@@ -31,6 +31,29 @@ from maxwell.electromagnetism.fields.electrotonic import (
     analyze_electrotonic_state,
 )
 
+from maxwell.electromagnetism.fields.vector_momentum import (
+    VectorPotential,
+    calc_vector_potential_from_current,
+    calc_vector_potential_wire,
+    calc_vector_potential_dipole,
+    calc_momentum_density,
+    calc_total_momentum,
+    verify_momentum_relations,
+    verify_momentum_conservation,
+    analyze_vector_potential,
+)
+
+from maxwell.electromagnetism.fields.curl_relation import (
+    CurlRelations,
+    verify_curl_relation,
+    verify_curl_gradient_identity,
+    verify_divergence_free_B,
+    calc_curl,
+    calc_divergence,
+    verify_gauge_invariance,
+    analyze_curl_relations,
+)
+
 __all__ = [
     # Ampere-Maxwell (Arts. 606-607)
     "AmpereMaxwellLaw",
@@ -50,4 +73,23 @@ __all__ = [
     "calc_flux_from_electrotonic",
     "verify_electrotonic_relations",
     "analyze_electrotonic_state",
+    # Vector Momentum (Arts. 585-592)
+    "VectorPotential",
+    "calc_vector_potential_from_current",
+    "calc_vector_potential_wire",
+    "calc_vector_potential_dipole",
+    "calc_momentum_density",
+    "calc_total_momentum",
+    "verify_momentum_relations",
+    "verify_momentum_conservation",
+    "analyze_vector_potential",
+    # Curl Relations (Arts. 590-592)
+    "CurlRelations",
+    "verify_curl_relation",
+    "verify_curl_gradient_identity",
+    "verify_divergence_free_B",
+    "calc_curl",
+    "calc_divergence",
+    "verify_gauge_invariance",
+    "analyze_curl_relations",
 ]
