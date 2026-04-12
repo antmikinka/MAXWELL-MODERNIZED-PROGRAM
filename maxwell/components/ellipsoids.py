@@ -23,7 +23,7 @@ References:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import numpy as np
 
 from maxwell.meta.citation import maxwell_cite
@@ -52,7 +52,7 @@ class MagneticEllipsoid:
         center: Center position (cm).
     """
 
-    semi_axes: np.ndarray  # (a, b, c), cm
+    semi_axes: np.ndarray = None  # (a, b, c), cm
     magnetization: np.ndarray = None  # I, emu/cm³, shape (3,)
     center: np.ndarray = None  # center, cm, shape (3,)
 
@@ -289,8 +289,8 @@ class ProlateSpheroid(MagneticEllipsoid):
         magnetization: Uniform magnetization I (emu/cm³).
     """
 
-    length: float  # Semi-axis a, cm
-    radius: float  # Semi-axes b = c, cm
+    length: float = 1.0  # Semi-axis a, cm
+    radius: float = 1.0  # Semi-axes b = c, cm
     magnetization: np.ndarray = None
     center: np.ndarray = None
 
@@ -386,8 +386,8 @@ class OblateSpheroid(MagneticEllipsoid):
         magnetization: Uniform magnetization I (emu/cm³).
     """
 
-    radius: float  # Semi-axes a = b, cm
-    thickness: float  # Semi-axis c, cm
+    radius: float = 1.0  # Semi-axes a = b, cm
+    thickness: float = 1.0  # Semi-axis c, cm
     magnetization: np.ndarray = None
     center: np.ndarray = None
 
