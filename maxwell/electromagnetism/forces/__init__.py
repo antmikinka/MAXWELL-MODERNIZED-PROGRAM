@@ -84,6 +84,17 @@ from maxwell.electromagnetism.forces.stress_tensor import (
     calc_force_on_conductor,
 )
 
+from maxwell.electromagnetism.forces.medium_force import (
+    MediumForceCalculator,
+    calc_medium_force,
+    calc_magnetized_body_force,
+    calc_permeable_medium_force,
+    calc_dipole_force_near_wire,
+    verify_medium_force,
+    verify_magnetic_response,
+    analyze_medium_forces,
+)
+
 __all__ = [
     # Lorentz force (Arts. 490-492)
     "LorentzForce",
@@ -110,4 +121,48 @@ __all__ = [
     "verify_stress_tensor_properties",
     "analyze_stress_tensor",
     "calc_force_on_conductor",
+    # Elemental forces (Arts. 510-515)
+    "CurrentElement",
+    "calc_ampere_force",
+    "calc_grassmann_force",
+    "calc_element_mutual_energy",
+    "verify_force_equivalence",
+    "calc_parallel_element_force",
+    "analyze_elemental_forces",
+    # Generalized forces (Arts. 573-578)
+    "GeneralizedForce",
+    "calc_force_from_energy",
+    "calc_force_movable_coil",
+    "calc_torque_on_loop",
+    "calc_force_on_dipole",
+    "calc_force_coaxial_coils",
+    "verify_generalized_forces",
+    "analyze_generalized_forces",
+    # Ponderomotive forces (Arts. 494-499)
+    "PonderomotiveForce",
+    "calc_electric_force_density",
+    "calc_magnetic_force_density",
+    "calc_ponderomotive_force",
+    "calc_force_on_point_charge",
+    "calc_force_on_wire_ponderomotive",
+    "calc_force_from_stress_tensor",
+    "verify_ponderomotive_forces",
+    "analyze_ponderomotive_forces",
+    # Sliding conductor (Arts. 536-539)
+    "SlidingConductor",
+    "calc_motional_emf_sliding",
+    "calc_magnetic_braking_force",
+    "calc_power_dissipation",
+    "calc_motional_emf_arbitrary",
+    "verify_motional_emf",
+    "analyze_sliding_conductor",
+    # Medium forces (Arts. 639-640)
+    "MediumForceCalculator",
+    "calc_medium_force",
+    "calc_magnetized_body_force",
+    "calc_permeable_medium_force",
+    "calc_dipole_force_near_wire",
+    "verify_medium_force",
+    "verify_magnetic_response",
+    "analyze_medium_forces",
 ]
