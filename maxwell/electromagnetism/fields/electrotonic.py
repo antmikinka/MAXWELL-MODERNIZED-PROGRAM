@@ -182,39 +182,42 @@ class ElectrotonicState:
 
 
 def _numerical_curl(F_func: callable, position: np.ndarray, delta: float) -> np.ndarray:
-    """Calculate numerical curl of vector field F."""
+    """Calculate numerical curl of vector field F.
+
+    curl F = [dFz/dy - dFy/dz, dFx/dz - dFz/dx, dFy/dx - dFx/dy]
+    """
     curl = np.zeros(3)
 
-    # dFz/dy - dFy/dz
-    Fy_plus = F_func(position + np.array([0, delta, 0]))[1]
-    Fy_minus = F_func(position - np.array([0, delta, 0]))[1]
-    dFy_dz = (Fy_plus - Fy_minus) / (2 * delta)
+    # curl_x = dFz/dy - dFy/dz
+    Fz_y_plus = F_func(position + np.array([0, delta, 0]))[2]
+    Fz_y_minus = F_func(position - np.array([0, delta, 0]))[2]
+    dFz_dy = (Fz_y_plus - Fz_y_minus) / (2 * delta)
 
-    Fz_plus = F_func(position + np.array([0, 0, delta]))[2]
-    Fz_minus = F_func(position - np.array([0, 0, delta]))[2]
-    dFz_dy = (Fz_plus - Fz_minus) / (2 * delta)
+    Fy_z_plus = F_func(position + np.array([0, 0, delta]))[1]
+    Fy_z_minus = F_func(position - np.array([0, 0, delta]))[1]
+    dFy_dz = (Fy_z_plus - Fy_z_minus) / (2 * delta)
 
     curl[0] = dFz_dy - dFy_dz
 
-    # dFx/dz - dFz/dx
-    Fz_plus = F_func(position + np.array([0, 0, delta]))[2]
-    Fz_minus = F_func(position - np.array([0, 0, delta]))[2]
-    dFz_dx = (Fz_plus - Fz_minus) / (2 * delta)
+    # curl_y = dFx/dz - dFz/dx
+    Fx_z_plus = F_func(position + np.array([0, 0, delta]))[0]
+    Fx_z_minus = F_func(position - np.array([0, 0, delta]))[0]
+    dFx_dz = (Fx_z_plus - Fx_z_minus) / (2 * delta)
 
-    Fx_plus = F_func(position + np.array([delta, 0, 0]))[0]
-    Fx_minus = F_func(position - np.array([delta, 0, 0]))[0]
-    dFx_dz = (Fx_plus - Fx_minus) / (2 * delta)
+    Fz_x_plus = F_func(position + np.array([delta, 0, 0]))[2]
+    Fz_x_minus = F_func(position - np.array([delta, 0, 0]))[2]
+    dFz_dx = (Fz_x_plus - Fz_x_minus) / (2 * delta)
 
     curl[1] = dFx_dz - dFz_dx
 
-    # dFy/dx - dFx/dy
-    Fx_plus = F_func(position + np.array([delta, 0, 0]))[0]
-    Fx_minus = F_func(position - np.array([delta, 0, 0]))[0]
-    dFx_dy = (Fx_plus - Fx_minus) / (2 * delta)
+    # curl_z = dFy/dx - dFx/dy
+    Fy_x_plus = F_func(position + np.array([delta, 0, 0]))[1]
+    Fy_x_minus = F_func(position - np.array([delta, 0, 0]))[1]
+    dFy_dx = (Fy_x_plus - Fy_x_minus) / (2 * delta)
 
-    Fy_plus = F_func(position + np.array([0, delta, 0]))[1]
-    Fy_minus = F_func(position - np.array([0, delta, 0]))[1]
-    dFy_dx = (Fy_plus - Fy_minus) / (2 * delta)
+    Fx_y_plus = F_func(position + np.array([0, delta, 0]))[0]
+    Fx_y_minus = F_func(position - np.array([0, delta, 0]))[0]
+    dFx_dy = (Fx_y_plus - Fx_y_minus) / (2 * delta)
 
     curl[2] = dFy_dx - dFx_dy
 
@@ -234,6 +237,89 @@ def _numerical_gradient(f_func: callable, position: np.ndarray, delta: float) ->
         grad[i] = (f_func(pos_plus) - f_func(pos_minus)) / (2 * delta)
 
     return grad
+
+
+@maxwell_cite(
+    540, 541,
+    part=4, chapter="Electrotonic State",
+    theory_class="maxwell_original",
+    description="Calculate electrotonic state (vector potential) from current",
+)
+def calc_electrotonic_state(
+    current: float,
+    position: np.ndarray,
+    gauge: str = "symmetric",
+) -> np.ndarray:
+    """
+    Calculate electrotonic state (vector potential) for a line current.
+
+    Art. 540-541: For an infinite wire along z-axis:
+
+        A_phi = (2*I/c) * ln(r)  (azimuthal direction)
+
+    Args:
+        current: Current (abamperes).
+        position: Position (cm).
+        gauge: Gauge choice ('symmetric' or 'landau').
+
+    Returns:
+        Vector potential A (gauss*cm).
+    """
+    position = np.asarray(position, dtype=np.float64)
+    r_perp = np.sqrt(position[0]**2 + position[1]**2)
+
+    if r_perp < 1e-15:
+        return np.zeros(3)
+
+    # Azimuthal direction
+    A_mag = 2.0 * current * np.log(max(r_perp, 1e-15)) / CONST.C
+    A_phi = np.array([-position[1], position[0], 0.0]) / r_perp
+
+    return A_mag * A_phi
+
+
+@maxwell_cite(
+    540, 541,
+    part=4, chapter="Electrotonic State",
+    theory_class="maxwell_original",
+    description="Verify electrotonic state relations",
+)
+def verify_electrotonic_state(
+    current: float = 1.0,
+    tolerance: float = 1e-5,
+) -> dict[str, float | bool]:
+    """
+    Verify electrotonic state relations.
+
+    Art. 540-541: Verifies curl(A) = B and other properties.
+
+    Args:
+        current: Test current (abamperes).
+        tolerance: Numerical tolerance.
+
+    Returns:
+        Dictionary with verification results.
+    """
+    B_test = np.array([0.0, 0.0, 1000.0])
+    pos = np.array([1.0, 0.0, 0.0])
+
+    A = calc_electrotonic_uniform_field(B_test, pos)
+
+    # Verify curl(A) = B numerically
+    def A_func(r):
+        return calc_electrotonic_uniform_field(B_test, r)
+
+    curl_A = _numerical_curl(A_func, pos, 1e-6)
+    curl_verified = bool(np.linalg.norm(curl_A - B_test) / np.linalg.norm(B_test) < tolerance)
+
+    return {
+        "B_field": B_test,
+        "position": pos,
+        "vector_potential": A,
+        "curl_A": curl_A,
+        "curl_verified": curl_verified,
+        "verified": curl_verified,
+    }
 
 
 @maxwell_cite(

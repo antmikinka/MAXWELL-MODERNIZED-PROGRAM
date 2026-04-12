@@ -265,7 +265,8 @@ def calc_force_between_circuits(
 def calc_mutual_inductance_coaxial_loops(
     radius1: float,
     radius2: float,
-    axial_separation: float,
+    axial_separation: float = None,
+    separation: float = None,
 ) -> float:
     """
     Calculate mutual inductance of coaxial circular loops.
@@ -295,7 +296,7 @@ def calc_mutual_inductance_coaxial_loops(
     """
     a = radius1
     b = radius2
-    z = axial_separation
+    z = axial_separation if axial_separation is not None else separation
 
     # k² parameter
     k_squared = 4.0 * a * b / ((a + b) ** 2 + z ** 2)
@@ -491,3 +492,7 @@ def _estimate_self_inductance(vertices: list[np.ndarray]) -> float:
         if effective_radius > 0.1:
             return 4.0 * np.pi * effective_radius * (np.log(8 * effective_radius / 0.1) - 1.75)
     return perimeter * 0.5
+
+
+# Alias for test compatibility
+calc_mutual_inductance = calc_mutual_inductance_coaxial_loops

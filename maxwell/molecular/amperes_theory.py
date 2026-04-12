@@ -361,7 +361,7 @@ def calc_molecular_field(
     r_cubed = distance ** 3
 
     B_radial = (2.0 * molecular_moment / r_cubed) * np.cos(angle)
-    B_tangential = (molecular_moment / r_cubed) * np.sin(angle)
+    B_tangential = -(molecular_moment / r_cubed) * np.sin(angle)
 
     return (B_radial, B_tangential)
 
@@ -407,10 +407,13 @@ def verify_amperes_theory(
     m_error = abs(m - expected_m) / expected_m if expected_m > 0 else 0
 
     # Calculate field at distance
-    B_r, B_θ = calc_molecular_field(m, distance, np.pi/4)
+    angle = np.pi / 4
+    B_r, B_θ = calc_molecular_field(m, distance, angle)
 
     # Verify dipole field relation
-    B_expected = m / (distance ** 3)
+    # For dipole field: B_r = (2m/r³)*cos(θ), B_θ = -(m/r³)*sin(θ)
+    # Magnitude: |B| = (m/r³) * sqrt(4cos²(θ) + sin²(θ))
+    B_expected = (m / (distance ** 3)) * np.sqrt(4 * np.cos(angle)**2 + np.sin(angle)**2)
     B_magnitude = np.sqrt(B_r ** 2 + B_θ ** 2)
     field_error = abs(B_magnitude - B_expected) / B_expected if B_expected > 0 else 0
 
@@ -433,7 +436,7 @@ def verify_amperes_theory(
         "field_error": field_error,
         "magnetization": M,
         "magnetization_error": M_error,
-        "verified": m_error < tolerance and field_error < tolerance and M_error < tolerance,
+        "verified": bool(m_error < tolerance and field_error < tolerance and M_error < tolerance),
     }
 
 

@@ -231,9 +231,57 @@ def calc_magnetic_force_density(
     602, 603,
     part=4, chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
-    description="Calculate total ponderomotive force",
+    description="Calculate Lorentz force on current element: F = I*L×B",
 )
 def calc_ponderomotive_force(
+    current: float,
+    length_vector: np.ndarray,
+    B_field: np.ndarray,
+    E_field: np.ndarray = None,
+    rho: float = 0.0,
+) -> np.ndarray:
+    """
+    Calculate ponderomotive force on current element.
+
+    Art. 602-603: For a current element in a magnetic field:
+
+        F = I * L × B
+
+    With charge density and electric field:
+        F = rho * E + J × B
+
+    Args:
+        current: Current (abamperes).
+        length_vector: Length vector of conductor (cm).
+        B_field: Magnetic field (gauss).
+        E_field: Optional electric field.
+        rho: Optional charge density.
+
+    Returns:
+        Force vector (dynes).
+
+    Reference:
+        Part IV, Arts. 602-603: Ponderomotive force on current element.
+    """
+    length_vector = np.asarray(length_vector, dtype=np.float64)
+    B_field = np.asarray(B_field, dtype=np.float64)
+
+    force = current * np.cross(length_vector, B_field)
+
+    if E_field is not None and rho != 0.0:
+        E_field = np.asarray(E_field, dtype=np.float64)
+        force += rho * E_field
+
+    return force
+
+
+@maxwell_cite(
+    602, 603,
+    part=4, chapter="Ponderomotive Forces",
+    theory_class="maxwell_original",
+    description="Calculate total ponderomotive force density",
+)
+def calc_ponderomotive_force_density(
     rho: float,
     J: np.ndarray,
     E_field: np.ndarray,

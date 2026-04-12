@@ -303,6 +303,83 @@ class CurrentCircuit:
         )
 
 
+@dataclass
+class CircuitEquivalence:
+    """
+    Circuit-shell equivalence calculator.
+
+    Art. 482-485: Maxwell's equivalence theorem between a current-carrying
+    circuit and a magnetic shell.
+
+    Attributes:
+        current: Current in circuit (abamperes).
+        area: Area of circuit (cm²).
+    """
+
+    current: float = 0.0
+    area: float = 1.0
+
+    @maxwell_cite(
+        482, 483,
+        part=4, chapter="Circuit-Shell Equivalence",
+        theory_class="maxwell_original",
+        description="Calculate magnetic moment from circuit area and current",
+    )
+    def magnetic_moment(self, current: float = None, area: float = None) -> float:
+        """
+        Calculate magnetic moment: m = I * A / c.
+
+        Art. 482-483: For a current loop:
+
+            m = I * A / c
+
+        Args:
+            current: Current (abamperes, uses self.current if None).
+            area: Area (cm², uses self.area if None).
+
+        Returns:
+            Magnetic moment (EMU).
+        """
+        I = current if current is not None else self.current
+        A = area if area is not None else self.area
+        return I * A / CONST.C
+
+
+@maxwell_cite(
+    482, 483,
+    part=4, chapter="Circuit-Shell Equivalence",
+    theory_class="maxwell_original",
+    description="Calculate solid angle of circular loop on axis",
+)
+def calc_solid_angle(
+    radius: float,
+    distance: float,
+) -> float:
+    """
+    Calculate solid angle subtended by a circular loop on its axis.
+
+    Art. 482-485: For a circular loop of radius R at distance z:
+
+        Omega = 2*pi * (1 - z / sqrt(R² + z²))
+
+    Args:
+        radius: Loop radius (cm).
+        distance: Axial distance from loop (cm).
+
+    Returns:
+        Solid angle (steradians).
+
+    Reference:
+        Part IV, Arts. 482-485: Solid angle of circular loop.
+    """
+    R = radius
+    z = abs(distance)
+    r = np.sqrt(R ** 2 + z ** 2)
+    if r < 1e-15:
+        return 2.0 * np.pi
+    return 2.0 * np.pi * (1.0 - z / r)
+
+
 @maxwell_cite(
     482, 483, 484, 485,
     part=4, chapter="Circuit-Shell Equivalence",

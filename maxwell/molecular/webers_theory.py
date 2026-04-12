@@ -311,6 +311,67 @@ class WebersTheory:
 
         return -mutual_inductance * dI_dt
 
+    @maxwell_cite(
+        841,
+        part=4, chapter="Weber's Theory",
+        theory_class="maxwell_original",
+        description="Calculate Weber force vector between moving charges",
+    )
+    def force(
+        self,
+        q1: float,
+        q2: float,
+        r_vec: np.ndarray,
+        v1: np.ndarray,
+        v2: np.ndarray,
+    ) -> np.ndarray:
+        """
+        Calculate Weber's force vector between two moving charges.
+
+        Art. 841: Full vector form of Weber's force law:
+
+            F = (q₁q₂ / r²) * [1 - (v1_r² + v2_r²)/(2c²)] * r̂
+
+        where v1_r and v2_r are the radial components of the velocities.
+
+        Args:
+            q1: First charge (statcoulombs).
+            q2: Second charge (statcoulombs).
+            r_vec: Separation vector from q1 to q2 (cm).
+            v1: Velocity of q1 (cm/s).
+            v2: Velocity of q2 (cm/s).
+
+        Returns:
+            Force vector F (dynes).
+
+        Reference:
+            Part IV, Art. 841: Weber's force law.
+        """
+        r_vec = np.asarray(r_vec, dtype=np.float64)
+        v1 = np.asarray(v1, dtype=np.float64)
+        v2 = np.asarray(v2, dtype=np.float64)
+
+        r = np.linalg.norm(r_vec)
+        if r < 1e-15:
+            return np.zeros(3)
+
+        r_hat = r_vec / r
+
+        # Weber force velocity correction using radial velocity components
+        c = CONST.C
+        coulomb_term = (q1 * q2) / (r ** 2)
+
+        # Radial components of velocities (along r_hat)
+        v1_r = np.dot(v1, r_hat)
+        v2_r = np.dot(v2, r_hat)
+
+        # Velocity correction: depends on squared radial velocities
+        velocity_correction = (v1_r ** 2 + v2_r ** 2) / (2.0 * c ** 2)
+
+        F_magnitude = coulomb_term * (1.0 - velocity_correction)
+
+        return F_magnitude * r_hat
+
 
 @maxwell_cite(
     841,
@@ -468,7 +529,7 @@ def verify_webers_theory(
         "V_ergs": V,
         "V_coulomb_ergs": V_coulomb,
         "potential_error": potential_error,
-        "verified": coulomb_error < tolerance and correction_error < tolerance,
+        "verified": bool(coulomb_error < tolerance and correction_error < tolerance),
     }
 
 
@@ -538,3 +599,121 @@ def analyze_webers_theory(
         "max_velocity_fraction_c": max(velocities) / CONST.C,
         "CGS_units": "q in statcoulombs, F in dynes, V in ergs",
     }
+
+
+# Alias for backwards compatibility
+WeberTheory = WebersTheory
+
+
+# =============================================================================
+# STANDALONE FUNCTIONS FOR DIRECT IMPORT (as expected by tests)
+# =============================================================================
+
+@maxwell_cite(
+    841,
+    part=4, chapter="Weber's Theory",
+    theory_class="maxwell_original",
+    description="Calculate Weber force vector between moving charges",
+)
+def weber_force(
+    q1: float,
+    q2: float,
+    r_vec: np.ndarray,
+    v1: np.ndarray,
+    v2: np.ndarray,
+) -> np.ndarray:
+    """
+    Calculate Weber's force vector between two moving charges.
+
+    Art. 841: Full vector form of Weber's force law:
+
+        F = (q₁q₂ / r²) * [1 - (v1²)/(2c²) - (v2²)/(2c²) + (v1·v2)/c²] * r̂
+
+    where v1 and v2 are the velocities of the two charges.
+
+    Args:
+        q1: First charge (statcoulombs).
+        q2: Second charge (statcoulombs).
+        r_vec: Separation vector from q1 to q2 (cm).
+        v1: Velocity of q1 (cm/s).
+        v2: Velocity of q2 (cm/s).
+
+    Returns:
+        Force vector F (dynes).
+
+    Reference:
+        Part IV, Art. 841: Weber's force law.
+
+    Example:
+        >>> q1, q2 = 1.0, 1.0
+        >>> r_vec = np.array([1.0, 0.0, 0.0])
+        >>> v1 = np.zeros(3)
+        >>> v2 = np.zeros(3)
+        >>> F = weber_force(q1, q2, r_vec, v1, v2)
+        >>> print(f"F = {F} dynes")
+    """
+    r_vec = np.asarray(r_vec, dtype=np.float64)
+    v1 = np.asarray(v1, dtype=np.float64)
+    v2 = np.asarray(v2, dtype=np.float64)
+
+    r = np.linalg.norm(r_vec)
+    if r < 1e-15:
+        return np.zeros(3)
+
+    r_hat = r_vec / r
+
+    # Weber force velocity correction using radial velocity components
+    c = CONST.C
+    coulomb_term = (q1 * q2) / (r ** 2)
+
+    # Radial components of velocities (along r_hat)
+    v1_r = np.dot(v1, r_hat)
+    v2_r = np.dot(v2, r_hat)
+
+    # Velocity correction: depends on squared radial velocities
+    # Each particle's radial velocity contributes independently
+    velocity_correction = (v1_r ** 2 + v2_r ** 2) / (2.0 * c ** 2)
+
+    F_magnitude = coulomb_term * (1.0 - velocity_correction)
+
+    return F_magnitude * r_hat
+
+
+@maxwell_cite(
+    842,
+    part=4, chapter="Weber's Theory",
+    theory_class="maxwell_original",
+    description="Calculate Weber potential energy",
+)
+def weber_potential(
+    q1: float,
+    q2: float,
+    r: float,
+    r_dot: float = 0.0,
+) -> float:
+    """
+    Calculate Weber's potential energy between two charges.
+
+    Art. 842: V = (q₁q₂ / r) * [1 - (ṙ²/2c²)]
+
+    Args:
+        q1: First charge (statcoulombs).
+        q2: Second charge (statcoulombs).
+        r: Separation distance (cm).
+        r_dot: Radial velocity ṙ (cm/s).
+
+    Returns:
+        Potential energy V (ergs).
+
+    Reference:
+        Part IV, Art. 842: Weber potential energy.
+
+    Example:
+        >>> V = weber_potential(1.0, 1.0, 1.0)
+        >>> print(f"V = {V} ergs")
+    """
+    c = CONST.C
+    coulomb_potential = (q1 * q2) / r
+    velocity_correction = (r_dot ** 2) / (2.0 * c ** 2)
+
+    return coulomb_potential * (1.0 - velocity_correction)

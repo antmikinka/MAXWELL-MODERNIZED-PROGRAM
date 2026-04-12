@@ -43,6 +43,112 @@ from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 
 
+@maxwell_cite(
+    792,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate radiation pressure: P = u",
+)
+def calc_radiation_pressure(u: float) -> float:
+    """
+    Calculate radiation pressure from energy density.
+
+    Art. 791-792: Maxwell's radiation pressure formula for absorption:
+
+        P = u
+
+    where u is the energy density (erg/cm³).
+
+    For CGS units: 1 erg/cm³ = 1 dyne/cm²
+
+    Args:
+        u: Energy density (erg/cm³).
+
+    Returns:
+        Radiation pressure P (dyne/cm²).
+
+    Raises:
+        ValueError: If energy density is negative.
+
+    Reference:
+        Part IV, Arts. 791-792: Radiation pressure formula.
+
+    Example:
+        >>> P = calc_radiation_pressure(1.0)
+        >>> print(f"P = {P} dyne/cm²")  # P = 1 dyne/cm²
+    """
+    if u < 0:
+        raise ValueError(f"Energy density must be non-negative, got {u}")
+
+    return u
+
+
+@maxwell_cite(
+    792,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate radiation pressure for reflection: P = 2u",
+)
+def calc_radiation_pressure_reflection(u: float) -> float:
+    """
+    Calculate radiation pressure for perfect reflection.
+
+    Art. 792: For perfect reflection, pressure is doubled:
+
+        P = 2u
+
+    Args:
+        u: Energy density (erg/cm³).
+
+    Returns:
+        Radiation pressure P (dyne/cm²).
+
+    Reference:
+        Part IV, Art. 792: Radiation pressure for reflection.
+
+    Example:
+        >>> P = calc_radiation_pressure_reflection(1.0)
+        >>> print(f"P = {P} dyne/cm²")  # P = 2 dyne/cm²
+    """
+    if u < 0:
+        raise ValueError(f"Energy density must be non-negative, got {u}")
+
+    return 2.0 * u
+
+
+@maxwell_cite(
+    791,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate radiation pressure from intensity: P = I/c",
+)
+def calc_pressure_from_intensity(I: float) -> float:
+    """
+    Calculate radiation pressure from intensity.
+
+    Art. 791: For absorbing surface:
+
+        P = I / c
+
+    Args:
+        I: Intensity (erg/cm²/s).
+
+    Returns:
+        Radiation pressure P (dyne/cm²).
+
+    Reference:
+        Part IV, Art. 791: Pressure from intensity.
+
+    Example:
+        >>> P = calc_pressure_from_intensity(CONST.C)
+        >>> print(f"P = {P} dyne/cm²")  # P = 1 dyne/cm²
+    """
+    if I < 0:
+        raise ValueError(f"Intensity must be non-negative, got {I}")
+
+    return I / CONST.C
+
+
 @dataclass
 class RadiationPressure:
     """
@@ -51,17 +157,7 @@ class RadiationPressure:
     Art. 791-794: Maxwell predicted that electromagnetic waves exert
     mechanical pressure on surfaces they strike. This pressure arises
     from the momentum carried by the electromagnetic field.
-
-    Attributes:
-        intensity: Wave intensity I (erg/cm²/s).
     """
-
-    intensity: float
-
-    def __post_init__(self):
-        """Validate intensity."""
-        if self.intensity < 0:
-            raise ValueError(f"Intensity must be non-negative, got {self.intensity}")
 
     @maxwell_cite(
         791,
@@ -69,15 +165,16 @@ class RadiationPressure:
         theory_class="maxwell_original",
         description="Calculate radiation pressure on absorbing surface",
     )
-    def pressure_absorbing(self) -> float:
+    def pressure_absorption(self, u: float) -> float:
         """
         Calculate radiation pressure on a perfectly absorbing surface.
 
-        Art. 791: For normal incidence on a black (absorbing) surface:
+        Art. 791: For absorbing surface:
 
-            P = I / c
+            P = u
 
-        where I is the intensity and c is the speed of light.
+        Args:
+            u: Energy density (erg/cm³).
 
         Returns:
             Radiation pressure (dyne/cm²).
@@ -85,7 +182,7 @@ class RadiationPressure:
         Reference:
             Part IV, Art. 791: Radiation pressure on absorber.
         """
-        return self.intensity / CONST.C
+        return calc_radiation_pressure(u)
 
     @maxwell_cite(
         792,
@@ -93,15 +190,16 @@ class RadiationPressure:
         theory_class="maxwell_original",
         description="Calculate radiation pressure on reflecting surface",
     )
-    def pressure_reflecting(self) -> float:
+    def pressure_reflection(self, u: float) -> float:
         """
         Calculate radiation pressure on a perfectly reflecting surface.
 
-        Art. 792: For normal incidence on a perfect mirror:
+        Art. 792: For perfect reflection:
 
-            P = 2I / c
+            P = 2u
 
-        The factor of 2 arises from momentum reversal upon reflection.
+        Args:
+            u: Energy density (erg/cm³).
 
         Returns:
             Radiation pressure (dyne/cm²).
@@ -109,60 +207,25 @@ class RadiationPressure:
         Reference:
             Part IV, Art. 792: Radiation pressure on reflector.
         """
-        return 2.0 * self.intensity / CONST.C
-
-    @maxwell_cite(
-        793,
-        part=4, chapter="Electromagnetic Theory of Light",
-        theory_class="maxwell_original",
-        description="Calculate radiation pressure at oblique incidence",
-    )
-    def pressure_oblique(self, angle: float, reflecting: bool = False) -> float:
-        """
-        Calculate radiation pressure at oblique incidence.
-
-        Art. 793: For incidence at angle θ from normal:
-
-            P = (I / c) * cos²(θ)  (absorbing)
-            P = (2I / c) * cos²(θ)  (reflecting)
-
-        Args:
-            angle: Angle of incidence θ (radians).
-            reflecting: True for reflecting surface, False for absorbing.
-
-        Returns:
-            Radiation pressure (dyne/cm²).
-
-        Reference:
-            Part IV, Art. 793: Oblique incidence radiation pressure.
-        """
-        cos_theta = np.cos(angle)
-        cos_sq = cos_theta ** 2
-
-        if reflecting:
-            return 2.0 * self.intensity / CONST.C * cos_sq
-        else:
-            return self.intensity / CONST.C * cos_sq
+        return calc_radiation_pressure_reflection(u)
 
     @maxwell_cite(
         794,
         part=4, chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
-        description="Calculate force on surface from radiation",
+        description="Calculate force on area from radiation pressure",
     )
-    def force_on_surface(self, area: float, reflecting: bool = False) -> float:
+    def force_on_area(self, pressure: float, area: float) -> float:
         """
-        Calculate total force on a surface from radiation pressure.
+        Calculate total force on area from radiation pressure.
 
         Art. 794: The force is:
 
             F = P * A
 
-        where P is the radiation pressure and A is the area.
-
         Args:
-            area: Surface area (cm²).
-            reflecting: True for reflecting surface.
+            pressure: Radiation pressure P (dyne/cm²).
+            area: Surface area A (cm²).
 
         Returns:
             Force (dynes).
@@ -172,89 +235,7 @@ class RadiationPressure:
         """
         if area <= 0:
             raise ValueError(f"Area must be positive, got {area}")
-
-        if reflecting:
-            return self.pressure_reflecting() * area
-        else:
-            return self.pressure_absorbing() * area
-
-    @maxwell_cite(
-        791, 794,
-        part=4, chapter="Electromagnetic Theory of Light",
-        theory_class="maxwell_original",
-        description="Calculate momentum flux of radiation",
-    )
-    def momentum_flux(self) -> float:
-        """
-        Calculate momentum flux (momentum per unit area per unit time).
-
-        Art. 791-794: The momentum flux is:
-
-            dp/dt/dA = I / c = u
-
-        where u is the energy density.
-
-        Returns:
-            Momentum flux (dyne·s/cm²/s = dyne/cm²).
-
-        Reference:
-            Part IV, Arts. 791-794: Momentum flux.
-        """
-        return self.intensity / CONST.C
-
-
-@maxwell_cite(
-    791,
-    part=4, chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
-    description="Calculate radiation pressure: P = I/c",
-)
-def calc_radiation_pressure(
-    intensity: float,
-    reflecting: bool = False,
-) -> float:
-    """
-    Calculate radiation pressure from electromagnetic wave.
-
-    Art. 791-792: Maxwell's radiation pressure formula:
-
-        P = I / c  (absorbing surface)
-        P = 2I / c  (reflecting surface)
-
-    where I is the intensity and c is the speed of light.
-
-    This pressure arises because electromagnetic waves carry momentum:
-
-        p = E / c
-
-    Args:
-        intensity: Wave intensity I (erg/cm²/s).
-        reflecting: True for perfectly reflecting surface.
-
-    Returns:
-        Radiation pressure (dyne/cm²).
-
-    Raises:
-        ValueError: If intensity is negative.
-
-    Reference:
-        Part IV, Arts. 791-792: Radiation pressure formula.
-
-    Example:
-        >>> # Solar radiation at Earth: I ≈ 1.4e6 erg/cm²/s
-        >>> P = calc_radiation_pressure(1.4e6)
-        >>> print(f"P = {P:.2e} dyne/cm²")
-        >>> # On reflecting surface (solar sail)
-        >>> P_reflect = calc_radiation_pressure(1.4e6, reflecting=True)
-        >>> print(f"P_reflect = {P_reflect:.2e} dyne/cm²")
-    """
-    if intensity < 0:
-        raise ValueError(f"Intensity must be non-negative, got {intensity}")
-
-    if reflecting:
-        return 2.0 * intensity / CONST.C
-    else:
-        return intensity / CONST.C
+        return pressure * area
 
 
 @maxwell_cite(

@@ -687,3 +687,246 @@ def analyze_metallic_reflection(
         "R_unpol_min": min(R_unpol_values),
         "R_unpol_max": max(R_unpol_values),
     }
+
+
+@maxwell_cite(
+    798,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate skin depth from conductivity",
+)
+def calc_skin_depth(sigma: float, omega: float) -> float:
+    """
+    Calculate electromagnetic skin depth in conductor.
+
+    Art. 798: For a good conductor, the skin depth is:
+
+        delta = c / sqrt(2 * pi * sigma * omega)
+
+    where sigma is the conductivity and omega is the angular frequency.
+
+    Args:
+        sigma: Conductivity (s⁻¹ in CGS).
+        omega: Angular frequency (rad/s).
+
+    Returns:
+        Skin depth delta (cm).
+
+    Reference:
+        Part IV, Art. 798: Skin depth in conductor.
+
+    Example:
+        >>> # Copper at 1 MHz
+        >>> delta = calc_skin_depth(5.9e17, 2*np.pi*1e6)
+        >>> print(f"delta = {delta*1e4:.2f} microns")
+    """
+    if sigma <= 0:
+        raise ValueError(f"Conductivity must be positive")
+    if omega <= 0:
+        raise ValueError(f"Angular frequency must be positive")
+
+    return CONST.C / np.sqrt(2.0 * np.pi * sigma * omega)
+
+
+@maxwell_cite(
+    799,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate absorption coefficient from skin depth",
+)
+def calc_absorption_coefficient(delta: float) -> float:
+    """
+    Calculate absorption coefficient from skin depth.
+
+    Art. 799: The absorption coefficient is the inverse of skin depth:
+
+        alpha = 1 / delta
+
+    Args:
+        delta: Skin depth (cm).
+
+    Returns:
+        Absorption coefficient alpha (cm⁻¹).
+
+    Reference:
+        Part IV, Art. 799: Absorption coefficient.
+
+    Example:
+        >>> alpha = calc_absorption_coefficient(1e-4)
+        >>> print(f"alpha = {alpha} cm^-1")  # alpha = 10000 cm^-1
+    """
+    if delta <= 0:
+        raise ValueError(f"Skin depth must be positive")
+    return 1.0 / delta
+
+
+@maxwell_cite(
+    797,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate metal reflectivity",
+)
+def calc_metal_reflectivity(sigma: float, omega: float) -> float:
+    """
+    Calculate reflectivity of a metal.
+
+    Art. 797-800: For a good conductor, reflectivity approaches 1.
+    Using the skin depth approximation:
+
+        R = 1 - 2 * sqrt(omega / (2 * pi * sigma))
+
+    For high conductivity, R approaches 1.
+
+    Args:
+        sigma: Conductivity (s⁻¹ in CGS).
+        omega: Angular frequency (rad/s).
+
+    Returns:
+        Reflectivity R (0 to 1).
+
+    Reference:
+        Part IV, Arts. 797-800: Metal reflectivity.
+
+    Example:
+        >>> # Copper at optical frequencies
+        >>> R = calc_metal_reflectivity(5.9e17, 2*np.pi*1e14)
+        >>> print(f"R = {R:.4f}")  # R close to 1
+    """
+    if sigma <= 0:
+        raise ValueError(f"Conductivity must be positive")
+    if omega <= 0:
+        raise ValueError(f"Angular frequency must be positive")
+
+    # Good conductor approximation
+    factor = np.sqrt(omega / (2.0 * np.pi * sigma))
+    return 1.0 - 2.0 * factor
+
+
+@maxwell_cite(
+    798,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Check transparency criterion for material",
+)
+def check_transparency(sigma: float, omega: float, epsilon: float) -> bool:
+    """
+    Check if material is transparent based on conductivity.
+
+    Art. 798: Transparency criterion:
+
+        Transparent if: sigma << omega * epsilon
+        Opaque if: sigma >> omega * epsilon
+
+    Args:
+        sigma: Conductivity (s⁻¹ in CGS).
+        omega: Angular frequency (rad/s).
+        epsilon: Permittivity (dimensionless).
+
+    Returns:
+        True if transparent, False if opaque.
+
+    Reference:
+        Part IV, Art. 798: Transparency criterion.
+
+    Example:
+        >>> # Good conductor (opaque)
+        >>> is_transparent = check_transparency(5.9e17, 1e15, 1.0)
+        >>> print(f"Conductor transparent: {is_transparent}")  # False
+        >>> # Dielectric (transparent)
+        >>> is_transparent = check_transparency(1e-10, 1e15, 2.0)
+        >>> print(f"Dielectric transparent: {is_transparent}")  # True
+    """
+    if omega <= 0 or epsilon <= 0:
+        return False
+    # Transparent if conductivity is much smaller than displacement current
+    return bool(sigma < omega * epsilon)
+
+
+@dataclass
+class MetalOptics:
+    """
+    Metal optics calculator.
+
+    Art. 798-800: Maxwell's theory of electromagnetic wave interaction
+    with metallic surfaces.
+
+    Attributes:
+        conductivity: Electrical conductivity sigma (s⁻¹ in CGS).
+    """
+
+    conductivity: float = 5.9e17  # Default: copper
+
+    def __post_init__(self):
+        """Validate parameters."""
+        if self.conductivity <= 0:
+            raise ValueError(f"Conductivity must be positive")
+
+    @maxwell_cite(
+        798,
+        part=4, chapter="Electromagnetic Theory of Light",
+        theory_class="maxwell_original",
+        description="Calculate skin depth at given frequency",
+    )
+    def skin_depth(self, omega: float) -> float:
+        """
+        Calculate skin depth at angular frequency omega.
+
+        Art. 798: delta = c / sqrt(2 * pi * sigma * omega)
+
+        Args:
+            omega: Angular frequency (rad/s).
+
+        Returns:
+            Skin depth delta (cm).
+
+        Reference:
+            Part IV, Art. 798: Skin depth.
+        """
+        return calc_skin_depth(self.conductivity, omega)
+
+    @maxwell_cite(
+        799,
+        part=4, chapter="Electromagnetic Theory of Light",
+        theory_class="maxwell_original",
+        description="Calculate absorption coefficient",
+    )
+    def absorption_coefficient(self, delta: float) -> float:
+        """
+        Calculate absorption coefficient from skin depth.
+
+        Art. 799: alpha = 1 / delta
+
+        Args:
+            delta: Skin depth (cm).
+
+        Returns:
+            Absorption coefficient alpha (cm⁻¹).
+
+        Reference:
+            Part IV, Art. 799: Absorption coefficient.
+        """
+        return calc_absorption_coefficient(delta)
+
+    @maxwell_cite(
+        797,
+        part=4, chapter="Electromagnetic Theory of Light",
+        theory_class="maxwell_original",
+        description="Calculate reflectivity at frequency",
+    )
+    def reflectivity(self, omega: float) -> float:
+        """
+        Calculate metal reflectivity at angular frequency.
+
+        Art. 797-800: For good conductors, R approaches 1.
+
+        Args:
+            omega: Angular frequency (rad/s).
+
+        Returns:
+            Reflectivity R (0 to 1).
+
+        Reference:
+            Part IV, Arts. 797-800: Metal reflectivity.
+        """
+        return calc_metal_reflectivity(self.conductivity, omega)
+

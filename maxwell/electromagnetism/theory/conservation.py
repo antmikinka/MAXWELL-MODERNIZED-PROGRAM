@@ -58,8 +58,8 @@ class EnergyConservation:
         mutual_inductance: Mutual inductance M (cm, default 0).
     """
 
-    inductance: float
-    resistance: float
+    inductance: float = 0.0
+    resistance: float = 1.0
     mutual_inductance: float = 0.0
 
     def __post_init__(self):
@@ -118,6 +118,35 @@ class EnergyConservation:
             Power dissipated (ergs/s).
         """
         return current ** 2 * self.resistance
+
+    def joule_heat(self, current: float, resistance: float = None) -> float:
+        """
+        Calculate Joule heating power.
+
+        Args:
+            current: Current (abamperes).
+            resistance: Resistance (abohms, uses self.resistance if None).
+
+        Returns:
+            Joule heating power (ergs/s).
+        """
+        R = resistance if resistance is not None else self.resistance
+        return current ** 2 * R
+
+    def electrical_power(self, emf: float, current: float) -> float:
+        """
+        Calculate electrical power supplied.
+
+        Art. 543-544: P = EMF * I
+
+        Args:
+            emf: Electromotive force (abvolts).
+            current: Current (abamperes).
+
+        Returns:
+            Electrical power (ergs/s).
+        """
+        return emf * current
 
     @maxwell_cite(
         543, 544,
@@ -294,6 +323,61 @@ def calc_work_by_emf(
         Part IV, Arts. 543-544: Work by EMF.
     """
     return emf * current * time_interval
+
+
+@maxwell_cite(
+    543, 544,
+    part=4, chapter="Energy Conservation",
+    theory_class="maxwell_original",
+    description="Verify energy conservation in circuit",
+)
+def verify_energy_conservation(
+    emf: float,
+    current: float,
+    resistance: float,
+    mechanical_power: float = 0.0,
+    tolerance: float = 1e-6,
+) -> dict[str, float | bool]:
+    """
+    Verify energy conservation in electromagnetic system.
+
+    Art. 543-544: Energy balance:
+
+        dW_electric = dW_mechanical + dW_heat
+
+    where:
+        dW_electric = EMF * I
+        dW_mechanical = mechanical_power
+        dW_heat = I² * R
+
+    Args:
+        emf: Electromotive force (abvolts).
+        current: Current (abamperes).
+        resistance: Resistance (abohms).
+        mechanical_power: Mechanical power output (ergs/s).
+        tolerance: Numerical tolerance.
+
+    Returns:
+        Dictionary with verification results.
+    """
+    electrical_power = emf * current
+    heat_power = current ** 2 * resistance
+
+    # Energy balance: electrical = mechanical + heat + stored
+    stored_power = electrical_power - heat_power - mechanical_power
+
+    balance = electrical_power - (mechanical_power + heat_power + stored_power)
+    relative_error = abs(balance) / abs(electrical_power) if abs(electrical_power) > 1e-15 else abs(balance)
+
+    return {
+        "electrical_power": electrical_power,
+        "heat_power": heat_power,
+        "mechanical_power": mechanical_power,
+        "stored_power": stored_power,
+        "balance_error": balance,
+        "relative_error": relative_error,
+        "energy_conserved": relative_error < tolerance,
+    }
 
 
 @maxwell_cite(

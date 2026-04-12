@@ -53,8 +53,8 @@ class EquipotentialSurface:
         potential_value: The potential value defining this surface (oersted*cm).
     """
 
-    current: float
-    potential_value: float
+    current: float = 0.0
+    potential_value: float = 0.0
 
     @property
     def solid_angle(self) -> float:
@@ -92,6 +92,41 @@ class EquipotentialSurface:
             Part IV, Arts. 486-487: Equipotential surface definition.
         """
         return abs(solid_angle_at_point - self.solid_angle) < tolerance
+
+    @maxwell_cite(
+        486, 487,
+        part=4, chapter="Equipotential Surfaces",
+        theory_class="maxwell_original",
+        description="Calculate potential at helicoidal surface point",
+    )
+    def potential_at(self, phi: float, r: float) -> float:
+        """
+        Calculate potential on a helicoidal equipotential surface.
+
+        Art. 486-487: For the helicoidal surface around a wire:
+
+            Omega = I * phi  (on the surface)
+
+        Args:
+            phi: Azimuthal angle (radians).
+            r: Radial distance (cm).
+
+        Returns:
+            Potential (oersted*cm).
+        """
+        return self.current * phi
+
+    def pitch(self) -> float:
+        """
+        Calculate the pitch of the helicoidal surface.
+
+        Art. 486-487: The pitch of the helicoid (vertical rise per
+        2*pi rotation) is proportional to the current.
+
+        Returns:
+            Pitch (cm per revolution).
+        """
+        return 2.0 * np.pi * abs(self.current)
 
 
 @dataclass
