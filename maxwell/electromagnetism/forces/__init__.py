@@ -25,6 +25,49 @@ from maxwell.electromagnetism.forces.lorentz import (
     verify_parallel_current_attraction,
 )
 
+from maxwell.electromagnetism.forces.elemental import (
+    CurrentElement,
+    calc_ampere_force,
+    calc_grassmann_force,
+    calc_element_mutual_energy,
+    verify_force_equivalence,
+    calc_parallel_element_force,
+    analyze_elemental_forces,
+)
+
+from maxwell.electromagnetism.forces.generalized import (
+    GeneralizedForce,
+    calc_force_from_energy,
+    calc_force_movable_coil,
+    calc_torque_on_loop,
+    calc_force_on_dipole,
+    calc_force_coaxial_coils,
+    verify_generalized_forces,
+    analyze_generalized_forces,
+)
+
+from maxwell.electromagnetism.forces.ponderomotive import (
+    PonderomotiveForce,
+    calc_electric_force_density,
+    calc_magnetic_force_density,
+    calc_ponderomotive_force,
+    calc_force_on_point_charge,
+    calc_force_on_wire_ponderomotive,
+    calc_force_from_stress_tensor,
+    verify_ponderomotive_forces,
+    analyze_ponderomotive_forces,
+)
+
+from maxwell.electromagnetism.forces.sliding import (
+    SlidingConductor,
+    calc_motional_emf_sliding,
+    calc_magnetic_braking_force,
+    calc_power_dissipation,
+    calc_motional_emf_arbitrary,
+    verify_motional_emf,
+    analyze_sliding_conductor,
+)
+
 from maxwell.electromagnetism.forces.stress_tensor import (
     MaxwellStressTensor,
     calc_maxwell_stress_tensor,
