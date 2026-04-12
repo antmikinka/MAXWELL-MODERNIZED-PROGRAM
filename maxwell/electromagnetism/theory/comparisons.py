@@ -375,3 +375,114 @@ def analyze_force_laws(
         "results_by_geometry": results,
         "summary": "Force laws agree for closed circuits, differ for open circuits",
     }
+
+
+@maxwell_cite(
+    526, 527,
+    part=4, chapter="Force Law Comparisons",
+    theory_class="maxwell_original",
+    description="Ampere force law for parallel wires: F/L = 2*I1*I2/r",
+)
+def ampere_force_law(I1: float, I2: float, r: float) -> float:
+    """
+    Calculate force per unit length between parallel wires (Ampere's law).
+
+    Art. 526-527: For two parallel wires separated by distance r:
+
+        F/L = 2 * I1 * I2 / r  (dynes/cm in CGS)
+
+    Args:
+        I1: Current in wire 1 (abamperes).
+        I2: Current in wire 2 (abamperes).
+        r: Separation distance (cm).
+
+    Returns:
+        Force per unit length (dynes/cm). Positive = attractive.
+    """
+    return 2.0 * I1 * I2 / r
+
+
+@maxwell_cite(
+    526, 527,
+    part=4, chapter="Force Law Comparisons",
+    theory_class="maxwell_original",
+    description="Grassmann force law: F = I * dl × B",
+)
+def grassmann_force_law(
+    current: float,
+    dl: np.ndarray,
+    B: np.ndarray,
+) -> np.ndarray:
+    """
+    Calculate Grassmann force: F = I * dl × B.
+
+    Art. 526-527: The force on a current element in a magnetic field:
+
+        F = I * dl × B
+
+    Args:
+        current: Current (abamperes).
+        dl: Current element vector (cm).
+        B: Magnetic field (gauss).
+
+    Returns:
+        Force vector (dynes).
+    """
+    dl = np.asarray(dl, dtype=np.float64)
+    B = np.asarray(B, dtype=np.float64)
+    return current * np.cross(dl, B)
+
+
+@maxwell_cite(
+    526, 527,
+    part=4, chapter="Force Law Comparisons",
+    theory_class="maxwell_original",
+    description="Weber force law for moving charges",
+)
+def weber_force_law(
+    q1: float,
+    q2: float,
+    r: np.ndarray,
+    v1: np.ndarray,
+    v2: np.ndarray,
+) -> np.ndarray:
+    """
+    Calculate Weber force between moving charges.
+
+    Art. 526-527: Weber's velocity-dependent force law:
+
+        F = (q1*q2/r²) * [r_hat + (v1·v2)/c² * r_hat - ...]
+
+    Simplified form for comparison purposes.
+
+    Args:
+        q1: Charge 1 (abcoulombs).
+        q2: Charge 2 (abcoulombs).
+        r: Separation vector (cm).
+        v1: Velocity of charge 1 (cm/s).
+        v2: Velocity of charge 2 (cm/s).
+
+    Returns:
+        Force vector (dynes).
+    """
+    r = np.asarray(r, dtype=np.float64)
+    v1 = np.asarray(v1, dtype=np.float64)
+    v2 = np.asarray(v2, dtype=np.float64)
+    r_mag = np.linalg.norm(r)
+
+    if r_mag < 1e-15:
+        return np.zeros(3)
+
+    r_hat = r / r_mag
+
+    # Coulomb term
+    F_coulomb = q1 * q2 / (r_mag ** 2) * r_hat
+
+    # Velocity-dependent correction (simplified Weber form)
+    v1_dot_v2 = np.dot(v1, v2)
+    v1_dot_r = np.dot(v1, r_hat)
+    v2_dot_r = np.dot(v2, r_hat)
+
+    correction = (3.0 * v1_dot_r * v2_dot_r - 2.0 * v1_dot_v2) / (CONST.C ** 2)
+
+    return F_coulomb * (1.0 + correction)

@@ -211,6 +211,41 @@ class SlidingConductor:
     594, 595,
     part=4, chapter="Motional EMF",
     theory_class="maxwell_original",
+    description="Calculate motional EMF: EMF = |v×B|*L",
+)
+def calc_motional_emf(
+    velocity: np.ndarray,
+    B_field: np.ndarray,
+    conductor_length: float,
+) -> float:
+    """
+    Calculate motional EMF for conductor moving in magnetic field.
+
+    Art. 594-595: For a conductor moving in a magnetic field:
+
+        EMF = |v × B| * L
+
+    Args:
+        velocity: Velocity vector (cm/s).
+        B_field: Magnetic field vector (gauss).
+        conductor_length: Conductor length (cm).
+
+    Returns:
+        Motional EMF (abvolts).
+
+    Reference:
+        Part IV, Arts. 594-595: Motional EMF.
+    """
+    velocity = np.asarray(velocity, dtype=np.float64)
+    B_field = np.asarray(B_field, dtype=np.float64)
+
+    return np.linalg.norm(np.cross(velocity, B_field)) * conductor_length
+
+
+@maxwell_cite(
+    594, 595,
+    part=4, chapter="Motional EMF",
+    theory_class="maxwell_original",
     description="Calculate motional EMF: EMF = B*v*L",
 )
 def calc_motional_emf_sliding(

@@ -163,7 +163,7 @@ class NeumannPotential:
 
 
 @dataclass
-class NeumannsTheory:
+class NeumannTheory:
     """
     Neumann's complete electromagnetic theory.
 
@@ -184,8 +184,11 @@ class NeumannsTheory:
     )
     def mutual_inductance(
         self,
-        loop1: Callable[[float], np.ndarray],
-        loop2: Callable[[float], np.ndarray],
+        loop1=None,
+        loop2=None,
+        R1: float = None,
+        R2: float = None,
+        d: float = None,
         n_segments: int = 100,
     ) -> float:
         """
@@ -195,9 +198,16 @@ class NeumannsTheory:
 
             M = ∮∮ (dl₁ · dl₂) / r₁₂
 
+        Can be called with either:
+        - loop1, loop2: Callable parametrizations
+        - R1, R2, d: Parameters for coaxial circular loops
+
         Args:
-            loop1: First loop parametrization.
-            loop2: Second loop parametrization.
+            loop1: First loop parametrization (Callable).
+            loop2: Second loop parametrization (Callable).
+            R1: Radius of first loop (cm).
+            R2: Radius of second loop (cm).
+            d: Axial separation (cm).
             n_segments: Number of discretization segments per loop.
 
         Returns:
@@ -206,6 +216,20 @@ class NeumannsTheory:
         Reference:
             Part IV, Art. 853: Neumann's mutual inductance formula.
         """
+        # Handle coaxial circular loops case
+        if R1 is not None and R2 is not None and d is not None:
+            def loop1_func(t):
+                return np.array([R1 * np.cos(t), R1 * np.sin(t), 0])
+
+            def loop2_func(t):
+                return np.array([R2 * np.cos(t), R2 * np.sin(t), d])
+
+            loop1 = loop1_func
+            loop2 = loop2_func
+
+        if loop1 is None or loop2 is None:
+            return 0.0
+
         M = 0.0
         dt1 = 2 * np.pi / n_segments
         dt2 = 2 * np.pi / n_segments
@@ -232,7 +256,6 @@ class NeumannsTheory:
                     dl_dot = np.dot(dl1, dl2)
                     M += dl_dot / r12
 
-        M *= dt1 * dt2
         return M
 
     @maxwell_cite(
@@ -311,6 +334,76 @@ class NeumannsTheory:
             Part IV, Art. 855: Induced EMF.
         """
         return -mutual_inductance_M * current_rate_of_change
+
+    @maxwell_cite(
+        853,
+        part=4, chapter="Neumann's Theory",
+        theory_class="maxwell_original",
+        description="Calculate mutual inductance between circular loops",
+    )
+    def mutual_inductance_loops(
+        self,
+        R1: float,
+        R2: float,
+        d: float,
+        n_segments: int = 100,
+    ) -> float:
+        """
+        Calculate mutual inductance between two coaxial circular loops.
+
+        Art. 853: Using Neumann's formula for coaxial loops.
+
+        Args:
+            R1: Radius of first loop (cm).
+            R2: Radius of second loop (cm).
+            d: Axial separation (cm).
+            n_segments: Number of discretization segments.
+
+        Returns:
+            Mutual inductance M (cm).
+
+        Reference:
+            Part IV, Art. 853: Mutual inductance formula.
+        """
+        def loop1(t):
+            return np.array([R1 * np.cos(t), R1 * np.sin(t), 0])
+
+        def loop2(t):
+            return np.array([R2 * np.cos(t), R2 * np.sin(t), d])
+
+        return self.mutual_inductance(loop1, loop2, n_segments)
+
+    @maxwell_cite(
+        852,
+        part=4, chapter="Neumann's Theory",
+        theory_class="maxwell_original",
+        description="Calculate potential energy of coupled circuits",
+    )
+    def potential_energy(
+        self,
+        M: float,
+        I1: float,
+        I2: float,
+    ) -> float:
+        """
+        Calculate mutual potential energy of coupled circuits.
+
+        Art. 852: The potential energy is:
+
+            W = M * I1 * I2
+
+        Args:
+            M: Mutual inductance (cm).
+            I1: Current in first circuit (abamperes).
+            I2: Current in second circuit (abamperes).
+
+        Returns:
+            Potential energy W (ergs).
+
+        Reference:
+            Part IV, Art. 852: Mutual potential energy.
+        """
+        return M * I1 * I2
 
 
 @maxwell_cite(
@@ -486,7 +579,7 @@ def verify_neumanns_theory(
         "coupling_valid": coupling_valid,
         "energy_ergs": W,
         "energy_positive": energy_positive,
-        "verified": symmetry_error < tolerance and coupling_valid and energy_positive,
+        "verified": bool(symmetry_error < tolerance and coupling_valid and energy_positive),
     }
 
 
@@ -561,3 +654,106 @@ def analyze_neumanns_theory(
         "current_abamp": current,
         "CGS_units": "M, L in cm, I in abamperes",
     }
+
+
+# =============================================================================
+# STANDALONE FUNCTIONS FOR DIRECT IMPORT (as expected by tests)
+# =============================================================================
+
+@maxwell_cite(
+    853,
+    part=4, chapter="Neumann's Theory",
+    theory_class="maxwell_original",
+    description="Calculate mutual inductance between circular loops",
+)
+def neumann_mutual_inductance(
+    R1: float,
+    R2: float,
+    d: float,
+    n_segments: int = 100,
+) -> float:
+    """
+    Calculate mutual inductance between two coaxial circular loops.
+
+    Art. 853: Using Neumann's formula:
+
+        M = ∮∮ (dl₁ · dl₂) / r
+
+    Args:
+        R1: Radius of first loop (cm).
+        R2: Radius of second loop (cm).
+        d: Axial separation (cm).
+        n_segments: Number of discretization segments.
+
+    Returns:
+        Mutual inductance M (cm).
+
+    Reference:
+        Part IV, Art. 853: Mutual inductance formula.
+    """
+    nt = NeumannTheory()
+    return nt.mutual_inductance_loops(R1, R2, d, n_segments)
+
+
+@maxwell_cite(
+    854,
+    part=4, chapter="Neumann's Theory",
+    theory_class="maxwell_original",
+    description="Calculate self-inductance of circular loop",
+)
+def circular_loop_inductance(
+    R: float,
+    a: float,
+) -> float:
+    """
+    Calculate self-inductance of a circular loop.
+
+    Art. 854: For a circular loop of radius R and wire radius a:
+
+        L ≈ R * [ln(8R/a) - 2]
+
+    Args:
+        R: Loop radius (cm).
+        a: Wire radius (cm).
+
+    Returns:
+        Self-inductance L (cm).
+
+    Reference:
+        Part IV, Art. 854: Self-inductance formula.
+    """
+    if R <= a:
+        return 0.0
+    return R * (np.log(8 * R / a) - 2.0)
+
+
+@maxwell_cite(
+    852,
+    part=4, chapter="Neumann's Theory",
+    theory_class="maxwell_original",
+    description="Calculate mutual potential energy",
+)
+def mutual_potential_energy(
+    M: float,
+    I1: float,
+    I2: float,
+) -> float:
+    """
+    Calculate mutual potential energy of coupled circuits.
+
+    Art. 852: The potential energy is:
+
+        W = M * I1 * I2
+
+    Args:
+        M: Mutual inductance (cm).
+        I1: Current in first circuit (abamperes).
+        I2: Current in second circuit (abamperes).
+
+    Returns:
+        Potential energy W (ergs).
+
+    Reference:
+        Part IV, Art. 852: Mutual potential energy.
+    """
+    return M * I1 * I2

@@ -44,6 +44,271 @@ from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 
 
+@maxwell_cite(
+    790,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Verify transverse wave condition",
+)
+def verify_transverse_condition(E: np.ndarray, k: np.ndarray) -> dict:
+    """
+    Verify that electromagnetic wave is transverse.
+
+    Art. 790-791: For transverse waves, E · k = 0.
+
+    Args:
+        E: Electric field vector (statvolts/cm).
+        k: Wave vector (cm⁻¹).
+
+    Returns:
+        Dictionary with:
+        - transverse: True if E ⊥ k
+        - dot_product: E · k value
+
+    Reference:
+        Part IV, Arts. 790-791: Transverse wave condition.
+
+    Example:
+        >>> E = np.array([100, 0, 0])
+        >>> k = np.array([0, 0, 1])
+        >>> result = verify_transverse_condition(E, k)
+        >>> print(f"transverse: {result['transverse']}")  # True
+    """
+    E = np.asarray(E, dtype=np.float64)
+    k = np.asarray(k, dtype=np.float64)
+
+    dot_product = np.dot(E, k)
+    transverse = bool(abs(dot_product) < 1e-10)
+
+    return {
+        "transverse": transverse,
+        "dot_product": dot_product,
+    }
+
+
+@maxwell_cite(
+    791,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate B field from E field",
+)
+def calc_B_from_E(E: np.ndarray, k: np.ndarray, omega: float) -> np.ndarray:
+    """
+    Calculate magnetic field from electric field for plane wave.
+
+    Art. 791: For a plane electromagnetic wave:
+
+        B = (1/omega) * (k × E)
+
+    In vacuum with k along z-axis:
+        B_x = -E_y / c
+        B_y = E_x / c
+        B_z = 0
+
+    Args:
+        E: Electric field vector (statvolts/cm).
+        k: Wave vector (cm⁻¹).
+        omega: Angular frequency (rad/s).
+
+    Returns:
+        Magnetic field vector B (gauss).
+
+    Reference:
+        Part IV, Art. 791: B field from E field.
+
+    Example:
+        >>> E = np.array([100, 0, 0])
+        >>> k = np.array([0, 0, 1])
+        >>> B = calc_B_from_E(E, k, CONST.C)
+        >>> print(f"B = {B}")  # B = [0, 100/c, 0]
+    """
+    E = np.asarray(E, dtype=np.float64)
+    k = np.asarray(k, dtype=np.float64)
+
+    # B = (1/omega) * (k × E)
+    k_cross_E = np.cross(k, E)
+    return k_cross_E / omega
+
+
+@maxwell_cite(
+    792,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate Poynting vector",
+)
+def calc_poynting_vector(E: np.ndarray, B: np.ndarray) -> np.ndarray:
+    """
+    Calculate Poynting vector (energy flux density).
+
+    Art. 792: The Poynting vector is:
+
+        S = (c / 4*pi) * (E × B)
+
+    In CGS units, this gives energy flux in erg/cm²/s.
+
+    Args:
+        E: Electric field vector (statvolts/cm).
+        B: Magnetic field vector (gauss).
+
+    Returns:
+        Poynting vector S (erg/cm²/s).
+
+    Reference:
+        Part IV, Art. 792: Poynting vector.
+
+    Example:
+        >>> E = np.array([100, 0, 0])
+        >>> B = np.array([0, 100/CONST.C, 0])
+        >>> S = calc_poynting_vector(E, B)
+        >>> print(f"S = {S}")  # S points in +z direction
+    """
+    E = np.asarray(E, dtype=np.float64)
+    B = np.asarray(B, dtype=np.float64)
+
+    # S = (c / 4*pi) * (E × B)
+    E_cross_B = np.cross(E, B)
+    return (CONST.C / (4.0 * np.pi)) * E_cross_B
+
+
+@maxwell_cite(
+    790,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Verify wave equation",
+)
+def verify_wave_equation(
+    omega: float,
+    k_magnitude: float,
+    permittivity: float,
+    permeability: float,
+) -> dict:
+    """
+    Verify wave equation is satisfied.
+
+    Art. 790: The wave equation requires:
+
+        omega² = v² * k²
+
+    where v = c / sqrt(eps * mu).
+
+    Args:
+        omega: Angular frequency (rad/s).
+        k_magnitude: Wave number magnitude (cm⁻¹).
+        permittivity: Relative permittivity.
+        permeability: Relative permeability.
+
+    Returns:
+        Dictionary with:
+        - wave_equation_verified: True if equation satisfied
+        - omega_squared: omega² value
+        - vk_squared: (v*k)² value
+
+    Reference:
+        Part IV, Art. 790: Wave equation verification.
+    """
+    v = CONST.C / np.sqrt(permittivity * permeability)
+
+    omega_squared = omega ** 2
+    vk_squared = (v * k_magnitude) ** 2
+
+    error = abs(omega_squared - vk_squared) / omega_squared if omega_squared > 0 else 0
+
+    return {
+        "wave_equation_verified": bool(error < 1e-10),
+        "omega_squared": omega_squared,
+        "vk_squared": vk_squared,
+        "error": error,
+    }
+
+
+@dataclass
+class PlaneWave:
+    """
+    Plane electromagnetic wave.
+
+    Art. 790-791: Maxwell's plane wave solution:
+
+        E(r,t) = E₀ cos(k·r - omega*t)
+        B(r,t) = (1/omega) * (k × E)
+
+    Attributes:
+        E_amplitude: Electric field amplitude (statvolts/cm).
+        omega: Angular frequency (rad/s).
+        k_vector: Wave vector (cm⁻¹).
+    """
+
+    E_amplitude: float = 1.0
+    omega: float = CONST.C
+    k_vector: np.ndarray = None
+
+    def __post_init__(self):
+        """Validate parameters."""
+        if self.E_amplitude <= 0:
+            raise ValueError(f"E_amplitude must be positive")
+        if self.omega <= 0:
+            raise ValueError(f"omega must be positive")
+        if self.k_vector is None:
+            self.k_vector = np.array([0.0, 0.0, self.omega / CONST.C])
+        else:
+            self.k_vector = np.asarray(self.k_vector, dtype=np.float64)
+
+    @maxwell_cite(
+        790,
+        part=4, chapter="Electromagnetic Theory of Light",
+        theory_class="maxwell_original",
+        description="Calculate E field at position and time",
+    )
+    def E_field(self, position: np.ndarray, time: float) -> np.ndarray:
+        """
+        Calculate electric field at given position and time.
+
+        Art. 790: E(r,t) = E₀ cos(k·r - omega*t)
+
+        Args:
+            position: Position vector r (cm).
+            time: Time t (s).
+
+        Returns:
+            Electric field vector E (statvolts/cm).
+
+        Reference:
+            Part IV, Art. 790: E field calculation.
+        """
+        position = np.asarray(position, dtype=np.float64)
+        k_dot_r = np.dot(self.k_vector, position)
+        phase = k_dot_r - self.omega * time
+
+        # E field polarized perpendicular to k (assuming k along z)
+        E = np.zeros(3)
+        E[0] = self.E_amplitude * np.cos(phase)
+        return E
+
+    @maxwell_cite(
+        791,
+        part=4, chapter="Electromagnetic Theory of Light",
+        theory_class="maxwell_original",
+        description="Calculate B field at position and time",
+    )
+    def B_field(self, position: np.ndarray, time: float) -> np.ndarray:
+        """
+        Calculate magnetic field at given position and time.
+
+        Art. 791: B = (1/omega) * (k × E)
+
+        Args:
+            position: Position vector r (cm).
+            time: Time t (s).
+
+        Returns:
+            Magnetic field vector B (gauss).
+
+        Reference:
+            Part IV, Art. 791: B field calculation.
+        """
+        E = self.E_field(position, time)
+        return calc_B_from_E(E, self.k_vector, self.omega)
+
+
 @dataclass
 class PolarizationState:
     """
