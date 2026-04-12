@@ -35,6 +35,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import numpy as np
 from scipy.special import ellipk, ellipe, ellipj
+from scipy.integrate import trapezoid
 
 from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
@@ -95,10 +96,10 @@ class EllipticIntegral:
             denom = np.sqrt(1 - k ** 2 * np.sin(theta) ** 2)
             return 1.0 / denom if denom > 1e-15 else 1e15
 
-        # Numerical integration using Simpson's rule
+        # Numerical integration using trapezoidal rule
         n_points = 100
         theta_vals = np.linspace(0, amplitude, n_points)
-        integral = np.trapz([integrand(t) for t in theta_vals], theta_vals)
+        integral = trapezoid([integrand(t) for t in theta_vals], theta_vals)
 
         return integral
 
@@ -139,7 +140,7 @@ class EllipticIntegral:
 
         n_points = 100
         theta_vals = np.linspace(0, amplitude, n_points)
-        integral = np.trapz([integrand(t) for t in theta_vals], theta_vals)
+        integral = trapezoid([integrand(t) for t in theta_vals], theta_vals)
 
         return integral
 
@@ -181,7 +182,7 @@ class EllipticIntegral:
 
         n_points = 100
         theta_vals = np.linspace(0, amplitude, n_points)
-        integral = np.trapz([integrand(t) for t in theta_vals], theta_vals)
+        integral = trapezoid([integrand(t) for t in theta_vals], theta_vals)
 
         return integral
 

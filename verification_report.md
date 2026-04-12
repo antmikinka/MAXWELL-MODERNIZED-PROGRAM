@@ -6,13 +6,13 @@
 
 | Status | Count |
 |--------|-------|
-| Verified | 768 |
+| Verified | 1452 |
 | Mismatch | 0 |
-| Unverified | 1830 |
+| Unverified | 3900 |
 | Error | 0 |
-| **Total** | **2598** |
+| **Total** | **5352** |
 
-**Trust Score:** 100% (768/768 verified)
+**Trust Score:** 100% (1452/1452 verified)
 
 ## Per-File Results
 
@@ -783,6 +783,753 @@ a= & \frac{d H}{d \eta}-\frac{d G}{d \zeta} \\
 - [OK] **Art.406** `relate_scalar_vector_potential`: verified
   - LaTeX: `\mathfrak{H}=-\nabla V,`
   - Structural/heuristic match
+
+### `maxwell\calibration\absolute_resistance.py`
+
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{align*}
+(K+R) \dot{x}-R \dot{y}+\frac{d}{d t}(L \dot{x}+M \dot{y}) & =0  \tag{1}\\
+-R \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+(K+R) \dot{x}-R \dot{y}=0 . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{gather*}
+(K+R) x-R y-M \dot{y}=0  \tag{4}\\
+-R x+(B+R) y-M \dot{x}=\int E d t=0 \tag{5}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+x=M_{\frac{(B+R) \dot{y}+R \dot{x}}{(B+R)(K+R)-R^{2}}} \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{align*}
+\frac{x}{\dot{x}} & =\frac{M}{R} \frac{(B+R)(K+R)+R^{2}}{(B+R)(K+R)-R^{2}}  \tag{7}\\`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{aligned}
+(K+R) \dot{x}-R \dot{y}+\frac{d}{d t}(L \dot{x}+M \dot{y}) & =0 \\
+-R \dot{x}+(B+R) `
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `(K+R) \dot{x}-R \dot{y}=0 .`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{gathered}
+(K+R) x-R y-M \dot{y}=0 \\
+-R x+(B+R) y-M \dot{x}=\int E d t=0
+\end{gathered}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `x=M_{\frac{(B+R) \dot{y}+R \dot{x}}{(B+R)(K+R)-R^{2}}}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{x}{\dot{x}} & =\frac{M}{R} \frac{(B+R)(K+R)+R^{2}}{(B+R)(K+R)-R^{2}} \\
+& =\fr`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{align*}
+(K+R) \dot{x}-R \dot{y}+\frac{d}{d t}(L \dot{x}+M \dot{y}) & =0  \tag{1}\\
+-R \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+(K+R) \dot{x}-R \dot{y}=0 . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{gather*}
+(K+R) x-R y-M \dot{y}=0  \tag{4}\\
+-R x+(B+R) y-M \dot{x}=\int E d t=0 \tag{5}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+x=M_{\frac{(B+R) \dot{y}+R \dot{x}}{(B+R)(K+R)-R^{2}}} \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{align*}
+\frac{x}{\dot{x}} & =\frac{M}{R} \frac{(B+R)(K+R)+R^{2}}{(B+R)(K+R)-R^{2}}  \tag{7}\\`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{aligned}
+(K+R) \dot{x}-R \dot{y}+\frac{d}{d t}(L \dot{x}+M \dot{y}) & =0 \\
+-R \dot{x}+(B+R) `
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `(K+R) \dot{x}-R \dot{y}=0 .`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{gathered}
+(K+R) x-R y-M \dot{y}=0 \\
+-R x+(B+R) y-M \dot{x}=\int E d t=0
+\end{gathered}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `x=M_{\frac{(B+R) \dot{y}+R \dot{x}}{(B+R)(K+R)-R^{2}}}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{x}{\dot{x}} & =\frac{M}{R} \frac{(B+R)(K+R)+R^{2}}{(B+R)(K+R)-R^{2}} \\
+& =\fr`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{align*}
+(K+R) \dot{x}-R \dot{y}+\frac{d}{d t}(L \dot{x}+M \dot{y}) & =0  \tag{1}\\
+-R \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+(K+R) \dot{x}-R \dot{y}=0 . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{gather*}
+(K+R) x-R y-M \dot{y}=0  \tag{4}\\
+-R x+(B+R) y-M \dot{x}=\int E d t=0 \tag{5}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+x=M_{\frac{(B+R) \dot{y}+R \dot{x}}{(B+R)(K+R)-R^{2}}} \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{align*}
+\frac{x}{\dot{x}} & =\frac{M}{R} \frac{(B+R)(K+R)+R^{2}}{(B+R)(K+R)-R^{2}}  \tag{7}\\`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{aligned}
+(K+R) \dot{x}-R \dot{y}+\frac{d}{d t}(L \dot{x}+M \dot{y}) & =0 \\
+-R \dot{x}+(B+R) `
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `(K+R) \dot{x}-R \dot{y}=0 .`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{gathered}
+(K+R) x-R y-M \dot{y}=0 \\
+-R x+(B+R) y-M \dot{x}=\int E d t=0
+\end{gathered}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `x=M_{\frac{(B+R) \dot{y}+R \dot{x}}{(B+R)(K+R)-R^{2}}}`
+  - No clear structural match found in code
+- [??] **Art.759** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{x}{\dot{x}} & =\frac{M}{R} \frac{(B+R)(K+R)+R^{2}}{(B+R)(K+R)-R^{2}} \\
+& =\fr`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x}{\dot{x}}=\frac{M}{R} . \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{2 g_{1} H}{R}, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\frac{x}{\dot{x}}=\frac{M}{R} .`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `Q=\frac{2 g_{1} H}{R},`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x}{\dot{x}}=\frac{M}{R} . \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{2 g_{1} H}{R}, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\frac{x}{\dot{x}}=\frac{M}{R} .`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `Q=\frac{2 g_{1} H}{R},`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x}{\dot{x}}=\frac{M}{R} . \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{2 g_{1} H}{R}, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `\frac{x}{\dot{x}}=\frac{M}{R} .`
+  - No clear structural match found in code
+- [??] **Art.760** `calc_absolute_resistance_lenz`: unverified
+  - LaTeX: `Q=\frac{2 g_{1} H}{R},`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{G} \frac{T}{\pi} 2 \sin \frac{1}{2} \theta, \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `\begin{equation*}
+R=\pi G g_{1} \frac{1}{T \sin \frac{1}{2} \theta} . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `Q=\frac{H}{G} \frac{T}{\pi} 2 \sin \frac{1}{2} \theta,`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `R=\pi G g_{1} \frac{1}{T \sin \frac{1}{2} \theta} .`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{G} \frac{T}{\pi} 2 \sin \frac{1}{2} \theta, \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `\begin{equation*}
+R=\pi G g_{1} \frac{1}{T \sin \frac{1}{2} \theta} . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `Q=\frac{H}{G} \frac{T}{\pi} 2 \sin \frac{1}{2} \theta,`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `R=\pi G g_{1} \frac{1}{T \sin \frac{1}{2} \theta} .`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{G} \frac{T}{\pi} 2 \sin \frac{1}{2} \theta, \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `\begin{equation*}
+R=\pi G g_{1} \frac{1}{T \sin \frac{1}{2} \theta} . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `Q=\frac{H}{G} \frac{T}{\pi} 2 \sin \frac{1}{2} \theta,`
+  - No clear structural match found in code
+- [??] **Art.761** `calc_absolute_resistance_rotating_coil`: unverified
+  - LaTeX: `R=\pi G g_{1} \frac{1}{T \sin \frac{1}{2} \theta} .`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=0 \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=G m \gamma \tag{9}
+\end{e`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+\left(L \frac{d}{d t}+R\right)\left(A \frac{d^{2}}{d t^{2}}+B \frac{d}{d t}+C\righ`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+B=2 A a_{0}, \quad C=A\left(a_{0}^{2}+\omega_{0}^{2}\right) . \tag{11}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}=-(a+i \omega), \quad \text { where } i=\sqrt{-1} \tag{12}
+\end{equat`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=0`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=G m \gamma`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\left(L \frac{d}{d t}+R\right)\left(A \frac{d^{2}}{d t^{2}}+B \frac{d}{d t}+C\right) \phi+G^{2} m^{2`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `B=2 A a_{0}, \quad C=A\left(a_{0}^{2}+\omega_{0}^{2}\right) .`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\frac{d}{d t}=-(a+i \omega), \quad \text { where } i=\sqrt{-1}`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=0 \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=G m \gamma \tag{9}
+\end{e`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+\left(L \frac{d}{d t}+R\right)\left(A \frac{d^{2}}{d t^{2}}+B \frac{d}{d t}+C\righ`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+B=2 A a_{0}, \quad C=A\left(a_{0}^{2}+\omega_{0}^{2}\right) . \tag{11}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}=-(a+i \omega), \quad \text { where } i=\sqrt{-1} \tag{12}
+\end{equat`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=0`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=G m \gamma`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\left(L \frac{d}{d t}+R\right)\left(A \frac{d^{2}}{d t^{2}}+B \frac{d}{d t}+C\right) \phi+G^{2} m^{2`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `B=2 A a_{0}, \quad C=A\left(a_{0}^{2}+\omega_{0}^{2}\right) .`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\frac{d}{d t}=-(a+i \omega), \quad \text { where } i=\sqrt{-1}`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=0 \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=G m \gamma \tag{9}
+\end{e`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+\left(L \frac{d}{d t}+R\right)\left(A \frac{d^{2}}{d t^{2}}+B \frac{d}{d t}+C\righ`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+B=2 A a_{0}, \quad C=A\left(a_{0}^{2}+\omega_{0}^{2}\right) . \tag{11}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}=-(a+i \omega), \quad \text { where } i=\sqrt{-1} \tag{12}
+\end{equat`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=0`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `A \frac{d^{2} \phi}{d t^{2}}+B \frac{d \phi}{d t}+C \phi=G m \gamma`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\left(L \frac{d}{d t}+R\right)\left(A \frac{d^{2}}{d t^{2}}+B \frac{d}{d t}+C\right) \phi+G^{2} m^{2`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `B=2 A a_{0}, \quad C=A\left(a_{0}^{2}+\omega_{0}^{2}\right) .`
+  - No clear structural match found in code
+- [??] **Art.762** `calc_absolute_resistance_joule`: unverified
+  - LaTeX: `\frac{d}{d t}=-(a+i \omega), \quad \text { where } i=\sqrt{-1}`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+\frac{1}{2} L\left(3 a-a_{0}-\frac{\`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{align*}
+& G^{2} m^{2}\left\{a^{2}+\omega^{2}-a_{0}^{2}-\omega_{0}^{2}\right\} \\
+& \quad=L A\`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\omega^{2}-\omega_{0}^{2}=a_{0}^{2}-a^{2} ; \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+2 L a \tag{17}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+\frac{1}{2} L\left(3 a-a_{0}-\frac{\omega^{2}-\omega_{`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+& G^{2} m^{2}\left\{a^{2}+\omega^{2}-a_{0}^{2}-\omega_{0}^{2}\right\} \\
+& \quad=L A`
+  - No clear structural match found in code
+- [OK] **Art.763** `calc_temperature_corrected_resistance`: verified
+  - LaTeX: `\omega^{2}-\omega_{0}^{2}=a_{0}^{2}-a^{2} ;`
+  - Structural/heuristic match
+- [OK] **Art.763** `calc_temperature_corrected_resistance`: verified
+  - LaTeX: `R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+2 L a`
+  - Structural/heuristic match
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+\frac{1}{2} L\left(3 a-a_{0}-\frac{\`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{align*}
+& G^{2} m^{2}\left\{a^{2}+\omega^{2}-a_{0}^{2}-\omega_{0}^{2}\right\} \\
+& \quad=L A\`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\omega^{2}-\omega_{0}^{2}=a_{0}^{2}-a^{2} ; \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+2 L a \tag{17}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+\frac{1}{2} L\left(3 a-a_{0}-\frac{\omega^{2}-\omega_{`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+& G^{2} m^{2}\left\{a^{2}+\omega^{2}-a_{0}^{2}-\omega_{0}^{2}\right\} \\
+& \quad=L A`
+  - No clear structural match found in code
+- [OK] **Art.763** `calc_temperature_corrected_resistance`: verified
+  - LaTeX: `\omega^{2}-\omega_{0}^{2}=a_{0}^{2}-a^{2} ;`
+  - Structural/heuristic match
+- [OK] **Art.763** `calc_temperature_corrected_resistance`: verified
+  - LaTeX: `R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+2 L a`
+  - Structural/heuristic match
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+\frac{1}{2} L\left(3 a-a_{0}-\frac{\`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{align*}
+& G^{2} m^{2}\left\{a^{2}+\omega^{2}-a_{0}^{2}-\omega_{0}^{2}\right\} \\
+& \quad=L A\`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\omega^{2}-\omega_{0}^{2}=a_{0}^{2}-a^{2} ; \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+2 L a \tag{17}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+\frac{1}{2} L\left(3 a-a_{0}-\frac{\omega^{2}-\omega_{`
+  - No clear structural match found in code
+- [??] **Art.763** `calc_temperature_corrected_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+& G^{2} m^{2}\left\{a^{2}+\omega^{2}-a_{0}^{2}-\omega_{0}^{2}\right\} \\
+& \quad=L A`
+  - No clear structural match found in code
+- [OK] **Art.763** `calc_temperature_corrected_resistance`: verified
+  - LaTeX: `\omega^{2}-\omega_{0}^{2}=a_{0}^{2}-a^{2} ;`
+  - Structural/heuristic match
+- [OK] **Art.763** `calc_temperature_corrected_resistance`: verified
+  - LaTeX: `R=\frac{G^{2} m^{2}}{2 A\left(a-a_{0}\right)}+2 L a`
+  - Structural/heuristic match
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} L \gamma^{2}-H g \gamma \sin \theta-M G \gamma \sin (\theta-\phi)+M `
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{M H}{2} \tau\left(\phi^{2}-2 \phi a\right) . \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `T=\frac{1}{2} L \gamma^{2}-H g \gamma \sin \theta-M G \gamma \sin (\theta-\phi)+M H \cos \phi+\frac{`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `V=\frac{M H}{2} \tau\left(\phi^{2}-2 \phi a\right) .`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} L \gamma^{2}-H g \gamma \sin \theta-M G \gamma \sin (\theta-\phi)+M `
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{M H}{2} \tau\left(\phi^{2}-2 \phi a\right) . \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `T=\frac{1}{2} L \gamma^{2}-H g \gamma \sin \theta-M G \gamma \sin (\theta-\phi)+M H \cos \phi+\frac{`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `V=\frac{M H}{2} \tau\left(\phi^{2}-2 \phi a\right) .`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} L \gamma^{2}-H g \gamma \sin \theta-M G \gamma \sin (\theta-\phi)+M `
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{M H}{2} \tau\left(\phi^{2}-2 \phi a\right) . \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `T=\frac{1}{2} L \gamma^{2}-H g \gamma \sin \theta-M G \gamma \sin (\theta-\phi)+M H \cos \phi+\frac{`
+  - No clear structural match found in code
+- [??] **Art.764** `verify_absolute_resistance`: unverified
+  - LaTeX: `V=\frac{M H}{2} \tau\left(\phi^{2}-2 \phi a\right) .`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+p=\frac{d T}{d \gamma}=L \gamma-H g \sin \theta-M G \sin (\theta-\phi), \tag{3}
+\e`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{gather*}
+R_{\gamma}+\frac{d^{2} T}{d t d \gamma}=0,  \tag{4}\\
+\theta=\omega t, \tag{5}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\left(R+L \frac{d}{d t}\right) \gamma=H g \omega \cos \theta+M G(\omega-\dot{\phi}`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+& \gamma=\frac{H g^{(1)}}{R^{2}+L^{2} \omega^{2}}(R \cos \theta+L \omega \sin \theta)`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} T}{d t d \dot{\phi}}-\frac{d T}{d \phi}+\frac{d V}{d \phi}=0 \tag{10}
+`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+A \ddot{\phi}-M G \gamma \cos (\theta-\phi)+M H(\sin \phi+\tau(\phi-a))=0 . \tag{1`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\phi=\phi_{0}+b e^{-l t} \cos n t+c \cos 2(\theta-\beta), \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `p=\frac{d T}{d \gamma}=L \gamma-H g \sin \theta-M G \sin (\theta-\phi),`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{gathered}
+R_{\gamma}+\frac{d^{2} T}{d t d \gamma}=0, \\
+\theta=\omega t,
+\end{gathered}`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\left(R+L \frac{d}{d t}\right) \gamma=H g \omega \cos \theta+M G(\omega-\dot{\phi}) \cos (\theta-\ph`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+& \gamma=\frac{H g^{(1)}}{R^{2}+L^{2} \omega^{2}}(R \cos \theta+L \omega \sin \theta`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `\frac{d^{2} T}{d t d \dot{\phi}}-\frac{d T}{d \phi}+\frac{d V}{d \phi}=0`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `A \ddot{\phi}-M G \gamma \cos (\theta-\phi)+M H(\sin \phi+\tau(\phi-a))=0 .`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `\phi=\phi_{0}+b e^{-l t} \cos n t+c \cos 2(\theta-\beta),`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+p=\frac{d T}{d \gamma}=L \gamma-H g \sin \theta-M G \sin (\theta-\phi), \tag{3}
+\e`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{gather*}
+R_{\gamma}+\frac{d^{2} T}{d t d \gamma}=0,  \tag{4}\\
+\theta=\omega t, \tag{5}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\left(R+L \frac{d}{d t}\right) \gamma=H g \omega \cos \theta+M G(\omega-\dot{\phi}`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+& \gamma=\frac{H g^{(1)}}{R^{2}+L^{2} \omega^{2}}(R \cos \theta+L \omega \sin \theta)`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} T}{d t d \dot{\phi}}-\frac{d T}{d \phi}+\frac{d V}{d \phi}=0 \tag{10}
+`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+A \ddot{\phi}-M G \gamma \cos (\theta-\phi)+M H(\sin \phi+\tau(\phi-a))=0 . \tag{1`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\phi=\phi_{0}+b e^{-l t} \cos n t+c \cos 2(\theta-\beta), \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `p=\frac{d T}{d \gamma}=L \gamma-H g \sin \theta-M G \sin (\theta-\phi),`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{gathered}
+R_{\gamma}+\frac{d^{2} T}{d t d \gamma}=0, \\
+\theta=\omega t,
+\end{gathered}`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\left(R+L \frac{d}{d t}\right) \gamma=H g \omega \cos \theta+M G(\omega-\dot{\phi}) \cos (\theta-\ph`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+& \gamma=\frac{H g^{(1)}}{R^{2}+L^{2} \omega^{2}}(R \cos \theta+L \omega \sin \theta`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `\frac{d^{2} T}{d t d \dot{\phi}}-\frac{d T}{d \phi}+\frac{d V}{d \phi}=0`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `A \ddot{\phi}-M G \gamma \cos (\theta-\phi)+M H(\sin \phi+\tau(\phi-a))=0 .`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `\phi=\phi_{0}+b e^{-l t} \cos n t+c \cos 2(\theta-\beta),`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+p=\frac{d T}{d \gamma}=L \gamma-H g \sin \theta-M G \sin (\theta-\phi), \tag{3}
+\e`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{gather*}
+R_{\gamma}+\frac{d^{2} T}{d t d \gamma}=0,  \tag{4}\\
+\theta=\omega t, \tag{5}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\left(R+L \frac{d}{d t}\right) \gamma=H g \omega \cos \theta+M G(\omega-\dot{\phi}`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+& \gamma=\frac{H g^{(1)}}{R^{2}+L^{2} \omega^{2}}(R \cos \theta+L \omega \sin \theta)`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} T}{d t d \dot{\phi}}-\frac{d T}{d \phi}+\frac{d V}{d \phi}=0 \tag{10}
+`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+A \ddot{\phi}-M G \gamma \cos (\theta-\phi)+M H(\sin \phi+\tau(\phi-a))=0 . \tag{1`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\phi=\phi_{0}+b e^{-l t} \cos n t+c \cos 2(\theta-\beta), \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `p=\frac{d T}{d \gamma}=L \gamma-H g \sin \theta-M G \sin (\theta-\phi),`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{gathered}
+R_{\gamma}+\frac{d^{2} T}{d t d \gamma}=0, \\
+\theta=\omega t,
+\end{gathered}`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\left(R+L \frac{d}{d t}\right) \gamma=H g \omega \cos \theta+M G(\omega-\dot{\phi}) \cos (\theta-\ph`
+  - No clear structural match found in code
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+& \gamma=\frac{H g^{(1)}}{R^{2}+L^{2} \omega^{2}}(R \cos \theta+L \omega \sin \theta`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `\frac{d^{2} T}{d t d \dot{\phi}}-\frac{d T}{d \phi}+\frac{d V}{d \phi}=0`
+  - Structural/heuristic match
+- [??] **Art.765** `verify_absolute_resistance`: unverified
+  - LaTeX: `A \ddot{\phi}-M G \gamma \cos (\theta-\phi)+M H(\sin \phi+\tau(\phi-a))=0 .`
+  - No clear structural match found in code
+- [OK] **Art.765** `verify_absolute_resistance`: verified
+  - LaTeX: `\phi=\phi_{0}+b e^{-l t} \cos n t+c \cos 2(\theta-\beta),`
+  - Structural/heuristic match
+- [??] **Art.766** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+\frac{M G \omega}{R^{2}+L^{2} \omega^{2}}\left\{H g\left(R \cos \phi_{0}+L \omega \si`
+  - No clear structural match found in code
+- [??] **Art.766** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+R=\frac{G g \omega}{2 \tan \phi_{0}\left(1+\tau \frac{\phi_{0}-a}{\sin \phi_{0}}\righ`
+  - No clear structural match found in code
+- [??] **Art.766** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+\frac{M G \omega}{R^{2}+L^{2} \omega^{2}}\left\{H g\left(R \cos \phi_{0}+L \omega \si`
+  - No clear structural match found in code
+- [??] **Art.766** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+R=\frac{G g \omega}{2 \tan \phi_{0}\left(1+\tau \frac{\phi_{0}-a}{\sin \phi_{0}}\righ`
+  - No clear structural match found in code
+- [??] **Art.766** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+\frac{M G \omega}{R^{2}+L^{2} \omega^{2}}\left\{H g\left(R \cos \phi_{0}+L \omega \si`
+  - No clear structural match found in code
+- [??] **Art.766** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{align*}
+R=\frac{G g \omega}{2 \tan \phi_{0}\left(1+\tau \frac{\phi_{0}-a}{\sin \phi_{0}}\righ`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+h=\frac{1}{J} \int R \gamma^{2} d t, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{M G \omega}{R^{2}+L^{2} \omega^{2}}\left\{H g\left(R \cos \phi_{0}+L \omega \s`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+R=\frac{G g \omega}{2 \tan \phi_{0}\left(1+\tau \frac{\phi_{0}-a}{\sin \phi_{0}}\rig`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `h=\frac{1}{J} \int R \gamma^{2} d t,`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+h=\frac{1}{J} \int R \gamma^{2} d t, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{M G \omega}{R^{2}+L^{2} \omega^{2}}\left\{H g\left(R \cos \phi_{0}+L \omega \s`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+R=\frac{G g \omega}{2 \tan \phi_{0}\left(1+\tau \frac{\phi_{0}-a}{\sin \phi_{0}}\rig`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `h=\frac{1}{J} \int R \gamma^{2} d t,`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+h=\frac{1}{J} \int R \gamma^{2} d t, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{M G \omega}{R^{2}+L^{2} \omega^{2}}\left\{H g\left(R \cos \phi_{0}+L \omega \s`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `\begin{aligned}
+R=\frac{G g \omega}{2 \tan \phi_{0}\left(1+\tau \frac{\phi_{0}-a}{\sin \phi_{0}}\rig`
+  - No clear structural match found in code
+- [??] **Art.767** `verify_absolute_resistance`: unverified
+  - LaTeX: `h=\frac{1}{J} \int R \gamma^{2} d t,`
+  - No clear structural match found in code
 
 ### `maxwell\circuits\dynamics.py`
 
@@ -2164,6 +2911,128 @@ B=\frac{r_{2}}{1+\frac{4}{3} \p`
   - LaTeX: `V=\Sigma\left(\frac{m}{r}\right),`
   - No clear structural match found in code
 
+### `maxwell\core\charge.py`
+
+- [??] **Art.45** `faraday_isolation_proof`: unverified
+  - LaTeX: `F^{\prime}=R e,`
+  - No clear structural match found in code
+- [??] **Art.45** `faraday_isolation_proof`: unverified
+  - LaTeX: `F^{\prime}=R e,`
+  - No clear structural match found in code
+- [??] **Art.45** `faraday_isolation_proof`: unverified
+  - LaTeX: `F^{\prime}=R e,`
+  - No clear structural match found in code
+- [??] **Art.45** `faraday_isolation_proof`: unverified
+  - LaTeX: `F^{\prime}=R e,`
+  - No clear structural match found in code
+
+### `maxwell\core\field.py`
+
+- [??] **Art.68** `intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.68** `intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.68** `intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.68** `intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathfrak{C} ;`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{\cdot} R \cos \epsilon d s,`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{0}\left(X \frac{d x}{d s}+Y \frac{d y}{d s}+Z \frac{d z}{d s}\right) d s .`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{A}^{P}(X d x+Y d y+Z d z)=-\int_{A}^{P} d V=V_{A}-V_{P}`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathfrak{C} ;`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{\cdot} R \cos \epsilon d s,`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{0}\left(X \frac{d x}{d s}+Y \frac{d y}{d s}+Z \frac{d z}{d s}\right) d s .`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{A}^{P}(X d x+Y d y+Z d z)=-\int_{A}^{P} d V=V_{A}-V_{P}`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathfrak{C} ;`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{\cdot} R \cos \epsilon d s,`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{0}\left(X \frac{d x}{d s}+Y \frac{d y}{d s}+Z \frac{d z}{d s}\right) d s .`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{A}^{P}(X d x+Y d y+Z d z)=-\int_{A}^{P} d V=V_{A}-V_{P}`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathfrak{C} ;`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{\cdot} R \cos \epsilon d s,`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{0}^{0}\left(X \frac{d x}{d s}+Y \frac{d y}{d s}+Z \frac{d z}{d s}\right) d s .`
+  - No clear structural match found in code
+- [??] **Art.69** `line_integral`: unverified
+  - LaTeX: `E=\int_{A}^{P}(X d x+Y d y+Z d z)=-\int_{A}^{P} d V=V_{A}-V_{P}`
+  - No clear structural match found in code
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `E_{A B}=V_{A}-V_{B}`
+  - Structural/heuristic match
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `R \cos \epsilon=-\frac{d V}{d s}`
+  - Structural/heuristic match
+- [??] **Art.71** `field_from_potential`: unverified
+  - LaTeX: `\begin{gathered}
+X=-\frac{d V}{d x}, \quad Y=-\frac{d V}{d y}, \quad Z=-\frac{d V}{d z} \\
+R=\left\{`
+  - No clear structural match found in code
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `E_{A B}=V_{A}-V_{B}`
+  - Structural/heuristic match
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `R \cos \epsilon=-\frac{d V}{d s}`
+  - Structural/heuristic match
+- [??] **Art.71** `field_from_potential`: unverified
+  - LaTeX: `\begin{gathered}
+X=-\frac{d V}{d x}, \quad Y=-\frac{d V}{d y}, \quad Z=-\frac{d V}{d z} \\
+R=\left\{`
+  - No clear structural match found in code
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `E_{A B}=V_{A}-V_{B}`
+  - Structural/heuristic match
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `R \cos \epsilon=-\frac{d V}{d s}`
+  - Structural/heuristic match
+- [??] **Art.71** `field_from_potential`: unverified
+  - LaTeX: `\begin{gathered}
+X=-\frac{d V}{d x}, \quad Y=-\frac{d V}{d y}, \quad Z=-\frac{d V}{d z} \\
+R=\left\{`
+  - No clear structural match found in code
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `E_{A B}=V_{A}-V_{B}`
+  - Structural/heuristic match
+- [OK] **Art.71** `field_from_potential`: verified
+  - LaTeX: `R \cos \epsilon=-\frac{d V}{d s}`
+  - Structural/heuristic match
+- [??] **Art.71** `field_from_potential`: unverified
+  - LaTeX: `\begin{gathered}
+X=-\frac{d V}{d x}, \quad Y=-\frac{d V}{d y}, \quad Z=-\frac{d V}{d z} \\
+R=\left\{`
+  - No clear structural match found in code
+
 ### `maxwell\core\magnet.py`
 
 - [OK] **Art.374** `mutual_action`: verified
@@ -2707,6 +3576,309 @@ a=\mathfrak{H} \cos \zeta \cos \delta, & \beta=\mathfrak{H} \cos \zeta \sin \del
   - LaTeX: `-\frac{d W}{d \phi}=-K \mathfrak{H} \cos \zeta \cos \theta \sin (\phi-\delta) .`
   - No clear structural match found in code
 
+### `maxwell\core\potential.py`
+
+- [OK] **Art.45** `electromotive_force_potential`: verified
+  - LaTeX: `F^{\prime}=R e,`
+  - Structural/heuristic match
+- [OK] **Art.45** `electromotive_force_potential`: verified
+  - LaTeX: `F^{\prime}=R e,`
+  - Structural/heuristic match
+- [OK] **Art.45** `electromotive_force_potential`: verified
+  - LaTeX: `F^{\prime}=R e,`
+  - Structural/heuristic match
+- [OK] **Art.45** `electromotive_force_potential`: verified
+  - LaTeX: `F^{\prime}=R e,`
+  - Structural/heuristic match
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1}=R_{1} \frac{x-x_{1}}{r_{1}}=R_{1} \frac{d r_{1}}{d x},`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1} d x+Y_{1} d y+Z_{1} d z=R_{1} d r_{1}`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{2} d x+Y_{2} d y+Z_{2} d z=R_{2} d r_{2}=-d V_{2} .`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X d x+Y d y+Z d z=-d V_{1}-d V_{2}-\text { \&c. }=-d V .`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1}=R_{1} \frac{x-x_{1}}{r_{1}}=R_{1} \frac{d r_{1}}{d x},`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1} d x+Y_{1} d y+Z_{1} d z=R_{1} d r_{1}`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{2} d x+Y_{2} d y+Z_{2} d z=R_{2} d r_{2}=-d V_{2} .`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X d x+Y d y+Z d z=-d V_{1}-d V_{2}-\text { \&c. }=-d V .`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1}=R_{1} \frac{x-x_{1}}{r_{1}}=R_{1} \frac{d r_{1}}{d x},`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1} d x+Y_{1} d y+Z_{1} d z=R_{1} d r_{1}`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{2} d x+Y_{2} d y+Z_{2} d z=R_{2} d r_{2}=-d V_{2} .`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X d x+Y d y+Z d z=-d V_{1}-d V_{2}-\text { \&c. }=-d V .`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1}=R_{1} \frac{x-x_{1}}{r_{1}}=R_{1} \frac{d r_{1}}{d x},`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{1} d x+Y_{1} d y+Z_{1} d z=R_{1} d r_{1}`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X_{2} d x+Y_{2} d y+Z_{2} d z=R_{2} d r_{2}=-d V_{2} .`
+  - No clear structural match found in code
+- [??] **Art.70** `potential_difference`: unverified
+  - LaTeX: `X d x+Y d y+Z d z=-d V_{1}-d V_{2}-\text { \&c. }=-d V .`
+  - No clear structural match found in code
+- [OK] **Art.72** `conductor_surface`: verified
+  - LaTeX: `\frac{d V}{d x}=0, \quad \frac{d V}{d y}=0, \quad \frac{d V}{d z}=0 ;`
+  - Structural/heuristic match
+- [OK] **Art.72** `conductor_surface`: verified
+  - LaTeX: `\frac{d V}{d x}=0, \quad \frac{d V}{d y}=0, \quad \frac{d V}{d z}=0 ;`
+  - Structural/heuristic match
+- [OK] **Art.72** `conductor_surface`: verified
+  - LaTeX: `\frac{d V}{d x}=0, \quad \frac{d V}{d y}=0, \quad \frac{d V}{d z}=0 ;`
+  - Structural/heuristic match
+- [OK] **Art.72** `conductor_surface`: verified
+  - LaTeX: `\frac{d V}{d x}=0, \quad \frac{d V}{d y}=0, \quad \frac{d V}{d z}=0 ;`
+  - Structural/heuristic match
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\int_{r}^{\infty} R d r=\int_{r}^{\infty} \frac{e}{r^{2}} d r=\frac{e}{r}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\Sigma\left(\frac{e}{r}\right) .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\iiint \frac{\rho}{r} d x d y d z`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `r=\left\{\left(x-x^{\prime}\right)^{2}+\left(y-y^{\prime}\right)^{2}+\left(z-z^{\prime}\right)^{2}\r`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\int_{r}^{\infty} R d r=\int_{r}^{\infty} \frac{e}{r^{2}} d r=\frac{e}{r}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\Sigma\left(\frac{e}{r}\right) .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\iiint \frac{\rho}{r} d x d y d z`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `r=\left\{\left(x-x^{\prime}\right)^{2}+\left(y-y^{\prime}\right)^{2}+\left(z-z^{\prime}\right)^{2}\r`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{gathered}
+k=\frac{\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}}{2 c} \\`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\theta=2 a, \quad \phi=0`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a a}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (8 \varpi-a)},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a b}=-k \sum_{s=1}^{s=\infty} \frac{1}{\sinh 8 \omega} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{b b}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (\beta+8 \omega)} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `K=\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\sinh a=-\frac{K}{2 a c}, \sinh \beta=\frac{K}{2 b c}, \sinh \varpi=\frac{K}{2 a b},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{aligned}
+& \sinh (a+\beta)=\sinh a \cosh \beta+\cosh a \sinh \beta \\
+& \cosh (a+\beta)=\cosh`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{gathered}
+k=\frac{\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}}{2 c} \\`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\theta=2 a, \quad \phi=0`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a a}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (8 \varpi-a)},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a b}=-k \sum_{s=1}^{s=\infty} \frac{1}{\sinh 8 \omega} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{b b}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (\beta+8 \omega)} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `K=\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\sinh a=-\frac{K}{2 a c}, \sinh \beta=\frac{K}{2 b c}, \sinh \varpi=\frac{K}{2 a b},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{aligned}
+& \sinh (a+\beta)=\sinh a \cosh \beta+\cosh a \sinh \beta \\
+& \cosh (a+\beta)=\cosh`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\int_{r}^{\infty} R d r=\int_{r}^{\infty} \frac{e}{r^{2}} d r=\frac{e}{r}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\Sigma\left(\frac{e}{r}\right) .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\iiint \frac{\rho}{r} d x d y d z`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `r=\left\{\left(x-x^{\prime}\right)^{2}+\left(y-y^{\prime}\right)^{2}+\left(z-z^{\prime}\right)^{2}\r`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\int_{r}^{\infty} R d r=\int_{r}^{\infty} \frac{e}{r^{2}} d r=\frac{e}{r}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\Sigma\left(\frac{e}{r}\right) .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `V=\iiint \frac{\rho}{r} d x d y d z`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `r=\left\{\left(x-x^{\prime}\right)^{2}+\left(y-y^{\prime}\right)^{2}+\left(z-z^{\prime}\right)^{2}\r`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{gathered}
+k=\frac{\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}}{2 c} \\`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\theta=2 a, \quad \phi=0`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a a}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (8 \varpi-a)},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a b}=-k \sum_{s=1}^{s=\infty} \frac{1}{\sinh 8 \omega} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{b b}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (\beta+8 \omega)} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `K=\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\sinh a=-\frac{K}{2 a c}, \sinh \beta=\frac{K}{2 b c}, \sinh \varpi=\frac{K}{2 a b},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{aligned}
+& \sinh (a+\beta)=\sinh a \cosh \beta+\cosh a \sinh \beta \\
+& \cosh (a+\beta)=\cosh`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{gathered}
+k=\frac{\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}}{2 c} \\`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\theta=2 a, \quad \phi=0`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a a}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (8 \varpi-a)},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{a b}=-k \sum_{s=1}^{s=\infty} \frac{1}{\sinh 8 \omega} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `q_{b b}=k \sum_{s=0}^{s=\infty} \frac{1}{\sinh (\beta+8 \omega)} .`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `K=\sqrt{a^{4}+b^{4}+c^{4}-2 b^{2} c^{2}-2 c^{2} a^{2}-2 a^{2} b^{2}}`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\sinh a=-\frac{K}{2 a c}, \sinh \beta=\frac{K}{2 b c}, \sinh \varpi=\frac{K}{2 a b},`
+  - No clear structural match found in code
+- [??] **Art.73** `from_charges`: unverified
+  - LaTeX: `\begin{aligned}
+& \sinh (a+\beta)=\sinh a \cosh \beta+\cosh a \sinh \beta \\
+& \cosh (a+\beta)=\cosh`
+  - No clear structural match found in code
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=4 \pi e`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `4 \pi e=4 \pi \iiint \rho d x d y d z`
+  - Structural/heuristic match
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}=4 \pi \rho ;`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=0 .`
+  - Structural/heuristic match
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}} \text { by }-\nabla^{2} V,`
+  - Structural/heuristic match
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=4 \pi e`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `4 \pi e=4 \pi \iiint \rho d x d y d z`
+  - Structural/heuristic match
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}=4 \pi \rho ;`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=0 .`
+  - Structural/heuristic match
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}} \text { by }-\nabla^{2} V,`
+  - Structural/heuristic match
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=4 \pi e`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `4 \pi e=4 \pi \iiint \rho d x d y d z`
+  - Structural/heuristic match
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}=4 \pi \rho ;`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=0 .`
+  - Structural/heuristic match
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}} \text { by }-\nabla^{2} V,`
+  - Structural/heuristic match
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=4 \pi e`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `4 \pi e=4 \pi \iiint \rho d x d y d z`
+  - Structural/heuristic match
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [??] **Art.77** `laplace_equation`: unverified
+  - LaTeX: `\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}=4 \pi \rho ;`
+  - No clear structural match found in code
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=0 .`
+  - Structural/heuristic match
+- [OK] **Art.77** `laplace_equation`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}} \text { by }-\nabla^{2} V,`
+  - Structural/heuristic match
+
 ### `maxwell\core\units\dimensions.py`
 
 - [OK] **Art.771** `calc_unit_ratio`: verified
@@ -2745,6 +3917,213 @@ a=\mathfrak{H} \cos \zeta \cos \delta, & \beta=\mathfrak{H} \cos \zeta \sin \del
 - [??] **Art.772** `calc_unit_ratio`: unverified
   - LaTeX: `v=310740000 \text { metres per second. }`
   - No clear structural match found in code
+
+### `maxwell\electromagnetism\charges\surface.py`
+
+- [??] **Art.613** `calc_surface_charge_density`: unverified
+  - LaTeX: `\begin{equation*}
+\sigma=l f+m g+n h+l^{\prime} f^{\prime}+m^{\prime} g^{\prime}+n^{\prime} h^{\prim`
+  - No clear structural match found in code
+- [OK] **Art.613** `calc_surface_charge_density`: verified
+  - LaTeX: `\sigma=l f+m g+n h+l^{\prime} f^{\prime}+m^{\prime} g^{\prime}+n^{\prime} h^{\prime},`
+  - Structural/heuristic match
+- [??] **Art.613** `calc_surface_charge_density`: unverified
+  - LaTeX: `\begin{equation*}
+\sigma=l f+m g+n h+l^{\prime} f^{\prime}+m^{\prime} g^{\prime}+n^{\prime} h^{\prim`
+  - No clear structural match found in code
+- [OK] **Art.613** `calc_surface_charge_density`: verified
+  - LaTeX: `\sigma=l f+m g+n h+l^{\prime} f^{\prime}+m^{\prime} g^{\prime}+n^{\prime} h^{\prime},`
+  - Structural/heuristic match
+- [??] **Art.613** `calc_surface_charge_density`: unverified
+  - LaTeX: `\begin{equation*}
+\sigma=l f+m g+n h+l^{\prime} f^{\prime}+m^{\prime} g^{\prime}+n^{\prime} h^{\prim`
+  - No clear structural match found in code
+- [OK] **Art.613** `calc_surface_charge_density`: verified
+  - LaTeX: `\sigma=l f+m g+n h+l^{\prime} f^{\prime}+m^{\prime} g^{\prime}+n^{\prime} h^{\prime},`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\charges\volume.py`
+
+- [??] **Art.612** `calc_volume_charge_density`: unverified
+  - LaTeX: `\begin{equation*}
+\rho=\frac{d f}{d x}+\frac{d g}{d y}+\frac{d h}{d z} . \tag{J}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.612** `calc_volume_charge_density`: unverified
+  - LaTeX: `\rho=\frac{d f}{d x}+\frac{d g}{d y}+\frac{d h}{d z} .`
+  - No clear structural match found in code
+- [??] **Art.612** `calc_volume_charge_density`: unverified
+  - LaTeX: `\begin{equation*}
+\rho=\frac{d f}{d x}+\frac{d g}{d y}+\frac{d h}{d z} . \tag{J}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.612** `calc_volume_charge_density`: unverified
+  - LaTeX: `\rho=\frac{d f}{d x}+\frac{d g}{d y}+\frac{d h}{d z} .`
+  - No clear structural match found in code
+- [??] **Art.612** `calc_volume_charge_density`: unverified
+  - LaTeX: `\begin{equation*}
+\rho=\frac{d f}{d x}+\frac{d g}{d y}+\frac{d h}{d z} . \tag{J}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.612** `calc_volume_charge_density`: unverified
+  - LaTeX: `\rho=\frac{d f}{d x}+\frac{d g}{d y}+\frac{d h}{d z} .`
+  - No clear structural match found in code
+
+### `maxwell\electromagnetism\currents\emf_relation.py`
+
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\begin{equation*}
+\varnothing=\left(C+\frac{1}{4 \pi} K \frac{d}{d \bar{t}}\right) \mathbb{E}, \tag{`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+u & =C P+\frac{1}{4 \pi} K \frac{d P}{d t},  \tag{*}\\
+v & =C Q+\frac{1}{4 \`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\varnothing=\left(C+\frac{1}{4 \pi} K \frac{d}{d \bar{t}}\right) \mathbb{E},`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+u & =C P+\frac{1}{4 \pi} K \frac{d P}{d t}, \\
+v & =C Q+\frac{1}{4 \pi} K \f`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\begin{equation*}
+\varnothing=\left(C+\frac{1}{4 \pi} K \frac{d}{d \bar{t}}\right) \mathbb{E}, \tag{`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+u & =C P+\frac{1}{4 \pi} K \frac{d P}{d t},  \tag{*}\\
+v & =C Q+\frac{1}{4 \`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\varnothing=\left(C+\frac{1}{4 \pi} K \frac{d}{d \bar{t}}\right) \mathbb{E},`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+u & =C P+\frac{1}{4 \pi} K \frac{d P}{d t}, \\
+v & =C Q+\frac{1}{4 \pi} K \f`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\begin{equation*}
+\varnothing=\left(C+\frac{1}{4 \pi} K \frac{d}{d \bar{t}}\right) \mathbb{E}, \tag{`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+u & =C P+\frac{1}{4 \pi} K \frac{d P}{d t},  \tag{*}\\
+v & =C Q+\frac{1}{4 \`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\varnothing=\left(C+\frac{1}{4 \pi} K \frac{d}{d \bar{t}}\right) \mathbb{E},`
+  - No clear structural match found in code
+- [??] **Art.611** `calc_emf_current_relation`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+u & =C P+\frac{1}{4 \pi} K \frac{d P}{d t}, \\
+v & =C Q+\frac{1}{4 \pi} K \f`
+  - No clear structural match found in code
+
+### `maxwell\electromagnetism\currents\total.py`
+
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{C}=\mathfrak{I}+\dot{D}, \quad \text { (Equation of True Currents.) } \t`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+u=p+\frac{d f}{d t},  \tag{*}\\
+v=q+\frac{d g}{d t}, \\
+w=r+\frac{d h}{d t} \`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\mathfrak{C}=\mathfrak{I}+\dot{D}, \quad \text { (Equation of True Currents.) }`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+u=p+\frac{d f}{d t}, \\
+v=q+\frac{d g}{d t}, \\
+w=r+\frac{d h}{d t} \cdot
+\en`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{C}=\mathfrak{I}+\dot{D}, \quad \text { (Equation of True Currents.) } \t`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+u=p+\frac{d f}{d t},  \tag{*}\\
+v=q+\frac{d g}{d t}, \\
+w=r+\frac{d h}{d t} \`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\mathfrak{C}=\mathfrak{I}+\dot{D}, \quad \text { (Equation of True Currents.) }`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+u=p+\frac{d f}{d t}, \\
+v=q+\frac{d g}{d t}, \\
+w=r+\frac{d h}{d t} \cdot
+\en`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{C}=\mathfrak{I}+\dot{D}, \quad \text { (Equation of True Currents.) } \t`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+u=p+\frac{d f}{d t},  \tag{*}\\
+v=q+\frac{d g}{d t}, \\
+w=r+\frac{d h}{d t} \`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\mathfrak{C}=\mathfrak{I}+\dot{D}, \quad \text { (Equation of True Currents.) }`
+  - No clear structural match found in code
+- [??] **Art.610** `calc_total_current_density`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+u=p+\frac{d f}{d t}, \\
+v=q+\frac{d g}{d t}, \\
+w=r+\frac{d h}{d t} \cdot
+\en`
+  - No clear structural match found in code
+
+### `maxwell\electromagnetism\dynamics\attraction.py`
+
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `F=2 i i^{\prime} \frac{a}{r}`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `[i]=\left[F^{\frac{1}{2}}\right]=\left[M^{\frac{1}{2}} L^{\frac{1}{2}} T^{-\frac{1}{2}}\right] .`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `F=2 i i^{\prime} \frac{a}{r}`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `[i]=\left[F^{\frac{1}{2}}\right]=\left[M^{\frac{1}{2}} L^{\frac{1}{2}} T^{-\frac{1}{2}}\right] .`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `F=2 i i^{\prime} \frac{a}{r}`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `[i]=\left[F^{\frac{1}{2}}\right]=\left[M^{\frac{1}{2}} L^{\frac{1}{2}} T^{-\frac{1}{2}}\right] .`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `F=2 i i^{\prime} \frac{a}{r}`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `[i]=\left[F^{\frac{1}{2}}\right]=\left[M^{\frac{1}{2}} L^{\frac{1}{2}} T^{-\frac{1}{2}}\right] .`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `F=2 i i^{\prime} \frac{a}{r}`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `[i]=\left[F^{\frac{1}{2}}\right]=\left[M^{\frac{1}{2}} L^{\frac{1}{2}} T^{-\frac{1}{2}}\right] .`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `F=2 i i^{\prime} \frac{a}{r}`
+  - Structural/heuristic match
+- [OK] **Art.496** `calc_force_parallel_wires`: verified
+  - LaTeX: `[i]=\left[F^{\frac{1}{2}}\right]=\left[M^{\frac{1}{2}} L^{\frac{1}{2}} T^{-\frac{1}{2}}\right] .`
+  - Structural/heuristic match
 
 ### `maxwell\electromagnetism\energy\electrokinetic.py`
 
@@ -3268,6 +4647,27 @@ W=\frac{1}{2} \iiint(P f+Q g+R h) d x d y d z .^{*} \tag{5}
   - LaTeX: `\frac{f}{4 \pi K}=P, \frac{g}{4 \pi K}=Q, \frac{h}{4 \pi K}=R,`
   - No clear structural match found in code
 
+### `maxwell\electromagnetism\equivalence.py`
+
+- [??] **Art.485** `verify_circuit_shell_equivalence`: unverified
+  - LaTeX: `\omega\left(\phi_{1}+\phi_{2}\right)-4 \pi \phi_{2} .`
+  - No clear structural match found in code
+- [??] **Art.485** `verify_circuit_shell_equivalence`: unverified
+  - LaTeX: `\omega\left(\phi_{1}+\phi_{2}\right)-4 \pi \phi_{2} .`
+  - No clear structural match found in code
+- [??] **Art.485** `verify_circuit_shell_equivalence`: unverified
+  - LaTeX: `\omega\left(\phi_{1}+\phi_{2}\right)-4 \pi \phi_{2} .`
+  - No clear structural match found in code
+- [??] **Art.485** `verify_circuit_shell_equivalence`: unverified
+  - LaTeX: `\omega\left(\phi_{1}+\phi_{2}\right)-4 \pi \phi_{2} .`
+  - No clear structural match found in code
+- [??] **Art.485** `verify_circuit_shell_equivalence`: unverified
+  - LaTeX: `\omega\left(\phi_{1}+\phi_{2}\right)-4 \pi \phi_{2} .`
+  - No clear structural match found in code
+- [??] **Art.485** `verify_circuit_shell_equivalence`: unverified
+  - LaTeX: `\omega\left(\phi_{1}+\phi_{2}\right)-4 \pi \phi_{2} .`
+  - No clear structural match found in code
+
 ### `maxwell\electromagnetism\fields\ampere_maxwell.py`
 
 - [??] **Art.606** `calc_ampere_law`: unverified
@@ -3421,6 +4821,459 @@ c=\gamma+4 \pi C .`
   - LaTeX: `\frac{d u}{d x}+\frac{d v}{d y}+\frac{d w}{d z}=0`
   - Structural/heuristic match
 
+### `maxwell\electromagnetism\forces\elemental.py`
+
+- [??] **Art.511** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+A P=s, \quad A^{\prime} P^{\prime}=s^{\prime}  \tag{1}\\
+P Q=d s, \quad P^{\p`
+  - No clear structural match found in code
+- [??] **Art.511** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+A P=s, \quad A^{\prime} P^{\prime}=s^{\prime} \\
+P Q=d s, \quad P^{\prime} Q^`
+  - No clear structural match found in code
+- [??] **Art.511** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+A P=s, \quad A^{\prime} P^{\prime}=s^{\prime}  \tag{1}\\
+P Q=d s, \quad P^{\p`
+  - No clear structural match found in code
+- [??] **Art.511** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+A P=s, \quad A^{\prime} P^{\prime}=s^{\prime} \\
+P Q=d s, \quad P^{\prime} Q^`
+  - No clear structural match found in code
+- [??] **Art.511** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+A P=s, \quad A^{\prime} P^{\prime}=s^{\prime}  \tag{1}\\
+P Q=d s, \quad P^{\p`
+  - No clear structural match found in code
+- [??] **Art.511** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+A P=s, \quad A^{\prime} P^{\prime}=s^{\prime} \\
+P Q=d s, \quad P^{\prime} Q^`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{lll}
+\frac{d x}{d s}=l, & \frac{d y}{d s}=m, & \frac{d z}{d s}=n,  \tag{2}\\
+\fr`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{c}
+l\left(x^{\prime}-x\right)+m\left(y^{\prime}-y\right)+n\left(z^{\prime}-z\rig`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\begin{equation*}
+\cos \epsilon=-\cos \theta \cos \theta^{\prime}+\sin \theta \sin \theta^{\prime} \`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\begin{equation*}
+r^{2}=\left(x^{\prime}-x\right)^{2}+\left(y^{\prime}-y\right)^{2}+\left(z^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{lll}
+\frac{d x}{d s}=l, & \frac{d y}{d s}=m, & \frac{d z}{d s}=n, \\
+\frac{d x^{`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{c}
+l\left(x^{\prime}-x\right)+m\left(y^{\prime}-y\right)+n\left(z^{\prime}-z\rig`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\cos \epsilon=-\cos \theta \cos \theta^{\prime}+\sin \theta \sin \theta^{\prime} \cos \eta`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `r^{2}=\left(x^{\prime}-x\right)^{2}+\left(y^{\prime}-y\right)^{2}+\left(z^{\prime}-z\right)^{2}`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{lll}
+\frac{d x}{d s}=l, & \frac{d y}{d s}=m, & \frac{d z}{d s}=n,  \tag{2}\\
+\fr`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{c}
+l\left(x^{\prime}-x\right)+m\left(y^{\prime}-y\right)+n\left(z^{\prime}-z\rig`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\begin{equation*}
+\cos \epsilon=-\cos \theta \cos \theta^{\prime}+\sin \theta \sin \theta^{\prime} \`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\begin{equation*}
+r^{2}=\left(x^{\prime}-x\right)^{2}+\left(y^{\prime}-y\right)^{2}+\left(z^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{lll}
+\frac{d x}{d s}=l, & \frac{d y}{d s}=m, & \frac{d z}{d s}=n, \\
+\frac{d x^{`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{c}
+l\left(x^{\prime}-x\right)+m\left(y^{\prime}-y\right)+n\left(z^{\prime}-z\rig`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\cos \epsilon=-\cos \theta \cos \theta^{\prime}+\sin \theta \sin \theta^{\prime} \cos \eta`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `r^{2}=\left(x^{\prime}-x\right)^{2}+\left(y^{\prime}-y\right)^{2}+\left(z^{\prime}-z\right)^{2}`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{lll}
+\frac{d x}{d s}=l, & \frac{d y}{d s}=m, & \frac{d z}{d s}=n,  \tag{2}\\
+\fr`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{c}
+l\left(x^{\prime}-x\right)+m\left(y^{\prime}-y\right)+n\left(z^{\prime}-z\rig`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\begin{equation*}
+\cos \epsilon=-\cos \theta \cos \theta^{\prime}+\sin \theta \sin \theta^{\prime} \`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\begin{equation*}
+r^{2}=\left(x^{\prime}-x\right)^{2}+\left(y^{\prime}-y\right)^{2}+\left(z^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{lll}
+\frac{d x}{d s}=l, & \frac{d y}{d s}=m, & \frac{d z}{d s}=n, \\
+\frac{d x^{`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\left.\begin{array}{c}
+l\left(x^{\prime}-x\right)+m\left(y^{\prime}-y\right)+n\left(z^{\prime}-z\rig`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `\cos \epsilon=-\cos \theta \cos \theta^{\prime}+\sin \theta \sin \theta^{\prime} \cos \eta`
+  - No clear structural match found in code
+- [??] **Art.512** `calc_ampere_force`: unverified
+  - LaTeX: `r^{2}=\left(x^{\prime}-x\right)^{2}+\left(y^{\prime}-y\right)^{2}+\left(z^{\prime}-z\right)^{2}`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\text { whence } \left.\quad \begin{array}{rl}
+r^{\prime d} & =-\left(x^{\prime}-x\right) d x  \tag{`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+r \frac{d^{2} r}{d s d s^{\prime}}+\frac{d r}{d s} \frac{d r}{d s^{\prime}} `
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\cos \theta & =-\frac{d r}{d s},  \tag{8}\\
+\cos \theta^{\prime} & =-\frac{d`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\text { whence } \left.\quad \begin{array}{rl}
+r^{\prime d} & =-\left(x^{\prime}-x\right) d x \\
+& =`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+r \frac{d^{2} r}{d s d s^{\prime}}+\frac{d r}{d s} \frac{d r}{d s^{\prime}} `
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\cos \theta & =-\frac{d r}{d s}, \\
+\cos \theta^{\prime} & =-\frac{d r}{d s^`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\text { whence } \left.\quad \begin{array}{rl}
+r^{\prime d} & =-\left(x^{\prime}-x\right) d x  \tag{`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+r \frac{d^{2} r}{d s d s^{\prime}}+\frac{d r}{d s} \frac{d r}{d s^{\prime}} `
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\cos \theta & =-\frac{d r}{d s},  \tag{8}\\
+\cos \theta^{\prime} & =-\frac{d`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\text { whence } \left.\quad \begin{array}{rl}
+r^{\prime d} & =-\left(x^{\prime}-x\right) d x \\
+& =`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+r \frac{d^{2} r}{d s d s^{\prime}}+\frac{d r}{d s} \frac{d r}{d s^{\prime}} `
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\cos \theta & =-\frac{d r}{d s}, \\
+\cos \theta^{\prime} & =-\frac{d r}{d s^`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\text { whence } \left.\quad \begin{array}{rl}
+r^{\prime d} & =-\left(x^{\prime}-x\right) d x  \tag{`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+r \frac{d^{2} r}{d s d s^{\prime}}+\frac{d r}{d s} \frac{d r}{d s^{\prime}} `
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\cos \theta & =-\frac{d r}{d s},  \tag{8}\\
+\cos \theta^{\prime} & =-\frac{d`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\text { whence } \left.\quad \begin{array}{rl}
+r^{\prime d} & =-\left(x^{\prime}-x\right) d x \\
+& =`
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+r \frac{d^{2} r}{d s d s^{\prime}}+\frac{d r}{d s} \frac{d r}{d s^{\prime}} `
+  - No clear structural match found in code
+- [??] **Art.513** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\cos \theta & =-\frac{d r}{d s}, \\
+\cos \theta^{\prime} & =-\frac{d r}{d s^`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+X=\left(A a a^{\prime}+B \beta \beta^{\prime}\right) i i^{\prime} \text { in `
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+R & =A+2 C \cos \theta \cos \theta^{\prime}+B \sin \theta \sin \theta^{\prim`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=A+2 C \frac{d r}{d s} \frac{d r}{d s^{\prime}}-B r \frac{d^{2} r}{d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-(A+2 C+B) \frac{1}{r^{2}}(l \xi+m \eta+n \zeta)\left(l^{\prime} \xi+m^{\pr`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+X=\left(A a a^{\prime}+B \beta \beta^{\prime}\right) i i^{\prime} \text { in `
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+R & =A+2 C \cos \theta \cos \theta^{\prime}+B \sin \theta \sin \theta^{\prim`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=A+2 C \frac{d r}{d s} \frac{d r}{d s^{\prime}}-B r \frac{d^{2} r}{d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-(A+2 C+B) \frac{1}{r^{2}}(l \xi+m \eta+n \zeta)\left(l^{\prime} \xi+m^{\pr`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+X=\left(A a a^{\prime}+B \beta \beta^{\prime}\right) i i^{\prime} \text { in `
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+R & =A+2 C \cos \theta \cos \theta^{\prime}+B \sin \theta \sin \theta^{\prim`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=A+2 C \frac{d r}{d s} \frac{d r}{d s^{\prime}}-B r \frac{d^{2} r}{d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-(A+2 C+B) \frac{1}{r^{2}}(l \xi+m \eta+n \zeta)\left(l^{\prime} \xi+m^{\pr`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+X=\left(A a a^{\prime}+B \beta \beta^{\prime}\right) i i^{\prime} \text { in `
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+R & =A+2 C \cos \theta \cos \theta^{\prime}+B \sin \theta \sin \theta^{\prim`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=A+2 C \frac{d r}{d s} \frac{d r}{d s^{\prime}}-B r \frac{d^{2} r}{d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-(A+2 C+B) \frac{1}{r^{2}}(l \xi+m \eta+n \zeta)\left(l^{\prime} \xi+m^{\pr`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+X=\left(A a a^{\prime}+B \beta \beta^{\prime}\right) i i^{\prime} \text { in `
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+R & =A+2 C \cos \theta \cos \theta^{\prime}+B \sin \theta \sin \theta^{\prim`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=A+2 C \frac{d r}{d s} \frac{d r}{d s^{\prime}}-B r \frac{d^{2} r}{d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-(A+2 C+B) \frac{1}{r^{2}}(l \xi+m \eta+n \zeta)\left(l^{\prime} \xi+m^{\pr`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+X=\left(A a a^{\prime}+B \beta \beta^{\prime}\right) i i^{\prime} \text { in `
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+R & =A+2 C \cos \theta \cos \theta^{\prime}+B \sin \theta \sin \theta^{\prim`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=A+2 C \frac{d r}{d s} \frac{d r}{d s^{\prime}}-B r \frac{d^{2} r}{d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.514** `calc_grassmann_force`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-(A+2 C+B) \frac{1}{r^{2}}(l \xi+m \eta+n \zeta)\left(l^{\prime} \xi+m^{\pr`
+  - No clear structural match found in code
+- [OK] **Art.515** `calc_element_mutual_energy`: verified
+  - LaTeX: `F_{(0,0)}=F_{P}-F_{A} .`
+  - Structural/heuristic match
+- [OK] **Art.515** `calc_element_mutual_energy`: verified
+  - LaTeX: `F_{(0,0)}=F_{P}-F_{A} .`
+  - Structural/heuristic match
+- [OK] **Art.515** `calc_element_mutual_energy`: verified
+  - LaTeX: `F_{(0,0)}=F_{P}-F_{A} .`
+  - Structural/heuristic match
+- [OK] **Art.515** `calc_element_mutual_energy`: verified
+  - LaTeX: `F_{(0,0)}=F_{P}-F_{A} .`
+  - Structural/heuristic match
+- [OK] **Art.515** `calc_element_mutual_energy`: verified
+  - LaTeX: `F_{(0,0)}=F_{P}-F_{A} .`
+  - Structural/heuristic match
+- [OK] **Art.515** `calc_element_mutual_energy`: verified
+  - LaTeX: `F_{(0,0)}=F_{P}-F_{A} .`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\forces\generalized.py`
+
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_force_from_energy`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_force_from_energy`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `calc_force_from_energy`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+
 ### `maxwell\electromagnetism\forces\lorentz.py`
 
 - [??] **Art.491** `calc_force_on_wire`: unverified
@@ -3512,6 +5365,420 @@ c=\gamma+4 \pi C .`
   - Structural/heuristic match
 - [OK] **Art.492** `calc_force_between_parallel_currents`: verified
   - LaTeX: `i_{1} i_{2} \frac{d M}{d x}`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\forces\ponderomotive.py`
+
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+X_{1}=\frac{d M}{d x_{1}} i_{1} i_{2} \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+M i_{1}=p=\int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right) d`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+X_{1}=i_{2} \frac{d}{d x_{1}} \int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \fra`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `X_{1}=\frac{d M}{d x_{1}} i_{1} i_{2}`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `M i_{1}=p=\int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right) d s`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `X_{1}=i_{2} \frac{d}{d x_{1}} \int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right)`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+X_{1}=\frac{d M}{d x_{1}} i_{1} i_{2} \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+M i_{1}=p=\int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right) d`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+X_{1}=i_{2} \frac{d}{d x_{1}} \int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \fra`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `X_{1}=\frac{d M}{d x_{1}} i_{1} i_{2}`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `M i_{1}=p=\int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right) d s`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `X_{1}=i_{2} \frac{d}{d x_{1}} \int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right)`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+X_{1}=\frac{d M}{d x_{1}} i_{1} i_{2} \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+M i_{1}=p=\int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right) d`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+X_{1}=i_{2} \frac{d}{d x_{1}} \int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \fra`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `X_{1}=\frac{d M}{d x_{1}} i_{1} i_{2}`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `M i_{1}=p=\int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right) d s`
+  - No clear structural match found in code
+- [??] **Art.602** `calc_electric_force_density`: unverified
+  - LaTeX: `X_{1}=i_{2} \frac{d}{d x_{1}} \int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right)`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d X}{d s} \delta x d s=i_{2} \int \frac{d}{d \delta x}\left(F^{\prime} `
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d x}{d \delta x}=1, \quad \frac{d y}{d \delta x}=0, \quad \text { and } \qua`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d X}{d s} \delta x d s=i_{2} \int\left(c \frac{d y}{d s}-b \frac{d z}{d`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d X}{d s}=i_{2}\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right), \tag{7}
+\en`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{d Y}{d s}=i_{2}\left(a \frac{d z}{d s}-c \frac{d x}{d s}\right),  \tag{8}\\
+&`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\int \frac{d X}{d s} \delta x d s=i_{2} \int \frac{d}{d \delta x}\left(F^{\prime} \frac{d x}{d s}+G `
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\frac{d x}{d \delta x}=1, \quad \frac{d y}{d \delta x}=0, \quad \text { and } \quad \frac{d z}{d \de`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\int \frac{d X}{d s} \delta x d s=i_{2} \int\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right) \delta `
+  - No clear structural match found in code
+- [OK] **Art.603** `calc_electric_force_density`: verified
+  - LaTeX: `\frac{d X}{d s}=i_{2}\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right),`
+  - Structural/heuristic match
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d Y}{d s}=i_{2}\left(a \frac{d z}{d s}-c \frac{d x}{d s}\right), \\
+& \frac{`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{X S d s}{d s}=S(v c-w b), \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\left.\begin{array}{lr}
+X=v c-w b . \\
+Y=w a-u c,  \tag{C}\\
+Z=u b-v a .
+\end{array}\right\} \quad \`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{F}=V . \mathbb{C} \mathfrak{B} . \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\left(\frac{d F}{d t} d x+\frac{d G}{d t} d y+\frac{d H}{d t} d z\right) .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\lambda, \mu, v=\frac{n \dot{y}-m \dot{z}}{v \sin \theta}, \frac{l \dot{z}-n \dot{x}}{v \sin \theta}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\delta p=(a \lambda+b \mu+c \nu) v \delta t \delta s \sin \theta .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\{a(n \dot{y}-m \dot{z})+\text { two similar terms }\} d s`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `=\int(c \dot{y}-b \dot{z}) d x+\text { two similar integrals. }`
+  - No clear structural match found in code
+- [OK] **Art.603** `calc_electric_force_density`: verified
+  - LaTeX: `\frac{X S d s}{d s}=S(v c-w b),`
+  - Structural/heuristic match
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\left.\begin{array}{lr}
+X=v c-w b . \\
+Y=w a-u c, \\
+Z=u b-v a .
+\end{array}\right\} \quad \text { (`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\mathfrak{F}=V . \mathbb{C} \mathfrak{B} .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\left(\frac{d F}{d t} d x+\frac{d G}{d t} d y+\frac{d H}{d t} d z\right) .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\lambda, \mu, v=\frac{n \dot{y}-m \dot{z}}{v \sin \theta}, \frac{l \dot{z}-n \dot{x}}{v \sin \theta}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\delta p=(a \lambda+b \mu+c \nu) v \delta t \delta s \sin \theta .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\{a(n \dot{y}-m \dot{z})+\text { two similar terms }\} d s`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `=\int(c \dot{y}-b \dot{z}) d x+\text { two similar integrals. }`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d X}{d s} \delta x d s=i_{2} \int \frac{d}{d \delta x}\left(F^{\prime} `
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d x}{d \delta x}=1, \quad \frac{d y}{d \delta x}=0, \quad \text { and } \qua`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d X}{d s} \delta x d s=i_{2} \int\left(c \frac{d y}{d s}-b \frac{d z}{d`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d X}{d s}=i_{2}\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right), \tag{7}
+\en`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{d Y}{d s}=i_{2}\left(a \frac{d z}{d s}-c \frac{d x}{d s}\right),  \tag{8}\\
+&`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\int \frac{d X}{d s} \delta x d s=i_{2} \int \frac{d}{d \delta x}\left(F^{\prime} \frac{d x}{d s}+G `
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\frac{d x}{d \delta x}=1, \quad \frac{d y}{d \delta x}=0, \quad \text { and } \quad \frac{d z}{d \de`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\int \frac{d X}{d s} \delta x d s=i_{2} \int\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right) \delta `
+  - No clear structural match found in code
+- [OK] **Art.603** `calc_electric_force_density`: verified
+  - LaTeX: `\frac{d X}{d s}=i_{2}\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right),`
+  - Structural/heuristic match
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d Y}{d s}=i_{2}\left(a \frac{d z}{d s}-c \frac{d x}{d s}\right), \\
+& \frac{`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{X S d s}{d s}=S(v c-w b), \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\left.\begin{array}{lr}
+X=v c-w b . \\
+Y=w a-u c,  \tag{C}\\
+Z=u b-v a .
+\end{array}\right\} \quad \`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{F}=V . \mathbb{C} \mathfrak{B} . \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\left(\frac{d F}{d t} d x+\frac{d G}{d t} d y+\frac{d H}{d t} d z\right) .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\lambda, \mu, v=\frac{n \dot{y}-m \dot{z}}{v \sin \theta}, \frac{l \dot{z}-n \dot{x}}{v \sin \theta}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\delta p=(a \lambda+b \mu+c \nu) v \delta t \delta s \sin \theta .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\{a(n \dot{y}-m \dot{z})+\text { two similar terms }\} d s`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `=\int(c \dot{y}-b \dot{z}) d x+\text { two similar integrals. }`
+  - No clear structural match found in code
+- [OK] **Art.603** `calc_electric_force_density`: verified
+  - LaTeX: `\frac{X S d s}{d s}=S(v c-w b),`
+  - Structural/heuristic match
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\left.\begin{array}{lr}
+X=v c-w b . \\
+Y=w a-u c, \\
+Z=u b-v a .
+\end{array}\right\} \quad \text { (`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\mathfrak{F}=V . \mathbb{C} \mathfrak{B} .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\left(\frac{d F}{d t} d x+\frac{d G}{d t} d y+\frac{d H}{d t} d z\right) .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\lambda, \mu, v=\frac{n \dot{y}-m \dot{z}}{v \sin \theta}, \frac{l \dot{z}-n \dot{x}}{v \sin \theta}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\delta p=(a \lambda+b \mu+c \nu) v \delta t \delta s \sin \theta .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\{a(n \dot{y}-m \dot{z})+\text { two similar terms }\} d s`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `=\int(c \dot{y}-b \dot{z}) d x+\text { two similar integrals. }`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d X}{d s} \delta x d s=i_{2} \int \frac{d}{d \delta x}\left(F^{\prime} `
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d x}{d \delta x}=1, \quad \frac{d y}{d \delta x}=0, \quad \text { and } \qua`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d X}{d s} \delta x d s=i_{2} \int\left(c \frac{d y}{d s}-b \frac{d z}{d`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d X}{d s}=i_{2}\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right), \tag{7}
+\en`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{d Y}{d s}=i_{2}\left(a \frac{d z}{d s}-c \frac{d x}{d s}\right),  \tag{8}\\
+&`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\int \frac{d X}{d s} \delta x d s=i_{2} \int \frac{d}{d \delta x}\left(F^{\prime} \frac{d x}{d s}+G `
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\frac{d x}{d \delta x}=1, \quad \frac{d y}{d \delta x}=0, \quad \text { and } \quad \frac{d z}{d \de`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\int \frac{d X}{d s} \delta x d s=i_{2} \int\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right) \delta `
+  - No clear structural match found in code
+- [OK] **Art.603** `calc_electric_force_density`: verified
+  - LaTeX: `\frac{d X}{d s}=i_{2}\left(c \frac{d y}{d s}-b \frac{d z}{d s}\right),`
+  - Structural/heuristic match
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d Y}{d s}=i_{2}\left(a \frac{d z}{d s}-c \frac{d x}{d s}\right), \\
+& \frac{`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{X S d s}{d s}=S(v c-w b), \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\left.\begin{array}{lr}
+X=v c-w b . \\
+Y=w a-u c,  \tag{C}\\
+Z=u b-v a .
+\end{array}\right\} \quad \`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{F}=V . \mathbb{C} \mathfrak{B} . \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\left(\frac{d F}{d t} d x+\frac{d G}{d t} d y+\frac{d H}{d t} d z\right) .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\lambda, \mu, v=\frac{n \dot{y}-m \dot{z}}{v \sin \theta}, \frac{l \dot{z}-n \dot{x}}{v \sin \theta}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\delta p=(a \lambda+b \mu+c \nu) v \delta t \delta s \sin \theta .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\{a(n \dot{y}-m \dot{z})+\text { two similar terms }\} d s`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `=\int(c \dot{y}-b \dot{z}) d x+\text { two similar integrals. }`
+  - No clear structural match found in code
+- [OK] **Art.603** `calc_electric_force_density`: verified
+  - LaTeX: `\frac{X S d s}{d s}=S(v c-w b),`
+  - Structural/heuristic match
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\left.\begin{array}{lr}
+X=v c-w b . \\
+Y=w a-u c, \\
+Z=u b-v a .
+\end{array}\right\} \quad \text { (`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\mathfrak{F}=V . \mathbb{C} \mathfrak{B} .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\left(\frac{d F}{d t} d x+\frac{d G}{d t} d y+\frac{d H}{d t} d z\right) .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\lambda, \mu, v=\frac{n \dot{y}-m \dot{z}}{v \sin \theta}, \frac{l \dot{z}-n \dot{x}}{v \sin \theta}`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `\delta p=(a \lambda+b \mu+c \nu) v \delta t \delta s \sin \theta .`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `-\int\{a(n \dot{y}-m \dot{z})+\text { two similar terms }\} d s`
+  - No clear structural match found in code
+- [??] **Art.603** `calc_electric_force_density`: unverified
+  - LaTeX: `=\int(c \dot{y}-b \dot{z}) d x+\text { two similar integrals. }`
+  - No clear structural match found in code
+
+### `maxwell\electromagnetism\forces\sliding.py`
+
+- [??] **Art.595** `calc_motional_emf_sliding`: unverified
+  - LaTeX: `\begin{equation*}
+p\left(A^{\prime} B^{\prime} C\right)-p(A B C)=p\left(A A^{\prime} B^{\prime} B\ri`
+  - No clear structural match found in code
+- [??] **Art.595** `calc_motional_emf_sliding`: unverified
+  - LaTeX: `\begin{equation*}
+E=-\frac{d p}{d t} \tag{14}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.595** `calc_motional_emf_sliding`: verified
+  - LaTeX: `p\left(A^{\prime} B^{\prime} C\right)-p(A B C)=p\left(A A^{\prime} B^{\prime} B\right) .`
+  - Structural/heuristic match
+- [OK] **Art.595** `calc_motional_emf_sliding`: verified
+  - LaTeX: `E=-\frac{d p}{d t}`
+  - Structural/heuristic match
+- [??] **Art.595** `calc_motional_emf_sliding`: unverified
+  - LaTeX: `\begin{equation*}
+p\left(A^{\prime} B^{\prime} C\right)-p(A B C)=p\left(A A^{\prime} B^{\prime} B\ri`
+  - No clear structural match found in code
+- [??] **Art.595** `calc_motional_emf_sliding`: unverified
+  - LaTeX: `\begin{equation*}
+E=-\frac{d p}{d t} \tag{14}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.595** `calc_motional_emf_sliding`: verified
+  - LaTeX: `p\left(A^{\prime} B^{\prime} C\right)-p(A B C)=p\left(A A^{\prime} B^{\prime} B\right) .`
+  - Structural/heuristic match
+- [OK] **Art.595** `calc_motional_emf_sliding`: verified
+  - LaTeX: `E=-\frac{d p}{d t}`
+  - Structural/heuristic match
+- [??] **Art.595** `calc_motional_emf_sliding`: unverified
+  - LaTeX: `\begin{equation*}
+p\left(A^{\prime} B^{\prime} C\right)-p(A B C)=p\left(A A^{\prime} B^{\prime} B\ri`
+  - No clear structural match found in code
+- [??] **Art.595** `calc_motional_emf_sliding`: unverified
+  - LaTeX: `\begin{equation*}
+E=-\frac{d p}{d t} \tag{14}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.595** `calc_motional_emf_sliding`: verified
+  - LaTeX: `p\left(A^{\prime} B^{\prime} C\right)-p(A B C)=p\left(A A^{\prime} B^{\prime} B\right) .`
+  - Structural/heuristic match
+- [OK] **Art.595** `calc_motional_emf_sliding`: verified
+  - LaTeX: `E=-\frac{d p}{d t}`
   - Structural/heuristic match
 
 ### `maxwell\electromagnetism\forces\stress_tensor.py`
@@ -3826,6 +6093,591 @@ Z & =u \beta-v a .
 \end{arra`
   - No clear structural match found in code
 
+### `maxwell\electromagnetism\induction\generalized.py`
+
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `calc_generalized_emf`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_generalized_emf`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\potentials\directrix.py`
+
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+P=\frac{1}{2 r}(B+C) . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d X}{d s}=\left\{\frac{B+C}{2} \frac{\xi}{r}(l \xi+m \eta+n \zeta)+Q\right\}_{`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{align*}
+& a^{\prime}=\int_{0}^{r^{\prime}} \frac{B-C n^{\prime} \eta-m^{\prime} \zeta}{2} d s`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d X}{d s}=m \gamma^{\prime}-n \beta^{\prime} .  \tag{23}\\
+\frac{d Y}{d`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `P=\frac{1}{2 r}(B+C) .`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d X}{d s}=\left\{\frac{B+C}{2} \frac{\xi}{r}(l \xi+m \eta+n \zeta)+Q\right\}_`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{aligned}
+& a^{\prime}=\int_{0}^{r^{\prime}} \frac{B-C n^{\prime} \eta-m^{\prime} \zeta}{2} d `
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d X}{d s}=m \gamma^{\prime}-n \beta^{\prime} . \\
+\frac{d Y}{d s}=n u^{`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+P=\frac{1}{2 r}(B+C) . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d X}{d s}=\left\{\frac{B+C}{2} \frac{\xi}{r}(l \xi+m \eta+n \zeta)+Q\right\}_{`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{align*}
+& a^{\prime}=\int_{0}^{r^{\prime}} \frac{B-C n^{\prime} \eta-m^{\prime} \zeta}{2} d s`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d X}{d s}=m \gamma^{\prime}-n \beta^{\prime} .  \tag{23}\\
+\frac{d Y}{d`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `P=\frac{1}{2 r}(B+C) .`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d X}{d s}=\left\{\frac{B+C}{2} \frac{\xi}{r}(l \xi+m \eta+n \zeta)+Q\right\}_`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{aligned}
+& a^{\prime}=\int_{0}^{r^{\prime}} \frac{B-C n^{\prime} \eta-m^{\prime} \zeta}{2} d `
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d X}{d s}=m \gamma^{\prime}-n \beta^{\prime} . \\
+\frac{d Y}{d s}=n u^{`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+P=\frac{1}{2 r}(B+C) . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d X}{d s}=\left\{\frac{B+C}{2} \frac{\xi}{r}(l \xi+m \eta+n \zeta)+Q\right\}_{`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{align*}
+& a^{\prime}=\int_{0}^{r^{\prime}} \frac{B-C n^{\prime} \eta-m^{\prime} \zeta}{2} d s`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d X}{d s}=m \gamma^{\prime}-n \beta^{\prime} .  \tag{23}\\
+\frac{d Y}{d`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `P=\frac{1}{2 r}(B+C) .`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d X}{d s}=\left\{\frac{B+C}{2} \frac{\xi}{r}(l \xi+m \eta+n \zeta)+Q\right\}_`
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{aligned}
+& a^{\prime}=\int_{0}^{r^{\prime}} \frac{B-C n^{\prime} \eta-m^{\prime} \zeta}{2} d `
+  - No clear structural match found in code
+- [??] **Art.517** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d X}{d s}=m \gamma^{\prime}-n \beta^{\prime} . \\
+\frac{d Y}{d s}=n u^{`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+\rho=\frac{1}{2} \int_{r}^{\infty}(B-C) d r \tag{24}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+A+B=r \frac{d^{2}}{d r^{2}}(Q+\rho)-\frac{d}{d r}(Q+\rho), \tag{25}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-\frac{d \rho}{d r} \cos \epsilon+r \frac{d^{2}}{d s d s^{\prime}}(Q+\rho) `
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{align*}
+\frac{d^{2} X}{d s d s^{\prime}} & =-\cos \epsilon \frac{d \rho}{d r} \frac{\xi}{r}+\`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\rho=\frac{1}{2} \int_{r}^{\infty}(B-C) d r`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `A+B=r \frac{d^{2}}{d r^{2}}(Q+\rho)-\frac{d}{d r}(Q+\rho),`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-\frac{d \rho}{d r} \cos \epsilon+r \frac{d^{2}}{d s d s^{\prime}}(Q+\rho) `
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{d^{2} X}{d s d s^{\prime}} & =-\cos \epsilon \frac{d \rho}{d r} \frac{\xi}{r}+`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+\rho=\frac{1}{2} \int_{r}^{\infty}(B-C) d r \tag{24}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+A+B=r \frac{d^{2}}{d r^{2}}(Q+\rho)-\frac{d}{d r}(Q+\rho), \tag{25}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-\frac{d \rho}{d r} \cos \epsilon+r \frac{d^{2}}{d s d s^{\prime}}(Q+\rho) `
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{align*}
+\frac{d^{2} X}{d s d s^{\prime}} & =-\cos \epsilon \frac{d \rho}{d r} \frac{\xi}{r}+\`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\rho=\frac{1}{2} \int_{r}^{\infty}(B-C) d r`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `A+B=r \frac{d^{2}}{d r^{2}}(Q+\rho)-\frac{d}{d r}(Q+\rho),`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-\frac{d \rho}{d r} \cos \epsilon+r \frac{d^{2}}{d s d s^{\prime}}(Q+\rho) `
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{d^{2} X}{d s d s^{\prime}} & =-\cos \epsilon \frac{d \rho}{d r} \frac{\xi}{r}+`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+\rho=\frac{1}{2} \int_{r}^{\infty}(B-C) d r \tag{24}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+A+B=r \frac{d^{2}}{d r^{2}}(Q+\rho)-\frac{d}{d r}(Q+\rho), \tag{25}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-\frac{d \rho}{d r} \cos \epsilon+r \frac{d^{2}}{d s d s^{\prime}}(Q+\rho) `
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{align*}
+\frac{d^{2} X}{d s d s^{\prime}} & =-\cos \epsilon \frac{d \rho}{d r} \frac{\xi}{r}+\`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\rho=\frac{1}{2} \int_{r}^{\infty}(B-C) d r`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `A+B=r \frac{d^{2}}{d r^{2}}(Q+\rho)-\frac{d}{d r}(Q+\rho),`
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+R=-\frac{d \rho}{d r} \cos \epsilon+r \frac{d^{2}}{d s d s^{\prime}}(Q+\rho) `
+  - No clear structural match found in code
+- [??] **Art.518** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{d^{2} X}{d s d s^{\prime}} & =-\cos \epsilon \frac{d \rho}{d r} \frac{\xi}{r}+`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{array}{lll}
+F & =\int_{0}^{s} l \rho d s, & G \\
+F^{v} & =\int_{0}^{s} m \rho d s, & H  \tag{`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+L=\int_{0}^{r} r(Q+\rho) d r \tag{30}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+\int_{0}^{s^{\prime}} \int_{0}^{s} \rho \cos \epsilon d s d s^{\prime} \tag{31}
+\e`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{array}{lll}
+F & =\int_{0}^{s} l \rho d s, & G \\
+F^{v} & =\int_{0}^{s} m \rho d s, & H \\
+s^{`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `L=\int_{0}^{r} r(Q+\rho) d r`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\int_{0}^{s^{\prime}} \int_{0}^{s} \rho \cos \epsilon d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{array}{lll}
+F & =\int_{0}^{s} l \rho d s, & G \\
+F^{v} & =\int_{0}^{s} m \rho d s, & H  \tag{`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+L=\int_{0}^{r} r(Q+\rho) d r \tag{30}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+\int_{0}^{s^{\prime}} \int_{0}^{s} \rho \cos \epsilon d s d s^{\prime} \tag{31}
+\e`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{array}{lll}
+F & =\int_{0}^{s} l \rho d s, & G \\
+F^{v} & =\int_{0}^{s} m \rho d s, & H \\
+s^{`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `L=\int_{0}^{r} r(Q+\rho) d r`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\int_{0}^{s^{\prime}} \int_{0}^{s} \rho \cos \epsilon d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{array}{lll}
+F & =\int_{0}^{s} l \rho d s, & G \\
+F^{v} & =\int_{0}^{s} m \rho d s, & H  \tag{`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+L=\int_{0}^{r} r(Q+\rho) d r \tag{30}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{equation*}
+\int_{0}^{s^{\prime}} \int_{0}^{s} \rho \cos \epsilon d s d s^{\prime} \tag{31}
+\e`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\begin{array}{lll}
+F & =\int_{0}^{s} l \rho d s, & G \\
+F^{v} & =\int_{0}^{s} m \rho d s, & H \\
+s^{`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `L=\int_{0}^{r} r(Q+\rho) d r`
+  - No clear structural match found in code
+- [??] **Art.519** `calc_vector_potential_element`: unverified
+  - LaTeX: `\int_{0}^{s^{\prime}} \int_{0}^{s} \rho \cos \epsilon d s d s^{\prime}`
+  - No clear structural match found in code
+
+### `maxwell\electromagnetism\potentials\multivalued.py`
+
+- [??] **Art.480** `calc_cyclic_potential`: unverified
+  - LaTeX: `X=-2 i \frac{y}{r^{2}}, \quad Y=2 i \frac{x}{r^{2}}, \quad Z=0 .`
+  - No clear structural match found in code
+- [OK] **Art.480** `calc_cyclic_potential`: verified
+  - LaTeX: `2 i \tan ^{-1} \frac{y}{x}+C .`
+  - Structural/heuristic match
+- [??] **Art.480** `calc_cyclic_potential`: unverified
+  - LaTeX: `X=-2 i \frac{y}{r^{2}}, \quad Y=2 i \frac{x}{r^{2}}, \quad Z=0 .`
+  - No clear structural match found in code
+- [OK] **Art.480** `calc_cyclic_potential`: verified
+  - LaTeX: `2 i \tan ^{-1} \frac{y}{x}+C .`
+  - Structural/heuristic match
+- [??] **Art.480** `calc_cyclic_potential`: unverified
+  - LaTeX: `X=-2 i \frac{y}{r^{2}}, \quad Y=2 i \frac{x}{r^{2}}, \quad Z=0 .`
+  - No clear structural match found in code
+- [OK] **Art.480** `calc_cyclic_potential`: verified
+  - LaTeX: `2 i \tan ^{-1} \frac{y}{x}+C .`
+  - Structural/heuristic match
+- [??] **Art.480** `calc_cyclic_potential`: unverified
+  - LaTeX: `X=-2 i \frac{y}{r^{2}}, \quad Y=2 i \frac{x}{r^{2}}, \quad Z=0 .`
+  - No clear structural match found in code
+- [OK] **Art.480** `calc_cyclic_potential`: verified
+  - LaTeX: `2 i \tan ^{-1} \frac{y}{x}+C .`
+  - Structural/heuristic match
+- [??] **Art.480** `calc_cyclic_potential`: unverified
+  - LaTeX: `X=-2 i \frac{y}{r^{2}}, \quad Y=2 i \frac{x}{r^{2}}, \quad Z=0 .`
+  - No clear structural match found in code
+- [OK] **Art.480** `calc_cyclic_potential`: verified
+  - LaTeX: `2 i \tan ^{-1} \frac{y}{x}+C .`
+  - Structural/heuristic match
+- [??] **Art.480** `calc_cyclic_potential`: unverified
+  - LaTeX: `X=-2 i \frac{y}{r^{2}}, \quad Y=2 i \frac{x}{r^{2}}, \quad Z=0 .`
+  - No clear structural match found in code
+- [OK] **Art.480** `calc_cyclic_potential`: verified
+  - LaTeX: `2 i \tan ^{-1} \frac{y}{x}+C .`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\potentials\mutual_energy.py`
+
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} X}{d s d s^{\prime}}=\frac{d^{2}}{d s d s^{\prime}}\left\{\frac{d M}{d`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{gather*}
+X=\frac{d M}{d x}-\frac{d}{d x}\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{align*}
+X d x+Y d y+Z d z= & D M-D\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime} P}+L_`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\frac{d^{2} X}{d s d s^{\prime}}=\frac{d^{2}}{d s d s^{\prime}}\left\{\frac{d M}{d x}-\frac{d L}{d x`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{gathered}
+X=\frac{d M}{d x}-\frac{d}{d x}\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{aligned}
+X d x+Y d y+Z d z= & D M-D\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime} P}+L`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} X}{d s d s^{\prime}}=\frac{d^{2}}{d s d s^{\prime}}\left\{\frac{d M}{d`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{gather*}
+X=\frac{d M}{d x}-\frac{d}{d x}\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{align*}
+X d x+Y d y+Z d z= & D M-D\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime} P}+L_`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\frac{d^{2} X}{d s d s^{\prime}}=\frac{d^{2}}{d s d s^{\prime}}\left\{\frac{d M}{d x}-\frac{d L}{d x`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{gathered}
+X=\frac{d M}{d x}-\frac{d}{d x}\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{aligned}
+X d x+Y d y+Z d z= & D M-D\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime} P}+L`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} X}{d s d s^{\prime}}=\frac{d^{2}}{d s d s^{\prime}}\left\{\frac{d M}{d`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{gather*}
+X=\frac{d M}{d x}-\frac{d}{d x}\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{align*}
+X d x+Y d y+Z d z= & D M-D\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime} P}+L_`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\frac{d^{2} X}{d s d s^{\prime}}=\frac{d^{2}}{d s d s^{\prime}}\left\{\frac{d M}{d x}-\frac{d L}{d x`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{gathered}
+X=\frac{d M}{d x}-\frac{d}{d x}\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime`
+  - No clear structural match found in code
+- [??] **Art.520** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{aligned}
+X d x+Y d y+Z d z= & D M-D\left(L_{P P^{\prime}}-L_{A P^{\prime}}-L_{A^{\prime} P}+L`
+  - No clear structural match found in code
+- [??] **Art.521** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{equation*}
+X d x+Y d y+Z d z=D M \tag{35}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.521** `calc_neumann_mutual_inductance`: verified
+  - LaTeX: `X d x+Y d y+Z d z=D M`
+  - Structural/heuristic match
+- [??] **Art.521** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{equation*}
+X d x+Y d y+Z d z=D M \tag{35}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.521** `calc_neumann_mutual_inductance`: verified
+  - LaTeX: `X d x+Y d y+Z d z=D M`
+  - Structural/heuristic match
+- [??] **Art.521** `calc_neumann_mutual_inductance`: unverified
+  - LaTeX: `\begin{equation*}
+X d x+Y d y+Z d z=D M \tag{35}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.521** `calc_neumann_mutual_inductance`: verified
+  - LaTeX: `X d x+Y d y+Z d z=D M`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\potentials\surfaces.py`
+
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m i\left(4 \pi-\omega-\omega^{\prime}\right),`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-m x \omega_{\theta}+m y\left(\omega-\omega_{\theta}\right) \text { and, of the south, }-m x \omega_`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m y\left(\omega+\omega^{\prime}\right)-m i\left(\omega_{\theta}+\omega_{\theta}^{\prime}\right) .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} m i \frac{d}{d \theta}\left(\Omega+\Omega^{\prime}\right) d \theta=-m i\left(\omeg`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `\left.m i\left\{4 \pi-\left(\omega+\omega^{\prime}\right)\right\}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m i\left(4 \pi-\omega-\omega^{\prime}\right),`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-m x \omega_{\theta}+m y\left(\omega-\omega_{\theta}\right) \text { and, of the south, }-m x \omega_`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m y\left(\omega+\omega^{\prime}\right)-m i\left(\omega_{\theta}+\omega_{\theta}^{\prime}\right) .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} m i \frac{d}{d \theta}\left(\Omega+\Omega^{\prime}\right) d \theta=-m i\left(\omeg`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `\left.m i\left\{4 \pi-\left(\omega+\omega^{\prime}\right)\right\}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m i\left(4 \pi-\omega-\omega^{\prime}\right),`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-m x \omega_{\theta}+m y\left(\omega-\omega_{\theta}\right) \text { and, of the south, }-m x \omega_`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m y\left(\omega+\omega^{\prime}\right)-m i\left(\omega_{\theta}+\omega_{\theta}^{\prime}\right) .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} m i \frac{d}{d \theta}\left(\Omega+\Omega^{\prime}\right) d \theta=-m i\left(\omeg`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `\left.m i\left\{4 \pi-\left(\omega+\omega^{\prime}\right)\right\}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m i\left(4 \pi-\omega-\omega^{\prime}\right),`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-m x \omega_{\theta}+m y\left(\omega-\omega_{\theta}\right) \text { and, of the south, }-m x \omega_`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m y\left(\omega+\omega^{\prime}\right)-m i\left(\omega_{\theta}+\omega_{\theta}^{\prime}\right) .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} m i \frac{d}{d \theta}\left(\Omega+\Omega^{\prime}\right) d \theta=-m i\left(\omeg`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `\left.m i\left\{4 \pi-\left(\omega+\omega^{\prime}\right)\right\}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m i\left(4 \pi-\omega-\omega^{\prime}\right),`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-m x \omega_{\theta}+m y\left(\omega-\omega_{\theta}\right) \text { and, of the south, }-m x \omega_`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m y\left(\omega+\omega^{\prime}\right)-m i\left(\omega_{\theta}+\omega_{\theta}^{\prime}\right) .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} m i \frac{d}{d \theta}\left(\Omega+\Omega^{\prime}\right) d \theta=-m i\left(\omeg`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `\left.m i\left\{4 \pi-\left(\omega+\omega^{\prime}\right)\right\}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m i\left(4 \pi-\omega-\omega^{\prime}\right),`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-m x \omega_{\theta}+m y\left(\omega-\omega_{\theta}\right) \text { and, of the south, }-m x \omega_`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `m y\left(\omega+\omega^{\prime}\right)-m i\left(\omega_{\theta}+\omega_{\theta}^{\prime}\right) .`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} m i \frac{d}{d \theta}\left(\Omega+\Omega^{\prime}\right) d \theta=-m i\left(\omeg`
+  - No clear structural match found in code
+- [??] **Art.487** `calc_solid_angle_circular_loop`: unverified
+  - LaTeX: `\left.m i\left\{4 \pi-\left(\omega+\omega^{\prime}\right)\right\}\right\} .`
+  - No clear structural match found in code
+
 ### `maxwell\electromagnetism\sources\oersted.py`
 
 - [OK] **Art.479** `calc_force_on_pole`: verified
@@ -3881,6 +6733,486 @@ Z & =u \beta-v a .
 & m_{1}+m_{2}=0 \\
 & T_{1} r_{1}=T_{2} r_{2}
 \end{aligned}`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\theory\comparisons.py`
+
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+R i i^{\prime} d s d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \frac{d r}{d `
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+{ }^{\prime} j^{\prime} d d s^{\prime}=\frac{1}{r^{2}}\left(\frac{1}{2} \frac{d r}`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+j j^{\prime}=2 i i^{\prime}, \text { or } j=\sqrt{2} i . \tag{41}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `{ }^{\prime} j^{\prime} d d s^{\prime}=\frac{1}{r^{2}}\left(\frac{1}{2} \frac{d r}{d s} \frac{d r}{d`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `j j^{\prime}=2 i i^{\prime}, \text { or } j=\sqrt{2} i .`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+R i i^{\prime} d s d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \frac{d r}{d `
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+{ }^{\prime} j^{\prime} d d s^{\prime}=\frac{1}{r^{2}}\left(\frac{1}{2} \frac{d r}`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+j j^{\prime}=2 i i^{\prime}, \text { or } j=\sqrt{2} i . \tag{41}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `{ }^{\prime} j^{\prime} d d s^{\prime}=\frac{1}{r^{2}}\left(\frac{1}{2} \frac{d r}{d s} \frac{d r}{d`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `j j^{\prime}=2 i i^{\prime}, \text { or } j=\sqrt{2} i .`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+R i i^{\prime} d s d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \frac{d r}{d `
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+{ }^{\prime} j^{\prime} d d s^{\prime}=\frac{1}{r^{2}}\left(\frac{1}{2} \frac{d r}`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+j j^{\prime}=2 i i^{\prime}, \text { or } j=\sqrt{2} i . \tag{41}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `{ }^{\prime} j^{\prime} d d s^{\prime}=\frac{1}{r^{2}}\left(\frac{1}{2} \frac{d r}{d s} \frac{d r}{d`
+  - No clear structural match found in code
+- [??] **Art.526** `compare_force_laws`: unverified
+  - LaTeX: `j j^{\prime}=2 i i^{\prime}, \text { or } j=\sqrt{2} i .`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+R i i^{\prime} d \varepsilon d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \fr`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{1}{2 r}, \quad R=-\frac{3}{2 r} \frac{d^{2} r}{d 8 d s^{\prime}}, \quad S`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{1}{r}, \quad R=\frac{1}{r^{2}} \cos \epsilon, \quad S=-\frac{1}{r^{2}} \f`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{2}{r}, \quad R=-3 \frac{1}{r^{2}} \frac{d r}{d s} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [OK] **Art.527** `compare_force_laws`: verified
+  - LaTeX: `R i i^{\prime} d \varepsilon d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \frac{d r}{d s^{\prim`
+  - Structural/heuristic match
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `Q=-\frac{1}{2 r}, \quad R=-\frac{3}{2 r} \frac{d^{2} r}{d 8 d s^{\prime}}, \quad S=-\frac{1}{2 r^{2}`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `Q=-\frac{1}{r}, \quad R=\frac{1}{r^{2}} \cos \epsilon, \quad S=-\frac{1}{r^{2}} \frac{d r}{d s^{\pri`
+  - No clear structural match found in code
+- [OK] **Art.527** `compare_force_laws`: verified
+  - LaTeX: `Q=-\frac{2}{r}, \quad R=-3 \frac{1}{r^{2}} \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \quad S=-\frac{`
+  - Structural/heuristic match
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+R i i^{\prime} d \varepsilon d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \fr`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{1}{2 r}, \quad R=-\frac{3}{2 r} \frac{d^{2} r}{d 8 d s^{\prime}}, \quad S`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{1}{r}, \quad R=\frac{1}{r^{2}} \cos \epsilon, \quad S=-\frac{1}{r^{2}} \f`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{2}{r}, \quad R=-3 \frac{1}{r^{2}} \frac{d r}{d s} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [OK] **Art.527** `compare_force_laws`: verified
+  - LaTeX: `R i i^{\prime} d \varepsilon d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \frac{d r}{d s^{\prim`
+  - Structural/heuristic match
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `Q=-\frac{1}{2 r}, \quad R=-\frac{3}{2 r} \frac{d^{2} r}{d 8 d s^{\prime}}, \quad S=-\frac{1}{2 r^{2}`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `Q=-\frac{1}{r}, \quad R=\frac{1}{r^{2}} \cos \epsilon, \quad S=-\frac{1}{r^{2}} \frac{d r}{d s^{\pri`
+  - No clear structural match found in code
+- [OK] **Art.527** `compare_force_laws`: verified
+  - LaTeX: `Q=-\frac{2}{r}, \quad R=-3 \frac{1}{r^{2}} \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \quad S=-\frac{`
+  - Structural/heuristic match
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+R i i^{\prime} d \varepsilon d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \fr`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{1}{2 r}, \quad R=-\frac{3}{2 r} \frac{d^{2} r}{d 8 d s^{\prime}}, \quad S`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{1}{r}, \quad R=\frac{1}{r^{2}} \cos \epsilon, \quad S=-\frac{1}{r^{2}} \f`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `\begin{equation*}
+Q=-\frac{2}{r}, \quad R=-3 \frac{1}{r^{2}} \frac{d r}{d s} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [OK] **Art.527** `compare_force_laws`: verified
+  - LaTeX: `R i i^{\prime} d \varepsilon d s^{\prime}=\frac{1}{r^{2}}\left(\frac{d r}{d s} \frac{d r}{d s^{\prim`
+  - Structural/heuristic match
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `Q=-\frac{1}{2 r}, \quad R=-\frac{3}{2 r} \frac{d^{2} r}{d 8 d s^{\prime}}, \quad S=-\frac{1}{2 r^{2}`
+  - No clear structural match found in code
+- [??] **Art.527** `compare_force_laws`: unverified
+  - LaTeX: `Q=-\frac{1}{r}, \quad R=\frac{1}{r^{2}} \cos \epsilon, \quad S=-\frac{1}{r^{2}} \frac{d r}{d s^{\pri`
+  - No clear structural match found in code
+- [OK] **Art.527** `compare_force_laws`: verified
+  - LaTeX: `Q=-\frac{2}{r}, \quad R=-3 \frac{1}{r^{2}} \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \quad S=-\frac{`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\theory\conservation.py`
+
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `A I d t=I^{2} R d t+I \frac{d V}{d t} d t,`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=\frac{A-\frac{d V}{d t}}{R}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=-\frac{1}{R} \frac{d V}{d t}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `\int I d t=-\frac{1}{R} \int \frac{d V}{d t} d t=\frac{1}{R}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `A I d t=I^{2} R d t+I \frac{d V}{d t} d t,`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=\frac{A-\frac{d V}{d t}}{R}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=-\frac{1}{R} \frac{d V}{d t}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `\int I d t=-\frac{1}{R} \int \frac{d V}{d t} d t=\frac{1}{R}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `A I d t=I^{2} R d t+I \frac{d V}{d t} d t,`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=\frac{A-\frac{d V}{d t}}{R}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=-\frac{1}{R} \frac{d V}{d t}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `\int I d t=-\frac{1}{R} \int \frac{d V}{d t} d t=\frac{1}{R}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `A I d t=I^{2} R d t+I \frac{d V}{d t} d t,`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=\frac{A-\frac{d V}{d t}}{R}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=-\frac{1}{R} \frac{d V}{d t}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `\int I d t=-\frac{1}{R} \int \frac{d V}{d t} d t=\frac{1}{R}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `A I d t=I^{2} R d t+I \frac{d V}{d t} d t,`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=\frac{A-\frac{d V}{d t}}{R}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=-\frac{1}{R} \frac{d V}{d t}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `\int I d t=-\frac{1}{R} \int \frac{d V}{d t} d t=\frac{1}{R}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `A I d t=I^{2} R d t+I \frac{d V}{d t} d t,`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=\frac{A-\frac{d V}{d t}}{R}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `I=-\frac{1}{R} \frac{d V}{d t}`
+  - Structural/heuristic match
+- [OK] **Art.544** `calc_electromagnetic_energy`: verified
+  - LaTeX: `\int I d t=-\frac{1}{R} \int \frac{d V}{d t} d t=\frac{1}{R}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+
+### `maxwell\electromagnetism\theory\dynamical_model.py`
+
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `T=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\& \mathrm{c}+\left(x_{1} x_{2}\right) \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x}=X^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `T=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\& \mathrm{c}+\left(x_{1} x_{2}\right) \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x}=X^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `T=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\& \mathrm{c}+\left(x_{1} x_{2}\right) \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x}=X^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `T=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\& \mathrm{c}+\left(x_{1} x_{2}\right) \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x}=X^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `T=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\& \mathrm{c}+\left(x_{1} x_{2}\right) \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x}=X^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `T=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\& \mathrm{c}+\left(x_{1} x_{2}\right) \dot{x}`
+  - No clear structural match found in code
+- [??] **Art.571** `analyze_dynamical_model`: unverified
+  - LaTeX: `\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x}=X^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.572** `calc_poynting_vector`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{m}=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\text { \&c. }+\left(x_{`
+  - No clear structural match found in code
+- [??] **Art.572** `calc_poynting_vector`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{m}=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\text { \&c. }+\left(x_{`
+  - No clear structural match found in code
+- [??] **Art.572** `calc_poynting_vector`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{m}=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\text { \&c. }+\left(x_{`
+  - No clear structural match found in code
+- [??] **Art.572** `calc_poynting_vector`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{m}=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\text { \&c. }+\left(x_{`
+  - No clear structural match found in code
+- [??] **Art.572** `calc_poynting_vector`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{m}=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\text { \&c. }+\left(x_{`
+  - No clear structural match found in code
+- [??] **Art.572** `calc_poynting_vector`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{m}=\frac{1}{2}\left(x_{1} x_{1}\right) \dot{x}_{1}^{2}+\text { \&c. }+\left(x_{`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=\frac{d}{d t} \frac{d T}{d \dot{x}}-\frac{d T}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.573** `calc_poynting_vector`: unverified
+  - LaTeX: `X^{\prime}=X_{m}^{\prime}+X_{e}^{\prime}+X_{m e}^{\prime} .`
+  - No clear structural match found in code
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{e}^{\prime}=-\frac{d T_{e}}{d x} .`
+  - Structural/heuristic match
+- [OK] **Art.573** `calc_poynting_vector`: verified
+  - LaTeX: `X_{m e}^{\prime}=\frac{d}{d t} \frac{d T_{m e}}{d \dot{x}}-\frac{d T_{m e}}{d x} .`
+  - Structural/heuristic match
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `2 T=A \dot{\phi}^{2} \sin ^{2} \theta+B \dot{\theta}^{2}+C \dot{\phi}^{2} \cos ^{2} \theta+E(\dot{\p`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\Theta=B \frac{d^{2} \theta}{d t^{2}}-\left\{(A-C) \dot{\phi}^{2} \sin \theta \cos \theta+E \dot{\ph`
+  - No clear structural match found in code
+- [??] **Art.575** `verify_poynting_theorem`: unverified
+  - LaTeX: `\dot{\phi} \sin \theta+\dot{\psi}=\gamma,`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `\sin \theta=\frac{E \gamma}{(C-A) \dot{\phi}} .`
+  - No clear structural match found in code
+- [??] **Art.576** `analyze_dynamical_model`: unverified
+  - LaTeX: `Y=-Y^{\prime}=-\frac{d}{d t} \frac{d T}{d \dot{y}}+\frac{d T}{d y} .`
+  - No clear structural match found in code
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{\mathrm{o}}=-\frac{d}{d t} \frac{d T_{\mathrm{e}}}{d \dot{y}} .`
+  - Structural/heuristic match
+- [OK] **Art.577** `calc_field_momentum`: verified
+  - LaTeX: `Y_{m e}=-\frac{d}{d t} \frac{d T_{m e}}{d \dot{y}}`
   - Structural/heuristic match
 
 ### `maxwell\electromagnetism\theory\general_equations.py`
@@ -7429,6 +10761,108 @@ A\left(n_{1}+n_{2}\right)+B=0 . \tag{8}
   - LaTeX: `A\left(n_{1}+n_{2}\right)+B=0 .`
   - Structural/heuristic match
 
+### `maxwell\materials\constitutive\conductivity.py`
+
+- [??] **Art.609** `calc_conduction_current`: unverified
+  - LaTeX: `\begin{equation*}
+\Re=C \mathscr{E}, \quad \text { (Equation of Conductivity.) } \tag{G}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.609** `calc_conduction_current`: unverified
+  - LaTeX: `\Re=C \mathscr{E}, \quad \text { (Equation of Conductivity.) }`
+  - No clear structural match found in code
+- [??] **Art.609** `calc_conduction_current`: unverified
+  - LaTeX: `\begin{equation*}
+\Re=C \mathscr{E}, \quad \text { (Equation of Conductivity.) } \tag{G}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.609** `calc_conduction_current`: unverified
+  - LaTeX: `\Re=C \mathscr{E}, \quad \text { (Equation of Conductivity.) }`
+  - No clear structural match found in code
+- [??] **Art.609** `calc_conduction_current`: unverified
+  - LaTeX: `\begin{equation*}
+\Re=C \mathscr{E}, \quad \text { (Equation of Conductivity.) } \tag{G}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.609** `calc_conduction_current`: unverified
+  - LaTeX: `\Re=C \mathscr{E}, \quad \text { (Equation of Conductivity.) }`
+  - No clear structural match found in code
+
+### `maxwell\materials\constitutive\displacement.py`
+
+- [??] **Art.608** `calc_electric_displacement`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathscr{E}, \quad \begin{gather*}
+\text { (Equation of Electric }  \`
+  - No clear structural match found in code
+- [??] **Art.608** `calc_electric_displacement`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathscr{E}, \quad \begin{gathered}
+\text { (Equation of Electric } \`
+  - No clear structural match found in code
+- [??] **Art.608** `calc_electric_displacement`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathscr{E}, \quad \begin{gather*}
+\text { (Equation of Electric }  \`
+  - No clear structural match found in code
+- [??] **Art.608** `calc_electric_displacement`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathscr{E}, \quad \begin{gathered}
+\text { (Equation of Electric } \`
+  - No clear structural match found in code
+- [??] **Art.608** `calc_electric_displacement`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathscr{E}, \quad \begin{gather*}
+\text { (Equation of Electric }  \`
+  - No clear structural match found in code
+- [??] **Art.608** `calc_electric_displacement`: unverified
+  - LaTeX: `\mathfrak{D}=\frac{1}{4 \pi} K \mathscr{E}, \quad \begin{gathered}
+\text { (Equation of Electric } \`
+  - No clear structural match found in code
+
+### `maxwell\materials\constitutive\magnetization.py`
+
+- [OK] **Art.605** `calc_magnetic_induction`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d b}{d y}+\frac{d c}{d z}=0`
+  - Structural/heuristic match
+- [OK] **Art.605** `calc_magnetic_induction`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d b}{d y}+\frac{d c}{d z}=0`
+  - Structural/heuristic match
+- [OK] **Art.605** `calc_magnetic_induction`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d b}{d y}+\frac{d c}{d z}=0`
+  - Structural/heuristic match
+- [OK] **Art.605** `calc_magnetic_induction`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d b}{d y}+\frac{d c}{d z}=0`
+  - Structural/heuristic match
+- [OK] **Art.605** `calc_magnetic_induction`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d b}{d y}+\frac{d c}{d z}=0`
+  - Structural/heuristic match
+- [OK] **Art.605** `calc_magnetic_induction`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d b}{d y}+\frac{d c}{d z}=0`
+  - Structural/heuristic match
+
+### `maxwell\materials\constitutive\permeability.py`
+
+- [??] **Art.614** `calc_magnetic_induction_permeability`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{B}=\mu \mathfrak{H}, \tag{L}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.614** `calc_magnetic_induction_permeability`: verified
+  - LaTeX: `\mathfrak{B}=\mu \mathfrak{H},`
+  - Structural/heuristic match
+- [??] **Art.614** `calc_magnetic_induction_permeability`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{B}=\mu \mathfrak{H}, \tag{L}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.614** `calc_magnetic_induction_permeability`: verified
+  - LaTeX: `\mathfrak{B}=\mu \mathfrak{H},`
+  - Structural/heuristic match
+- [??] **Art.614** `calc_magnetic_induction_permeability`: unverified
+  - LaTeX: `\begin{equation*}
+\mathfrak{B}=\mu \mathfrak{H}, \tag{L}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.614** `calc_magnetic_induction_permeability`: verified
+  - LaTeX: `\mathfrak{B}=\mu \mathfrak{H},`
+  - Structural/heuristic match
+
 ### `maxwell\materials\hysteresis.py`
 
 - [??] **Art.444** `explain_hysteresis_phenomena`: unverified
@@ -7774,6 +11208,2931 @@ I=\int_{0}^{\pi} \frac{m n}{2} \cos \theta \sin \alpha d \alpha, \tag{2}
   - LaTeX: `I=\int_{0}^{\pi} \frac{m n}{2} \cos \theta \sin \alpha d \alpha,`
   - No clear structural match found in code
 
+### `maxwell\math\elliptic_integrals.py`
+
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega^{\prime}=\omega+4 \pi . \tag{7}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=-2 \pi\left\{1+\frac{r}{c} P_{1}(\theta)+\& \mathrm{c} .+(-)^{:} \frac{1.3 `
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=+2 \pi\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}(\theta)+\text { \&c. }+(`
+  - No clear structural match found in code
+- [OK] **Art.696** `calc_complete_elliptic_integral_first_kind`: verified
+  - LaTeX: `M=-\iint \frac{d \omega_{1}}{d r} d S`
+  - Structural/heuristic match
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=2 \pi\left(1-\frac{z-c \cos \alpha}{H Z}\right) .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega^{\prime}=\omega+4 \pi .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=-2 \pi\left\{1+\frac{r}{c} P_{1}(\theta)+\& \mathrm{c} .+(-)^{:} \frac{1.3 \ldots(2 s-1)}{2.4`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=+2 \pi\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}(\theta)+\text { \&c. }+(-)^{*} \frac{1.3 \`
+  - No clear structural match found in code
+- [OK] **Art.696** `calc_complete_elliptic_integral_first_kind`: verified
+  - LaTeX: `M=-\iint \frac{d \omega_{1}}{d r} d S`
+  - Structural/heuristic match
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=2 \pi\left(1-\frac{z-c \cos \alpha}{H Z}\right) .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega^{\prime}=\omega+4 \pi . \tag{7}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=-2 \pi\left\{1+\frac{r}{c} P_{1}(\theta)+\& \mathrm{c} .+(-)^{:} \frac{1.3 `
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=+2 \pi\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}(\theta)+\text { \&c. }+(`
+  - No clear structural match found in code
+- [OK] **Art.696** `calc_complete_elliptic_integral_first_kind`: verified
+  - LaTeX: `M=-\iint \frac{d \omega_{1}}{d r} d S`
+  - Structural/heuristic match
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=2 \pi\left(1-\frac{z-c \cos \alpha}{H Z}\right) .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega^{\prime}=\omega+4 \pi .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=-2 \pi\left\{1+\frac{r}{c} P_{1}(\theta)+\& \mathrm{c} .+(-)^{:} \frac{1.3 \ldots(2 s-1)}{2.4`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=+2 \pi\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}(\theta)+\text { \&c. }+(-)^{*} \frac{1.3 \`
+  - No clear structural match found in code
+- [OK] **Art.696** `calc_complete_elliptic_integral_first_kind`: verified
+  - LaTeX: `M=-\iint \frac{d \omega_{1}}{d r} d S`
+  - Structural/heuristic match
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=2 \pi\left(1-\frac{z-c \cos \alpha}{H Z}\right) .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega^{\prime}=\omega+4 \pi . \tag{7}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=-2 \pi\left\{1+\frac{r}{c} P_{1}(\theta)+\& \mathrm{c} .+(-)^{:} \frac{1.3 `
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=+2 \pi\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}(\theta)+\text { \&c. }+(`
+  - No clear structural match found in code
+- [OK] **Art.696** `calc_complete_elliptic_integral_first_kind`: verified
+  - LaTeX: `M=-\iint \frac{d \omega_{1}}{d r} d S`
+  - Structural/heuristic match
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=2 \pi\left(1-\frac{z-c \cos \alpha}{H Z}\right) .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega^{\prime}=\omega+4 \pi .`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=-2 \pi\left\{1+\frac{r}{c} P_{1}(\theta)+\& \mathrm{c} .+(-)^{:} \frac{1.3 \ldots(2 s-1)}{2.4`
+  - No clear structural match found in code
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=+2 \pi\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}(\theta)+\text { \&c. }+(-)^{*} \frac{1.3 \`
+  - No clear structural match found in code
+- [OK] **Art.696** `calc_complete_elliptic_integral_first_kind`: verified
+  - LaTeX: `M=-\iint \frac{d \omega_{1}}{d r} d S`
+  - Structural/heuristic match
+- [??] **Art.696** `calc_complete_elliptic_integral_first_kind`: unverified
+  - LaTeX: `\omega=2 \pi\left(1-\frac{z-c \cos \alpha}{H Z}\right) .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{gathered}
+M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2} \\
+=4 \pi^{`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}\left\{\frac{1}{2} \frac{c_{2}}{c_{1}} P_{1}^{\prim`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{aligned}
+M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}^{2}\left\{\frac{1}{2} \frac{c_{2}}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `X=\frac{d M}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\Theta=\frac{d M}{d \theta} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\left.M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2}\right\}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{gathered}
+M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2} \\
+=4 \pi^{`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}\left\{\frac{1}{2} \frac{c_{2}}{c_{1}} P_{1}^{\prim`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{aligned}
+M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}^{2}\left\{\frac{1}{2} \frac{c_{2}}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `X=\frac{d M}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\Theta=\frac{d M}{d \theta} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\left.M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2}\right\}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{gathered}
+M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2} \\
+=4 \pi^{`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}\left\{\frac{1}{2} \frac{c_{2}}{c_{1}} P_{1}^{\prim`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{aligned}
+M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}^{2}\left\{\frac{1}{2} \frac{c_{2}}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `X=\frac{d M}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\Theta=\frac{d M}{d \theta} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\left.M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2}\right\}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{gathered}
+M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2} \\
+=4 \pi^{`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}\left\{\frac{1}{2} \frac{c_{2}}{c_{1}} P_{1}^{\prim`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{aligned}
+M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}^{2}\left\{\frac{1}{2} \frac{c_{2}}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `X=\frac{d M}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\Theta=\frac{d M}{d \theta} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\left.M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2}\right\}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{gathered}
+M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2} \\
+=4 \pi^{`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}\left\{\frac{1}{2} \frac{c_{2}}{c_{1}} P_{1}^{\prim`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{aligned}
+M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}^{2}\left\{\frac{1}{2} \frac{c_{2}}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `X=\frac{d M}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\Theta=\frac{d M}{d \theta} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\left.M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2}\right\}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{gathered}
+M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2} \\
+=4 \pi^{`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}\left\{\frac{1}{2} \frac{c_{2}}{c_{1}} P_{1}^{\prim`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\begin{aligned}
+M=4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} c_{2}^{2}\left\{\frac{1}{2} \frac{c_{2}}`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `X=\frac{d M}{d x} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\Theta=\frac{d M}{d \theta} .`
+  - No clear structural match found in code
+- [??] **Art.697** `calc_complete_elliptic_integral_second_kind`: unverified
+  - LaTeX: `\left.M=\int_{\mu_{2}}^{1} \frac{d \omega_{1}}{d r} 2 \pi c_{2}^{2} d \mu_{2}\right\}`
+  - No clear structural match found in code
+- [OK] **Art.698** `calc_elliptic_integral_third_kind`: verified
+  - LaTeX: `\frac{d P_{i}(\theta)}{d \theta}=-\sin \theta P_{i}^{\prime}(\theta),`
+  - Structural/heuristic match
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+\Theta=-4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} \sin \theta c_{2}\{ & \frac{1}{2} `
+  - No clear structural match found in code
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+& P_{1}^{\prime}=1 \\
+& P_{2}^{\prime}=3 \mu \\
+& P_{3}^{\prime}=\frac{8}{2}\left(5 `
+  - No clear structural match found in code
+- [OK] **Art.698** `calc_elliptic_integral_third_kind`: verified
+  - LaTeX: `\frac{d P_{i}(\theta)}{d \theta}=-\sin \theta P_{i}^{\prime}(\theta),`
+  - Structural/heuristic match
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+\Theta=-4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} \sin \theta c_{2}\{ & \frac{1}{2} `
+  - No clear structural match found in code
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+& P_{1}^{\prime}=1 \\
+& P_{2}^{\prime}=3 \mu \\
+& P_{3}^{\prime}=\frac{8}{2}\left(5 `
+  - No clear structural match found in code
+- [OK] **Art.698** `calc_elliptic_integral_third_kind`: verified
+  - LaTeX: `\frac{d P_{i}(\theta)}{d \theta}=-\sin \theta P_{i}^{\prime}(\theta),`
+  - Structural/heuristic match
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+\Theta=-4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} \sin \theta c_{2}\{ & \frac{1}{2} `
+  - No clear structural match found in code
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+& P_{1}^{\prime}=1 \\
+& P_{2}^{\prime}=3 \mu \\
+& P_{3}^{\prime}=\frac{8}{2}\left(5 `
+  - No clear structural match found in code
+- [OK] **Art.698** `calc_elliptic_integral_third_kind`: verified
+  - LaTeX: `\frac{d P_{i}(\theta)}{d \theta}=-\sin \theta P_{i}^{\prime}(\theta),`
+  - Structural/heuristic match
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+\Theta=-4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} \sin \theta c_{2}\{ & \frac{1}{2} `
+  - No clear structural match found in code
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+& P_{1}^{\prime}=1 \\
+& P_{2}^{\prime}=3 \mu \\
+& P_{3}^{\prime}=\frac{8}{2}\left(5 `
+  - No clear structural match found in code
+- [OK] **Art.698** `calc_elliptic_integral_third_kind`: verified
+  - LaTeX: `\frac{d P_{i}(\theta)}{d \theta}=-\sin \theta P_{i}^{\prime}(\theta),`
+  - Structural/heuristic match
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+\Theta=-4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} \sin \theta c_{2}\{ & \frac{1}{2} `
+  - No clear structural match found in code
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+& P_{1}^{\prime}=1 \\
+& P_{2}^{\prime}=3 \mu \\
+& P_{3}^{\prime}=\frac{8}{2}\left(5 `
+  - No clear structural match found in code
+- [OK] **Art.698** `calc_elliptic_integral_third_kind`: verified
+  - LaTeX: `\frac{d P_{i}(\theta)}{d \theta}=-\sin \theta P_{i}^{\prime}(\theta),`
+  - Structural/heuristic match
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+\Theta=-4 \pi^{2} \sin ^{2} a_{1} \sin ^{2} a_{2} \sin \theta c_{2}\{ & \frac{1}{2} `
+  - No clear structural match found in code
+- [??] **Art.698** `calc_elliptic_integral_third_kind`: unverified
+  - LaTeX: `\begin{aligned}
+& P_{1}^{\prime}=1 \\
+& P_{2}^{\prime}=3 \mu \\
+& P_{3}^{\prime}=\frac{8}{2}\left(5 `
+  - No clear structural match found in code
+- [??] **Art.699** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & 1.2 \cdot \pi^{2} \frac{A^{2}}{C^{3}} a^{2} \cos \theta \\
+& +2 \cdot 3 \cdot \`
+  - No clear structural match found in code
+- [OK] **Art.699** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\pi^{2} \frac{A^{2} a^{2}}{C^{4}}\left\{2.3 \frac{B}{C}+2.3 .4 \frac{B^{2}-\frac{1}{`
+  - Structural/heuristic match
+- [??] **Art.699** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & 1.2 \cdot \pi^{2} \frac{A^{2}}{C^{3}} a^{2} \cos \theta \\
+& +2 \cdot 3 \cdot \`
+  - No clear structural match found in code
+- [OK] **Art.699** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\pi^{2} \frac{A^{2} a^{2}}{C^{4}}\left\{2.3 \frac{B}{C}+2.3 .4 \frac{B^{2}-\frac{1}{`
+  - Structural/heuristic match
+- [??] **Art.699** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & 1.2 \cdot \pi^{2} \frac{A^{2}}{C^{3}} a^{2} \cos \theta \\
+& +2 \cdot 3 \cdot \`
+  - No clear structural match found in code
+- [OK] **Art.699** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\pi^{2} \frac{A^{2} a^{2}}{C^{4}}\left\{2.3 \frac{B}{C}+2.3 .4 \frac{B^{2}-\frac{1}{`
+  - Structural/heuristic match
+- [??] **Art.699** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & 1.2 \cdot \pi^{2} \frac{A^{2}}{C^{3}} a^{2} \cos \theta \\
+& +2 \cdot 3 \cdot \`
+  - No clear structural match found in code
+- [OK] **Art.699** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\pi^{2} \frac{A^{2} a^{2}}{C^{4}}\left\{2.3 \frac{B}{C}+2.3 .4 \frac{B^{2}-\frac{1}{`
+  - Structural/heuristic match
+- [??] **Art.699** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & 1.2 \cdot \pi^{2} \frac{A^{2}}{C^{3}} a^{2} \cos \theta \\
+& +2 \cdot 3 \cdot \`
+  - No clear structural match found in code
+- [OK] **Art.699** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\pi^{2} \frac{A^{2} a^{2}}{C^{4}}\left\{2.3 \frac{B}{C}+2.3 .4 \frac{B^{2}-\frac{1}{`
+  - Structural/heuristic match
+- [??] **Art.699** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & 1.2 \cdot \pi^{2} \frac{A^{2}}{C^{3}} a^{2} \cos \theta \\
+& +2 \cdot 3 \cdot \`
+  - No clear structural match found in code
+- [OK] **Art.699** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\pi^{2} \frac{A^{2} a^{2}}{C^{4}}\left\{2.3 \frac{B}{C}+2.3 .4 \frac{B^{2}-\frac{1}{`
+  - Structural/heuristic match
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P x y=\int_{-\frac{1}{2} x}^{+\frac{1}{2} x} \int_{-\frac{1}{2} y}^{+\frac{1}{2} y} P d x d y .`
+  - Structural/heuristic match
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P=P_{0}+x \frac{d P_{0}}{d x}+y \frac{d P_{0}}{d y}+\frac{1}{2} x^{2} \frac{d^{2} P_{0}}{d x^{2}}+\&`
+  - Structural/heuristic match
+- [??] **Art.700** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\tilde{P}=P_{0} & +\frac{1}{2 \pi}\left(x^{2} \frac{d^{2} P_{0}}{d x^{2}}+y^{2} \fra`
+  - No clear structural match found in code
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P x y=\int_{-\frac{1}{2} x}^{+\frac{1}{2} x} \int_{-\frac{1}{2} y}^{+\frac{1}{2} y} P d x d y .`
+  - Structural/heuristic match
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P=P_{0}+x \frac{d P_{0}}{d x}+y \frac{d P_{0}}{d y}+\frac{1}{2} x^{2} \frac{d^{2} P_{0}}{d x^{2}}+\&`
+  - Structural/heuristic match
+- [??] **Art.700** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\tilde{P}=P_{0} & +\frac{1}{2 \pi}\left(x^{2} \frac{d^{2} P_{0}}{d x^{2}}+y^{2} \fra`
+  - No clear structural match found in code
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P x y=\int_{-\frac{1}{2} x}^{+\frac{1}{2} x} \int_{-\frac{1}{2} y}^{+\frac{1}{2} y} P d x d y .`
+  - Structural/heuristic match
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P=P_{0}+x \frac{d P_{0}}{d x}+y \frac{d P_{0}}{d y}+\frac{1}{2} x^{2} \frac{d^{2} P_{0}}{d x^{2}}+\&`
+  - Structural/heuristic match
+- [??] **Art.700** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\tilde{P}=P_{0} & +\frac{1}{2 \pi}\left(x^{2} \frac{d^{2} P_{0}}{d x^{2}}+y^{2} \fra`
+  - No clear structural match found in code
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P x y=\int_{-\frac{1}{2} x}^{+\frac{1}{2} x} \int_{-\frac{1}{2} y}^{+\frac{1}{2} y} P d x d y .`
+  - Structural/heuristic match
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P=P_{0}+x \frac{d P_{0}}{d x}+y \frac{d P_{0}}{d y}+\frac{1}{2} x^{2} \frac{d^{2} P_{0}}{d x^{2}}+\&`
+  - Structural/heuristic match
+- [??] **Art.700** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\tilde{P}=P_{0} & +\frac{1}{2 \pi}\left(x^{2} \frac{d^{2} P_{0}}{d x^{2}}+y^{2} \fra`
+  - No clear structural match found in code
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P x y=\int_{-\frac{1}{2} x}^{+\frac{1}{2} x} \int_{-\frac{1}{2} y}^{+\frac{1}{2} y} P d x d y .`
+  - Structural/heuristic match
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P=P_{0}+x \frac{d P_{0}}{d x}+y \frac{d P_{0}}{d y}+\frac{1}{2} x^{2} \frac{d^{2} P_{0}}{d x^{2}}+\&`
+  - Structural/heuristic match
+- [??] **Art.700** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\tilde{P}=P_{0} & +\frac{1}{2 \pi}\left(x^{2} \frac{d^{2} P_{0}}{d x^{2}}+y^{2} \fra`
+  - No clear structural match found in code
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P x y=\int_{-\frac{1}{2} x}^{+\frac{1}{2} x} \int_{-\frac{1}{2} y}^{+\frac{1}{2} y} P d x d y .`
+  - Structural/heuristic match
+- [OK] **Art.700** `verify_elliptic_integrals`: verified
+  - LaTeX: `P=P_{0}+x \frac{d P_{0}}{d x}+y \frac{d P_{0}}{d y}+\frac{1}{2} x^{2} \frac{d^{2} P_{0}}{d x^{2}}+\&`
+  - Structural/heuristic match
+- [??] **Art.700** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\tilde{P}=P_{0} & +\frac{1}{2 \pi}\left(x^{2} \frac{d^{2} P_{0}}{d x^{2}}+y^{2} \fra`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+G_{3}=4 \pi \frac{A^{2}\left(B^{2}-\frac{1}{4} A^{2}\right)}{C^{7}}+\frac{\pi}{24} `
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{array}{ll}
+g_{1}=\pi a^{2} & +\frac{1}{12} \pi \xi^{2} \\
+g_{2}=2 \pi a^{2} b & +\frac{1}{6} `
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\omega=-2 \pi+2 G_{0}-G_{1} r P_{1}(\theta)-G_{2} r^{2} P_{2}(\theta)-\& c .`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\omega^{\prime}=g_{1} \frac{1}{r^{2}} P_{1}(\theta)+g_{2} \frac{1}{r^{3}} F_{2}(\theta)+\& \mathrm{c`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=G_{1} g_{1} P_{1}(\theta)+G_{2} g_{2} P_{2}(\theta)+\text { \&c. }`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+r^{2}=A^{2}+a^{2}+b^{2}-2 A a \cos \left(\phi-\phi^{\prime}\right) \\
+\epsilon=\phi`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+G_{3}=4 \pi \frac{A^{2}\left(B^{2}-\frac{1}{4} A^{2}\right)}{C^{7}}+\frac{\pi}{24} `
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{array}{ll}
+g_{1}=\pi a^{2} & +\frac{1}{12} \pi \xi^{2} \\
+g_{2}=2 \pi a^{2} b & +\frac{1}{6} `
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\omega=-2 \pi+2 G_{0}-G_{1} r P_{1}(\theta)-G_{2} r^{2} P_{2}(\theta)-\& c .`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\omega^{\prime}=g_{1} \frac{1}{r^{2}} P_{1}(\theta)+g_{2} \frac{1}{r^{3}} F_{2}(\theta)+\& \mathrm{c`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=G_{1} g_{1} P_{1}(\theta)+G_{2} g_{2} P_{2}(\theta)+\text { \&c. }`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+r^{2}=A^{2}+a^{2}+b^{2}-2 A a \cos \left(\phi-\phi^{\prime}\right) \\
+\epsilon=\phi`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{A a \cos \left(\phi-\phi^{\prime}\right`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `c=\frac{2 \sqrt{A a}}{\sqrt{(A+a)^{2}+b^{2}}}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d F}{d c}=\frac{1}{c\left(1-c^{2}\right)}\left\{E-\left(1-c^{2}\right) F\right\}, \quad \frac{`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\frac{\pi}{\sqrt{A a}} \frac{b c}{1-c^{2}}\left\{\left(2-c^{2}\right) E-2\left(1-c^{`
+  - Structural/heuristic match
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `r_{1}^{2}=(A+a)^{2}+b^{2}, \quad r_{2}^{2}=(A-a)^{2}+b^{2}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-\pi \frac{b \sin \gamma}{\sqrt{A a}}\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\ri`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-2 \pi \cos \gamma\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\right) E_{\gamma}\rig`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{A a \cos \left(\phi-\phi^{\prime}\right`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `c=\frac{2 \sqrt{A a}}{\sqrt{(A+a)^{2}+b^{2}}}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d F}{d c}=\frac{1}{c\left(1-c^{2}\right)}\left\{E-\left(1-c^{2}\right) F\right\}, \quad \frac{`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\frac{\pi}{\sqrt{A a}} \frac{b c}{1-c^{2}}\left\{\left(2-c^{2}\right) E-2\left(1-c^{`
+  - Structural/heuristic match
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `r_{1}^{2}=(A+a)^{2}+b^{2}, \quad r_{2}^{2}=(A-a)^{2}+b^{2}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-\pi \frac{b \sin \gamma}{\sqrt{A a}}\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\ri`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-2 \pi \cos \gamma\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\right) E_{\gamma}\rig`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+G_{3}=4 \pi \frac{A^{2}\left(B^{2}-\frac{1}{4} A^{2}\right)}{C^{7}}+\frac{\pi}{24} `
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{array}{ll}
+g_{1}=\pi a^{2} & +\frac{1}{12} \pi \xi^{2} \\
+g_{2}=2 \pi a^{2} b & +\frac{1}{6} `
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\omega=-2 \pi+2 G_{0}-G_{1} r P_{1}(\theta)-G_{2} r^{2} P_{2}(\theta)-\& c .`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\omega^{\prime}=g_{1} \frac{1}{r^{2}} P_{1}(\theta)+g_{2} \frac{1}{r^{3}} F_{2}(\theta)+\& \mathrm{c`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=G_{1} g_{1} P_{1}(\theta)+G_{2} g_{2} P_{2}(\theta)+\text { \&c. }`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+r^{2}=A^{2}+a^{2}+b^{2}-2 A a \cos \left(\phi-\phi^{\prime}\right) \\
+\epsilon=\phi`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+G_{3}=4 \pi \frac{A^{2}\left(B^{2}-\frac{1}{4} A^{2}\right)}{C^{7}}+\frac{\pi}{24} `
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{array}{ll}
+g_{1}=\pi a^{2} & +\frac{1}{12} \pi \xi^{2} \\
+g_{2}=2 \pi a^{2} b & +\frac{1}{6} `
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\omega=-2 \pi+2 G_{0}-G_{1} r P_{1}(\theta)-G_{2} r^{2} P_{2}(\theta)-\& c .`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\omega^{\prime}=g_{1} \frac{1}{r^{2}} P_{1}(\theta)+g_{2} \frac{1}{r^{3}} F_{2}(\theta)+\& \mathrm{c`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=G_{1} g_{1} P_{1}(\theta)+G_{2} g_{2} P_{2}(\theta)+\text { \&c. }`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+r^{2}=A^{2}+a^{2}+b^{2}-2 A a \cos \left(\phi-\phi^{\prime}\right) \\
+\epsilon=\phi`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{A a \cos \left(\phi-\phi^{\prime}\right`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `c=\frac{2 \sqrt{A a}}{\sqrt{(A+a)^{2}+b^{2}}}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d F}{d c}=\frac{1}{c\left(1-c^{2}\right)}\left\{E-\left(1-c^{2}\right) F\right\}, \quad \frac{`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\frac{\pi}{\sqrt{A a}} \frac{b c}{1-c^{2}}\left\{\left(2-c^{2}\right) E-2\left(1-c^{`
+  - Structural/heuristic match
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `r_{1}^{2}=(A+a)^{2}+b^{2}, \quad r_{2}^{2}=(A-a)^{2}+b^{2}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-\pi \frac{b \sin \gamma}{\sqrt{A a}}\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\ri`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-2 \pi \cos \gamma\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\right) E_{\gamma}\rig`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{A a \cos \left(\phi-\phi^{\prime}\right`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `c=\frac{2 \sqrt{A a}}{\sqrt{(A+a)^{2}+b^{2}}}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d F}{d c}=\frac{1}{c\left(1-c^{2}\right)}\left\{E-\left(1-c^{2}\right) F\right\}, \quad \frac{`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\frac{\pi}{\sqrt{A a}} \frac{b c}{1-c^{2}}\left\{\left(2-c^{2}\right) E-2\left(1-c^{`
+  - Structural/heuristic match
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `r_{1}^{2}=(A+a)^{2}+b^{2}, \quad r_{2}^{2}=(A-a)^{2}+b^{2}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-\pi \frac{b \sin \gamma}{\sqrt{A a}}\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\ri`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-2 \pi \cos \gamma\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\right) E_{\gamma}\rig`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+G_{3}=4 \pi \frac{A^{2}\left(B^{2}-\frac{1}{4} A^{2}\right)}{C^{7}}+\frac{\pi}{24} `
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{array}{ll}
+g_{1}=\pi a^{2} & +\frac{1}{12} \pi \xi^{2} \\
+g_{2}=2 \pi a^{2} b & +\frac{1}{6} `
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\omega=-2 \pi+2 G_{0}-G_{1} r P_{1}(\theta)-G_{2} r^{2} P_{2}(\theta)-\& c .`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\omega^{\prime}=g_{1} \frac{1}{r^{2}} P_{1}(\theta)+g_{2} \frac{1}{r^{3}} F_{2}(\theta)+\& \mathrm{c`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=G_{1} g_{1} P_{1}(\theta)+G_{2} g_{2} P_{2}(\theta)+\text { \&c. }`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+r^{2}=A^{2}+a^{2}+b^{2}-2 A a \cos \left(\phi-\phi^{\prime}\right) \\
+\epsilon=\phi`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+G_{3}=4 \pi \frac{A^{2}\left(B^{2}-\frac{1}{4} A^{2}\right)}{C^{7}}+\frac{\pi}{24} `
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{array}{ll}
+g_{1}=\pi a^{2} & +\frac{1}{12} \pi \xi^{2} \\
+g_{2}=2 \pi a^{2} b & +\frac{1}{6} `
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\omega=-2 \pi+2 G_{0}-G_{1} r P_{1}(\theta)-G_{2} r^{2} P_{2}(\theta)-\& c .`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\omega^{\prime}=g_{1} \frac{1}{r^{2}} P_{1}(\theta)+g_{2} \frac{1}{r^{3}} F_{2}(\theta)+\& \mathrm{c`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=G_{1} g_{1} P_{1}(\theta)+G_{2} g_{2} P_{2}(\theta)+\text { \&c. }`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+r^{2}=A^{2}+a^{2}+b^{2}-2 A a \cos \left(\phi-\phi^{\prime}\right) \\
+\epsilon=\phi`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{A a \cos \left(\phi-\phi^{\prime}\right`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `c=\frac{2 \sqrt{A a}}{\sqrt{(A+a)^{2}+b^{2}}}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d F}{d c}=\frac{1}{c\left(1-c^{2}\right)}\left\{E-\left(1-c^{2}\right) F\right\}, \quad \frac{`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\frac{\pi}{\sqrt{A a}} \frac{b c}{1-c^{2}}\left\{\left(2-c^{2}\right) E-2\left(1-c^{`
+  - Structural/heuristic match
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `r_{1}^{2}=(A+a)^{2}+b^{2}, \quad r_{2}^{2}=(A-a)^{2}+b^{2}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-\pi \frac{b \sin \gamma}{\sqrt{A a}}\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\ri`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-2 \pi \cos \gamma\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\right) E_{\gamma}\rig`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+M= & \int_{0}^{2 \pi} \int_{0}^{2 \pi} \frac{A a \cos \left(\phi-\phi^{\prime}\right`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `c=\frac{2 \sqrt{A a}}{\sqrt{(A+a)^{2}+b^{2}}}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d F}{d c}=\frac{1}{c\left(1-c^{2}\right)}\left\{E-\left(1-c^{2}\right) F\right\}, \quad \frac{`
+  - No clear structural match found in code
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\frac{\pi}{\sqrt{A a}} \frac{b c}{1-c^{2}}\left\{\left(2-c^{2}\right) E-2\left(1-c^{`
+  - Structural/heuristic match
+- [OK] **Art.701** `verify_elliptic_integrals`: verified
+  - LaTeX: `r_{1}^{2}=(A+a)^{2}+b^{2}, \quad r_{2}^{2}=(A-a)^{2}+b^{2}`
+  - Structural/heuristic match
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-\pi \frac{b \sin \gamma}{\sqrt{A a}}\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\ri`
+  - No clear structural match found in code
+- [??] **Art.701** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{d M}{d b}=-2 \pi \cos \gamma\left\{2 F_{\gamma}-\left(1+\sec ^{2} \gamma\right) E_{\gamma}\rig`
+  - No clear structural match found in code
+- [OK] **Art.702** `verify_elliptic_integrals`: verified
+  - LaTeX: `* M=8 \pi \sqrt{A a} \frac{1}{\sqrt{c_{1}}}\left\{F\left(c_{1}\right)-E\left(c_{1}\right)\right\} .`
+  - Structural/heuristic match
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=8 \pi \sqrt{A a} \frac{1}{\sqrt{K_{\theta}}}, \quad \text { and } \quad A=\frac{1}{64 \pi^{2}} \fr`
+  - No clear structural match found in code
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \sqrt{1-c^{2}}=\frac{1-c_{1}}{1+c_{1}}, \quad \text { or } \quad c=\frac{2 \sqrt{c`
+  - No clear structural match found in code
+- [OK] **Art.702** `verify_elliptic_integrals`: verified
+  - LaTeX: `* M=8 \pi \sqrt{A a} \frac{1}{\sqrt{c_{1}}}\left\{F\left(c_{1}\right)-E\left(c_{1}\right)\right\} .`
+  - Structural/heuristic match
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=8 \pi \sqrt{A a} \frac{1}{\sqrt{K_{\theta}}}, \quad \text { and } \quad A=\frac{1}{64 \pi^{2}} \fr`
+  - No clear structural match found in code
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \sqrt{1-c^{2}}=\frac{1-c_{1}}{1+c_{1}}, \quad \text { or } \quad c=\frac{2 \sqrt{c`
+  - No clear structural match found in code
+- [OK] **Art.702** `verify_elliptic_integrals`: verified
+  - LaTeX: `* M=8 \pi \sqrt{A a} \frac{1}{\sqrt{c_{1}}}\left\{F\left(c_{1}\right)-E\left(c_{1}\right)\right\} .`
+  - Structural/heuristic match
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=8 \pi \sqrt{A a} \frac{1}{\sqrt{K_{\theta}}}, \quad \text { and } \quad A=\frac{1}{64 \pi^{2}} \fr`
+  - No clear structural match found in code
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \sqrt{1-c^{2}}=\frac{1-c_{1}}{1+c_{1}}, \quad \text { or } \quad c=\frac{2 \sqrt{c`
+  - No clear structural match found in code
+- [OK] **Art.702** `verify_elliptic_integrals`: verified
+  - LaTeX: `* M=8 \pi \sqrt{A a} \frac{1}{\sqrt{c_{1}}}\left\{F\left(c_{1}\right)-E\left(c_{1}\right)\right\} .`
+  - Structural/heuristic match
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=8 \pi \sqrt{A a} \frac{1}{\sqrt{K_{\theta}}}, \quad \text { and } \quad A=\frac{1}{64 \pi^{2}} \fr`
+  - No clear structural match found in code
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \sqrt{1-c^{2}}=\frac{1-c_{1}}{1+c_{1}}, \quad \text { or } \quad c=\frac{2 \sqrt{c`
+  - No clear structural match found in code
+- [OK] **Art.702** `verify_elliptic_integrals`: verified
+  - LaTeX: `* M=8 \pi \sqrt{A a} \frac{1}{\sqrt{c_{1}}}\left\{F\left(c_{1}\right)-E\left(c_{1}\right)\right\} .`
+  - Structural/heuristic match
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=8 \pi \sqrt{A a} \frac{1}{\sqrt{K_{\theta}}}, \quad \text { and } \quad A=\frac{1}{64 \pi^{2}} \fr`
+  - No clear structural match found in code
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \sqrt{1-c^{2}}=\frac{1-c_{1}}{1+c_{1}}, \quad \text { or } \quad c=\frac{2 \sqrt{c`
+  - No clear structural match found in code
+- [OK] **Art.702** `verify_elliptic_integrals`: verified
+  - LaTeX: `* M=8 \pi \sqrt{A a} \frac{1}{\sqrt{c_{1}}}\left\{F\left(c_{1}\right)-E\left(c_{1}\right)\right\} .`
+  - Structural/heuristic match
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `M=8 \pi \sqrt{A a} \frac{1}{\sqrt{K_{\theta}}}, \quad \text { and } \quad A=\frac{1}{64 \pi^{2}} \fr`
+  - No clear structural match found in code
+- [??] **Art.702** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \sqrt{1-c^{2}}=\frac{1-c_{1}}{1+c_{1}}, \quad \text { or } \quad c=\frac{2 \sqrt{c`
+  - No clear structural match found in code
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `A=x=n^{2} K_{\theta} a .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}}-\frac{1}{a} \frac{d M}{d a}=0 . \t`
+  - Structural/heuristic match
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} a \delta a \frac{d V}{d y} d \theta`
+  - No clear structural match found in code
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d M}{d a}=-\int_{0}^{2 \pi} a \frac{d V}{d y} d \theta \tag{2}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d M}{d b}=\int_{0}^{2 \pi} a \frac{d V}{d r} d \theta . \tag{3}
+\end{equatio`
+  - No clear structural match found in code
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `A=x=n^{2} K_{\theta} a .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}}-\frac{1}{a} \frac{d M}{d a}=0 .`
+  - Structural/heuristic match
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} a \delta a \frac{d V}{d y} d \theta`
+  - No clear structural match found in code
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d a}=-\int_{0}^{2 \pi} a \frac{d V}{d y} d \theta`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\int_{0}^{2 \pi} a \frac{d V}{d r} d \theta .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `A=x=n^{2} K_{\theta} a .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}}-\frac{1}{a} \frac{d M}{d a}=0 . \t`
+  - Structural/heuristic match
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} a \delta a \frac{d V}{d y} d \theta`
+  - No clear structural match found in code
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d M}{d a}=-\int_{0}^{2 \pi} a \frac{d V}{d y} d \theta \tag{2}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d M}{d b}=\int_{0}^{2 \pi} a \frac{d V}{d r} d \theta . \tag{3}
+\end{equatio`
+  - No clear structural match found in code
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `A=x=n^{2} K_{\theta} a .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}}-\frac{1}{a} \frac{d M}{d a}=0 .`
+  - Structural/heuristic match
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} a \delta a \frac{d V}{d y} d \theta`
+  - No clear structural match found in code
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d a}=-\int_{0}^{2 \pi} a \frac{d V}{d y} d \theta`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\int_{0}^{2 \pi} a \frac{d V}{d r} d \theta .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `A=x=n^{2} K_{\theta} a .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}}-\frac{1}{a} \frac{d M}{d a}=0 . \t`
+  - Structural/heuristic match
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} a \delta a \frac{d V}{d y} d \theta`
+  - No clear structural match found in code
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d M}{d a}=-\int_{0}^{2 \pi} a \frac{d V}{d y} d \theta \tag{2}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d M}{d b}=\int_{0}^{2 \pi} a \frac{d V}{d r} d \theta . \tag{3}
+\end{equatio`
+  - No clear structural match found in code
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `A=x=n^{2} K_{\theta} a .`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}}-\frac{1}{a} \frac{d M}{d a}=0 .`
+  - Structural/heuristic match
+- [??] **Art.703** `verify_elliptic_integrals`: unverified
+  - LaTeX: `-\int_{0}^{2 \pi} a \delta a \frac{d V}{d y} d \theta`
+  - No clear structural match found in code
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d a}=-\int_{0}^{2 \pi} a \frac{d V}{d y} d \theta`
+  - Structural/heuristic match
+- [OK] **Art.703** `verify_elliptic_integrals`: verified
+  - LaTeX: `\frac{d M}{d b}=\int_{0}^{2 \pi} a \frac{d V}{d r} d \theta .`
+  - Structural/heuristic match
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `\begin{align*}
+& \frac{d^{2} M}{d a^{2}}=-\int_{0}^{2 \pi} \frac{d V}{d y} d \theta-\int_{0}^{2 \pi}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{align*}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}} & =-\int_{0}^{2 \pi} \frac{d V}{d y} `
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `r=\sqrt{c^{2}+b^{2}}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{1}{\rho^{2}} \sin \theta \delta 8 .`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `2 \delta 8 \int_{\theta_{1}}^{\alpha_{2} \pi} \int_{r_{2}}^{r_{1}} \frac{\sin \theta}{\rho} d \theta`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d^{2} M}{d a^{2}}=-\int_{0}^{2 \pi} \frac{d V}{d y} d \theta-\int_{0}^{2 \pi`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}} & =-\int_{0}^{2 \pi} \frac{d V}{d y}`
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `r=\sqrt{c^{2}+b^{2}}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{1}{\rho^{2}} \sin \theta \delta 8 .`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `2 \delta 8 \int_{\theta_{1}}^{\alpha_{2} \pi} \int_{r_{2}}^{r_{1}} \frac{\sin \theta}{\rho} d \theta`
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `\begin{align*}
+& \frac{d^{2} M}{d a^{2}}=-\int_{0}^{2 \pi} \frac{d V}{d y} d \theta-\int_{0}^{2 \pi}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{align*}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}} & =-\int_{0}^{2 \pi} \frac{d V}{d y} `
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `r=\sqrt{c^{2}+b^{2}}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{1}{\rho^{2}} \sin \theta \delta 8 .`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `2 \delta 8 \int_{\theta_{1}}^{\alpha_{2} \pi} \int_{r_{2}}^{r_{1}} \frac{\sin \theta}{\rho} d \theta`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d^{2} M}{d a^{2}}=-\int_{0}^{2 \pi} \frac{d V}{d y} d \theta-\int_{0}^{2 \pi`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}} & =-\int_{0}^{2 \pi} \frac{d V}{d y}`
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `r=\sqrt{c^{2}+b^{2}}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{1}{\rho^{2}} \sin \theta \delta 8 .`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `2 \delta 8 \int_{\theta_{1}}^{\alpha_{2} \pi} \int_{r_{2}}^{r_{1}} \frac{\sin \theta}{\rho} d \theta`
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `\begin{align*}
+& \frac{d^{2} M}{d a^{2}}=-\int_{0}^{2 \pi} \frac{d V}{d y} d \theta-\int_{0}^{2 \pi}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{align*}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}} & =-\int_{0}^{2 \pi} \frac{d V}{d y} `
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `r=\sqrt{c^{2}+b^{2}}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{1}{\rho^{2}} \sin \theta \delta 8 .`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `2 \delta 8 \int_{\theta_{1}}^{\alpha_{2} \pi} \int_{r_{2}}^{r_{1}} \frac{\sin \theta}{\rho} d \theta`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d^{2} M}{d a^{2}}=-\int_{0}^{2 \pi} \frac{d V}{d y} d \theta-\int_{0}^{2 \pi`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{d^{2} M}{d a^{2}}+\frac{d^{2} M}{d b^{2}} & =-\int_{0}^{2 \pi} \frac{d V}{d y}`
+  - No clear structural match found in code
+- [OK] **Art.704** `verify_elliptic_integrals`: verified
+  - LaTeX: `r=\sqrt{c^{2}+b^{2}}`
+  - Structural/heuristic match
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\frac{1}{\rho^{2}} \sin \theta \delta 8 .`
+  - No clear structural match found in code
+- [??] **Art.704** `verify_elliptic_integrals`: unverified
+  - LaTeX: `2 \delta 8 \int_{\theta_{1}}^{\alpha_{2} \pi} \int_{r_{2}}^{r_{1}} \frac{\sin \theta}{\rho} d \theta`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `r^{2}-2(a+c) \sin \theta r+c^{2}+2 a c=0`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=(a+c) \sin \theta+\sqrt{(a+c)^{2} \sin ^{2} \theta-c^{2}-2 a c}, \\
+& r_{2}=`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `\sin ^{2} \theta_{1}=\frac{c^{2}+2 a c}{(c+a)^{2}}`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=2 a \sin \theta, \\
+& r_{2}=c / \sin \theta .
+\end{aligned}`
+  - No clear structural match found in code
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+2 \delta s \int_{\theta_{1}}^{\frac{1 \pi}{2}} \log \left(\frac{2 a}{c} \sin ^{2} \`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a \circ}=4 \pi a\left(\log _{e} \frac{8 a}{c}-2\right) .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a A}-M_{a c}=4 \pi \alpha\left\{\log _{e} c-\log _{e} r\right\} .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{A_{a}}=4 \pi a\left(\log _{e} 8 a-\log _{e} r-2\right)`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=4 \pi\left\{A \log _{e} \frac{8 a}{r}+B\right\},`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `r^{2}-2(a+c) \sin \theta r+c^{2}+2 a c=0`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=(a+c) \sin \theta+\sqrt{(a+c)^{2} \sin ^{2} \theta-c^{2}-2 a c}, \\
+& r_{2}=`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `\sin ^{2} \theta_{1}=\frac{c^{2}+2 a c}{(c+a)^{2}}`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=2 a \sin \theta, \\
+& r_{2}=c / \sin \theta .
+\end{aligned}`
+  - No clear structural match found in code
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+2 \delta s \int_{\theta_{1}}^{\frac{1 \pi}{2}} \log \left(\frac{2 a}{c} \sin ^{2} \`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a \circ}=4 \pi a\left(\log _{e} \frac{8 a}{c}-2\right) .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a A}-M_{a c}=4 \pi \alpha\left\{\log _{e} c-\log _{e} r\right\} .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{A_{a}}=4 \pi a\left(\log _{e} 8 a-\log _{e} r-2\right)`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=4 \pi\left\{A \log _{e} \frac{8 a}{r}+B\right\},`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `r^{2}-2(a+c) \sin \theta r+c^{2}+2 a c=0`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=(a+c) \sin \theta+\sqrt{(a+c)^{2} \sin ^{2} \theta-c^{2}-2 a c}, \\
+& r_{2}=`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `\sin ^{2} \theta_{1}=\frac{c^{2}+2 a c}{(c+a)^{2}}`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=2 a \sin \theta, \\
+& r_{2}=c / \sin \theta .
+\end{aligned}`
+  - No clear structural match found in code
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+2 \delta s \int_{\theta_{1}}^{\frac{1 \pi}{2}} \log \left(\frac{2 a}{c} \sin ^{2} \`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a \circ}=4 \pi a\left(\log _{e} \frac{8 a}{c}-2\right) .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a A}-M_{a c}=4 \pi \alpha\left\{\log _{e} c-\log _{e} r\right\} .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{A_{a}}=4 \pi a\left(\log _{e} 8 a-\log _{e} r-2\right)`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=4 \pi\left\{A \log _{e} \frac{8 a}{r}+B\right\},`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `r^{2}-2(a+c) \sin \theta r+c^{2}+2 a c=0`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=(a+c) \sin \theta+\sqrt{(a+c)^{2} \sin ^{2} \theta-c^{2}-2 a c}, \\
+& r_{2}=`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `\sin ^{2} \theta_{1}=\frac{c^{2}+2 a c}{(c+a)^{2}}`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=2 a \sin \theta, \\
+& r_{2}=c / \sin \theta .
+\end{aligned}`
+  - No clear structural match found in code
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+2 \delta s \int_{\theta_{1}}^{\frac{1 \pi}{2}} \log \left(\frac{2 a}{c} \sin ^{2} \`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a \circ}=4 \pi a\left(\log _{e} \frac{8 a}{c}-2\right) .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a A}-M_{a c}=4 \pi \alpha\left\{\log _{e} c-\log _{e} r\right\} .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{A_{a}}=4 \pi a\left(\log _{e} 8 a-\log _{e} r-2\right)`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=4 \pi\left\{A \log _{e} \frac{8 a}{r}+B\right\},`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `r^{2}-2(a+c) \sin \theta r+c^{2}+2 a c=0`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=(a+c) \sin \theta+\sqrt{(a+c)^{2} \sin ^{2} \theta-c^{2}-2 a c}, \\
+& r_{2}=`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `\sin ^{2} \theta_{1}=\frac{c^{2}+2 a c}{(c+a)^{2}}`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=2 a \sin \theta, \\
+& r_{2}=c / \sin \theta .
+\end{aligned}`
+  - No clear structural match found in code
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+2 \delta s \int_{\theta_{1}}^{\frac{1 \pi}{2}} \log \left(\frac{2 a}{c} \sin ^{2} \`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a \circ}=4 \pi a\left(\log _{e} \frac{8 a}{c}-2\right) .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a A}-M_{a c}=4 \pi \alpha\left\{\log _{e} c-\log _{e} r\right\} .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{A_{a}}=4 \pi a\left(\log _{e} 8 a-\log _{e} r-2\right)`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=4 \pi\left\{A \log _{e} \frac{8 a}{r}+B\right\},`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `r^{2}-2(a+c) \sin \theta r+c^{2}+2 a c=0`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=(a+c) \sin \theta+\sqrt{(a+c)^{2} \sin ^{2} \theta-c^{2}-2 a c}, \\
+& r_{2}=`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `\sin ^{2} \theta_{1}=\frac{c^{2}+2 a c}{(c+a)^{2}}`
+  - Structural/heuristic match
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{aligned}
+& r_{1}=2 a \sin \theta, \\
+& r_{2}=c / \sin \theta .
+\end{aligned}`
+  - No clear structural match found in code
+- [??] **Art.705** `verify_elliptic_integrals`: unverified
+  - LaTeX: `\begin{gathered}
+2 \delta s \int_{\theta_{1}}^{\frac{1 \pi}{2}} \log \left(\frac{2 a}{c} \sin ^{2} \`
+  - No clear structural match found in code
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a \circ}=4 \pi a\left(\log _{e} \frac{8 a}{c}-2\right) .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{a A}-M_{a c}=4 \pi \alpha\left\{\log _{e} c-\log _{e} r\right\} .`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M_{A_{a}}=4 \pi a\left(\log _{e} 8 a-\log _{e} r-2\right)`
+  - Structural/heuristic match
+- [OK] **Art.705** `verify_elliptic_integrals`: verified
+  - LaTeX: `M=4 \pi\left\{A \log _{e} \frac{8 a}{r}+B\right\},`
+  - Structural/heuristic match
+
+### `maxwell\math\spherical_harmonics.py`
+
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-1 \frac{d V}{d z} ; \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-4 \pi I z-I \frac{d V}{d z} . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+F=I \frac{d V}{d y}, \quad G=-I \frac{d V}{d x}, \quad H=0 . \tag{4}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{align*}
+V & =\frac{4 \pi}{3} \frac{a^{3}}{r} \text { when } r \text { is greater than } a  \t`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=\frac{4 \pi}{3} I \frac{a^{3}}{r^{3}} z \text { outside the sphere, } \tag{`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=\frac{4 \pi}{3} I z \text { inside the sphere. } \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-\frac{8 \pi}{3} I z . \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=-1 \frac{d V}{d z} ;`
+  - Structural/heuristic match
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=-4 \pi I z-I \frac{d V}{d z} .`
+  - Structural/heuristic match
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `F=I \frac{d V}{d y}, \quad G=-I \frac{d V}{d x}, \quad H=0 .`
+  - Structural/heuristic match
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{aligned}
+V & =\frac{4 \pi}{3} \frac{a^{3}}{r} \text { when } r \text { is greater than } a \\`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=\frac{4 \pi}{3} I \frac{a^{3}}{r^{3}} z \text { outside the sphere, }`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=\frac{4 \pi}{3} I z \text { inside the sphere. }`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=-\frac{8 \pi}{3} I z .`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-1 \frac{d V}{d z} ; \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-4 \pi I z-I \frac{d V}{d z} . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+F=I \frac{d V}{d y}, \quad G=-I \frac{d V}{d x}, \quad H=0 . \tag{4}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{align*}
+V & =\frac{4 \pi}{3} \frac{a^{3}}{r} \text { when } r \text { is greater than } a  \t`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=\frac{4 \pi}{3} I \frac{a^{3}}{r^{3}} z \text { outside the sphere, } \tag{`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=\frac{4 \pi}{3} I z \text { inside the sphere. } \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-\frac{8 \pi}{3} I z . \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=-1 \frac{d V}{d z} ;`
+  - Structural/heuristic match
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=-4 \pi I z-I \frac{d V}{d z} .`
+  - Structural/heuristic match
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `F=I \frac{d V}{d y}, \quad G=-I \frac{d V}{d x}, \quad H=0 .`
+  - Structural/heuristic match
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{aligned}
+V & =\frac{4 \pi}{3} \frac{a^{3}}{r} \text { when } r \text { is greater than } a \\`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=\frac{4 \pi}{3} I \frac{a^{3}}{r^{3}} z \text { outside the sphere, }`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=\frac{4 \pi}{3} I z \text { inside the sphere. }`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=-\frac{8 \pi}{3} I z .`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-1 \frac{d V}{d z} ; \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-4 \pi I z-I \frac{d V}{d z} . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+F=I \frac{d V}{d y}, \quad G=-I \frac{d V}{d x}, \quad H=0 . \tag{4}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{align*}
+V & =\frac{4 \pi}{3} \frac{a^{3}}{r} \text { when } r \text { is greater than } a  \t`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=\frac{4 \pi}{3} I \frac{a^{3}}{r^{3}} z \text { outside the sphere, } \tag{`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=\frac{4 \pi}{3} I z \text { inside the sphere. } \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=-\frac{8 \pi}{3} I z . \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=-1 \frac{d V}{d z} ;`
+  - Structural/heuristic match
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=-4 \pi I z-I \frac{d V}{d z} .`
+  - Structural/heuristic match
+- [OK] **Art.675** `calc_legendre_polynomial`: verified
+  - LaTeX: `F=I \frac{d V}{d y}, \quad G=-I \frac{d V}{d x}, \quad H=0 .`
+  - Structural/heuristic match
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{aligned}
+V & =\frac{4 \pi}{3} \frac{a^{3}}{r} \text { when } r \text { is greater than } a \\`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=\frac{4 \pi}{3} I \frac{a^{3}}{r^{3}} z \text { outside the sphere, }`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=\frac{4 \pi}{3} I z \text { inside the sphere. }`
+  - No clear structural match found in code
+- [??] **Art.675** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=-\frac{8 \pi}{3} I z .`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=V_{1}-V_{2} . \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=n_{\gamma}\left(V_{1}-V_{2}\right), \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=n \gamma\left(-4 \pi z+V_{1}-V_{2}\right) . \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+V_{1}=\frac{A}{r_{1}}, \quad V_{2}=\frac{A}{r_{2}}, \tag{13}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{gather*}
+V=2 \pi\left\{-r P_{1}+a+\frac{1}{2} \frac{r^{2}}{a} P_{2}-\frac{1.1}{2.4} \frac{r^{`
+  - No clear structural match found in code
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=V_{1}-V_{2} .`
+  - Structural/heuristic match
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=n_{\gamma}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=n \gamma\left(-4 \pi z+V_{1}-V_{2}\right) .`
+  - No clear structural match found in code
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `V_{1}=\frac{A}{r_{1}}, \quad V_{2}=\frac{A}{r_{2}},`
+  - Structural/heuristic match
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{gathered}
+V=2 \pi\left\{-r P_{1}+a+\frac{1}{2} \frac{r^{2}}{a} P_{2}-\frac{1.1}{2.4} \frac{r^`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=V_{1}-V_{2} . \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=n_{\gamma}\left(V_{1}-V_{2}\right), \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=n \gamma\left(-4 \pi z+V_{1}-V_{2}\right) . \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+V_{1}=\frac{A}{r_{1}}, \quad V_{2}=\frac{A}{r_{2}}, \tag{13}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{gather*}
+V=2 \pi\left\{-r P_{1}+a+\frac{1}{2} \frac{r^{2}}{a} P_{2}-\frac{1.1}{2.4} \frac{r^{`
+  - No clear structural match found in code
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=V_{1}-V_{2} .`
+  - Structural/heuristic match
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=n_{\gamma}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=n \gamma\left(-4 \pi z+V_{1}-V_{2}\right) .`
+  - No clear structural match found in code
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `V_{1}=\frac{A}{r_{1}}, \quad V_{2}=\frac{A}{r_{2}},`
+  - Structural/heuristic match
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{gathered}
+V=2 \pi\left\{-r P_{1}+a+\frac{1}{2} \frac{r^{2}}{a} P_{2}-\frac{1.1}{2.4} \frac{r^`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=V_{1}-V_{2} . \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=n_{\gamma}\left(V_{1}-V_{2}\right), \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+\Omega=n \gamma\left(-4 \pi z+V_{1}-V_{2}\right) . \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{equation*}
+V_{1}=\frac{A}{r_{1}}, \quad V_{2}=\frac{A}{r_{2}}, \tag{13}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{gather*}
+V=2 \pi\left\{-r P_{1}+a+\frac{1}{2} \frac{r^{2}}{a} P_{2}-\frac{1.1}{2.4} \frac{r^{`
+  - No clear structural match found in code
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=V_{1}-V_{2} .`
+  - Structural/heuristic match
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `\Omega=n_{\gamma}\left(V_{1}-V_{2}\right),`
+  - Structural/heuristic match
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\Omega=n \gamma\left(-4 \pi z+V_{1}-V_{2}\right) .`
+  - No clear structural match found in code
+- [OK] **Art.676** `calc_legendre_polynomial`: verified
+  - LaTeX: `V_{1}=\frac{A}{r_{1}}, \quad V_{2}=\frac{A}{r_{2}},`
+  - Structural/heuristic match
+- [??] **Art.676** `calc_legendre_polynomial`: unverified
+  - LaTeX: `\begin{gathered}
+V=2 \pi\left\{-r P_{1}+a+\frac{1}{2} \frac{r^{2}}{a} P_{2}-\frac{1.1}{2.4} \frac{r^`
+  - No clear structural match found in code
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `\begin{equation*}
+M=4 \pi n n^{\prime} A \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `\begin{equation*}
+L=4 \pi n^{2} A . \tag{17}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `M=4 \pi n n^{\prime} A`
+  - No clear structural match found in code
+- [OK] **Art.677** `rodrigues_formula`: verified
+  - LaTeX: `L=4 \pi n^{2} A .`
+  - Structural/heuristic match
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `\begin{equation*}
+M=4 \pi n n^{\prime} A \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `\begin{equation*}
+L=4 \pi n^{2} A . \tag{17}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `M=4 \pi n n^{\prime} A`
+  - No clear structural match found in code
+- [OK] **Art.677** `rodrigues_formula`: verified
+  - LaTeX: `L=4 \pi n^{2} A .`
+  - Structural/heuristic match
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `\begin{equation*}
+M=4 \pi n n^{\prime} A \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `\begin{equation*}
+L=4 \pi n^{2} A . \tag{17}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.677** `rodrigues_formula`: unverified
+  - LaTeX: `M=4 \pi n n^{\prime} A`
+  - No clear structural match found in code
+- [OK] **Art.677** `rodrigues_formula`: verified
+  - LaTeX: `L=4 \pi n^{2} A .`
+  - Structural/heuristic match
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+M=G g, \tag{18}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+G=4 \pi n_{1}, \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+g=\pi c_{2}^{2} \ln n_{2} . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+M=4 \pi^{2} n_{1} n_{2} c_{2}^{2}\left(l-2 c_{1} \alpha\right), \tag{21}
+\end{equa`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{align*}
+a=\frac{1}{2} & \frac{c_{1}+l-r}{c_{1}}-\frac{1.3}{2.4} \cdot \frac{1}{2.3} \frac{c_{`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+a=\frac{1}{2}-\frac{1}{18} \frac{c_{2}^{2}}{c_{1}^{2}}-{ }_{1}^{\frac{1}{2}} \frac`
+  - No clear structural match found in code
+- [OK] **Art.678** `orthogonality_check`: verified
+  - LaTeX: `G=4 \pi n_{1},`
+  - Structural/heuristic match
+- [OK] **Art.678** `orthogonality_check`: verified
+  - LaTeX: `g=\pi c_{2}^{2} \ln n_{2} .`
+  - Structural/heuristic match
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `M=4 \pi^{2} n_{1} n_{2} c_{2}^{2}\left(l-2 c_{1} \alpha\right),`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{aligned}
+a=\frac{1}{2} & \frac{c_{1}+l-r}{c_{1}}-\frac{1.3}{2.4} \cdot \frac{1}{2.3} \frac{c_`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `a=\frac{1}{2}-\frac{1}{18} \frac{c_{2}^{2}}{c_{1}^{2}}-{ }_{1}^{\frac{1}{2}} \frac{c_{2}^{4}}{c_{1}^`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+M=G g, \tag{18}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+G=4 \pi n_{1}, \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+g=\pi c_{2}^{2} \ln n_{2} . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+M=4 \pi^{2} n_{1} n_{2} c_{2}^{2}\left(l-2 c_{1} \alpha\right), \tag{21}
+\end{equa`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{align*}
+a=\frac{1}{2} & \frac{c_{1}+l-r}{c_{1}}-\frac{1.3}{2.4} \cdot \frac{1}{2.3} \frac{c_{`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+a=\frac{1}{2}-\frac{1}{18} \frac{c_{2}^{2}}{c_{1}^{2}}-{ }_{1}^{\frac{1}{2}} \frac`
+  - No clear structural match found in code
+- [OK] **Art.678** `orthogonality_check`: verified
+  - LaTeX: `G=4 \pi n_{1},`
+  - Structural/heuristic match
+- [OK] **Art.678** `orthogonality_check`: verified
+  - LaTeX: `g=\pi c_{2}^{2} \ln n_{2} .`
+  - Structural/heuristic match
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `M=4 \pi^{2} n_{1} n_{2} c_{2}^{2}\left(l-2 c_{1} \alpha\right),`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{aligned}
+a=\frac{1}{2} & \frac{c_{1}+l-r}{c_{1}}-\frac{1.3}{2.4} \cdot \frac{1}{2.3} \frac{c_`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `a=\frac{1}{2}-\frac{1}{18} \frac{c_{2}^{2}}{c_{1}^{2}}-{ }_{1}^{\frac{1}{2}} \frac{c_{2}^{4}}{c_{1}^`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+M=G g, \tag{18}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+G=4 \pi n_{1}, \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+g=\pi c_{2}^{2} \ln n_{2} . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+M=4 \pi^{2} n_{1} n_{2} c_{2}^{2}\left(l-2 c_{1} \alpha\right), \tag{21}
+\end{equa`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{align*}
+a=\frac{1}{2} & \frac{c_{1}+l-r}{c_{1}}-\frac{1.3}{2.4} \cdot \frac{1}{2.3} \frac{c_{`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{equation*}
+a=\frac{1}{2}-\frac{1}{18} \frac{c_{2}^{2}}{c_{1}^{2}}-{ }_{1}^{\frac{1}{2}} \frac`
+  - No clear structural match found in code
+- [OK] **Art.678** `orthogonality_check`: verified
+  - LaTeX: `G=4 \pi n_{1},`
+  - Structural/heuristic match
+- [OK] **Art.678** `orthogonality_check`: verified
+  - LaTeX: `g=\pi c_{2}^{2} \ln n_{2} .`
+  - Structural/heuristic match
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `M=4 \pi^{2} n_{1} n_{2} c_{2}^{2}\left(l-2 c_{1} \alpha\right),`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `\begin{aligned}
+a=\frac{1}{2} & \frac{c_{1}+l-r}{c_{1}}-\frac{1.3}{2.4} \cdot \frac{1}{2.3} \frac{c_`
+  - No clear structural match found in code
+- [??] **Art.678** `orthogonality_check`: unverified
+  - LaTeX: `a=\frac{1}{2}-\frac{1}{18} \frac{c_{2}^{2}}{c_{1}^{2}}-{ }_{1}^{\frac{1}{2}} \frac{c_{2}^{4}}{c_{1}^`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} \iiint H w d x d y d z \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} l \iint H w d x d y \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\mathbf{2} T}{l}=\iint H w^{\prime} d x^{\prime} d y^{\prime}+\iint H^{\prim`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `T=\frac{1}{2} \iiint H w d x d y d z`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `T=\frac{1}{2} l \iint H w d x d y`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\frac{\mathbf{2} T}{l}=\iint H w^{\prime} d x^{\prime} d y^{\prime}+\iint H^{\prime} w d x d y+\iint`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} \iiint H w d x d y d z \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} l \iint H w d x d y \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\mathbf{2} T}{l}=\iint H w^{\prime} d x^{\prime} d y^{\prime}+\iint H^{\prim`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `T=\frac{1}{2} \iiint H w d x d y d z`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `T=\frac{1}{2} l \iint H w d x d y`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\frac{\mathbf{2} T}{l}=\iint H w^{\prime} d x^{\prime} d y^{\prime}+\iint H^{\prime} w d x d y+\iint`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} \iiint H w d x d y d z \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+T=\frac{1}{2} l \iint H w d x d y \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\mathbf{2} T}{l}=\iint H w^{\prime} d x^{\prime} d y^{\prime}+\iint H^{\prim`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `T=\frac{1}{2} \iiint H w d x d y d z`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `T=\frac{1}{2} l \iint H w d x d y`
+  - No clear structural match found in code
+- [??] **Art.685** `calc_spherical_harmonic`: unverified
+  - LaTeX: `\frac{\mathbf{2} T}{l}=\iint H w^{\prime} d x^{\prime} d y^{\prime}+\iint H^{\prime} w d x d y+\iint`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{array}{r}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2} \mu\left[`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\left(\mu`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+X & =\frac{1}{2} \frac{d L}{d b} C^{2} \\
+& =2 \mu_{0} \frac{l}{b} C^{2} \tag{24}
+\en`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{array}{r}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2} \mu\left[`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\left(\mu+\mu^{\prime}\righ`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+X & =\frac{1}{2} \frac{d L}{d b} C^{2} \\
+& =2 \mu_{0} \frac{l}{b} C^{2}
+\end{aligne`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{array}{r}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2} \mu\left[`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\left(\mu`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+X & =\frac{1}{2} \frac{d L}{d b} C^{2} \\
+& =2 \mu_{0} \frac{l}{b} C^{2} \tag{24}
+\en`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{array}{r}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2} \mu\left[`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\left(\mu+\mu^{\prime}\righ`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+X & =\frac{1}{2} \frac{d L}{d b} C^{2} \\
+& =2 \mu_{0} \frac{l}{b} C^{2}
+\end{aligne`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{array}{r}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2} \mu\left[`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\left(\mu`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+X & =\frac{1}{2} \frac{d L}{d b} C^{2} \\
+& =2 \mu_{0} \frac{l}{b} C^{2} \tag{24}
+\en`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{array}{r}
+\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2} \mu\left[`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\frac{L}{l}=2 \mu_{0} \log \frac{b^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\left(\mu+\mu^{\prime}\righ`
+  - No clear structural match found in code
+- [??] **Art.686** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+X & =\frac{1}{2} \frac{d L}{d b} C^{2} \\
+& =2 \mu_{0} \frac{l}{b} C^{2}
+\end{aligne`
+  - No clear structural match found in code
+- [??] **Art.687** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+Z & =\frac{1}{2} \frac{d L}{d l} C^{2} \\
+& =C^{2}\left\{\mu_{0} \log \frac{b^{2}}{a_`
+  - No clear structural match found in code
+- [??] **Art.687** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+Z & =\frac{1}{2} \frac{d L}{d l} C^{2} \\
+& =C^{2}\left\{\mu_{0} \log \frac{b^{2}}{a`
+  - No clear structural match found in code
+- [??] **Art.687** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+Z & =\frac{1}{2} \frac{d L}{d l} C^{2} \\
+& =C^{2}\left\{\mu_{0} \log \frac{b^{2}}{a_`
+  - No clear structural match found in code
+- [??] **Art.687** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+Z & =\frac{1}{2} \frac{d L}{d l} C^{2} \\
+& =C^{2}\left\{\mu_{0} \log \frac{b^{2}}{a`
+  - No clear structural match found in code
+- [??] **Art.687** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+Z & =\frac{1}{2} \frac{d L}{d l} C^{2} \\
+& =C^{2}\left\{\mu_{0} \log \frac{b^{2}}{a_`
+  - No clear structural match found in code
+- [??] **Art.687** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+Z & =\frac{1}{2} \frac{d L}{d l} C^{2} \\
+& =C^{2}\left\{\mu_{0} \log \frac{b^{2}}{a`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+L=2 l\left\{\log \frac{\left(a_{1}+a_{1}^{\prime}\right)^{2}}{a_{1} a_{1}^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+L & =2 l\left(\log 4+\frac{1}{2}\right) \\
+& =2 l(1.8863) \\
+& =3.7726 l \tag{27}
+\en`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `L=2 l\left\{\log \frac{\left(a_{1}+a_{1}^{\prime}\right)^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\righ`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+L & =2 l\left(\log 4+\frac{1}{2}\right) \\
+& =2 l(1.8863) \\
+& =3.7726 l
+\end{aligne`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+L=2 l\left\{\log \frac{\left(a_{1}+a_{1}^{\prime}\right)^{2}}{a_{1} a_{1}^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+L & =2 l\left(\log 4+\frac{1}{2}\right) \\
+& =2 l(1.8863) \\
+& =3.7726 l \tag{27}
+\en`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `L=2 l\left\{\log \frac{\left(a_{1}+a_{1}^{\prime}\right)^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\righ`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+L & =2 l\left(\log 4+\frac{1}{2}\right) \\
+& =2 l(1.8863) \\
+& =3.7726 l
+\end{aligne`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+L=2 l\left\{\log \frac{\left(a_{1}+a_{1}^{\prime}\right)^{2}}{a_{1} a_{1}^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+L & =2 l\left(\log 4+\frac{1}{2}\right) \\
+& =2 l(1.8863) \\
+& =3.7726 l \tag{27}
+\en`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `L=2 l\left\{\log \frac{\left(a_{1}+a_{1}^{\prime}\right)^{2}}{a_{1} a_{1}^{\prime}}+\frac{1}{2}\righ`
+  - No clear structural match found in code
+- [??] **Art.688** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+L & =2 l\left(\log 4+\frac{1}{2}\right) \\
+& =2 l(1.8863) \\
+& =3.7726 l
+\end{aligne`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+H=S+T_{0}+T_{1} r^{2}+\text { \&c. }+T_{n} r^{2 n}+\ldots, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} H}{d r^{2}}+\frac{1}{r} \frac{d H}{d r}=-4 \pi w \tag{2}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+-\pi w=T_{1}+\text { \&c. }+n^{2} T_{n} r^{2 n-2}+\ldots \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+\rho w=-\frac{d \Psi}{d z}-\frac{d H}{d t}, \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{align*}
+& T_{1}=\frac{\pi}{\rho}\left(\frac{d \Psi}{d z}+\frac{d S}{d t}+\frac{d T_{0}}{d t}\`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+T_{0}=T, \quad T_{1}=\frac{\pi}{\rho} \frac{d T}{d t}, \ldots \quad T_{n}=\frac{\p`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `H=S+T_{0}+T_{1} r^{2}+\text { \&c. }+T_{n} r^{2 n}+\ldots,`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\frac{d^{2} H}{d r^{2}}+\frac{1}{r} \frac{d H}{d r}=-4 \pi w`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `-\pi w=T_{1}+\text { \&c. }+n^{2} T_{n} r^{2 n-2}+\ldots`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\rho w=-\frac{d \Psi}{d z}-\frac{d H}{d t},`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{1}=\frac{\pi}{\rho}\left(\frac{d \Psi}{d z}+\frac{d S}{d t}+\frac{d T_{0}}{d t}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `T_{0}=T, \quad T_{1}=\frac{\pi}{\rho} \frac{d T}{d t}, \ldots \quad T_{n}=\frac{\pi^{n}}{\rho^{n}} \`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+H=S+T_{0}+T_{1} r^{2}+\text { \&c. }+T_{n} r^{2 n}+\ldots, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} H}{d r^{2}}+\frac{1}{r} \frac{d H}{d r}=-4 \pi w \tag{2}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+-\pi w=T_{1}+\text { \&c. }+n^{2} T_{n} r^{2 n-2}+\ldots \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+\rho w=-\frac{d \Psi}{d z}-\frac{d H}{d t}, \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{align*}
+& T_{1}=\frac{\pi}{\rho}\left(\frac{d \Psi}{d z}+\frac{d S}{d t}+\frac{d T_{0}}{d t}\`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+T_{0}=T, \quad T_{1}=\frac{\pi}{\rho} \frac{d T}{d t}, \ldots \quad T_{n}=\frac{\p`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `H=S+T_{0}+T_{1} r^{2}+\text { \&c. }+T_{n} r^{2 n}+\ldots,`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\frac{d^{2} H}{d r^{2}}+\frac{1}{r} \frac{d H}{d r}=-4 \pi w`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `-\pi w=T_{1}+\text { \&c. }+n^{2} T_{n} r^{2 n-2}+\ldots`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\rho w=-\frac{d \Psi}{d z}-\frac{d H}{d t},`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{1}=\frac{\pi}{\rho}\left(\frac{d \Psi}{d z}+\frac{d S}{d t}+\frac{d T_{0}}{d t}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `T_{0}=T, \quad T_{1}=\frac{\pi}{\rho} \frac{d T}{d t}, \ldots \quad T_{n}=\frac{\pi^{n}}{\rho^{n}} \`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+H=S+T_{0}+T_{1} r^{2}+\text { \&c. }+T_{n} r^{2 n}+\ldots, \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} H}{d r^{2}}+\frac{1}{r} \frac{d H}{d r}=-4 \pi w \tag{2}
+\end{equation`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+-\pi w=T_{1}+\text { \&c. }+n^{2} T_{n} r^{2 n-2}+\ldots \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+\rho w=-\frac{d \Psi}{d z}-\frac{d H}{d t}, \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{align*}
+& T_{1}=\frac{\pi}{\rho}\left(\frac{d \Psi}{d z}+\frac{d S}{d t}+\frac{d T_{0}}{d t}\`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{equation*}
+T_{0}=T, \quad T_{1}=\frac{\pi}{\rho} \frac{d T}{d t}, \ldots \quad T_{n}=\frac{\p`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `H=S+T_{0}+T_{1} r^{2}+\text { \&c. }+T_{n} r^{2 n}+\ldots,`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\frac{d^{2} H}{d r^{2}}+\frac{1}{r} \frac{d H}{d r}=-4 \pi w`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `-\pi w=T_{1}+\text { \&c. }+n^{2} T_{n} r^{2 n-2}+\ldots`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\rho w=-\frac{d \Psi}{d z}-\frac{d H}{d t},`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `\begin{aligned}
+& T_{1}=\frac{\pi}{\rho}\left(\frac{d \Psi}{d z}+\frac{d S}{d t}+\frac{d T_{0}}{d t}`
+  - No clear structural match found in code
+- [??] **Art.689** `calc_associated_legendre`: unverified
+  - LaTeX: `T_{0}=T, \quad T_{1}=\frac{\pi}{\rho} \frac{d T}{d t}, \ldots \quad T_{n}=\frac{\pi^{n}}{\rho^{n}} \`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+C=2 \pi \int_{0}^{a} w r d r \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+C=-\left(T_{1} a^{2}+\text { \&c. }+n T_{n} a^{2 n}+\ldots\right) \tag{12}
+\end{eq`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{equation*}
+A C=S+T_{0}+T_{1} a^{2}+\text { \&c. }+T_{n} a^{2 n}+\ldots \tag{13}
+\end{equation`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gather*}
+C=-\left(a \frac{d T}{d t}+\frac{2 a^{2}}{1^{2} \cdot 2^{2}} \frac{d^{2} T}{d t^{2}}`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a \frac{d T}{d t}=-C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{8} a^{2} \frac{d^{2} C}{d t^{2}}+\frac{7`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C=\frac{1}{2} a^{2} \frac{d^{2} T}{d t^{2}}+\frac{1}`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C+\frac{1}{2} a \frac{d C}{d t}-\f`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d S}{d t}=\frac{E}{l}, \quad a=\frac{l}{R},  \tag{17}\\
+E=R C+l\left(A+\frac{1`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `C=2 \pi \int_{0}^{a} w r d r`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `C=-\left(T_{1} a^{2}+\text { \&c. }+n T_{n} a^{2 n}+\ldots\right)`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `A C=S+T_{0}+T_{1} a^{2}+\text { \&c. }+T_{n} a^{2 n}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{gathered}
+C=-\left(a \frac{d T}{d t}+\frac{2 a^{2}}{1^{2} \cdot 2^{2}} \frac{d^{2} T}{d t^{2}`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a \frac{d T}{d t}=-C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{8} a^{2} \frac{d^{2} C}{d t^{2}}+\frac{7`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C=\frac{1}{2} a^{2} \frac{d^{2} T}{d t^{2}}+\frac{1}`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{12} a^{2} \`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d S}{d t}=\frac{E}{l}, \quad a=\frac{l}{R}, \\
+E=R C+l\left(A+\frac{1}{2}\rig`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right) C-\frac{1}{12} \frac{l^{2}}{R}`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{equation*}
+\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right)\left(C_{1}-C_{0}\right), \tag{`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+E & =\left(R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} `
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} l^{4} p^{4}}{R^{3}}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `l A+\mu \frac{l}{2}-\frac{1}{48} \frac{\mu^{3} l^{3} p^{3}}{R^{2}} \ldots .`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right) C-\frac{1}{12} \frac{l^{2}}{R} \frac{d C}{d t}+\`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right)\left(C_{1}-C_{0}\right),`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+E & =\left(R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} `
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} l^{4} p^{4}}{R^{3}}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `l A+\mu \frac{l}{2}-\frac{1}{48} \frac{\mu^{3} l^{3} p^{3}}{R^{2}} \ldots .`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+C=2 \pi \int_{0}^{a} w r d r \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+C=-\left(T_{1} a^{2}+\text { \&c. }+n T_{n} a^{2 n}+\ldots\right) \tag{12}
+\end{eq`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{equation*}
+A C=S+T_{0}+T_{1} a^{2}+\text { \&c. }+T_{n} a^{2 n}+\ldots \tag{13}
+\end{equation`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gather*}
+C=-\left(a \frac{d T}{d t}+\frac{2 a^{2}}{1^{2} \cdot 2^{2}} \frac{d^{2} T}{d t^{2}}`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a \frac{d T}{d t}=-C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{8} a^{2} \frac{d^{2} C}{d t^{2}}+\frac{7`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C=\frac{1}{2} a^{2} \frac{d^{2} T}{d t^{2}}+\frac{1}`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C+\frac{1}{2} a \frac{d C}{d t}-\f`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d S}{d t}=\frac{E}{l}, \quad a=\frac{l}{R},  \tag{17}\\
+E=R C+l\left(A+\frac{1`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `C=2 \pi \int_{0}^{a} w r d r`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `C=-\left(T_{1} a^{2}+\text { \&c. }+n T_{n} a^{2 n}+\ldots\right)`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `A C=S+T_{0}+T_{1} a^{2}+\text { \&c. }+T_{n} a^{2 n}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{gathered}
+C=-\left(a \frac{d T}{d t}+\frac{2 a^{2}}{1^{2} \cdot 2^{2}} \frac{d^{2} T}{d t^{2}`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a \frac{d T}{d t}=-C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{8} a^{2} \frac{d^{2} C}{d t^{2}}+\frac{7`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C=\frac{1}{2} a^{2} \frac{d^{2} T}{d t^{2}}+\frac{1}`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{12} a^{2} \`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d S}{d t}=\frac{E}{l}, \quad a=\frac{l}{R}, \\
+E=R C+l\left(A+\frac{1}{2}\rig`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right) C-\frac{1}{12} \frac{l^{2}}{R}`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{equation*}
+\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right)\left(C_{1}-C_{0}\right), \tag{`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+E & =\left(R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} `
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} l^{4} p^{4}}{R^{3}}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `l A+\mu \frac{l}{2}-\frac{1}{48} \frac{\mu^{3} l^{3} p^{3}}{R^{2}} \ldots .`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right) C-\frac{1}{12} \frac{l^{2}}{R} \frac{d C}{d t}+\`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right)\left(C_{1}-C_{0}\right),`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+E & =\left(R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} `
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} l^{4} p^{4}}{R^{3}}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `l A+\mu \frac{l}{2}-\frac{1}{48} \frac{\mu^{3} l^{3} p^{3}}{R^{2}} \ldots .`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+C=2 \pi \int_{0}^{a} w r d r \tag{11}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+C=-\left(T_{1} a^{2}+\text { \&c. }+n T_{n} a^{2 n}+\ldots\right) \tag{12}
+\end{eq`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{equation*}
+A C=S+T_{0}+T_{1} a^{2}+\text { \&c. }+T_{n} a^{2 n}+\ldots \tag{13}
+\end{equation`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gather*}
+C=-\left(a \frac{d T}{d t}+\frac{2 a^{2}}{1^{2} \cdot 2^{2}} \frac{d^{2} T}{d t^{2}}`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a \frac{d T}{d t}=-C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{8} a^{2} \frac{d^{2} C}{d t^{2}}+\frac{7`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C=\frac{1}{2} a^{2} \frac{d^{2} T}{d t^{2}}+\frac{1}`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C+\frac{1}{2} a \frac{d C}{d t}-\f`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d S}{d t}=\frac{E}{l}, \quad a=\frac{l}{R},  \tag{17}\\
+E=R C+l\left(A+\frac{1`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `C=2 \pi \int_{0}^{a} w r d r`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `C=-\left(T_{1} a^{2}+\text { \&c. }+n T_{n} a^{2 n}+\ldots\right)`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `A C=S+T_{0}+T_{1} a^{2}+\text { \&c. }+T_{n} a^{2 n}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{gathered}
+C=-\left(a \frac{d T}{d t}+\frac{2 a^{2}}{1^{2} \cdot 2^{2}} \frac{d^{2} T}{d t^{2}`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a \frac{d T}{d t}=-C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{8} a^{2} \frac{d^{2} C}{d t^{2}}+\frac{7`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C=\frac{1}{2} a^{2} \frac{d^{2} T}{d t^{2}}+\frac{1}`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `a\left(A \frac{d C}{d t}-\frac{d S}{d t}\right)+C+\frac{1}{2} a \frac{d C}{d t}-\frac{1}{12} a^{2} \`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d S}{d t}=\frac{E}{l}, \quad a=\frac{l}{R}, \\
+E=R C+l\left(A+\frac{1}{2}\rig`
+  - No clear structural match found in code
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{equation*}
+\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right) C-\frac{1}{12} \frac{l^{2}}{R}`
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\begin{equation*}
+\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right)\left(C_{1}-C_{0}\right), \tag{`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+E & =\left(R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} `
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} l^{4} p^{4}}{R^{3}}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `l A+\mu \frac{l}{2}-\frac{1}{48} \frac{\mu^{3} l^{3} p^{3}}{R^{2}} \ldots .`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right) C-\frac{1}{12} \frac{l^{2}}{R} \frac{d C}{d t}+\`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `\int E d t=R \int C d t+l\left(A+\frac{1}{2}\right)\left(C_{1}-C_{0}\right),`
+  - Structural/heuristic match
+- [??] **Art.690** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+E & =\left(R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} `
+  - No clear structural match found in code
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `R+\frac{1}{12} \frac{\mu^{2} l^{2} p^{2}}{R}-\frac{1}{180} \frac{\mu^{4} l^{4} p^{4}}{R^{3}}+\ldots`
+  - Structural/heuristic match
+- [OK] **Art.690** `calc_multipole_expansion`: verified
+  - LaTeX: `l A+\mu \frac{l}{2}-\frac{1}{48} \frac{\mu^{3} l^{3} p^{3}}{R^{2}} \ldots .`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\iiint \int \log r d x d y d x^{\prime} d y^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& \quad \frac{E}{l}=\frac{C \rho}{\pi a^{2}}\left\{1+\frac{1}{12}\left(\frac{\pi \mu`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\frac{C \rho}{2 \pi a} n+A i p C ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `n^{2}=4 \frac{\pi \mu i p}{\rho},`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\sqrt{\frac{\rho p \mu}{2 \pi a^{2}}} C+i p C\left(A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\left\{\frac{\rho p \mu}{2 \pi a^{2}}\right\}^{\frac{1}{2}},`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p}},`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{a} \frac{J_{0}^{\prime}(i n r)}{J_{0}^{\prime}(i n a)} .`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `J_{0}^{\prime}(i n a)=-i \frac{e^{n a}}{\sqrt{\pi 2 n a}} ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{\sqrt{a(a-x)}} e^{-n x} .`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\iiint \int \log r d x d y d x^{\prime} d y^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& \quad \frac{E}{l}=\frac{C \rho}{\pi a^{2}}\left\{1+\frac{1}{12}\left(\frac{\pi \mu`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\frac{C \rho}{2 \pi a} n+A i p C ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `n^{2}=4 \frac{\pi \mu i p}{\rho},`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\sqrt{\frac{\rho p \mu}{2 \pi a^{2}}} C+i p C\left(A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\left\{\frac{\rho p \mu}{2 \pi a^{2}}\right\}^{\frac{1}{2}},`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p}},`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{a} \frac{J_{0}^{\prime}(i n r)}{J_{0}^{\prime}(i n a)} .`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `J_{0}^{\prime}(i n a)=-i \frac{e^{n a}}{\sqrt{\pi 2 n a}} ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{\sqrt{a(a-x)}} e^{-n x} .`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\iiint \int \log r d x d y d x^{\prime} d y^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& \quad \frac{E}{l}=\frac{C \rho}{\pi a^{2}}\left\{1+\frac{1}{12}\left(\frac{\pi \mu`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\frac{C \rho}{2 \pi a} n+A i p C ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `n^{2}=4 \frac{\pi \mu i p}{\rho},`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\sqrt{\frac{\rho p \mu}{2 \pi a^{2}}} C+i p C\left(A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\left\{\frac{\rho p \mu}{2 \pi a^{2}}\right\}^{\frac{1}{2}},`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p}},`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{a} \frac{J_{0}^{\prime}(i n r)}{J_{0}^{\prime}(i n a)} .`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `J_{0}^{\prime}(i n a)=-i \frac{e^{n a}}{\sqrt{\pi 2 n a}} ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{\sqrt{a(a-x)}} e^{-n x} .`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\iiint \int \log r d x d y d x^{\prime} d y^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& \quad \frac{E}{l}=\frac{C \rho}{\pi a^{2}}\left\{1+\frac{1}{12}\left(\frac{\pi \mu`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\frac{C \rho}{2 \pi a} n+A i p C ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `n^{2}=4 \frac{\pi \mu i p}{\rho},`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\sqrt{\frac{\rho p \mu}{2 \pi a^{2}}} C+i p C\left(A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\left\{\frac{\rho p \mu}{2 \pi a^{2}}\right\}^{\frac{1}{2}},`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p}},`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{a} \frac{J_{0}^{\prime}(i n r)}{J_{0}^{\prime}(i n a)} .`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `J_{0}^{\prime}(i n a)=-i \frac{e^{n a}}{\sqrt{\pi 2 n a}} ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{\sqrt{a(a-x)}} e^{-n x} .`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\iiint \int \log r d x d y d x^{\prime} d y^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& \quad \frac{E}{l}=\frac{C \rho}{\pi a^{2}}\left\{1+\frac{1}{12}\left(\frac{\pi \mu`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\frac{C \rho}{2 \pi a} n+A i p C ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `n^{2}=4 \frac{\pi \mu i p}{\rho},`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\sqrt{\frac{\rho p \mu}{2 \pi a^{2}}} C+i p C\left(A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\left\{\frac{\rho p \mu}{2 \pi a^{2}}\right\}^{\frac{1}{2}},`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p}},`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{a} \frac{J_{0}^{\prime}(i n r)}{J_{0}^{\prime}(i n a)} .`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `J_{0}^{\prime}(i n a)=-i \frac{e^{n a}}{\sqrt{\pi 2 n a}} ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{\sqrt{a(a-x)}} e^{-n x} .`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\iiint \int \log r d x d y d x^{\prime} d y^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& \quad \frac{E}{l}=\frac{C \rho}{\pi a^{2}}\left\{1+\frac{1}{12}\left(\frac{\pi \mu`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\frac{C \rho}{2 \pi a} n+A i p C ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `n^{2}=4 \frac{\pi \mu i p}{\rho},`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{E}{l}=\sqrt{\frac{\rho p \mu}{2 \pi a^{2}}} C+i p C\left(A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p`
+  - Structural/heuristic match
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `\left\{\frac{\rho p \mu}{2 \pi a^{2}}\right\}^{\frac{1}{2}},`
+  - No clear structural match found in code
+- [??] **Art.691** `calc_multipole_expansion`: unverified
+  - LaTeX: `A+\sqrt{\frac{\rho \mu}{2 \pi a^{2} p}},`
+  - No clear structural match found in code
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{a} \frac{J_{0}^{\prime}(i n r)}{J_{0}^{\prime}(i n a)} .`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `J_{0}^{\prime}(i n a)=-i \frac{e^{n a}}{\sqrt{\pi 2 n a}} ;`
+  - Structural/heuristic match
+- [OK] **Art.691** `calc_multipole_expansion`: verified
+  - LaTeX: `\frac{2 C}{\sqrt{a(a-x)}} e^{-n x} .`
+  - Structural/heuristic match
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `(A+B) \log R_{A+B}=A \log R_{A}+B \log R_{B} .`
+  - Structural/heuristic match
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `A B(\log R+1)=A P \log O A+P B \log O B+O P A \widehat{O} B .`
+  - Structural/heuristic match
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& a b(2 \log R+3)=\left(c^{2}-(a-b)^{2}\right) \log \sqrt{c^{2}+(a-b)^{2}}+c^{2} \lo`
+  - No clear structural match found in code
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `(A+B) \log R_{A+B}=A \log R_{A}+B \log R_{B} .`
+  - Structural/heuristic match
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `A B(\log R+1)=A P \log O A+P B \log O B+O P A \widehat{O} B .`
+  - Structural/heuristic match
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& a b(2 \log R+3)=\left(c^{2}-(a-b)^{2}\right) \log \sqrt{c^{2}+(a-b)^{2}}+c^{2} \lo`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{array}{r}
+P Q . R S(2 \log R+3)=\log P R\left(2 O P . O R \sin ^{2} O-P R^{2} \cos O\right) \`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& +O P^{2} \cdot D \widehat{D A}+O Q^{2} \cdot A \widehat{O B} B \\
+& +O R^{2} \cdot`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{3}{2}, \\
+\text { or } & =a e^{-\frac{3}{2}} \\
+R & =0.22313 `
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{array}{r}
+P Q . R S(2 \log R+3)=\log P R\left(2 O P . O R \sin ^{2} O-P R^{2} \cos O\right) \`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& +O P^{2} \cdot D \widehat{D A}+O Q^{2} \cdot A \widehat{O B} B \\
+& +O R^{2} \cdot`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{3}{2}, \\
+\text { or } & =a e^{-\frac{3}{2}} \\
+R & =0.22313 `
+  - No clear structural match found in code
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `(A+B) \log R_{A+B}=A \log R_{A}+B \log R_{B} .`
+  - Structural/heuristic match
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `A B(\log R+1)=A P \log O A+P B \log O B+O P A \widehat{O} B .`
+  - Structural/heuristic match
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& a b(2 \log R+3)=\left(c^{2}-(a-b)^{2}\right) \log \sqrt{c^{2}+(a-b)^{2}}+c^{2} \lo`
+  - No clear structural match found in code
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `(A+B) \log R_{A+B}=A \log R_{A}+B \log R_{B} .`
+  - Structural/heuristic match
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `A B(\log R+1)=A P \log O A+P B \log O B+O P A \widehat{O} B .`
+  - Structural/heuristic match
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& a b(2 \log R+3)=\left(c^{2}-(a-b)^{2}\right) \log \sqrt{c^{2}+(a-b)^{2}}+c^{2} \lo`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{array}{r}
+P Q . R S(2 \log R+3)=\log P R\left(2 O P . O R \sin ^{2} O-P R^{2} \cos O\right) \`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& +O P^{2} \cdot D \widehat{D A}+O Q^{2} \cdot A \widehat{O B} B \\
+& +O R^{2} \cdot`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{3}{2}, \\
+\text { or } & =a e^{-\frac{3}{2}} \\
+R & =0.22313 `
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{array}{r}
+P Q . R S(2 \log R+3)=\log P R\left(2 O P . O R \sin ^{2} O-P R^{2} \cos O\right) \`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& +O P^{2} \cdot D \widehat{D A}+O Q^{2} \cdot A \widehat{O B} B \\
+& +O R^{2} \cdot`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{3}{2}, \\
+\text { or } & =a e^{-\frac{3}{2}} \\
+R & =0.22313 `
+  - No clear structural match found in code
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `(A+B) \log R_{A+B}=A \log R_{A}+B \log R_{B} .`
+  - Structural/heuristic match
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `A B(\log R+1)=A P \log O A+P B \log O B+O P A \widehat{O} B .`
+  - Structural/heuristic match
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& a b(2 \log R+3)=\left(c^{2}-(a-b)^{2}\right) \log \sqrt{c^{2}+(a-b)^{2}}+c^{2} \lo`
+  - No clear structural match found in code
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `(A+B) \log R_{A+B}=A \log R_{A}+B \log R_{B} .`
+  - Structural/heuristic match
+- [OK] **Art.692** `calc_multipole_expansion`: verified
+  - LaTeX: `A B(\log R+1)=A P \log O A+P B \log O B+O P A \widehat{O} B .`
+  - Structural/heuristic match
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& a b(2 \log R+3)=\left(c^{2}-(a-b)^{2}\right) \log \sqrt{c^{2}+(a-b)^{2}}+c^{2} \lo`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{array}{r}
+P Q . R S(2 \log R+3)=\log P R\left(2 O P . O R \sin ^{2} O-P R^{2} \cos O\right) \`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& +O P^{2} \cdot D \widehat{D A}+O Q^{2} \cdot A \widehat{O B} B \\
+& +O R^{2} \cdot`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{3}{2}, \\
+\text { or } & =a e^{-\frac{3}{2}} \\
+R & =0.22313 `
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{array}{r}
+P Q . R S(2 \log R+3)=\log P R\left(2 O P . O R \sin ^{2} O-P R^{2} \cos O\right) \`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+& +O P^{2} \cdot D \widehat{D A}+O Q^{2} \cdot A \widehat{O B} B \\
+& +O R^{2} \cdot`
+  - No clear structural match found in code
+- [??] **Art.692** `calc_multipole_expansion`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{3}{2}, \\
+\text { or } & =a e^{-\frac{3}{2}} \\
+R & =0.22313 `
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{array}{r}
+\log R=\log \sqrt{a^{2}+b^{2}}-\frac{1}{6} \frac{a^{2}}{b^{2}} \log \sqrt{1+\frac{b`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a+\frac{1}{3} \log 2+\frac{\pi}{3}-{ }_{1}^{2} \frac{5}{2} \\
+R & =0.`
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\frac{a_{1}{ }^{2} \log a_{1}-a_{2}{ }^{2} \log a_{2}}{a_{1}{ }^{2}-a_{2}{ }^{2}}-\frac{1}{2}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\log a_{1}-\frac{a_{2}^{4}}{\left(a_{1}^{2}-a_{2}^{2}\right)^{2}} \log \frac{a_{1}}{a_{2}}+\f`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{1}{4}, \\
+\text { or } \quad R & =a e^{-\frac{1}{4}}, \\
+R & `
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\left.\log R=\log \frac{a+b}{2}-\frac{1}{4} \cdot\right\}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{array}{r}
+\log R=\log \sqrt{a^{2}+b^{2}}-\frac{1}{6} \frac{a^{2}}{b^{2}} \log \sqrt{1+\frac{b`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a+\frac{1}{3} \log 2+\frac{\pi}{3}-{ }_{1}^{2} \frac{5}{2} \\
+R & =0.`
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\frac{a_{1}{ }^{2} \log a_{1}-a_{2}{ }^{2} \log a_{2}}{a_{1}{ }^{2}-a_{2}{ }^{2}}-\frac{1}{2}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\log a_{1}-\frac{a_{2}^{4}}{\left(a_{1}^{2}-a_{2}^{2}\right)^{2}} \log \frac{a_{1}}{a_{2}}+\f`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{1}{4}, \\
+\text { or } \quad R & =a e^{-\frac{1}{4}}, \\
+R & `
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\left.\log R=\log \frac{a+b}{2}-\frac{1}{4} \cdot\right\}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{array}{r}
+\log R=\log \sqrt{a^{2}+b^{2}}-\frac{1}{6} \frac{a^{2}}{b^{2}} \log \sqrt{1+\frac{b`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a+\frac{1}{3} \log 2+\frac{\pi}{3}-{ }_{1}^{2} \frac{5}{2} \\
+R & =0.`
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\frac{a_{1}{ }^{2} \log a_{1}-a_{2}{ }^{2} \log a_{2}}{a_{1}{ }^{2}-a_{2}{ }^{2}}-\frac{1}{2}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\log a_{1}-\frac{a_{2}^{4}}{\left(a_{1}^{2}-a_{2}^{2}\right)^{2}} \log \frac{a_{1}}{a_{2}}+\f`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{1}{4}, \\
+\text { or } \quad R & =a e^{-\frac{1}{4}}, \\
+R & `
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\left.\log R=\log \frac{a+b}{2}-\frac{1}{4} \cdot\right\}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{array}{r}
+\log R=\log \sqrt{a^{2}+b^{2}}-\frac{1}{6} \frac{a^{2}}{b^{2}} \log \sqrt{1+\frac{b`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a+\frac{1}{3} \log 2+\frac{\pi}{3}-{ }_{1}^{2} \frac{5}{2} \\
+R & =0.`
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\frac{a_{1}{ }^{2} \log a_{1}-a_{2}{ }^{2} \log a_{2}}{a_{1}{ }^{2}-a_{2}{ }^{2}}-\frac{1}{2}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\log a_{1}-\frac{a_{2}^{4}}{\left(a_{1}^{2}-a_{2}^{2}\right)^{2}} \log \frac{a_{1}}{a_{2}}+\f`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{1}{4}, \\
+\text { or } \quad R & =a e^{-\frac{1}{4}}, \\
+R & `
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\left.\log R=\log \frac{a+b}{2}-\frac{1}{4} \cdot\right\}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{array}{r}
+\log R=\log \sqrt{a^{2}+b^{2}}-\frac{1}{6} \frac{a^{2}}{b^{2}} \log \sqrt{1+\frac{b`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a+\frac{1}{3} \log 2+\frac{\pi}{3}-{ }_{1}^{2} \frac{5}{2} \\
+R & =0.`
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\frac{a_{1}{ }^{2} \log a_{1}-a_{2}{ }^{2} \log a_{2}}{a_{1}{ }^{2}-a_{2}{ }^{2}}-\frac{1}{2}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\log a_{1}-\frac{a_{2}^{4}}{\left(a_{1}^{2}-a_{2}^{2}\right)^{2}} \log \frac{a_{1}}{a_{2}}+\f`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{1}{4}, \\
+\text { or } \quad R & =a e^{-\frac{1}{4}}, \\
+R & `
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\left.\log R=\log \frac{a+b}{2}-\frac{1}{4} \cdot\right\}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{array}{r}
+\log R=\log \sqrt{a^{2}+b^{2}}-\frac{1}{6} \frac{a^{2}}{b^{2}} \log \sqrt{1+\frac{b`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a+\frac{1}{3} \log 2+\frac{\pi}{3}-{ }_{1}^{2} \frac{5}{2} \\
+R & =0.`
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\frac{a_{1}{ }^{2} \log a_{1}-a_{2}{ }^{2} \log a_{2}}{a_{1}{ }^{2}-a_{2}{ }^{2}}-\frac{1}{2}`
+  - Structural/heuristic match
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\log R=\log a_{1}-\frac{a_{2}^{4}}{\left(a_{1}^{2}-a_{2}^{2}\right)^{2}} \log \frac{a_{1}}{a_{2}}+\f`
+  - Structural/heuristic match
+- [??] **Art.693** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+\log R & =\log a-\frac{1}{4}, \\
+\text { or } \quad R & =a e^{-\frac{1}{4}}, \\
+R & `
+  - No clear structural match found in code
+- [OK] **Art.693** `verify_spherical_harmonics`: verified
+  - LaTeX: `\left.\log R=\log \frac{a+b}{2}-\frac{1}{4} \cdot\right\}`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{gather*}
+i(i+1) P_{i}+\frac{d}{d \mu}\left[\left(1-\mu^{2}\right) \frac{d P_{i}}{d \mu}\right`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\int_{\mu}^{1} P_{0} d \mu=1-\mu . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+V & =2 \pi c\left\{1-\cos \alpha+\& \mathrm{c} .+\frac{\sin ^{2} a}{i(i+1)} \frac{r^{`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{equation*}
+\omega=-\frac{1}{c} \frac{d}{d r}(V r) . \tag{5}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=-2 \pi\left\{1-\cos a+\text { \&c. }+\frac{\sin ^{2} a}{i} \frac{r^{i}}{c^{`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\text { or } \omega^{\prime}=2 \pi \sin ^{2} \alpha\left\{\frac{1}{2} \frac{c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{gathered}
+i(i+1) P_{i}+\frac{d}{d \mu}\left[\left(1-\mu^{2}\right) \frac{d P_{i}}{d \mu}\righ`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\int_{\mu}^{1} P_{0} d \mu=1-\mu .`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+V & =2 \pi c\left\{1-\cos \alpha+\& \mathrm{c} .+\frac{\sin ^{2} a}{i(i+1)} \frac{r^`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\omega=-\frac{1}{c} \frac{d}{d r}(V r) .`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\omega=-2 \pi\left\{1-\cos a+\text { \&c. }+\frac{\sin ^{2} a}{i} \frac{r^{i}}{c^{i}} P_{i}^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\text { or } \omega^{\prime}=2 \pi \sin ^{2} \alpha\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}^{\pr`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{gather*}
+i(i+1) P_{i}+\frac{d}{d \mu}\left[\left(1-\mu^{2}\right) \frac{d P_{i}}{d \mu}\right`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\int_{\mu}^{1} P_{0} d \mu=1-\mu . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+V & =2 \pi c\left\{1-\cos \alpha+\& \mathrm{c} .+\frac{\sin ^{2} a}{i(i+1)} \frac{r^{`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{equation*}
+\omega=-\frac{1}{c} \frac{d}{d r}(V r) . \tag{5}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=-2 \pi\left\{1-\cos a+\text { \&c. }+\frac{\sin ^{2} a}{i} \frac{r^{i}}{c^{`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\text { or } \omega^{\prime}=2 \pi \sin ^{2} \alpha\left\{\frac{1}{2} \frac{c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{gathered}
+i(i+1) P_{i}+\frac{d}{d \mu}\left[\left(1-\mu^{2}\right) \frac{d P_{i}}{d \mu}\righ`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\int_{\mu}^{1} P_{0} d \mu=1-\mu .`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+V & =2 \pi c\left\{1-\cos \alpha+\& \mathrm{c} .+\frac{\sin ^{2} a}{i(i+1)} \frac{r^`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\omega=-\frac{1}{c} \frac{d}{d r}(V r) .`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\omega=-2 \pi\left\{1-\cos a+\text { \&c. }+\frac{\sin ^{2} a}{i} \frac{r^{i}}{c^{i}} P_{i}^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\text { or } \omega^{\prime}=2 \pi \sin ^{2} \alpha\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}^{\pr`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{gather*}
+i(i+1) P_{i}+\frac{d}{d \mu}\left[\left(1-\mu^{2}\right) \frac{d P_{i}}{d \mu}\right`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\int_{\mu}^{1} P_{0} d \mu=1-\mu . \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{align*}
+V & =2 \pi c\left\{1-\cos \alpha+\& \mathrm{c} .+\frac{\sin ^{2} a}{i(i+1)} \frac{r^{`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\begin{equation*}
+\omega=-\frac{1}{c} \frac{d}{d r}(V r) . \tag{5}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\omega=-2 \pi\left\{1-\cos a+\text { \&c. }+\frac{\sin ^{2} a}{i} \frac{r^{i}}{c^{`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{equation*}
+\text { or } \omega^{\prime}=2 \pi \sin ^{2} \alpha\left\{\frac{1}{2} \frac{c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{gathered}
+i(i+1) P_{i}+\frac{d}{d \mu}\left[\left(1-\mu^{2}\right) \frac{d P_{i}}{d \mu}\righ`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\int_{\mu}^{1} P_{0} d \mu=1-\mu .`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\begin{aligned}
+V & =2 \pi c\left\{1-\cos \alpha+\& \mathrm{c} .+\frac{\sin ^{2} a}{i(i+1)} \frac{r^`
+  - No clear structural match found in code
+- [OK] **Art.695** `verify_spherical_harmonics`: verified
+  - LaTeX: `\omega=-\frac{1}{c} \frac{d}{d r}(V r) .`
+  - Structural/heuristic match
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\omega=-2 \pi\left\{1-\cos a+\text { \&c. }+\frac{\sin ^{2} a}{i} \frac{r^{i}}{c^{i}} P_{i}^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.695** `verify_spherical_harmonics`: unverified
+  - LaTeX: `\text { or } \omega^{\prime}=2 \pi \sin ^{2} \alpha\left\{\frac{1}{2} \frac{c^{2}}{r^{2}} P_{1}^{\pr`
+  - No clear structural match found in code
+
 ### `maxwell\mechanics\potential_energy.py`
 
 - [??] **Art.389** `calc_dipole_potential_energy`: unverified
@@ -7970,6 +14329,2469 @@ M=-\phi \int\left(F \frac{d x}{d s}+G \frac{d y}{d s}+H \frac{d z}{d s}\right) d
   - No clear structural match found in code
 - [??] **Art.423** `calc_shell_potential_energy`: unverified
   - LaTeX: `\phi^{\prime} \int \frac{1}{r} \frac{d x^{\prime}}{d s^{\prime}} d s^{\prime}`
+  - No clear structural match found in code
+
+### `maxwell\molecular\amperes_theory.py`
+
+- [??] **Art.835** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d a}{d x}+\frac{d \beta}{d y}+\frac{d \gamma}{d z}=0 . \tag{1}
+\end{equation`
+  - No clear structural match found in code
+- [OK] **Art.835** `verify_amperes_theory`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d \beta}{d y}+\frac{d \gamma}{d z}=0 .`
+  - Structural/heuristic match
+- [??] **Art.835** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d a}{d x}+\frac{d \beta}{d y}+\frac{d \gamma}{d z}=0 . \tag{1}
+\end{equation`
+  - No clear structural match found in code
+- [OK] **Art.835** `verify_amperes_theory`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d \beta}{d y}+\frac{d \gamma}{d z}=0 .`
+  - Structural/heuristic match
+- [??] **Art.835** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d a}{d x}+\frac{d \beta}{d y}+\frac{d \gamma}{d z}=0 . \tag{1}
+\end{equation`
+  - No clear structural match found in code
+- [OK] **Art.835** `verify_amperes_theory`: verified
+  - LaTeX: `\frac{d a}{d x}+\frac{d \beta}{d y}+\frac{d \gamma}{d z}=0 .`
+  - Structural/heuristic match
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}\left(L_{\gamma}+M_{\gamma^{\prime}}\right)=-R_{\gamma} ; \tag{2}
+\en`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+L \gamma+M \gamma^{\prime}=\text { constant },=L \gamma_{0}, \text { say } . \tag{`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+L \gamma+X A \cos \theta=L \gamma_{0}, \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\frac{d}{d t}\left(L_{\gamma}+M_{\gamma^{\prime}}\right)=-R_{\gamma} ;`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `L \gamma+M \gamma^{\prime}=\text { constant },=L \gamma_{0}, \text { say } .`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `L \gamma+X A \cos \theta=L \gamma_{0},`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}\left(L_{\gamma}+M_{\gamma^{\prime}}\right)=-R_{\gamma} ; \tag{2}
+\en`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+L \gamma+M \gamma^{\prime}=\text { constant },=L \gamma_{0}, \text { say } . \tag{`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+L \gamma+X A \cos \theta=L \gamma_{0}, \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\frac{d}{d t}\left(L_{\gamma}+M_{\gamma^{\prime}}\right)=-R_{\gamma} ;`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `L \gamma+M \gamma^{\prime}=\text { constant },=L \gamma_{0}, \text { say } .`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `L \gamma+X A \cos \theta=L \gamma_{0},`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}\left(L_{\gamma}+M_{\gamma^{\prime}}\right)=-R_{\gamma} ; \tag{2}
+\en`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+L \gamma+M \gamma^{\prime}=\text { constant },=L \gamma_{0}, \text { say } . \tag{`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+L \gamma+X A \cos \theta=L \gamma_{0}, \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `\frac{d}{d t}\left(L_{\gamma}+M_{\gamma^{\prime}}\right)=-R_{\gamma} ;`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `L \gamma+M \gamma^{\prime}=\text { constant },=L \gamma_{0}, \text { say } .`
+  - No clear structural match found in code
+- [??] **Art.836** `verify_amperes_theory`: unverified
+  - LaTeX: `L \gamma+X A \cos \theta=L \gamma_{0},`
+  - No clear structural match found in code
+- [??] **Art.837** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=-\frac{X A}{L} \cos \theta . \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.837** `verify_amperes_theory`: unverified
+  - LaTeX: `\gamma=-\frac{X A}{L} \cos \theta .`
+  - No clear structural match found in code
+- [??] **Art.837** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=-\frac{X A}{L} \cos \theta . \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.837** `verify_amperes_theory`: unverified
+  - LaTeX: `\gamma=-\frac{X A}{L} \cos \theta .`
+  - No clear structural match found in code
+- [??] **Art.837** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=-\frac{X A}{L} \cos \theta . \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.837** `verify_amperes_theory`: unverified
+  - LaTeX: `\gamma=-\frac{X A}{L} \cos \theta .`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{X A^{2}}{L}-\cos ^{2} \theta . \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{1}{3} \frac{n X A^{2}}{L} . \tag{7}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\kappa=-\frac{1}{8} \frac{n A^{2}}{L} \cdot \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `-\frac{X A^{2}}{L}-\cos ^{2} \theta .`
+  - No clear structural match found in code
+- [OK] **Art.838** `verify_amperes_theory`: verified
+  - LaTeX: `-\frac{1}{3} \frac{n X A^{2}}{L} .`
+  - Structural/heuristic match
+- [OK] **Art.838** `verify_amperes_theory`: verified
+  - LaTeX: `\kappa=-\frac{1}{8} \frac{n A^{2}}{L} \cdot`
+  - Structural/heuristic match
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{X A^{2}}{L}-\cos ^{2} \theta . \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{1}{3} \frac{n X A^{2}}{L} . \tag{7}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\kappa=-\frac{1}{8} \frac{n A^{2}}{L} \cdot \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `-\frac{X A^{2}}{L}-\cos ^{2} \theta .`
+  - No clear structural match found in code
+- [OK] **Art.838** `verify_amperes_theory`: verified
+  - LaTeX: `-\frac{1}{3} \frac{n X A^{2}}{L} .`
+  - Structural/heuristic match
+- [OK] **Art.838** `verify_amperes_theory`: verified
+  - LaTeX: `\kappa=-\frac{1}{8} \frac{n A^{2}}{L} \cdot`
+  - Structural/heuristic match
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{X A^{2}}{L}-\cos ^{2} \theta . \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{1}{3} \frac{n X A^{2}}{L} . \tag{7}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\kappa=-\frac{1}{8} \frac{n A^{2}}{L} \cdot \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.838** `verify_amperes_theory`: unverified
+  - LaTeX: `-\frac{X A^{2}}{L}-\cos ^{2} \theta .`
+  - No clear structural match found in code
+- [OK] **Art.838** `verify_amperes_theory`: verified
+  - LaTeX: `-\frac{1}{3} \frac{n X A^{2}}{L} .`
+  - Structural/heuristic match
+- [OK] **Art.838** `verify_amperes_theory`: verified
+  - LaTeX: `\kappa=-\frac{1}{8} \frac{n A^{2}}{L} \cdot`
+  - Structural/heuristic match
+- [??] **Art.839** `verify_amperes_theory`: unverified
+  - LaTeX: `\Sigma \frac{A^{2}}{L} \cos ^{2} \theta`
+  - No clear structural match found in code
+- [??] **Art.839** `verify_amperes_theory`: unverified
+  - LaTeX: `\Sigma \frac{A^{2}}{L} \cos ^{2} \theta`
+  - No clear structural match found in code
+- [??] **Art.839** `verify_amperes_theory`: unverified
+  - LaTeX: `\Sigma \frac{A^{2}}{L} \cos ^{2} \theta`
+  - No clear structural match found in code
+- [??] **Art.839** `verify_amperes_theory`: unverified
+  - LaTeX: `\Sigma \frac{A^{2}}{L} \cos ^{2} \theta`
+  - No clear structural match found in code
+- [??] **Art.839** `verify_amperes_theory`: unverified
+  - LaTeX: `\Sigma \frac{A^{2}}{L} \cos ^{2} \theta`
+  - No clear structural match found in code
+- [??] **Art.839** `verify_amperes_theory`: unverified
+  - LaTeX: `\Sigma \frac{A^{2}}{L} \cos ^{2} \theta`
+  - No clear structural match found in code
+
+### `maxwell\molecular\competing_theories.py`
+
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{r^{2}} d s d s^{\prime} i V(2 \cos \widehat{V d} d s-3 \cos \widehat{V r}`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{r^{2}} d s d s^{\prime}\left(r \frac{d r}{d s} \frac{d i}{d t}+2 i \frac{`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{1}{r^{2}} d s d s^{\prime} i V(2 \cos \widehat{V d} d s-3 \cos \widehat{V r} \cos \widehat{r d`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{1}{r^{2}} d s d s^{\prime}\left(r \frac{d r}{d s} \frac{d i}{d t}+2 i \frac{d}{d s} \frac{d r}`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{r^{2}} d s d s^{\prime} i V(2 \cos \widehat{V d} d s-3 \cos \widehat{V r}`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{r^{2}} d s d s^{\prime}\left(r \frac{d r}{d s} \frac{d i}{d t}+2 i \frac{`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{1}{r^{2}} d s d s^{\prime} i V(2 \cos \widehat{V d} d s-3 \cos \widehat{V r} \cos \widehat{r d`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{1}{r^{2}} d s d s^{\prime}\left(r \frac{d r}{d s} \frac{d i}{d t}+2 i \frac{d}{d s} \frac{d r}`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{r^{2}} d s d s^{\prime} i V(2 \cos \widehat{V d} d s-3 \cos \widehat{V r}`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{r^{2}} d s d s^{\prime}\left(r \frac{d r}{d s} \frac{d i}{d t}+2 i \frac{`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{1}{r^{2}} d s d s^{\prime} i V(2 \cos \widehat{V d} d s-3 \cos \widehat{V r} \cos \widehat{r d`
+  - No clear structural match found in code
+- [??] **Art.859** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{1}{r^{2}} d s d s^{\prime}\left(r \frac{d r}{d s} \frac{d i}{d t}+2 i \frac{d}{d s} \frac{d r}`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}\left(\frac{i}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}}\right) d s`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t} i \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d^{2} r}{d s d s^{\prime}} d s=0 \tag{32}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{d}{d t}(i M), \tag{34}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{d}{d t}\left(\frac{i}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}}\right) d s d s^{\prime}+\fra`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{d}{d t} i \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{\prime}+i \iint `
+  - No clear structural match found in code
+- [OK] **Art.860** `compare_electromagnetic_theories`: verified
+  - LaTeX: `\int \frac{d^{2} r}{d s d s^{\prime}} d s=0`
+  - Structural/heuristic match
+- [OK] **Art.860** `compare_electromagnetic_theories`: verified
+  - LaTeX: `-\frac{d}{d t}(i M),`
+  - Structural/heuristic match
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}\left(\frac{i}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}}\right) d s`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t} i \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d^{2} r}{d s d s^{\prime}} d s=0 \tag{32}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{d}{d t}(i M), \tag{34}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{d}{d t}\left(\frac{i}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}}\right) d s d s^{\prime}+\fra`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{d}{d t} i \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{\prime}+i \iint `
+  - No clear structural match found in code
+- [OK] **Art.860** `compare_electromagnetic_theories`: verified
+  - LaTeX: `\int \frac{d^{2} r}{d s d s^{\prime}} d s=0`
+  - Structural/heuristic match
+- [OK] **Art.860** `compare_electromagnetic_theories`: verified
+  - LaTeX: `-\frac{d}{d t}(i M),`
+  - Structural/heuristic match
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t}\left(\frac{i}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}}\right) d s`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d}{d t} i \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+\int \frac{d^{2} r}{d s d s^{\prime}} d s=0 \tag{32}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\begin{equation*}
+-\frac{d}{d t}(i M), \tag{34}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{d}{d t}\left(\frac{i}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}}\right) d s d s^{\prime}+\fra`
+  - No clear structural match found in code
+- [??] **Art.860** `compare_electromagnetic_theories`: unverified
+  - LaTeX: `\frac{d}{d t} i \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{\prime}+i \iint `
+  - No clear structural match found in code
+- [OK] **Art.860** `compare_electromagnetic_theories`: verified
+  - LaTeX: `\int \frac{d^{2} r}{d s d s^{\prime}} d s=0`
+  - Structural/heuristic match
+- [OK] **Art.860** `compare_electromagnetic_theories`: verified
+  - LaTeX: `-\frac{d}{d t}(i M),`
+  - Structural/heuristic match
+- [OK] **Art.862** `analyze_theory_differences`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=\frac{1}{a^{2}} \`
+  - Structural/heuristic match
+- [OK] **Art.862** `analyze_theory_differences`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=\frac{1}{a^{2}} \`
+  - Structural/heuristic match
+- [OK] **Art.862** `analyze_theory_differences`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=\frac{1}{a^{2}} \`
+  - Structural/heuristic match
+- [OK] **Art.862** `analyze_theory_differences`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=\frac{1}{a^{2}} \`
+  - Structural/heuristic match
+- [OK] **Art.862** `analyze_theory_differences`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=\frac{1}{a^{2}} \`
+  - Structural/heuristic match
+- [OK] **Art.862** `analyze_theory_differences`: verified
+  - LaTeX: `\frac{d^{2} V}{d x^{2}}+\frac{d^{2} V}{d y^{2}}+\frac{d^{2} V}{d z^{2}}+4 \pi \rho=\frac{1}{a^{2}} \`
+  - Structural/heuristic match
+
+### `maxwell\molecular\neumanns_theory.py`
+
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\binom{e e^{\prime}}{r^{2}}=\frac{\left(e+e_{1}\right)\left(e^{\prime}+e_{1}`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{e e^{\prime}}{r^{2}}\left[1+\frac{1}{c^{2}}\left(u^{2}-\frac{8}{2}\left(\frac`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\Sigma\binom{e e^{\prime}}{r^{2}}=\frac{\left(e+e_{1}\right)\left(e^{\prime}+e_{1}^{\prime}\right)}{`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\binom{e e^{\prime}}{r^{2}}=\frac{\left(e+e_{1}\right)\left(e^{\prime}+e_{1}`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{e e^{\prime}}{r^{2}}\left[1+\frac{1}{c^{2}}\left(u^{2}-\frac{8}{2}\left(\frac`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\Sigma\binom{e e^{\prime}}{r^{2}}=\frac{\left(e+e_{1}\right)\left(e^{\prime}+e_{1}^{\prime}\right)}{`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\binom{e e^{\prime}}{r^{2}}=\frac{\left(e+e_{1}\right)\left(e^{\prime}+e_{1}`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{e e^{\prime}}{r^{2}}\left[1+\frac{1}{c^{2}}\left(u^{2}-\frac{8}{2}\left(\frac`
+  - No clear structural match found in code
+- [??] **Art.851** `calc_neumann_potential`: unverified
+  - LaTeX: `\Sigma\binom{e e^{\prime}}{r^{2}}=\frac{\left(e+e_{1}\right)\left(e^{\prime}+e_{1}^{\prime}\right)}{`
+  - No clear structural match found in code
+- [??] **Art.852** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{e e^{\prime}}{r^{2}}\left[1+\frac{1}{c^{2}}\left(u^{2}-\frac{8}{2}\left(\fra`
+  - No clear structural match found in code
+- [??] **Art.852** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{e e^{\prime}}{r^{2}}\left[1+\frac{1}{c^{2}}\left(u^{2}-\frac{8}{2}\left(\fra`
+  - No clear structural match found in code
+- [??] **Art.852** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{e e^{\prime}}{r^{2}}\left[1+\frac{1}{c^{2}}\left(u^{2}-\frac{8}{2}\left(\fra`
+  - No clear structural match found in code
+- [??] **Art.853** `calc_mutual_inductance_neumann`: unverified
+  - LaTeX: `\begin{equation*}
+\psi=\frac{e e^{\prime}}{r}\left[1-\frac{1}{2 c^{2}}\left(\frac{\partial r}{\parti`
+  - No clear structural match found in code
+- [??] **Art.853** `calc_mutual_inductance_neumann`: unverified
+  - LaTeX: `\psi=\frac{e e^{\prime}}{r}\left[1-\frac{1}{2 c^{2}}\left(\frac{\partial r}{\partial t}\right)^{2}\r`
+  - No clear structural match found in code
+- [??] **Art.853** `calc_mutual_inductance_neumann`: unverified
+  - LaTeX: `\begin{equation*}
+\psi=\frac{e e^{\prime}}{r}\left[1-\frac{1}{2 c^{2}}\left(\frac{\partial r}{\parti`
+  - No clear structural match found in code
+- [??] **Art.853** `calc_mutual_inductance_neumann`: unverified
+  - LaTeX: `\psi=\frac{e e^{\prime}}{r}\left[1-\frac{1}{2 c^{2}}\left(\frac{\partial r}{\partial t}\right)^{2}\r`
+  - No clear structural match found in code
+- [??] **Art.853** `calc_mutual_inductance_neumann`: unverified
+  - LaTeX: `\begin{equation*}
+\psi=\frac{e e^{\prime}}{r}\left[1-\frac{1}{2 c^{2}}\left(\frac{\partial r}{\parti`
+  - No clear structural match found in code
+- [??] **Art.853** `calc_mutual_inductance_neumann`: unverified
+  - LaTeX: `\psi=\frac{e e^{\prime}}{r}\left[1-\frac{1}{2 c^{2}}\left(\frac{\partial r}{\partial t}\right)^{2}\r`
+  - No clear structural match found in code
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+4 \pi a \sigma e\left(1-\frac{v^{2}}{6 c^{2}}\right), \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{2}\left(m-\frac{4}{8} \frac{\pi a \sigma e}{c^{2}}\right) v^{2}+4 \pi a \`
+  - No clear structural match found in code
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `4 \pi a \sigma e\left(1-\frac{v^{2}}{6 c^{2}}\right),`
+  - No clear structural match found in code
+- [OK] **Art.855** `verify_neumanns_theory`: verified
+  - LaTeX: `\frac{1}{2}\left(m-\frac{4}{8} \frac{\pi a \sigma e}{c^{2}}\right) v^{2}+4 \pi a \sigma e+V=\text { `
+  - Structural/heuristic match
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+4 \pi a \sigma e\left(1-\frac{v^{2}}{6 c^{2}}\right), \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{2}\left(m-\frac{4}{8} \frac{\pi a \sigma e}{c^{2}}\right) v^{2}+4 \pi a \`
+  - No clear structural match found in code
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `4 \pi a \sigma e\left(1-\frac{v^{2}}{6 c^{2}}\right),`
+  - No clear structural match found in code
+- [OK] **Art.855** `verify_neumanns_theory`: verified
+  - LaTeX: `\frac{1}{2}\left(m-\frac{4}{8} \frac{\pi a \sigma e}{c^{2}}\right) v^{2}+4 \pi a \sigma e+V=\text { `
+  - Structural/heuristic match
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+4 \pi a \sigma e\left(1-\frac{v^{2}}{6 c^{2}}\right), \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{2}\left(m-\frac{4}{8} \frac{\pi a \sigma e}{c^{2}}\right) v^{2}+4 \pi a \`
+  - No clear structural match found in code
+- [??] **Art.855** `verify_neumanns_theory`: unverified
+  - LaTeX: `4 \pi a \sigma e\left(1-\frac{v^{2}}{6 c^{2}}\right),`
+  - No clear structural match found in code
+- [OK] **Art.855** `verify_neumanns_theory`: verified
+  - LaTeX: `\frac{1}{2}\left(m-\frac{4}{8} \frac{\pi a \sigma e}{c^{2}}\right) v^{2}+4 \pi a \sigma e+V=\text { `
+  - Structural/heuristic match
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-i i^{\prime} d s d s^{\prime} \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-i i^{\prime} \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}, \text { as in Arts. 423,524. }`
+  - No clear structural match found in code
+- [OK] **Art.856** `verify_neumanns_theory`: verified
+  - LaTeX: `-i i^{\prime} d s d s^{\prime} \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}},`
+  - Structural/heuristic match
+- [OK] **Art.856** `verify_neumanns_theory`: verified
+  - LaTeX: `-i i^{\prime} \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{\prime}=i i^{\prim`
+  - Structural/heuristic match
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}, \text { as in Arts. 423,524. }`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-i i^{\prime} d s d s^{\prime} \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-i i^{\prime} \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}, \text { as in Arts. 423,524. }`
+  - No clear structural match found in code
+- [OK] **Art.856** `verify_neumanns_theory`: verified
+  - LaTeX: `-i i^{\prime} d s d s^{\prime} \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}},`
+  - Structural/heuristic match
+- [OK] **Art.856** `verify_neumanns_theory`: verified
+  - LaTeX: `-i i^{\prime} \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{\prime}=i i^{\prim`
+  - Structural/heuristic match
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}, \text { as in Arts. 423,524. }`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-i i^{\prime} d s d s^{\prime} \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-i i^{\prime} \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{`
+  - No clear structural match found in code
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}, \text { as in Arts. 423,524. }`
+  - No clear structural match found in code
+- [OK] **Art.856** `verify_neumanns_theory`: verified
+  - LaTeX: `-i i^{\prime} d s d s^{\prime} \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}},`
+  - Structural/heuristic match
+- [OK] **Art.856** `verify_neumanns_theory`: verified
+  - LaTeX: `-i i^{\prime} \iint \frac{1}{r} \frac{d r}{d s} \frac{d r}{d s^{\prime}} d s d s^{\prime}=i i^{\prim`
+  - Structural/heuristic match
+- [??] **Art.856** `verify_neumanns_theory`: unverified
+  - LaTeX: `M=\iint \frac{\cos \epsilon}{r} d s d s^{\prime}, \text { as in Arts. 423,524. }`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `e^{\prime}\left(v e+v_{1} e_{1}\right) \quad \text { and } \quad e_{1}^{\prime}\left(v e+v_{1} e_{1}`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+u^{2}=v^{2}+v^{\prime 2}+V^{2}-2 v v^{\prime} \cos \epsilon+2 V v \cos \hat{V d} s`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `2 v \frac{d r}{d s} \frac{d r}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{align*}
+\frac{\partial^{2} r}{\partial t^{2}} & =v^{2} \frac{d^{2} r}{d s^{2}}+2 v v^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `e^{\prime}\left(v e+v_{1} e_{1}\right) \quad \text { and } \quad e_{1}^{\prime}\left(v e+v_{1} e_{1}`
+  - No clear structural match found in code
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `u^{2}=v^{2}+v^{\prime 2}+V^{2}-2 v v^{\prime} \cos \epsilon+2 V v \cos \hat{V d} s-2 V v^{\prime} \c`
+  - Structural/heuristic match
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}}+\frac{d r}{d t},`
+  - Structural/heuristic match
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `2 v \frac{d r}{d s} \frac{d r}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{\partial^{2} r}{\partial t^{2}} & =v^{2} \frac{d^{2} r}{d s^{2}}+2 v v^{\prime`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `e^{\prime}\left(v e+v_{1} e_{1}\right) \quad \text { and } \quad e_{1}^{\prime}\left(v e+v_{1} e_{1}`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+u^{2}=v^{2}+v^{\prime 2}+V^{2}-2 v v^{\prime} \cos \epsilon+2 V v \cos \hat{V d} s`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `2 v \frac{d r}{d s} \frac{d r}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{align*}
+\frac{\partial^{2} r}{\partial t^{2}} & =v^{2} \frac{d^{2} r}{d s^{2}}+2 v v^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `e^{\prime}\left(v e+v_{1} e_{1}\right) \quad \text { and } \quad e_{1}^{\prime}\left(v e+v_{1} e_{1}`
+  - No clear structural match found in code
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `u^{2}=v^{2}+v^{\prime 2}+V^{2}-2 v v^{\prime} \cos \epsilon+2 V v \cos \hat{V d} s-2 V v^{\prime} \c`
+  - Structural/heuristic match
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}}+\frac{d r}{d t},`
+  - Structural/heuristic match
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `2 v \frac{d r}{d s} \frac{d r}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{\partial^{2} r}{\partial t^{2}} & =v^{2} \frac{d^{2} r}{d s^{2}}+2 v v^{\prime`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `e^{\prime}\left(v e+v_{1} e_{1}\right) \quad \text { and } \quad e_{1}^{\prime}\left(v e+v_{1} e_{1}`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+u^{2}=v^{2}+v^{\prime 2}+V^{2}-2 v v^{\prime} \cos \epsilon+2 V v \cos \hat{V d} s`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `2 v \frac{d r}{d s} \frac{d r}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{align*}
+\frac{\partial^{2} r}{\partial t^{2}} & =v^{2} \frac{d^{2} r}{d s^{2}}+2 v v^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `e^{\prime}\left(v e+v_{1} e_{1}\right) \quad \text { and } \quad e_{1}^{\prime}\left(v e+v_{1} e_{1}`
+  - No clear structural match found in code
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `u^{2}=v^{2}+v^{\prime 2}+V^{2}-2 v v^{\prime} \cos \epsilon+2 V v \cos \hat{V d} s-2 V v^{\prime} \c`
+  - Structural/heuristic match
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}}+\frac{d r}{d t},`
+  - Structural/heuristic match
+- [OK] **Art.858** `verify_neumanns_theory`: verified
+  - LaTeX: `2 v \frac{d r}{d s} \frac{d r}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.858** `verify_neumanns_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\frac{\partial^{2} r}{\partial t^{2}} & =v^{2} \frac{d^{2} r}{d s^{2}}+2 v v^{\prime`
+  - No clear structural match found in code
+
+### `maxwell\molecular\webers_theory.py`
+
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `-\frac{1}{2} r^{3} X,`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `\begin{equation*}
+\mu=\frac{2-2 k^{\prime}}{2+k^{\prime}} \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `-\frac{1}{2} r^{3} X,`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `\mu=\frac{2-2 k^{\prime}}{2+k^{\prime}}`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `-\frac{1}{2} r^{3} X,`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `\begin{equation*}
+\mu=\frac{2-2 k^{\prime}}{2+k^{\prime}} \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `-\frac{1}{2} r^{3} X,`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `\mu=\frac{2-2 k^{\prime}}{2+k^{\prime}}`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `-\frac{1}{2} r^{3} X,`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `\begin{equation*}
+\mu=\frac{2-2 k^{\prime}}{2+k^{\prime}} \tag{9}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `-\frac{1}{2} r^{3} X,`
+  - No clear structural match found in code
+- [??] **Art.841** `calc_weber_force`: unverified
+  - LaTeX: `\mu=\frac{2-2 k^{\prime}}{2+k^{\prime}}`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{equation*}
+k=-\frac{1}{2} k^{\prime}, \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{equation*}
+\kappa=-\frac{3}{4 \tau} \frac{k^{\prime}}{2+k^{\prime}} . \tag{11}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{align*}
+\gamma \gamma^{\prime} \frac{d M}{d \theta} & =-\gamma X A \sin \theta  \tag{12}\\
+& `
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `k=-\frac{1}{2} k^{\prime},`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\kappa=-\frac{3}{4 \tau} \frac{k^{\prime}}{2+k^{\prime}} .`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{aligned}
+\gamma \gamma^{\prime} \frac{d M}{d \theta} & =-\gamma X A \sin \theta \\
+& =\frac{X`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{equation*}
+k=-\frac{1}{2} k^{\prime}, \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{equation*}
+\kappa=-\frac{3}{4 \tau} \frac{k^{\prime}}{2+k^{\prime}} . \tag{11}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{align*}
+\gamma \gamma^{\prime} \frac{d M}{d \theta} & =-\gamma X A \sin \theta  \tag{12}\\
+& `
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `k=-\frac{1}{2} k^{\prime},`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\kappa=-\frac{3}{4 \tau} \frac{k^{\prime}}{2+k^{\prime}} .`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{aligned}
+\gamma \gamma^{\prime} \frac{d M}{d \theta} & =-\gamma X A \sin \theta \\
+& =\frac{X`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{equation*}
+k=-\frac{1}{2} k^{\prime}, \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{equation*}
+\kappa=-\frac{3}{4 \tau} \frac{k^{\prime}}{2+k^{\prime}} . \tag{11}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{align*}
+\gamma \gamma^{\prime} \frac{d M}{d \theta} & =-\gamma X A \sin \theta  \tag{12}\\
+& `
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `k=-\frac{1}{2} k^{\prime},`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\kappa=-\frac{3}{4 \tau} \frac{k^{\prime}}{2+k^{\prime}} .`
+  - No clear structural match found in code
+- [??] **Art.842** `calc_weber_potential`: unverified
+  - LaTeX: `\begin{aligned}
+\gamma \gamma^{\prime} \frac{d M}{d \theta} & =-\gamma X A \sin \theta \\
+& =\frac{X`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=\gamma_{0}-\frac{X A}{L} \cos \theta, \tag{14}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\gamma_{0} X A \sin \theta+\frac{X^{2} A^{2}}{2 L} \sin 2 \theta . \tag{15}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+A \gamma_{0}=m, \quad \frac{A}{L \gamma_{0}}=B, \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+X \sin \theta-B X^{2} \sin \theta \cos \theta=D \sin (a-\theta) . \tag{17}
+\end{eq`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+\gamma A \cos \theta & =\gamma_{0} A \cos \theta-\frac{X A^{2}}{L} \cos ^{2} \theta, `
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\gamma=\gamma_{0}-\frac{X A}{L} \cos \theta,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `-\gamma_{0} X A \sin \theta+\frac{X^{2} A^{2}}{2 L} \sin 2 \theta .`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `A \gamma_{0}=m, \quad \frac{A}{L \gamma_{0}}=B,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `X \sin \theta-B X^{2} \sin \theta \cos \theta=D \sin (a-\theta) .`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\gamma A \cos \theta & =\gamma_{0} A \cos \theta-\frac{X A^{2}}{L} \cos ^{2} \theta,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=\gamma_{0}-\frac{X A}{L} \cos \theta, \tag{14}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\gamma_{0} X A \sin \theta+\frac{X^{2} A^{2}}{2 L} \sin 2 \theta . \tag{15}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+A \gamma_{0}=m, \quad \frac{A}{L \gamma_{0}}=B, \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+X \sin \theta-B X^{2} \sin \theta \cos \theta=D \sin (a-\theta) . \tag{17}
+\end{eq`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+\gamma A \cos \theta & =\gamma_{0} A \cos \theta-\frac{X A^{2}}{L} \cos ^{2} \theta, `
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\gamma=\gamma_{0}-\frac{X A}{L} \cos \theta,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `-\gamma_{0} X A \sin \theta+\frac{X^{2} A^{2}}{2 L} \sin 2 \theta .`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `A \gamma_{0}=m, \quad \frac{A}{L \gamma_{0}}=B,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `X \sin \theta-B X^{2} \sin \theta \cos \theta=D \sin (a-\theta) .`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\gamma A \cos \theta & =\gamma_{0} A \cos \theta-\frac{X A^{2}}{L} \cos ^{2} \theta,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=\gamma_{0}-\frac{X A}{L} \cos \theta, \tag{14}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+-\gamma_{0} X A \sin \theta+\frac{X^{2} A^{2}}{2 L} \sin 2 \theta . \tag{15}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+A \gamma_{0}=m, \quad \frac{A}{L \gamma_{0}}=B, \tag{16}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+X \sin \theta-B X^{2} \sin \theta \cos \theta=D \sin (a-\theta) . \tag{17}
+\end{eq`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+\gamma A \cos \theta & =\gamma_{0} A \cos \theta-\frac{X A^{2}}{L} \cos ^{2} \theta, `
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\gamma=\gamma_{0}-\frac{X A}{L} \cos \theta,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `-\gamma_{0} X A \sin \theta+\frac{X^{2} A^{2}}{2 L} \sin 2 \theta .`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `A \gamma_{0}=m, \quad \frac{A}{L \gamma_{0}}=B,`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `X \sin \theta-B X^{2} \sin \theta \cos \theta=D \sin (a-\theta) .`
+  - No clear structural match found in code
+- [??] **Art.844** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\gamma A \cos \theta & =\gamma_{0} A \cos \theta-\frac{X A^{2}}{L} \cos ^{2} \theta,`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{i i^{\prime} d s d s^{\prime}}{r^{2}}\left(2 \cos \epsilon+3 \frac{d r}{d s} \`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\cos \epsilon, \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \text { and } \frac{d^{2} r}{d s d s^{\prim`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{i i^{\prime} d s d s^{\prime}}{r^{2}}\left(2 \cos \epsilon+3 \frac{d r}{d s} `
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\cos \epsilon, \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \text { and } \frac{d^{2} r}{d s d s^{\prim`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{i i^{\prime} d s d s^{\prime}}{r^{2}}\left(2 \cos \epsilon+3 \frac{d r}{d s} \`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\cos \epsilon, \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \text { and } \frac{d^{2} r}{d s d s^{\prim`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{i i^{\prime} d s d s^{\prime}}{r^{2}}\left(2 \cos \epsilon+3 \frac{d r}{d s} `
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\cos \epsilon, \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \text { and } \frac{d^{2} r}{d s d s^{\prim`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{i i^{\prime} d s d s^{\prime}}{r^{2}}\left(2 \cos \epsilon+3 \frac{d r}{d s} \`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\cos \epsilon, \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \text { and } \frac{d^{2} r}{d s d s^{\prim`
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{i i^{\prime} d s d s^{\prime}}{r^{2}}\left(2 \cos \epsilon+3 \frac{d r}{d s} `
+  - No clear structural match found in code
+- [??] **Art.846** `verify_webers_theory`: unverified
+  - LaTeX: `\cos \epsilon, \frac{d r}{d s} \frac{d r}{d s^{\prime}}, \text { and } \frac{d^{2} r}{d s d s^{\prim`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+u^{2}=v^{2}-2 v v^{\prime} \cos \epsilon+v^{\prime 2} ; \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `u^{2}=v^{2}-2 v v^{\prime} \cos \epsilon+v^{\prime 2} ;`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}},`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+u^{2}=v^{2}-2 v v^{\prime} \cos \epsilon+v^{\prime 2} ; \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `u^{2}=v^{2}-2 v v^{\prime} \cos \epsilon+v^{\prime 2} ;`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}},`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+u^{2}=v^{2}-2 v v^{\prime} \cos \epsilon+v^{\prime 2} ; \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `u^{2}=v^{2}-2 v v^{\prime} \cos \epsilon+v^{\prime 2} ;`
+  - No clear structural match found in code
+- [??] **Art.847** `verify_webers_theory`: unverified
+  - LaTeX: `\frac{\partial r}{\partial t}=v \frac{d r}{d s}+v^{\prime} \frac{d r}{d s^{\prime}},`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+\left(\frac{\partial r}{\partial t}\right)^{2} & =v^{2}\left(\frac{d r}{d s}\right)^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v^{2} e e^{\prime}\right)=\left(v^{2} e+v_{1}^{2} e_{1}\right)\left(e^`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v^{\prime 2} e e^{\prime}\right)=\left(v^{\prime 2} e^{\prime}+v_{1}^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v v^{\prime} e e^{\prime}\right)=\left(v e+v_{1} e_{1}\right)\left(v^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+e^{\prime}+e_{1}^{\prime}=0, \quad \text { or } \quad v^{2} e+v_{1}^{2} e_{1}=0 \t`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\left(\frac{\partial r}{\partial t}\right)^{2} & =v^{2}\left(\frac{d r}{d s}\right)^`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v^{2} e e^{\prime}\right)=\left(v^{2} e+v_{1}^{2} e_{1}\right)\left(e^{\prime}+e_{1}^{\p`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v^{\prime 2} e e^{\prime}\right)=\left(v^{\prime 2} e^{\prime}+v_{1}^{\prime 2} e_{1}^{\`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v v^{\prime} e e^{\prime}\right)=\left(v e+v_{1} e_{1}\right)\left(v^{\prime} e^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `e^{\prime}+e_{1}^{\prime}=0, \quad \text { or } \quad v^{2} e+v_{1}^{2} e_{1}=0`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+\left(\frac{\partial r}{\partial t}\right)^{2} & =v^{2}\left(\frac{d r}{d s}\right)^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v^{2} e e^{\prime}\right)=\left(v^{2} e+v_{1}^{2} e_{1}\right)\left(e^`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v^{\prime 2} e e^{\prime}\right)=\left(v^{\prime 2} e^{\prime}+v_{1}^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v v^{\prime} e e^{\prime}\right)=\left(v e+v_{1} e_{1}\right)\left(v^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+e^{\prime}+e_{1}^{\prime}=0, \quad \text { or } \quad v^{2} e+v_{1}^{2} e_{1}=0 \t`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\left(\frac{\partial r}{\partial t}\right)^{2} & =v^{2}\left(\frac{d r}{d s}\right)^`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v^{2} e e^{\prime}\right)=\left(v^{2} e+v_{1}^{2} e_{1}\right)\left(e^{\prime}+e_{1}^{\p`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v^{\prime 2} e e^{\prime}\right)=\left(v^{\prime 2} e^{\prime}+v_{1}^{\prime 2} e_{1}^{\`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v v^{\prime} e e^{\prime}\right)=\left(v e+v_{1} e_{1}\right)\left(v^{\prime} e^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `e^{\prime}+e_{1}^{\prime}=0, \quad \text { or } \quad v^{2} e+v_{1}^{2} e_{1}=0`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+\left(\frac{\partial r}{\partial t}\right)^{2} & =v^{2}\left(\frac{d r}{d s}\right)^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v^{2} e e^{\prime}\right)=\left(v^{2} e+v_{1}^{2} e_{1}\right)\left(e^`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v^{\prime 2} e e^{\prime}\right)=\left(v^{\prime 2} e^{\prime}+v_{1}^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v v^{\prime} e e^{\prime}\right)=\left(v e+v_{1} e_{1}\right)\left(v^{`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+e^{\prime}+e_{1}^{\prime}=0, \quad \text { or } \quad v^{2} e+v_{1}^{2} e_{1}=0 \t`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+\left(\frac{\partial r}{\partial t}\right)^{2} & =v^{2}\left(\frac{d r}{d s}\right)^`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v^{2} e e^{\prime}\right)=\left(v^{2} e+v_{1}^{2} e_{1}\right)\left(e^{\prime}+e_{1}^{\p`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v^{\prime 2} e e^{\prime}\right)=\left(v^{\prime 2} e^{\prime}+v_{1}^{\prime 2} e_{1}^{\`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `\Sigma\left(v v^{\prime} e e^{\prime}\right)=\left(v e+v_{1} e_{1}\right)\left(v^{\prime} e^{\prime}`
+  - No clear structural match found in code
+- [??] **Art.848** `verify_webers_theory`: unverified
+  - LaTeX: `e^{\prime}+e_{1}^{\prime}=0, \quad \text { or } \quad v^{2} e+v_{1}^{2} e_{1}=0`
+  - No clear structural match found in code
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `v e+v_{1} e_{1}=c i d s`
+  - Structural/heuristic match
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v v^{\prime} e e^{\prime}\right)=c^{2} i i^{\prime} d s d s^{\prime} \`
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+& \Sigma\left(e e^{\prime} u^{2}\right)=-2 c^{2} i i^{\prime} d s d s^{\prime} \cos \`
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+& -\frac{1}{c^{2}} \Sigma\left[\frac{e e^{\prime}}{r^{2}}\left(u^{2}-\frac{8}{2}\left`
+  - No clear structural match found in code
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `v e+v_{1} e_{1}=c i d s`
+  - Structural/heuristic match
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `\Sigma\left(v v^{\prime} e e^{\prime}\right)=c^{2} i i^{\prime} d s d s^{\prime}`
+  - Structural/heuristic match
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& \Sigma\left(e e^{\prime} u^{2}\right)=-2 c^{2} i i^{\prime} d s d s^{\prime} \cos `
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& -\frac{1}{c^{2}} \Sigma\left[\frac{e e^{\prime}}{r^{2}}\left(u^{2}-\frac{8}{2}\lef`
+  - No clear structural match found in code
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `v e+v_{1} e_{1}=c i d s`
+  - Structural/heuristic match
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v v^{\prime} e e^{\prime}\right)=c^{2} i i^{\prime} d s d s^{\prime} \`
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+& \Sigma\left(e e^{\prime} u^{2}\right)=-2 c^{2} i i^{\prime} d s d s^{\prime} \cos \`
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+& -\frac{1}{c^{2}} \Sigma\left[\frac{e e^{\prime}}{r^{2}}\left(u^{2}-\frac{8}{2}\left`
+  - No clear structural match found in code
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `v e+v_{1} e_{1}=c i d s`
+  - Structural/heuristic match
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `\Sigma\left(v v^{\prime} e e^{\prime}\right)=c^{2} i i^{\prime} d s d s^{\prime}`
+  - Structural/heuristic match
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& \Sigma\left(e e^{\prime} u^{2}\right)=-2 c^{2} i i^{\prime} d s d s^{\prime} \cos `
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& -\frac{1}{c^{2}} \Sigma\left[\frac{e e^{\prime}}{r^{2}}\left(u^{2}-\frac{8}{2}\lef`
+  - No clear structural match found in code
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `v e+v_{1} e_{1}=c i d s`
+  - Structural/heuristic match
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{equation*}
+\Sigma\left(v v^{\prime} e e^{\prime}\right)=c^{2} i i^{\prime} d s d s^{\prime} \`
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+& \Sigma\left(e e^{\prime} u^{2}\right)=-2 c^{2} i i^{\prime} d s d s^{\prime} \cos \`
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{align*}
+& -\frac{1}{c^{2}} \Sigma\left[\frac{e e^{\prime}}{r^{2}}\left(u^{2}-\frac{8}{2}\left`
+  - No clear structural match found in code
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `v e+v_{1} e_{1}=c i d s`
+  - Structural/heuristic match
+- [OK] **Art.849** `verify_webers_theory`: verified
+  - LaTeX: `\Sigma\left(v v^{\prime} e e^{\prime}\right)=c^{2} i i^{\prime} d s d s^{\prime}`
+  - Structural/heuristic match
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& \Sigma\left(e e^{\prime} u^{2}\right)=-2 c^{2} i i^{\prime} d s d s^{\prime} \cos `
+  - No clear structural match found in code
+- [??] **Art.849** `verify_webers_theory`: unverified
+  - LaTeX: `\begin{aligned}
+& -\frac{1}{c^{2}} \Sigma\left[\frac{e e^{\prime}}{r^{2}}\left(u^{2}-\frac{8}{2}\lef`
+  - No clear structural match found in code
+
+### `maxwell\optics\constants.py`
+
+- [??] **Art.789** `calc_refractive_index_from_EM`: unverified
+  - LaTeX: `\begin{equation*}
+K=1.975 . \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.789** `calc_refractive_index_from_EM`: unverified
+  - LaTeX: `K=1.975 .`
+  - No clear structural match found in code
+- [??] **Art.789** `calc_refractive_index_from_EM`: unverified
+  - LaTeX: `\begin{equation*}
+K=1.975 . \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.789** `calc_refractive_index_from_EM`: unverified
+  - LaTeX: `K=1.975 .`
+  - No clear structural match found in code
+- [??] **Art.789** `calc_refractive_index_from_EM`: unverified
+  - LaTeX: `\begin{equation*}
+K=1.975 . \tag{12}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.789** `calc_refractive_index_from_EM`: unverified
+  - LaTeX: `K=1.975 .`
+  - No clear structural match found in code
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\begin{equation*}
+a=-\frac{d G}{d z}, \quad b=\frac{d F}{d z}, \quad c=0 \tag{13}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+4 \pi \mu u & =-\frac{d b}{d z}=-\frac{d^{2} F}{d z^{2}}  \tag{14}\\
+4 \pi \`
+  - No clear structural match found in code
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\begin{equation*}
+u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} . \tag{15}
+\en`
+  - No clear structural match found in code
+- [OK] **Art.790** `calc_frequency_from_wavelength`: verified
+  - LaTeX: `a=-\frac{d G}{d z}, \quad b=\frac{d F}{d z}, \quad c=0`
+  - Structural/heuristic match
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+4 \pi \mu u & =-\frac{d b}{d z}=-\frac{d^{2} F}{d z^{2}} \\
+4 \pi \mu v & =\`
+  - No clear structural match found in code
+- [OK] **Art.790** `calc_frequency_from_wavelength`: verified
+  - LaTeX: `u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\begin{equation*}
+a=-\frac{d G}{d z}, \quad b=\frac{d F}{d z}, \quad c=0 \tag{13}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+4 \pi \mu u & =-\frac{d b}{d z}=-\frac{d^{2} F}{d z^{2}}  \tag{14}\\
+4 \pi \`
+  - No clear structural match found in code
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\begin{equation*}
+u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} . \tag{15}
+\en`
+  - No clear structural match found in code
+- [OK] **Art.790** `calc_frequency_from_wavelength`: verified
+  - LaTeX: `a=-\frac{d G}{d z}, \quad b=\frac{d F}{d z}, \quad c=0`
+  - Structural/heuristic match
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+4 \pi \mu u & =-\frac{d b}{d z}=-\frac{d^{2} F}{d z^{2}} \\
+4 \pi \mu v & =\`
+  - No clear structural match found in code
+- [OK] **Art.790** `calc_frequency_from_wavelength`: verified
+  - LaTeX: `u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} .`
+  - Structural/heuristic match
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\begin{equation*}
+a=-\frac{d G}{d z}, \quad b=\frac{d F}{d z}, \quad c=0 \tag{13}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+4 \pi \mu u & =-\frac{d b}{d z}=-\frac{d^{2} F}{d z^{2}}  \tag{14}\\
+4 \pi \`
+  - No clear structural match found in code
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\begin{equation*}
+u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} . \tag{15}
+\en`
+  - No clear structural match found in code
+- [OK] **Art.790** `calc_frequency_from_wavelength`: verified
+  - LaTeX: `a=-\frac{d G}{d z}, \quad b=\frac{d F}{d z}, \quad c=0`
+  - Structural/heuristic match
+- [??] **Art.790** `calc_frequency_from_wavelength`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+4 \pi \mu u & =-\frac{d b}{d z}=-\frac{d^{2} F}{d z^{2}} \\
+4 \pi \mu v & =\`
+  - No clear structural match found in code
+- [OK] **Art.790** `calc_frequency_from_wavelength`: verified
+  - LaTeX: `u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} .`
+  - Structural/heuristic match
+
+### `maxwell\optics\crystals.py`
+
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\begin{equation*}
+\nabla^{2} F=\nabla^{2} G=\nabla^{2} H=0 \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\nabla^{2} F & =4 \pi u  \tag{3}\\
+\nabla^{2} G & =4 \pi v \\
+\nabla^{2} H &`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\nabla^{2} F=\nabla^{2} G=\nabla^{2} H=0`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\nabla^{2} F & =4 \pi u \\
+\nabla^{2} G & =4 \pi v \\
+\nabla^{2} H & =4 \pi `
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\begin{equation*}
+\nabla^{2} F=\nabla^{2} G=\nabla^{2} H=0 \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\nabla^{2} F & =4 \pi u  \tag{3}\\
+\nabla^{2} G & =4 \pi v \\
+\nabla^{2} H &`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\nabla^{2} F=\nabla^{2} G=\nabla^{2} H=0`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\nabla^{2} F & =4 \pi u \\
+\nabla^{2} G & =4 \pi v \\
+\nabla^{2} H & =4 \pi `
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\begin{equation*}
+\nabla^{2} F=\nabla^{2} G=\nabla^{2} H=0 \tag{2}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\nabla^{2} F & =4 \pi u  \tag{3}\\
+\nabla^{2} G & =4 \pi v \\
+\nabla^{2} H &`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\nabla^{2} F=\nabla^{2} G=\nabla^{2} H=0`
+  - No clear structural match found in code
+- [??] **Art.805** `calc_birefringence`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\nabla^{2} F & =4 \pi u \\
+\nabla^{2} G & =4 \pi v \\
+\nabla^{2} H & =4 \pi `
+  - No clear structural match found in code
+
+### `maxwell\optics\metals.py`
+
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\begin{equation*}
+f=\frac{1}{4 \pi} K_{1} P, \quad g=\frac{1}{4 \pi} K_{2} Q, \quad h=\frac{1}{4 \pi`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d^{2} F}{d y^{2}}+\frac{d^{2} F}{d z^{2}}-\frac{d^{2} G}{d x d y}-\frac`
+  - No clear structural match found in code
+- [OK] **Art.795** `get_metal_constants`: verified
+  - LaTeX: `\begin{equation*}
+l x+m y+n z-V t=w \tag{3}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\begin{equation*}
+K_{1} \mu=\frac{1}{a^{2}}, \quad K_{2} \mu=\frac{1}{b^{2}}, \quad K_{3} \mu=\frac{`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{r}
+\left(m^{2}+n^{2}-\frac{V^{2}}{a^{2}}\right) F^{\prime \prime}-l m G^{\prime `
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `f=\frac{1}{4 \pi} K_{1} P, \quad g=\frac{1}{4 \pi} K_{2} Q, \quad h=\frac{1}{4 \pi} K_{3} R,`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d^{2} F}{d y^{2}}+\frac{d^{2} F}{d z^{2}}-\frac{d^{2} G}{d x d y}-\frac`
+  - No clear structural match found in code
+- [OK] **Art.795** `get_metal_constants`: verified
+  - LaTeX: `l x+m y+n z-V t=w`
+  - Structural/heuristic match
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `K_{1} \mu=\frac{1}{a^{2}}, \quad K_{2} \mu=\frac{1}{b^{2}}, \quad K_{3} \mu=\frac{1}{c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{r}
+\left(m^{2}+n^{2}-\frac{V^{2}}{a^{2}}\right) F^{\prime \prime}-l m G^{\prime `
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\begin{equation*}
+f=\frac{1}{4 \pi} K_{1} P, \quad g=\frac{1}{4 \pi} K_{2} Q, \quad h=\frac{1}{4 \pi`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d^{2} F}{d y^{2}}+\frac{d^{2} F}{d z^{2}}-\frac{d^{2} G}{d x d y}-\frac`
+  - No clear structural match found in code
+- [OK] **Art.795** `get_metal_constants`: verified
+  - LaTeX: `\begin{equation*}
+l x+m y+n z-V t=w \tag{3}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\begin{equation*}
+K_{1} \mu=\frac{1}{a^{2}}, \quad K_{2} \mu=\frac{1}{b^{2}}, \quad K_{3} \mu=\frac{`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{r}
+\left(m^{2}+n^{2}-\frac{V^{2}}{a^{2}}\right) F^{\prime \prime}-l m G^{\prime `
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `f=\frac{1}{4 \pi} K_{1} P, \quad g=\frac{1}{4 \pi} K_{2} Q, \quad h=\frac{1}{4 \pi} K_{3} R,`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d^{2} F}{d y^{2}}+\frac{d^{2} F}{d z^{2}}-\frac{d^{2} G}{d x d y}-\frac`
+  - No clear structural match found in code
+- [OK] **Art.795** `get_metal_constants`: verified
+  - LaTeX: `l x+m y+n z-V t=w`
+  - Structural/heuristic match
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `K_{1} \mu=\frac{1}{a^{2}}, \quad K_{2} \mu=\frac{1}{b^{2}}, \quad K_{3} \mu=\frac{1}{c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{r}
+\left(m^{2}+n^{2}-\frac{V^{2}}{a^{2}}\right) F^{\prime \prime}-l m G^{\prime `
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\begin{equation*}
+f=\frac{1}{4 \pi} K_{1} P, \quad g=\frac{1}{4 \pi} K_{2} Q, \quad h=\frac{1}{4 \pi`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d^{2} F}{d y^{2}}+\frac{d^{2} F}{d z^{2}}-\frac{d^{2} G}{d x d y}-\frac`
+  - No clear structural match found in code
+- [OK] **Art.795** `get_metal_constants`: verified
+  - LaTeX: `\begin{equation*}
+l x+m y+n z-V t=w \tag{3}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\begin{equation*}
+K_{1} \mu=\frac{1}{a^{2}}, \quad K_{2} \mu=\frac{1}{b^{2}}, \quad K_{3} \mu=\frac{`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{r}
+\left(m^{2}+n^{2}-\frac{V^{2}}{a^{2}}\right) F^{\prime \prime}-l m G^{\prime `
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `f=\frac{1}{4 \pi} K_{1} P, \quad g=\frac{1}{4 \pi} K_{2} Q, \quad h=\frac{1}{4 \pi} K_{3} R,`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\frac{d^{2} F}{d y^{2}}+\frac{d^{2} F}{d z^{2}}-\frac{d^{2} G}{d x d y}-\frac`
+  - No clear structural match found in code
+- [OK] **Art.795** `get_metal_constants`: verified
+  - LaTeX: `l x+m y+n z-V t=w`
+  - Structural/heuristic match
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `K_{1} \mu=\frac{1}{a^{2}}, \quad K_{2} \mu=\frac{1}{b^{2}}, \quad K_{3} \mu=\frac{1}{c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.795** `get_metal_constants`: unverified
+  - LaTeX: `\left.\begin{array}{r}
+\left(m^{2}+n^{2}-\frac{V^{2}}{a^{2}}\right) F^{\prime \prime}-l m G^{\prime `
+  - No clear structural match found in code
+- [OK] **Art.796** `calc_fresnel_reflection_metal`: verified
+  - LaTeX: `\begin{equation*}
+\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{V^{2}-c^{2}}=U \t`
+  - Structural/heuristic match
+- [??] **Art.796** `calc_fresnel_reflection_metal`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+V U\left(V F^{\prime \prime}-l \Psi^{\prime \prime}\right)=0  \tag{7}\\
+V U\l`
+  - No clear structural match found in code
+- [OK] **Art.796** `calc_fresnel_reflection_metal`: verified
+  - LaTeX: `\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{V^{2}-c^{2}}=U`
+  - Structural/heuristic match
+- [??] **Art.796** `calc_fresnel_reflection_metal`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+V U\left(V F^{\prime \prime}-l \Psi^{\prime \prime}\right)=0 \\
+V U\left(V G^`
+  - No clear structural match found in code
+- [OK] **Art.796** `calc_fresnel_reflection_metal`: verified
+  - LaTeX: `\begin{equation*}
+\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{V^{2}-c^{2}}=U \t`
+  - Structural/heuristic match
+- [??] **Art.796** `calc_fresnel_reflection_metal`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+V U\left(V F^{\prime \prime}-l \Psi^{\prime \prime}\right)=0  \tag{7}\\
+V U\l`
+  - No clear structural match found in code
+- [OK] **Art.796** `calc_fresnel_reflection_metal`: verified
+  - LaTeX: `\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{V^{2}-c^{2}}=U`
+  - Structural/heuristic match
+- [??] **Art.796** `calc_fresnel_reflection_metal`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+V U\left(V F^{\prime \prime}-l \Psi^{\prime \prime}\right)=0 \\
+V U\left(V G^`
+  - No clear structural match found in code
+- [OK] **Art.796** `calc_fresnel_reflection_metal`: verified
+  - LaTeX: `\begin{equation*}
+\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{V^{2}-c^{2}}=U \t`
+  - Structural/heuristic match
+- [??] **Art.796** `calc_fresnel_reflection_metal`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+V U\left(V F^{\prime \prime}-l \Psi^{\prime \prime}\right)=0  \tag{7}\\
+V U\l`
+  - No clear structural match found in code
+- [OK] **Art.796** `calc_fresnel_reflection_metal`: verified
+  - LaTeX: `\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{V^{2}-c^{2}}=U`
+  - Structural/heuristic match
+- [??] **Art.796** `calc_fresnel_reflection_metal`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+V U\left(V F^{\prime \prime}-l \Psi^{\prime \prime}\right)=0 \\
+V U\left(V G^`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `\begin{equation*}
+\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{y^{2}-c^{2}}=0 . `
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+\lambda: \mu: v:: \frac{1}{a^{2}} F^{\prime \prime \prime}: \frac{1}{b^{2}} G^{\pr`
+  - No clear structural match found in code
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+l \lambda+m \mu+n \nu=0 ; \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{l}{\lambda}\left(b^{2}-c^{2}\right)+\frac{m}{\mu}\left(c^{2}-a^{2}\right)+\f`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{y^{2}-c^{2}}=0 .`
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\lambda: \mu: v:: \frac{1}{a^{2}} F^{\prime \prime \prime}: \frac{1}{b^{2}} G^{\prime \prime}: \frac`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `l \lambda+m \mu+n \nu=0 ;`
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\frac{l}{\lambda}\left(b^{2}-c^{2}\right)+\frac{m}{\mu}\left(c^{2}-a^{2}\right)+\frac{n}{\nu}\left(a`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `\begin{equation*}
+\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{y^{2}-c^{2}}=0 . `
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+\lambda: \mu: v:: \frac{1}{a^{2}} F^{\prime \prime \prime}: \frac{1}{b^{2}} G^{\pr`
+  - No clear structural match found in code
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+l \lambda+m \mu+n \nu=0 ; \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{l}{\lambda}\left(b^{2}-c^{2}\right)+\frac{m}{\mu}\left(c^{2}-a^{2}\right)+\f`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{y^{2}-c^{2}}=0 .`
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\lambda: \mu: v:: \frac{1}{a^{2}} F^{\prime \prime \prime}: \frac{1}{b^{2}} G^{\prime \prime}: \frac`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `l \lambda+m \mu+n \nu=0 ;`
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\frac{l}{\lambda}\left(b^{2}-c^{2}\right)+\frac{m}{\mu}\left(c^{2}-a^{2}\right)+\frac{n}{\nu}\left(a`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `\begin{equation*}
+\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{y^{2}-c^{2}}=0 . `
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+\lambda: \mu: v:: \frac{1}{a^{2}} F^{\prime \prime \prime}: \frac{1}{b^{2}} G^{\pr`
+  - No clear structural match found in code
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+l \lambda+m \mu+n \nu=0 ; \tag{10}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{l}{\lambda}\left(b^{2}-c^{2}\right)+\frac{m}{\mu}\left(c^{2}-a^{2}\right)+\f`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `\frac{l^{2}}{V^{2}-a^{2}}+\frac{m^{2}}{V^{2}-b^{2}}+\frac{n^{2}}{y^{2}-c^{2}}=0 .`
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\lambda: \mu: v:: \frac{1}{a^{2}} F^{\prime \prime \prime}: \frac{1}{b^{2}} G^{\prime \prime}: \frac`
+  - No clear structural match found in code
+- [OK] **Art.797** `calc_metal_reflectance_normal`: verified
+  - LaTeX: `l \lambda+m \mu+n \nu=0 ;`
+  - Structural/heuristic match
+- [??] **Art.797** `calc_metal_reflectance_normal`: unverified
+  - LaTeX: `\frac{l}{\lambda}\left(b^{2}-c^{2}\right)+\frac{m}{\mu}\left(c^{2}-a^{2}\right)+\frac{n}{\nu}\left(a`
+  - No clear structural match found in code
+- [??] **Art.798** `calc_skin_depth`: unverified
+  - LaTeX: `\begin{equation*}
+F=e^{-p z} \cos (n t-q z), \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.798** `calc_skin_depth`: unverified
+  - LaTeX: `F=e^{-p z} \cos (n t-q z),`
+  - No clear structural match found in code
+- [??] **Art.798** `calc_skin_depth`: unverified
+  - LaTeX: `\begin{equation*}
+F=e^{-p z} \cos (n t-q z), \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.798** `calc_skin_depth`: unverified
+  - LaTeX: `F=e^{-p z} \cos (n t-q z),`
+  - No clear structural match found in code
+- [??] **Art.798** `calc_skin_depth`: unverified
+  - LaTeX: `\begin{equation*}
+F=e^{-p z} \cos (n t-q z), \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.798** `calc_skin_depth`: unverified
+  - LaTeX: `F=e^{-p z} \cos (n t-q z),`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} F}{d z^{2}}=\mu K \frac{d^{2} F}{d t^{2}}+4 \pi \mu C \frac{d F}{d t} `
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+q^{2}-p^{2}=\mu K n^{2} \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+2 p q=4 \pi \mu C n . \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{n}{q} \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+p=2 \pi \mu C V . \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `\begin{equation*}
+R=\frac{l}{b z C} \tag{7}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+e^{-2 p x}=e^{-4 \pi \mu i_{b}^{l} \frac{V}{R}} \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\mu K \frac{d^{2} F}{d t^{2}}+4 \pi \mu C \frac{d F}{d t}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `q^{2}-p^{2}=\mu K n^{2}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `2 p q=4 \pi \mu C n .`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `V=\frac{n}{q}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `p=2 \pi \mu C V .`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `R=\frac{l}{b z C}`
+  - Structural/heuristic match
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `e^{-2 p x}=e^{-4 \pi \mu i_{b}^{l} \frac{V}{R}}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} F}{d z^{2}}=\mu K \frac{d^{2} F}{d t^{2}}+4 \pi \mu C \frac{d F}{d t} `
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+q^{2}-p^{2}=\mu K n^{2} \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+2 p q=4 \pi \mu C n . \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{n}{q} \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+p=2 \pi \mu C V . \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `\begin{equation*}
+R=\frac{l}{b z C} \tag{7}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+e^{-2 p x}=e^{-4 \pi \mu i_{b}^{l} \frac{V}{R}} \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\mu K \frac{d^{2} F}{d t^{2}}+4 \pi \mu C \frac{d F}{d t}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `q^{2}-p^{2}=\mu K n^{2}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `2 p q=4 \pi \mu C n .`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `V=\frac{n}{q}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `p=2 \pi \mu C V .`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `R=\frac{l}{b z C}`
+  - Structural/heuristic match
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `e^{-2 p x}=e^{-4 \pi \mu i_{b}^{l} \frac{V}{R}}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{d^{2} F}{d z^{2}}=\mu K \frac{d^{2} F}{d t^{2}}+4 \pi \mu C \frac{d F}{d t} `
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+q^{2}-p^{2}=\mu K n^{2} \tag{3}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+2 p q=4 \pi \mu C n . \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{n}{q} \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+p=2 \pi \mu C V . \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `\begin{equation*}
+R=\frac{l}{b z C} \tag{7}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\begin{equation*}
+e^{-2 p x}=e^{-4 \pi \mu i_{b}^{l} \frac{V}{R}} \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\mu K \frac{d^{2} F}{d t^{2}}+4 \pi \mu C \frac{d F}{d t}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `q^{2}-p^{2}=\mu K n^{2}`
+  - No clear structural match found in code
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `2 p q=4 \pi \mu C n .`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `V=\frac{n}{q}`
+  - Structural/heuristic match
+- [??] **Art.799** `calc_absorption_coefficient`: unverified
+  - LaTeX: `p=2 \pi \mu C V .`
+  - No clear structural match found in code
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `R=\frac{l}{b z C}`
+  - Structural/heuristic match
+- [OK] **Art.799** `calc_absorption_coefficient`: verified
+  - LaTeX: `e^{-2 p x}=e^{-4 \pi \mu i_{b}^{l} \frac{V}{R}}`
+  - Structural/heuristic match
+
+### `maxwell\optics\plane_waves.py`
+
+- [??] **Art.801** `calc_polarized_wave_intensity`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\nabla^{2} F+4 \pi \mu C \frac{d F}{d t}=0,  \tag{1}\\
+\nabla^{2} G+4 \pi \mu`
+  - No clear structural match found in code
+- [??] **Art.801** `calc_polarized_wave_intensity`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\nabla^{2} F+4 \pi \mu C \frac{d F}{d t}=0, \\
+\nabla^{2} G+4 \pi \mu C \frac`
+  - No clear structural match found in code
+- [??] **Art.801** `calc_polarized_wave_intensity`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\nabla^{2} F+4 \pi \mu C \frac{d F}{d t}=0,  \tag{1}\\
+\nabla^{2} G+4 \pi \mu`
+  - No clear structural match found in code
+- [??] **Art.801** `calc_polarized_wave_intensity`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\nabla^{2} F+4 \pi \mu C \frac{d F}{d t}=0, \\
+\nabla^{2} G+4 \pi \mu C \frac`
+  - No clear structural match found in code
+- [??] **Art.801** `calc_polarized_wave_intensity`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\nabla^{2} F+4 \pi \mu C \frac{d F}{d t}=0,  \tag{1}\\
+\nabla^{2} G+4 \pi \mu`
+  - No clear structural match found in code
+- [??] **Art.801** `calc_polarized_wave_intensity`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+\nabla^{2} F+4 \pi \mu C \frac{d F}{d t}=0, \\
+\nabla^{2} G+4 \pi \mu C \frac`
+  - No clear structural match found in code
+- [??] **Art.802** `calc_polarization_ellipse`: unverified
+  - LaTeX: `v=\iiint \frac{d \alpha d \beta d \gamma}{2^{3} \sqrt{k^{3} \pi^{3} t^{3}}} e^{-\left(\frac{(\alpha-`
+  - No clear structural match found in code
+- [??] **Art.802** `calc_polarization_ellipse`: unverified
+  - LaTeX: `v=\iiint \frac{d \alpha d \beta d \gamma}{2^{3} \sqrt{k^{3} \pi^{3} t^{3}}} e^{-\left(\frac{(\alpha-`
+  - No clear structural match found in code
+- [??] **Art.802** `calc_polarization_ellipse`: unverified
+  - LaTeX: `v=\iiint \frac{d \alpha d \beta d \gamma}{2^{3} \sqrt{k^{3} \pi^{3} t^{3}}} e^{-\left(\frac{(\alpha-`
+  - No clear structural match found in code
+- [??] **Art.802** `calc_polarization_ellipse`: unverified
+  - LaTeX: `v=\iiint \frac{d \alpha d \beta d \gamma}{2^{3} \sqrt{k^{3} \pi^{3} t^{3}}} e^{-\left(\frac{(\alpha-`
+  - No clear structural match found in code
+- [??] **Art.802** `calc_polarization_ellipse`: unverified
+  - LaTeX: `v=\iiint \frac{d \alpha d \beta d \gamma}{2^{3} \sqrt{k^{3} \pi^{3} t^{3}}} e^{-\left(\frac{(\alpha-`
+  - No clear structural match found in code
+- [??] **Art.802** `calc_polarization_ellipse`: unverified
+  - LaTeX: `v=\iiint \frac{d \alpha d \beta d \gamma}{2^{3} \sqrt{k^{3} \pi^{3} t^{3}}} e^{-\left(\frac{(\alpha-`
+  - No clear structural match found in code
+- [OK] **Art.803** `calc_wave_interference`: verified
+  - LaTeX: `e^{-\frac{\pi \mu c r^{2}}{t}},`
+  - Structural/heuristic match
+- [OK] **Art.803** `calc_wave_interference`: verified
+  - LaTeX: `e^{-\frac{\pi \mu c r^{2}}{t}},`
+  - Structural/heuristic match
+- [OK] **Art.803** `calc_wave_interference`: verified
+  - LaTeX: `e^{-\frac{\pi \mu c r^{2}}{t}},`
+  - Structural/heuristic match
+- [OK] **Art.803** `calc_wave_interference`: verified
+  - LaTeX: `e^{-\frac{\pi \mu c r^{2}}{t}},`
+  - Structural/heuristic match
+- [OK] **Art.803** `calc_wave_interference`: verified
+  - LaTeX: `e^{-\frac{\pi \mu c r^{2}}{t}},`
+  - Structural/heuristic match
+- [OK] **Art.803** `calc_wave_interference`: verified
+  - LaTeX: `e^{-\frac{\pi \mu c r^{2}}{t}},`
+  - Structural/heuristic match
+
+### `maxwell\optics\radiation_pressure.py`
+
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+f=\frac{K}{4 \pi} P, \quad g=\frac{K}{4 \pi} Q, \quad h=\frac{K}{4 \pi} R ; \tag{1`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{gather*}
+P=-\frac{d F}{d t}, \quad Q=-\frac{d G}{d t}, \quad R=-\frac{d H}{d t} .  \tag{17}\\`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\frac{d^{2} F}{d z^{2}} & =\dot{K}_{\mu} \frac{d^{2} F}{d t^{2}},  \tag{19}\`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+F=f_{1}(z-V t)+f_{2}(z+V t),  \tag{20}\\
+G=f_{3}(z-V t)+f_{4}(z+V t) .
+\end{a`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+H=A+B t, \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `f=\frac{K}{4 \pi} P, \quad g=\frac{K}{4 \pi} Q, \quad h=\frac{K}{4 \pi} R ;`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{gathered}
+P=-\frac{d F}{d t}, \quad Q=-\frac{d G}{d t}, \quad R=-\frac{d H}{d t} . \\
+\text {`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\frac{d^{2} F}{d z^{2}} & =\dot{K}_{\mu} \frac{d^{2} F}{d t^{2}}, \\
+\frac{d`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+F=f_{1}(z-V t)+f_{2}(z+V t), \\
+G=f_{3}(z-V t)+f_{4}(z+V t) .
+\end{array}\rig`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `H=A+B t,`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+f=\frac{K}{4 \pi} P, \quad g=\frac{K}{4 \pi} Q, \quad h=\frac{K}{4 \pi} R ; \tag{1`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{gather*}
+P=-\frac{d F}{d t}, \quad Q=-\frac{d G}{d t}, \quad R=-\frac{d H}{d t} .  \tag{17}\\`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\frac{d^{2} F}{d z^{2}} & =\dot{K}_{\mu} \frac{d^{2} F}{d t^{2}},  \tag{19}\`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+F=f_{1}(z-V t)+f_{2}(z+V t),  \tag{20}\\
+G=f_{3}(z-V t)+f_{4}(z+V t) .
+\end{a`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+H=A+B t, \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `f=\frac{K}{4 \pi} P, \quad g=\frac{K}{4 \pi} Q, \quad h=\frac{K}{4 \pi} R ;`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{gathered}
+P=-\frac{d F}{d t}, \quad Q=-\frac{d G}{d t}, \quad R=-\frac{d H}{d t} . \\
+\text {`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\frac{d^{2} F}{d z^{2}} & =\dot{K}_{\mu} \frac{d^{2} F}{d t^{2}}, \\
+\frac{d`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+F=f_{1}(z-V t)+f_{2}(z+V t), \\
+G=f_{3}(z-V t)+f_{4}(z+V t) .
+\end{array}\rig`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `H=A+B t,`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+f=\frac{K}{4 \pi} P, \quad g=\frac{K}{4 \pi} Q, \quad h=\frac{K}{4 \pi} R ; \tag{1`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{gather*}
+P=-\frac{d F}{d t}, \quad Q=-\frac{d G}{d t}, \quad R=-\frac{d H}{d t} .  \tag{17}\\`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\frac{d^{2} F}{d z^{2}} & =\dot{K}_{\mu} \frac{d^{2} F}{d t^{2}},  \tag{19}\`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+F=f_{1}(z-V t)+f_{2}(z+V t),  \tag{20}\\
+G=f_{3}(z-V t)+f_{4}(z+V t) .
+\end{a`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+H=A+B t, \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `f=\frac{K}{4 \pi} P, \quad g=\frac{K}{4 \pi} Q, \quad h=\frac{K}{4 \pi} R ;`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\begin{gathered}
+P=-\frac{d F}{d t}, \quad Q=-\frac{d G}{d t}, \quad R=-\frac{d H}{d t} . \\
+\text {`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{rl}
+\frac{d^{2} F}{d z^{2}} & =\dot{K}_{\mu} \frac{d^{2} F}{d t^{2}}, \\
+\frac{d`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `\left.\begin{array}{l}
+F=f_{1}(z-V t)+f_{2}(z+V t), \\
+G=f_{3}(z-V t)+f_{4}(z+V t) .
+\end{array}\rig`
+  - No clear structural match found in code
+- [??] **Art.791** `calc_radiation_pressure`: unverified
+  - LaTeX: `H=A+B t,`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{2} f P=\frac{K}{8 \pi} P^{2}=\left.\frac{K}{8 \pi} \frac{d F}{d t}\right|`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{8 \pi} b \beta=\frac{1}{8 \pi \mu} b^{2}=\left.\frac{1}{8 \pi \mu} \frac{`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\frac{1}{2} f P=\frac{K}{8 \pi} P^{2}=\left.\frac{K}{8 \pi} \frac{d F}{d t}\right|^{2}`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\frac{1}{8 \pi} b \beta=\frac{1}{8 \pi \mu} b^{2}=\left.\frac{1}{8 \pi \mu} \frac{\overline{d F}}{d `
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{2} f P=\frac{K}{8 \pi} P^{2}=\left.\frac{K}{8 \pi} \frac{d F}{d t}\right|`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{8 \pi} b \beta=\frac{1}{8 \pi \mu} b^{2}=\left.\frac{1}{8 \pi \mu} \frac{`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\frac{1}{2} f P=\frac{K}{8 \pi} P^{2}=\left.\frac{K}{8 \pi} \frac{d F}{d t}\right|^{2}`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\frac{1}{8 \pi} b \beta=\frac{1}{8 \pi \mu} b^{2}=\left.\frac{1}{8 \pi \mu} \frac{\overline{d F}}{d `
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{2} f P=\frac{K}{8 \pi} P^{2}=\left.\frac{K}{8 \pi} \frac{d F}{d t}\right|`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{8 \pi} b \beta=\frac{1}{8 \pi \mu} b^{2}=\left.\frac{1}{8 \pi \mu} \frac{`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\frac{1}{2} f P=\frac{K}{8 \pi} P^{2}=\left.\frac{K}{8 \pi} \frac{d F}{d t}\right|^{2}`
+  - No clear structural match found in code
+- [??] **Art.792** `verify_radiation_pressure`: unverified
+  - LaTeX: `\frac{1}{8 \pi} b \beta=\frac{1}{8 \pi \mu} b^{2}=\left.\frac{1}{8 \pi \mu} \frac{\overline{d F}}{d `
+  - No clear structural match found in code
+- [??] **Art.793** `calc_radiation_pressure_oblique`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{K}{8 \pi} P^{2}=\frac{\mu}{8 \pi} \beta^{2}=\text { mean energy in unit of v`
+  - No clear structural match found in code
+- [??] **Art.793** `calc_radiation_pressure_oblique`: unverified
+  - LaTeX: `\frac{K}{8 \pi} P^{2}=\frac{\mu}{8 \pi} \beta^{2}=\text { mean energy in unit of volume. }`
+  - No clear structural match found in code
+- [??] **Art.793** `calc_radiation_pressure_oblique`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{K}{8 \pi} P^{2}=\frac{\mu}{8 \pi} \beta^{2}=\text { mean energy in unit of v`
+  - No clear structural match found in code
+- [??] **Art.793** `calc_radiation_pressure_oblique`: unverified
+  - LaTeX: `\frac{K}{8 \pi} P^{2}=\frac{\mu}{8 \pi} \beta^{2}=\text { mean energy in unit of volume. }`
+  - No clear structural match found in code
+- [??] **Art.793** `calc_radiation_pressure_oblique`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{K}{8 \pi} P^{2}=\frac{\mu}{8 \pi} \beta^{2}=\text { mean energy in unit of v`
+  - No clear structural match found in code
+- [??] **Art.793** `calc_radiation_pressure_oblique`: unverified
+  - LaTeX: `\frac{K}{8 \pi} P^{2}=\frac{\mu}{8 \pi} \beta^{2}=\text { mean energy in unit of volume. }`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F=A e^{i(p t-a s)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime} e^{i(p t+a z)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{1}{V^{2}} \frac{d^{2} F}{d t^{2}},`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{4 \pi \mu}{\sigma} \frac{d F}{d t},`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `a^{\prime 2}=-\frac{4 \pi \mu i p}{\sigma}=-2 i n^{2}, \text { say } ;`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `a^{\prime}=n(1-i),`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime \prime} e^{-n s} e^{i(p t-n s)} .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `A+A^{\prime}=A^{\prime \prime} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+& a\left(A-A^{\prime}\right)=\frac{a^{\prime} A^{\prime \prime}}{\mu}, \\
+& A^{\prim`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+A^{\prime \prime} & =2 \boldsymbol{A} \frac{a \mu}{a^{\prime}} \\
+& =\frac{2 \boldsy`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `F^{\prime \prime}=\frac{2 A \mu p}{V \sqrt{2} n} e^{-n s} \cos (p t-n z+\overline{4}) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{2 A \mu p^{2}}{\sigma V \sqrt{2} n} e^{-n t} \sin \left(p t-n z+\frac{\pi}{4}\right) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A \mu p}{V \sqrt{2}} e^{-n s}\left\{\cos \left(p t-n z+\frac{\pi}{4}\right)-\sin \left(p t-`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F=A e^{i(p t-a s)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime} e^{i(p t+a z)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{1}{V^{2}} \frac{d^{2} F}{d t^{2}},`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{4 \pi \mu}{\sigma} \frac{d F}{d t},`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `a^{\prime 2}=-\frac{4 \pi \mu i p}{\sigma}=-2 i n^{2}, \text { say } ;`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `a^{\prime}=n(1-i),`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime \prime} e^{-n s} e^{i(p t-n s)} .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `A+A^{\prime}=A^{\prime \prime} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+& a\left(A-A^{\prime}\right)=\frac{a^{\prime} A^{\prime \prime}}{\mu}, \\
+& A^{\prim`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+A^{\prime \prime} & =2 \boldsymbol{A} \frac{a \mu}{a^{\prime}} \\
+& =\frac{2 \boldsy`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `F^{\prime \prime}=\frac{2 A \mu p}{V \sqrt{2} n} e^{-n s} \cos (p t-n z+\overline{4}) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{2 A \mu p^{2}}{\sigma V \sqrt{2} n} e^{-n t} \sin \left(p t-n z+\frac{\pi}{4}\right) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A \mu p}{V \sqrt{2}} e^{-n s}\left\{\cos \left(p t-n z+\frac{\pi}{4}\right)-\sin \left(p t-`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n x}\left\{\frac{1}{2} \sin 2\left(p t-n z+\frac`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n \varepsilon} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `=\frac{1}{3} \frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n^{2}}=\frac{A^{2} \mu p^{2}}{4 \pi V^{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{1}{4 \pi \mu} \frac{d^{2} F}{d z^{2}}=\frac{a^{2} A}{2 \pi \mu} \sin p t \sin a z .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} a^{3}}{2 \pi \mu}(1-\cos 2 p t) \sin a z \cos a z,`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\left.\frac{A^{2} a^{3}}{2 \pi \mu} \sin a z \cos a z .\right\}`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n x}\left\{\frac{1}{2} \sin 2\left(p t-n z+\frac`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n \varepsilon} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `=\frac{1}{3} \frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n^{2}}=\frac{A^{2} \mu p^{2}}{4 \pi V^{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{1}{4 \pi \mu} \frac{d^{2} F}{d z^{2}}=\frac{a^{2} A}{2 \pi \mu} \sin p t \sin a z .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} a^{3}}{2 \pi \mu}(1-\cos 2 p t) \sin a z \cos a z,`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\left.\frac{A^{2} a^{3}}{2 \pi \mu} \sin a z \cos a z .\right\}`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F=A e^{i(p t-a s)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime} e^{i(p t+a z)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{1}{V^{2}} \frac{d^{2} F}{d t^{2}},`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{4 \pi \mu}{\sigma} \frac{d F}{d t},`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `a^{\prime 2}=-\frac{4 \pi \mu i p}{\sigma}=-2 i n^{2}, \text { say } ;`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `a^{\prime}=n(1-i),`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime \prime} e^{-n s} e^{i(p t-n s)} .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `A+A^{\prime}=A^{\prime \prime} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+& a\left(A-A^{\prime}\right)=\frac{a^{\prime} A^{\prime \prime}}{\mu}, \\
+& A^{\prim`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+A^{\prime \prime} & =2 \boldsymbol{A} \frac{a \mu}{a^{\prime}} \\
+& =\frac{2 \boldsy`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `F^{\prime \prime}=\frac{2 A \mu p}{V \sqrt{2} n} e^{-n s} \cos (p t-n z+\overline{4}) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{2 A \mu p^{2}}{\sigma V \sqrt{2} n} e^{-n t} \sin \left(p t-n z+\frac{\pi}{4}\right) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A \mu p}{V \sqrt{2}} e^{-n s}\left\{\cos \left(p t-n z+\frac{\pi}{4}\right)-\sin \left(p t-`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F=A e^{i(p t-a s)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime} e^{i(p t+a z)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{1}{V^{2}} \frac{d^{2} F}{d t^{2}},`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{4 \pi \mu}{\sigma} \frac{d F}{d t},`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `a^{\prime 2}=-\frac{4 \pi \mu i p}{\sigma}=-2 i n^{2}, \text { say } ;`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `a^{\prime}=n(1-i),`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime \prime} e^{-n s} e^{i(p t-n s)} .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `A+A^{\prime}=A^{\prime \prime} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+& a\left(A-A^{\prime}\right)=\frac{a^{\prime} A^{\prime \prime}}{\mu}, \\
+& A^{\prim`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+A^{\prime \prime} & =2 \boldsymbol{A} \frac{a \mu}{a^{\prime}} \\
+& =\frac{2 \boldsy`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `F^{\prime \prime}=\frac{2 A \mu p}{V \sqrt{2} n} e^{-n s} \cos (p t-n z+\overline{4}) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{2 A \mu p^{2}}{\sigma V \sqrt{2} n} e^{-n t} \sin \left(p t-n z+\frac{\pi}{4}\right) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A \mu p}{V \sqrt{2}} e^{-n s}\left\{\cos \left(p t-n z+\frac{\pi}{4}\right)-\sin \left(p t-`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n x}\left\{\frac{1}{2} \sin 2\left(p t-n z+\frac`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n \varepsilon} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `=\frac{1}{3} \frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n^{2}}=\frac{A^{2} \mu p^{2}}{4 \pi V^{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{1}{4 \pi \mu} \frac{d^{2} F}{d z^{2}}=\frac{a^{2} A}{2 \pi \mu} \sin p t \sin a z .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} a^{3}}{2 \pi \mu}(1-\cos 2 p t) \sin a z \cos a z,`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\left.\frac{A^{2} a^{3}}{2 \pi \mu} \sin a z \cos a z .\right\}`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n x}\left\{\frac{1}{2} \sin 2\left(p t-n z+\frac`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n \varepsilon} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `=\frac{1}{3} \frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n^{2}}=\frac{A^{2} \mu p^{2}}{4 \pi V^{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{1}{4 \pi \mu} \frac{d^{2} F}{d z^{2}}=\frac{a^{2} A}{2 \pi \mu} \sin p t \sin a z .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} a^{3}}{2 \pi \mu}(1-\cos 2 p t) \sin a z \cos a z,`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\left.\frac{A^{2} a^{3}}{2 \pi \mu} \sin a z \cos a z .\right\}`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F=A e^{i(p t-a s)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime} e^{i(p t+a z)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{1}{V^{2}} \frac{d^{2} F}{d t^{2}},`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{4 \pi \mu}{\sigma} \frac{d F}{d t},`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `a^{\prime 2}=-\frac{4 \pi \mu i p}{\sigma}=-2 i n^{2}, \text { say } ;`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `a^{\prime}=n(1-i),`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime \prime} e^{-n s} e^{i(p t-n s)} .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `A+A^{\prime}=A^{\prime \prime} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+& a\left(A-A^{\prime}\right)=\frac{a^{\prime} A^{\prime \prime}}{\mu}, \\
+& A^{\prim`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+A^{\prime \prime} & =2 \boldsymbol{A} \frac{a \mu}{a^{\prime}} \\
+& =\frac{2 \boldsy`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `F^{\prime \prime}=\frac{2 A \mu p}{V \sqrt{2} n} e^{-n s} \cos (p t-n z+\overline{4}) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{2 A \mu p^{2}}{\sigma V \sqrt{2} n} e^{-n t} \sin \left(p t-n z+\frac{\pi}{4}\right) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A \mu p}{V \sqrt{2}} e^{-n s}\left\{\cos \left(p t-n z+\frac{\pi}{4}\right)-\sin \left(p t-`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F=A e^{i(p t-a s)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime} e^{i(p t+a z)},`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{1}{V^{2}} \frac{d^{2} F}{d t^{2}},`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{d^{2} F}{d z^{2}}=\frac{4 \pi \mu}{\sigma} \frac{d F}{d t},`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `a^{\prime 2}=-\frac{4 \pi \mu i p}{\sigma}=-2 i n^{2}, \text { say } ;`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `a^{\prime}=n(1-i),`
+  - Structural/heuristic match
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `F^{\prime \prime}=A^{\prime \prime} e^{-n s} e^{i(p t-n s)} .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `A+A^{\prime}=A^{\prime \prime} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+& a\left(A-A^{\prime}\right)=\frac{a^{\prime} A^{\prime \prime}}{\mu}, \\
+& A^{\prim`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\begin{aligned}
+A^{\prime \prime} & =2 \boldsymbol{A} \frac{a \mu}{a^{\prime}} \\
+& =\frac{2 \boldsy`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `F^{\prime \prime}=\frac{2 A \mu p}{V \sqrt{2} n} e^{-n s} \cos (p t-n z+\overline{4}) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{2 A \mu p^{2}}{\sigma V \sqrt{2} n} e^{-n t} \sin \left(p t-n z+\frac{\pi}{4}\right) .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A \mu p}{V \sqrt{2}} e^{-n s}\left\{\cos \left(p t-n z+\frac{\pi}{4}\right)-\sin \left(p t-`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n x}\left\{\frac{1}{2} \sin 2\left(p t-n z+\frac`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n \varepsilon} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `=\frac{1}{3} \frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n^{2}}=\frac{A^{2} \mu p^{2}}{4 \pi V^{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{1}{4 \pi \mu} \frac{d^{2} F}{d z^{2}}=\frac{a^{2} A}{2 \pi \mu} \sin p t \sin a z .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} a^{3}}{2 \pi \mu}(1-\cos 2 p t) \sin a z \cos a z,`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\left.\frac{A^{2} a^{3}}{2 \pi \mu} \sin a z \cos a z .\right\}`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `-\frac{2 A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n x}\left\{\frac{1}{2} \sin 2\left(p t-n z+\frac`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n} e^{-2 n \varepsilon} .`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `=\frac{1}{3} \frac{A^{2} \mu^{2} p^{3}}{\sigma V^{2} n^{2}}=\frac{A^{2} \mu p^{2}}{4 \pi V^{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.794** `calc_radiation_force`: verified
+  - LaTeX: `\frac{1}{4 \pi \mu} \frac{d^{2} F}{d z^{2}}=\frac{a^{2} A}{2 \pi \mu} \sin p t \sin a z .`
+  - Structural/heuristic match
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\frac{A^{2} a^{3}}{2 \pi \mu}(1-\cos 2 p t) \sin a z \cos a z,`
+  - No clear structural match found in code
+- [??] **Art.794** `calc_radiation_force`: unverified
+  - LaTeX: `\left.\frac{A^{2} a^{3}}{2 \pi \mu} \sin a z \cos a z .\right\}`
+  - No clear structural match found in code
+
+### `maxwell\optics\velocity.py`
+
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V_`
+  - No clear structural match found in code
+- [OK] **Art.786** `calc_wave_velocity`: verified
+  - LaTeX: `\begin{equation*}
+l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0 \tag{6}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{2`
+  - No clear structural match found in code
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V`
+  - No clear structural match found in code
+- [OK] **Art.786** `calc_wave_velocity`: verified
+  - LaTeX: `l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0`
+  - Structural/heuristic match
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{`
+  - No clear structural match found in code
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V_`
+  - No clear structural match found in code
+- [OK] **Art.786** `calc_wave_velocity`: verified
+  - LaTeX: `\begin{equation*}
+l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0 \tag{6}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{2`
+  - No clear structural match found in code
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V`
+  - No clear structural match found in code
+- [OK] **Art.786** `calc_wave_velocity`: verified
+  - LaTeX: `l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0`
+  - Structural/heuristic match
+- [??] **Art.786** `calc_wave_velocity`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{`
   - No clear structural match found in code
 
 ### `maxwell\optics\wave_equation.py`
@@ -8232,6 +17054,54 @@ G & `
 F & =\frac{d}{d t}(\bar{F} t)+t \frac{d \bar{F}}{d t} \cdot \\
 G & =\frac{d}`
   - No clear structural match found in code
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V_`
+  - Structural/heuristic match
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{equation*}
+l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0 \tag{6}
+\end{equation*}`
+  - Structural/heuristic match
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{2`
+  - Structural/heuristic match
+- [??] **Art.786** `calc_plane_wave_B_from_E`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V`
+  - No clear structural match found in code
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0`
+  - Structural/heuristic match
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{`
+  - Structural/heuristic match
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V_`
+  - Structural/heuristic match
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{equation*}
+l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0 \tag{6}
+\end{equation*}`
+  - Structural/heuristic match
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{align*}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{2`
+  - Structural/heuristic match
+- [??] **Art.786** `calc_plane_wave_B_from_E`: unverified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{1}}{d \nu_{1}}=-l \frac{d V_{1}}{d x}-m \frac{d V_{1}}{d y}-n \frac{d V`
+  - No clear structural match found in code
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `l \frac{d x}{d s}+m \frac{d y}{d s}+n \frac{d z}{d s}=0`
+  - Structural/heuristic match
+- [OK] **Art.786** `calc_plane_wave_B_from_E`: verified
+  - LaTeX: `\begin{aligned}
+& \frac{d V_{2}}{d x}-\frac{d V_{1}}{d x}=l\left(\frac{d V_{1}}{d v_{1}}+\frac{d V_{`
+  - Structural/heuristic match
 - [??] **Art.789** `calc_energy_density`: unverified
   - LaTeX: `\begin{equation*}
 K=1.975 . \tag{12}
@@ -8334,6 +17204,250 @@ u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} . \tag{15}
 - [OK] **Art.790** `calc_wavelength`: verified
   - LaTeX: `u=\frac{d f}{d t}, \quad v=\frac{d g}{d t}, \quad w=\frac{d h}{d t} .`
   - Structural/heuristic match
+
+### `maxwell\physics\conduction.py`
+
+- [OK] **Art.274** `isotropic_conductivity_tensor`: verified
+  - LaTeX: `\begin{equation*}
+E=C R . \tag{1}
+\end{equation*}`
+  - Structural/heuristic match
+- [OK] **Art.274** `isotropic_conductivity_tensor`: verified
+  - LaTeX: `\begin{equation*}
+E=C R . \tag{1}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+E_{12}=C R_{12}, \quad E_{23}=C R_{23}, \quad E_{34}=C R_{34}, \text { \&c. } \tag`
+  - No clear structural match found in code
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `\begin{equation*}
+E=C R . \tag{3}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+E=E_{12}+E_{23}+E_{34}+\& \mathrm{c} \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `=C\left(R_{12}+R_{23}+R_{34}+\& \mathrm{c} .\right) \text { by equations (2). }`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+R=R_{12}+R_{23}+R_{34}+\& \mathrm{c} \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `a-b=R_{1} C, \quad b-c=R_{2} C, \quad \text { and } \quad a-c=R C,`
+  - Structural/heuristic match
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+b=\frac{R_{2} a+R_{1} c}{R}, \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `E_{12}=C R_{12}, \quad E_{23}=C R_{23}, \quad E_{34}=C R_{34}, \text { \&c. }`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `E=E_{12}+E_{23}+E_{34}+\& \mathrm{c}`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `=C\left(R_{12}+R_{23}+R_{34}+\& \mathrm{c} .\right) \text { by equations (2). }`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `R=R_{12}+R_{23}+R_{34}+\& \mathrm{c}`
+  - No clear structural match found in code
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `a-b=R_{1} C, \quad b-c=R_{2} C, \quad \text { and } \quad a-c=R C,`
+  - Structural/heuristic match
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `b=\frac{R_{2} a+R_{1} c}{R},`
+  - Structural/heuristic match
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+E_{12}=C R_{12}, \quad E_{23}=C R_{23}, \quad E_{34}=C R_{34}, \text { \&c. } \tag`
+  - No clear structural match found in code
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `\begin{equation*}
+E=C R . \tag{3}
+\end{equation*}`
+  - Structural/heuristic match
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+E=E_{12}+E_{23}+E_{34}+\& \mathrm{c} \tag{4}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `=C\left(R_{12}+R_{23}+R_{34}+\& \mathrm{c} .\right) \text { by equations (2). }`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+R=R_{12}+R_{23}+R_{34}+\& \mathrm{c} \tag{5}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `a-b=R_{1} C, \quad b-c=R_{2} C, \quad \text { and } \quad a-c=R C,`
+  - Structural/heuristic match
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `\begin{equation*}
+b=\frac{R_{2} a+R_{1} c}{R}, \tag{6}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `E_{12}=C R_{12}, \quad E_{23}=C R_{23}, \quad E_{34}=C R_{34}, \text { \&c. }`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `E=E_{12}+E_{23}+E_{34}+\& \mathrm{c}`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `=C\left(R_{12}+R_{23}+R_{34}+\& \mathrm{c} .\right) \text { by equations (2). }`
+  - No clear structural match found in code
+- [??] **Art.276** `joule_heating`: unverified
+  - LaTeX: `R=R_{12}+R_{23}+R_{34}+\& \mathrm{c}`
+  - No clear structural match found in code
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `a-b=R_{1} C, \quad b-c=R_{2} C, \quad \text { and } \quad a-c=R C,`
+  - Structural/heuristic match
+- [OK] **Art.276** `joule_heating`: verified
+  - LaTeX: `b=\frac{R_{2} a+R_{1} c}{R},`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `\begin{equation*}
+\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}} \tag{7}
+\end{equation*`
+  - Structural/heuristic match
+- [??] **Art.277** `calc_resistance_3d`: unverified
+  - LaTeX: `\begin{equation*}
+C_{1}=C \frac{R}{R_{1}}, \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.277** `calc_resistance_3d`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}}`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `C_{1}=C \frac{R}{R_{1}},`
+  - Structural/heuristic match
+- [??] **Art.277** `calc_resistance_3d`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `\begin{equation*}
+\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}} \tag{7}
+\end{equation*`
+  - Structural/heuristic match
+- [??] **Art.277** `calc_resistance_3d`: unverified
+  - LaTeX: `\begin{equation*}
+C_{1}=C \frac{R}{R_{1}}, \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.277** `calc_resistance_3d`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}}`
+  - Structural/heuristic match
+- [OK] **Art.277** `calc_resistance_3d`: verified
+  - LaTeX: `C_{1}=C \frac{R}{R_{1}},`
+  - Structural/heuristic match
+- [??] **Art.277** `calc_resistance_3d`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
+- [OK] **Art.278** `heterogeneous_conduction`: verified
+  - LaTeX: `R=\frac{l^{2} r}{m} .`
+  - Structural/heuristic match
+- [OK] **Art.278** `heterogeneous_conduction`: verified
+  - LaTeX: `R=\frac{l^{2} r}{m} .`
+  - Structural/heuristic match
+- [OK] **Art.278** `heterogeneous_conduction`: verified
+  - LaTeX: `R=\frac{l^{2} r}{m} .`
+  - Structural/heuristic match
+- [OK] **Art.278** `heterogeneous_conduction`: verified
+  - LaTeX: `R=\frac{l^{2} r}{m} .`
+  - Structural/heuristic match
+
+### `maxwell\physics\coulomb.py`
+
+- [??] **Art.40** `force_distance_law`: unverified
+  - LaTeX: `\left(m m^{\prime}+n n^{\prime}-m n^{\prime}-n m^{\prime}\right) f \quad \text { or } \quad(m-n)\lef`
+  - No clear structural match found in code
+- [??] **Art.40** `force_distance_law`: unverified
+  - LaTeX: `\left(m m^{\prime}+n n^{\prime}-m n^{\prime}-n m^{\prime}\right) f \quad \text { or } \quad(m-n)\lef`
+  - No clear structural match found in code
+- [??] **Art.40** `force_distance_law`: unverified
+  - LaTeX: `\left(m m^{\prime}+n n^{\prime}-m n^{\prime}-n m^{\prime}\right) f \quad \text { or } \quad(m-n)\lef`
+  - No clear structural match found in code
+- [??] **Art.40** `force_distance_law`: unverified
+  - LaTeX: `\left(m m^{\prime}+n n^{\prime}-m n^{\prime}-n m^{\prime}\right) f \quad \text { or } \quad(m-n)\lef`
+  - No clear structural match found in code
+- [??] **Art.67** `resultant_force`: unverified
+  - LaTeX: `\iiint \iiint \frac{\rho \rho^{\prime}\left(x-x^{\prime}\right) d x d y d z d x^{\prime} d y^{\prime`
+  - No clear structural match found in code
+- [??] **Art.67** `resultant_force`: unverified
+  - LaTeX: `\iiint \iiint \frac{\rho \rho^{\prime}\left(x-x^{\prime}\right) d x d y d z d x^{\prime} d y^{\prime`
+  - No clear structural match found in code
+- [??] **Art.67** `resultant_force`: unverified
+  - LaTeX: `\iiint \iiint \frac{\rho \rho^{\prime}\left(x-x^{\prime}\right) d x d y d z d x^{\prime} d y^{\prime`
+  - No clear structural match found in code
+- [??] **Art.67** `resultant_force`: unverified
+  - LaTeX: `\iiint \iiint \frac{\rho \rho^{\prime}\left(x-x^{\prime}\right) d x d y d z d x^{\prime} d y^{\prime`
+  - No clear structural match found in code
+- [??] **Art.68** `field_intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.68** `field_intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.68** `field_intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.68** `field_intensity`: unverified
+  - LaTeX: `X=R l, \quad Y=R m, \quad Z=R n .`
+  - No clear structural match found in code
+- [??] **Art.84** `superposition_force`: unverified
+  - LaTeX: `\begin{equation*}
+W=\Sigma\left(\int V \delta e\right) ; \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.84** `superposition_force`: unverified
+  - LaTeX: `W=\Sigma\left(\int V \delta e\right) ;`
+  - No clear structural match found in code
+- [??] **Art.84** `superposition_force`: unverified
+  - LaTeX: `\begin{equation*}
+W=\Sigma\left(\int V \delta e\right) ; \tag{1}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.84** `superposition_force`: unverified
+  - LaTeX: `W=\Sigma\left(\int V \delta e\right) ;`
+  - No clear structural match found in code
 
 ### `maxwell\physics\coupling.py`
 
@@ -8527,6 +17641,344 @@ R=\frac{3 m_{1} m_{2}}{r^{4}}\left(\mu_{12}-5 \lambda_{1} \lambda_{2}\right),`
   - LaTeX: `\lambda_{1}=1 \text { and } \lambda_{2}=0, \text { then } \mu_{12}=0 .`
   - No clear structural match found in code
 
+### `maxwell\physics\current.py`
+
+- [??] **Art.64** `current_vector`: unverified
+  - LaTeX: `\rho_{0} \theta=\sigma .`
+  - No clear structural match found in code
+- [??] **Art.64** `current_vector`: unverified
+  - LaTeX: `\rho_{0} \theta=\sigma .`
+  - No clear structural match found in code
+- [??] **Art.64** `current_vector`: unverified
+  - LaTeX: `\rho_{0} \theta=\sigma .`
+  - No clear structural match found in code
+- [??] **Art.64** `current_vector`: unverified
+  - LaTeX: `\rho_{0} \theta=\sigma .`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\beta=\int_{0}^{\phi} \frac{d \phi}{\sqrt{1-k^{\prime 2} \cos ^{2} \varphi}}=F\lef`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=\int_{0}^{\psi} \frac{d \psi}{\sqrt{1-k^{2} \cos ^{2} \psi}}=F(k)-F(k, \psi`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{a_{1} V_{2}-a_{2} V_{1}+a\left(V_{1}-V_{2}\right)}{a_{1}-a_{2}} \tag{18}
+\`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\beta=\int_{0}^{\phi} \frac{d \phi}{\sqrt{1-k^{\prime 2} \cos ^{2} \varphi}}=F\left(k^{\prime}\right`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\gamma=\int_{0}^{\psi} \frac{d \psi}{\sqrt{1-k^{2} \cos ^{2} \psi}}=F(k)-F(k, \psi)`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `V=\frac{a_{1} V_{2}-a_{2} V_{1}+a\left(V_{1}-V_{2}\right)}{a_{1}-a_{2}}`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x^{2}}{c^{2}}+\frac{y^{2}}{c^{2}-b^{2}}=1 \tag{25}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{\gamma_{1} V-\gamma_{2} V_{1}+\gamma\left(V_{1}-V_{2}\right)}{\gamma_{1}-\`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\sigma=-\frac{1}{4 \pi} \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}} \frac{c p_{3}}{P`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+Q_{2}=c \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}}=-Q_{1}, \tag{28}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+Q=c \frac{V}{F(k)-\gamma} . \tag{29}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\sigma=\frac{V}{4 \pi \sqrt{c^{2}-b^{2}}} \frac{1}{F(k)} \frac{1}{\sqrt{1-\frac{a^`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+Q=c \frac{V}{F(k)} . \tag{31}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `\frac{x^{2}}{c^{2}}+\frac{y^{2}}{c^{2}-b^{2}}=1`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `V=\frac{\gamma_{1} V-\gamma_{2} V_{1}+\gamma\left(V_{1}-V_{2}\right)}{\gamma_{1}-\gamma_{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `\sigma=-\frac{1}{4 \pi} \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}} \frac{c p_{3}}{P_{3}}`
+  - Structural/heuristic match
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `Q_{2}=c \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}}=-Q_{1},`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `Q=c \frac{V}{F(k)-\gamma} .`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `\sigma=\frac{V}{4 \pi \sqrt{c^{2}-b^{2}}} \frac{1}{F(k)} \frac{1}{\sqrt{1-\frac{a^{2}}{c^{2}}-\frac{`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `Q=c \frac{V}{F(k)} .`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\beta=\int_{0}^{\phi} \frac{d \phi}{\sqrt{1-k^{\prime 2} \cos ^{2} \varphi}}=F\lef`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\gamma=\int_{0}^{\psi} \frac{d \psi}{\sqrt{1-k^{2} \cos ^{2} \psi}}=F(k)-F(k, \psi`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{a_{1} V_{2}-a_{2} V_{1}+a\left(V_{1}-V_{2}\right)}{a_{1}-a_{2}} \tag{18}
+\`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\beta=\int_{0}^{\phi} \frac{d \phi}{\sqrt{1-k^{\prime 2} \cos ^{2} \varphi}}=F\left(k^{\prime}\right`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\gamma=\int_{0}^{\psi} \frac{d \psi}{\sqrt{1-k^{2} \cos ^{2} \psi}}=F(k)-F(k, \psi)`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `V=\frac{a_{1} V_{2}-a_{2} V_{1}+a\left(V_{1}-V_{2}\right)}{a_{1}-a_{2}}`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x^{2}}{c^{2}}+\frac{y^{2}}{c^{2}-b^{2}}=1 \tag{25}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+V=\frac{\gamma_{1} V-\gamma_{2} V_{1}+\gamma\left(V_{1}-V_{2}\right)}{\gamma_{1}-\`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\sigma=-\frac{1}{4 \pi} \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}} \frac{c p_{3}}{P`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+Q_{2}=c \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}}=-Q_{1}, \tag{28}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+Q=c \frac{V}{F(k)-\gamma} . \tag{29}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+\sigma=\frac{V}{4 \pi \sqrt{c^{2}-b^{2}}} \frac{1}{F(k)} \frac{1}{\sqrt{1-\frac{a^`
+  - No clear structural match found in code
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `\begin{equation*}
+Q=c \frac{V}{F(k)} . \tag{31}
+\end{equation*}`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `\frac{x^{2}}{c^{2}}+\frac{y^{2}}{c^{2}-b^{2}}=1`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `V=\frac{\gamma_{1} V-\gamma_{2} V_{1}+\gamma\left(V_{1}-V_{2}\right)}{\gamma_{1}-\gamma_{2}} .`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `\sigma=-\frac{1}{4 \pi} \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}} \frac{c p_{3}}{P_{3}}`
+  - Structural/heuristic match
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `Q_{2}=c \frac{V_{1}-V_{2}}{\gamma_{1}-\gamma_{2}}=-Q_{1},`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `Q=c \frac{V}{F(k)-\gamma} .`
+  - No clear structural match found in code
+- [OK] **Art.150** `calc_current_density`: verified
+  - LaTeX: `\sigma=\frac{V}{4 \pi \sqrt{c^{2}-b^{2}}} \frac{1}{F(k)} \frac{1}{\sqrt{1-\frac{a^{2}}{c^{2}}-\frac{`
+  - Structural/heuristic match
+- [??] **Art.150** `calc_current_density`: unverified
+  - LaTeX: `Q=c \frac{V}{F(k)} .`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+Q=c \frac{V}{\frac{1}{2} \pi-\gamma}, \tag{37}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{align*}
+\sigma & =\frac{V}{2 \pi^{2} \sqrt{c^{2}-r^{2}}}  \tag{38}\\
+Q & =c \frac{V}{\frac{1}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+a=\log \tan \frac{\pi+2 \theta}{4}, \text { whence } \lambda_{1}=c \tanh a, \tag{4`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x^{2}}{(\tanh a)^{2}}-\frac{y^{2}+z^{2}}{(\operatorname{sech} a)^{2}}=c^{2} `
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{y^{2}}{(\sin \beta)^{2}}-\frac{z^{2}}{(\cos \beta)^{2}}=0 \tag{42}
+\end{equa`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\int_{\lambda_{2}}^{\infty} \frac{c d \lambda_{3}}{\lambda_{3}^{2}-c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x^{2}}{(\operatorname{coth} \gamma)^{2}}+\frac{y^{2}+z^{2}}{(\operatorname{c`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+c V \div \int_{\psi_{0}}^{\frac{\pi}{8}} \frac{d \psi}{\sin \psi} \tag{44}
+\end{eq`
+  - No clear structural match found in code
+- [OK] **Art.152** `current_density_parallel`: verified
+  - LaTeX: `Q=c \frac{V}{\frac{1}{2} \pi-\gamma},`
+  - Structural/heuristic match
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{aligned}
+\sigma & =\frac{V}{2 \pi^{2} \sqrt{c^{2}-r^{2}}} \\
+Q & =c \frac{V}{\frac{1}{2} \pi}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `a=\log \tan \frac{\pi+2 \theta}{4}, \text { whence } \lambda_{1}=c \tanh a,`
+  - No clear structural match found in code
+- [OK] **Art.152** `current_density_parallel`: verified
+  - LaTeX: `\frac{x^{2}}{(\tanh a)^{2}}-\frac{y^{2}+z^{2}}{(\operatorname{sech} a)^{2}}=c^{2} .`
+  - Structural/heuristic match
+- [OK] **Art.152** `current_density_parallel`: verified
+  - LaTeX: `\frac{y^{2}}{(\sin \beta)^{2}}-\frac{z^{2}}{(\cos \beta)^{2}}=0`
+  - Structural/heuristic match
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\int_{\lambda_{2}}^{\infty} \frac{c d \lambda_{3}}{\lambda_{3}^{2}-c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\frac{x^{2}}{(\operatorname{coth} \gamma)^{2}}+\frac{y^{2}+z^{2}}{(\operatorname{cosech} \gamma)^{2}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `c V \div \int_{\psi_{0}}^{\frac{\pi}{8}} \frac{d \psi}{\sin \psi}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+Q=c \frac{V}{\frac{1}{2} \pi-\gamma}, \tag{37}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{align*}
+\sigma & =\frac{V}{2 \pi^{2} \sqrt{c^{2}-r^{2}}}  \tag{38}\\
+Q & =c \frac{V}{\frac{1}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+a=\log \tan \frac{\pi+2 \theta}{4}, \text { whence } \lambda_{1}=c \tanh a, \tag{4`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x^{2}}{(\tanh a)^{2}}-\frac{y^{2}+z^{2}}{(\operatorname{sech} a)^{2}}=c^{2} `
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{y^{2}}{(\sin \beta)^{2}}-\frac{z^{2}}{(\cos \beta)^{2}}=0 \tag{42}
+\end{equa`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\int_{\lambda_{2}}^{\infty} \frac{c d \lambda_{3}}{\lambda_{3}^{2}-c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{x^{2}}{(\operatorname{coth} \gamma)^{2}}+\frac{y^{2}+z^{2}}{(\operatorname{c`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{equation*}
+c V \div \int_{\psi_{0}}^{\frac{\pi}{8}} \frac{d \psi}{\sin \psi} \tag{44}
+\end{eq`
+  - No clear structural match found in code
+- [OK] **Art.152** `current_density_parallel`: verified
+  - LaTeX: `Q=c \frac{V}{\frac{1}{2} \pi-\gamma},`
+  - Structural/heuristic match
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\begin{aligned}
+\sigma & =\frac{V}{2 \pi^{2} \sqrt{c^{2}-r^{2}}} \\
+Q & =c \frac{V}{\frac{1}{2} \pi}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `a=\log \tan \frac{\pi+2 \theta}{4}, \text { whence } \lambda_{1}=c \tanh a,`
+  - No clear structural match found in code
+- [OK] **Art.152** `current_density_parallel`: verified
+  - LaTeX: `\frac{x^{2}}{(\tanh a)^{2}}-\frac{y^{2}+z^{2}}{(\operatorname{sech} a)^{2}}=c^{2} .`
+  - Structural/heuristic match
+- [OK] **Art.152** `current_density_parallel`: verified
+  - LaTeX: `\frac{y^{2}}{(\sin \beta)^{2}}-\frac{z^{2}}{(\cos \beta)^{2}}=0`
+  - Structural/heuristic match
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\int_{\lambda_{2}}^{\infty} \frac{c d \lambda_{3}}{\lambda_{3}^{2}-c^{2}}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `\frac{x^{2}}{(\operatorname{coth} \gamma)^{2}}+\frac{y^{2}+z^{2}}{(\operatorname{cosech} \gamma)^{2}`
+  - No clear structural match found in code
+- [??] **Art.152** `current_density_parallel`: unverified
+  - LaTeX: `c V \div \int_{\psi_{0}}^{\frac{\pi}{8}} \frac{d \psi}{\sin \psi}`
+  - No clear structural match found in code
+
+### `maxwell\physics\gauss.py`
+
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\frac{1}{4 \pi} K R \cos \epsilon d S .`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\frac{1}{4 \pi} K R \cos \epsilon d S .`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\frac{1}{4 \pi} K R \cos \epsilon d S .`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\frac{1}{4 \pi} K R \cos \epsilon d S .`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S`
+  - No clear structural match found in code
+- [??] **Art.75** `surface_integral_induction`: unverified
+  - LaTeX: `\iint R \cos \epsilon d S=\iiint\left(\frac{d X}{d x}+\frac{d Y}{d y}+\frac{d Z}{d z}\right) d x d y`
+  - No clear structural match found in code
+- [OK] **Art.82** `trace_induction_lines`: verified
+  - LaTeX: `\epsilon=0 \text { and } R=-4 \pi \sigma,`
+  - Structural/heuristic match
+- [OK] **Art.82** `trace_induction_lines`: verified
+  - LaTeX: `\epsilon=0 \text { and } R=-4 \pi \sigma,`
+  - Structural/heuristic match
+- [OK] **Art.82** `trace_induction_lines`: verified
+  - LaTeX: `\epsilon=0 \text { and } R=-4 \pi \sigma,`
+  - Structural/heuristic match
+- [OK] **Art.82** `trace_induction_lines`: verified
+  - LaTeX: `\epsilon=0 \text { and } R=-4 \pi \sigma,`
+  - Structural/heuristic match
+
 ### `maxwell\physics\molecular_theory.py`
 
 - [??] **Art.430** `molecular_field`: unverified
@@ -8565,6 +18017,77 @@ R=\frac{3 m_{1} m_{2}}{r^{4}}\left(\mu_{12}-5 \lambda_{1} \lambda_{2}\right),`
 - [OK] **Art.430** `molecular_field`: verified
   - LaTeX: `\mu=\frac{1+2 k}{1-k} .`
   - Structural/heuristic match
+
+### `maxwell\physics\ohm.py`
+
+- [OK] **Art.277** `uniform_wire_resistance`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}} \tag{7}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+C_{1}=C \frac{R}{R_{1}}, \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
+- [OK] **Art.277** `uniform_wire_resistance`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}}`
+  - No clear structural match found in code
+- [OK] **Art.277** `uniform_wire_resistance`: verified
+  - LaTeX: `C_{1}=C \frac{R}{R_{1}},`
+  - Structural/heuristic match
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
+- [OK] **Art.277** `uniform_wire_resistance`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}} \tag{7}
+\end{equation*`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `\begin{equation*}
+C_{1}=C \frac{R}{R_{1}}, \tag{8}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
+- [OK] **Art.277** `uniform_wire_resistance`: verified
+  - LaTeX: `E=C_{1} R_{1}=C_{2} R_{2}=C_{3} R_{3}=C R,`
+  - Structural/heuristic match
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `C=C_{1}+C_{2}+C_{3},`
+  - No clear structural match found in code
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `\frac{1}{R}=\frac{1}{R_{1}}+\frac{1}{R_{2}}+\frac{1}{R_{3}}`
+  - No clear structural match found in code
+- [OK] **Art.277** `uniform_wire_resistance`: verified
+  - LaTeX: `C_{1}=C \frac{R}{R_{1}},`
+  - Structural/heuristic match
+- [??] **Art.277** `uniform_wire_resistance`: unverified
+  - LaTeX: `R=\frac{l_{\rho}}{8} .`
+  - No clear structural match found in code
 
 ### `maxwell\physics\potentials.py`
 
@@ -8730,6 +18253,729 @@ V= & \iint A \frac{1}{r} d y d z+\iint B \frac{1}{r} d z d x+\iint C \frac{1}{r}
 - [OK] **Art.386** `calc_finite_potential`: verified
   - LaTeX: `V=\iint \frac{\sigma}{r} d S+\iiint \frac{\rho}{r} d x d y d z`
   - Structural/heuristic match
+
+### `maxwell\signal_processing\telegraphy.py`
+
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v \cdot \sin \alpha=\omega \cdot S P .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v=\frac{\omega}{\sin a} S P^{\prime} .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v \cdot \sin \alpha=\omega \cdot S P .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v=\frac{\omega}{\sin a} S P^{\prime} .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v \cdot \sin \alpha=\omega \cdot S P .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v=\frac{\omega}{\sin a} S P^{\prime} .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v \cdot \sin \alpha=\omega \cdot S P .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v=\frac{\omega}{\sin a} S P^{\prime} .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v \cdot \sin \alpha=\omega \cdot S P .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v=\frac{\omega}{\sin a} S P^{\prime} .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v \cdot \sin \alpha=\omega \cdot S P .`
+  - No clear structural match found in code
+- [??] **Art.731** `calc_characteristic_impedance`: unverified
+  - LaTeX: `v=\frac{\omega}{\sin a} S P^{\prime} .`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} S P^{\prime \prime}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} P S \text { and } \frac{\omega^{2}}{\sin ^{2} a} P K .`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `P K=2 \cos a P^{\prime} S=-2^{\frac{\sin a \cos a}{\omega}} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `-2 \frac{\omega \cos a}{\sin a} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\mu=\frac{\omega^{2}}{\sin ^{2} a}, \text { and } k=\omega \frac{\cos a}{\sin a}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\omega=\omega_{0} \sin a`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} S P^{\prime \prime}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} P S \text { and } \frac{\omega^{2}}{\sin ^{2} a} P K .`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `P K=2 \cos a P^{\prime} S=-2^{\frac{\sin a \cos a}{\omega}} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `-2 \frac{\omega \cos a}{\sin a} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\mu=\frac{\omega^{2}}{\sin ^{2} a}, \text { and } k=\omega \frac{\cos a}{\sin a}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\omega=\omega_{0} \sin a`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} S P^{\prime \prime}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} P S \text { and } \frac{\omega^{2}}{\sin ^{2} a} P K .`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `P K=2 \cos a P^{\prime} S=-2^{\frac{\sin a \cos a}{\omega}} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `-2 \frac{\omega \cos a}{\sin a} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\mu=\frac{\omega^{2}}{\sin ^{2} a}, \text { and } k=\omega \frac{\cos a}{\sin a}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\omega=\omega_{0} \sin a`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} S P^{\prime \prime}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} P S \text { and } \frac{\omega^{2}}{\sin ^{2} a} P K .`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `P K=2 \cos a P^{\prime} S=-2^{\frac{\sin a \cos a}{\omega}} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `-2 \frac{\omega \cos a}{\sin a} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\mu=\frac{\omega^{2}}{\sin ^{2} a}, \text { and } k=\omega \frac{\cos a}{\sin a}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\omega=\omega_{0} \sin a`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} S P^{\prime \prime}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} P S \text { and } \frac{\omega^{2}}{\sin ^{2} a} P K .`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `P K=2 \cos a P^{\prime} S=-2^{\frac{\sin a \cos a}{\omega}} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `-2 \frac{\omega \cos a}{\sin a} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\mu=\frac{\omega^{2}}{\sin ^{2} a}, \text { and } k=\omega \frac{\cos a}{\sin a}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\omega=\omega_{0} \sin a`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} S P^{\prime \prime}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\frac{\omega^{2}}{\sin ^{2} a} P S \text { and } \frac{\omega^{2}}{\sin ^{2} a} P K .`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `P K=2 \cos a P^{\prime} S=-2^{\frac{\sin a \cos a}{\omega}} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `-2 \frac{\omega \cos a}{\sin a} v`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\mu=\frac{\omega^{2}}{\sin ^{2} a}, \text { and } k=\omega \frac{\cos a}{\sin a}`
+  - No clear structural match found in code
+- [??] **Art.732** `calc_propagation_constant`: unverified
+  - LaTeX: `\omega=\omega_{0} \sin a`
+  - No clear structural match found in code
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `r=C e^{-\phi \cot a}`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `\phi=\omega t, \quad x=a+r \sin \phi,`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `r=C e^{-\phi \cot a}`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `\phi=\omega t, \quad x=a+r \sin \phi,`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `r=C e^{-\phi \cot a}`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `\phi=\omega t, \quad x=a+r \sin \phi,`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `r=C e^{-\phi \cot a}`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `\phi=\omega t, \quad x=a+r \sin \phi,`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `r=C e^{-\phi \cot a}`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `\phi=\omega t, \quad x=a+r \sin \phi,`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `r=C e^{-\phi \cot a}`
+  - Structural/heuristic match
+- [OK] **Art.733** `calc_propagation_constant`: verified
+  - LaTeX: `\phi=\omega t, \quad x=a+r \sin \phi,`
+  - Structural/heuristic match
+- [??] **Art.735** `verify_telegraph_line`: unverified
+  - LaTeX: `\begin{aligned}
+& x_{1}-a=r_{1} \sin a \\
+& x_{2}-a=-r_{1} \sin a e^{-\pi \cot a} \\
+& x_{3}-a=r_{1}`
+  - No clear structural match found in code
+- [??] **Art.735** `verify_telegraph_line`: unverified
+  - LaTeX: `\begin{aligned}
+& x_{1}-a=r_{1} \sin a \\
+& x_{2}-a=-r_{1} \sin a e^{-\pi \cot a} \\
+& x_{3}-a=r_{1}`
+  - No clear structural match found in code
+- [??] **Art.735** `verify_telegraph_line`: unverified
+  - LaTeX: `\begin{aligned}
+& x_{1}-a=r_{1} \sin a \\
+& x_{2}-a=-r_{1} \sin a e^{-\pi \cot a} \\
+& x_{3}-a=r_{1}`
+  - No clear structural match found in code
+- [??] **Art.735** `verify_telegraph_line`: unverified
+  - LaTeX: `\begin{aligned}
+& x_{1}-a=r_{1} \sin a \\
+& x_{2}-a=-r_{1} \sin a e^{-\pi \cot a} \\
+& x_{3}-a=r_{1}`
+  - No clear structural match found in code
+- [??] **Art.735** `verify_telegraph_line`: unverified
+  - LaTeX: `\begin{aligned}
+& x_{1}-a=r_{1} \sin a \\
+& x_{2}-a=-r_{1} \sin a e^{-\pi \cot a} \\
+& x_{3}-a=r_{1}`
+  - No clear structural match found in code
+- [??] **Art.735** `verify_telegraph_line`: unverified
+  - LaTeX: `\begin{aligned}
+& x_{1}-a=r_{1} \sin a \\
+& x_{2}-a=-r_{1} \sin a e^{-\pi \cot a} \\
+& x_{3}-a=r_{1}`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T=T_{1}\left(1+\kappa c^{2}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `n T=T_{1}\left(n+\kappa \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{\rho^{2}-1}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T_{1}=T\left\{1-\frac{\kappa}{n} \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{p^{2}-1}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T=T_{1}\left(1+\kappa c^{2}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `n T=T_{1}\left(n+\kappa \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{\rho^{2}-1}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T_{1}=T\left\{1-\frac{\kappa}{n} \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{p^{2}-1}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T=T_{1}\left(1+\kappa c^{2}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `n T=T_{1}\left(n+\kappa \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{\rho^{2}-1}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T_{1}=T\left\{1-\frac{\kappa}{n} \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{p^{2}-1}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T=T_{1}\left(1+\kappa c^{2}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `n T=T_{1}\left(n+\kappa \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{\rho^{2}-1}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T_{1}=T\left\{1-\frac{\kappa}{n} \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{p^{2}-1}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T=T_{1}\left(1+\kappa c^{2}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `n T=T_{1}\left(n+\kappa \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{\rho^{2}-1}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T_{1}=T\left\{1-\frac{\kappa}{n} \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{p^{2}-1}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T=T_{1}\left(1+\kappa c^{2}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `n T=T_{1}\left(n+\kappa \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{\rho^{2}-1}\right),`
+  - No clear structural match found in code
+- [??] **Art.740** `rise_time`: unverified
+  - LaTeX: `T_{1}=T\left\{1-\frac{\kappa}{n} \frac{c_{1}^{2} \rho^{2}-c_{n}^{2}}{p^{2}-1}\right\} .`
+  - No clear structural match found in code
+- [??] **Art.745** `bandwidth_limit`: unverified
+  - LaTeX: `\phi=\frac{\theta_{0}+\rho \theta_{1}}{1+\rho} .`
+  - No clear structural match found in code
+- [??] **Art.745** `bandwidth_limit`: unverified
+  - LaTeX: `\phi=\frac{\theta_{0}+\rho \theta_{1}}{1+\rho} .`
+  - No clear structural match found in code
+- [??] **Art.745** `bandwidth_limit`: unverified
+  - LaTeX: `\phi=\frac{\theta_{0}+\rho \theta_{1}}{1+\rho} .`
+  - No clear structural match found in code
+- [??] **Art.745** `bandwidth_limit`: unverified
+  - LaTeX: `\phi=\frac{\theta_{0}+\rho \theta_{1}}{1+\rho} .`
+  - No clear structural match found in code
+- [??] **Art.745** `bandwidth_limit`: unverified
+  - LaTeX: `\phi=\frac{\theta_{0}+\rho \theta_{1}}{1+\rho} .`
+  - No clear structural match found in code
+- [??] **Art.745** `bandwidth_limit`: unverified
+  - LaTeX: `\phi=\frac{\theta_{0}+\rho \theta_{1}}{1+\rho} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta=C e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta=\theta_{1} . `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=\frac{v}{\omega_{1}} e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\tan \beta=\frac{\lambda}{\pi}, \quad \omega_{1}=\frac{\pi}{T_{1}}, \tag{12}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=\frac{Q G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambd`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{G} \frac{T_{1} \theta_{1}}{\sqrt{\pi^{2}+\lambda^{2}}} e^{\frac{\lambda`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{\bar{G}} \frac{T}{\pi}\left(1+\frac{1}{2} \lambda\right) \theta_{1} . \`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=K Q_{0}=a_{1}(\mathrm{say}) . \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta=C e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta=\theta_{1} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=\frac{v}{\omega_{1}} e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\tan \beta=\frac{\lambda}{\pi}, \quad \omega_{1}=\frac{\pi}{T_{1}},`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=\frac{Q G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan ^{-1}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `Q=\frac{H}{G} \frac{T_{1} \theta_{1}}{\sqrt{\pi^{2}+\lambda^{2}}} e^{\frac{\lambda}{\pi} \tan ^{-1} `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `Q=\frac{H}{\bar{G}} \frac{T}{\pi}\left(1+\frac{1}{2} \lambda\right) \theta_{1} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\frac{G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan ^{-1} \frac{\pi}{\`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=K Q_{0}=a_{1}(\mathrm{say}) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{0}=\frac{M G}{A} Q_{0} . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{1}=-v e^{-\lambda} . \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{2}=-\theta_{1} e^{-\lambda}=b_{1} . \tag{22}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{2}=v_{0} e^{-2 \lambda} . \tag{23}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v=\frac{M G}{A} Q . \tag{24}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `-\frac{M G}{A}\left(Q-Q_{0} e^{-2 \lambda}\right) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{3}=-K\left(Q-Q_{0} e^{-2 \lambda}\right)=c_{1}=-K Q+\theta_{1} e^{-2 \lamb`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{4}=-\theta_{3} e^{-\lambda}=d_{1}=e^{-\lambda}\left(K Q-a_{1} e^{-2 \lambd`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{5}=K Q+\theta_{3} e^{-2 \lambda} ; \tag{27}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+a_{2}=K Q\left(1-e^{-2 \lambda}\right)+a_{1} e^{-4 \lambda} . \tag{28}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d-b}{a-c}=e^{-\lambda}  \tag{29}\\
+K Q=\frac{(a-b) e^{-2 \lambda}+d-c}{1+e^{-\`
+  - No clear structural match found in code
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{0}=\frac{M G}{A} Q_{0} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{1}=-v e^{-\lambda} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `\theta_{2}=-\theta_{1} e^{-\lambda}=b_{1} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{2}=v_{0} e^{-2 \lambda} .`
+  - Structural/heuristic match
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `v=\frac{M G}{A} Q .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `-\frac{M G}{A}\left(Q-Q_{0} e^{-2 \lambda}\right) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{3}=-K\left(Q-Q_{0} e^{-2 \lambda}\right)=c_{1}=-K Q+\theta_{1} e^{-2 \lambda} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{4}=-\theta_{3} e^{-\lambda}=d_{1}=e^{-\lambda}\left(K Q-a_{1} e^{-2 \lambda}\right),`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{5}=K Q+\theta_{3} e^{-2 \lambda} ;`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `a_{2}=K Q\left(1-e^{-2 \lambda}\right)+a_{1} e^{-4 \lambda} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d-b}{a-c}=e^{-\lambda} \\
+K Q=\frac{(a-b) e^{-2 \lambda}+d-c}{1+e^{-\lambda}}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta=C e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta=\theta_{1} . `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=\frac{v}{\omega_{1}} e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\tan \beta=\frac{\lambda}{\pi}, \quad \omega_{1}=\frac{\pi}{T_{1}}, \tag{12}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=\frac{Q G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambd`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{G} \frac{T_{1} \theta_{1}}{\sqrt{\pi^{2}+\lambda^{2}}} e^{\frac{\lambda`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{\bar{G}} \frac{T}{\pi}\left(1+\frac{1}{2} \lambda\right) \theta_{1} . \`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=K Q_{0}=a_{1}(\mathrm{say}) . \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta=C e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta=\theta_{1} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=\frac{v}{\omega_{1}} e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\tan \beta=\frac{\lambda}{\pi}, \quad \omega_{1}=\frac{\pi}{T_{1}},`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=\frac{Q G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan ^{-1}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `Q=\frac{H}{G} \frac{T_{1} \theta_{1}}{\sqrt{\pi^{2}+\lambda^{2}}} e^{\frac{\lambda}{\pi} \tan ^{-1} `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `Q=\frac{H}{\bar{G}} \frac{T}{\pi}\left(1+\frac{1}{2} \lambda\right) \theta_{1} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\frac{G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan ^{-1} \frac{\pi}{\`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=K Q_{0}=a_{1}(\mathrm{say}) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{0}=\frac{M G}{A} Q_{0} . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{1}=-v e^{-\lambda} . \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{2}=-\theta_{1} e^{-\lambda}=b_{1} . \tag{22}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{2}=v_{0} e^{-2 \lambda} . \tag{23}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v=\frac{M G}{A} Q . \tag{24}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `-\frac{M G}{A}\left(Q-Q_{0} e^{-2 \lambda}\right) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{3}=-K\left(Q-Q_{0} e^{-2 \lambda}\right)=c_{1}=-K Q+\theta_{1} e^{-2 \lamb`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{4}=-\theta_{3} e^{-\lambda}=d_{1}=e^{-\lambda}\left(K Q-a_{1} e^{-2 \lambd`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{5}=K Q+\theta_{3} e^{-2 \lambda} ; \tag{27}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+a_{2}=K Q\left(1-e^{-2 \lambda}\right)+a_{1} e^{-4 \lambda} . \tag{28}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d-b}{a-c}=e^{-\lambda}  \tag{29}\\
+K Q=\frac{(a-b) e^{-2 \lambda}+d-c}{1+e^{-\`
+  - No clear structural match found in code
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{0}=\frac{M G}{A} Q_{0} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{1}=-v e^{-\lambda} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `\theta_{2}=-\theta_{1} e^{-\lambda}=b_{1} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{2}=v_{0} e^{-2 \lambda} .`
+  - Structural/heuristic match
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `v=\frac{M G}{A} Q .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `-\frac{M G}{A}\left(Q-Q_{0} e^{-2 \lambda}\right) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{3}=-K\left(Q-Q_{0} e^{-2 \lambda}\right)=c_{1}=-K Q+\theta_{1} e^{-2 \lambda} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{4}=-\theta_{3} e^{-\lambda}=d_{1}=e^{-\lambda}\left(K Q-a_{1} e^{-2 \lambda}\right),`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{5}=K Q+\theta_{3} e^{-2 \lambda} ;`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `a_{2}=K Q\left(1-e^{-2 \lambda}\right)+a_{1} e^{-4 \lambda} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d-b}{a-c}=e^{-\lambda} \\
+K Q=\frac{(a-b) e^{-2 \lambda}+d-c}{1+e^{-\lambda}}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta=C e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta=\theta_{1} . `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=\frac{v}{\omega_{1}} e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\tan \beta=\frac{\lambda}{\pi}, \quad \omega_{1}=\frac{\pi}{T_{1}}, \tag{12}
+\end{`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=\frac{Q G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambd`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{G} \frac{T_{1} \theta_{1}}{\sqrt{\pi^{2}+\lambda^{2}}} e^{\frac{\lambda`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+Q=\frac{H}{\bar{G}} \frac{T}{\pi}\left(1+\frac{1}{2} \lambda\right) \theta_{1} . \`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\frac{G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{1}=K Q_{0}=a_{1}(\mathrm{say}) . \tag{19}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta=C e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta=\theta_{1} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=\frac{v}{\omega_{1}} e^{-\left(\frac{\pi}{2}-\beta\right) \tan \beta} \cos \beta`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\tan \beta=\frac{\lambda}{\pi}, \quad \omega_{1}=\frac{\pi}{T_{1}},`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=\frac{Q G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan ^{-1}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `Q=\frac{H}{G} \frac{T_{1} \theta_{1}}{\sqrt{\pi^{2}+\lambda^{2}}} e^{\frac{\lambda}{\pi} \tan ^{-1} `
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `Q=\frac{H}{\bar{G}} \frac{T}{\pi}\left(1+\frac{1}{2} \lambda\right) \theta_{1} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\frac{G}{H} \frac{\sqrt{\pi^{2}+\lambda^{2}}}{T_{1}} e^{-\frac{\lambda}{\pi} \tan ^{-1} \frac{\pi}{\`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{1}=K Q_{0}=a_{1}(\mathrm{say}) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{0}=\frac{M G}{A} Q_{0} . \tag{20}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{1}=-v e^{-\lambda} . \tag{21}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{2}=-\theta_{1} e^{-\lambda}=b_{1} . \tag{22}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v_{2}=v_{0} e^{-2 \lambda} . \tag{23}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+v=\frac{M G}{A} Q . \tag{24}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `-\frac{M G}{A}\left(Q-Q_{0} e^{-2 \lambda}\right) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{3}=-K\left(Q-Q_{0} e^{-2 \lambda}\right)=c_{1}=-K Q+\theta_{1} e^{-2 \lamb`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{4}=-\theta_{3} e^{-\lambda}=d_{1}=e^{-\lambda}\left(K Q-a_{1} e^{-2 \lambd`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+\theta_{5}=K Q+\theta_{3} e^{-2 \lambda} ; \tag{27}
+\end{equation*}`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{equation*}
+a_{2}=K Q\left(1-e^{-2 \lambda}\right)+a_{1} e^{-4 \lambda} . \tag{28}
+\end{equati`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{gather*}
+\frac{d-b}{a-c}=e^{-\lambda}  \tag{29}\\
+K Q=\frac{(a-b) e^{-2 \lambda}+d-c}{1+e^{-\`
+  - No clear structural match found in code
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{0}=\frac{M G}{A} Q_{0} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{1}=-v e^{-\lambda} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `\theta_{2}=-\theta_{1} e^{-\lambda}=b_{1} .`
+  - Structural/heuristic match
+- [OK] **Art.750** `max_signaling_rate`: verified
+  - LaTeX: `v_{2}=v_{0} e^{-2 \lambda} .`
+  - Structural/heuristic match
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `v=\frac{M G}{A} Q .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `-\frac{M G}{A}\left(Q-Q_{0} e^{-2 \lambda}\right) .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{3}=-K\left(Q-Q_{0} e^{-2 \lambda}\right)=c_{1}=-K Q+\theta_{1} e^{-2 \lambda} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{4}=-\theta_{3} e^{-\lambda}=d_{1}=e^{-\lambda}\left(K Q-a_{1} e^{-2 \lambda}\right),`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\theta_{5}=K Q+\theta_{3} e^{-2 \lambda} ;`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `a_{2}=K Q\left(1-e^{-2 \lambda}\right)+a_{1} e^{-4 \lambda} .`
+  - No clear structural match found in code
+- [??] **Art.750** `max_signaling_rate`: unverified
+  - LaTeX: `\begin{gathered}
+\frac{d-b}{a-c}=e^{-\lambda} \\
+K Q=\frac{(a-b) e^{-2 \lambda}+d-c}{1+e^{-\lambda}}`
+  - No clear structural match found in code
 
 ### `maxwell\solvers\induction_solvers.py`
 
