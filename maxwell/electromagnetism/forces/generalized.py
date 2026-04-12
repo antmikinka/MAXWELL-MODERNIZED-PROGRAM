@@ -151,6 +151,36 @@ class GeneralizedForce:
     573, 574, 575,
     part=4, chapter="Generalized Forces",
     theory_class="maxwell_original",
+    description="Calculate generalized force from energy gradient",
+)
+def calc_generalized_force(
+    inductance_gradient: float,
+    current: float,
+) -> float:
+    """
+    Calculate generalized electromagnetic force.
+
+    Art. 573-575: For a system with inductance gradient dL/dx:
+
+        F_x = (1/2) * I² * dL/dx
+
+    Args:
+        inductance_gradient: dL/dx gradient.
+        current: Current (abamperes).
+
+    Returns:
+        Force (dynes).
+
+    Reference:
+        Part IV, Arts. 573-575: Generalized force.
+    """
+    return 0.5 * current ** 2 * inductance_gradient
+
+
+@maxwell_cite(
+    573, 574, 575,
+    part=4, chapter="Generalized Forces",
+    theory_class="maxwell_original",
     description="Calculate force from energy gradient",
 )
 def calc_force_from_energy(

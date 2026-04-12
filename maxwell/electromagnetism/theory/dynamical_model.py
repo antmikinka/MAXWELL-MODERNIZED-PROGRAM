@@ -55,7 +55,7 @@ class DynamicalModel:
         permeability: Permeability mu (dimensionless).
     """
 
-    volume: float
+    volume: float = 1.0
     permittivity: float = 1.0
     permeability: float = 1.0
 
@@ -207,6 +207,79 @@ class DynamicalModel:
             "potential_density": u_potential,
             "total_density": u_kinetic + u_potential,
         }
+
+    @maxwell_cite(
+        568, 569,
+        part=4, chapter="Dynamical Theory",
+        theory_class="maxwell_original",
+        description="Calculate mechanical kinetic energy",
+    )
+    def mechanical_kinetic_energy(self, mass: float, velocity: float) -> float:
+        """
+        Calculate mechanical kinetic energy.
+
+        Art. 568-569: T_mech = (1/2) * m * v²
+
+        Args:
+            mass: Mass (g).
+            velocity: Velocity (cm/s).
+
+        Returns:
+            Kinetic energy (ergs).
+        """
+        return 0.5 * mass * velocity ** 2
+
+    @maxwell_cite(
+        568, 570,
+        part=4, chapter="Dynamical Theory",
+        theory_class="maxwell_original",
+        description="Calculate electrokinetic energy",
+    )
+    def electrokinetic_energy(self, inductance: float, current: float) -> float:
+        """
+        Calculate electromagnetic kinetic (electrokinetic) energy.
+
+        Art. 568-570: T_elec = (1/2) * L * I²
+
+        Args:
+            inductance: Self-inductance (cm).
+            current: Current (abamperes).
+
+        Returns:
+            Electrokinetic energy (ergs).
+        """
+        return 0.5 * inductance * current ** 2
+
+    @maxwell_cite(
+        573, 574,
+        part=4, chapter="Dynamical Theory",
+        theory_class="maxwell_original",
+        description="Calculate generalized momentum",
+    )
+    def generalized_momentum(self, mass: float = None, velocity: float = None,
+                             inductance: float = None, current: float = None) -> float:
+        """
+        Calculate generalized momentum.
+
+        Art. 573-574: p = dT/d(q_dot)
+
+        For mechanical: p = m * v
+        For electrical: p = L * I
+
+        Args:
+            mass: Mass (g).
+            velocity: Velocity (cm/s).
+            inductance: Inductance (cm).
+            current: Current (abamperes).
+
+        Returns:
+            Generalized momentum.
+        """
+        if mass is not None and velocity is not None:
+            return mass * velocity
+        if inductance is not None and current is not None:
+            return inductance * current
+        return 0.0
 
 
 @maxwell_cite(

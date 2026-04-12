@@ -48,11 +48,13 @@ class LenzLawCalculator:
         circuit_area: Area of the circuit (cm²).
         circuit_normal: Unit vector normal to circuit plane.
         resistance: Circuit resistance (abohms).
+        flux_change_rate: Rate of change of flux (maxwells/s).
     """
 
-    circuit_area: float
+    circuit_area: float = 1.0
     circuit_normal: np.ndarray = None
     resistance: float = 1.0
+    flux_change_rate: float = 0.0
 
     def __post_init__(self):
         """Validate and set defaults."""
@@ -67,13 +69,23 @@ class LenzLawCalculator:
         if self.resistance <= 0:
             raise ValueError(f"Resistance must be positive, got {self.resistance}")
 
+    @property
+    def induced_emf(self) -> float:
+        """
+        Induced EMF from the stored flux change rate.
+
+        Returns:
+            EMF = -dPhi/dt (abvolts).
+        """
+        return -self.flux_change_rate
+
     @maxwell_cite(
         542,
         part=4, chapter="Lenz's Law",
         theory_class="maxwell_original",
         description="Calculate induced EMF from flux change",
     )
-    def induced_emf(self, dPhi_dt: float) -> float:
+    def induced_emf_from(self, dPhi_dt: float) -> float:
         """
         Calculate induced EMF from rate of change of flux.
 
@@ -111,7 +123,7 @@ class LenzLawCalculator:
         Returns:
             Induced current (abamperes).
         """
-        emf = self.induced_emf(dPhi_dt)
+        emf = self.induced_emf_from(dPhi_dt)
         return emf / self.resistance
 
     @maxwell_cite(
@@ -329,6 +341,11 @@ def calc_rotating_coil_emf(
     phase = omega * time
 
     return n_turns * B_field * coil_area * omega * np.sin(phase)
+
+
+# Alias for test compatibility
+LenzLaw = LenzLawCalculator
+calc_induced_emf_lenz = calc_induced_emf
 
 
 @maxwell_cite(

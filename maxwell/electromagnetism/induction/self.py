@@ -55,6 +55,7 @@ class SelfInductance:
 
     inductance: float
     geometry: str = "unknown"
+    initial_current: float = 0.0
 
     def __post_init__(self):
         """Validate inductance."""
@@ -284,6 +285,11 @@ def calc_inductor_energy(
         Part IV, Arts. 548-549: Inductor energy.
     """
     return 0.5 * inductance * current ** 2
+
+
+# Aliases for test compatibility
+calc_self_induction_emf = calc_self_induced_emf
+calc_magnetic_energy = calc_inductor_energy
 
 
 @maxwell_cite(

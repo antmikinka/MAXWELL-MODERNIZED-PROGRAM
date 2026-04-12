@@ -100,9 +100,8 @@ class CrystalOptics:
         else:
             self.crystal_type = "isotropic"
 
-    @property
     def birefringence(self) -> float:
-        """Birefringence Δn = n_e - n_o."""
+        """Calculate birefringence Delta_n = n_e - n_o."""
         return self.n_e - self.n_o
 
     @maxwell_cite(
@@ -242,6 +241,20 @@ class CrystalOptics:
         inv_n_sq = cos_sq / (self.n_o ** 2) + sin_sq / (self.n_e ** 2)
 
         return 1.0 / np.sqrt(inv_n_sq)
+
+    def effective_index(self, theta: float) -> float:
+        """
+        Calculate effective refractive index at angle theta.
+
+        Alias for effective_index_at_angle.
+
+        Args:
+            theta: Angle from optic axis (radians).
+
+        Returns:
+            Effective refractive index n_eff.
+        """
+        return self.effective_index_at_angle(theta)
 
     @maxwell_cite(
         804,
@@ -609,3 +622,90 @@ def analyze_crystal_optics(
         "n_eff_max": max(n_eff_values),
         "n_eff_range": max(n_eff_values) - min(n_eff_values),
     }
+
+
+@maxwell_cite(
+    794,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate refraction angle from Snell's law",
+)
+def calc_refraction_angle(incident: float, n: float) -> float:
+    """
+    Calculate refraction angle using Snell's law.
+
+    Art. 794-797: Snell's law for refraction:
+
+        n1 * sin(theta1) = n2 * sin(theta2)
+
+    For air (n1 = 1) to medium (n2 = n):
+
+        theta2 = arcsin(sin(theta1) / n)
+
+    Args:
+        incident: Angle of incidence theta1 (radians).
+        n: Refractive index of medium.
+
+    Returns:
+        Refraction angle theta2 (radians).
+
+    Reference:
+        Part IV, Art. 794-797: Refraction angle.
+
+    Example:
+        >>> # 30 degree incidence into glass (n=1.5)
+        >>> theta = calc_refraction_angle(np.pi/6, 1.5)
+        >>> print(f"theta = {np.degrees(theta):.1f} degrees")
+    """
+    if n <= 0:
+        raise ValueError(f"Refractive index must be positive")
+
+    sin_theta2 = np.sin(incident) / n
+    # Clamp to [-1, 1] to handle numerical errors
+    sin_theta2 = np.clip(sin_theta2, -1, 1)
+    return np.arcsin(sin_theta2)
+
+
+@maxwell_cite(
+    805,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate effective refractive index at angle",
+)
+def calc_effective_index(n_o: float, n_e: float, theta: float) -> float:
+    """
+    Calculate effective refractive index at angle from optic axis.
+
+    Art. 805: For extraordinary ray propagating at angle theta
+    from the optic axis:
+
+        1/n_eff(theta)^2 = cos^2(theta)/n_o^2 + sin^2(theta)/n_e^2
+
+    Along optic axis (theta = 0): n_eff = n_o
+    Perpendicular to optic axis (theta = pi/2): n_eff = n_e
+
+    Args:
+        n_o: Ordinary refractive index.
+        n_e: Extraordinary refractive index.
+        theta: Angle from optic axis (radians).
+
+    Returns:
+        Effective refractive index n_eff.
+
+    Reference:
+        Part IV, Art. 805: Effective refractive index.
+
+    Example:
+        >>> # Along optic axis
+        >>> n_eff = calc_effective_index(1.54, 1.55, 0.0)
+        >>> print(f"n_eff = {n_eff}")  # n_eff = 1.54
+    """
+    if n_o <= 0 or n_e <= 0:
+        raise ValueError(f"Refractive indices must be positive")
+
+    cos_sq = np.cos(theta) ** 2
+    sin_sq = np.sin(theta) ** 2
+
+    inv_n_sq = cos_sq / (n_o ** 2) + sin_sq / (n_e ** 2)
+
+    return 1.0 / np.sqrt(inv_n_sq)

@@ -509,7 +509,7 @@ def verify_maxwell_velocity(
     # In vacuum, v should equal c
     vacuum_verified = True
     if permittivity == 1.0 and permeability == 1.0:
-        vacuum_verified = abs(velocity - CONST.C) / CONST.C < tolerance
+        vacuum_verified = bool(abs(velocity - CONST.C) / CONST.C < tolerance)
 
     return {
         "permittivity": permittivity,
@@ -522,11 +522,11 @@ def verify_maxwell_velocity(
         "ratio_error": ratio_error,
         "refractive_index_error": n_error,
         "vacuum_verified": vacuum_verified,
-        "maxwell_verified": all([
+        "maxwell_verified": bool(all([
             v_error < tolerance,
             ratio_error < tolerance,
             n_error < tolerance,
-        ]),
+        ])),
     }
 
 

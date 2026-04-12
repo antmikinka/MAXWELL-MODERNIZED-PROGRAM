@@ -79,6 +79,114 @@ WAVELENGTH_RANGES = {
 }
 
 
+@maxwell_cite(
+    788,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate refractive index from dielectric constant",
+)
+def calc_refractive_from_dielectric(K: float) -> float:
+    """
+    Calculate refractive index from dielectric constant.
+
+    Art. 788: Maxwell's relation:
+
+        n = sqrt(K)
+
+    where K is the specific inductive capacity (dielectric constant).
+
+    Args:
+        K: Dielectric constant (dimensionless).
+
+    Returns:
+        Refractive index n (dimensionless).
+
+    Reference:
+        Part IV, Art. 788: Refractive from dielectric.
+
+    Example:
+        >>> n = calc_refractive_from_dielectric(2.25)
+        >>> print(f"n = {n:.2f}")  # n = 1.5
+    """
+    if K <= 0:
+        raise ValueError(f"Dielectric constant must be positive, got {K}")
+    return np.sqrt(K)
+
+
+@maxwell_cite(
+    788,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate dielectric constant from refractive index",
+)
+def calc_dielectric_from_refractive(n: float) -> float:
+    """
+    Calculate dielectric constant from refractive index.
+
+    Art. 788: Inverse of Maxwell's relation:
+
+        K = n²
+
+    Args:
+        n: Refractive index (dimensionless).
+
+    Returns:
+        Dielectric constant K (dimensionless).
+
+    Reference:
+        Part IV, Art. 788: Dielectric from refractive.
+
+    Example:
+        >>> K = calc_dielectric_from_refractive(1.5)
+        >>> print(f"K = {K:.2f}")  # K = 2.25
+    """
+    if n <= 0:
+        raise ValueError(f"Refractive index must be positive, got {n}")
+    return n ** 2
+
+
+@maxwell_cite(
+    789,
+    part=4, chapter="Electromagnetic Theory of Light",
+    theory_class="maxwell_original",
+    description="Calculate dispersion (wavelength-dependent n)",
+)
+def calc_dispersion(omega: float, omega_0: float) -> float:
+    """
+    Calculate refractive index with simple dispersion model.
+
+    Art. 789: Simple dispersion model (normal dispersion):
+
+        n(omega) = n_base + A * (omega / omega_0)^2
+
+    For omega < omega_0, n increases with frequency (normal dispersion).
+
+    Args:
+        omega: Angular frequency of light (rad/s).
+        omega_0: Reference frequency for normalization (rad/s).
+
+    Returns:
+        Refractive index n at frequency omega (dimensionless).
+
+    Reference:
+        Part IV, Art. 789: Dispersion relation.
+
+    Example:
+        >>> n1 = calc_dispersion(5e14, 6e14)
+        >>> n2 = calc_dispersion(7e14, 6e14)
+        >>> print(f"n2 > n1: {n2 > n1}")  # True (normal dispersion)
+    """
+    if omega_0 <= 0:
+        raise ValueError(f"Resonant frequency must be positive")
+
+    # Simple normal dispersion model: n increases with frequency
+    # n = n_base + A * (omega / omega_0)^2
+    n_base = 1.0
+    A = 0.1
+
+    return n_base + A * (omega / omega_0) ** 2
+
+
 @dataclass
 class OpticalConstants:
     """
@@ -228,6 +336,52 @@ class OpticalConstants:
             Part IV, Art. 788: Specific inductive capacity.
         """
         return self.permittivity
+
+    @maxwell_cite(
+        788,
+        part=4, chapter="Electromagnetic Theory of Light",
+        theory_class="maxwell_original",
+        description="Calculate refractive index from dielectric constant",
+    )
+    def refractive_from_dielectric(self, K: float) -> float:
+        """
+        Calculate refractive index from dielectric constant.
+
+        Art. 788: n = sqrt(K)
+
+        Args:
+            K: Dielectric constant (dimensionless).
+
+        Returns:
+            Refractive index n (dimensionless).
+
+        Reference:
+            Part IV, Art. 788: Refractive from dielectric.
+        """
+        return calc_refractive_from_dielectric(K)
+
+    @maxwell_cite(
+        788,
+        part=4, chapter="Electromagnetic Theory of Light",
+        theory_class="maxwell_original",
+        description="Calculate dielectric constant from refractive index",
+    )
+    def dielectric_from_refractive(self, n: float) -> float:
+        """
+        Calculate dielectric constant from refractive index.
+
+        Art. 788: K = n²
+
+        Args:
+            n: Refractive index (dimensionless).
+
+        Returns:
+            Dielectric constant K (dimensionless).
+
+        Reference:
+            Part IV, Art. 788: Dielectric from refractive.
+        """
+        return calc_dielectric_from_refractive(n)
 
 
 @maxwell_cite(

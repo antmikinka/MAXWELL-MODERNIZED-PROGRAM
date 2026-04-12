@@ -170,6 +170,50 @@ class DirectrixFunction:
     517, 518, 519,
     part=4, chapter="Directrix Function",
     theory_class="maxwell_original",
+    description="Calculate directrix (vector potential) of current element",
+)
+def calc_directrix(
+    current: float,
+    element_position: np.ndarray,
+    element_direction: np.ndarray,
+    observation_point: np.ndarray,
+) -> np.ndarray:
+    """
+    Calculate directrix (vector potential) from a current element.
+
+    Art. 517-519: For a current element at a given position:
+
+        A(r) = I * dl / |r - r'|
+
+    Args:
+        current: Current (abamperes).
+        element_position: Position of current element (cm).
+        element_direction: Direction vector of element.
+        observation_point: Position where A is calculated (cm).
+
+    Returns:
+        Vector potential A (gauss*cm).
+    """
+    element_position = np.asarray(element_position, dtype=np.float64)
+    element_direction = np.asarray(element_direction, dtype=np.float64)
+    observation_point = np.asarray(observation_point, dtype=np.float64)
+
+    r_vec = observation_point - element_position
+    r_mag = np.linalg.norm(r_vec)
+
+    if r_mag < 1e-15:
+        return np.zeros(3)
+
+    # Normalize direction
+    dir_norm = element_direction / np.linalg.norm(element_direction) if np.linalg.norm(element_direction) > 0 else element_direction
+
+    return current * dir_norm / r_mag
+
+
+@maxwell_cite(
+    517, 518, 519,
+    part=4, chapter="Directrix Function",
+    theory_class="maxwell_original",
     description="Calculate vector potential of current element",
 )
 def calc_vector_potential_element(
