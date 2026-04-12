@@ -1,0 +1,27 @@
+# Maxwell Treatise Processing Pipeline Requirements
+
+# HTTP client for API calls
+httpx>=0.25.0
+
+# Data handling
+numpy>=1.24.0
+
+# Optional: For enhanced JSON handling
+orjson>=3.9.0
+
+# Optional: For rich console output
+rich>=13.0.0
+
+# Optional: For progress bars
+tqdm>=4.65.0
+
+# Development/Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Type checking
+mypy>=1.0.0
+
+# Code formatting
+black>=23.0.0
+isort>=5.12.0
