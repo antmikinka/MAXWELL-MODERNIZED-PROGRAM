@@ -62,7 +62,7 @@ class LegendrePolynomial:
             raise ValueError(f"Degree must be non-negative")
 
     @maxwell_cite(
-        675,
+        128, 675,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate Legendre polynomial",
@@ -87,7 +87,7 @@ class LegendrePolynomial:
         return float(legendre(self.degree)(x))
 
     @maxwell_cite(
-        676,
+        129, 676,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate derivative of Legendre polynomial",
@@ -122,7 +122,7 @@ class LegendrePolynomial:
         return self.degree * (self.degree + 1) / (2 * self.degree + 1) * (P_next - P_prev) / 2
 
     @maxwell_cite(
-        677,
+        130, 677,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate Rodrigues formula",
@@ -148,7 +148,7 @@ class LegendrePolynomial:
         return self.evaluate(x)
 
     @maxwell_cite(
-        678,
+        131, 678,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Check orthogonality",
@@ -206,7 +206,7 @@ class SphericalHarmonic:
             raise ValueError(f"|m| must be ≤ l")
 
     @maxwell_cite(
-        685,
+        132, 685,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate spherical harmonic",
@@ -237,7 +237,7 @@ class SphericalHarmonic:
         return complex(result)
 
     @maxwell_cite(
-        686,
+        133, 686,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate real spherical harmonic",
@@ -270,7 +270,7 @@ class SphericalHarmonic:
             return Y.imag * np.sqrt(2)
 
     @maxwell_cite(
-        687,
+        134, 687,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate intensity",
@@ -299,7 +299,7 @@ class SphericalHarmonic:
         return abs(Y) ** 2
 
     @maxwell_cite(
-        688,
+        135, 688,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Check normalization",
@@ -344,7 +344,7 @@ class SphericalHarmonic:
         return integral
 
     @maxwell_cite(
-        689,
+        136, 689,
         part=4, chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate associated Legendre function",
@@ -371,7 +371,7 @@ class SphericalHarmonic:
 
 
 @maxwell_cite(
-    675, 676,
+    137, 138, 675, 676,
     part=4, chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate Legendre polynomial Pₗ(x)",
@@ -401,7 +401,7 @@ def calc_legendre_polynomial(l: int, x: float) -> float:
 
 
 @maxwell_cite(
-    689,
+    139, 689,
     part=4, chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate associated Legendre function Pₗᵐ(x)",
@@ -429,7 +429,7 @@ def calc_associated_legendre(l: int, m: int, x: float) -> float:
 
 
 @maxwell_cite(
-    685,
+    140, 685,
     part=4, chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate spherical harmonic Yₗᵐ(θ, φ)",
@@ -461,7 +461,7 @@ def calc_spherical_harmonic(l: int, m: int, theta: float, phi: float) -> complex
 
 
 @maxwell_cite(
-    690, 691, 692,
+    141, 142, 690, 691, 692,
     part=4, chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate multipole expansion of potential",
@@ -518,7 +518,7 @@ def calc_multipole_expansion(
 
 
 @maxwell_cite(
-    675, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695,
+    143, 144, 145, 146, 675, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695,
     part=4, chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Verify spherical harmonic relations",
@@ -586,7 +586,7 @@ def verify_spherical_harmonics(
 
 
 @maxwell_cite(
-    675, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695,
+    143, 144, 145, 146, 675, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695,
     part=4, chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Complete spherical harmonic analysis",
