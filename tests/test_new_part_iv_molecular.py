@@ -198,7 +198,7 @@ class TestWebersTheory:
         assert abs(F[2]) < cgs_tolerance
         assert F[0] > 0  # Repulsive for like charges
 
-    def test_weber_force_static_limit(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_weber_force_static_limit(self, cgs_tolerance, assert_cgs_close, assert_vectors_close) -> None:
         """Verify Weber force reduces to Coulomb for v = 0.
 
         For v1 = v2 = 0:
@@ -404,7 +404,7 @@ class TestCompetingTheories:
 
     def test_maxwells_theory_advantages(self) -> None:
         """Verify Maxwell's theory advantages over competitors."""
-        from maxwell.molecular.competing_theories import maxwell_advantages
+        from maxwell.molecular.competing_theories import maxwells_theory_advantages
 
         advantages = maxwells_theory_advantages()
 

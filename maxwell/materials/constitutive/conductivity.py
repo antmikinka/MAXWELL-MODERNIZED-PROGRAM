@@ -421,3 +421,34 @@ def analyze_conduction(
         "conductor_length": conductor_length,
         "cross_section_area": cross_section_area,
     }
+
+
+# Alias for test compatibility
+calc_current_density = calc_conduction_current
+
+
+@maxwell_cite(
+    609,
+    part=4, chapter="Constitutive Relations",
+    theory_class="maxwell_original",
+    description="Calculate Joule heating power",
+)
+def calc_joule_heating(current: float, resistance: float) -> float:
+    """
+    Calculate Joule heating power dissipation.
+
+    Art. 609: The power dissipated as heat in a resistor:
+
+        P = I² * R
+
+    Args:
+        current: Current I (abamperes).
+        resistance: Resistance R (abohms).
+
+    Returns:
+        Power dissipated (ergs/s).
+
+    Reference:
+        Part IV, Art. 609: Joule heating.
+    """
+    return current ** 2 * resistance

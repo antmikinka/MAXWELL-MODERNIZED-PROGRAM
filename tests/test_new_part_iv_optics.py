@@ -435,7 +435,7 @@ class TestPlaneWaves:
 
         assert result["wave_equation_verified"] is True
 
-    def test_plane_wave_class(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_plane_wave_class(self, cgs_tolerance, assert_vectors_close, assert_cgs_close) -> None:
         """Verify PlaneWave class."""
         from maxwell.optics.plane_waves import PlaneWave
 
@@ -611,7 +611,7 @@ class TestCrystalOptics:
 
         # Test effective index at 45°
         n_eff = co.effective_index(np.pi/4)
-        assert n_o < n_eff < n_e
+        assert co.n_o < n_eff < co.n_e
 
 
 # =============================================================================

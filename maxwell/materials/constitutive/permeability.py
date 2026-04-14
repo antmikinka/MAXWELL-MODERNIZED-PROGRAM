@@ -37,6 +37,9 @@ import numpy as np
 from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 
+# Alias for test compatibility
+VACUUM_PERMEABILITY = 1.0  # In CGS-EMU, mu_0 = 1 by definition
+
 
 @dataclass
 class Permeability:
@@ -66,7 +69,7 @@ class Permeability:
         theory_class="maxwell_original",
         description="Calculate magnetic induction B from H",
     )
-    def magnetic_induction(self, H_field: np.ndarray) -> np.ndarray:
+    def B_from_H(self, H_field: np.ndarray) -> np.ndarray:
         """
         Calculate magnetic induction from magnetic field.
 
@@ -87,7 +90,7 @@ class Permeability:
         theory_class="maxwell_original",
         description="Calculate magnetic field H from B",
     )
-    def magnetic_field(self, B_field: np.ndarray) -> np.ndarray:
+    def H_from_B(self, B_field: np.ndarray) -> np.ndarray:
         """
         Calculate magnetic field from magnetic induction.
 
@@ -101,6 +104,10 @@ class Permeability:
         """
         B_field = np.asarray(B_field, dtype=np.float64)
         return B_field / self.permeability
+
+    # Aliases for backward compatibility
+    magnetic_induction = B_from_H
+    magnetic_field = H_from_B
 
     @maxwell_cite(
         614,
@@ -222,8 +229,9 @@ def calc_k_from_permeability(permeability: float) -> float:
     description="Calculate magnetic energy density",
 )
 def calc_magnetic_energy_density(
-    B_field: np.ndarray,
-    H_field: np.ndarray,
+    B_field: np.ndarray | float,
+    permeability: float = None,
+    H_field: np.ndarray = None,
 ) -> float:
     """
     Calculate magnetic energy density.
@@ -232,9 +240,14 @@ def calc_magnetic_energy_density(
 
         u = (1/8π) * B · H = (1/8π) * μH² = B² / (8πμ)
 
+    This function supports two calling conventions:
+    1. calc_magnetic_energy_density(B, mu) — scalar B and permeability
+    2. calc_magnetic_energy_density(B, H=H) — vector B and H field
+
     Args:
-        B_field: Magnetic induction (gauss).
-        H_field: Magnetic field intensity (oersted).
+        B_field: Magnetic induction (gauss) — scalar or vector.
+        permeability: Permeability coefficient μ (when using scalar B).
+        H_field: Magnetic field intensity (oersted) — optional.
 
     Returns:
         Energy density (ergs/cm³).
@@ -242,9 +255,24 @@ def calc_magnetic_energy_density(
     Reference:
         Part IV, Art. 614: Magnetic energy.
     """
-    B_field = np.asarray(B_field, dtype=np.float64)
-    H_field = np.asarray(H_field, dtype=np.float64)
+    # If B_field is scalar and permeability is provided, use u = B²/(8πμ)
+    if isinstance(B_field, (int, float)) or np.isscalar(B_field):
+        B = float(B_field)
+        if permeability is None:
+            raise ValueError("permeability must be provided when B is scalar")
+        return B ** 2 / (8.0 * np.pi * permeability)
 
+    # Otherwise use u = (1/8π) * B · H
+    if H_field is None:
+        if permeability is not None:
+            # Compute H from B and mu
+            H_field = np.asarray(B_field, dtype=np.float64) / permeability
+        else:
+            raise ValueError("Either H_field or permeability must be provided")
+    else:
+        H_field = np.asarray(H_field, dtype=np.float64)
+
+    B_field = np.asarray(B_field, dtype=np.float64)
     return (1.0 / (8.0 * np.pi)) * np.dot(B_field, H_field)
 
 
@@ -426,3 +454,64 @@ def analyze_permeability(
         "material_type": classify_material_by_permeability(permeability),
         "B_enhancement_factor": permeability,
     }
+
+
+# Alias for test compatibility
+calc_B_from_H = calc_magnetic_induction_permeability
+
+
+@maxwell_cite(
+    614,
+    part=4, chapter="Constitutive Relations",
+    theory_class="maxwell_original",
+    description="Calculate magnetic field H from B: H = B/μ",
+)
+def calc_H_from_B(
+    B_field: np.ndarray,
+    permeability: float,
+) -> np.ndarray:
+    """
+    Calculate magnetic field from magnetic induction.
+
+    Art. 614: The inverse relation:
+
+        H = B / μ
+
+    Args:
+        B_field: Magnetic induction (gauss).
+        permeability: Permeability coefficient μ.
+
+    Returns:
+        Magnetic field intensity H (oersted).
+
+    Reference:
+        Part IV, Art. 614: Permeability equation (Eq. L).
+    """
+    B_field = np.asarray(B_field, dtype=np.float64)
+    return B_field / permeability
+
+
+@maxwell_cite(
+    614,
+    part=4, chapter="Constitutive Relations",
+    theory_class="maxwell_original",
+    description="Calculate relative permeability",
+)
+def calc_relative_permeability(permeability: float) -> float:
+    """
+    Calculate relative permeability.
+
+    Art. 614: In CGS, the relative permeability is:
+
+        μ_r = μ / μ_0 = μ  (since μ_0 = 1 in CGS)
+
+    Args:
+        permeability: Permeability μ.
+
+    Returns:
+        Relative permeability μ_r.
+
+    Reference:
+        Part IV, Art. 614: Relative permeability.
+    """
+    return permeability
