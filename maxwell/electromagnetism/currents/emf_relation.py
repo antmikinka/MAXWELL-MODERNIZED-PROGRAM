@@ -445,3 +445,181 @@ def analyze_emf_current(
         "final_current": currents[-1] if currents else 0,
         "expected_final_current": I_final,
     }
+
+
+# =============================================================================
+# ALIASES AND ADDITIONAL FUNCTIONS FOR TEST COMPATIBILITY
+# =============================================================================
+
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate current from EMF (Ohm's law)",
+)
+def calc_current_from_emf(emf: float, resistance: float) -> float:
+    """
+    Calculate current from EMF using Ohm's law.
+
+    Art. 611: I = EMF / R
+
+    Args:
+        emf: Electromotive force (abvolts).
+        resistance: Resistance (abohms).
+
+    Returns:
+        Current I (abamperes).
+
+    Reference:
+        Part IV, Art. 611: Ohm's law.
+    """
+    if resistance <= 0:
+        return float('inf')
+    return emf / resistance
+
+
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate EMF from current",
+)
+def calc_emf_from_current(current: float, resistance: float) -> float:
+    """
+    Calculate EMF from current using Ohm's law.
+
+    Art. 611: EMF = I * R
+
+    Args:
+        current: Current (abamperes).
+        resistance: Resistance (abohms).
+
+    Returns:
+        EMF (abvolts).
+
+    Reference:
+        Part IV, Art. 611: Ohm's law.
+    """
+    return current * resistance
+
+
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate power from EMF",
+)
+def calc_power_from_emf(emf: float, current: float) -> float:
+    """
+    Calculate power from EMF and current.
+
+    Art. 611: P = EMF * I
+
+    Args:
+        emf: Electromotive force (abvolts).
+        current: Current (abamperes).
+
+    Returns:
+        Power P (ergs/s).
+
+    Reference:
+        Part IV, Art. 611: Power.
+    """
+    return emf * current
+
+
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate series resistance",
+)
+def calc_series_resistance(resistances: list[float]) -> float:
+    """
+    Calculate total resistance for series combination.
+
+    Art. 611: R_series = R1 + R2 + ...
+
+    Args:
+        resistances: List of resistances.
+
+    Returns:
+        Total series resistance.
+
+    Reference:
+        Part IV, Art. 611: Series resistance.
+    """
+    return sum(resistances)
+
+
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate parallel resistance",
+)
+def calc_parallel_resistance(resistances: list[float]) -> float:
+    """
+    Calculate total resistance for parallel combination.
+
+    Art. 611: 1/R_parallel = 1/R1 + 1/R2 + ...
+
+    Args:
+        resistances: List of resistances.
+
+    Returns:
+        Total parallel resistance.
+
+    Reference:
+        Part IV, Art. 611: Parallel resistance.
+    """
+    if not resistances:
+        return float('inf')
+    inv_sum = sum(1.0 / r for r in resistances if r > 0)
+    if inv_sum <= 0:
+        return float('inf')
+    return 1.0 / inv_sum
+
+
+# Alias for test compatibility
+EMFRelation = EMFCurrentRelation
+
+
+# Add methods to EMFRelation class for test compatibility
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate current from EMF",
+)
+def _emf_current_from_emf(self, emf: float) -> float:
+    """Calculate current from EMF: I = EMF / R."""
+    return emf / self.resistance if self.resistance > 0 else float('inf')
+
+
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate EMF from current",
+)
+def _emf_emf_from_current(self, current: float) -> float:
+    """Calculate EMF from current: EMF = I * R."""
+    return current * self.resistance
+
+
+@maxwell_cite(
+    611,
+    part=4, chapter="EMF-Current Relation",
+    theory_class="maxwell_original",
+    description="Calculate power",
+)
+def _emf_power(self, emf: float, current: float) -> float:
+    """Calculate power: P = EMF * I."""
+    return emf * current
+
+
+# Add methods to class
+EMFCurrentRelation.current_from_emf = _emf_current_from_emf
+EMFCurrentRelation.emf_from_current = _emf_emf_from_current
+EMFCurrentRelation.power = _emf_power

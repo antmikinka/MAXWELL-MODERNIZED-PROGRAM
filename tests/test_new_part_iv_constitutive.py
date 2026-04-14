@@ -206,21 +206,21 @@ class TestDisplacement:
         assert_vectors_close(D, expected, cgs_tolerance)
 
     def test_permittivity_from_dielectric_constant(self, cgs_tolerance, assert_cgs_close) -> None:
-        """Verify epsilon = K/(4*pi) formula.
+        """Verify epsilon = K formula (CGS-Gaussian).
 
         For K = 80 (water):
-        epsilon = 80/(4*pi) = 6.366
+        epsilon = 80
         """
         from maxwell.materials.constitutive.displacement import calc_permittivity
 
         K = 80.0
         epsilon = calc_permittivity(K)
-        expected = K / (4.0 * np.pi)
+        expected = K  # In CGS-Gaussian, epsilon = K
 
         assert_cgs_close(epsilon, expected, cgs_tolerance)
 
     def test_dielectric_constant_from_permittivity(self, cgs_tolerance, assert_cgs_close) -> None:
-        """Verify K = 4*pi*epsilon inverse formula."""
+        """Verify K = epsilon (CGS-Gaussian) inverse formula."""
         from maxwell.materials.constitutive.displacement import calc_dielectric_constant, calc_permittivity
 
         epsilon_original = 10.0
@@ -229,7 +229,7 @@ class TestDisplacement:
 
         assert_cgs_close(epsilonRecovered, epsilon_original, cgs_tolerance)
 
-    def test_displacement_current_formula(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_displacement_current_formula(self, cgs_tolerance, assert_vectors_close, assert_cgs_close) -> None:
         """Verify J_d = (1/4pi)*dD/dt formula.
 
         For dD/dt = 1e6 statcoulombs/cm²/s:

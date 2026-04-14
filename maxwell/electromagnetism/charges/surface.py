@@ -381,12 +381,158 @@ def verify_surface_charge_boundary(
     }
 
 
+# Aliases for test compatibility
 @maxwell_cite(
     613,
     part=4, chapter="Surface Charge",
     theory_class="maxwell_original",
-    description="Complete surface charge analysis",
+    description="Calculate surface density from D_normal",
 )
+def calc_surface_density(D_normal: float) -> float:
+    """
+    Calculate surface charge density from normal D field component.
+
+    Art. 613: σ = D_normal
+
+    Args:
+        D_normal: Normal component of D (statcoulombs/cm²).
+
+    Returns:
+        Surface charge density σ (statcoulombs/cm²).
+
+    Reference:
+        Part IV, Art. 613: Surface charge density.
+    """
+    return D_normal
+
+
+@maxwell_cite(
+    613,
+    part=4, chapter="Surface Charge",
+    theory_class="maxwell_original",
+    description="Calculate surface density from field",
+)
+def calc_surface_density_from_field(
+    D: np.ndarray,
+    normal: np.ndarray,
+) -> float:
+    """
+    Calculate surface charge density from D field.
+
+    Art. 613: σ = D · n
+
+    Args:
+        D: Electric displacement (statcoulombs/cm²).
+        normal: Unit normal to surface.
+
+    Returns:
+        Surface charge density σ (statcoulombs/cm²).
+
+    Reference:
+        Part IV, Art. 613: Surface charge density.
+    """
+    D = np.asarray(D, dtype=np.float64)
+    normal = np.asarray(normal, dtype=np.float64)
+    norm = np.linalg.norm(normal)
+    if norm > 0:
+        normal = normal / norm
+    return np.dot(D, normal)
+
+
+@maxwell_cite(
+    613,
+    part=4, chapter="Surface Charge",
+    theory_class="maxwell_original",
+    description="Calculate conducting surface density",
+)
+def calc_conducting_surface_density(E_surface: float) -> float:
+    """
+    Calculate surface charge density on conductor.
+
+    Art. 613: σ = E / (4π)
+
+    Args:
+        E_surface: Electric field at conductor surface.
+
+    Returns:
+        Surface charge density σ.
+
+    Reference:
+        Part IV, Art. 613: Conductor surface charge.
+    """
+    return E_surface / (4.0 * np.pi)
+
+
+@maxwell_cite(
+    613,
+    part=4, chapter="Surface Charge",
+    theory_class="maxwell_original",
+    description="Verify boundary condition",
+)
+def verify_boundary_condition(
+    sigma: float,
+    D_above: float,
+    D_below: float,
+    tolerance: float = 1e-10,
+) -> dict[str, float | bool]:
+    """
+    Verify boundary condition for surface charge.
+
+    Art. 613: D_above - D_below = 4πσ
+
+    Args:
+        sigma: Surface charge density.
+        D_above: Displacement above surface.
+        D_below: Displacement below surface.
+        tolerance: Numerical tolerance.
+
+    Returns:
+        Dictionary with verification results.
+
+    Reference:
+        Part IV, Art. 613: Boundary condition.
+    """
+    expected_jump = 4.0 * np.pi * sigma
+    actual_jump = D_above - D_below
+    error = abs(expected_jump - actual_jump)
+
+    return {
+        "sigma": sigma,
+        "D_above": D_above,
+        "D_below": D_below,
+        "expected_jump": expected_jump,
+        "actual_jump": actual_jump,
+        "boundary_error": error,
+        "boundary_verified": error < tolerance,
+    }
+
+
+# Add methods to SurfaceCharge class for test compatibility
+@maxwell_cite(
+    613,
+    part=4, chapter="Surface Charge",
+    theory_class="maxwell_original",
+    description="Calculate surface density",
+)
+def _surface_charge_density(self, D_normal: float) -> float:
+    """Calculate surface charge density from normal D field."""
+    return D_normal
+
+
+@maxwell_cite(
+    613,
+    part=4, chapter="Surface Charge",
+    theory_class="maxwell_original",
+    description="Calculate total charge",
+)
+def _surface_charge_total(self, sigma: float, area: float) -> float:
+    """Calculate total charge: Q = σ * A."""
+    return sigma * area
+
+
+# Add methods to class
+SurfaceCharge.surface_density = _surface_charge_density
+SurfaceCharge.total_charge = _surface_charge_total
 def analyze_surface_charge(
     surface_charge_density: float,
     surface_area: float,

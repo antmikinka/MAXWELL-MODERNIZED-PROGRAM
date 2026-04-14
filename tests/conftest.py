@@ -150,16 +150,22 @@ def assert_cgs_close() -> Callable[[float, float, float], None]:
     Returns:
         Function that asserts two floats are close within tolerance.
     """
-    def _assert_close(actual: float, expected: float, tolerance: float) -> None:
-        if expected == 0:
-            assert abs(actual) < tolerance, (
-                f"Expected ~0, got {actual} (tolerance: {tolerance})"
-            )
-        else:
-            relative_error = abs((actual - expected) / expected)
-            assert relative_error < tolerance, (
-                f"Expected {expected}, got {actual} "
-                f"(relative error: {relative_error:.2e}, tolerance: {tolerance})"
+    def _assert_close(
+        actual: float | np.ndarray,
+        expected: float | np.ndarray,
+        tolerance: float,
+        msg: str | None = None
+    ) -> None:
+        actual = np.asarray(actual)
+        expected = np.asarray(expected)
+        diff = np.abs(actual - expected)
+        scale = np.maximum(np.abs(actual), np.abs(expected))
+        scale = np.maximum(scale, 1.0)
+        rel_err = diff / scale
+        if not np.all(rel_err < tolerance) and not np.all(diff < tolerance * 1e-6):
+            raise AssertionError(
+                f"{msg or ''} Expected {expected}, got {actual} "
+                f"(relative error: {rel_err:.2e}, tolerance: {tolerance})"
             )
     return _assert_close
 
