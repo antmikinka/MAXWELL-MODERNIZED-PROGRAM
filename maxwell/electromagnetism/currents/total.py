@@ -369,12 +369,118 @@ def verify_capacitor_total_current(
     }
 
 
+# Aliases for test compatibility
+calc_total_current = calc_total_current_density
+
+
 @maxwell_cite(
     610,
     part=4, chapter="Total Current",
     theory_class="maxwell_original",
-    description="Complete total current analysis",
+    description="Calculate total current magnitude",
 )
+def calc_total_current_magnitude(
+    J_conduction_mag: float,
+    J_displacement_mag: float,
+) -> float:
+    """
+    Calculate total current magnitude.
+
+    Art. 610: For scalar magnitudes:
+
+        J_total = J_cond + J_disp
+
+    Args:
+        J_conduction_mag: Conduction current magnitude.
+        J_displacement_mag: Displacement current magnitude.
+
+    Returns:
+        Total current magnitude.
+
+    Reference:
+        Part IV, Art. 610: Total current.
+    """
+    return J_conduction_mag + J_displacement_mag
+
+
+@maxwell_cite(
+    610,
+    part=4, chapter="Total Current",
+    theory_class="maxwell_original",
+    description="Calculate displacement current fraction",
+)
+def calc_displacement_fraction(
+    J_conduction_mag: float | np.ndarray,
+    J_displacement_mag: float | np.ndarray,
+) -> float:
+    """
+    Calculate fraction of total current that is displacement.
+
+    Art. 610: The fraction is:
+
+        f_disp = |J_disp| / (|J_cond| + |J_disp|)
+
+    Args:
+        J_conduction_mag: Conduction current magnitude or vector.
+        J_displacement_mag: Displacement current magnitude or vector.
+
+    Returns:
+        Displacement fraction (0 to 1).
+
+    Reference:
+        Part IV, Art. 610: Displacement fraction.
+    """
+    # Handle both scalar and vector inputs
+    if isinstance(J_conduction_mag, np.ndarray):
+        J_cond_mag = np.linalg.norm(J_conduction_mag)
+    else:
+        J_cond_mag = float(J_conduction_mag)
+
+    if isinstance(J_displacement_mag, np.ndarray):
+        J_disp_mag = np.linalg.norm(J_displacement_mag)
+    else:
+        J_disp_mag = float(J_displacement_mag)
+
+    total = J_cond_mag + J_disp_mag
+    if total <= 0:
+        return 0.0
+    return J_disp_mag / total
+
+
+# Add methods to TotalCurrent class for test compatibility
+@maxwell_cite(
+    610,
+    part=4, chapter="Total Current",
+    theory_class="maxwell_original",
+    description="Calculate total current",
+)
+def _total_current_total(
+    self,
+    J_cond: np.ndarray,
+    J_disp: np.ndarray,
+) -> np.ndarray:
+    """Calculate total current density J_total = J_cond + J_disp."""
+    return calc_total_current(J_cond, J_disp)
+
+
+@maxwell_cite(
+    610,
+    part=4, chapter="Total Current",
+    theory_class="maxwell_original",
+    description="Calculate displacement fraction",
+)
+def _total_current_fraction(
+    self,
+    J_cond_mag: float,
+    J_disp_mag: float,
+) -> float:
+    """Calculate displacement fraction."""
+    return calc_displacement_fraction(J_cond_mag, J_disp_mag)
+
+
+# Add methods to class
+TotalCurrent.total = _total_current_total
+TotalCurrent.displacement_fraction = _total_current_fraction
 def analyze_total_current(
     E_field: np.ndarray,
     dE_dt: np.ndarray,

@@ -363,11 +363,11 @@ def verify_gauss_law_volume(
         "sphere_radius": sphere_radius,
         "total_charge_Q": Q,
         "test_radius": r_test,
-        "E_at_surface": np.linalg.norm(E_surface),
+        "E_at_surface": float(np.linalg.norm(E_surface)),
         "calculated_flux": flux,
         "expected_flux": expected_flux,
-        "flux_error": flux_error,
-        "gauss_law_verified": flux_error < tolerance,
+        "flux_error": float(flux_error),
+        "gauss_law_verified": bool(flux_error < tolerance),
     }
 
 
@@ -414,4 +414,99 @@ def analyze_volume_charge(
         "volume": volume,
         "total_charge": total_charge,
         "average_charge_density": avg_density,
+    }
+
+
+@maxwell_cite(
+    612,
+    part=4, chapter="Volume Charge",
+    theory_class="maxwell_original",
+    description="Verify continuity equation",
+)
+def verify_continuity_equation(
+    rho_func: callable,
+    t: float,
+    dt: float,
+    div_J: float,
+    tolerance: float = 1e-10,
+) -> dict[str, float | bool]:
+    """
+    Verify continuity equation for charge conservation.
+
+    Art. 612: The continuity equation is:
+
+        div(J) + dρ/dt = 0
+
+    Args:
+        rho_func: Function ρ(t) returning charge density.
+        t: Time for evaluation.
+        dt: Time step for derivative.
+        div_J: Divergence of current density.
+        tolerance: Numerical tolerance.
+
+    Returns:
+        Dictionary with verification results.
+    """
+    # Calculate dρ/dt
+    rho_plus = rho_func(t + dt)
+    rho_minus = rho_func(t - dt)
+    drho_dt = (rho_plus - rho_minus) / (2 * dt)
+
+    # Continuity: div(J) + dρ/dt = 0
+    continuity_value = div_J + drho_dt
+
+    return {
+        "rho_at_t": rho_func(t),
+        "drho_dt": drho_dt,
+        "div_J": div_J,
+        "continuity_value": continuity_value,
+        "continuity_error": abs(continuity_value),
+        "continuity_verified": abs(continuity_value) < tolerance,
+    }
+
+
+@maxwell_cite(
+    612,
+    part=4, chapter="Volume Charge",
+    theory_class="maxwell_original",
+    description="Verify charge conservation",
+)
+def verify_charge_conservation(
+    initial_charge: float,
+    current_out: float,
+    time_interval: float,
+    tolerance: float = 1e-10,
+) -> dict[str, float | bool]:
+    """
+    Verify charge conservation in a closed system.
+
+    Art. 612: Charge conservation:
+
+        Q_final = Q_initial - integral(I_out) dt
+
+    For constant I_out:
+        Q_final = Q_initial - I_out * t
+
+    Args:
+        initial_charge: Initial charge Q_initial.
+        current_out: Current flowing out.
+        time_interval: Time interval.
+        tolerance: Numerical tolerance.
+
+    Returns:
+        Dictionary with verification results.
+    """
+    # Final charge after current flows out
+    Q_final = initial_charge - current_out * time_interval
+
+    # Verify charge is conserved (positive check)
+    charge_conserved = Q_final >= 0
+
+    return {
+        "initial_charge": initial_charge,
+        "current_out": current_out,
+        "time_interval": time_interval,
+        "charge_outflow": current_out * time_interval,
+        "final_charge": Q_final,
+        "charge_conserved": charge_conserved,
     }

@@ -21,6 +21,7 @@ from maxwell.materials.constitutive.magnetization import (
 from maxwell.materials.constitutive.displacement import (
     ElectricDisplacement,
     calc_electric_displacement,
+    calc_displacement,  # Alias for test compatibility
     calc_polarization,
     calc_permittivity_from_susceptibility,
     calc_dielectric_constant,
@@ -32,6 +33,7 @@ from maxwell.materials.constitutive.displacement import (
 from maxwell.materials.constitutive.conductivity import (
     Conductivity,
     calc_conduction_current,
+    calc_current_density,  # Alias for test compatibility
     calc_wire_current,
     calc_resistance,
     calc_conductance,
@@ -44,6 +46,7 @@ from maxwell.materials.constitutive.conductivity import (
 from maxwell.materials.constitutive.permeability import (
     Permeability,
     calc_magnetic_induction_permeability,
+    calc_B_from_H,  # Alias for test compatibility
     calc_permeability_from_k,
     calc_k_from_permeability,
     calc_magnetic_energy_density,
@@ -51,6 +54,7 @@ from maxwell.materials.constitutive.permeability import (
     calc_magnetic_flux,
     verify_permeability_relations,
     analyze_permeability,
+    VACUUM_PERMEABILITY,  # Constant for test compatibility
 )
 
 __all__ = [
@@ -66,6 +70,7 @@ __all__ = [
     # Electric displacement (Art. 608)
     "ElectricDisplacement",
     "calc_electric_displacement",
+    "calc_displacement",  # Alias for test compatibility
     "calc_polarization",
     "calc_permittivity_from_susceptibility",
     "calc_dielectric_constant",
@@ -75,6 +80,7 @@ __all__ = [
     # Conductivity (Art. 609)
     "Conductivity",
     "calc_conduction_current",
+    "calc_current_density",  # Alias for test compatibility
     "calc_wire_current",
     "calc_resistance",
     "calc_conductance",
@@ -85,6 +91,7 @@ __all__ = [
     # Permeability (Art. 614)
     "Permeability",
     "calc_magnetic_induction_permeability",
+    "calc_B_from_H",  # Alias for test compatibility
     "calc_permeability_from_k",
     "calc_k_from_permeability",
     "calc_magnetic_energy_density",
@@ -92,4 +99,5 @@ __all__ = [
     "calc_magnetic_flux",
     "verify_permeability_relations",
     "analyze_permeability",
+    "VACUUM_PERMEABILITY",  # Constant for test compatibility
 ]
