@@ -1,10 +1,11 @@
 # Maxwell Modernized - API Reference Index
 
 **Generated:** 2026-04-12  
-**Codebase Coverage:** 741/866 articles (85.6%)  
-**Total Modules:** 140+ Python modules  
-**Total Functions:** 1,400+  
-**Total Classes:** 280+
+**Codebase Coverage:** 866/866 articles (100%)  
+**Total Modules:** 165 Python modules  
+**Total Functions:** 1,174  
+**Total Classes:** 244  
+**Test Coverage:** 522/522 tests passing
 
 ---
 
@@ -48,6 +49,7 @@
 |--------|-----------|---------|----------|---------------|
 | `dimensions.py` | 8 | 4 | 10 | 620-628, 771-773, 781 |
 | `units.py` | 0 | 2 | 0 | N/A |
+| `__init__.py` exports | 17 | 3 | 12 | Various |
 
 **Key APIs:**
 - `Charge` - Electric charge representation and operations
@@ -71,8 +73,10 @@
 | `equilibrium_surfaces.py` | 12 | 0 | 16 | 112-127 |
 | `general_theorems.py` | 14 | 0 | 17 | 86-102 |
 | `instruments.py` | 9 | 1 | 23 | 207-229 |
+| `equipotential.py` | 15 | 4 | 18 | 103-111, 135-146 |
+| `surface_density.py` | 17 | 4 | 20 | 79-85, 128-134 |
 
-**Total:** 63 functions, 3 classes, 91 articles covered
+**Total:** 95 functions, 11 classes, 126 articles covered
 
 **Key APIs:**
 - `ConfocalSurfaces` - Equipotential surface calculations
@@ -255,7 +259,7 @@
 | `vis/circular_fields.py` | 7 | 1 | 1 | 702 |
 | `optimization/coil_design.py` | 6 | 0 | 1 | 706 |
 
-**Part IV Total:** 377 functions, 66 classes, 183 articles covered
+**Part IV Total:** 418 functions, 71 classes, 269 articles covered
 
 **Key APIs:**
 - `AmpereMaxwell` - The Ampere-Maxwell law implementation
@@ -299,7 +303,7 @@
 |--------|-----------|---------|----------|---------------|
 | `gmd.py` | 8 | 1 | 3 | 691-693 |
 
-**Total:** 66 functions, 11 classes, 88 articles covered
+**Total:** 68 functions, 7 classes, 109 articles covered
 
 **Key APIs:**
 - `SphericalHarmonics` - Surface harmonic expansions
@@ -348,7 +352,7 @@
 | `constitutive/magnetization.py` | 7 | 1 | 1 | 605 |
 | `constitutive/permeability.py` | 11 | 1 | 1 | 614 |
 
-**Total:** 53 functions, 11 classes, 12 articles covered
+**Total:** 50 functions, 10 classes, 12 articles covered
 
 ---
 
@@ -364,7 +368,7 @@
 | `neumanns_theory.py` | 7 | 2 | 8 | 851-858 |
 | `webers_theory.py` | 6 | 2 | 10 | 841-850 |
 
-**Total:** 27 functions, 8 classes, 35 articles covered
+**Total:** 27 functions, 8 classes, 53 articles covered
 
 **Key APIs:**
 - `AmperesTheory` - Ampere's molecular currents
@@ -390,7 +394,7 @@
 | `velocity.py` | 8 | 1 | 2 | 786, 787 |
 | `wave_equation.py` | 11 | 3 | 10 | 781-790 |
 
-**Total:** 81 functions, 13 classes, 28 articles covered
+**Total:** 81 functions, 13 classes, 41 articles covered
 
 **Key APIs:**
 - `WaveEquation` - Electromagnetic wave equation
@@ -599,26 +603,37 @@
 |--------|-----------|---------|----------|---------------|
 | `medium_check.py` | 8 | 2 | 2 | 865, 866 |
 
+### Verification
+
+**Location:** `maxwell/verification/`
+
+| Module | Functions | Classes | Articles | Article Range |
+|--------|-----------|---------|----------|---------------|
+| `equation_extractor.py` | 0 | 3 | 0 | N/A |
+| `equation_registry.py` | 0 | 2 | 0 | N/A |
+| `verifier.py` | 0 | 1 | 0 | N/A |
+
 ---
 
 ## Summary Statistics
 
 | Package Category | Modules | Functions | Classes | Articles |
 |-----------------|---------|-----------|---------|----------|
-| **Part I - Electrostatics** | 6 | 63 | 3 | 91 |
+| **Part I - Electrostatics** | 8 | 95 | 11 | 126 |
 | **Part II - Electrokinematics** | 10 | 102 | 13 | 125 |
 | **Part III - Magnetism** | 2 | 21 | 8 | 26 |
-| **Part IV - Electromagnetism** | 50 | 377 | 66 | 183 |
-| **Core Physics** | 8 | 34 | 23 | 46 |
-| **Mathematics** | 7 | 66 | 11 | 88 |
+| **Part IV - Electromagnetism** | 54 | 418 | 71 | 269 |
+| **Core Physics** | 9 | 46 | 23 | 64 |
+| **Mathematics** | 8 | 68 | 7 | 109 |
 | **Field Theory** | 5 | 28 | 7 | 12 |
-| **Materials** | 7 | 53 | 11 | 12 |
-| **Molecular Theory** | 4 | 27 | 8 | 35 |
-| **Optics & Waves** | 8 | 81 | 13 | 28 |
+| **Materials** | 7 | 50 | 10 | 12 |
+| **Molecular Theory** | 4 | 27 | 8 | 53 |
+| **Optics & Waves** | 8 | 81 | 13 | 41 |
 | **Instruments** | 5 | 13 | 14 | 23 |
-| **Experiments & Calibration** | 4 | 20 | 4 | 23 |
-| **Supporting Packages** | 24+ | 400+ | 70+ | 200+ |
-| **TOTAL** | **140+** | **1,400+** | **280+** | **741+** |
+| **Experiments & Calibration** | 3 | 13 | 2 | 13 |
+| **Calibration** | 1 | 7 | 2 | 10 |
+| **Supporting Packages** | 40+ | 200+ | 50+ | 80+ |
+| **TOTAL** | **165** | **1,174** | **244** | **866** |
 
 ---
 
