@@ -1,660 +1,592 @@
-# Maxwell Modernized - API Reference Index
+# Maxwell Modernized — API Reference
 
-**Generated:** 2026-04-12  
-**Codebase Coverage:** 866/866 articles (100%)  
-**Total Modules:** 165 Python modules  
-**Total Functions:** 1,174  
-**Total Classes:** 244  
-**Test Coverage:** 522/522 tests passing
-
----
-
-## Table of Contents
-
-1. [Core Physics](#core-physics)
-2. [Part I - Electrostatics](#part-i---electrostatics)
-3. [Part II - Electrokinematics](#part-ii---electrokinematics)
-4. [Part III - Magnetism](#part-iii---magnetism)
-5. [Part IV - Electromagnetism](#part-iv---electromagnetism)
-6. [Mathematics](#mathematics)
-7. [Field Theory](#field-theory)
-8. [Materials & Constitutive Relations](#materials--constitutive-relations)
-9. [Molecular Theory](#molecular-theory)
-10. [Optics & Waves](#optics--waves)
-11. [Instruments & Measurements](#instruments--measurements)
-12. [Experiments & Calibration](#experiments--calibration)
-13. [Supporting Packages](#supporting-packages)
+**Version:** 0.1.0
+**Generated:** 2026-04-25
+**Coverage:** 866/866 articles (100%) across all 4 Parts of Maxwell's Treatise
+**Tests:** 522/522 passing
+**Modules:** 241 Python modules, 80+ subpackages
 
 ---
 
-## Core Physics
+## Quick Start
 
-**Location:** `maxwell/core/`  
-**Purpose:** Fundamental physics abstractions - charge, field, magnet, matter, moment, potential
+```python
+from maxwell import (
+    PointCharge, LorentzForce, MaxwellStressTensor, FaradayInduction,
+    MaxwellEquations, ElectromagneticField, PlaneWave,
+    SphericalHarmonicExpansion, LegendrePolynomial, EllipticIntegral,
+    CGSUnitConverter, CONST, C,
+)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `charge.py` | 2 | 1 | 4 | 29, 30, 45, 245 |
-| `field.py` | 5 | 3 | 9 | 44, 46-49, 68, 69, 71, 76 |
-| `magnet.py` | 4 | 4 | 7 | 371-376, 392 |
-| `matter.py` | 4 | 2 | 4 | 377-380 |
-| `moment.py` | 1 | 6 | 6 | 381-384, 389, 390 |
-| `potential.py` | 10 | 1 | 7 | 45, 70, 72, 73, 77, 78, 85 |
+# Speed of light in CGS
+print(f"c = {C:.4e} cm/s")
 
-### Subpackages
+# Point charge field
+from maxwell import PointCharge
+import numpy as np
+q = PointCharge(q=1.0, position=np.array([0.0, 0.0, 0.0]))
+E = q.field_at(np.array([1.0, 0.0, 0.0]))
 
-#### `maxwell/core/units/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `dimensions.py` | 8 | 4 | 10 | 620-628, 771-773, 781 |
-| `units.py` | 0 | 2 | 0 | N/A |
-| `__init__.py` exports | 17 | 3 | 12 | Various |
-
-**Key APIs:**
-- `Charge` - Electric charge representation and operations
-- `Field` - Electric and magnetic field abstractions
-- `Magnet` - Magnetic body modeling
-- `Potential` - Scalar and vector potential calculations
-- `DimensionalAnalysis` - Unit consistency verification
+# Lorentz force on a wire
+from maxwell import LorentzForce
+F = LorentzForce(current=1.0, length=np.array([0.0, 0.0, 10.0]),
+                 B_field=np.array([0.0, 100.0, 0.0]))
+force = F.force_vector()
+```
 
 ---
 
-## Part I - Electrostatics
+## Public API — Top-Level Imports
 
-**Location:** `maxwell/electrostatics/`  
-**Purpose:** Static electric fields, potentials, and charge distributions
+All 39 symbols importable directly from `maxwell`:
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `confocal_surfaces.py` | 7 | 1 | 10 | 147-156 |
-| `dielectrics.py` | 14 | 1 | 14 | 157-170 |
-| `electric_images.py` | 7 | 0 | 11 | 171-181 |
-| `equilibrium_surfaces.py` | 12 | 0 | 16 | 112-127 |
-| `general_theorems.py` | 14 | 0 | 17 | 86-102 |
-| `instruments.py` | 9 | 1 | 23 | 207-229 |
-| `equipotential.py` | 15 | 4 | 18 | 103-111, 135-146 |
-| `surface_density.py` | 17 | 4 | 20 | 79-85, 128-134 |
+### Core Primitives (5)
 
-**Total:** 95 functions, 11 classes, 126 articles covered
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `PointCharge` | class | `maxwell.core.charge` | Point charge with `q` and `position`; computes E-field via Coulomb's law |
+| `ElectricField` | class | `maxwell.core.field` | Electric field abstraction with flux, tension, and Gauss law methods |
+| `ElectricPotential` | class | `maxwell.core.potential` | Scalar potential with Laplace/Poisson equation solvers |
+| `Magnet` | class | `maxwell.core.magnet` | Magnetic body with pole strength, axis, and mutual action methods |
+| `MagneticMoment` | class | `maxwell.core.moment` | Magnetic dipole moment vector representation |
 
-**Key APIs:**
-- `ConfocalSurfaces` - Equipotential surface calculations
-- `DielectricMedia` - Dielectric constant and polarization
-- `ElectricImages` - Method of images for conductors
-- `EquilibriumConfigurations` - Charge distribution on conductors
-- `GeneralTheorems` - Gauss's law, uniqueness theorems
+### Constants & Units (4)
 
----
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `CONST` | class | `maxwell.config.constants` | Universal constants (c, pi, e, etc.) in CGS units |
+| `C` | float | `maxwell.config.constants` | Speed of light: 2.99792458e10 cm/s |
+| `CGSUnitConverter` | class | `maxwell.core.units` | Convert between CGS, SI, and practical units |
+| `MagneticDimensions` | class | `maxwell.core.units` | Dimensional analysis for electromagnetic quantities |
 
-## Part II - Electrokinematics
+### Forces (2)
 
-**Location:** `maxwell/electrokinematics/`  
-**Purpose:** Electric currents, conduction, resistance, and EMF
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `LorentzForce` | class | `maxwell.electromagnetism.forces.lorentz` | Force on current-carrying conductor: F = I*L x B |
+| `MaxwellStressTensor` | class | `maxwell.electromagnetism.forces.stress_tensor` | Electromagnetic stress tensor T_ij with eigenvalue analysis |
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `conduction_3d.py` | 11 | 1 | 12 | 285-296 |
-| `dielectric_conduction.py` | 8 | 1 | 10 | 325-334 |
-| `electrolysis.py` | 16 | 2 | 15 | 249-263 |
-| `emf.py` | 15 | 1 | 9 | 264-272 |
-| `emf_bodies.py` | 6 | 1 | 3 | 246-248 |
-| `heterogeneous_media.py` | 8 | 1 | 15 | 310-324 |
-| `network_solver.py` | 8 | 1 | 12 | 273-284 |
-| `resistance_distribution.py` | 11 | 1 | 13 | 297-309 |
-| `resistance_measurement.py` | 8 | 2 | 24 | 335-358 |
-| `resistance_substances.py` | 11 | 2 | 12 | 359-370 |
+### Induction (1)
 
-**Total:** 102 functions, 13 classes, 125 articles covered
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `FaradayInduction` | class | `maxwell.electromagnetism.induction.faraday` | Induced EMF from changing magnetic flux and motional EMF |
 
-**Key APIs:**
-- `Conduction3D` - Three-dimensional current flow
-- `Electrolysis` - Chemical effects of currents
-- `EMF` - Electromotive force calculations
-- `NetworkSolver` - Circuit analysis (Kirchhoff's laws)
-- `ResistanceMeasurement` - Resistance measurement techniques
+### Theory (2)
 
----
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `MaxwellEquations` | class | `maxwell.electromagnetism.theory.general_equations` | All 7 Maxwell equations (A-G) with numerical verification |
+| `ElectromagneticField` | class | `maxwell.electromagnetism.theory.general_equations` | Complete EM field state (E, B, H, D, J, rho, potentials) |
 
-## Part III - Magnetism
+### Energy (3)
 
-**Location:** `maxwell/magnetism/`  
-**Purpose:** Magnetic measurements and terrestrial magnetism
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `calc_magnetic_energy_density` | func | `maxwell.electromagnetism.energy.magnetic` | u = B^2/(8*pi) in CGS vacuum |
+| `calc_total_magnetic_energy` | func | `maxwell.electromagnetism.energy.magnetic` | Integrate magnetic energy density over volume |
+| `calc_electrostatic_energy_density` | func | `maxwell.electromagnetism.energy.electrostatic` | u = E^2/(8*pi) in CGS vacuum |
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `magnetic_measurements.py` | 8 | 7 | 16 | 449-464 |
-| `terrestrial_magnetism.py` | 13 | 1 | 10 | 465-474 |
+### Fields (2)
 
-**Total:** 21 functions, 8 classes, 26 articles covered
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `AmpereMaxwellLaw` | class | `maxwell.electromagnetism.fields.ampere_maxwell` | curl H = (4*pi/c)*J + (1/c)*dD/dt |
+| `DisplacementCurrent` | class | `maxwell.electromagnetism.fields.ampere_maxwell` | Displacement current density dD/dt |
 
-**Key APIs:**
-- `MagneticMeasurements` - Magnetic moment and field measurements
-- `TerrestrialMagnetism` - Earth's magnetic field modeling
+### Electrostatics (1)
 
----
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `DielectricMaterial` | class | `maxwell.electrostatics.dielectrics` | Dielectric with permittivity, polarization, bound charge |
 
-## Part IV - Electromagnetism
+### Electrokinematics (1)
 
-**Location:** `maxwell/electromagnetism/`  
-**Purpose:** Unified electromagnetic theory - the crown jewel of Maxwell's work
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `NetworkAnalyzer` | class | `maxwell.electrokinematics.network_solver` | Circuit analysis with Kirchhoff's laws, Wheatstone bridge |
 
-### Core Theory
+### Magnetism (1)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `equivalence.py` | 5 | 3 | 4 | 482-485 |
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `GeomagneticElements` | class | `maxwell.magnetism.terrestrial_magnetism` | Earth's magnetic field: declination, dip, intensity |
 
-### Charges & Currents
+### Optics (1)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `charges/surface.py` | 12 | 1 | 1 | 613 |
-| `charges/volume.py` | 9 | 1 | 1 | 612 |
-| `currents/emf_relation.py` | 12 | 2 | 1 | 611 |
-| `currents/total.py` | 9 | 1 | 1 | 610 |
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `PlaneWave` | class | `maxwell.optics.wave_equation` | Electromagnetic plane wave solutions |
 
-### Current Sheets
+### Mathematics (3)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `current_sheets/boundary_conditions.py` | 7 | 2 | 12 | 663-674 |
-| `current_sheets/sheet_theory.py` | 6 | 3 | 9 | 647-655 |
-| `current_sheets/surface_currents.py` | 5 | 2 | 7 | 656-662 |
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `SphericalHarmonicExpansion` | class | `maxwell.math.spherical_harmonics` | Expand functions in spherical harmonic series |
+| `LegendrePolynomial` | class | `maxwell.math.spherical_harmonics` | Legendre polynomials P_l(x) and associated P_l^m(x) |
+| `EllipticIntegral` | class | `maxwell.math.elliptic_integrals` | Complete and incomplete elliptic integrals K(k), E(k) |
 
-### Fields
+### Instruments (2)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `fields/ampere_maxwell.py` | 7 | 3 | 2 | 606, 607 |
-| `fields/curl_relation.py` | 10 | 1 | 3 | 590-592 |
-| `fields/electrotonic.py` | 9 | 1 | 2 | 540, 541 |
-| `fields/vector_momentum.py` | 8 | 1 | 8 | 585-592 |
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `TangentGalvanometer` | class | `maxwell.instruments.galvanometers` | Tangent galvanometer for current measurement |
+| `HelmholtzCoil` | class | `maxwell.instruments.helmholtz` | Helmholtz coil pair with uniform field region |
 
-### Forces
+### Materials (5)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `forces/coil_forces.py` | 7 | 0 | 3 | 697-699 |
-| `forces/elemental.py` | 6 | 1 | 6 | 510-515 |
-| `forces/generalized.py` | 8 | 1 | 3 | 573-575 |
-| `forces/lorentz.py` | 8 | 2 | 3 | 490-492 |
-| `forces/medium_force.py` | 8 | 1 | 2 | 639, 640 |
-| `forces/ponderomotive.py` | 9 | 1 | 2 | 602, 603 |
-| `forces/sliding.py` | 7 | 1 | 4 | 594-597 |
-| `forces/stress_tensor.py` | 12 | 1 | 4 | 641-644 |
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `Magnetization` | class | `maxwell.materials.constitutive` | B = (1 + 4*pi*chi)*H constitutive relation |
+| `ElectricDisplacement` | class | `maxwell.materials.constitutive` | D = epsilon*E constitutive relation |
+| `Conductivity` | class | `maxwell.materials.constitutive` | J = sigma*E Ohm's law constitutive relation |
+| `Permeability` | class | `maxwell.materials.constitutive` | Magnetic permeability mu = 1 + 4*pi*chi |
+| `HysteresisLoop` | class | `maxwell.materials.hysteresis` | Hysteresis loop simulation with retentivity, coercivity |
 
-### Induction
+### Engineering (2)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `induction/faraday.py` | 9 | 3 | 5 | 528-531, 542 |
-| `induction/generalized.py` | 6 | 1 | 2 | 576, 577 |
-| `induction/lenz.py` | 6 | 1 | 1 | 542 |
-| `induction/self.py` | 8 | 1 | 6 | 546-551 |
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `ShipMagnetism` | class | `maxwell.engineering` | Ship magnetization model with compass correction |
+| `MagneticCompass` | class | `maxwell.engineering` | Magnetic compass deviation and correction analysis |
 
-### Energy
+### Competing Theories (1)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `energy/electrokinetic.py` | 9 | 1 | 5 | 634-638 |
-| `energy/electrostatic.py` | 8 | 1 | 2 | 630, 631 |
-| `energy/magnetic.py` | 9 | 1 | 2 | 632, 633 |
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `CompetingTheory` | class | `maxwell.molecular.competing_theories` | Historical theory comparison framework |
 
-### Potentials
+### Citation System (2)
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `potentials/directrix.py` | 6 | 1 | 3 | 517-519 |
-| `potentials/multivalued.py` | 6 | 1 | 1 | 480 |
-| `potentials/mutual_energy.py` | 8 | 1 | 2 | 520, 521 |
-| `potentials/surfaces.py` | 6 | 2 | 2 | 486, 487 |
-
-### Sources
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `sources/oersted.py` | 7 | 1 | 5 | 475-479 |
-
-### Components
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `components/circular_coils.py` | 9 | 1 | 10 | 670-679 |
-| `components/cylinders.py` | 6 | 1 | 8 | 680-687 |
-| `components/solenoids.py` | 6 | 1 | 9 | 675-683 |
-
-### Theory & Dynamics
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `theory/comparisons.py` | 10 | 1 | 2 | 526, 527 |
-| `theory/connected_systems.py` | 8 | 1 | 15 | 553-567 |
-| `theory/conservation.py` | 7 | 1 | 2 | 543, 544 |
-| `theory/dynamical_model.py` | 5 | 1 | 10 | 568-577 |
-| `theory/general_equations.py` | 13 | 3 | 10 | 594-603 |
-
-### Waves
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `waves/plane_wave.py` | 3 | 2 | 5 | 786-790 |
-| `waves/polarization.py` | 7 | 2 | 5 | 791-795 |
-| `waves/wave_equation.py` | 5 | 2 | 5 | 781-785 |
-
-### Experiments & Verification
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `experiments/ampere_balance.py` | 6 | 1 | 6 | 579-584 |
-| `experiments/felici.py` | 7 | 2 | 4 | 536-539 |
-| `experiments/stress_verification.py` | 6 | 0 | 2 | 645, 646 |
-
-### Dynamics & Applications
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `dynamics/attraction.py` | 8 | 1 | 2 | 496, 497 |
-| `physics/stress.py` | 6 | 1 | 1 | 501 |
-| `vis/circular_fields.py` | 7 | 1 | 1 | 702 |
-| `optimization/coil_design.py` | 6 | 0 | 1 | 706 |
-
-**Part IV Total:** 418 functions, 71 classes, 269 articles covered
-
-**Key APIs:**
-- `AmpereMaxwell` - The Ampere-Maxwell law implementation
-- `LorentzForce` - Force on charged particles
-- `FaradayInduction` - Electromagnetic induction
-- `StressTensor` - Maxwell stress tensor
-- `WaveEquation` - Electromagnetic wave propagation
-- `ConnectedSystems` - Coupled electromagnetic systems
+| Name | Type | Source | Description |
+|---|---|---|---|
+| `get_citation` | func | `maxwell.meta.citation` | Get citation info for a Maxwell article number |
+| `get_all_citations` | func | `maxwell.meta.citation` | List all available citations |
 
 ---
 
-## Mathematics
+## Complete Module Index
+
+### maxwell.core — Core Physics
+
+| Module | Public API | Articles |
+|---|---|---|
+| `charge` | `PointCharge(q, position)` → `field_at(point)` | 29, 30, 45, 245 |
+| `field` | `ElectricField`, `gauss_law_closed_surface`, `electric_flux` | 44, 46-49, 68-71, 76 |
+| `potential` | `ElectricPotential`, `laplace_equation`, `poisson_equation`, `solve_laplace`, `solve_poisson` | 45, 70, 72, 73, 77, 78, 85 |
+| `magnet` | `Magnet`, `MagneticPole`, `MagneticAxis`, `mutual_action`, `earth_response` | 371-376, 392 |
+| `moment` | `MagneticMoment`, `MagnetizationVector`, `MagneticParticle`, `resultant_moment_and_axis` | 381-384, 389, 390 |
+| `measurement` | `cgs_unit_of`, `resistance_units`, `potential_units`, `current_units` | 2-26 |
+
+### maxwell.core.units — Units & Dimensional Analysis
+
+| Module | Public API | Articles |
+|---|---|---|
+| `units` | `CGSUnitConverter` → `cgs_to_si_*`, `si_to_cgs_*` | — |
+| `dimensions` | `ElectromagneticUnit`, `ESUDimensions`, `EMUDimensions`, `get_esu_dimensions`, `get_emu_dimensions`, `calc_unit_ratio`, `verify_speed_of_light_relationship`, `convert_esu_to_emu`, `verify_dimensional_consistency` | 440-445 |
+
+### maxwell.config — Constants & Conventions
+
+| Module | Public API | Articles |
+|---|---|---|
+| `constants` | `CONST` (universal constants), `C` (speed of light), `cgs_unit_of` | — |
+| `conventions` | `PolarityConvention`, `ForceDirectionConvention`, `MagneticDirection`, `verify_austral_positive`, `right_hand_rule_direction` | 28-37 |
+
+### maxwell.calculus — Integral Theorems
+
+| Module | Public API | Articles |
+|---|---|---|
+| `cyclic` | `CyclicFunction`, `calc_solid_angle_closed_curve`, `solid_angle_double_line_integral`, `vector_potential_closed_curve` | 53-54 |
+| `integrals` | `MagneticLineIntegral`, `MagneticSurfaceIntegral`, `calc_line_integral_force`, `calc_surface_induction`, `amperes_law_integral` | 28-33 |
+| `vector_potential` | `VectorPotential`, `calc_B_from_vector_potential`, `calc_vector_potential_from_magnetization`, `gauge_transform`, `verify_coulomb_gauge` | 39-45 |
+
+### maxwell.electrostatics — Part I (Arts. 27-229)
+
+| Module | Public API | Articles |
+|---|---|---|
+| `dielectrics` | `DielectricMaterial` → `polarization`, `bound_charge`, `susceptibility` | 55-107 |
+| `general_theorems` | `greens_theorem`, `greens_reciprocity`, `uniqueness_theorem`, `electrostatic_energy` | 18-24 |
+| `electric_images` | `image_point_charge_plane`, `image_point_charge_sphere`, `image_line_charge_cylinder`, `inversion_method` | 40-73 |
+| `equilibrium_surfaces` | `equilibrium_points`, `saddle_point`, `equipotential_surfaces`, `field_line_tracing` | 18-22 |
+| `confocal_surfaces` | `EllipsoidalHarmonic`, `confocal_ellipsoid`, `ellipsoidal_coordinates` | 73-82 |
+| `surface_density` | Surface charge density calculations | 79-85, 128-134 |
+| `equipotential` | Equipotential surface computation | 103-111, 135-146 |
+| `instruments` | `QuadrantElectrometer`, electrometer calibration | 207-229 |
+
+### maxwell.electrokinematics — Part II (Arts. 230-370)
+
+| Module | Public API | Articles |
+|---|---|---|
+| `network_solver` | `NetworkAnalyzer` → `kirchhoff_junction`, `kirchhoff_loop`, `solve_network`, `wheatstone_bridge` | 273-284 |
+| `electrolysis` | `ElectrolysisCell`, `faraday_laws`, `nernst_equation`, `ion_migration` | 249-263 |
+| `emf` | `EMFSource`, `contact_potential`, `seebeck_effect`, `peltier_effect`, `thomson_effect` | 264-272 |
+| `conduction_3d` | `Conduction3DAnalyzer` — 3D current flow | 285-296 |
+| `resistance_distribution` | `ResistanceDistributionAnalyzer` — resistance of spheres, cylinders, shells | 297-309 |
+| `heterogeneous_media` | `HeterogeneousMediaAnalyzer` — effective conductivity, Maxwell-Garnett | 310-324 |
+| `dielectric_conduction` | `DielectricConductor` — conduction in dielectrics | 325-334 |
+| `resistance_measurement` | `ResistanceMeasurementAnalyzer` — Wheatstone, Kelvin bridge, four-terminal | 335-358 |
+| `resistance_substances` | `ResistanceSubstancesAnalyzer` — material resistance, temperature coefficients | 359-370 |
+| `emf_bodies` | `ContactEMFAnalyzer` — concentration cells, junction potentials | 246-248 |
+
+### maxwell.electromagnetism — Part IV (Arts. 475-866)
+
+#### Theory
+
+| Module | Public API | Articles |
+|---|---|---|
+| `theory.general_equations` | `ElectromagneticField`, `MaxwellEquations`, `GeneralEquationsCalculator` — all 7 equations A-G | 594-603 |
+| `theory.connected_systems` | `ConnectedSystem` — coupled EM systems | 553-567 |
+| `theory.dynamical_model` | `DynamicalModel` — Lagrangian formulation | 568-577 |
+| `theory.comparisons` | `ForceLawComparison` — compare force laws | 526, 527 |
+| `theory.conservation` | `EnergyConservation` — energy conservation checks | 543, 544 |
+
+#### Forces
+
+| Module | Public API | Articles |
+|---|---|---|
+| `forces.lorentz` | `LorentzForce` → `force_vector`, `force_on_charge`, `force_between_parallel_currents` | 490-492 |
+| `forces.stress_tensor` | `MaxwellStressTensor` → `tensor`, `analyze_stress`, `verify_stress_tensor` | 641-644 |
+| `forces.elemental` | `CurrentElement` — elemental force between currents | 510-515 |
+| `forces.ponderomotive` | `PonderomotiveForce` — force on medium | 602, 603 |
+| `forces.sliding` | `SlidingConductor` — sliding conductor dynamics | 594-597 |
+| `forces.generalized` | `GeneralizedForce` — generalized EM forces | 573-575 |
+| `forces.coil_forces` | Coil force computations | 697-699 |
+| `forces.medium_force` | `MediumForceCalculator` | 639, 640 |
+
+#### Induction
+
+| Module | Public API | Articles |
+|---|---|---|
+| `induction.faraday` | `FaradayInduction`, `MagneticFlux`, `InducedEMF` — Faraday's law, motional EMF | 528-531, 542 |
+| `induction.self` | `SelfInductance` — self-inductance calculations | 546-551 |
+| `induction.lenz` | `LenzLawCalculator` — Lenz's law direction | 542 |
+| `induction.generalized` | `GeneralizedEMF` — generalized EMF | 576, 577 |
+
+#### Energy
+
+| Module | Public API | Articles |
+|---|---|---|
+| `energy.magnetic` | `calc_magnetic_energy_density`, `calc_total_magnetic_energy`, `MagneticEnergy` | 632, 633 |
+| `energy.electrostatic` | `calc_electrostatic_energy_density`, `ElectrostaticEnergy` | 630, 631 |
+| `energy.electrokinetic` | `ElectrokineticEnergy` — electrokinetic energy | 634-638 |
 
-**Location:** `maxwell/math/`  
-**Purpose:** Mathematical tools - spherical harmonics, elliptic integrals, vector calculus
+#### Fields
+
+| Module | Public API | Articles |
+|---|---|---|
+| `fields.ampere_maxwell` | `AmpereMaxwellLaw`, `DisplacementCurrent`, `AmpereMaxwellCalculator` | 606, 607 |
+| `fields.curl_relation` | `CurlRelations` — curl relations for EM fields | 590-592 |
+| `fields.electrotonic` | `ElectrotonicState` — Faraday's electrotonic state | 540, 541 |
+| `fields.vector_momentum` | `VectorPotential` — vector potential momentum | 585-592 |
+
+#### Charges & Currents
+
+| Module | Public API | Articles |
+|---|---|---|
+| `charges.surface` | `SurfaceCharge` — surface charge distributions | 613 |
+| `charges.volume` | `VolumeCharge` — volume charge distributions | 612 |
+| `currents.total` | `TotalCurrent` — total current density | 610 |
+| `currents.emf_relation` | `EMFCurrentRelation` — EMF-current relationship | 611 |
+
+#### Current Sheets
+
+| Module | Public API | Articles |
+|---|---|---|
+| `current_sheets.sheet_theory` | `CurrentSheet`, `MagneticShell`, `CurrentSheetCalculator` | 647-655 |
+| `current_sheets.surface_currents` | `SurfaceCurrentDensity`, `SurfaceCurrentAnalyzer` | 656-662 |
+| `current_sheets.boundary_conditions` | `ElectromagneticBoundary`, `BoundaryConditionAnalyzer` | 663-674 |
+
+#### Components
+
+| Module | Public API | Articles |
+|---|---|---|
+| `components.solenoids` | `Solenoid` — solenoid field and inductance | 675-683 |
+| `components.circular_coils` | `CircularCoil`, `calc_coil_on_axis`, `calc_coil_off_axis` | 670-679 |
+| `components.cylinders` | `CylindricalConductor` — cylindrical conductor fields | 680-687 |
+
+#### Waves
+
+| Module | Public API | Articles |
+|---|---|---|
+| `waves.wave_equation` | `ElectromagneticWave`, `WaveEquationSolver` | 781-785 |
+| `waves.plane_wave` | `PlaneWave`, `PlaneWaveAnalyzer` | 786-790 |
+| `waves.polarization` | `PolarizationState`, `PolarizationAnalyzer` | 791-795 |
+
+#### Potentials
+
+| Module | Public API | Articles |
+|---|---|---|
+| `potentials.directrix` | `DirectrixFunction` — directrix of electromagnetic action | 517-519 |
+| `potentials.multivalued` | `CyclicPotential` — multivalued potentials | 480 |
+| `potentials.mutual_energy` | `MutualEnergy` — mutual energy of circuits | 520, 521 |
+| `potentials.surfaces` | `EquipotentialSurface`, `CurrentLoopPotential` | 486, 487 |
+
+#### Sources
+
+| Module | Public API | Articles |
+|---|---|---|
+| `sources.oersted` | `OerstedField` — Oersted's magnetic field from current | 475-479 |
+
+#### Equivalence
+
+| Module | Public API | Articles |
+|---|---|---|
+| `equivalence` | `MagneticShell`, `CurrentCircuit`, `CircuitEquivalence` — circuit-shell equivalence | 482-485 |
+
+#### Dynamics & Applications
+
+| Module | Public API | Articles |
+|---|---|---|
+| `dynamics.attraction` | `ParallelConductorForce` — force between parallel conductors | 496, 497 |
+| `optimization.coil_design` | `calc_optimal_coil_radius`, `calc_uniformity_fom`, `verify_coil_design` | 706 |
+| `vis.circular_fields` | `FieldLineData` — field line computation for visualization | 702 |
+
+#### Experiments
+
+| Module | Public API | Articles |
+|---|---|---|
+| `experiments.felici` | `InductionEvent`, `FeliciResult` — Felici's induction experiments | 536-539 |
+| `experiments.ampere_balance` | `BalanceReading` — Ampere balance experiments | 579-584 |
+| `experiments.stress_verification` | Stress tensor experimental verification | 645, 646 |
+
+### maxwell.math — Mathematics
+
+| Module | Public API | Articles |
+|---|---|---|
+| `spherical_harmonics` | `SphericalHarmonicExpansion`, `LegendrePolynomial`, `SphericalHarmonic`, `calc_legendre_polynomial`, `addition_theorem`, `multipole_expansion` | 128-146, 675-695 |
+| `elliptic_integrals` | `EllipticIntegral`, `calc_complete_elliptic_integral_first_kind`, `calc_complete_elliptic_integral_second_kind`, `calc_incomplete_elliptic_integral` | 696-705 |
+| `vector_operators` | `gradient`, `divergence`, `curl`, `laplacian`, `vector_laplacian`, vector identities | 71-77, 100-110 |
+| `conjugate_functions` | `ConjugatePair`, conjugate harmonic functions | 182-206 |
+| `potential_theorems` | Surface integrals, Gauss law, potential mean value | 11-26 |
+
+Subpackages:
+
+| Module | Public API | Articles |
+|---|---|---|
+| `algebra.quaternions` | `Quaternion` — quaternion algebra | 522 |
+| `gauge.manager` | `GaugeTransformation`, `coulomb_gauge`, `lorenz_gauge` | 616, 617 |
+| `geometry.gmd` | `GMDCalculator` — geometric mean distance | 691-693 |
+
+### maxwell.materials — Materials
+
+| Module | Public API | Articles |
+|---|---|---|
+| `hysteresis` | `HysteresisLoop`, `WeberModelWithHysteresis`, `simulate_cycle`, `retentivity`, `coercive_force`, `typical_hysteresis_parameters` | 444-446 |
+| `induction` | `MagneticSusceptibility`, `InducedMagnetization` | 424-426 |
+| `saturation` | `WeberModel` — magnetic saturation model | 442, 443 |
+
+Subpackage `constitutive/`:
+
+| Module | Public API | Articles |
+|---|---|---|
+| `conductivity` | `Conductivity` → `current_density`, `joule_heating` | 609 |
+| `displacement` | `ElectricDisplacement` → `displacement_field`, `bound_charge_density` | 608 |
+| `magnetization` | `Magnetization` → `magnetic_induction`, `magnetization_current` | 605 |
+| `permeability` | `Permeability` → `permeability_from_susceptibility` | 614 |
+
+### maxwell.magnetism — Part III (Arts. 371-474)
+
+| Module | Public API | Articles |
+|---|---|---|
+| `terrestrial_magnetism` | `GeomagneticElements` → `earth_field_components`, `magnetic_survey`, `gauss_spherical_analysis`, `gauss_coefficients` | 465-474 |
+| `magnetic_measurements` | `DeflectionMagnetometer`, `UnifilarSuspension`, `BifilarSuspension`, `KewMagnetometer`, `DipCircle`, `BalanceMagnetometer`, `MagneticSurvey` | 449-464 |
+
+### maxwell.instruments — Instruments
+
+| Module | Public API | Articles |
+|---|---|---|
+| `galvanometers` | `TangentGalvanometer`, `SineGalvanometer`, `StandardGalvanometer`, `FourCoilGalvanometer`, `ThreeCoilGalvanometer`, `UniformWireGalvanometer` | 707-720 |
+| `helmholtz` | `HelmholtzCoil` → `field_at`, `uniformity_region` | 713 |
+| `dynamometers` | `WeberDynamometer`, `JouleCurrentWeigher`, `TorsionDynamometer` | 725-729 |
+| `suspended_coil` | `SuspendedCoil`, `ThomsonSensitiveCoil`, `ThomsonCombinedInstrument` | 721-728 |
+| `optimization.sensitivity` | Galvanometer sensitivity optimization | 716-719 |
+
+### maxwell.optics — Electromagnetic Theory of Light
+
+| Module | Public API | Articles |
+|---|---|---|
+| `wave_equation` | `ElectromagneticWave`, `PlaneWave`, `WaveEquationCalculator` | 781-790 |
+| `plane_waves` | `PlaneWave`, `PolarizationState` — plane wave solutions | 790-793, 801-803 |
+| `velocity` | `WaveVelocity` — wave speed in media | 786, 787 |
+| `crystals` | `CrystalOptics` — optics in crystals | 794, 804, 805 |
+| `metals` | `MetallicReflection`, `MetalOptics` — optics in metals | 795-800 |
+| `radiation_pressure` | `RadiationPressure` — light pressure | 791-794 |
+| `diffusion` | `LightDiffusion`, `FieldDiffusion` — light diffusion | 801-808 |
+| `constants` | `OpticalConstants` — optical constants | 788-790 |
 
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `conjugate_functions.py` | 15 | 1 | 25 | 182-206 |
-| `elliptic_integrals.py` | 7 | 1 | 10 | 696-705 |
-| `spherical_harmonics.py` | 13 | 6 | 34 | 128-146, 675-695 |
-| `vector_operators.py` | 8 | 0 | 16 | 71-77, 100-110 |
+### maxwell.molecular — Molecular Theories
+
+| Module | Public API | Articles |
+|---|---|---|
+| `competing_theories` | `CompetingTheory`, `TheoryComparison`, `compare_theories` | 841-866 |
+| `amperes_theory` | `AmperesTheory`, `MolecularCurrent` — Ampere's molecular currents | 832-840 |
+| `webers_theory` | `WebersTheory`, `WeberForce` — Weber's magnetic molecules | 841-850 |
+| `neumanns_theory` | `NeumannTheory`, `NeumannPotential` — Neumann's induction | 851-858 |
+
+### maxwell.fields — Field Theory
 
-### Subpackages
-
-#### `maxwell/math/algebra/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `quaternions.py` | 7 | 1 | 1 | 522 |
-
-#### `maxwell/math/gauge/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `manager.py` | 8 | 1 | 2 | 616, 617 |
-
-#### `maxwell/math/geometry/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `gmd.py` | 8 | 1 | 3 | 691-693 |
-
-**Total:** 68 functions, 7 classes, 109 articles covered
-
-**Key APIs:**
-- `SphericalHarmonics` - Surface harmonic expansions
-- `EllipticIntegrals` - Complete and incomplete elliptic integrals
-- `VectorOperators` - Gradient, divergence, curl
-- `ConjugateFunctions` - Complex variable methods
-
----
-
-## Field Theory
-
-**Location:** `maxwell/fields/`  
-**Purpose:** General field theory and constitutive relations
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `constitutive.py` | 8 | 2 | 1 | 400 |
-| `decomposition.py` | 5 | 2 | 4 | 412, 413, 415, 416 |
-| `force.py` | 6 | 1 | 4 | 395-398 |
-| `induction.py` | 4 | 1 | 1 | 399 |
-| `solenoidal.py` | 5 | 1 | 2 | 403, 404 |
-
-**Total:** 28 functions, 7 classes, 12 articles covered
-
----
-
-## Materials & Constitutive Relations
-
-**Location:** `maxwell/materials/`  
-**Purpose:** Material properties and constitutive equations
-
-### Core Materials
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `hysteresis.py` | 5 | 2 | 3 | 444-446 |
-| `induction.py` | 5 | 3 | 3 | 424-426 |
-| `saturation.py` | 4 | 1 | 2 | 442, 443 |
-
-### Constitutive Relations
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `constitutive/conductivity.py` | 10 | 1 | 1 | 609 |
-| `constitutive/displacement.py` | 11 | 2 | 1 | 608 |
-| `constitutive/magnetization.py` | 7 | 1 | 1 | 605 |
-| `constitutive/permeability.py` | 11 | 1 | 1 | 614 |
-
-**Total:** 50 functions, 10 classes, 12 articles covered
-
----
-
-## Molecular Theory
-
-**Location:** `maxwell/molecular/`  
-**Purpose:** Molecular theories of magnetism and dielectrics
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `amperes_theory.py` | 4 | 2 | 9 | 832-840 |
-| `competing_theories.py` | 10 | 2 | 26 | 841-866 |
-| `neumanns_theory.py` | 7 | 2 | 8 | 851-858 |
-| `webers_theory.py` | 6 | 2 | 10 | 841-850 |
-
-**Total:** 27 functions, 8 classes, 53 articles covered
-
-**Key APIs:**
-- `AmperesTheory` - Ampere's molecular currents
-- `WebersTheory` - Weber's magnetic molecules
-- `NeumannsTheory` - Neumann's induction theory
-- `CompetingTheories` - Historical theory comparisons
-
----
-
-## Optics & Waves
-
-**Location:** `maxwell/optics/`  
-**Purpose:** Electromagnetic theory of light
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `constants.py` | 11 | 1 | 3 | 788-790 |
-| `crystals.py` | 8 | 1 | 3 | 794, 804, 805 |
-| `diffusion.py` | 12 | 2 | 7 | 801-808 |
-| `metals.py` | 11 | 2 | 6 | 795-800 |
-| `plane_waves.py` | 10 | 2 | 6 | 790-793, 801-803 |
-| `radiation_pressure.py` | 10 | 1 | 4 | 791-794 |
-| `velocity.py` | 8 | 1 | 2 | 786, 787 |
-| `wave_equation.py` | 11 | 3 | 10 | 781-790 |
-
-**Total:** 81 functions, 13 classes, 41 articles covered
-
-**Key APIs:**
-- `WaveEquation` - Electromagnetic wave equation
-- `PlaneWaves` - Plane wave solutions
-- `Polarization` - Wave polarization states
-- `RadiationPressure` - Light pressure calculations
-
----
-
-## Instruments & Measurements
-
-**Location:** `maxwell/instruments/`  
-**Purpose:** Galvanometers, dynamometers, and measurement apparatus
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `dynamometers.py` | 2 | 3 | 4 | 725-727, 729 |
-| `galvanometers.py` | 6 | 7 | 10 | 707-712, 714, 715, 717, 720 |
-| `helmholtz.py` | 0 | 1 | 1 | 713 |
-| `suspended_coil.py` | 2 | 3 | 5 | 721-724, 728 |
-
-### Subpackages
-
-#### `maxwell/instruments/optimization/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `sensitivity.py` | 3 | 0 | 3 | 716, 718, 719 |
-
-**Total:** 13 functions, 14 classes, 23 articles covered
-
----
-
-## Experiments & Calibration
-
-**Location:** `maxwell/experiments/`, `maxwell/calibration/`  
-**Purpose:** Experimental verifications and absolute measurements
-
-### Calibration
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `absolute_resistance.py` | 7 | 2 | 10 | 758-767 |
-
-### Experiments (v/c ratio)
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `ratio_v/combined.py` | 6 | 0 | 6 | 773, 775-779 |
-| `ratio_v/condensers.py` | 3 | 1 | 3 | 771, 772, 774 |
-| `ratio_v/theory.py` | 4 | 1 | 4 | 768-770, 780 |
-
-**Total:** 20 functions, 4 classes, 23 articles covered
-
----
-
-## Supporting Packages
-
-### Calculus
-
-**Location:** `maxwell/calculus/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `cyclic.py` | 7 | 1 | 6 | 417-422 |
-| `integrals.py` | 5 | 2 | 2 | 401, 402 |
-| `vector_potential.py` | 6 | 1 | 2 | 405, 406 |
-
-### Circuits
-
-**Location:** `maxwell/circuits/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `dynamics.py` | 10 | 2 | 7 | 578-584 |
-
-### Components
-
-**Location:** `maxwell/components/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `ellipsoids.py` | 5 | 3 | 2 | 437, 438 |
-| `spheres.py` | 6 | 2 | 6 | 431-436 |
-
-### Geometry
-
-**Location:** `maxwell/geometry/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `shells.py` | 5 | 1 | 3 | 409-411 |
-| `solenoids.py` | 1 | 2 | 3 | 407, 408, 414 |
-
-### Magneto-Optics
-
-**Location:** `maxwell/magneto_optics/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `circular_polarization.py` | 6 | 1 | 7 | 811-817 |
-| `energy_analysis.py` | 2 | 1 | 4 | 818-821 |
-| `rotation.py` | 3 | 2 | 4 | 807-810 |
-
-### Signal Processing
-
-**Location:** `maxwell/signal_processing/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `telegraphy.py` | 6 | 2 | 9 | 730-735, 740, 745, 750 |
-
-### Solvers
-
-**Location:** `maxwell/solvers/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `induction_solvers.py` | 8 | 2 | 3 | 427-429 |
-| `shape_solvers.py` | 4 | 2 | 2 | 439, 440 |
-
-### Vortex Engine
-
-**Location:** `maxwell/vortex_engine/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `equations_of_motion.py` | 1 | 1 | 2 | 827, 828 |
-| `helmholtz_law.py` | 2 | 0 | 1 | 823 |
-| `kinetic_energy.py` | 3 | 0 | 3 | 824-826 |
-| `magnetic_rotation.py` | 2 | 0 | 2 | 829, 830 |
-| `vortex_lattice.py` | 1 | 2 | 2 | 822, 831 |
-
-### Configuration
-
-**Location:** `maxwell/config/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `constants.py` | 1 | 1 | 0 | N/A |
-| `conventions.py` | 5 | 3 | 2 | 393, 394 |
-
-### I/O
-
-**Location:** `maxwell/io/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `article_parser.py` | 5 | 0 | 1 | 1 |
-| `json_loader.py` | 6 | 0 | 1 | 1 |
-
-### Meta
-
-**Location:** `maxwell/meta/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `citation.py` | 4 | 1 | 1 | 241 |
-
-### Physics (Legacy)
-
-**Location:** `maxwell/physics/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `conduction.py` | 10 | 1 | 7 | 230, 241, 274-279 |
-| `coulomb.py` | 11 | 1 | 10 | 30, 38-40, 43, 44, 66-68, 84 |
-| `coupling.py` | 8 | 1 | 2 | 387, 388 |
-| `current.py` | 8 | 1 | 4 | 64, 150, 152, 177 |
-| `gauss.py` | 11 | 1 | 3 | 75, 76, 82 |
-| `magnetostriction.py` | 5 | 2 | 2 | 447, 448 |
-| `molecular_theory.py` | 4 | 2 | 1 | 430 |
-| `ohm.py` | 5 | 0 | 3 | 241, 277, 279 |
-| `potentials.py` | 6 | 1 | 2 | 385, 386 |
-
-### Historical Theories
-
-**Location:** `maxwell/theories/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `failure_modes.py` | 8 | 1 | 3 | 857-859 |
-
-### Engineering
-
-**Location:** `maxwell/engineering/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `naval.py` | 5 | 2 | 1 | 441 |
-
-### Mechanics
-
-**Location:** `maxwell/mechanics/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `potential_energy.py` | 6 | 1 | 1 | 389 |
-| `shell_energy.py` | 6 | 1 | 1 | 423 |
-
-### Philosophy
-
-**Location:** `maxwell/philosophy/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `medium_check.py` | 8 | 2 | 2 | 865, 866 |
-
-### Verification
-
-**Location:** `maxwell/verification/`
-
-| Module | Functions | Classes | Articles | Article Range |
-|--------|-----------|---------|----------|---------------|
-| `equation_extractor.py` | 0 | 3 | 0 | N/A |
-| `equation_registry.py` | 0 | 2 | 0 | N/A |
-| `verifier.py` | 0 | 1 | 0 | N/A |
-
----
-
-## Summary Statistics
-
-| Package Category | Modules | Functions | Classes | Articles |
-|-----------------|---------|-----------|---------|----------|
-| **Part I - Electrostatics** | 8 | 95 | 11 | 126 |
-| **Part II - Electrokinematics** | 10 | 102 | 13 | 125 |
-| **Part III - Magnetism** | 2 | 21 | 8 | 26 |
-| **Part IV - Electromagnetism** | 54 | 418 | 71 | 269 |
-| **Core Physics** | 9 | 46 | 23 | 64 |
-| **Mathematics** | 8 | 68 | 7 | 109 |
-| **Field Theory** | 5 | 28 | 7 | 12 |
-| **Materials** | 7 | 50 | 10 | 12 |
-| **Molecular Theory** | 4 | 27 | 8 | 53 |
-| **Optics & Waves** | 8 | 81 | 13 | 41 |
-| **Instruments** | 5 | 13 | 14 | 23 |
-| **Experiments & Calibration** | 3 | 13 | 2 | 13 |
-| **Calibration** | 1 | 7 | 2 | 10 |
-| **Supporting Packages** | 40+ | 200+ | 50+ | 80+ |
-| **TOTAL** | **165** | **1,174** | **244** | **866** |
+| Module | Public API | Articles |
+|---|---|---|
+| `constitutive` | `MagneticConstitutiveRelation` — B-H constitutive relations | 400 |
+| `decomposition` | `LamellarDistribution`, `ComplexLamellarDistribution` — Helmholtz decomposition | 412-416 |
+| `force` | `MagneticForce` — magnetic force from potential | 395-398 |
+| `induction` | `MagneticInduction` — magnetic induction B field | 399 |
+| `solenoidal` | `MagneticInductionTube` — solenoidal field verification | 403, 404 |
+
+### maxwell.circuits — Circuit Dynamics
+
+| Module | Public API | Articles |
+|---|---|---|
+| `dynamics` | `Circuit`, `CoupledCircuits`, `calc_self_inductance`, `calc_mutual_inductance`, `calc_coupling_coefficient` | 578-584 |
+
+### maxwell.components — Geometric Components
+
+| Module | Public API | Articles |
+|---|---|---|
+| `spheres` | `MagneticSphere`, `HollowMagneticSphere`, `sphere_field`, `sphere_demagnetizing_field` | 431-436 |
+| `ellipsoids` | `MagneticEllipsoid`, `ProlateSpheroid`, `OblateSpheroid`, `ellipsoid_field` | 437, 438 |
+
+### maxwell.engineering — Naval Engineering
+
+| Module | Public API | Articles |
+|---|---|---|
+| `naval` | `ShipMagnetism`, `MagneticCompass`, `flinders_bar_correction`, `quadrantal_correctors`, `simulate_compass_swinging` | 441, 760-790 |
+
+### maxwell.magneto_optics — Magneto-Optic Effects
+
+| Module | Public API | Articles |
+|---|---|---|
+| `rotation` | `FaradayRotator`, `VerdetTable` — Faraday rotation | 807-810 |
+| `circular_polarization` | `CircularlyPolarizedRay` — circular polarization in magnetic fields | 811-817 |
+| `energy_analysis` | `MagnetoOpticMedium` — magneto-optic energy | 818-821 |
+
+### maxwell.signal_processing — Telegraph Theory
+
+| Module | Public API | Articles |
+|---|---|---|
+| `telegraphy` | `TelegraphLine`, `SignalTransmission`, `signal_velocity`, `propagation_delay` | 730-735, 740, 745, 750 |
+
+### maxwell.geometry — Geometric Structures
+
+| Module | Public API | Articles |
+|---|---|---|
+| `shells` | `MagneticShell` — magnetic shell potential | 409-411 |
+| `solenoids` | `Solenoid`, `ComplexSolenoid` — solenoid geometry | 407, 408, 414 |
+
+### maxwell.mechanics — Mechanical Energy
+
+| Module | Public API | Articles |
+|---|---|---|
+| `potential_energy` | `MagneticPotentialEnergy`, `ShellEnergy` | 87-95, 389 |
+| `shell_energy` | `ShellEnergy` — energy of magnetic shells | 423 |
+
+### maxwell.vortex_engine — Molecular Vortex Theory
+
+| Module | Public API | Articles |
+|---|---|---|
+| `vortex_lattice` | `MolecularVortex`, `VortexLattice` | 822, 831 |
+| `equations_of_motion` | `VortexEquations` — vortex dynamics | 827, 828 |
+| `kinetic_energy` | Vortex kinetic energy computations | 824-826 |
+| `helmholtz_law` | Helmholtz vortex law | 823 |
+| `magnetic_rotation` | Magnetic rotation in vortex model | 829, 830 |
+
+### maxwell.calibration — Calibration
+
+| Module | Public API | Articles |
+|---|---|---|
+| `absolute_resistance` | `AbsoluteResistance`, `StandardResistanceCoil` — absolute resistance calibration | 758-767 |
+
+### maxwell.experiments — Experimental Verification
+
+| Module | Public API | Articles |
+|---|---|---|
+| `ratio_v.theory` | `UnitRatioExperiment` — v/c ratio experiments | 768-770, 780 |
+| `ratio_v.combined` | Combined ratio experiments | 773, 775-779 |
+| `ratio_v.condensers` | `CondenserMeasurement` — condenser-based ratio | 771, 772, 774 |
+
+### maxwell.io — I/O Utilities
+
+| Module | Public API |
+|---|---|
+| `json_loader` | `load_article_json`, `load_chapter_json`, `list_available_articles`, `batch_load_articles` |
+| `article_parser` | `extract_article_number`, `extract_all_articles_from_chapter`, `extract_equations`, `extract_cross_references` |
+
+### maxwell.meta — Citation System
+
+| Module | Public API | Articles |
+|---|---|---|
+| `citation` | `MaxwellCitation`, `get_citation(article)`, `get_all_citations()`, `@maxwell_cite` decorator | 241 |
+
+### maxwell.solvers — Problem Solvers
+
+| Module | Public API | Articles |
+|---|---|---|
+| `induction_solvers` | `InductionProblem`, `InductionSolution` | 427-429 |
+| `shape_solvers` | `CylindricalMagnet`, `RectangularMagnet` | 439, 440 |
+
+### maxwell.physics — Legacy Physics
+
+| Module | Public API | Articles |
+|---|---|---|
+| `coulomb` | `ElectrostaticForce` — Coulomb's law | 30, 38-40, 43, 44, 66-68, 84 |
+| `gauss` | `SurfaceIntegral` — Gauss's law | 75, 76, 82 |
+| `ohm` | Ohm's law implementations | 241, 277, 279 |
+| `conduction` | `ConductivityTensor` | 230, 241, 274-279 |
+| `current` | `ElectricCurrent` | 64, 150, 152, 177 |
+| `potentials` | `MagneticPotential` | 385, 386 |
+| `coupling` | `DipoleInteraction` | 387, 388 |
+| `molecular_theory` | `MagneticMolecule`, `MolecularEnsemble` | 430 |
+| `magnetostriction` | `MagnetostrictionTensor`, `MagnetostrictiveMaterial` | 447, 448 |
+
+### maxwell.verification — Verification Framework
+
+| Module | Public API |
+|---|---|
+| `verifier` | `VerificationResult`, `EquationVerifier` |
+| `equation_registry` | `VerificationEntry`, `EquationRegistry` |
+| `equation_extractor` | `ExtractedEquation`, `EquationExtractor` |
+
+### maxwell.theories — Historical Theory Analysis
+
+| Module | Public API | Articles |
+|---|---|---|
+| `failure_modes` | `TheoryResult` — theory failure mode analysis | 857-859 |
+
+### maxwell.philosophy — Philosophical Checks
+
+| Module | Public API | Articles |
+|---|---|---|
+| `medium_check` | `MediumProperties`, `WaveProperties` — medium property verification | 865, 866 |
 
 ---
 
 ## Citation System
 
-All modules use the `@maxwell_cite` decorator to link implementations to Maxwell's original articles:
+Every function and class is annotated with `@maxwell_cite(article_number, part=..., chapter=...)` linking the implementation to Maxwell's original articles:
 
 ```python
-from maxwell.meta.citation import maxwell_cite
+from maxwell.meta.citation import get_citation
 
-@maxwell_cite(528, 529, 530)
-def faraday_induction(circuit, magnetic_flux):
-    """Calculate induced EMF from changing magnetic flux.
-    
-    Implements Maxwell's formulation of Faraday's law.
-    """
-    ...
+# Get citation for a specific article
+info = get_citation(598)
+print(info)  # Part IV, Art. 598: Faraday's Law of Induction
+
+# List all citations
+all_citations = get_all_citations()
 ```
 
-See [COVERAGE_SUMMARY.md](./COVERAGE_SUMMARY.md) for detailed coverage analysis.
+## Unit System
 
----
+All computations use **CGS (Gaussian) units** as Maxwell's original Treatise:
 
-*Generated by SCRIBA - Documentation & Technical Writing Agent*
+| Quantity | CGS Unit | SI Equivalent |
+|---|---|---|
+| Electric field E | statvolt/cm | 3e4 V/m |
+| Magnetic field B | gauss | 1e-4 tesla |
+| Charge | statcoulomb (ESU) / abcoulomb (EMU) | 3.336e-10 C / 10 C |
+| Current | statampere (ESU) / abampere (EMU) | 3.336e-10 A / 10 A |
+| Potential | statvolt | 300 V |
+| Force | dyne | 1e-5 N |
+| Energy | erg | 1e-7 J |
+
+Conversion utilities available via `CGSUnitConverter` and `maxwell.core.units.dimensions`.

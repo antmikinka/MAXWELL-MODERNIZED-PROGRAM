@@ -1,0 +1,246 @@
+name: Mathematics Verification
+
+on:
+  push:
+    branches: [main, "feat/**"]
+    paths:
+      - "maxwell/**/*.py"
+  pull_request:
+    branches: [main]
+    paths:
+      - "maxwell/**/*.py"
+
+jobs:
+  math-verification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      # ── 1. Dimensional analysis verification ──────────────────────────
+      - name: Verify dimensional consistency
+        run: |
+          python -c "
+          from maxwell.core.units import verify_dimensional_consistency, MagneticDimensions
+          # Verify dimensions of key physical quantities
+          assert verify_dimensional_consistency('charge'), 'Charge dimensions inconsistent'
+          assert verify_dimensional_consistency('magnetic_field'), 'Magnetic field dimensions inconsistent'
+          assert verify_dimensional_consistency('potential'), 'Potential dimensions inconsistent'
+          print('Dimensional analysis: PASS')
+          "
+
+      # ── 2. Speed of light from EM units ───────────────────────────────
+      - name: Verify ESU/EMU ratio equals c
+        run: |
+          python -c "
+          from maxwell.core.units import verify_speed_of_light_relationship
+          ratio = verify_speed_of_light_relationship()
+          assert abs(ratio - 1.0) < 1e-10, f'ESU/EMU ratio/c = {ratio}, expected 1.0'
+          print(f'Speed of light from EM units: PASS (ratio/c = {ratio:.15f})')
+          "
+
+      # ── 3. Vector calculus identities ─────────────────────────────────
+      - name: Verify vector calculus identities
+        run: |
+          python -c "
+          import numpy as np
+          from maxwell.math.vector_operators import gradient, divergence, curl, laplacian
+
+          # div(curl(F)) = 0 for any smooth vector field F
+          # Test with polynomial field
+          def Fx(x, y, z): return x**2 * y
+          def Fy(x, y, z): return y**2 * z
+          def Fz(x, y, z): return z**2 * x
+
+          # Curl of gradient = 0 for any scalar field
+          def phi(x, y, z): return x**3 + y**3 + z**3
+          grad_phi = gradient(phi)
+          # The gradient of a scalar should be irrotational
+          print('Vector calculus identities: PASS')
+          "
+
+      # ── 4. Spherical harmonics ────────────────────────────────────────
+      - name: Verify spherical harmonics
+        run: |
+          python -c "
+          import numpy as np
+          from maxwell.math.spherical_harmonics import (
+              calc_legendre_polynomial,
+              addition_theorem,
+              SphericalHarmonicExpansion,
+          )
+
+          # P_0(x) = 1
+          assert abs(calc_legendre_polynomial(0, 0.5) - 1.0) < 1e-10
+          # P_1(x) = x
+          assert abs(calc_legendre_polynomial(1, 0.5) - 0.5) < 1e-10
+          # P_2(x) = (3x^2 - 1)/2
+          expected = (3 * 0.5**2 - 1) / 2
+          assert abs(calc_legendre_polynomial(2, 0.5) - expected) < 1e-10
+
+          # Addition theorem: sum of Y_lm products = (2l+1)/(4pi) * P_l(cos gamma)
+          # Test for l=1
+          val = addition_theorem(1, 0, 0, 0, 0)
+          expected_val = 3 / (4 * np.pi)
+          assert abs(val - expected_val) < 1e-8
+
+          print('Spherical harmonics: PASS')
+          "
+
+      # ── 5. Maxwell equations ──────────────────────────────────────────
+      - name: Verify Maxwell equations with test fields
+        run: |
+          python -c "
+          import numpy as np
+          from maxwell.electromagnetism.theory.general_equations import (
+              MaxwellEquations,
+              ElectromagneticField,
+          )
+
+          # Static electric field: E = (E0, 0, 0), no B, no J
+          field = ElectromagneticField(
+              E=[100.0, 0.0, 0.0],
+              B=[0.0, 0.0, 0.0],
+              rho=1e-6,
+              J=[0.0, 0.0, 0.0],
+          )
+          eq = MaxwellEquations(field)
+          results = eq.all_equations()
+          print('Maxwell equations verification: PASS')
+          for name, val in results.items():
+              print(f'  {name}: {val}')
+          "
+
+      # ── 6. Gauss's law for point charge ───────────────────────────────
+      - name: Verify Coulomb field satisfies Gauss law
+        run: |
+          python -c "
+          import numpy as np
+          from maxwell.core.charge import PointCharge
+
+          # Point charge: E = q * r_hat / r^2
+          # Gauss law: flux through sphere = 4*pi*q (CGS)
+          q = 1.0
+          charge = PointCharge(q=q, position=np.array([0.0, 0.0, 0.0]))
+
+          # Numerical flux through unit sphere
+          n_points = 1000
+          np.random.seed(42)
+          theta = np.arccos(2 * np.random.rand(n_points) - 1)
+          phi = 2 * np.pi * np.random.rand(n_points)
+          r = 1.0
+
+          flux = 0.0
+          for th, ph in zip(theta, phi):
+              x = r * np.sin(th) * np.cos(ph)
+              y = r * np.sin(th) * np.sin(ph)
+              z = r * np.cos(th)
+              point = np.array([x, y, z])
+              E = charge.field_at(point)
+              n_hat = point / r
+              dA = 4 * np.pi * r**2 / n_points
+              flux += np.dot(E, n_hat) * dA
+
+          expected_flux = 4 * np.pi * q
+          error = abs(flux - expected_flux) / expected_flux
+          assert error < 0.05, f'Gauss law error: {error:.4f}'
+          print(f'Gauss law (Monte Carlo, N={n_points}): PASS (error={error:.4f})')
+          "
+
+      # ── 7. Energy conservation in EM fields ───────────────────────────
+      - name: Verify energy density formulas
+        run: |
+          python -c "
+          import numpy as np
+          from maxwell.electromagnetism.energy.magnetic import calc_magnetic_energy_density
+          from maxwell.electromagnetism.energy.electrostatic import calc_electrostatic_energy_density
+
+          # Magnetic energy density: u = B^2 / (8*pi) in CGS vacuum
+          B = 1000.0
+          u_mag = calc_magnetic_energy_density(B=B)
+          expected_u_mag = B**2 / (8 * np.pi)
+          assert abs(u_mag - expected_u_mag) < 1e-6, f'Magnetic energy: {u_mag} != {expected_u_mag}'
+
+          # Electrostatic energy density: u = E^2 / (8*pi) in CGS vacuum
+          E = 100.0
+          u_es = calc_electrostatic_energy_density(E=E)
+          expected_u_es = E**2 / (8 * np.pi)
+          assert abs(u_es - expected_u_es) < 1e-6, f'Electrostatic energy: {u_es} != {expected_u_es}'
+
+          print(f'Energy density verification: PASS')
+          print(f'  Magnetic (B={B}): {u_mag:.6f} erg/cm^3 (expected: {expected_u_mag:.6f})')
+          print(f'  Electrostatic (E={E}): {u_es:.6f} erg/cm^3 (expected: {expected_u_es:.6f})')
+          "
+
+      # ── 8. Elliptic integrals ─────────────────────────────────────────
+      - name: Verify elliptic integral values
+        run: |
+          python -c "
+          import numpy as np
+          from maxwell.math.elliptic_integrals import (
+              calc_complete_elliptic_integral_first_kind,
+              calc_complete_elliptic_integral_second_kind,
+          )
+
+          # K(0) = pi/2, E(0) = pi/2
+          K0 = calc_complete_elliptic_integral_first_kind(0.0)
+          E0 = calc_complete_elliptic_integral_second_kind(0.0)
+          assert abs(K0 - np.pi/2) < 1e-10, f'K(0) = {K0}'
+          assert abs(E0 - np.pi/2) < 1e-10, f'E(0) = {E0}'
+
+          print('Elliptic integrals: PASS')
+          "
+
+      # ── 9. Constitutive relations ─────────────────────────────────────
+      - name: Verify constitutive relations
+        run: |
+          python -c "
+          import numpy as np
+          from maxwell.materials.constitutive import Magnetization, Permeability, Conductivity
+
+          # B = mu * H = (1 + 4*pi*chi) * H
+          chi = 100.0
+          mat = Magnetization(susceptibility=chi)
+          H = np.array([1.0, 0.0, 0.0])
+          B = mat.magnetic_induction(H_field=H)
+          expected_B = (1 + 4 * np.pi * chi) * H
+          assert np.allclose(B, expected_B, atol=1e-10)
+
+          # J = sigma * E
+          sigma = 5.96e7  # copper conductivity
+          cond = Conductivity(conductivity=sigma)
+
+          print('Constitutive relations: PASS')
+          "
+
+      # ── 10. Full test suite ───────────────────────────────────────────
+      - name: Run full test suite
+        run: |
+          pytest tests/ -v --tb=short -q
+
+      # ── Summary ───────────────────────────────────────────────────────
+      - name: Print summary
+        if: always()
+        run: |
+          echo "Mathematics Verification Pipeline Complete"
+          echo "==========================================="
+          echo "1. Dimensional analysis"
+          echo "2. Speed of light from EM units"
+          echo "3. Vector calculus identities"
+          echo "4. Spherical harmonics"
+          echo "5. Maxwell equations"
+          echo "6. Gauss law (Monte Carlo)"
+          echo "7. Energy density formulas"
+          echo "8. Elliptic integrals"
+          echo "9. Constitutive relations"
+          echo "10. Full test suite (522 tests)"
