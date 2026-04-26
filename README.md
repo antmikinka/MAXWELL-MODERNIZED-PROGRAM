@@ -29,7 +29,7 @@ pip install -e ".[dev]"
 from maxwell.config.constants import C, CONST
 from maxwell.core.units import MagneticDimensions, verify_speed_of_light_relationship
 from maxwell.math.vector_operators import gradient, divergence, curl
-from maxwell.electrostatics.general_theorems import gauss_law
+from maxwell.core.field import gauss_law_closed_surface
 
 # The speed of light emerges from Maxwell's electromagnetic theory (Art. 782)
 print(f"c = {C:.4e} cm/s")  # 2.9979e+10
@@ -49,6 +49,18 @@ E_field = gradient(potential_field)
 pytest tests/ -v
 # 522 passed in X.XXs
 ```
+
+## What Can I Use This For?
+
+A detailed practical guide is available at **[docs/USE_CASES.md](docs/USE_CASES.md)**. Briefly, this library supports:
+
+- **Electromagnetic calculations** -- Coulomb fields, Lorentz forces, Faraday induction, Oersted fields, Maxwell stress tensors
+- **Education** -- executable examples tied to primary-source articles for teaching classical EM theory
+- **Scientific research** -- computational exploration of 19th-century electromagnetic theory and competing formulations (Maxwell, Weber, Neumann, Ampere)
+- **Engineering reference** -- back-of-envelope calculations for magnetic fields, forces, inductance, hysteresis, and compass deviation
+- **Unit system verification** -- dimensional analysis, ESU/EMU/CGS/SI conversions, speed-of-light relationship checks
+
+See [USE_CASES.md](docs/USE_CASES.md) for 20+ concrete code examples, limitations, target audiences, and a quick-reference table mapping common problems to modules.
 
 ## Project Structure
 
@@ -113,6 +125,7 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 
 | Document | Contents |
 |----------|----------|
+| [docs/USE_CASES.md](docs/USE_CASES.md) | Practical guide: what you can do with this library, code examples, and quick reference |
 | [docs/API_REFERENCE.md](docs/API_REFERENCE.md) | Module-by-module API index with function counts and article mappings |
 | [docs/COVERAGE_SUMMARY.md](docs/COVERAGE_SUMMARY.md) | Article coverage by Part, chapter, and module |
 | [docs/validation_report.md](docs/validation_report.md) | Test results, math validation, import verification |
