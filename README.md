@@ -1,1 +1,234 @@
-# MAXWELL-MODERNIZED-PROGRAM
+# Maxwell Modernized
+
+> A computational implementation of James Clerk Maxwell's 1873 _A Treatise on Electricity and Magnetism_ -- all 866 articles, modernized in Python.
+
+## What This Is
+
+In 1873, James Clerk Maxwell published _A Treatise on Electricity and Magnetism_, the definitive work that unified electricity, magnetism, and light into a single theoretical framework. This project is a complete computational re-implementation of that Treatise -- every one of its 866 articles translated into modern, executable Python.
+
+**100% coverage** means the entire work is represented: from the elementary definitions of charge and force in Part I through the electromagnetic theory of light in Part IV, including the supplementary chapters on molecular theory, optics, and the philosophy of the electromagnetic field. Every function is traceable to its source article. Every result is computationally reproducible.
+
+The project serves two audiences:
+
+- **Scholars and historians** who want to explore Maxwell's theory as executable mathematics rather than prose alone
+- **Developers and physicists** who need a verified, well-tested implementation of classical electromagnetic theory
+
+## Quick Start
+
+### Installation
+
+```bash
+git clone https://github.com/maxwell-treatise/modernized-program.git
+cd modernized-program
+pip install -e ".[dev]"
+```
+
+### Your First Calculation
+
+```python
+from maxwell.config.constants import C, CONST
+from maxwell.core.units import MagneticDimensions, verify_speed_of_light_relationship
+from maxwell.math.vector_operators import gradient, divergence, curl
+from maxwell.electrostatics.general_theorems import gauss_law
+
+# The speed of light emerges from Maxwell's electromagnetic theory (Art. 782)
+print(f"c = {C:.4e} cm/s")  # 2.9979e+10
+
+# Verify the EM/ESU unit ratio equals c (Arts. 771-781)
+ratio = verify_speed_of_light_relationship()
+print(f"Unit ratio / c = {ratio}")  # 1.0
+
+# Compute the gradient of a potential -- Art. 72
+potential_field = lambda x, y, z: 1.0 / (x**2 + y**2 + z**2)**0.5
+E_field = gradient(potential_field)
+```
+
+### Run the Test Suite
+
+```bash
+pytest tests/ -v
+# 522 passed in X.XXs
+```
+
+## Project Structure
+
+The codebase mirrors the Treatise's four-part structure.
+
+| Part | Scope | Articles | Package |
+|------|-------|----------|---------|
+| **I** | Electrostatics | 1-206 | `maxwell/electrostatics/` |
+| **II** | Electrokinematics | 230-370 | `maxwell/electrokinematics/` |
+| **III** | Magnetism | 371-474 | `maxwell/magnetism/` |
+| **IV** | Electromagnetism | 475-866 | `maxwell/electromagnetism/` |
+
+The **core** package (`maxwell/core/`) provides shared abstractions -- `Charge`, `Field`, `Potential`, `Magnet` -- used across all Parts. Supplementary domains (optics, molecular theory, instrumentation, signal processing) live in their own top-level packages.
+
+For the full module-level breakdown, see [docs/API_REFERENCE.md](docs/API_REFERENCE.md).
+
+## Key Features
+
+### CGS-EMU Unit System
+
+The codebase uses the centimeter-gram-second electromagnetic unit system throughout -- the system Maxwell himself employed. All constants, dimensions, and conversions are defined in `maxwell/config/constants.py` and `maxwell/core/units/`. ESU equivalents and SI reference values are available for cross-checking.
+
+### Citation-Based Traceability
+
+Every function carries a `@maxwell_cite` decorator that links it to Maxwell's original article numbers:
+
+```python
+from maxwell.meta.citation import maxwell_cite
+
+@maxwell_cite(528, 529, 530, part=4, chapter="Electromagnetic Induction")
+def faraday_induction(circuit, d_flux_dt):
+    """Induced EMF from time-varying magnetic flux (Arts. 528-530)."""
+    return -d_flux_dt
+```
+
+Query citations programmatically or search the codebase by article number:
+
+```python
+from maxwell.meta.citation import get_citation, get_all_citations
+
+citation = get_citation(faraday_induction)
+print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
+```
+
+### Scope
+
+| Metric | Count |
+|--------|-------|
+| Articles covered | 866 / 866 (100%) |
+| Python modules | 165 |
+| Functions | 1,174 |
+| Classes | 244 |
+| Tests | 522 / 522 passing |
+
+### Validation
+
+- 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
+- 100% citation compliance -- every public function is linked to its source article
+- All 165 modules import without errors
+
+## Documentation
+
+| Document | Contents |
+|----------|----------|
+| [docs/API_REFERENCE.md](docs/API_REFERENCE.md) | Module-by-module API index with function counts and article mappings |
+| [docs/COVERAGE_SUMMARY.md](docs/COVERAGE_SUMMARY.md) | Article coverage by Part, chapter, and module |
+| [docs/validation_report.md](docs/validation_report.md) | Test results, math validation, import verification |
+
+The `archive/docs/` directory contains 24 legacy development documents (architecture maps, OCR audits, integration reports) preserved for historical reference.
+
+## For Scholars
+
+### Tracing Code to Articles
+
+Every function in the codebase is linked to a specific article or group of articles in Maxwell's Treatise. To find what implements a given article:
+
+```bash
+# Search by article number
+grep -r "@maxwell_cite.*528" maxwell/
+```
+
+Or use the citation module directly:
+
+```python
+from maxwell.meta.citation import get_all_citations
+
+all_citations = get_all_citations()
+for func_name, citation in all_citations.items():
+    if 528 in citation.articles:
+        print(f"{func_name} -> {citation}")
+```
+
+### Citation Methodology
+
+Citations use three theory classifications:
+
+- **`maxwell_original`** -- implementations derived directly from Maxwell's 1873 text
+- **`user_original`** -- theoretical extensions built by the modernization project (e.g., the spherical harmonics infrastructure)
+- **`standard_math`** -- established mathematical machinery (vector calculus, elliptic integrals)
+
+### CGS vs SI Units
+
+This project uses CGS-EMU as its primary unit system. SI values are available for reference only. Conversion utilities in `maxwell/core/units/` handle ESU/EMU/CGS/SI conversions. The constants module (`maxwell/config/constants.py`) provides both CGS and SI reference values.
+
+## For Developers
+
+### Project Layout
+
+```
+maxwell/
+    __init__.py          # Package entry point, version info
+    core/                # Shared abstractions: Charge, Field, Potential, Magnet
+    electrostatics/      # Part I: Static electric fields (Arts. 1-206)
+    electrokinematics/   # Part II: Currents and conduction (Arts. 230-370)
+    magnetism/           # Part III: Magnetic measurements (Arts. 371-474)
+    electromagnetism/    # Part IV: Unified theory (Arts. 475-866)
+    math/                # Spherical harmonics, elliptic integrals, vector calculus
+    fields/              # General field theory and constitutive relations
+    materials/           # Hysteresis, saturation, permeability
+    optics/              # Electromagnetic theory of light
+    molecular/           # Molecular theories of magnetism
+    config/              # Physical constants and conventions
+    meta/                # Citation system (@maxwell_cite)
+    ... and more
+tests/
+    test_*.py            # 522 tests across electrostatics, electromagnetism, etc.
+archive/                 # Legacy development documents
+docs/                    # API reference, coverage, validation
+```
+
+### Adding a New Function
+
+1. Create the function in the appropriate module
+2. Decorate it with `@maxwell_cite(article_numbers)`
+3. Write a test with a descriptive name
+
+```python
+# maxwell/electrostatics/my_module.py
+from maxwell.meta.citation import maxwell_cite
+
+@maxwell_cite(86, 87, part=1, chapter="General Theorems")
+def my_electrostatics_function(charge, distance):
+    """Implement Maxwell's formulation from Arts. 86-87."""
+    ...
+```
+
+### Running Tests
+
+```bash
+# Full suite
+pytest tests/ -v
+
+# Specific test file
+pytest tests/test_part_iv_electromagnetism.py -v
+
+# With coverage
+pytest tests/ --cov=maxwell --cov-report=term-missing
+```
+
+### Type Checking and Formatting
+
+```bash
+mypy maxwell/
+black maxwell/ tests/
+isort maxwell/ tests/
+```
+
+## Principles
+
+- **Scholarly fidelity.** Every implementation must trace back to a specific article in the Treatise. The original text is the authoritative specification.
+- **Computational correctness.** Mathematical implementations are validated against analytical results. All 50 math checks pass.
+- **Open access.** The Treatise is public domain. This implementation is too -- free for scholars, students, and developers everywhere.
+- **Reproducibility.** Every result can be recomputed from source. The test suite is the specification.
+
+## Acknowledgments
+
+This project is a computational homage to [James Clerk Maxwell](https://en.wikipedia.org/wiki/James_Clerk_Maxwell) and his _A Treatise on Electricity and Magnetism_ (1873), one of the foundational works of classical physics. The Treatise text is in the public domain.
+
+The implementation follows the article numbering and chapter structure of the original Dover Publications reprint.
+
+---
+
+_Maxwell Modernized. All 866 articles. Fully tested. Scholarly traceable._

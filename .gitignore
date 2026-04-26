@@ -28,4 +28,10 @@ Thumbs.db
 
 # Verification artifacts
 verification_report.md
+verification_report.json
 equation_registry.json
+test_results.json
+coverage_baseline.json
+
+# Runtime data
+chroma_data/
