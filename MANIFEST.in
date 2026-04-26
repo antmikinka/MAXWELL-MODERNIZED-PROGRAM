@@ -1,0 +1,20 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+include requirements.txt
+
+recursive-include maxwell *.py *.json *.md
+recursive-include tests *.py
+
+# Exclude non-source directories from sdist
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.egg-info
+global-exclude .pytest_cache
+global-exclude .benchmarks
+global-exclude chroma_data
+global-exclude agents
+global-exclude archive
+global-exclude .claude
+global-exclude *.egg

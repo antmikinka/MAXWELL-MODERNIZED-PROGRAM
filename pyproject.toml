@@ -7,16 +7,30 @@ name = "maxwell"
 version = "0.1.0"
 description = "A Modern Computational Implementation of Maxwell's Treatise on Electricity and Magnetism"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
-license = {text = "MIT"}
 authors = [
     {name = "Maxwell Modernization Project"}
+]
+keywords = [
+    "maxwell",
+    "electromagnetism",
+    "physics",
+    "electromagnetic",
+    "maxwell-equations",
+    "classical-physics",
+    "electrostatics",
+    "magnetism",
+    "electrodynamics",
+    "computational-physics",
+    "cgs-units",
+    "spherical-harmonics",
+    "maxwell-treatise",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Education",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -24,15 +38,17 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Mathematics",
 ]
 dependencies = [
     "numpy>=1.24.0",
+    "scipy>=1.10.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",
-    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
     "mypy>=1.0.0",
     "black>=23.0.0",
     "isort>=5.12.0",
@@ -48,10 +64,16 @@ enhanced = [
 Homepage = "https://github.com/maxwell-treatise/modernized-program"
 Documentation = "https://github.com/maxwell-treatise/modernized-program#readme"
 Repository = "https://github.com/maxwell-treatise/modernized-program.git"
+"Bug Tracker" = "https://github.com/maxwell-treatise/modernized-program/issues"
+Changelog = "https://github.com/maxwell-treatise/modernized-program/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["maxwell*"]
+exclude = ["tests*", "agents*", "archive*", ".claude*", ".pytest_cache*", ".benchmarks*", "maxwell.egg-info*"]
+
+[tool.setuptools.package-data]
+maxwell = ["*.json", "*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
