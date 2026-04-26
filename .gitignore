@@ -35,3 +35,7 @@ coverage_baseline.json
 
 # Runtime data
 chroma_data/
+
+# PyPI build artifacts
+*.whl
+*.tar.gz
