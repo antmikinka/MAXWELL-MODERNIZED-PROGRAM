@@ -413,7 +413,7 @@ class TestCompetingTheories:
 
     def test_competing_theory_class(self) -> None:
         """Verify CompetingTheory class."""
-        from maxbell.molecular.competing_theories import CompetingTheory
+        from maxwell.molecular.competing_theories import CompetingTheory
 
         ct = CompetingTheory()
 
