@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "mcp__clear-thought-server__sequentialthinking",
-      "mcp__sequential-thinking__sequentialthinking"
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs"
     ]
   }
 }

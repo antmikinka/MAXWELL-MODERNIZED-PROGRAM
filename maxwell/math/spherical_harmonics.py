@@ -40,7 +40,30 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Tuple
 import numpy as np
-from scipy.special import lpmv, sph_harm, legendre
+from scipy.special import sph_harm_y, lpmv, legendre
+
+
+def _sph_harm(m: int, n: int, phi, theta) -> complex:
+    """Wrapper around scipy's sph_harm_y (replaces deprecated sph_harm).
+
+    scipy.special.sph_harm was deprecated in 1.15.0. The replacement
+    sph_harm_y has a different signature: sph_harm_y(n, m, theta, phi)
+    and returns a complex numpy ndarray instead of a complex scalar.
+
+    Args:
+        m: Order.
+        n: Degree.
+        phi: Azimuthal angle(s).
+        theta: Polar angle(s).
+
+    Returns:
+        Complex value (scalar if inputs are scalar, array if inputs are arrays).
+    """
+    result = sph_harm_y(n, m, theta, phi)
+    if isinstance(result, np.ndarray) and result.size == 1:
+        return complex(result.item())
+    return result
+
 
 from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
@@ -292,7 +315,7 @@ class SurfaceHarmonic:
             Part I, Art. 131: Surface harmonic definition.
         """
         # Use scipy's sph_harm (Condon-Shortley phase convention)
-        result = sph_harm(self.m, self.l, phi, theta)
+        result = _sph_harm(self.m, self.l, phi, theta)
         return complex(result)
 
     @maxwell_cite(
@@ -502,7 +525,7 @@ class SolidHarmonic:
         Reference:
             Part I, Art. 136: Solid harmonic definition.
         """
-        Y_lm = sph_harm(self.m, self.l, phi, theta)
+        Y_lm = _sph_harm(self.m, self.l, phi, theta)
 
         if self.harmonic_type == "internal":
             radial_factor = r ** self.l
@@ -669,7 +692,7 @@ class SphericalHarmonicExpansion:
                 for theta in theta_vals:
                     sin_theta = np.sin(theta)
                     for phi in phi_vals:
-                        Y_lm = sph_harm(m, l, phi, theta)
+                        Y_lm = _sph_harm(m, l, phi, theta)
                         weight = sin_theta  # dΩ = sin θ dθ dφ
                         integral += f(theta, phi) * np.conj(Y_lm) * weight
 
@@ -714,7 +737,7 @@ class SphericalHarmonicExpansion:
         for l in range(n_terms + 1):
             for m in range(-l, l + 1):
                 if (l, m) in self.coefficients:
-                    Y_lm = sph_harm(m, l, phi, theta)
+                    Y_lm = _sph_harm(m, l, phi, theta)
                     result += self.coefficients[(l, m)] * Y_lm
 
         return result
@@ -757,7 +780,7 @@ class SphericalHarmonicExpansion:
 
         for l in range(self.max_l + 1):
             # Only m=0 for axisymmetric case
-            Y_l0 = sph_harm(0, l, 0, theta_vals)  # phi=0, arbitrary
+            Y_l0 = _sph_harm(0, l, 0, theta_vals)  # phi=0, arbitrary
             f_vals = np.array([f(theta) for theta in theta_vals])
             weight = np.sin(theta_vals)  # dΩ = sin θ dθ dφ, integrated over φ gives 2π
 
@@ -876,8 +899,8 @@ def addition_theorem(
     # Sum over m using spherical harmonics
     sum_over_m = 0.0j
     for m in range(-l, l + 1):
-        Y1 = sph_harm(m, l, phi1, theta1)
-        Y2 = sph_harm(m, l, phi2, theta2)
+        Y1 = _sph_harm(m, l, phi1, theta1)
+        Y2 = _sph_harm(m, l, phi2, theta2)
         sum_over_m += Y1 * np.conj(Y2)
 
     # Addition theorem result
@@ -972,8 +995,8 @@ def verify_addition_theorem(
     # Addition theorem sum
     sum_over_m = 0.0j
     for m in range(-l, l + 1):
-        Y1 = sph_harm(m, l, phi1, theta1)
-        Y2 = sph_harm(m, l, phi2, theta2)
+        Y1 = _sph_harm(m, l, phi1, theta1)
+        Y2 = _sph_harm(m, l, phi2, theta2)
         sum_over_m += Y1 * np.conj(Y2)
 
     P_l_addition = (4 * np.pi / (2 * l + 1)) * sum_over_m
@@ -1056,8 +1079,8 @@ def potential_expansion_addition_theorem(
         # Sum over m using addition theorem
         sum_over_m = 0.0j
         for m in range(-l, l + 1):
-            Y1 = sph_harm(m, l, phi1, theta1)
-            Y2 = sph_harm(m, l, phi2, theta2)
+            Y1 = _sph_harm(m, l, phi1, theta1)
+            Y2 = _sph_harm(m, l, phi2, theta2)
             sum_over_m += Y1 * np.conj(Y2)
 
         result += (4 * np.pi / (2 * l + 1)) * radial_factor * sum_over_m
@@ -1157,7 +1180,7 @@ def verify_chapter_ix(
     # Use a known harmonic: V = r^l Y_lm (solid harmonic)
     def test_potential(r, theta, phi):
         """Internal solid harmonic with l=1, m=0."""
-        Y_10 = sph_harm(0, 1, phi, theta)
+        Y_10 = _sph_harm(0, 1, phi, theta)
         return (r ** 1 * Y_10).real
 
     laplace_test = LaplaceSpherical.verify_harmonic(
@@ -1559,7 +1582,7 @@ class SphericalHarmonic:
         """
         # Use scipy's sph_harm which uses the standard Condon-Shortley phase
         # Note: scipy uses (phi, theta) order
-        result = sph_harm(self.m, self.l, phi, theta)
+        result = _sph_harm(self.m, self.l, phi, theta)
         return complex(result)
 
     @maxwell_cite(

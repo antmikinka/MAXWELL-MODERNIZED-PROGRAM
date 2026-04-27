@@ -8,7 +8,7 @@ A computational reference library containing every formula from James Clerk Maxw
 
 The library uses CGS-EMU (centimeter-gram-second electromagnetic units) throughout, the system Maxwell himself employed. SI equivalents are available for reference and cross-checking.
 
-**165 modules. 1,174 functions. 244 classes. 522 tests. All passing.**
+**241 modules. 1,174 functions. 244 classes. 548 tests. All passing.**
 
 ---
 

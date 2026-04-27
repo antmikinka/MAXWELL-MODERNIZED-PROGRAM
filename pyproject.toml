@@ -5,12 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "maxwell"
 version = "0.1.0"
-description = "A Modern Computational Implementation of Maxwell's Treatise on Electricity and Magnetism"
+description = "A computational implementation of Maxwell's 1873 Treatise on Electricity and Magnetism — all 866 articles, CGS-EMU units, citation-traceable."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    {name = "Maxwell Modernization Project"}
+    {name = "Anthony Mikinka", email = "anthony.mikinka@gmail.com"},
+    {name = "Maxwell Modernization Project"},
 ]
 keywords = [
     "maxwell",
@@ -39,6 +40,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Education",
     "Topic :: Scientific/Engineering :: Mathematics",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
 ]
 dependencies = [
     "numpy>=1.24.0",
@@ -58,6 +61,9 @@ enhanced = [
     "orjson>=3.9.0",
     "rich>=13.0.0",
     "tqdm>=4.65.0",
+]
+viz = [
+    "matplotlib>=3.5.0",
 ]
 
 [project.urls]

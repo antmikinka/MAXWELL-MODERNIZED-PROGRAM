@@ -1,12 +1,98 @@
-"""maxwell.verification — Equation extraction and verification against JSON sources."""
+"""maxwell.verification -- Equation extraction and numerical verification.
+
+Provides systematic verification of all maxwell modules against known
+analytical solutions, cross-module consistency checks, and convergence
+testing.
+
+Framework:
+    VerificationResult: Immutable container for a single verification test.
+    VerificationSuite: Orchestrates running all registered verification tests.
+    VerificationReport: Aggregated results with HTML report generation.
+
+Module checks:
+    verify_spherical_harmonics: Spherical harmonic computation checks.
+    verify_electrostatics: Electrostatic module checks.
+    verify_magnetism: Magnetic module checks.
+    verify_electromagnetism: Electromagnetic module checks.
+    verify_vector_calculus: Vector calculus operator checks.
+    verify_elliptic_integrals: Elliptic integral computation checks.
+    verify_units_and_dimensions: Unit system consistency checks.
+    verify_optics_and_waves: Optics and wave propagation checks.
+
+Cross-validation:
+    validate_stress_energy_consistency: Stress tensor vs energy density.
+    validate_faraday_self_consistency: Faraday's law sign convention.
+    validate_maxwell_equations_consistency: Maxwell equation consistency.
+    validate_cgs_si_roundtrip: CGS <-> SI conversion invertibility.
+
+Convergence:
+    measure_spherical_harmonic_convergence: SH expansion convergence rate.
+    measure_grid_convergence: Grid resolution convergence rate.
+"""
 
 from __future__ import annotations
 
+# Framework
+from maxwell.verification.framework import (
+    VerificationResult,
+    VerificationSuite,
+    VerificationReport,
+)
+
+# Module checks
+from maxwell.verification.module_checks import (
+    verify_spherical_harmonics,
+    verify_electrostatics,
+    verify_magnetism,
+    verify_electromagnetism,
+    verify_vector_calculus,
+    verify_elliptic_integrals,
+    verify_units_and_dimensions,
+    verify_optics_and_waves,
+)
+
+# Cross-validation
+from maxwell.verification.cross_validation import (
+    validate_stress_energy_consistency,
+    validate_faraday_self_consistency,
+    validate_maxwell_equations_consistency,
+    validate_cgs_si_roundtrip,
+)
+
+# Convergence
+from maxwell.verification.convergence import (
+    measure_spherical_harmonic_convergence,
+    measure_grid_convergence,
+)
+
+# Legacy exports (kept for backward compatibility)
 from maxwell.verification.equation_extractor import EquationExtractor
 from maxwell.verification.equation_registry import EquationRegistry
 from maxwell.verification.verifier import EquationVerifier
 
 __all__ = [
+    # Framework
+    "VerificationResult",
+    "VerificationSuite",
+    "VerificationReport",
+    # Module checks
+    "verify_spherical_harmonics",
+    "verify_electrostatics",
+    "verify_magnetism",
+    "verify_electromagnetism",
+    "verify_vector_calculus",
+    "verify_elliptic_integrals",
+    "verify_units_and_dimensions",
+    "verify_optics_and_waves",
+    # Cross-validation
+    "validate_stress_energy_consistency",
+    "validate_faraday_self_consistency",
+    "validate_maxwell_equations_consistency",
+    "validate_cgs_si_roundtrip",
+    # Convergence
+    "measure_spherical_harmonic_convergence",
+    "measure_grid_convergence",
+    # Legacy
     "EquationExtractor",
     "EquationRegistry",
     "EquationVerifier",
