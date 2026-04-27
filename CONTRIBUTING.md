@@ -140,7 +140,7 @@ The `maxwell.jax` package provides GPU/TPU-accelerated, auto-differentiable vers
 
 ```bash
 # Install JAX
-pip install jax
+pip install -e ".[accel]"
 
 # Run JAX adapter tests
 pytest tests/test_jax_adapter.py -v

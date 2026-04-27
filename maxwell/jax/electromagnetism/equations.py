@@ -32,6 +32,7 @@ import jax.numpy as jnp
 from jax import jit
 
 from maxwell.jax._compat import jax_tree
+from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import C
 
 __all__ = [
@@ -419,6 +420,12 @@ class MaxwellEquationsJAX:
 # ── verify_maxwell_equations_jax ────────────────────────────────
 
 
+@maxwell_cite(
+    594, 598, 600, 603,
+    part=4, chapter="General Equations of the Electromagnetic Field",
+    theory_class="maxwell_original",
+    description="Numerical verification of all Maxwell equations (JAX)",
+)
 def verify_maxwell_equations_jax(
     atol: float = 1e-6,
 ) -> dict[str, Any]:

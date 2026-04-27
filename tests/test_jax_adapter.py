@@ -467,7 +467,7 @@ class TestFaradayInductionJAX:
         B = jnp.array([0.0, 0.0, 1000.0])
         v = jnp.array([100.0, 0.0, 0.0])
         length = jnp.array(5.0)
-        emf = self.coil.motional_emf(B, length, v)
+        emf = self.coil.motional_emf(v, B, length)
         # |v x B| = 100 * 1000 = 1e5; emf_per = 1e5 * 5 = 5e5; total = 100 * 5e5 = 5e7
         expected = 100 * 1e5 * 5.0
         assert abs(emf - expected) < 1e-3
@@ -476,7 +476,7 @@ class TestFaradayInductionJAX:
         """Motional EMF is zero when v is parallel to B (cross product = 0)."""
         B = jnp.array([0.0, 0.0, 1000.0])
         v = jnp.array([0.0, 0.0, 100.0])
-        emf = self.coil.motional_emf(B, jnp.array(5.0), v)
+        emf = self.coil.motional_emf(v, B, jnp.array(5.0))
         assert abs(emf) < 1e-15
 
     def test_lenz_law_check_opposing(self):
@@ -526,6 +526,7 @@ class TestFaradayInductionJAX:
             "average_emf",
             "average_current",
             "charge_transferred",
+            "num_turns",
         }
         assert set(result.keys()) == expected_keys
         # flux_initial should be 0

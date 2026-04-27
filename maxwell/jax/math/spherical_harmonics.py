@@ -24,6 +24,7 @@ from jax import lax
 
 from maxwell.jax._compat import jax_tree
 from maxwell.jax._scipy_special import sph_harm_y_jax
+from maxwell.meta.citation import maxwell_cite
 
 __all__ = [
     "SphericalHarmonicExpansionJAX",
@@ -37,6 +38,12 @@ __all__ = [
 # =============================================================================
 
 
+@maxwell_cite(
+    128, 129, 130,
+    part=1, chapter="Spherical Harmonics",
+    theory_class="standard_math",
+    description="Batched Legendre polynomial evaluation via Bonnet recurrence (JAX)",
+)
 def legendre_batched(n: int, x: jax.Array) -> jax.Array:
     """Batched Legendre polynomial evaluation via Bonnet's recurrence.
 
@@ -91,6 +98,12 @@ def _legendre_fori(n: int, x: jax.Array) -> jax.Array:
 # =============================================================================
 
 
+@maxwell_cite(
+    134, 135,
+    part=1, chapter="Spherical Harmonics",
+    theory_class="standard_math",
+    description="Spherical-harmonic addition theorem (pure JAX)",
+)
 def addition_theorem_jax(
     l: int,
     theta1: jax.Array,
