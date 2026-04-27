@@ -41,6 +41,7 @@ import jax.numpy as jnp
 from jax import grad, jit, vmap
 
 from maxwell.jax._compat import jax_tree, safe_div, safe_norm
+from maxwell.meta.citation import maxwell_cite
 
 __all__ = [
     "FaradayInductionJAX",
@@ -143,9 +144,9 @@ class FaradayInductionJAX:
 
     def motional_emf(
         self,
+        velocity: jax.Array,
         B_field: jax.Array,
         length: jax.Array,
-        velocity: jax.Array,
     ) -> jax.Array:
         """Motional EMF for a conductor moving in a magnetic field.
 
@@ -153,9 +154,9 @@ class FaradayInductionJAX:
         length ℓ the magnitude is |v × B| * ℓ, scaled by N turns.
 
         Args:
+            velocity: Velocity vector (cm/s), shape (3,).
             B_field: Magnetic flux density (gauss), shape (3,).
             length: Conductor length in the field (cm).
-            velocity: Velocity vector (cm/s), shape (3,).
 
         Returns:
             Total motional EMF (abvolts), scalar.
@@ -237,6 +238,12 @@ class FaradayInductionJAX:
 # ── Batched evaluation helpers ───────────────────────────────────
 
 
+@maxwell_cite(
+    528, 529, 530,
+    part=4, chapter="Electromagnetic Induction",
+    theory_class="maxwell_original",
+    description="Magnetic flux over a batch of B-field configurations via vmap",
+)
 def flux_over_batch(
     coil: FaradayInductionJAX,
     B_fields: jax.Array,
@@ -257,6 +264,12 @@ def flux_over_batch(
     return vmap(lambda B: coil.magnetic_flux(B, area, normal))(B_fields)
 
 
+@maxwell_cite(
+    529, 531,
+    part=4, chapter="Electromagnetic Induction",
+    theory_class="maxwell_original",
+    description="Induced EMF over a batch of flux change rates via vmap",
+)
 def emf_over_batch(
     coil: FaradayInductionJAX,
     flux_rates: jax.Array,
@@ -276,6 +289,12 @@ def emf_over_batch(
 # ── Complete Faraday induction analysis ─────────────────────────
 
 
+@maxwell_cite(
+    528, 529, 530, 531,
+    part=4, chapter="Electromagnetic Induction",
+    theory_class="maxwell_original",
+    description="Complete Faraday induction analysis for a multi-turn coil (JAX)",
+)
 def analyze_faraday_induction_jax(
     B_initial: jax.Array,
     B_final: jax.Array,
@@ -372,12 +391,19 @@ def analyze_faraday_induction_jax(
         "average_emf": average_emf,
         "average_current": average_current,
         "charge_transferred": charge_transferred,
+        "num_turns": num_turns,
     }
 
 
 # ── Gradient helpers (demonstrate auto-differentiation) ──────────
 
 
+@maxwell_cite(
+    529,
+    part=4, chapter="Electromagnetic Induction",
+    theory_class="maxwell_original",
+    description="Gradient of induced EMF w.r.t. flux_change_rate via jax.grad",
+)
 def emf_wrt_flux_rate(
     num_turns: int,
     flux_change_rate: jax.Array,
@@ -402,6 +428,12 @@ def emf_wrt_flux_rate(
     return grad(emf_fn)(jnp.asarray(flux_change_rate, dtype=jnp.float64))
 
 
+@maxwell_cite(
+    528, 529, 530,
+    part=4, chapter="Electromagnetic Induction",
+    theory_class="maxwell_original",
+    description="Gradient of magnetic flux w.r.t. B-field vector via jax.grad",
+)
 def flux_wrt_bfield(
     num_turns: int,
     B_field: jax.Array,

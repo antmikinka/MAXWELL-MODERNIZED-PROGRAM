@@ -65,6 +65,12 @@ enhanced = [
 viz = [
     "matplotlib>=3.5.0",
 ]
+symbolic = [
+    "sympy>=1.12",
+]
+accel = [
+    "jax>=0.4.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/maxwell-treatise/modernized-program"

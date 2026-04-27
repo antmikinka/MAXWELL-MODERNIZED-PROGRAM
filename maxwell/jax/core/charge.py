@@ -28,6 +28,7 @@ import jax.numpy as jnp
 from jax import vmap, grad, jit
 
 from maxwell.jax._compat import jax_tree, safe_div, safe_norm
+from maxwell.meta.citation import maxwell_cite
 
 __all__ = [
     "PointChargeJAX",
@@ -141,6 +142,12 @@ class PointChargeJAX:
 
 # ── Multi-charge systems ────────────────────────────────────────
 
+@maxwell_cite(
+    29, 30,
+    part=1, chapter="Electrification",
+    theory_class="maxwell_original",
+    description="Total electric field from multiple point charges via superposition",
+)
 def charge_system_field(
     charges: Sequence[PointChargeJAX],
     points: jax.Array,
@@ -166,6 +173,12 @@ def charge_system_field(
     return total
 
 
+@maxwell_cite(
+    29, 30,
+    part=1, chapter="Electrification",
+    theory_class="maxwell_original",
+    description="Total electric potential from multiple point charges via superposition",
+)
 def charge_system_potential(
     charges: Sequence[PointChargeJAX],
     points: jax.Array,
@@ -187,6 +200,12 @@ def charge_system_potential(
 
 # ── Automatic differentiation demo ──────────────────────────────
 
+@maxwell_cite(
+    29, 30,
+    part=1, chapter="Electrification",
+    theory_class="maxwell_original",
+    description="Gradient of E-field magnitude w.r.t. charge demonstrating auto-differentiation",
+)
 def field_gradient(charge_q: float, point: jax.Array) -> jax.Array:
     """Gradient of E-field magnitude with respect to charge.
 
