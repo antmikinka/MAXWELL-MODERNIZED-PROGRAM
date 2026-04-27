@@ -1,9 +1,9 @@
 # Maxwell Modernized — API Reference
 
 **Version:** 0.1.0
-**Generated:** 2026-04-25
+**Generated:** 2026-04-26
 **Coverage:** 866/866 articles (100%) across all 4 Parts of Maxwell's Treatise
-**Tests:** 522/522 passing
+**Tests:** 548/548 passing
 **Modules:** 241 Python modules, 80+ subpackages
 
 ---
@@ -523,6 +523,16 @@ Subpackage `constitutive/`:
 |---|---|---|
 | `induction_solvers` | `InductionProblem`, `InductionSolution` | 427-429 |
 | `shape_solvers` | `CylindricalMagnet`, `RectangularMagnet` | 439, 440 |
+
+### maxwell.vis — Visualization
+
+| Module | Public API | Articles |
+|---|---|---|
+| `_compat` | `HAS_MATPLOTLIB` — graceful matplotlib availability check | — |
+| `_base` | `create_meshgrid`, `evaluate_on_grid` — shared grid utilities | — |
+| `field_lines` | `plot_field_lines_2d` — electric and magnetic field line plotting | 702 |
+| `equipotential` | `plot_equipotentials_2d` — equipotential contour plotting | 103-111 |
+| `stress` | `plot_stress_tensor_2d` — Maxwell stress tensor visualization | 641-644 |
 
 ### maxwell.physics — Legacy Physics
 

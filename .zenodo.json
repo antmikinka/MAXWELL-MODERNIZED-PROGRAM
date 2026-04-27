@@ -1,0 +1,64 @@
+{
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Mikinka, Anthony",
+      "affiliation": "Maxwell Modernization Project"
+    },
+    {
+      "name": "Maxwell, James Clerk",
+      "affiliation": "Maxwell Modernization Project",
+      "type": "Original author"
+    }
+  ],
+  "title": "Maxwell Modernized",
+  "description": "A complete computational implementation of James Clerk Maxwell's 1873 A Treatise on Electricity and Magnetism. All 866 articles are implemented in Python with CGS-EMU units and citation-based traceability.",
+  "license": "MIT",
+  "keywords": [
+    "maxwell",
+    "electromagnetism",
+    "physics",
+    "electromagnetic",
+    "maxwell-equations",
+    "classical-physics",
+    "electrostatics",
+    "magnetism",
+    "electrodynamics",
+    "computational-physics",
+    "cgs-units",
+    "spherical-harmonics",
+    "maxwell-treatise"
+  ],
+  "version": "0.1.0",
+  "language": "eng",
+  "access_right": "open",
+  "pub_state": "published",
+  "imprint_isbn": "",
+  "imprint_place": "",
+  "imprint_publisher": "",
+  "journal_title": "",
+  "journal_volume": "",
+  "journal_issue": "",
+  "first_page": "",
+  "last_page": "",
+  "conference_title": "",
+  "conference_acronym": "",
+  "conference_dates": "",
+  "conference_place": "",
+  "conference_url": "",
+  "conference_session": "",
+  "conference_session_part": "",
+  "thesis_university": "",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/maxwell-treatise/modernized-program",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "communities": [
+    {
+      "identifier": "maxwell-modernized"
+    }
+  ]
+}

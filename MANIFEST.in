@@ -1,9 +1,10 @@
 include README.md
 include LICENSE
 include CHANGELOG.md
+include CITATION.cff
 include pyproject.toml
-include requirements.txt
 
+recursive-include docs *.md
 recursive-include maxwell *.py *.json *.md
 recursive-include tests *.py
 
@@ -17,4 +18,7 @@ global-exclude chroma_data
 global-exclude agents
 global-exclude archive
 global-exclude .claude
+global-exclude audit_logs
+global-exclude build
+global-exclude dist
 global-exclude *.egg

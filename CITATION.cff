@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Maxwell Modernized"
+version: 0.1.0
+date-released: 2026-04-25
+url: "https://github.com/maxwell-treatise/modernized-program"
+repository-code: "https://github.com/maxwell-treatise/modernized-program"
+license: MIT
+type: software
+authors:
+  - family-names: Mikinka
+    given-names: Anthony
+  - family-names: Maxwell
+    given-names: James Clerk
+keywords:
+  - electromagnetism
+  - computational-physics
+  - maxwell-equations
+  - classical-physics
+  - cgs-units
+  - spherical-harmonics
+  - maxwell-treatise
+abstract: >
+  A complete computational implementation of James Clerk Maxwell's 1873
+  A Treatise on Electricity and Magnetism. All 866 articles are implemented
+  in Python with CGS-EMU units and citation-based traceability.
+references:
+  - type: book
+    authors:
+      - family-names: Maxwell
+        given-names: James Clerk
+    title: "A Treatise on Electricity and Magnetism"
+    year: "1873"
+    publisher:
+      name: "Clarendon Press"

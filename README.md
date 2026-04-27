@@ -1,5 +1,11 @@
 # Maxwell Modernized
 
+[![Tests](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml)
+[![Math Verification](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml)
+[![Coverage](https://img.shields.io/badge/coverage-866%2F866%20articles-brightgreen)](docs/COVERAGE_SUMMARY.md)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > A computational implementation of James Clerk Maxwell's 1873 _A Treatise on Electricity and Magnetism_ -- all 866 articles, modernized in Python.
 
 ## What This Is
@@ -17,10 +23,20 @@ The project serves two audiences:
 
 ### Installation
 
+From PyPI (recommended):
+
+```bash
+pip install maxwell           # Core library
+pip install maxwell[viz]      # With visualization support
+pip install maxwell[dev]      # With development tools
+```
+
+From source:
+
 ```bash
 git clone https://github.com/maxwell-treatise/modernized-program.git
 cd modernized-program
-pip install -e ".[dev]"
+pip install -e ".[dev,viz]"
 ```
 
 ### Your First Calculation
@@ -47,7 +63,7 @@ E_field = gradient(potential_field)
 
 ```bash
 pytest tests/ -v
-# 522 passed in X.XXs
+# 548 passed in X.XXs
 ```
 
 ## What Can I Use This For?
@@ -110,16 +126,17 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | Metric | Count |
 |--------|-------|
 | Articles covered | 866 / 866 (100%) |
-| Python modules | 165 |
+| Python modules | 241 |
 | Functions | 1,174 |
 | Classes | 244 |
-| Tests | 522 / 522 passing |
+| Tests | 548 / 548 passing |
+| Math validations | 50 / 50 passing |
 
 ### Validation
 
 - 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
 - 100% citation compliance -- every public function is linked to its source article
-- All 165 modules import without errors
+- All 241 modules import without errors
 
 ## Documentation
 
@@ -131,6 +148,34 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | [docs/validation_report.md](docs/validation_report.md) | Test results, math validation, import verification |
 
 The `archive/docs/` directory contains 24 legacy development documents (architecture maps, OCR audits, integration reports) preserved for historical reference.
+
+## Citing This Work
+
+If you use Maxwell Modernized in your research, please cite it using the
+[CITATION.cff](CITATION.cff) file provided with this repository. You can
+import the citation directly from GitHub or use the following BibTeX entry:
+
+```bibtex
+@software{maxwell_modernized_2026,
+  title = {Maxwell Modernized},
+  author = {Mikinka, Anthony},
+  year = {2026},
+  url = {https://github.com/maxwell-treatise/modernized-program},
+  description = {A complete computational implementation of Maxwell's 1873 Treatise}
+}
+```
+
+The original Treatise should also be cited:
+
+```bibtex
+@book{maxwell1873,
+  author = {Maxwell, James Clerk},
+  title = {A Treatise on Electricity and Magnetism},
+  publisher = {Clarendon Press},
+  address = {Oxford},
+  year = {1873}
+}
+```
 
 ## For Scholars
 
@@ -187,7 +232,7 @@ maxwell/
     meta/                # Citation system (@maxwell_cite)
     ... and more
 tests/
-    test_*.py            # 522 tests across electrostatics, electromagnetism, etc.
+    test_*.py            # 548 tests across electrostatics, electromagnetism, etc.
 archive/                 # Legacy development documents
 docs/                    # API reference, coverage, validation
 ```

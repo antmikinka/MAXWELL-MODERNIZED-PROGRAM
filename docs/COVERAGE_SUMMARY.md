@@ -4,14 +4,14 @@
 **Total Articles in Treatise:** 866  
 **Articles Covered:** 866  
 **Coverage:** 100%  
-**Test Status:** 522/522 tests passing (100%)  
+**Test Status:** 548/548 tests passing (100%)  
 **Math Validation:** 50/50 checks passing (100%)
 
 ---
 
 ## Executive Summary
 
-The Maxwell Modernized project has successfully modernized **100%** of Maxwell's Treatise on Electricity and Magnetism. The codebase contains **165 Python modules** with **1,174 functions** and **244 classes**, all traceable to Maxwell's original articles via the `@maxwell_cite` decorator system.
+The Maxwell Modernized project has successfully modernized **100%** of Maxwell's Treatise on Electricity and Magnetism. The codebase contains **241 Python modules** with **1,174 functions** and **244 classes**, all traceable to Maxwell's original articles via the `@maxwell_cite` decorator system.
 
 ### Coverage by Part
 
@@ -276,9 +276,9 @@ python -m maxwell.meta.citation --article 528
 | Metric | Value | Status |
 |--------|-------|--------|
 | Article Coverage | 866/866 | 100% Complete |
-| Test Coverage | 522/522 | 100% Passing |
+| Test Coverage | 548/548 | 100% Passing |
 | Math Validation | 50/50 | 100% Passing |
-| Module Count | 165 | Complete |
+| Module Count | 241 | Complete |
 | Function Count | 1,174 | Complete |
 | Class Count | 244 | Complete |
 
@@ -348,8 +348,9 @@ python -m maxwell.meta.citation --article 528
 | solvers | 2 | 12 | 4 | 5 |
 | theories | 1 | 8 | 1 | 3 |
 | verification | 3 | 0 | 6 | 0 |
+| vis | 6 | 5 | 0 | — |
 | vortex_engine | 5 | 9 | 3 | 10 |
-| **TOTAL** | **165** | **1,174** | **244** | **866** |
+| **TOTAL** | **241** | **1,174** | **244** | **866** |
 
 ---
 

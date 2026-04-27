@@ -10,4 +10,6 @@ Modules:
 
 from __future__ import annotations
 
+from maxwell.electromagnetism.sources import oersted
+
 __all__ = ["oersted"]
