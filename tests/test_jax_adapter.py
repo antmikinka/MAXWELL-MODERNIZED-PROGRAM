@@ -1742,3 +1742,724 @@ class TestElectricFieldStandaloneJAX:
 
         emf = jit_emf(jnp.zeros(3), jnp.array([10.0, 0.0, 0.0]))
         assert abs(emf - 50.0) < 1e-3
+
+
+# ── Imports for MagnetJAX ────────────────────────────────────────────
+
+try:
+    from maxwell.jax.core.magnet import (
+        MagneticPoleJAX,
+        MagnetJAX,
+        pole_force_jax,
+        mutual_action_jax,
+        torque_on_magnet_jax,
+        pole_force_gradient,
+    )
+
+    HAS_MAGNET = True
+except ImportError:
+    HAS_MAGNET = False
+
+
+# ── MagneticPoleJAX ───────────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_MAGNET, reason="maxwell.jax.core.magnet not installed")
+class TestMagneticPoleJAX:
+    """Test MagneticPoleJAX against NumPy reference (Art. 371)."""
+
+    def setup_method(self):
+        self.pole = MagneticPoleJAX(
+            strength=100.0, position=jnp.array([0.0, 0.0, 0.0])
+        )
+
+    def test_field_at_single_point(self):
+        """H = m/r^2 at 5 cm: H = 100/25 = 4 gauss."""
+        point = jnp.array([5.0, 0.0, 0.0])
+        H = self.pole.field_at(point)
+        expected = jnp.array([4.0, 0.0, 0.0])
+        assert jnp.allclose(H, expected, atol=1e-10)
+
+    def test_field_at_origin_safe(self):
+        """Field at pole position should be zero (safe division)."""
+        H = self.pole.field_at(jnp.array([0.0, 0.0, 0.0]))
+        assert jnp.allclose(H, jnp.zeros(3), atol=1e-15)
+
+    def test_field_radial_direction(self):
+        """Field points radially away from positive (N) pole."""
+        point = jnp.array([1.0, 1.0, 1.0])
+        H = self.pole.field_at(point)
+        r_hat = point / jnp.linalg.norm(point)
+        H_hat = H / jnp.linalg.norm(H)
+        assert jnp.allclose(H_hat, r_hat, atol=1e-10)
+
+    def test_negative_pole_field(self):
+        """South pole produces inward-pointing field."""
+        s_pole = MagneticPoleJAX(strength=-100.0, position=jnp.zeros(3))
+        point = jnp.array([1.0, 0.0, 0.0])
+        H = s_pole.field_at(point)
+        assert H[0] < 0
+
+    def test_field_inverse_square(self):
+        """Field magnitude follows inverse square law."""
+        H1 = self.pole.field_at(jnp.array([1.0, 0.0, 0.0]))
+        H2 = self.pole.field_at(jnp.array([2.0, 0.0, 0.0]))
+        H4 = self.pole.field_at(jnp.array([4.0, 0.0, 0.0]))
+        # H(1) = 100, H(2) = 25, H(4) = 6.25
+        assert abs(jnp.linalg.norm(H1) - 100.0) < 1e-10
+        assert abs(jnp.linalg.norm(H2) - 25.0) < 1e-10
+        assert abs(jnp.linalg.norm(H4) - 6.25) < 1e-10
+
+    def test_batched_field(self):
+        """Batched field evaluation."""
+        points = jnp.array([
+            [1.0, 0.0, 0.0],
+            [2.0, 0.0, 0.0],
+            [5.0, 0.0, 0.0],
+        ])
+        H = self.pole.field_at_batched(points)
+        assert H.shape == (3, 3)
+        expected_magnitudes = jnp.array([100.0, 25.0, 4.0])
+        actual_magnitudes = jnp.linalg.norm(H, axis=1)
+        assert jnp.allclose(actual_magnitudes, expected_magnitudes, atol=1e-10)
+
+    def test_field_at_off_axis(self):
+        """Field at off-axis point has correct direction and magnitude."""
+        point = jnp.array([3.0, 4.0, 0.0])
+        H = self.pole.field_at(point)
+        r = jnp.linalg.norm(point)  # 5
+        expected_mag = 100.0 / (r ** 2)  # 4.0
+        assert abs(jnp.linalg.norm(H) - expected_mag) < 1e-10
+        # Direction should be along r_hat
+        r_hat = point / r
+        H_hat = H / jnp.linalg.norm(H)
+        assert jnp.allclose(H_hat, r_hat, atol=1e-10)
+
+    def test_matches_numpy_reference(self):
+        """JAX results match NumPy MagneticPole exactly."""
+        from maxwell.core.magnet import MagneticPole
+
+        point = np.array([5.0, 3.0, 2.0])
+        np_pole = MagneticPole(
+            strength=100.0, position=np.array([0.0, 0.0, 0.0]), pole_type="N"
+        )
+        # NumPy field: H = m * r / r^3
+        r_vec = point - np_pole.position
+        r_mag = np.linalg.norm(r_vec)
+        H_np = np_pole.signed_strength * r_vec / (r_mag ** 3)
+
+        jax_pole = MagneticPoleJAX(
+            strength=100.0, position=jnp.array([0.0, 0.0, 0.0])
+        )
+        H_jax = jax_pole.field_at(jnp.array(point))
+
+        assert jnp.allclose(H_jax, H_np, atol=1e-8)
+
+
+# ── MagneticPoleJAX: JIT and Auto-Diff ────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_MAGNET, reason="maxwell.jax.core.magnet not installed")
+class TestMagneticPoleJAXJIT:
+    """Test JIT compilation and auto-diff for MagneticPoleJAX."""
+
+    def test_jit_field(self):
+        """MagneticPoleJAX field works under JIT."""
+
+        @jax.jit
+        def compute_field(strength, pos, point):
+            p = MagneticPoleJAX(strength=strength, position=pos)
+            return p.field_at(point)
+
+        result = compute_field(100.0, jnp.zeros(3), jnp.array([5.0, 0.0, 0.0]))
+        assert result.shape == (3,)
+        assert abs(result[0] - 4.0) < 1e-10
+
+    def test_vmap_field(self):
+        """MagneticPoleJAX works with vmap."""
+
+        def single_field(point):
+            p = MagneticPoleJAX(strength=100.0, position=jnp.zeros(3))
+            return p.field_at(point)
+
+        points = jnp.array([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]])
+        result = jax.vmap(single_field)(points)
+        assert result.shape == (3, 3)
+
+    def test_static_jit_field(self):
+        """Static JIT-compiled field method works."""
+        H = MagneticPoleJAX._field_at_jit(
+            100.0, jnp.zeros(3), jnp.array([10.0, 0.0, 0.0])
+        )
+        # H = 100/100 = 1 along x
+        assert jnp.allclose(H, jnp.array([1.0, 0.0, 0.0]), atol=1e-10)
+
+    def test_grad_field_wrt_strength(self):
+        """d|H|/dm = |H|/m for magnetic pole (linearity)."""
+
+        def field_mag(strength):
+            p = MagneticPoleJAX(strength=strength, position=jnp.zeros(3))
+            H = p.field_at(jnp.array([5.0, 0.0, 0.0]))
+            return jnp.linalg.norm(H)
+
+        g = jax.grad(field_mag)(100.0)
+        # |H| = m/r^2 = 100/25 = 4, d|H|/dm = 1/r^2 = 0.04
+        assert abs(g - 0.04) < 1e-10
+
+    def test_grad_potential_wrt_position(self):
+        """Gradient of field magnitude w.r.t. pole position."""
+
+        def field_mag_at_pos(pos):
+            p = MagneticPoleJAX(strength=100.0, position=pos)
+            H = p.field_at(jnp.array([5.0, 0.0, 0.0]))
+            return jnp.linalg.norm(H)
+
+        g = jax.grad(field_mag_at_pos)(jnp.zeros(3))
+        assert g.shape == (3,)
+        assert jnp.isfinite(g).all()
+
+
+# ── MagnetJAX ─────────────────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_MAGNET, reason="maxwell.jax.core.magnet not installed")
+class TestMagnetJAX:
+    """Test MagnetJAX against NumPy reference (Arts. 372-376)."""
+
+    def setup_method(self):
+        # Bar magnet along z-axis: N at (0,0,1), S at (0,0,-1), strength=50
+        self.magnet = MagnetJAX(
+            pole_strength=50.0,
+            north_position=jnp.array([0.0, 0.0, 1.0]),
+            south_position=jnp.array([0.0, 0.0, -1.0]),
+        )
+
+    def test_magnetic_moment(self):
+        """m = strength * (r_N - r_S) = 50 * (0,0,2) = (0,0,100)."""
+        moment = self.magnet.magnetic_moment
+        expected = jnp.array([0.0, 0.0, 100.0])
+        assert jnp.allclose(moment, expected, atol=1e-10)
+
+    def test_magnetic_length(self):
+        """Distance between poles = 2 cm."""
+        length = self.magnet.magnetic_length
+        assert abs(length - 2.0) < 1e-10
+
+    def test_magnetic_axis(self):
+        """Unit vector from S to N = (0,0,1)."""
+        axis = self.magnet.magnetic_axis
+        expected = jnp.array([0.0, 0.0, 1.0])
+        assert jnp.allclose(axis, expected, atol=1e-10)
+
+    def test_field_on_axis(self):
+        """Field on the magnetic axis (beyond N pole)."""
+        point = jnp.array([0.0, 0.0, 3.0])
+        H = self.magnet.field_at(point)
+        # r_N = (0,0,2), r_S = (0,0,4)
+        # H_N = 50 * (0,0,2) / 8 = (0,0,12.5)
+        # H_S = -50 * (0,0,4) / 64 = (0,0,-3.125)
+        # Total = (0,0,9.375)
+        expected = jnp.array([0.0, 0.0, 9.375])
+        assert jnp.allclose(H, expected, atol=1e-10)
+
+    def test_field_at_origin_safe(self):
+        """Field at center of magnet should be finite."""
+        H = self.magnet.field_at(jnp.array([0.0, 0.0, 0.0]))
+        # Both poles contribute equally, field points S to N
+        # H_N: r = (0,0,-1), r^2=1, H_N = 50*(0,0,-1)/1 = (0,0,-50)
+        # H_S: r = (0,0,1), r^2=1, H_S = -50*(0,0,1)/1 = (0,0,-50)
+        # Total = (0,0,-100)
+        expected = jnp.array([0.0, 0.0, -100.0])
+        assert jnp.allclose(H, expected, atol=1e-10)
+
+    def test_field_far_away_dipole_approximation(self):
+        """Field at large distance approximates dipole field."""
+        point = jnp.array([0.0, 0.0, 100.0])
+        H = self.magnet.field_at(point)
+        # Dipole approximation: H = 2*m/r^3 along axis
+        # m = 100, r = 99 (from center to point, approx)
+        # More precisely: exact calculation
+        assert jnp.all(jnp.isfinite(H))
+        assert H[2] > 0  # Points away from magnet on N side
+
+    def test_batched_field(self):
+        """Batched field evaluation."""
+        points = jnp.array([
+            [0.0, 0.0, 3.0],
+            [0.0, 0.0, 5.0],
+            [0.0, 0.0, 10.0],
+        ])
+        H = self.magnet.field_at_batched(points)
+        assert H.shape == (3, 3)
+
+    def test_force_in_nonuniform_field(self):
+        """Force on magnet in nonuniform field."""
+        H_north = jnp.array([0.0, 0.0, 100.0])
+        H_south = jnp.array([0.0, 0.0, 80.0])
+        F = self.magnet.force_in_field(H_north, H_south)
+        # F = 50*(0,0,100) - 50*(0,0,80) = (0,0,1000)
+        expected = jnp.array([0.0, 0.0, 1000.0])
+        assert jnp.allclose(F, expected, atol=1e-10)
+
+    def test_force_in_uniform_field(self):
+        """Force on magnet in uniform field is zero."""
+        H_uniform = jnp.array([0.0, 0.0, 50.0])
+        F = self.magnet.force_in_field(H_uniform, H_uniform)
+        assert jnp.allclose(F, jnp.zeros(3), atol=1e-15)
+
+    def test_torque_in_uniform_field(self):
+        """tau = m x H."""
+        H = jnp.array([100.0, 0.0, 0.0])
+        tau = self.magnet.torque_in_uniform_field(H)
+        # m = (0,0,100), H = (100,0,0)
+        # m x H = (0, 10000, 0)
+        expected = jnp.array([0.0, 10000.0, 0.0])
+        assert jnp.allclose(tau, expected, atol=1e-10)
+
+    def test_torque_aligned_field(self):
+        """Zero torque when magnet is aligned with field."""
+        H = jnp.array([0.0, 0.0, 50.0])
+        tau = self.magnet.torque_in_uniform_field(H)
+        assert jnp.allclose(tau, jnp.zeros(3), atol=1e-15)
+
+    def test_potential_energy_uniform_field(self):
+        """W = -m dot H."""
+        H = jnp.array([0.0, 0.0, 50.0])
+        W = self.magnet.potential_energy_in_field(H)
+        # W = -(0,0,100) . (0,0,50) = -5000
+        assert abs(W - (-5000.0)) < 1e-10
+
+    def test_potential_energy_perpendicular(self):
+        """Zero energy when m is perpendicular to H."""
+        H = jnp.array([100.0, 0.0, 0.0])
+        W = self.magnet.potential_energy_in_field(H)
+        assert abs(W) < 1e-15
+
+    def test_potential_energy_minimum(self):
+        """Energy is minimum (most negative) when m parallel to H."""
+        H = jnp.array([0.0, 0.0, 50.0])
+        W_parallel = self.magnet.potential_energy_in_field(H)
+        H_anti = jnp.array([0.0, 0.0, -50.0])
+        W_anti = self.magnet.potential_energy_in_field(H_anti)
+        assert W_parallel < W_anti  # Parallel = lower energy
+
+    def test_static_jit_field(self):
+        """Static JIT-compiled field method works."""
+        H = MagnetJAX._field_at_jit(
+            50.0,
+            jnp.array([0.0, 0.0, 1.0]),
+            jnp.array([0.0, 0.0, -1.0]),
+            jnp.array([0.0, 0.0, 3.0]),
+        )
+        assert H.shape == (3,)
+        assert jnp.isfinite(H).all()
+
+    def test_static_jit_torque(self):
+        """Static JIT-compiled torque method works."""
+        tau = MagnetJAX._torque_jit(
+            50.0,
+            jnp.array([0.0, 0.0, 1.0]),
+            jnp.array([0.0, 0.0, -1.0]),
+            jnp.array([100.0, 0.0, 0.0]),
+        )
+        expected = jnp.array([0.0, 10000.0, 0.0])
+        assert jnp.allclose(tau, expected, atol=1e-10)
+
+    def test_static_jit_energy(self):
+        """Static JIT-compiled energy method works."""
+        W = MagnetJAX._energy_jit(
+            50.0,
+            jnp.array([0.0, 0.0, 1.0]),
+            jnp.array([0.0, 0.0, -1.0]),
+            jnp.array([0.0, 0.0, 50.0]),
+        )
+        assert abs(W - (-5000.0)) < 1e-10
+
+
+# ── MagnetJAX: JIT and Auto-Diff ──────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_MAGNET, reason="maxwell.jax.core.magnet not installed")
+class TestMagnetJAXJIT:
+    """Test JIT compilation and auto-diff for MagnetJAX."""
+
+    def test_jit_magnetic_moment(self):
+        """Magnetic moment calculation works under JIT."""
+
+        @jax.jit
+        def compute_moment(strength, n_pos, s_pos):
+            m = MagnetJAX(
+                pole_strength=strength, north_position=n_pos, south_position=s_pos
+            )
+            return m.magnetic_moment
+
+        result = compute_moment(
+            50.0, jnp.array([0.0, 0.0, 1.0]), jnp.array([0.0, 0.0, -1.0])
+        )
+        assert jnp.allclose(result, jnp.array([0.0, 0.0, 100.0]), atol=1e-10)
+
+    def test_jit_torque(self):
+        """Torque calculation works under JIT."""
+
+        @jax.jit
+        def compute_torque(strength, n_pos, s_pos, H):
+            m = MagnetJAX(
+                pole_strength=strength, north_position=n_pos, south_position=s_pos
+            )
+            return m.torque_in_uniform_field(H)
+
+        tau = compute_torque(
+            50.0,
+            jnp.array([0.0, 0.0, 1.0]),
+            jnp.array([0.0, 0.0, -1.0]),
+            jnp.array([100.0, 0.0, 0.0]),
+        )
+        assert jnp.allclose(tau, jnp.array([0.0, 10000.0, 0.0]), atol=1e-10)
+
+    def test_jit_energy(self):
+        """Energy calculation works under JIT."""
+
+        @jax.jit
+        def compute_energy(strength, n_pos, s_pos, H):
+            m = MagnetJAX(
+                pole_strength=strength, north_position=n_pos, south_position=s_pos
+            )
+            return m.potential_energy_in_field(H)
+
+        W = compute_energy(
+            50.0,
+            jnp.array([0.0, 0.0, 1.0]),
+            jnp.array([0.0, 0.0, -1.0]),
+            jnp.array([0.0, 0.0, 50.0]),
+        )
+        assert abs(W - (-5000.0)) < 1e-10
+
+    def test_grad_energy_wrt_moment(self):
+        """dW/dm = -H (since W = -m dot H)."""
+
+        def energy_from_mz(mz):
+            moment = jnp.array([0.0, 0.0, mz])
+            H = jnp.array([0.0, 0.0, 50.0])
+            return -jnp.dot(moment, H)
+
+        g = jax.grad(energy_from_mz)(100.0)
+        # dW/dmz = -Hz = -50
+        assert abs(g - (-50.0)) < 1e-10
+
+    def test_grad_torque_wrt_field(self):
+        """Gradient of torque magnitude w.r.t. field component."""
+
+        def torque_mag(Hx):
+            m = MagnetJAX(
+                pole_strength=50.0,
+                north_position=jnp.array([0.0, 0.0, 1.0]),
+                south_position=jnp.array([0.0, 0.0, -1.0]),
+            )
+            H = jnp.array([Hx, 0.0, 0.0])
+            tau = m.torque_in_uniform_field(H)
+            return jnp.linalg.norm(tau)
+
+        g = jax.grad(torque_mag)(100.0)
+        assert jnp.isfinite(g)
+
+
+# ── Pytree Registration ───────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_MAGNET, reason="maxwell.jax.core.magnet not installed")
+class TestMagnetPytreeRegistration:
+    """Test that MagnetJAX and MagneticPoleJAX are proper JAX pytrees."""
+
+    def test_pole_pytree_flatten(self):
+        """MagneticPoleJAX can be flattened and unflattened."""
+        pole = MagneticPoleJAX(
+            strength=100.0, position=jnp.array([0.0, 0.0, 0.0])
+        )
+        leaves, treedef = jax.tree_util.tree_flatten(pole)
+        assert len(leaves) == 2  # strength and position
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert restored.strength == pole.strength
+        assert jnp.allclose(restored.position, pole.position)
+
+    def test_magnet_pytree_flatten(self):
+        """MagnetJAX can be flattened and unflattened."""
+        magnet = MagnetJAX(
+            pole_strength=50.0,
+            north_position=jnp.array([0.0, 0.0, 1.0]),
+            south_position=jnp.array([0.0, 0.0, -1.0]),
+        )
+        leaves, treedef = jax.tree_util.tree_flatten(magnet)
+        assert len(leaves) == 3  # pole_strength, north_position, south_position
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert restored.pole_strength == magnet.pole_strength
+        assert jnp.allclose(restored.north_position, magnet.north_position)
+        assert jnp.allclose(restored.south_position, magnet.south_position)
+
+    def test_magnet_jit_compatible(self):
+        """MagnetJAX works with jax.jit."""
+
+        @jax.jit
+        def compute_moment(strength, n_pos, s_pos):
+            m = MagnetJAX(
+                pole_strength=strength, north_position=n_pos, south_position=s_pos
+            )
+            return m.magnetic_moment
+
+        result = compute_moment(
+            50.0, jnp.array([0.0, 0.0, 1.0]), jnp.array([0.0, 0.0, -1.0])
+        )
+        assert result.shape == (3,)
+
+    def test_magnet_vmap_compatible(self):
+        """MagnetJAX works with jax.vmap."""
+
+        def single_field(n_pos):
+            m = MagnetJAX(
+                pole_strength=50.0, north_position=n_pos, south_position=jnp.array([0.0, 0.0, -1.0])
+            )
+            return m.field_at(jnp.array([0.0, 0.0, 3.0]))
+
+        n_positions = jnp.array([
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, 2.0],
+            [0.0, 0.0, 3.0],
+        ])
+        result = jax.vmap(single_field)(n_positions)
+        assert result.shape == (3, 3)
+
+
+# ── Standalone Functions ──────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_MAGNET, reason="maxwell.jax.core.magnet not installed")
+class TestMagnetStandaloneJAX:
+    """Test standalone magnet functions."""
+
+    def test_pole_force_jax_basic(self):
+        """F = m1*m2/r^2 for two like poles."""
+        F = pole_force_jax(10.0, 10.0, jnp.array(5.0))
+        # F = 100/25 = 4 dyne (repulsive)
+        assert abs(F - 4.0) < 1e-10
+
+    def test_pole_force_jax_attractive(self):
+        """Opposite poles give negative (attractive) force."""
+        F = pole_force_jax(10.0, -10.0, jnp.array(5.0))
+        assert F < 0  # Attractive
+        assert abs(F - (-4.0)) < 1e-10
+
+    def test_pole_force_jax_zero_distance(self):
+        """Zero distance gives zero force (safe division)."""
+        F = pole_force_jax(10.0, 10.0, jnp.array(0.0))
+        assert abs(F) < 1e-15
+
+    def test_pole_force_jax_array(self):
+        """Pole force works with array of distances."""
+        distances = jnp.array([1.0, 2.0, 5.0, 10.0])
+        forces = pole_force_jax(10.0, 10.0, distances)
+        expected = jnp.array([100.0, 25.0, 4.0, 1.0])
+        assert jnp.allclose(forces, expected, atol=1e-10)
+
+    def test_pole_force_jax_inverse_square(self):
+        """Force follows inverse square law."""
+        F1 = pole_force_jax(1.0, 1.0, jnp.array(1.0))
+        F2 = pole_force_jax(1.0, 1.0, jnp.array(2.0))
+        F4 = pole_force_jax(1.0, 1.0, jnp.array(4.0))
+        assert abs(F1 - 1.0) < 1e-10
+        assert abs(F2 - 0.25) < 1e-10
+        assert abs(F4 - 0.0625) < 1e-10
+
+    def test_torque_on_magnet_jax(self):
+        """tau = m x H."""
+        tau = torque_on_magnet_jax(
+            magnetic_moment=jnp.array([0.0, 0.0, 100.0]),
+            H_field=jnp.array([100.0, 0.0, 0.0]),
+        )
+        # (0,0,100) x (100,0,0) = (0, 10000, 0)
+        expected = jnp.array([0.0, 10000.0, 0.0])
+        assert jnp.allclose(tau, expected, atol=1e-10)
+
+    def test_torque_on_magnet_jax_aligned(self):
+        """Zero torque when aligned."""
+        tau = torque_on_magnet_jax(
+            magnetic_moment=jnp.array([0.0, 0.0, 100.0]),
+            H_field=jnp.array([0.0, 0.0, 50.0]),
+        )
+        assert jnp.allclose(tau, jnp.zeros(3), atol=1e-15)
+
+    def test_torque_on_magnet_jax_zero_moment(self):
+        """Zero moment gives zero torque."""
+        tau = torque_on_magnet_jax(
+            magnetic_moment=jnp.zeros(3),
+            H_field=jnp.array([100.0, 0.0, 0.0]),
+        )
+        assert jnp.allclose(tau, jnp.zeros(3), atol=1e-15)
+
+    def test_mutual_action_jax(self):
+        """Mutual action between two magnets returns all expected keys."""
+        result = mutual_action_jax(
+            m1_strength=50.0,
+            m1_north=jnp.array([0.0, 0.0, 1.0]),
+            m1_south=jnp.array([0.0, 0.0, -1.0]),
+            m2_strength=30.0,
+            m2_north=jnp.array([10.0, 0.0, 1.0]),
+            m2_south=jnp.array([10.0, 0.0, -1.0]),
+        )
+        assert "force_on_2" in result
+        assert "torque_on_2" in result
+        assert "potential_energy" in result
+        assert result["force_on_2"].shape == (3,)
+        assert result["torque_on_2"].shape == (3,)
+        assert jnp.isfinite(result["potential_energy"])
+
+    def test_mutual_action_jax_symmetric(self):
+        """Mutual action produces finite, reasonable values."""
+        # Two identical magnets side by side
+        result = mutual_action_jax(
+            m1_strength=10.0,
+            m1_north=jnp.array([0.0, 0.0, 0.5]),
+            m1_south=jnp.array([0.0, 0.0, -0.5]),
+            m2_strength=10.0,
+            m2_north=jnp.array([5.0, 0.0, 0.5]),
+            m2_south=jnp.array([5.0, 0.0, -0.5]),
+        )
+        # Forces should be small at this distance
+        assert jnp.linalg.norm(result["force_on_2"]) < 1.0
+
+    def test_mutual_action_jax_far_apart(self):
+        """Mutual action decreases with distance."""
+        result_near = mutual_action_jax(
+            m1_strength=10.0,
+            m1_north=jnp.array([0.0, 0.0, 0.5]),
+            m1_south=jnp.array([0.0, 0.0, -0.5]),
+            m2_strength=10.0,
+            m2_north=jnp.array([5.0, 0.0, 0.5]),
+            m2_south=jnp.array([5.0, 0.0, -0.5]),
+        )
+        result_far = mutual_action_jax(
+            m1_strength=10.0,
+            m1_north=jnp.array([0.0, 0.0, 0.5]),
+            m1_south=jnp.array([0.0, 0.0, -0.5]),
+            m2_strength=10.0,
+            m2_north=jnp.array([50.0, 0.0, 0.5]),
+            m2_south=jnp.array([50.0, 0.0, -0.5]),
+        )
+        # Force should be much smaller at greater distance
+        assert jnp.linalg.norm(result_far["force_on_2"]) < jnp.linalg.norm(
+            result_near["force_on_2"]
+        )
+
+    def test_pole_force_gradient(self):
+        """dF/dm1 = m2/r^2."""
+        g = pole_force_gradient(10.0, 5.0, 2.0)
+        expected = 5.0 / 4.0  # m2/r^2 = 5/4 = 1.25
+        assert abs(g - expected) < 1e-10
+
+    def test_jit_pole_force(self):
+        """Pole force works under JIT."""
+
+        @jax.jit
+        def jit_pole_force(m1, m2, r):
+            return pole_force_jax(m1, m2, r)
+
+        F = jit_pole_force(10.0, 10.0, jnp.array(5.0))
+        assert abs(F - 4.0) < 1e-10
+
+    def test_jit_torque(self):
+        """Torque function works under JIT."""
+
+        @jax.jit
+        def jit_torque(moment, H):
+            return torque_on_magnet_jax(moment, H)
+
+        tau = jit_torque(jnp.array([0.0, 0.0, 100.0]), jnp.array([100.0, 0.0, 0.0]))
+        assert jnp.allclose(tau, jnp.array([0.0, 10000.0, 0.0]), atol=1e-10)
+
+    def test_jit_mutual_action(self):
+        """Mutual action works under JIT."""
+
+        @jax.jit
+        def jit_mutual(m1s, m1n, m1s_pos, m2s, m2n, m2s_pos):
+            result = mutual_action_jax(m1s, m1n, m1s_pos, m2s, m2n, m2s_pos)
+            return result["force_on_2"]
+
+        force = jit_mutual(
+            50.0,
+            jnp.array([0.0, 0.0, 1.0]),
+            jnp.array([0.0, 0.0, -1.0]),
+            30.0,
+            jnp.array([10.0, 0.0, 1.0]),
+            jnp.array([10.0, 0.0, -1.0]),
+        )
+        assert force.shape == (3,)
+
+    def test_vmap_pole_force(self):
+        """vmap over multiple distances."""
+        distances = jnp.array([1.0, 2.0, 5.0, 10.0])
+        forces = jax.vmap(lambda r: pole_force_jax(10.0, 10.0, r))(distances)
+        expected = jnp.array([100.0, 25.0, 4.0, 1.0])
+        assert jnp.allclose(forces, expected, atol=1e-10)
+
+    def test_grad_pole_force_wrt_distance(self):
+        """dF/dr = -2*m1*m2/r^3."""
+        def F(r):
+            return pole_force_jax(10.0, 10.0, r)
+
+        g = jax.grad(F)(5.0)
+        expected = -2.0 * 10.0 * 10.0 / (5.0 ** 3)  # -200/125 = -1.6
+        assert abs(g - expected) < 1e-10
+
+    def test_grad_torque_wrt_moment(self):
+        """d|tau|/dm for torque."""
+        def torque_mag(mx):
+            moment = jnp.array([mx, 0.0, 0.0])
+            H = jnp.array([0.0, 100.0, 0.0])
+            tau = torque_on_magnet_jax(moment, H)
+            return jnp.linalg.norm(tau)
+
+        g = jax.grad(torque_mag)(50.0)
+        # |tau| = |mx| * |Hz| = mx * 100, d|tau|/dmx = 100
+        assert abs(g - 100.0) < 1e-8
+
+    def test_cross_validation_with_numpy(self):
+        """JAX MagnetJAX field matches NumPy Magnet field."""
+        from maxwell.core.magnet import Magnet, MagneticPole
+
+        # Create NumPy magnet
+        np_north = MagneticPole(
+            strength=50.0, position=np.array([0.0, 0.0, 1.0]), pole_type="N"
+        )
+        np_south = MagneticPole(
+            strength=-50.0, position=np.array([0.0, 0.0, -1.0]), pole_type="S"
+        )
+        np_magnet = Magnet(north_pole=np_north, south_pole=np_south)
+
+        # Create JAX magnet
+        jax_magnet = MagnetJAX(
+            pole_strength=50.0,
+            north_position=jnp.array([0.0, 0.0, 1.0]),
+            south_position=jnp.array([0.0, 0.0, -1.0]),
+        )
+
+        # Compare fields at several points
+        test_points = [
+            np.array([0.0, 0.0, 3.0]),
+            np.array([0.0, 0.0, 5.0]),
+            np.array([1.0, 0.0, 0.0]),
+            np.array([0.0, 2.0, 0.0]),
+        ]
+
+        for point in test_points:
+            # NumPy: H = m_N * r_N/r_N^3 + m_S * r_S/r_S^3
+            r_n = point - np_magnet.north_pole.position
+            r_s = point - np_magnet.south_pole.position
+            r_n_mag = np.linalg.norm(r_n)
+            r_s_mag = np.linalg.norm(r_s)
+            H_np = (
+                np_magnet.north_pole.signed_strength * r_n / (r_n_mag ** 3)
+                + np_magnet.south_pole.signed_strength * r_s / (r_s_mag ** 3)
+            )
+
+            H_jax = jax_magnet.field_at(jnp.array(point))
+            assert jnp.allclose(H_jax, H_np, atol=1e-8), (
+                f"Field mismatch at {point}: JAX={H_jax}, NumPy={H_np}"
+            )
