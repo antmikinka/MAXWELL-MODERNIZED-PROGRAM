@@ -13,6 +13,8 @@ Implemented:
 - LorentzForceJAX, MaxwellStressTensorJAX: EM forces and stress
 - DisplacementCurrentJAX, AmpereMaxwellLawJAX: Displacement current, Ampere-Maxwell
 - ElectricFieldJAX: Electric field definition, flux, Gauss's law, EMF
+- ElectrostaticEnergyJAX, CapacitorEnergyJAX: Electrostatic energy (Arts. 630-631)
+- MagneticEnergyJAX, InductorEnergyJAX: Magnetic energy (Arts. 632-633)
 
 Category: B (user_original) — JAX adapter layer.
 """
@@ -52,6 +54,16 @@ from maxwell.jax.electromagnetism.energy import (
     calc_total_electrostatic_energy_jax,
     verify_electrostatic_energy_density_jax,
 )
+from maxwell.jax.electromagnetism.magnetic_energy import (
+    InductorEnergyJAX,
+    MagneticEnergyJAX,
+    analyze_magnetic_energy_jax,
+    calc_energy_density_from_BH_dot_jax,
+    calc_inductor_energy_jax,
+    calc_magnetic_energy_density_jax,
+    calc_total_magnetic_energy_jax,
+    verify_magnetic_energy_density_jax,
+)
 from maxwell.jax.electromagnetism.forces import (
     LorentzForceJAX,
     MaxwellStressTensorJAX,
@@ -79,6 +91,15 @@ __all__ = [
     "calc_total_electrostatic_energy_jax",
     "verify_electrostatic_energy_density_jax",
     "analyze_electrostatic_energy_jax",
+    # Magnetic energy
+    "MagneticEnergyJAX",
+    "InductorEnergyJAX",
+    "calc_magnetic_energy_density_jax",
+    "calc_energy_density_from_BH_dot_jax",
+    "calc_inductor_energy_jax",
+    "calc_total_magnetic_energy_jax",
+    "verify_magnetic_energy_density_jax",
+    "analyze_magnetic_energy_jax",
     # Maxwell equations
     "ElectromagneticFieldJAX",
     "MaxwellEquationsJAX",

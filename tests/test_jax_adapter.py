@@ -2478,10 +2478,22 @@ try:
         verify_electrostatic_energy_density_jax,
         analyze_electrostatic_energy_jax,
     )
+    from maxwell.jax.electromagnetism.magnetic_energy import (
+        MagneticEnergyJAX,
+        InductorEnergyJAX,
+        calc_magnetic_energy_density_jax,
+        calc_energy_density_from_BH_dot_jax,
+        calc_inductor_energy_jax,
+        calc_total_magnetic_energy_jax,
+        verify_magnetic_energy_density_jax,
+        analyze_magnetic_energy_jax,
+    )
 
     HAS_ENERGY = True
+    HAS_MAGNETIC_ENERGY = True
 except ImportError:
     HAS_ENERGY = False
+    HAS_MAGNETIC_ENERGY = False
 
 
 # ── ElectrostaticEnergyJAX ────────────────────────────────────────────────
@@ -3076,6 +3088,600 @@ class TestEnergyNumpyCrossValidation:
         jax_energy = ElectrostaticEnergyJAX(
             E_field=jnp.array([1000.0, 0.0, 0.0]),
             permittivity=2.0,
+        )
+
+        assert abs(float(jax_energy.energy_density) - np_energy.energy_density) < 1e-10
+
+
+# -- MagneticEnergyJAX --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestMagneticEnergyJAX:
+    """Test MagneticEnergyJAX against NumPy reference (Arts. 632-633)."""
+
+    def setup_method(self):
+        self.energy = MagneticEnergyJAX(
+            H_field=jnp.array([1000.0, 0.0, 0.0]),
+            permeability=1.0,
+        )
+
+    def test_B_field_vacuum(self):
+        """B = mu * H for vacuum (mu=1)."""
+        B = self.energy.B_field
+        expected = jnp.array([1000.0, 0.0, 0.0])
+        assert jnp.allclose(B, expected, atol=1e-10)
+
+    def test_B_field_magnetic_material(self):
+        """B = mu * H for magnetic material (mu=5000)."""
+        energy = MagneticEnergyJAX(
+            H_field=jnp.array([1000.0, 0.0, 0.0]),
+            permeability=5000.0,
+        )
+        B = energy.B_field
+        expected = jnp.array([5_000_000.0, 0.0, 0.0])
+        assert jnp.allclose(B, expected, atol=1e-6)
+
+    def test_energy_density_vacuum(self):
+        """u = (1/8*pi) * H^2 for H=1000 oersted."""
+        u = self.energy.energy_density
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_magnetic_material(self):
+        """u = (1/8*pi) * mu * H^2 with mu=5000."""
+        energy = MagneticEnergyJAX(
+            H_field=jnp.array([1000.0, 0.0, 0.0]),
+            permeability=5000.0,
+        )
+        u = energy.energy_density
+        expected = 5000.0 * 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_zero_field(self):
+        """Zero field gives zero energy density."""
+        energy = MagneticEnergyJAX(
+            H_field=jnp.zeros(3),
+            permeability=1.0,
+        )
+        assert energy.energy_density == 0.0
+
+    def test_energy_density_arbitrary_direction(self):
+        """Energy density depends on H^2, not direction."""
+        H_mag = 1000.0
+        h_x = MagneticEnergyJAX(H_field=jnp.array([H_mag, 0.0, 0.0]))
+        h_y = MagneticEnergyJAX(H_field=jnp.array([0.0, H_mag, 0.0]))
+        h_z = MagneticEnergyJAX(H_field=jnp.array([0.0, 0.0, H_mag]))
+        h_diag = MagneticEnergyJAX(
+            H_field=jnp.array([H_mag / jnp.sqrt(3), H_mag / jnp.sqrt(3), H_mag / jnp.sqrt(3)])
+        )
+        assert abs(h_x.energy_density - h_diag.energy_density) < 1e-6
+        assert abs(h_x.energy_density - h_y.energy_density) < 1e-6
+        assert abs(h_y.energy_density - h_z.energy_density) < 1e-6
+
+    def test_total_energy_uniform_field(self):
+        """U = u * V for uniform field."""
+        u = self.energy.energy_density
+        V = 1.0  # cm^3
+        U = self.energy.total_energy(V)
+        assert abs(U - u * V) < 1e-10
+
+    def test_total_energy_various_volumes(self):
+        """Total energy scales linearly with volume."""
+        U1 = self.energy.total_energy(1.0)
+        U10 = self.energy.total_energy(10.0)
+        assert abs(U10 - 10.0 * U1) < 1e-6
+
+    def test_energy_density_at_override(self):
+        """energy_density_at uses custom H field."""
+        H_override = jnp.array([500.0, 0.0, 0.0])
+        u = self.energy.energy_density_at(H_override)
+        expected = 500.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_from_B_and_H_linear(self):
+        """from_B_and_H recovers correct permeability for linear material."""
+        H = jnp.array([100.0, 0.0, 0.0])
+        B = jnp.array([50000.0, 0.0, 0.0])  # mu = 500
+        energy = MagneticEnergyJAX.from_B_and_H(B, H)
+        assert abs(energy.permeability - 500.0) < 1e-10
+
+    def test_from_B_and_H_vacuum(self):
+        """from_B_and_H for vacuum (mu=1)."""
+        H = jnp.array([100.0, 0.0, 0.0])
+        B = jnp.array([100.0, 0.0, 0.0])
+        energy = MagneticEnergyJAX.from_B_and_H(B, H)
+        assert abs(energy.permeability - 1.0) < 1e-10
+
+    def test_pytree_flatten(self):
+        """MagneticEnergyJAX can be flattened and unflattened."""
+        energy = MagneticEnergyJAX(
+            H_field=jnp.array([100.0, 0.0, 0.0]),
+            permeability=5000.0,
+        )
+        leaves, treedef = jax.tree_util.tree_flatten(energy)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert jnp.allclose(restored.H_field, energy.H_field)
+        assert restored.permeability == energy.permeability
+
+
+# -- InductorEnergyJAX --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestInductorEnergyJAX:
+    """Test InductorEnergyJAX (Art. 633)."""
+
+    def setup_method(self):
+        self.ind = InductorEnergyJAX(inductance=10.0)
+
+    def test_from_current_basic(self):
+        """U = (1/2) * L * I^2 for L=10, I=5: U = 125."""
+        U = self.ind.from_current(5.0)
+        expected = 0.5 * 10.0 * 5.0 ** 2  # = 125
+        assert abs(U - expected) < 1e-10
+
+    def test_from_current_zero(self):
+        """Zero current gives zero energy."""
+        U = self.ind.from_current(0.0)
+        assert U == 0.0
+
+    def test_from_flux_basic(self):
+        """U = Phi^2/(2*L) for Phi=50, L=10: U = 125."""
+        U = self.ind.from_flux(50.0)
+        expected = 50.0 ** 2 / (2.0 * 10.0)  # = 125
+        assert abs(U - expected) < 1e-10
+
+    def test_from_flux_zero(self):
+        """Zero flux gives zero energy."""
+        U = self.ind.from_flux(0.0)
+        assert U == 0.0
+
+    def test_from_flux_current_basic(self):
+        """U = (1/2) * Phi * I for Phi=50, I=5: U = 125."""
+        U = self.ind.from_flux_current(50.0, 5.0)
+        expected = 0.5 * 50.0 * 5.0  # = 125
+        assert abs(U - expected) < 1e-10
+
+    def test_consistency_LI2_vs_Phi2L(self):
+        """LI^2 and Phi^2/L forms give same result (Phi=LI)."""
+        L = 10.0
+        I = 5.0
+        Phi = L * I  # = 50
+        ind = InductorEnergyJAX(inductance=L)
+        U_li2 = ind.from_current(I)
+        U_phi2l = ind.from_flux(Phi)
+        assert abs(U_li2 - U_phi2l) < 1e-10
+
+    def test_consistency_LI2_vs_PhiI(self):
+        """LI^2 and PhiI forms give same result (Phi=LI)."""
+        L = 10.0
+        I = 5.0
+        Phi = L * I
+        ind = InductorEnergyJAX(inductance=L)
+        U_li2 = ind.from_current(I)
+        U_phi_i = ind.from_flux_current(Phi, I)
+        assert abs(U_li2 - U_phi_i) < 1e-10
+
+    def test_consistency_Phi2L_vs_PhiI(self):
+        """Phi^2/L and PhiI forms give same result."""
+        L = 10.0
+        I = 5.0
+        Phi = L * I
+        ind = InductorEnergyJAX(inductance=L)
+        U_phi2l = ind.from_flux(Phi)
+        U_phi_i = ind.from_flux_current(Phi, I)
+        assert abs(U_phi2l - U_phi_i) < 1e-10
+
+    def test_pytree_flatten(self):
+        """InductorEnergyJAX can be flattened and unflattened."""
+        ind = InductorEnergyJAX(inductance=10.0)
+        leaves, treedef = jax.tree_util.tree_flatten(ind)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert restored.inductance == ind.inductance
+
+
+# -- Magnetic: Standalone Functions --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestMagneticStandaloneFunctions:
+    """Test standalone magnetic energy JAX functions."""
+
+    def test_energy_density_vacuum(self):
+        """u = (1/8*pi) * H^2 for vacuum."""
+        H = jnp.array([1000.0, 0.0, 0.0])
+        u = calc_magnetic_energy_density_jax(H)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_magnetic_material(self):
+        """u = (1/8*pi) * mu * H^2 for mu=5000."""
+        H = jnp.array([1000.0, 0.0, 0.0])
+        u = calc_magnetic_energy_density_jax(H, permeability=5000.0)
+        expected = 5000.0 * 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_zero_field(self):
+        """Zero field gives zero energy density."""
+        u = calc_magnetic_energy_density_jax(jnp.zeros(3))
+        assert u == 0.0
+
+    def test_energy_density_arbitrary_direction(self):
+        """Energy density is isotropic."""
+        H_mag = 1000.0
+        u_x = calc_magnetic_energy_density_jax(jnp.array([H_mag, 0.0, 0.0]))
+        u_y = calc_magnetic_energy_density_jax(jnp.array([0.0, H_mag, 0.0]))
+        u_z = calc_magnetic_energy_density_jax(jnp.array([0.0, 0.0, H_mag]))
+        assert jnp.isclose(u_x, u_y, rtol=1e-10)
+        assert jnp.isclose(u_y, u_z, rtol=1e-10)
+
+    def test_energy_density_from_BH_dot_parallel(self):
+        """u = (1/8*pi) * B.H for parallel B and H."""
+        H = jnp.array([100.0, 0.0, 0.0])
+        B = jnp.array([50000.0, 0.0, 0.0])  # mu=500
+        u = calc_energy_density_from_BH_dot_jax(B, H)
+        # B.H = 100 * 50000 = 5_000_000
+        expected = 5_000_000.0 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_from_BH_dot_non_parallel(self):
+        """u = (1/8*pi) * B.H for non-parallel B and H."""
+        H = jnp.array([100.0, 0.0, 0.0])
+        B = jnp.array([80.0, 60.0, 0.0])  # anisotropic
+        u = calc_energy_density_from_BH_dot_jax(B, H)
+        # B.H = 100*80 + 0*60 = 8000
+        expected = 8000.0 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_from_BH_dot_zero(self):
+        """Perpendicular B and H gives zero energy density."""
+        H = jnp.array([100.0, 0.0, 0.0])
+        B = jnp.array([0.0, 100.0, 0.0])
+        u = calc_energy_density_from_BH_dot_jax(B, H)
+        assert abs(u) < 1e-15
+
+    def test_inductor_energy_LI2(self):
+        """U = (1/2)*L*I^2."""
+        U = calc_inductor_energy_jax(inductance=10.0, current=5.0)
+        expected = 0.5 * 10.0 * 5.0 ** 2
+        assert abs(U - expected) < 1e-10
+
+    def test_inductor_energy_Phi2L(self):
+        """U = Phi^2/(2*L)."""
+        U = calc_inductor_energy_jax(inductance=10.0, flux=50.0)
+        expected = 50.0 ** 2 / (2.0 * 10.0)
+        assert abs(U - expected) < 1e-10
+
+    def test_inductor_energy_no_params(self):
+        """Missing current and flux raises error."""
+        with pytest.raises(ValueError):
+            calc_inductor_energy_jax(inductance=10.0)
+
+    def test_total_magnetic_energy_jax(self):
+        """U = u * V for uniform field."""
+        H = jnp.array([1000.0, 0.0, 0.0])
+        U = calc_total_magnetic_energy_jax(H, volume=1.0)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi) * 1.0
+        assert abs(U - expected) < 1e-6
+
+    def test_total_magnetic_energy_various_volumes(self):
+        """Total energy scales with volume."""
+        H = jnp.array([500.0, 0.0, 0.0])
+        U1 = calc_total_magnetic_energy_jax(H, volume=1.0)
+        U10 = calc_total_magnetic_energy_jax(H, volume=10.0)
+        assert abs(U10 - 10.0 * U1) < 1e-6
+
+
+# -- Magnetic: Verification and Analysis --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestMagneticVerification:
+    """Test verification and analysis functions for magnetic energy."""
+
+    def test_verify_isotropy(self):
+        """verify_magnetic_energy_density_jax confirms isotropy."""
+        result = verify_magnetic_energy_density_jax(
+            H_magnitude=1000.0, permeability=1.0
+        )
+        assert result["verified"] is True
+        assert result["all_match"] is True
+
+    def test_verify_expected_value(self):
+        """Verification matches expected (1/8*pi)*mu*H^2."""
+        H_mag = 1000.0
+        mu = 1.0
+        result = verify_magnetic_energy_density_jax(H_magnitude=H_mag, permeability=mu)
+        expected = mu * H_mag ** 2 / (8.0 * jnp.pi)
+        assert abs(result["expected"] - expected) < 1e-10
+
+    def test_verify_magnetic_material(self):
+        """Verification works for magnetic material (mu != 1)."""
+        result = verify_magnetic_energy_density_jax(
+            H_magnitude=500.0, permeability=5000.0
+        )
+        assert result["verified"] is True
+
+    def test_analyze_magnetic_energy_basic(self):
+        """Basic analysis returns expected keys."""
+        H = jnp.array([1000.0, 0.0, 0.0])
+        result = analyze_magnetic_energy_jax(H)
+        expected_keys = {
+            "H_field", "H_magnitude", "H_direction",
+            "B_field", "permeability", "energy_density",
+        }
+        assert expected_keys.issubset(set(result.keys()))
+
+    def test_analyze_with_volume(self):
+        """Analysis with volume includes total_energy."""
+        H = jnp.array([1000.0, 0.0, 0.0])
+        result = analyze_magnetic_energy_jax(H, volume=1.0)
+        assert "total_energy" in result
+        assert "volume" in result
+
+    def test_analyze_with_inductor(self):
+        """Analysis with inductor params includes inductor_energy."""
+        H = jnp.array([1000.0, 0.0, 0.0])
+        result = analyze_magnetic_energy_jax(
+            H, volume=1.0, inductance=10.0, current=5.0
+        )
+        assert "inductor_energy" in result
+        assert "energy_ratio" in result
+
+
+# -- Magnetic: Auto-Diff --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestMagneticAutoDiff:
+    """Test JAX auto-differentiation on magnetic energy formulas."""
+
+    def test_grad_density_wrt_H(self):
+        """dU/dH_x = (mu/(4*pi)) * H_x for energy density."""
+        def density(Hx):
+            H = jnp.array([Hx, 0.0, 0.0])
+            return calc_magnetic_energy_density_jax(H)
+
+        g = jax.grad(density)(1000.0)
+        expected = 1000.0 / (4.0 * jnp.pi)
+        assert abs(g - expected) < 1e-8
+
+    def test_grad_density_wrt_permeability(self):
+        """dU/d(mu) = H^2/(8*pi)."""
+        def density_mu(mu):
+            return calc_magnetic_energy_density_jax(
+                jnp.array([1000.0, 0.0, 0.0]), permeability=mu
+            )
+
+        g = jax.grad(density_mu)(1.0)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(g - expected) < 1e-6
+
+    def test_grad_inductor_energy_wrt_I(self):
+        """dU/dI = L*I for U = (1/2)*L*I^2."""
+        def energy_I(I):
+            return calc_inductor_energy_jax(inductance=10.0, current=I)
+
+        g = jax.grad(energy_I)(5.0)
+        expected = 10.0 * 5.0  # = 50
+        assert abs(g - expected) < 1e-10
+
+    def test_grad_inductor_energy_wrt_L(self):
+        """dU/dL = (1/2)*I^2."""
+        def energy_L(L):
+            return calc_inductor_energy_jax(inductance=L, current=5.0)
+
+        g = jax.grad(energy_L)(10.0)
+        expected = 0.5 * 5.0 ** 2  # = 12.5
+        assert abs(g - expected) < 1e-10
+
+    def test_grad_inductor_energy_wrt_flux(self):
+        """dU/dPhi = Phi/L for U = Phi^2/(2*L)."""
+        def energy_phi(Phi):
+            return calc_inductor_energy_jax(inductance=10.0, flux=Phi)
+
+        g = jax.grad(energy_phi)(50.0)
+        expected = 50.0 / 10.0  # = 5
+        assert abs(g - expected) < 1e-10
+
+    def test_grad_total_energy_wrt_volume(self):
+        """dU/dV = u (energy density)."""
+        def total_energy_V(vol):
+            return calc_total_magnetic_energy_jax(
+                jnp.array([1000.0, 0.0, 0.0]), vol
+            )
+
+        g = jax.grad(total_energy_V)(1.0)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(g - expected) < 1e-6
+
+    def test_grad_BH_dot_wrt_H(self):
+        """d(B.H)/dH = B for dot product density."""
+        B = jnp.array([50000.0, 0.0, 0.0])
+
+        def density_BH(Hx):
+            H = jnp.array([Hx, 0.0, 0.0])
+            return calc_energy_density_from_BH_dot_jax(B, H)
+
+        g = jax.grad(density_BH)(100.0)
+        expected = 50000.0 / (8.0 * jnp.pi)
+        assert abs(g - expected) < 1e-10
+
+
+# -- Magnetic: JIT --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestMagneticJIT:
+    """Test JIT compilation compatibility for magnetic energy."""
+
+    def test_jit_energy_density(self):
+        """Energy density works under JIT."""
+
+        @jax.jit
+        def jit_density(H, mu):
+            return calc_magnetic_energy_density_jax(H, permeability=mu)
+
+        u = jit_density(jnp.array([1000.0, 0.0, 0.0]), 1.0)
+        assert u > 0
+
+    def test_jit_total_energy(self):
+        """Total energy works under JIT."""
+
+        @jax.jit
+        def jit_total(H, vol, mu):
+            return calc_total_magnetic_energy_jax(H, vol, permeability=mu)
+
+        U = jit_total(jnp.array([1000.0, 0.0, 0.0]), 1.0, 1.0)
+        assert U > 0
+
+    def test_jit_inductor_energy(self):
+        """Inductor energy works under JIT."""
+
+        @jax.jit
+        def jit_ind(L, I):
+            return calc_inductor_energy_jax(L, current=I)
+
+        U = jit_ind(10.0, 5.0)
+        expected = 0.5 * 10.0 * 5.0 ** 2
+        assert abs(U - expected) < 1e-10
+
+    def test_jit_magnetic_energy_class(self):
+        """MagneticEnergyJAX works under JIT."""
+
+        @jax.jit
+        def jit_class_density(H, mu):
+            e = MagneticEnergyJAX(H_field=H, permeability=mu)
+            return e.energy_density
+
+        u = jit_class_density(jnp.array([500.0, 0.0, 0.0]), 5000.0)
+        expected = 5000.0 * 500.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_jit_inductor_class(self):
+        """InductorEnergyJAX works under JIT."""
+
+        @jax.jit
+        def jit_ind_class(L, I):
+            ind = InductorEnergyJAX(inductance=L)
+            return ind.from_current(I)
+
+        U = jit_ind_class(10.0, 5.0)
+        expected = 0.5 * 10.0 * 5.0 ** 2
+        assert abs(U - expected) < 1e-10
+
+
+# -- Magnetic: vmap --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestMagneticVmap:
+    """Test batched evaluation via vmap for magnetic energy."""
+
+    def test_vmap_energy_density(self):
+        """vmap over batch of H fields."""
+        H_batch = jnp.array([
+            [100.0, 0.0, 0.0],
+            [200.0, 0.0, 0.0],
+            [500.0, 0.0, 0.0],
+        ])
+        densities = jax.vmap(calc_magnetic_energy_density_jax)(H_batch)
+        assert densities.shape == (3,)
+        # Densities should be monotonically increasing (H^2 relationship)
+        assert densities[0] < densities[1] < densities[2]
+
+    def test_vmap_energy_density_magnetic_material(self):
+        """vmap with fixed permeability over batch of H fields."""
+        H_batch = jnp.array([
+            [100.0, 0.0, 0.0],
+            [200.0, 0.0, 0.0],
+        ])
+        densities = jax.vmap(lambda H: calc_magnetic_energy_density_jax(H, 5000.0))(H_batch)
+        assert densities.shape == (2,)
+
+    def test_vmap_inductor_energy(self):
+        """vmap over batch of currents."""
+        currents = jnp.array([1.0, 5.0, 10.0, 20.0])
+        energies = jax.vmap(lambda I: calc_inductor_energy_jax(10.0, current=I))(currents)
+        assert energies.shape == (4,)
+        # U = 0.5*10*I^2: 5, 125, 500, 2000
+        expected = 0.5 * 10.0 * currents ** 2
+        assert jnp.allclose(energies, expected, atol=1e-10)
+
+    def test_vmap_total_energy(self):
+        """vmap over batch of H fields for total energy."""
+        H_batch = jnp.array([
+            [100.0, 0.0, 0.0],
+            [200.0, 0.0, 0.0],
+            [300.0, 0.0, 0.0],
+        ])
+        energies = jax.vmap(lambda H: calc_total_magnetic_energy_jax(H, volume=1.0))(H_batch)
+        assert energies.shape == (3,)
+        assert energies[0] < energies[1] < energies[2]
+
+
+# -- Magnetic: NumPy Cross-Validation --
+
+
+@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+class TestMagneticNumpyCrossValidation:
+    """Test JAX magnetic energy results against NumPy reference implementation."""
+
+    def test_energy_density_matches_numpy(self):
+        """JAX magnetic energy density matches NumPy."""
+        from maxwell.electromagnetism.energy.magnetic import (
+            calc_magnetic_energy_density,
+        )
+
+        H_np = np.array([1000.0, 500.0, 250.0])
+        H_jax = jnp.array([1000.0, 500.0, 250.0])
+
+        u_np = calc_magnetic_energy_density(H_np, permeability=5000.0)
+        u_jax = calc_magnetic_energy_density_jax(H_jax, permeability=5000.0)
+
+        assert abs(float(u_jax) - u_np) < 1e-10
+
+    def test_total_energy_matches_numpy(self):
+        """JAX total magnetic energy matches NumPy."""
+        from maxwell.electromagnetism.energy.magnetic import (
+            calc_total_magnetic_energy,
+        )
+
+        H_np = np.array([1000.0, 0.0, 0.0])
+        H_jax = jnp.array([1000.0, 0.0, 0.0])
+
+        U_np = calc_total_magnetic_energy(H_np, volume=5.0, permeability=1.0)
+        U_jax = calc_total_magnetic_energy_jax(H_jax, volume=5.0, permeability=1.0)
+
+        assert abs(float(U_jax) - U_np) < 1e-10
+
+    def test_BH_dot_matches_numpy(self):
+        """JAX B.H dot product matches NumPy."""
+        from maxwell.electromagnetism.energy.magnetic import (
+            calc_energy_density_from_BH_dot,
+        )
+
+        B_np = np.array([50000.0, 25000.0, 0.0])
+        H_np = np.array([100.0, 50.0, 0.0])
+        B_jax = jnp.array([50000.0, 25000.0, 0.0])
+        H_jax = jnp.array([100.0, 50.0, 0.0])
+
+        u_np = calc_energy_density_from_BH_dot(B_np, H_np)
+        u_jax = calc_energy_density_from_BH_dot_jax(B_jax, H_jax)
+
+        assert abs(float(u_jax) - u_np) < 1e-10
+
+    def test_class_energy_density_matches_numpy(self):
+        """MagneticEnergyJAX.energy_density matches NumPy."""
+        from maxwell.electromagnetism.energy.magnetic import MagneticEnergy
+
+        H_np = np.array([1000.0, 0.0, 0.0])
+        np_energy = MagneticEnergy(H_field=H_np, permeability=5000.0)
+
+        jax_energy = MagneticEnergyJAX(
+            H_field=jnp.array([1000.0, 0.0, 0.0]),
+            permeability=5000.0,
         )
 
         assert abs(float(jax_energy.energy_density) - np_energy.energy_density) < 1e-10
