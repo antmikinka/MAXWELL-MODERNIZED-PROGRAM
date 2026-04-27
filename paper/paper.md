@@ -32,7 +32,7 @@ Maxwell Modernized translates every one of the 866 articles into executable Pyth
 
 - **866/866 articles covered** (100% of the Treatise)
 - **246 Python modules**, 1,140 functions, 246 classes
-- **706 tests** passing (629 core + 77 JAX adapter), 50 mathematical validations, 81 cross-module verification checks
+- **757 tests** passing (629 core + 77 JAX adapter + 51 SymPy verification), 50 mathematical validations, 81 cross-module verification checks
 - MIT-licensed, PyPI-installable, CI-verified on three platforms and three Python versions
 
 The library serves historians of science (executable primary-source analysis), physics educators (teaching classical electromagnetism from original formulations), computational physicists (verified analytical formulas for benchmarking numerical solvers), and engineers (reference calculations in CGS-EMU units). This is a computational edition of Maxwell's Treatise -- every formula, every derivation, every article -- implemented as reproducible, testable Python code with full scholarly traceability.
@@ -285,7 +285,7 @@ The verification computes the ESU/EMU ratio for charge, current, potential, and 
 
 ## Test Suite Overview
 
-The project maintains 706 tests across 21 test modules, all passing. The test suite covers:
+The project maintains 757 tests across 22 test modules, all passing. The test suite covers:
 
 - Each of the four Parts (electrostatics, electrokinematics, magnetism, electromagnetism)
 - Mathematical functions (spherical harmonics, elliptic integrals, vector calculus)
@@ -295,6 +295,7 @@ The project maintains 706 tests across 21 test modules, all passing. The test su
 - Cross-module consistency (stress tensor, Faraday, Maxwell equations, CGS-SI roundtrip)
 - Convergence analysis (spherical harmonic expansion, grid resolution)
 - JAX adapter (pytree registration, JIT compilation, auto-differentiation, batched evaluation, elliptic integrals, Faraday induction, Maxwell equations, spherical harmonics)
+- SymPy symbolic verification (div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem)
 
 Tests run on Ubuntu, Windows, and macOS with Python 3.10, 3.11, and 3.12 via GitHub Actions, providing six platform/version combinations per commit.
 
@@ -317,6 +318,25 @@ Fifty mathematical validation checks verify analytical correctness across the sp
 
 Each validation compares computed results against known analytical solutions at the specified tolerance, with failures flagged in the verification report.
 
+## SymPy Symbolic Verification
+
+The `maxwell.verification.sympy_verify` module provides symbolic (not numerical) verification of Maxwell's mathematical identities using SymPy's exact algebra engine. Unlike the numerical validations above, these proofs establish exact equality -- zero is proven algebraically, not approximated within tolerance. Each symbolic verifier is decorated with `@maxwell_cite` and registered with the `VerificationSuite`:
+
+| Symbolic proof | Articles | Technique |
+|---------------|----------|-----------|
+| `div(curl(F)) = 0` | Art. 15 | Symbolic vector calculus |
+| `curl(grad(phi)) = 0` | Arts. 15, 39 | Gradient of scalar potential |
+| 1D wave equation | Art. 787 | `f(x - ct)` propagation |
+| Laplace equation for `1/r` | Arts. 134, 340 | Spherical Laplacian |
+| `E = -grad(V)` (Coulomb) | Arts. 27, 80 | Symbolic gradient of `q/r` |
+| Biot-Savart law | Arts. 515, 621 | Curl of vector potential |
+| Faraday's law | Art. 593 | Symbolic curl + time derivative |
+| Continuity equation | Art. 64 | Charge conservation `div J + drho/dt = 0` |
+| Maxwell displacement current | Arts. 597, 601 | `dD/dt` term verification |
+| Stokes' theorem | Art. 46 | Surface/line integral equality |
+
+The verification uses a fallback chain of SymPy simplification strategies (`trigsimp`, `simplify`, `expand_trig`, numerical substitution) to reduce symbolic expressions to zero. All 51 tests pass, confirming that Maxwell's original formulations are algebraically exact.
+
 ## Cross-Module Verification
 
 The verification framework (`maxwell/verification/`) provides four layers of automated validation:
@@ -337,7 +357,7 @@ The verification framework (`maxwell/verification/`) provides four layers of aut
 
 Two GitHub Actions workflows ensure ongoing correctness:
 
-- **`test.yml`**: Runs the full 629-test suite on Ubuntu, Windows, and macOS with Python 3.10, 3.11, and 3.12 (6 job combinations). Verifies imports of key modules. Triggers on push to `main` and all `feat/**` branches, and on pull requests.
+- **`test.yml`**: Runs the full 757-test suite on Ubuntu, Windows, and macOS with Python 3.10, 3.11, and 3.12 (6 job combinations). Verifies imports of key modules. Triggers on push to `main` and all `feat/**` branches, and on pull requests.
 
 - **`math-verification.yml`**: Runs the 10-step mathematical verification pipeline on Ubuntu with Python 3.12, including dimensional analysis, speed-of-light verification, vector calculus identities, spherical harmonics, Maxwell equations, Gauss's law (Monte Carlo), energy density formulas, elliptic integrals, constitutive relations, and the full test suite.
 
