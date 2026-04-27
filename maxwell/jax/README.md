@@ -23,14 +23,16 @@ maxwell/jax/
 ├── _elliptic.py                 # AGM-based elliptic integrals (no scipy)
 ├── core/
 │   ├── __init__.py
-│   └── charge.py                # PointChargeJAX, multi-charge systems
+│   ├── charge.py                # PointChargeJAX, multi-charge systems
+│   └── magnet.py                # MagneticPoleJAX, MagnetJAX (force, torque, mutual action)
 ├── electromagnetism/
 │   ├── __init__.py
 │   ├── induction.py             # FaradayInductionJAX (Lenz's law, EMF)
 │   ├── equations.py             # MaxwellEquationsJAX (all 9 equations)
 │   ├── forces.py                # LorentzForceJAX, MaxwellStressTensorJAX
 │   ├── ampere_maxwell.py        # DisplacementCurrentJAX, AmpereMaxwellLawJAX
-│   └── field.py                 # ElectricFieldJAX (flux, Gauss's law, EMF)
+│   ├── field.py                 # ElectricFieldJAX (flux, Gauss's law, EMF)
+│   └── energy.py                # ElectrostaticEnergyJAX, CapacitorEnergyJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -209,6 +211,165 @@ T = tensor.stress_tensor()  # 3x3 tensor
 P = tensor.electromagnetic_pressure  # scalar pressure
 ```
 
+## Electric Field
+
+```python
+from maxwell.jax.electromagnetism.field import (
+    ElectricFieldJAX,
+    electric_flux_jax,
+    gauss_law_closed_surface_jax,
+    field_from_potential_jax,
+    superposition_field_jax,
+)
+from maxwell.jax.core.charge import PointChargeJAX
+
+# Electric field from a point charge
+charge = PointChargeJAX(q=1.0, position=jnp.array([0.0, 0.0, 0.0]))
+E = ElectricFieldJAX.from_point_charge(charge, jnp.array([5.0, 0.0, 0.0]))
+# E.value = [0.04, 0.0, 0.0] statvolt/cm
+# E.magnitude = 0.04 statvolt/cm
+
+# Superposition: field from multiple charges
+charges = [
+    PointChargeJAX(q=1.0, position=jnp.array([1.0, 0.0, 0.0])),
+    PointChargeJAX(q=-1.0, position=jnp.array([-1.0, 0.0, 0.0])),
+]
+E_resultant = ElectricFieldJAX.superposition(charges, jnp.array([0.0, 1.0, 0.0]))
+
+# Electric flux through a surface (Gauss's law)
+flux = electric_flux_jax(
+    field_value=jnp.array([100.0, 0.0, 0.0]),
+    surface_normal=jnp.array([1.0, 0.0, 0.0]),
+    area=25.0,
+)  # = 2500.0
+
+# Gauss's law: flux through closed surface = 4*pi*Q
+expected_flux = gauss_law_closed_surface_jax(total_charge=1.0)
+# = 4 * pi = 12.566...
+
+# Field from potential via auto-differentiation
+V_func = lambda r: 1.0 / jnp.linalg.norm(r)  # V = q/r for q=1
+E_from_V = field_from_potential_jax(V_func, jnp.array([1.0, 0.0, 0.0]))
+# E = -grad(V) = [1.0, 0.0, 0.0] at r=1
+```
+
+## Permanent Magnets
+
+```python
+from maxwell.jax.core.magnet import (
+    MagneticPoleJAX,
+    MagnetJAX,
+    pole_force_jax,
+    mutual_action_jax,
+    torque_on_magnet_jax,
+)
+
+# Single magnetic pole (Art. 371)
+pole = MagneticPoleJAX(strength=10.0, position=jnp.array([0.0, 0.0, 0.0]))
+H = pole.field_at(jnp.array([5.0, 0.0, 0.0]))
+# H = [0.4, 0.0, 0.0] gauss
+
+# Permanent magnet with N and S poles (Arts. 372-376)
+magnet = MagnetJAX(
+    pole_strength=10.0,
+    north_position=jnp.array([1.0, 0.0, 0.0]),
+    south_position=jnp.array([-1.0, 0.0, 0.0]),
+)
+# Properties
+moment = magnet.magnetic_moment       # [20.0, 0.0, 0.0] emu
+length = magnet.magnetic_length        # 2.0 cm
+axis = magnet.magnetic_axis            # [1.0, 0.0, 0.0]
+
+# Field at a point
+H = magnet.field_at(jnp.array([0.0, 5.0, 0.0]))
+
+# Force on magnet in non-uniform field
+F = magnet.force_in_field(
+    H_north=jnp.array([100.0, 0.0, 0.0]),
+    H_south=jnp.array([90.0, 0.0, 0.0]),
+)
+
+# Torque in uniform field
+tau = magnet.torque_in_uniform_field(jnp.array([0.0, 100.0, 0.0]))
+
+# Potential energy in field
+W = magnet.potential_energy_in_field(jnp.array([100.0, 0.0, 0.0]))
+# W = -m dot H = -2000.0 erg
+
+# Mutual action between two magnets (Art. 392)
+interaction = mutual_action_jax(
+    m1_strength=10.0, m1_north=jnp.array([1.0, 0.0, 0.0]), m1_south=jnp.array([0.0, 0.0, 0.0]),
+    m2_strength=5.0,  m2_north=jnp.array([5.0, 0.0, 0.0]), m2_south=jnp.array([4.0, 0.0, 0.0]),
+)
+# interaction['force_on_2'], interaction['torque_on_2'], interaction['potential_energy']
+
+# JIT-compiled torque
+from jax import jit
+torque_fn = jit(MagnetJAX._torque_jit)
+tau = torque_fn(10.0, jnp.array([1.0, 0.0, 0.0]), jnp.array([-1.0, 0.0, 0.0]),
+                jnp.array([0.0, 100.0, 0.0]))
+```
+
+## Electrostatic Energy
+
+```python
+from maxwell.jax.electromagnetism.energy import (
+    ElectrostaticEnergyJAX,
+    CapacitorEnergyJAX,
+    calc_electrostatic_energy_density_jax,
+    calc_capacitor_energy_jax,
+    analyze_electrostatic_energy_jax,
+)
+
+# Energy density in electric field (Art. 630)
+E_field = jnp.array([100.0, 0.0, 0.0])  # statvolt/cm
+u = calc_electrostatic_energy_density_jax(E_field, permittivity=1.0)
+# u = E^2 / (8*pi) = 10000 / (8*pi) erg/cm^3
+
+# Using the class interface
+energy = ElectrostaticEnergyJAX(E_field=jnp.array([100.0, 0.0, 0.0]))
+density = energy.energy_density             # erg/cm^3
+D = energy.D_field                           # D = eps * E
+total = energy.total_energy(volume=1.0)     # erg, for V = 1 cm^3
+
+# From E and D fields directly (general dielectric)
+energy_general = ElectrostaticEnergyJAX.from_E_and_D(
+    E=jnp.array([100.0, 0.0, 0.0]),
+    D=jnp.array([200.0, 0.0, 0.0]),
+)
+
+# JIT-compiled
+from jax import jit
+density_jit = jit(ElectrostaticEnergyJAX._density_jit)
+u_fast = density_jit(jnp.array([100.0, 0.0, 0.0]), 1.0)
+
+# Capacitor energy (Art. 631)
+cap = CapacitorEnergyJAX(capacitance=10.0)  # C = 10 cm (CGS)
+U1 = cap.from_voltage(voltage=5.0)           # U = 0.5 * 10 * 25 = 125 erg
+U2 = cap.from_charge(charge=50.0)            # U = 2500 / 20 = 125 erg
+U3 = cap.from_QV(charge=50.0, voltage=5.0)  # U = 0.5 * 50 * 5 = 125 erg
+
+# Standalone function with auto-selection
+U = calc_capacitor_energy_jax(capacitance=10.0, voltage=5.0)
+
+# Comprehensive analysis
+result = analyze_electrostatic_energy_jax(
+    E_field=jnp.array([100.0, 0.0, 0.0]),
+    permittivity=1.0,
+    volume=1.0,
+    capacitance=10.0,
+    voltage=5.0,
+)
+# result['energy_density'], result['total_energy'],
+# result['capacitor_energy'], result['energy_ratio']
+
+# Auto-differentiation: d(energy)/d(E_x)
+from jax import grad
+dU_dEx = grad(lambda Ex: ElectrostaticEnergyJAX._density_jit(
+    jnp.array([Ex, 0.0, 0.0]), 1.0
+))(100.0)
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -232,7 +393,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-157 tests cover:
+271 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -249,6 +410,8 @@ dVdq = grad(potential_at_q)(1.0)
 - Electric field (14 tests): magnitude, direction, superposition, EMF, flux, Gauss's law
 - Field from potential (12 tests): gradient via auto-diff, line integral
 - Standalone functions (8 tests): tension, flux, gauss_law, superposition
+- MagnetJAX (23 tests): MagneticPole, magnet properties, force, torque, mutual action
+- Electrostatic energy (60 tests): energy density, capacitor energy, E.D dot, isotropy, auto-diff
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -261,6 +424,8 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | JAX Class | Articles |
 |-----------|----------|
 | PointChargeJAX | Arts. 29-30 |
+| MagneticPoleJAX | Art. 371 |
+| MagnetJAX | Arts. 372-376, 392 |
 | FaradayInductionJAX | Arts. 528-531, 542 |
 | MaxwellEquationsJAX | Arts. 594-603 |
 | SphericalHarmonicExpansionJAX | Arts. 128-146 |
@@ -269,4 +434,6 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | DisplacementCurrentJAX | Arts. 606-607 |
 | AmpereMaxwellLawJAX | Arts. 606-607 |
 | ElectricFieldJAX | Arts. 44-49, 68-76 |
+| ElectrostaticEnergyJAX | Arts. 630-631 |
+| CapacitorEnergyJAX | Arts. 630-631 |
 | ellipk_jax, ellipe_jax | Arts. 149-152 |
