@@ -2463,3 +2463,619 @@ class TestMagnetStandaloneJAX:
             assert jnp.allclose(H_jax, H_np, atol=1e-8), (
                 f"Field mismatch at {point}: JAX={H_jax}, NumPy={H_np}"
             )
+
+
+# ── Imports for ElectrostaticEnergyJAX ────────────────────────────────────
+
+try:
+    from maxwell.jax.electromagnetism.energy import (
+        ElectrostaticEnergyJAX,
+        CapacitorEnergyJAX,
+        calc_electrostatic_energy_density_jax,
+        calc_energy_density_from_ED_dot_jax,
+        calc_capacitor_energy_jax,
+        calc_total_electrostatic_energy_jax,
+        verify_electrostatic_energy_density_jax,
+        analyze_electrostatic_energy_jax,
+    )
+
+    HAS_ENERGY = True
+except ImportError:
+    HAS_ENERGY = False
+
+
+# ── ElectrostaticEnergyJAX ────────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestElectrostaticEnergyJAX:
+    """Test ElectrostaticEnergyJAX against NumPy reference (Arts. 630-631)."""
+
+    def setup_method(self):
+        self.energy = ElectrostaticEnergyJAX(
+            E_field=jnp.array([1000.0, 0.0, 0.0]),
+            permittivity=1.0,
+        )
+
+    def test_D_field_vacuum(self):
+        """D = eps * E for vacuum (eps=1)."""
+        D = self.energy.D_field
+        expected = jnp.array([1000.0, 0.0, 0.0])
+        assert jnp.allclose(D, expected, atol=1e-10)
+
+    def test_D_field_dielectric(self):
+        """D = eps * E for dielectric (eps=2.5)."""
+        energy = ElectrostaticEnergyJAX(
+            E_field=jnp.array([500.0, 0.0, 0.0]),
+            permittivity=2.5,
+        )
+        D = energy.D_field
+        expected = jnp.array([1250.0, 0.0, 0.0])
+        assert jnp.allclose(D, expected, atol=1e-10)
+
+    def test_energy_density_vacuum(self):
+        """u = (1/8*pi) * E^2 for E=1000 statV/cm."""
+        u = self.energy.energy_density
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_dielectric(self):
+        """u = (1/8*pi) * eps * E^2 with eps=2.5."""
+        energy = ElectrostaticEnergyJAX(
+            E_field=jnp.array([500.0, 0.0, 0.0]),
+            permittivity=2.5,
+        )
+        u = energy.energy_density
+        expected = 2.5 * 500.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_zero_field(self):
+        """Zero field gives zero energy density."""
+        energy = ElectrostaticEnergyJAX(
+            E_field=jnp.zeros(3),
+            permittivity=1.0,
+        )
+        assert energy.energy_density == 0.0
+
+    def test_energy_density_arbitrary_direction(self):
+        """Energy density depends on E^2, not direction."""
+        E_mag = 1000.0
+        e_x = ElectrostaticEnergyJAX(E_field=jnp.array([E_mag, 0.0, 0.0]))
+        e_y = ElectrostaticEnergyJAX(E_field=jnp.array([0.0, E_mag, 0.0]))
+        e_z = ElectrostaticEnergyJAX(E_field=jnp.array([0.0, 0.0, E_mag]))
+        e_diag = ElectrostaticEnergyJAX(
+            E_field=jnp.array([E_mag / jnp.sqrt(3), E_mag / jnp.sqrt(3), E_mag / jnp.sqrt(3)])
+        )
+        # Diagonal: E^2 = E_mag^2 * (1/3 + 1/3 + 1/3) = E_mag^2
+        assert abs(e_x.energy_density - e_diag.energy_density) < 1e-6
+        assert abs(e_x.energy_density - e_y.energy_density) < 1e-6
+        assert abs(e_y.energy_density - e_z.energy_density) < 1e-6
+
+    def test_total_energy_uniform_field(self):
+        """U = u * V for uniform field."""
+        u = self.energy.energy_density
+        V = 1.0  # cm^3
+        U = self.energy.total_energy(V)
+        assert abs(U - u * V) < 1e-10
+
+    def test_total_energy_various_volumes(self):
+        """Total energy scales linearly with volume."""
+        U1 = self.energy.total_energy(1.0)
+        U10 = self.energy.total_energy(10.0)
+        assert abs(U10 - 10.0 * U1) < 1e-6
+
+    def test_energy_density_at_override(self):
+        """energy_density_at uses custom E field."""
+        E_override = jnp.array([500.0, 0.0, 0.0])
+        u = self.energy.energy_density_at(E_override)
+        expected = 500.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_from_E_and_D_linear(self):
+        """from_E_and_D recovers correct permittivity for linear dielectric."""
+        E = jnp.array([100.0, 0.0, 0.0])
+        D = jnp.array([250.0, 0.0, 0.0])  # eps = 2.5
+        energy = ElectrostaticEnergyJAX.from_E_and_D(E, D)
+        assert abs(energy.permittivity - 2.5) < 1e-10
+
+    def test_from_E_and_D_vacuum(self):
+        """from_E_and_D for vacuum (eps=1)."""
+        E = jnp.array([100.0, 0.0, 0.0])
+        D = jnp.array([100.0, 0.0, 0.0])
+        energy = ElectrostaticEnergyJAX.from_E_and_D(E, D)
+        assert abs(energy.permittivity - 1.0) < 1e-10
+
+    def test_pytree_flatten(self):
+        """ElectrostaticEnergyJAX can be flattened and unflattened."""
+        energy = ElectrostaticEnergyJAX(
+            E_field=jnp.array([100.0, 0.0, 0.0]),
+            permittivity=2.0,
+        )
+        leaves, treedef = jax.tree_util.tree_flatten(energy)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert jnp.allclose(restored.E_field, energy.E_field)
+        assert restored.permittivity == energy.permittivity
+
+
+# ── CapacitorEnergyJAX ────────────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestCapacitorEnergyJAX:
+    """Test CapacitorEnergyJAX (Art. 631)."""
+
+    def setup_method(self):
+        self.cap = CapacitorEnergyJAX(capacitance=10.0)
+
+    def test_from_voltage_basic(self):
+        """U = (1/2) * C * V^2 for C=10, V=100: U = 50000."""
+        U = self.cap.from_voltage(100.0)
+        expected = 0.5 * 10.0 * 100.0 ** 2  # = 50000
+        assert abs(U - expected) < 1e-10
+
+    def test_from_voltage_zero(self):
+        """Zero voltage gives zero energy."""
+        U = self.cap.from_voltage(0.0)
+        assert U == 0.0
+
+    def test_from_charge_basic(self):
+        """U = Q^2/(2*C) for Q=1000, C=10: U = 50000."""
+        U = self.cap.from_charge(1000.0)
+        expected = 1000.0 ** 2 / (2.0 * 10.0)  # = 50000
+        assert abs(U - expected) < 1e-10
+
+    def test_from_charge_zero(self):
+        """Zero charge gives zero energy."""
+        U = self.cap.from_charge(0.0)
+        assert U == 0.0
+
+    def test_from_QV_basic(self):
+        """U = (1/2) * Q * V for Q=1000, V=100: U = 50000."""
+        U = self.cap.from_QV(1000.0, 100.0)
+        expected = 0.5 * 1000.0 * 100.0  # = 50000
+        assert abs(U - expected) < 1e-10
+
+    def test_consistency_CV2_vs_Q2C(self):
+        """CV^2 and Q^2/C forms give same result (Q=CV)."""
+        C = 10.0
+        V = 100.0
+        Q = C * V  # = 1000
+        cap = CapacitorEnergyJAX(capacitance=C)
+        U_cv2 = cap.from_voltage(V)
+        U_q2c = cap.from_charge(Q)
+        assert abs(U_cv2 - U_q2c) < 1e-10
+
+    def test_consistency_CV2_vs_QV(self):
+        """CV^2 and QV forms give same result (Q=CV)."""
+        C = 10.0
+        V = 100.0
+        Q = C * V
+        cap = CapacitorEnergyJAX(capacitance=C)
+        U_cv2 = cap.from_voltage(V)
+        U_qv = cap.from_QV(Q, V)
+        assert abs(U_cv2 - U_qv) < 1e-10
+
+    def test_consistency_Q2C_vs_QV(self):
+        """Q^2/C and QV forms give same result."""
+        C = 10.0
+        V = 100.0
+        Q = C * V
+        cap = CapacitorEnergyJAX(capacitance=C)
+        U_q2c = cap.from_charge(Q)
+        U_qv = cap.from_QV(Q, V)
+        assert abs(U_q2c - U_qv) < 1e-10
+
+    def test_pytree_flatten(self):
+        """CapacitorEnergyJAX can be flattened and unflattened."""
+        cap = CapacitorEnergyJAX(capacitance=10.0)
+        leaves, treedef = jax.tree_util.tree_flatten(cap)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert restored.capacitance == cap.capacitance
+
+
+# ── Standalone Energy Functions ───────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestStandaloneEnergyFunctions:
+    """Test standalone electrostatic energy JAX functions."""
+
+    def test_energy_density_vacuum(self):
+        """u = (1/8*pi) * E^2 for vacuum."""
+        E = jnp.array([1000.0, 0.0, 0.0])
+        u = calc_electrostatic_energy_density_jax(E)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_dielectric(self):
+        """u = (1/8*pi) * eps * E^2 for eps=2.5."""
+        E = jnp.array([500.0, 0.0, 0.0])
+        u = calc_electrostatic_energy_density_jax(E, permittivity=2.5)
+        expected = 2.5 * 500.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_zero_field(self):
+        """Zero field gives zero energy density."""
+        u = calc_electrostatic_energy_density_jax(jnp.zeros(3))
+        assert u == 0.0
+
+    def test_energy_density_arbitrary_direction(self):
+        """Energy density is isotropic."""
+        E_mag = 1000.0
+        u_x = calc_electrostatic_energy_density_jax(jnp.array([E_mag, 0.0, 0.0]))
+        u_y = calc_electrostatic_energy_density_jax(jnp.array([0.0, E_mag, 0.0]))
+        u_z = calc_electrostatic_energy_density_jax(jnp.array([0.0, 0.0, E_mag]))
+        assert jnp.isclose(u_x, u_y, rtol=1e-10)
+        assert jnp.isclose(u_y, u_z, rtol=1e-10)
+
+    def test_energy_density_from_ED_dot_parallel(self):
+        """u = (1/8*pi) * E.D for parallel E and D."""
+        E = jnp.array([100.0, 0.0, 0.0])
+        D = jnp.array([250.0, 0.0, 0.0])  # eps=2.5
+        u = calc_energy_density_from_ED_dot_jax(E, D)
+        # E.D = 100 * 250 = 25000
+        expected = 25000.0 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_from_ED_dot_non_parallel(self):
+        """u = (1/8*pi) * E.D for non-parallel E and D."""
+        E = jnp.array([100.0, 0.0, 0.0])
+        D = jnp.array([80.0, 60.0, 0.0])  # anisotropic
+        u = calc_energy_density_from_ED_dot_jax(E, D)
+        # E.D = 100*80 + 0*60 = 8000
+        expected = 8000.0 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_energy_density_from_ED_dot_zero(self):
+        """Perpendicular E and D gives zero energy density."""
+        E = jnp.array([100.0, 0.0, 0.0])
+        D = jnp.array([0.0, 100.0, 0.0])
+        u = calc_energy_density_from_ED_dot_jax(E, D)
+        assert abs(u) < 1e-15
+
+    def test_capacitor_energy_CV2(self):
+        """U = (1/2)*C*V^2."""
+        U = calc_capacitor_energy_jax(capacitance=10.0, voltage=100.0)
+        expected = 0.5 * 10.0 * 100.0 ** 2
+        assert abs(U - expected) < 1e-10
+
+    def test_capacitor_energy_Q2C(self):
+        """U = Q^2/(2*C)."""
+        U = calc_capacitor_energy_jax(capacitance=10.0, charge=1000.0)
+        expected = 1000.0 ** 2 / (2.0 * 10.0)
+        assert abs(U - expected) < 1e-10
+
+    def test_capacitor_energy_no_params(self):
+        """Missing voltage and charge raises error."""
+        with pytest.raises(ValueError):
+            calc_capacitor_energy_jax(capacitance=10.0)
+
+    def test_total_energy_jax(self):
+        """U = u * V for uniform field."""
+        E = jnp.array([1000.0, 0.0, 0.0])
+        U = calc_total_electrostatic_energy_jax(E, volume=1.0)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi) * 1.0
+        assert abs(U - expected) < 1e-6
+
+    def test_total_energy_various_volumes(self):
+        """Total energy scales with volume."""
+        E = jnp.array([500.0, 0.0, 0.0])
+        U1 = calc_total_electrostatic_energy_jax(E, volume=1.0)
+        U10 = calc_total_electrostatic_energy_jax(E, volume=10.0)
+        assert abs(U10 - 10.0 * U1) < 1e-6
+
+
+# ── Energy: Verification and Analysis ─────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestEnergyVerification:
+    """Test verification and analysis functions."""
+
+    def test_verify_isotropy(self):
+        """verify_electrostatic_energy_density_jax confirms isotropy."""
+        result = verify_electrostatic_energy_density_jax(
+            E_magnitude=1000.0, permittivity=1.0
+        )
+        assert result["verified"] is True
+        assert result["all_match"] is True
+
+    def test_verify_expected_value(self):
+        """Verification matches expected (1/8*pi)*eps*E^2."""
+        E_mag = 1000.0
+        eps = 1.0
+        result = verify_electrostatic_energy_density_jax(E_magnitude=E_mag, permittivity=eps)
+        expected = eps * E_mag ** 2 / (8.0 * jnp.pi)
+        assert abs(result["expected"] - expected) < 1e-10
+
+    def test_verify_dielectric(self):
+        """Verification works for dielectric (eps != 1)."""
+        result = verify_electrostatic_energy_density_jax(
+            E_magnitude=500.0, permittivity=2.5
+        )
+        assert result["verified"] is True
+
+    def test_analyze_electrostatic_energy_basic(self):
+        """Basic analysis returns expected keys."""
+        E = jnp.array([1000.0, 0.0, 0.0])
+        result = analyze_electrostatic_energy_jax(E)
+        expected_keys = {
+            "E_field", "E_magnitude", "E_direction",
+            "D_field", "permittivity", "energy_density",
+        }
+        assert expected_keys.issubset(set(result.keys()))
+
+    def test_analyze_with_volume(self):
+        """Analysis with volume includes total_energy."""
+        E = jnp.array([1000.0, 0.0, 0.0])
+        result = analyze_electrostatic_energy_jax(E, volume=1.0)
+        assert "total_energy" in result
+        assert "volume" in result
+
+    def test_analyze_with_capacitor(self):
+        """Analysis with capacitor params includes capacitor_energy."""
+        E = jnp.array([1000.0, 0.0, 0.0])
+        result = analyze_electrostatic_energy_jax(
+            E, volume=1.0, capacitance=10.0, voltage=100.0
+        )
+        assert "capacitor_energy" in result
+        assert "energy_ratio" in result
+
+
+# ── Energy: Auto-Diff ─────────────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestEnergyAutoDiff:
+    """Test JAX auto-differentiation on energy formulas."""
+
+    def test_grad_density_wrt_E(self):
+        """dU/dE_x = (eps/(4*pi)) * E_x for energy density."""
+        def density(Ex):
+            E = jnp.array([Ex, 0.0, 0.0])
+            return calc_electrostatic_energy_density_jax(E)
+
+        g = jax.grad(density)(1000.0)
+        expected = 1000.0 / (4.0 * jnp.pi)
+        assert abs(g - expected) < 1e-8
+
+    def test_grad_density_wrt_permittivity(self):
+        """dU/d(eps) = E^2/(8*pi)."""
+        def density_eps(eps):
+            return calc_electrostatic_energy_density_jax(
+                jnp.array([1000.0, 0.0, 0.0]), permittivity=eps
+            )
+
+        g = jax.grad(density_eps)(1.0)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(g - expected) < 1e-6
+
+    def test_grad_capacitor_energy_wrt_V(self):
+        """dU/dV = C*V for U = (1/2)*C*V^2."""
+        def energy_V(V):
+            return calc_capacitor_energy_jax(capacitance=10.0, voltage=V)
+
+        g = jax.grad(energy_V)(100.0)
+        expected = 10.0 * 100.0  # = 1000
+        assert abs(g - expected) < 1e-10
+
+    def test_grad_capacitor_energy_wrt_C(self):
+        """dU/dC = (1/2)*V^2."""
+        def energy_C(C):
+            return calc_capacitor_energy_jax(capacitance=C, voltage=100.0)
+
+        g = jax.grad(energy_C)(10.0)
+        expected = 0.5 * 100.0 ** 2  # = 5000
+        assert abs(g - expected) < 1e-10
+
+    def test_grad_total_energy_wrt_volume(self):
+        """dU/dV = u (energy density)."""
+        def total_energy_V(vol):
+            return calc_total_electrostatic_energy_jax(
+                jnp.array([1000.0, 0.0, 0.0]), vol
+            )
+
+        g = jax.grad(total_energy_V)(1.0)
+        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(g - expected) < 1e-6
+
+    def test_grad_ED_dot_wrt_E(self):
+        """d(E.D)/dE = D for dot product density."""
+        D = jnp.array([250.0, 0.0, 0.0])
+
+        def density_ED(Ex):
+            E = jnp.array([Ex, 0.0, 0.0])
+            return calc_energy_density_from_ED_dot_jax(E, D)
+
+        g = jax.grad(density_ED)(100.0)
+        expected = 250.0 / (8.0 * jnp.pi)
+        assert abs(g - expected) < 1e-10
+
+
+# ── Energy: JIT ───────────────────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestEnergyJIT:
+    """Test JIT compilation compatibility."""
+
+    def test_jit_energy_density(self):
+        """Energy density works under JIT."""
+
+        @jax.jit
+        def jit_density(E, eps):
+            return calc_electrostatic_energy_density_jax(E, permittivity=eps)
+
+        u = jit_density(jnp.array([1000.0, 0.0, 0.0]), 1.0)
+        assert u > 0
+
+    def test_jit_total_energy(self):
+        """Total energy works under JIT."""
+
+        @jax.jit
+        def jit_total(E, vol, eps):
+            return calc_total_electrostatic_energy_jax(E, vol, permittivity=eps)
+
+        U = jit_total(jnp.array([1000.0, 0.0, 0.0]), 1.0, 1.0)
+        assert U > 0
+
+    def test_jit_capacitor_energy(self):
+        """Capacitor energy works under JIT."""
+
+        @jax.jit
+        def jit_cap(C, V):
+            return calc_capacitor_energy_jax(C, voltage=V)
+
+        U = jit_cap(10.0, 100.0)
+        expected = 0.5 * 10.0 * 100.0 ** 2
+        assert abs(U - expected) < 1e-10
+
+    def test_jit_electrostatic_energy_class(self):
+        """ElectrostaticEnergyJAX works under JIT."""
+
+        @jax.jit
+        def jit_class_density(E, eps):
+            e = ElectrostaticEnergyJAX(E_field=E, permittivity=eps)
+            return e.energy_density
+
+        u = jit_class_density(jnp.array([500.0, 0.0, 0.0]), 2.0)
+        expected = 2.0 * 500.0 ** 2 / (8.0 * jnp.pi)
+        assert abs(u - expected) < 1e-6
+
+    def test_jit_capacitor_class(self):
+        """CapacitorEnergyJAX works under JIT."""
+
+        @jax.jit
+        def jit_cap_class(C, V):
+            cap = CapacitorEnergyJAX(capacitance=C)
+            return cap.from_voltage(V)
+
+        U = jit_cap_class(10.0, 100.0)
+        expected = 0.5 * 10.0 * 100.0 ** 2
+        assert abs(U - expected) < 1e-10
+
+
+# ── Energy: vmap ──────────────────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestEnergyVmap:
+    """Test batched evaluation via vmap."""
+
+    def test_vmap_energy_density(self):
+        """vmap over batch of E fields."""
+        E_batch = jnp.array([
+            [100.0, 0.0, 0.0],
+            [200.0, 0.0, 0.0],
+            [500.0, 0.0, 0.0],
+        ])
+        densities = jax.vmap(calc_electrostatic_energy_density_jax)(E_batch)
+        assert densities.shape == (3,)
+        # Densities should be monotonically increasing (E^2 relationship)
+        assert densities[0] < densities[1] < densities[2]
+
+    def test_vmap_energy_density_dielectric(self):
+        """vmap with fixed permittivity over batch of E fields."""
+        E_batch = jnp.array([
+            [100.0, 0.0, 0.0],
+            [200.0, 0.0, 0.0],
+        ])
+        densities = jax.vmap(lambda E: calc_electrostatic_energy_density_jax(E, 2.5))(E_batch)
+        assert densities.shape == (2,)
+
+    def test_vmap_capacitor_energy(self):
+        """vmap over batch of voltages."""
+        voltages = jnp.array([10.0, 50.0, 100.0, 200.0])
+        energies = jax.vmap(lambda V: calc_capacitor_energy_jax(10.0, voltage=V))(voltages)
+        assert energies.shape == (4,)
+        # U = 0.5*10*V^2: 500, 12500, 50000, 200000
+        expected = 0.5 * 10.0 * voltages ** 2
+        assert jnp.allclose(energies, expected, atol=1e-10)
+
+    def test_vmap_total_energy(self):
+        """vmap over batch of E fields for total energy."""
+        E_batch = jnp.array([
+            [100.0, 0.0, 0.0],
+            [200.0, 0.0, 0.0],
+            [300.0, 0.0, 0.0],
+        ])
+        energies = jax.vmap(lambda E: calc_total_electrostatic_energy_jax(E, volume=1.0))(E_batch)
+        assert energies.shape == (3,)
+        assert energies[0] < energies[1] < energies[2]
+
+
+# ── Energy: NumPy Cross-Validation ────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+class TestEnergyNumpyCrossValidation:
+    """Test JAX results against NumPy reference implementation."""
+
+    def test_energy_density_matches_numpy(self):
+        """JAX energy density matches NumPy."""
+        from maxwell.electromagnetism.energy.electrostatic import (
+            calc_electrostatic_energy_density,
+        )
+
+        E_np = np.array([1000.0, 500.0, 250.0])
+        E_jax = jnp.array([1000.0, 500.0, 250.0])
+
+        u_np = calc_electrostatic_energy_density(E_np, permittivity=2.5)
+        u_jax = calc_electrostatic_energy_density_jax(E_jax, permittivity=2.5)
+
+        assert abs(float(u_jax) - u_np) < 1e-10
+
+    def test_total_energy_matches_numpy(self):
+        """JAX total energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrostatic import (
+            calc_total_electrostatic_energy,
+        )
+
+        E_np = np.array([1000.0, 0.0, 0.0])
+        E_jax = jnp.array([1000.0, 0.0, 0.0])
+
+        U_np = calc_total_electrostatic_energy(E_np, volume=5.0, permittivity=1.0)
+        U_jax = calc_total_electrostatic_energy_jax(E_jax, volume=5.0, permittivity=1.0)
+
+        assert abs(float(U_jax) - U_np) < 1e-10
+
+    def test_capacitor_energy_matches_numpy(self):
+        """JAX capacitor energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrostatic import (
+            calc_capacitor_energy,
+        )
+
+        U_np = calc_capacitor_energy(capacitance=10.0, voltage=100.0)
+        U_jax = calc_capacitor_energy_jax(capacitance=10.0, voltage=100.0)
+
+        assert abs(float(U_jax) - U_np) < 1e-10
+
+    def test_ED_dot_matches_numpy(self):
+        """JAX E.D dot product matches NumPy."""
+        from maxwell.electromagnetism.energy.electrostatic import (
+            calc_energy_density_from_ED_dot,
+        )
+
+        E_np = np.array([100.0, 50.0, 0.0])
+        D_np = np.array([250.0, 125.0, 0.0])
+        E_jax = jnp.array([100.0, 50.0, 0.0])
+        D_jax = jnp.array([250.0, 125.0, 0.0])
+
+        u_np = calc_energy_density_from_ED_dot(E_np, D_np)
+        u_jax = calc_energy_density_from_ED_dot_jax(E_jax, D_jax)
+
+        assert abs(float(u_jax) - u_np) < 1e-10
+
+    def test_class_energy_density_matches_numpy(self):
+        """ElectrostaticEnergyJAX.energy_density matches NumPy."""
+        from maxwell.electromagnetism.energy.electrostatic import ElectrostaticEnergy
+
+        E_np = np.array([1000.0, 0.0, 0.0])
+        np_energy = ElectrostaticEnergy(E_field=E_np, permittivity=2.0)
+
+        jax_energy = ElectrostaticEnergyJAX(
+            E_field=jnp.array([1000.0, 0.0, 0.0]),
+            permittivity=2.0,
+        )
+
+        assert abs(float(jax_energy.energy_density) - np_energy.energy_density) < 1e-10

@@ -42,6 +42,16 @@ from maxwell.jax.electromagnetism.field import (
     gauss_law_closed_surface_jax,
     superposition_field_jax,
 )
+from maxwell.jax.electromagnetism.energy import (
+    CapacitorEnergyJAX,
+    ElectrostaticEnergyJAX,
+    analyze_electrostatic_energy_jax,
+    calc_capacitor_energy_jax,
+    calc_electrostatic_energy_density_jax,
+    calc_energy_density_from_ED_dot_jax,
+    calc_total_electrostatic_energy_jax,
+    verify_electrostatic_energy_density_jax,
+)
 from maxwell.jax.electromagnetism.forces import (
     LorentzForceJAX,
     MaxwellStressTensorJAX,
@@ -60,6 +70,15 @@ __all__ = [
     "displacement_current_jax",
     "magnetic_field_from_current_jax",
     "total_current_jax",
+    # Electrostatic energy
+    "ElectrostaticEnergyJAX",
+    "CapacitorEnergyJAX",
+    "calc_electrostatic_energy_density_jax",
+    "calc_energy_density_from_ED_dot_jax",
+    "calc_capacitor_energy_jax",
+    "calc_total_electrostatic_energy_jax",
+    "verify_electrostatic_energy_density_jax",
+    "analyze_electrostatic_energy_jax",
     # Maxwell equations
     "ElectromagneticFieldJAX",
     "MaxwellEquationsJAX",
