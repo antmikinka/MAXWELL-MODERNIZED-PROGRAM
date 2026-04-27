@@ -434,6 +434,21 @@ try:
 except ImportError:
     HAS_FORCES = False
 
+try:
+    from maxwell.jax.electromagnetism.ampere_maxwell import (
+        DisplacementCurrentJAX,
+        AmpereMaxwellLawJAX,
+        displacement_current_jax,
+        total_current_jax,
+        curl_H_jax,
+        magnetic_field_from_current_jax,
+        capacitor_paradox_jax,
+    )
+
+    HAS_AMPERE = True
+except ImportError:
+    HAS_AMPERE = False
+
 
 # ── Faraday Induction JAX ─────────────────────────────────────────
 
@@ -1166,3 +1181,222 @@ class TestMaxwellStressTensorJAX:
         g = jax.grad(pressure_from_E)(100.0)
         expected = 100.0 / (4.0 * jnp.pi)
         assert abs(g - expected) < 1e-10
+
+
+# ── Ampere-Maxwell JAX ──────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed")
+class TestDisplacementCurrentJAX:
+    """Test DisplacementCurrentJAX (Arts. 606-607)."""
+
+    def test_D_field(self):
+        """D = epsilon * E."""
+        dc = DisplacementCurrentJAX(
+            E_field=jnp.array([100.0, 0.0, 0.0]),
+            dE_dt=jnp.array([1e10, 0.0, 0.0]),
+            permittivity=2.0,
+        )
+        D = dc.D_field
+        assert jnp.allclose(D, jnp.array([200.0, 0.0, 0.0]), atol=1e-10)
+
+    def test_dD_dt(self):
+        """dD/dt = epsilon * dE/dt."""
+        dc = DisplacementCurrentJAX(
+            E_field=jnp.zeros(3),
+            dE_dt=jnp.array([1e10, 0.0, 0.0]),
+            permittivity=2.0,
+        )
+        dD = dc.dD_dt
+        assert jnp.allclose(dD, jnp.array([2e10, 0.0, 0.0]), atol=1e-10)
+
+    def test_J_displacement(self):
+        """J_d = (1/4pi) * dD/dt."""
+        dc = DisplacementCurrentJAX(
+            E_field=jnp.zeros(3),
+            dE_dt=jnp.array([4.0 * jnp.pi * 1e6, 0.0, 0.0]),
+            permittivity=1.0,
+        )
+        J_d = dc.J_displacement
+        # J_d = (1/4pi) * 4pi * 1e6 = 1e6
+        assert jnp.allclose(J_d, jnp.array([1e6, 0.0, 0.0]), atol=1e-6)
+
+    def test_magnitude(self):
+        """|J_d| returns scalar magnitude."""
+        dc = DisplacementCurrentJAX(
+            E_field=jnp.zeros(3),
+            dE_dt=jnp.array([0.0, 4.0 * jnp.pi * 1e6, 0.0]),
+            permittivity=1.0,
+        )
+        mag = dc.magnitude
+        assert abs(mag - 1e6) < 1e-6
+
+    def test_jit_compatible(self):
+        """DisplacementCurrentJAX works under JIT."""
+
+        @jax.jit
+        def jit_J_disp(dE_dt):
+            dc = DisplacementCurrentJAX(dE_dt=dE_dt)
+            return dc.J_displacement
+
+        J = jit_J_disp(jnp.array([1e10, 0.0, 0.0]))
+        expected = jnp.array([1e10 / (4.0 * jnp.pi), 0.0, 0.0])
+        assert jnp.allclose(J, expected, atol=1e-6)
+
+
+@pytest.mark.skipif(not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed")
+class TestAmpereMaxwellLawJAX:
+    """Test AmpereMaxwellLawJAX (Arts. 606-607)."""
+
+    def test_J_displacement(self):
+        """J_d = (epsilon/4pi) * dE/dt."""
+        aml = AmpereMaxwellLawJAX(
+            J_conduction=jnp.zeros(3),
+            dE_dt=jnp.array([4.0 * jnp.pi * 1e6, 0.0, 0.0]),
+            permittivity=1.0,
+        )
+        J_d = aml.J_displacement
+        assert jnp.allclose(J_d, jnp.array([1e6, 0.0, 0.0]), atol=1e-6)
+
+    def test_J_total(self):
+        """J_total = J_cond + J_disp."""
+        aml = AmpereMaxwellLawJAX(
+            J_conduction=jnp.array([2e6, 0.0, 0.0]),
+            dE_dt=jnp.array([4.0 * jnp.pi * 1e6, 0.0, 0.0]),
+            permittivity=1.0,
+        )
+        J_total = aml.J_total
+        # J_cond = 2e6, J_disp = 1e6 => total = 3e6
+        assert jnp.allclose(J_total, jnp.array([3e6, 0.0, 0.0]), atol=1e-6)
+
+    def test_curl_H(self):
+        """curl(H) = 4pi * J_total."""
+        aml = AmpereMaxwellLawJAX(
+            J_conduction=jnp.array([1.0, 0.0, 0.0]),
+            dE_dt=jnp.zeros(3),
+            permittivity=1.0,
+        )
+        curl_H = aml.curl_H
+        expected = 4.0 * jnp.pi * jnp.array([1.0, 0.0, 0.0])
+        assert jnp.allclose(curl_H, expected, atol=1e-10)
+
+    def test_compute_curl_H_override(self):
+        """compute_curl_H with override parameters."""
+        aml = AmpereMaxwellLawJAX(
+            J_conduction=jnp.array([1.0, 0.0, 0.0]),
+            dE_dt=jnp.zeros(3),
+        )
+        curl = aml.compute_curl_H(
+            J_conduction=jnp.array([0.0, 2.0, 0.0]),
+            dE_dt=jnp.zeros(3),
+        )
+        expected = 4.0 * jnp.pi * jnp.array([0.0, 2.0, 0.0])
+        assert jnp.allclose(curl, expected, atol=1e-10)
+
+    def test_pure_displacement_current(self):
+        """No conduction current: only displacement contributes."""
+        aml = AmpereMaxwellLawJAX(
+            J_conduction=jnp.zeros(3),
+            dE_dt=jnp.array([1e10, 0.0, 0.0]),
+        )
+        curl_H = aml.curl_H
+        expected = jnp.array([1e10, 0.0, 0.0])  # (epsilon/4pi)*4pi = 1
+        assert jnp.allclose(curl_H, expected, atol=1e-6)
+
+    def test_jit_compatible(self):
+        """AmpereMaxwellLawJAX works under JIT."""
+
+        @jax.jit
+        def jit_curl_H(J_c, dE):
+            aml = AmpereMaxwellLawJAX(J_conduction=J_c, dE_dt=dE)
+            return aml.curl_H
+
+        curl = jit_curl_H(jnp.array([1.0, 0.0, 0.0]), jnp.zeros(3))
+        assert curl.shape == (3,)
+
+
+@pytest.mark.skipif(not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed")
+class TestAmpereStandaloneJAX:
+    """Test standalone Ampere-Maxwell JAX functions."""
+
+    def test_displacement_current_jax(self):
+        """J_d = (epsilon/4pi) * dE/dt."""
+        J_d = displacement_current_jax(
+            dE_dt=jnp.array([4.0 * jnp.pi * 1e8, 0.0, 0.0]),
+            permittivity=1.0,
+        )
+        assert jnp.allclose(J_d, jnp.array([1e8, 0.0, 0.0]), atol=1e-6)
+
+    def test_total_current_jax(self):
+        """J_total = J_cond + J_disp."""
+        J_total = total_current_jax(
+            J_conduction=jnp.array([1e6, 0.0, 0.0]),
+            dE_dt=jnp.array([4.0 * jnp.pi * 1e6, 0.0, 0.0]),
+        )
+        assert jnp.allclose(J_total, jnp.array([2e6, 0.0, 0.0]), atol=1e-6)
+
+    def test_curl_H_jax(self):
+        """curl(H) = 4pi * J_total."""
+        curl = curl_H_jax(
+            J_conduction=jnp.array([1.0, 0.0, 0.0]),
+            dE_dt=jnp.zeros(3),
+        )
+        expected = 4.0 * jnp.pi * jnp.array([1.0, 0.0, 0.0])
+        assert jnp.allclose(curl, expected, atol=1e-10)
+
+    def test_magnetic_field_from_current_jax(self):
+        """dH = (1/4pi) * (Idl x r) / r^3."""
+        Idl = jnp.array([0.0, 0.0, 1.0])  # Current element along z
+        r = jnp.array([1.0, 0.0, 0.0])  # Position along x
+        H = magnetic_field_from_current_jax(Idl, r)
+        # Idl x r = (0,0,1) x (1,0,0) = (0, 1, 0)
+        # dH = (1/4pi) * (0, 1, 0) / 1 = (0, 1/(4pi), 0)
+        expected = jnp.array([0.0, 1.0 / (4.0 * jnp.pi), 0.0])
+        assert jnp.allclose(H, expected, atol=1e-10)
+
+    def test_magnetic_field_zero_distance(self):
+        """Zero distance gives zero field (safe norm)."""
+        H = magnetic_field_from_current_jax(
+            jnp.array([0.0, 0.0, 1.0]),
+            jnp.zeros(3),
+        )
+        assert jnp.allclose(H, jnp.zeros(3), atol=1e-15)
+
+    def test_capacitor_paradox_jax(self):
+        """Displacement current equals conduction current for capacitor."""
+        result = capacitor_paradox_jax(
+            charging_current=1.0,
+            plate_area=100.0,
+        )
+        assert jnp.isclose(result["displacement_current"], 1.0, atol=1e-10)
+        assert bool(result["paradox_resolved"]) is True
+
+    def test_jit_displacement_current(self):
+        """Displacement current works under JIT."""
+
+        @jax.jit
+        def jit_J(dE):
+            return displacement_current_jax(dE)
+
+        J = jit_J(jnp.array([1e10, 0.0, 0.0]))
+        assert J.shape == (3,)
+
+    def test_grad_J_disp_wrt_dE_dt(self):
+        """dJ_d/d(dE/dt) = epsilon/(4pi)."""
+
+        def J_disp_from_dE(dE_x):
+            return displacement_current_jax(jnp.array([dE_x, 0.0, 0.0]))[0]
+
+        g = jax.grad(J_disp_from_dE)(1e10)
+        expected = 1.0 / (4.0 * jnp.pi)
+        assert abs(g - expected) < 1e-10
+
+    def test_vmap_over_dE_dt(self):
+        """vmap over multiple dE/dt values."""
+        dE_dt_batch = jnp.array([
+            [1e10, 0.0, 0.0],
+            [0.0, 2e10, 0.0],
+            [0.0, 0.0, 3e10],
+        ])
+        J_d_batch = jax.vmap(displacement_current_jax)(dE_dt_batch)
+        assert J_d_batch.shape == (3, 3)
