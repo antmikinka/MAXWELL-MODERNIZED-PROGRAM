@@ -29,7 +29,8 @@ maxwell/jax/
 │   ├── induction.py             # FaradayInductionJAX (Lenz's law, EMF)
 │   ├── equations.py             # MaxwellEquationsJAX (all 9 equations)
 │   ├── forces.py                # LorentzForceJAX, MaxwellStressTensorJAX
-│   └── ampere_maxwell.py        # DisplacementCurrentJAX, AmpereMaxwellLawJAX
+│   ├── ampere_maxwell.py        # DisplacementCurrentJAX, AmpereMaxwellLawJAX
+│   └── field.py                 # ElectricFieldJAX (flux, Gauss's law, EMF)
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -231,7 +232,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-123 tests cover:
+157 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -245,6 +246,9 @@ dVdq = grad(potential_at_q)(1.0)
 - Maxwell stress tensor (13 tests)
 - Ampere-Maxwell law (20 tests)
 - Safe arithmetic (5 tests)
+- Electric field (14 tests): magnitude, direction, superposition, EMF, flux, Gauss's law
+- Field from potential (12 tests): gradient via auto-diff, line integral
+- Standalone functions (8 tests): tension, flux, gauss_law, superposition
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -264,4 +268,5 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | MaxwellStressTensorJAX | Arts. 641-646 |
 | DisplacementCurrentJAX | Arts. 606-607 |
 | AmpereMaxwellLawJAX | Arts. 606-607 |
+| ElectricFieldJAX | Arts. 44-49, 68-76 |
 | ellipk_jax, ellipe_jax | Arts. 149-152 |

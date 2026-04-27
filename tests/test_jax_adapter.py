@@ -1400,3 +1400,345 @@ class TestAmpereStandaloneJAX:
         ])
         J_d_batch = jax.vmap(displacement_current_jax)(dE_dt_batch)
         assert J_d_batch.shape == (3, 3)
+
+
+# ── Imports for ElectricFieldJAX ────────────────────────────────────
+
+try:
+    from maxwell.jax.electromagnetism.field import (
+        ElectricFieldJAX,
+        electric_flux_jax,
+        electric_tension_jax,
+        electromotive_force_jax,
+        field_from_potential_jax,
+        gauss_law_closed_surface_jax,
+        superposition_field_jax,
+    )
+
+    HAS_EFIELD = True
+except ImportError:
+    HAS_EFIELD = False
+
+
+# ── Electric Field JAX ──────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_EFIELD, reason="maxwell.jax.electromagnetism.field not installed")
+class TestElectricFieldJAX:
+    """Test ElectricFieldJAX against Maxwell's theory (Arts. 44-49, 68-76)."""
+
+    def test_magnitude(self):
+        """|E| = sqrt(Ex^2 + Ey^2 + Ez^2)."""
+        E = ElectricFieldJAX(
+            value=jnp.array([3.0, 0.0, 4.0]),
+            position=jnp.array([1.0, 0.0, 0.0]),
+        )
+        assert abs(E.magnitude - 5.0) < 1e-15
+
+    def test_magnitude_zero(self):
+        """Zero field has zero magnitude."""
+        E = ElectricFieldJAX(
+            value=jnp.zeros(3),
+            position=jnp.zeros(3),
+        )
+        assert E.magnitude == 0.0
+
+    def test_direction_unit_vector(self):
+        """Direction is a unit vector."""
+        E = ElectricFieldJAX(
+            value=jnp.array([3.0, 0.0, 4.0]),
+            position=jnp.array([1.0, 0.0, 0.0]),
+        )
+        d = E.direction
+        mag = jnp.linalg.norm(d)
+        assert abs(mag - 1.0) < 1e-15
+
+    def test_direction_zero_field(self):
+        """Zero field returns zero direction (safe)."""
+        E = ElectricFieldJAX(
+            value=jnp.zeros(3),
+            position=jnp.zeros(3),
+        )
+        d = E.direction
+        assert jnp.allclose(d, jnp.zeros(3), atol=1e-15)
+
+    def test_from_point_charge(self):
+        """E from a point charge matches Coulomb's law."""
+        charge = PointChargeJAX(q=1.0, position=jnp.zeros(3))
+        point = jnp.array([5.0, 0.0, 0.0])
+        E = ElectricFieldJAX.from_point_charge(charge, point)
+        # E = q/r^2 = 1/25 = 0.04 along x
+        expected_E = jnp.array([0.04, 0.0, 0.0])
+        assert jnp.allclose(E.value, expected_E, atol=1e-15)
+        assert jnp.allclose(E.position, point)
+
+    def test_superposition_two_charges(self):
+        """Superposition of two charges: E_total = E1 + E2."""
+        q1 = PointChargeJAX(q=1.0, position=jnp.array([-1.0, 0.0, 0.0]))
+        q2 = PointChargeJAX(q=1.0, position=jnp.array([1.0, 0.0, 0.0]))
+        point = jnp.array([0.0, 0.0, 0.0])
+        E = ElectricFieldJAX.superposition([q1, q2], point)
+        # By symmetry, the x-components cancel: E1 = (1,0,0), E2 = (-1,0,0)
+        # Actually at origin: E1 from q1 at (-1,0,0): r = (1,0,0), E = 1/1^2 * (1,0,0) = (1,0,0)
+        # E2 from q2 at (1,0,0): r = (-1,0,0), E = 1/1^2 * (-1,0,0) = (-1,0,0)
+        # Total: (0, 0, 0)
+        assert jnp.allclose(E.value, jnp.zeros(3), atol=1e-15)
+
+    def test_superposition_asymmetric(self):
+        """Superposition with asymmetric charges."""
+        q1 = PointChargeJAX(q=2.0, position=jnp.array([-1.0, 0.0, 0.0]))
+        q2 = PointChargeJAX(q=1.0, position=jnp.array([2.0, 0.0, 0.0]))
+        point = jnp.array([0.0, 0.0, 0.0])
+        E = ElectricFieldJAX.superposition([q1, q2], point)
+        # E1: r = (1,0,0), r^2=1, E1 = 2*(1,0,0)/1 = (2,0,0)
+        # E2: r = (-2,0,0), r^2=4, E2 = 1*(-1,0,0)/4 = (-0.25,0,0)
+        expected = jnp.array([2.0 - 0.25, 0.0, 0.0])
+        assert jnp.allclose(E.value, expected, atol=1e-15)
+
+    def test_intensity(self):
+        """intensity() returns the magnitude."""
+        E = ElectricFieldJAX(
+            value=jnp.array([0.0, 100.0, 0.0]),
+            position=jnp.zeros(3),
+        )
+        assert abs(E.intensity() - 100.0) < 1e-15
+
+    def test_electromotive_force_uniform(self):
+        """EMF = E . (end - start) for uniform field."""
+        E = ElectricFieldJAX(
+            value=jnp.array([10.0, 0.0, 0.0]),
+            position=jnp.array([0.0, 0.0, 0.0]),
+        )
+        emf = E.electromotive_force(
+            path_end=jnp.array([5.0, 0.0, 0.0]),
+            num_steps=100,
+        )
+        # EMF = 10 * 5 = 50
+        assert abs(emf - 50.0) < 1e-10
+
+    def test_electromotive_force_perpendicular(self):
+        """EMF = 0 when displacement is perpendicular to field."""
+        E = ElectricFieldJAX(
+            value=jnp.array([0.0, 0.0, 100.0]),
+            position=jnp.array([0.0, 0.0, 0.0]),
+        )
+        emf = E.electromotive_force(
+            path_end=jnp.array([5.0, 0.0, 0.0]),
+            num_steps=100,
+        )
+        assert abs(emf) < 1e-10
+
+    def test_field_at_batched(self):
+        """Batched evaluation broadcasts uniform field."""
+        E = ElectricFieldJAX(
+            value=jnp.array([1.0, 2.0, 3.0]),
+            position=jnp.zeros(3),
+        )
+        positions = jnp.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
+        fields = E.field_at_batched(positions)
+        assert fields.shape == (3, 3)
+        assert jnp.allclose(fields[0], jnp.array([1.0, 2.0, 3.0]))
+        assert jnp.allclose(fields[1], jnp.array([1.0, 2.0, 3.0]))
+        assert jnp.allclose(fields[2], jnp.array([1.0, 2.0, 3.0]))
+
+    def test_pytree_flatten(self):
+        """ElectricFieldJAX can be flattened and unflattened."""
+        E = ElectricFieldJAX(
+            value=jnp.array([1.0, 2.0, 3.0]),
+            position=jnp.array([0.0, 0.0, 0.0]),
+        )
+        leaves, treedef = jax.tree_util.tree_flatten(E)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert jnp.allclose(restored.value, E.value)
+        assert jnp.allclose(restored.position, E.position)
+
+    def test_jit_field_properties(self):
+        """Field magnitude and direction work under JIT."""
+
+        @jax.jit
+        def jit_magnitude(value):
+            E = ElectricFieldJAX(value=value, position=jnp.zeros(3))
+            return E.magnitude
+
+        mag = jit_magnitude(jnp.array([3.0, 0.0, 4.0]))
+        assert abs(mag - 5.0) < 1e-15
+
+    def test_grad_magnitude_wrt_field(self):
+        """d|E|/dE = E/|E| (unit direction)."""
+
+        def mag(Ex):
+            E = ElectricFieldJAX(
+                value=jnp.array([Ex, 0.0, 0.0]),
+                position=jnp.zeros(3),
+            )
+            return E.magnitude
+
+        g = jax.grad(mag)(3.0)
+        # d|E|/dEx = Ex/|E| = 3/3 = 1
+        assert abs(g - 1.0) < 1e-15
+
+
+@pytest.mark.skipif(not HAS_EFIELD, reason="maxwell.jax.electromagnetism.field not installed")
+class TestElectricFieldStandaloneJAX:
+    """Test standalone electric field functions."""
+
+    def test_electric_tension_jax(self):
+        """Tension = |E|."""
+        T = electric_tension_jax(jnp.array([3.0, 0.0, 4.0]))
+        assert abs(T - 5.0) < 1e-15
+
+    def test_electric_tension_zero(self):
+        """Zero field gives zero tension."""
+        T = electric_tension_jax(jnp.zeros(3))
+        assert T == 0.0
+
+    def test_electric_flux_jax(self):
+        """Flux = E . n * A for uniform field."""
+        E = jnp.array([100.0, 0.0, 0.0])
+        n = jnp.array([1.0, 0.0, 0.0])
+        flux = electric_flux_jax(E, n, area=10.0)
+        # Flux = 100 * 1 * 10 = 1000
+        assert abs(flux - 1000.0) < 1e-15
+
+    def test_electric_flux_jax_perpendicular(self):
+        """Zero flux when field is perpendicular to surface."""
+        E = jnp.array([0.0, 0.0, 100.0])
+        n = jnp.array([1.0, 0.0, 0.0])
+        flux = electric_flux_jax(E, n, area=10.0)
+        assert abs(flux) < 1e-15
+
+    def test_electric_flux_jax_oblique(self):
+        """Flux at oblique angle: E . n = |E| * cos(theta)."""
+        E = jnp.array([100.0, 100.0, 0.0])
+        n = jnp.array([1.0, 0.0, 0.0])
+        flux = electric_flux_jax(E, n, area=1.0)
+        # E . n = 100
+        assert abs(flux - 100.0) < 1e-15
+
+    def test_gauss_law_jax(self):
+        """Gauss's law: Flux = 4*pi*Q."""
+        Q = 1.0
+        flux = gauss_law_closed_surface_jax(Q)
+        expected = 4.0 * jnp.pi * 1.0
+        assert abs(flux - expected) < 1e-15
+
+    def test_gauss_law_jax_zero_charge(self):
+        """Zero enclosed charge gives zero flux."""
+        flux = gauss_law_closed_surface_jax(0.0)
+        assert flux == 0.0
+
+    def test_gauss_law_jax_negative(self):
+        """Negative charge gives negative flux."""
+        Q = -2.0
+        flux = gauss_law_closed_surface_jax(Q)
+        expected = 4.0 * jnp.pi * (-2.0)
+        assert abs(flux - expected) < 1e-15
+
+    def test_field_from_potential_jax(self):
+        """E = -grad(V) for V = q/r."""
+        def V(point):
+            r = jnp.linalg.norm(point)
+            return 1.0 / r
+
+        point = jnp.array([1.0, 0.0, 0.0])
+        E = field_from_potential_jax(V, point)
+        # For V = 1/r, E = -grad(V) = r_hat/r^2 = (1,0,0)
+        expected = jnp.array([1.0, 0.0, 0.0])
+        assert jnp.allclose(E, expected, atol=1e-6)
+
+    def test_field_from_potential_jax_quadratic(self):
+        """E = -grad(V) for V = x^2 + y^2 + z^2."""
+        def V(point):
+            return jnp.sum(point ** 2)
+
+        point = jnp.array([1.0, 2.0, 3.0])
+        E = field_from_potential_jax(V, point)
+        # grad(V) = (2x, 2y, 2z), E = -(2x, 2y, 2z)
+        expected = jnp.array([-2.0, -4.0, -6.0])
+        assert jnp.allclose(E, expected, atol=1e-10)
+
+    def test_electromotive_force_jax_uniform(self):
+        """EMF line integral for uniform field."""
+        def E_func(pos):
+            return jnp.array([10.0, 0.0, 0.0])
+
+        start = jnp.array([0.0, 0.0, 0.0])
+        end = jnp.array([5.0, 0.0, 0.0])
+        emf = electromotive_force_jax(E_func, start, end, num_steps=100)
+        # EMF = 10 * 5 = 50
+        assert abs(emf - 50.0) < 1e-6
+
+    def test_electromotive_force_jax_zero(self):
+        """EMF = 0 for perpendicular path."""
+        def E_func(pos):
+            return jnp.array([0.0, 0.0, 100.0])
+
+        start = jnp.array([0.0, 0.0, 0.0])
+        end = jnp.array([5.0, 0.0, 0.0])
+        emf = electromotive_force_jax(E_func, start, end, num_steps=100)
+        assert abs(emf) < 1e-6
+
+    def test_superposition_field_jax(self):
+        """Superposition field at multiple points."""
+        q1 = PointChargeJAX(q=1.0, position=jnp.zeros(3))
+        q2 = PointChargeJAX(q=2.0, position=jnp.array([3.0, 0.0, 0.0]))
+        points = jnp.array([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        fields = superposition_field_jax([q1, q2], points)
+        assert fields.shape == (2, 3)
+        # At (1,0,0): E1 from q1: r=1, E=(1,0,0); E2 from q2: r=(-2,0,0), E=2*(-1,0,0)/4=(-0.5,0,0)
+        # Total: (0.5, 0, 0)
+        assert jnp.allclose(fields[0, 0], 0.5, atol=1e-10)
+
+    def test_jit_electric_flux(self):
+        """Electric flux works under JIT."""
+
+        @jax.jit
+        def jit_flux(E, n, area):
+            return electric_flux_jax(E, n, area)
+
+        flux = jit_flux(
+            jnp.array([50.0, 0.0, 0.0]),
+            jnp.array([1.0, 0.0, 0.0]),
+            20.0,
+        )
+        assert abs(flux - 1000.0) < 1e-15
+
+    def test_jit_field_from_potential(self):
+        """field_from_potential works under JIT."""
+
+        @jax.jit
+        def jit_field(px, py, pz):
+            point = jnp.array([px, py, pz])
+
+            def V(p):
+                return jnp.sum(p ** 2)
+
+            return field_from_potential_jax(V, point)
+
+        E = jit_field(1.0, 0.0, 0.0)
+        assert E.shape == (3,)
+        assert abs(E[0] - (-2.0)) < 1e-10
+
+    def test_grad_flux_wrt_field(self):
+        """d(Flux)/dE = n * A."""
+
+        def flux_from_Ex(Ex):
+            E = jnp.array([Ex, 0.0, 0.0])
+            n = jnp.array([1.0, 0.0, 0.0])
+            return electric_flux_jax(E, n, 10.0)
+
+        g = jax.grad(flux_from_Ex)(100.0)
+        # d(Flux)/dEx = n_x * A = 1 * 10 = 10
+        assert abs(g - 10.0) < 1e-15
+
+    def test_jit_emf_line_integral(self):
+        """EMF line integral works under JIT."""
+
+        @jax.jit
+        def jit_emf(start, end):
+            def E_func(pos):
+                return jnp.array([5.0, 0.0, 0.0])
+            return electromotive_force_jax(E_func, start, end, num_steps=50)
+
+        emf = jit_emf(jnp.zeros(3), jnp.array([10.0, 0.0, 0.0]))
+        assert abs(emf - 50.0) < 1e-3

@@ -12,6 +12,7 @@ Implemented:
 - verify_maxwell_equations_jax: Numerical verification suite
 - LorentzForceJAX, MaxwellStressTensorJAX: EM forces and stress
 - DisplacementCurrentJAX, AmpereMaxwellLawJAX: Displacement current, Ampere-Maxwell
+- ElectricFieldJAX: Electric field definition, flux, Gauss's law, EMF
 
 Category: B (user_original) — JAX adapter layer.
 """
@@ -31,6 +32,15 @@ from maxwell.jax.electromagnetism.equations import (
     ElectromagneticFieldJAX,
     MaxwellEquationsJAX,
     verify_maxwell_equations_jax,
+)
+from maxwell.jax.electromagnetism.field import (
+    ElectricFieldJAX,
+    electric_flux_jax,
+    electric_tension_jax,
+    electromotive_force_jax,
+    field_from_potential_jax,
+    gauss_law_closed_surface_jax,
+    superposition_field_jax,
 )
 from maxwell.jax.electromagnetism.forces import (
     LorentzForceJAX,
@@ -54,6 +64,14 @@ __all__ = [
     "ElectromagneticFieldJAX",
     "MaxwellEquationsJAX",
     "verify_maxwell_equations_jax",
+    # Electric field
+    "ElectricFieldJAX",
+    "electric_flux_jax",
+    "electric_tension_jax",
+    "electromotive_force_jax",
+    "field_from_potential_jax",
+    "gauss_law_closed_surface_jax",
+    "superposition_field_jax",
     # Forces
     "LorentzForceJAX",
     "MaxwellStressTensorJAX",
