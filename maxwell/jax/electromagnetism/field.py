@@ -85,6 +85,12 @@ class ElectricFieldJAX:
     # ── Factory methods ───────────────────────────────────────────
 
     @classmethod
+    @maxwell_cite(
+        44, 47,
+        part=1, chapter="The Electric Field",
+        theory_class="maxwell_original",
+        description="Create electric field from a point charge (JAX)",
+    )
     def from_point_charge(
         cls, charge: PointChargeJAX, point: jax.Array
     ) -> ElectricFieldJAX:
