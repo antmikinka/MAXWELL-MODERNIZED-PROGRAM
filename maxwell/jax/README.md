@@ -393,7 +393,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-271 tests cover:
+330 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -436,4 +436,6 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | ElectricFieldJAX | Arts. 44-49, 68-76 |
 | ElectrostaticEnergyJAX | Arts. 630-631 |
 | CapacitorEnergyJAX | Arts. 630-631 |
+| MagneticEnergyJAX | Arts. 632-633 |
+| InductorEnergyJAX | Arts. 632-633 |
 | ellipk_jax, ellipe_jax | Arts. 149-152 |
