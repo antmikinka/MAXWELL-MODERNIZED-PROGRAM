@@ -27,7 +27,8 @@ maxwell/jax/
 ├── electromagnetism/
 │   ├── __init__.py
 │   ├── induction.py             # FaradayInductionJAX (Lenz's law, EMF)
-│   └── equations.py             # MaxwellEquationsJAX (all 9 equations)
+│   ├── equations.py             # MaxwellEquationsJAX (all 9 equations)
+│   └── forces.py                # LorentzForceJAX, MaxwellStressTensorJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -171,6 +172,41 @@ expansion.compute_coefficients(f_theta, theta_grid)
 reconstructed = expansion.reconstruct(theta, phi)
 ```
 
+## Lorentz Force & Stress Tensor
+
+```python
+from maxwell.jax.electromagnetism.forces import (
+    LorentzForceJAX,
+    MaxwellStressTensorJAX,
+    force_on_wire_jax,
+    force_on_charge_jax,
+    stress_tensor_jax,
+)
+
+# Lorentz force on wire
+force = LorentzForceJAX(
+    current=1.0,
+    length=jnp.array([10.0, 0.0, 0.0]),
+    B_field=jnp.array([0.0, 0.0, 1000.0]),
+)
+F = force.force_vector  # [0, -10000, 0] dynes
+
+# Force on moving charge
+F = force_on_charge_jax(
+    charge=1.0,
+    velocity=jnp.array([1e8, 0.0, 0.0]),
+    B_field=jnp.array([0.0, 0.0, 100.0]),
+)
+
+# Maxwell stress tensor
+tensor = MaxwellStressTensorJAX(
+    E_field=jnp.array([100.0, 0.0, 0.0]),
+    H_field=jnp.array([0.0, 50.0, 0.0]),
+)
+T = tensor.stress_tensor()  # 3x3 tensor
+P = tensor.electromagnetic_pressure  # scalar pressure
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -194,7 +230,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-77 tests cover:
+103 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -204,6 +240,8 @@ dVdq = grad(potential_at_q)(1.0)
 - Faraday induction (16 tests)
 - Maxwell equations (11 tests)
 - Spherical harmonics (14 tests)
+- Lorentz force (13 tests)
+- Maxwell stress tensor (13 tests)
 - Safe arithmetic (5 tests)
 
 ```bash
@@ -220,4 +258,6 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | FaradayInductionJAX | Arts. 528-531, 542 |
 | MaxwellEquationsJAX | Arts. 594-603 |
 | SphericalHarmonicExpansionJAX | Arts. 128-146 |
+| LorentzForceJAX | Arts. 490-492 |
+| MaxwellStressTensorJAX | Arts. 641-646 |
 | ellipk_jax, ellipe_jax | Arts. 149-152 |

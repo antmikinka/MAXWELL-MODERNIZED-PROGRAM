@@ -32,6 +32,9 @@ from maxwell.verification.sympy_verify import (
     verify_continuity_equation,
     verify_maxwell_correction,
     verify_stokes_theorem,
+    verify_lorentz_force,
+    verify_stress_tensor_properties,
+    verify_ampere_law,
     ALL_SYMBOLIC_VERIFIERS,
 )
 
@@ -284,7 +287,7 @@ class TestAllVerifiersHaveCitations:
 
 
 class TestAllVerifiersPass:
-    """All 10 functions must pass when SymPy is available."""
+    """All 13 functions must pass when SymPy is available."""
 
     def test_all_pass(self):
         for fn in ALL_SYMBOLIC_VERIFIERS:
@@ -323,6 +326,9 @@ class TestModuleExports:
             verify_continuity_equation,
             verify_maxwell_correction,
             verify_stokes_theorem,
+            verify_lorentz_force,
+            verify_stress_tensor_properties,
+            verify_ampere_law,
         )
         # All imports succeed (no assertion needed beyond no ImportError)
 
@@ -339,3 +345,78 @@ class TestVerificationResultImmutability:
         r = verify_div_curl()
         with pytest.raises(Exception):
             r.details = "modified"  # type: ignore[attr-defined]
+
+
+# ── New verifiers (11-13) ────────────────────────────────────────
+
+
+class TestVerifyLorentzForce:
+    """Test Lorentz force symbolic verification."""
+
+    def test_returns_result(self):
+        r = verify_lorentz_force()
+        _assert_result_type(r)
+
+    def test_passes_with_sympy(self):
+        r = verify_lorentz_force()
+        assert r.passed is True
+
+    def test_zero_relative_error(self):
+        r = verify_lorentz_force()
+        assert r.relative_error == 0.0
+
+    def test_citation_attached(self):
+        assert get_citation(verify_lorentz_force) is not None
+        assert 490 in get_citation(verify_lorentz_force).articles
+
+    def test_orthogonality_in_details(self):
+        r = verify_lorentz_force()
+        assert "orthogonality" in r.details.lower()
+
+
+class TestVerifyStressTensorProperties:
+    """Test Maxwell stress tensor symbolic verification."""
+
+    def test_returns_result(self):
+        r = verify_stress_tensor_properties()
+        _assert_result_type(r)
+
+    def test_passes_with_sympy(self):
+        r = verify_stress_tensor_properties()
+        assert r.passed is True
+
+    def test_zero_relative_error(self):
+        r = verify_stress_tensor_properties()
+        assert r.relative_error == 0.0
+
+    def test_citation_attached(self):
+        assert get_citation(verify_stress_tensor_properties) is not None
+        assert 641 in get_citation(verify_stress_tensor_properties).articles
+
+    def test_symmetry_in_details(self):
+        r = verify_stress_tensor_properties()
+        assert "symmetry" in r.details.lower()
+
+
+class TestVerifyAmpereLaw:
+    """Test Ampere's law symbolic verification."""
+
+    def test_returns_result(self):
+        r = verify_ampere_law()
+        _assert_result_type(r)
+
+    def test_passes_with_sympy(self):
+        r = verify_ampere_law()
+        assert r.passed is True
+
+    def test_zero_relative_error(self):
+        r = verify_ampere_law()
+        assert r.relative_error == 0.0
+
+    def test_citation_attached(self):
+        assert get_citation(verify_ampere_law) is not None
+        assert 606 in get_citation(verify_ampere_law).articles
+
+    def test_circulation_in_details(self):
+        r = verify_ampere_law()
+        assert "circulation" in r.details.lower()

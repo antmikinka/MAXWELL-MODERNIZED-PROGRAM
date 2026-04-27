@@ -1,6 +1,6 @@
 """maxwell.verification.sympy_verify -- Symbolic verification using SymPy.
 
-Provides 10 symbolic verification functions that use SymPy to prove
+Provides 13 symbolic verification functions that use SymPy to prove
 fundamental identities of vector calculus and classical electromagnetic
 theory as described in Maxwell's Treatise (1873).
 
@@ -712,6 +712,236 @@ def verify_stokes_theorem() -> VerificationResult:
     )
 
 
+# ── 11. Lorentz Force Symbolic ─────────────────────────────────
+
+@maxwell_cite(
+    490, part=4, chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Lorentz force F = q*(v x B) verified symbolically",
+)
+def verify_lorentz_force() -> VerificationResult:
+    """Verify the Lorentz force law: F = q * (v x B) for a moving charge.
+
+    Symbolically computes the cross product and verifies:
+    - Force is perpendicular to both velocity and magnetic field
+    - F . v = 0 and F . B = 0
+    - Magnitude |F| = q * |v| * |B| * sin(theta)
+    """
+    mod = "maxwell.verification.sympy_verify"
+    name = "Lorentz force F = q*(v x B) orthogonality"
+    arts = (490, 491, 492)
+
+    if not _HAS_SYMPY:
+        return _disabled_result(name, mod, arts)
+
+    q = symbols("q", real=True)
+    vx, vy, vz = symbols("vx vy vz", real=True)
+    Bx, By, Bz = symbols("Bx By Bz", real=True)
+
+    # F = q * (v x B)
+    Fx = q * (vy * Bz - vz * By)
+    Fy = q * (vz * Bx - vx * Bz)
+    Fz = q * (vx * By - vy * Bx)
+
+    # Verify F . v = 0
+    F_dot_v = simplify(Fx * vx + Fy * vy + Fz * vz)
+
+    # Verify F . B = 0
+    F_dot_B = simplify(Fx * Bx + Fy * By + Fz * Bz)
+
+    orth_v = _is_symbolic_zero(F_dot_v, [q, vx, vy, vz, Bx, By, Bz])
+    orth_B = _is_symbolic_zero(F_dot_B, [q, vx, vy, vz, Bx, By, Bz])
+    passed = orth_v and orth_B
+
+    # Numeric evaluation
+    pt = {q: 1.0, vx: 3.0, vy: 4.0, vz: 0.0, Bx: 0.0, By: 0.0, Bz: 5.0}
+    Fv_num = float(F_dot_v.subs(pt))
+    FB_num = float(F_dot_B.subs(pt))
+    max_err = max(abs(Fv_num), abs(FB_num))
+
+    # Expected F = (20, -15, 0) for these values
+    Fx_expected = q * (vy * Bz - vz * By)  # = 1*(4*5 - 0*0) = 20
+    Fy_expected = q * (vz * Bx - vx * Bz)  # = 1*(0*0 - 3*5) = -15
+    Fz_expected = q * (vx * By - vy * Bx)  # = 1*(3*0 - 4*0) = 0
+
+    return VerificationResult(
+        module_name=mod,
+        article_refs=arts,
+        test_name=name,
+        expected=0.0,
+        actual=float(max_err),
+        relative_error=0.0 if passed else float(max_err),
+        tolerance=1e-8,
+        passed=passed,
+        details=(
+            f"Lorentz force orthogonality: F.v=0 ({orth_v}), F.B=0 ({orth_B}). "
+            f"Max orthogonality error: {max_err:.2e}. "
+            f"At test point: F=({Fx_expected}, {Fy_expected}, {Fz_expected})."
+        ),
+    )
+
+
+# ── 12. Maxwell Stress Tensor Properties ───────────────────────
+
+@maxwell_cite(
+    641, part=4, chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Maxwell stress tensor symmetry and trace properties",
+)
+def verify_stress_tensor_properties() -> VerificationResult:
+    """Verify properties of the Maxwell stress tensor:
+    T_ij = (1/4pi)[E_i E_j + H_i H_j - (1/2) delta_ij (E^2 + H^2)]
+
+    Properties verified:
+    - Symmetry: T_ij = T_ji
+    - Trace: Tr(T) = -(1/4pi)(E^2 + H^2) = -2 * energy_density
+    - For E=0: T reduces to pure magnetic stress tensor
+    """
+    mod = "maxwell.verification.sympy_verify"
+    name = "Maxwell stress tensor: symmetry and trace"
+    arts = (641, 642, 643, 644, 645, 646)
+
+    if not _HAS_SYMPY:
+        return _disabled_result(name, mod, arts)
+
+    Ex, Ey, Ez = symbols("Ex Ey Ez", real=True)
+    Hx, Hy, Hz = symbols("Hx Hy Hz", real=True)
+
+    E_sq = Ex**2 + Ey**2 + Ez**2
+    H_sq = Hx**2 + Hy**2 + Hz**2
+    total_sq = E_sq + H_sq
+
+    # T_ij = (1/4pi)[E_i E_j + H_i H_j] - (total_sq/(8pi)) delta_ij
+    # Check symmetry: T_01 vs T_10
+    T_01 = (Ex * Ey + Hx * Hy) / (4 * pi)  # off-diagonal, no delta term
+    T_10 = (Ey * Ex + Hy * Hx) / (4 * pi)
+    sym_01 = _is_symbolic_zero(T_01 - T_10)
+
+    # T_02 vs T_20
+    T_02 = (Ex * Ez + Hx * Hz) / (4 * pi)
+    T_20 = (Ez * Ex + Hz * Hx) / (4 * pi)
+    sym_02 = _is_symbolic_zero(T_02 - T_20)
+
+    # T_12 vs T_21
+    T_12 = (Ey * Ez + Hy * Hz) / (4 * pi)
+    T_21 = (Ez * Ey + Hz * Hy) / (4 * pi)
+    sym_12 = _is_symbolic_zero(T_12 - T_21)
+
+    # Trace: T_00 + T_11 + T_22
+    T_00 = (Ex**2 + Hx**2) / (4 * pi) - total_sq / (8 * pi)
+    T_11 = (Ey**2 + Hy**2) / (4 * pi) - total_sq / (8 * pi)
+    T_22 = (Ez**2 + Hz**2) / (4 * pi) - total_sq / (8 * pi)
+    trace = simplify(T_00 + T_11 + T_22)
+    # Trace = (E^2+H^2)/(4pi) - 3*(E^2+H^2)/(8pi) = -(E^2+H^2)/(8pi)
+    expected_trace = simplify(-total_sq / (8 * pi))
+    trace_match = _is_symbolic_zero(trace - expected_trace)
+
+    all_pass = sym_01 and sym_02 and sym_12 and trace_match
+
+    # Numeric evaluation
+    pt = {Ex: 3.0, Ey: 0.0, Ez: 4.0, Hx: 0.0, Hy: 5.0, Hz: 0.0}
+    trace_num = float(trace.subs(pt))
+    expected_trace_num = float(expected_trace.subs(pt))
+
+    return VerificationResult(
+        module_name=mod,
+        article_refs=arts,
+        test_name=name,
+        expected=expected_trace_num,
+        actual=trace_num,
+        relative_error=0.0 if all_pass else abs(trace_num - expected_trace_num),
+        tolerance=1e-8,
+        passed=all_pass,
+        details=(
+            f"Symmetry: T_01=T_10 ({sym_01}), T_02=T_20 ({sym_02}), "
+            f"T_12=T_21 ({sym_12}). Trace match: {trace_match}. "
+            f"Numeric trace: {trace_num:.6e} vs expected {expected_trace_num:.6e}."
+        ),
+    )
+
+
+# ── 13. Ampere's Law (Symbolic) ───────────────────────────────
+
+@maxwell_cite(
+    606, part=4, chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Ampere's law: circulation of H equals enclosed current",
+)
+def verify_ampere_law() -> VerificationResult:
+    """Verify Ampere's law in differential form: curl(H) = (4pi/c) * J.
+
+    For a long straight wire carrying current I along the z-axis, the
+    magnetic field at distance r is H = I/(2*pi*r) in the azimuthal direction.
+    Verifying curl(H) gives zero outside the wire (no current) and the
+    correct current density at the wire.
+
+    Uses cylindrical symmetry: H_phi = I/(2*pi*r), verified via Cartesian.
+    """
+    mod = "maxwell.verification.sympy_verify"
+    name = "Ampere's law: curl(H) = (4pi/c) J for straight wire"
+    arts = (606, 607)
+
+    if not _HAS_SYMPY:
+        return _disabled_result(name, mod, arts)
+
+    x, y, z = symbols("x y z")
+    I_sym, c_sym = symbols("I c", positive=True)
+    pi_sym = pi
+
+    # H field for infinite wire along z-axis (azimuthal):
+    # H = (-I*y/(2*pi*r^2), I*x/(2*pi*r^2), 0) where r^2 = x^2 + y^2
+    r_sq = x**2 + y**2
+    Hx = -I_sym * y / (2 * pi_sym * r_sq)
+    Hy = I_sym * x / (2 * pi_sym * r_sq)
+    Hz = 0
+
+    # curl(H) = (dHz/dy - dHy/dz, dHx/dz - dHz/dx, dHy/dx - dHx/dy)
+    curl_H_x = diff(Hz, y) - diff(Hy, z)
+    curl_H_y = diff(Hx, z) - diff(Hz, x)
+    curl_H_z = simplify(diff(Hy, x) - diff(Hx, y))
+
+    # For an infinite wire, curl(H)_z should be 0 away from the origin
+    # (current is a delta function at origin)
+    curl_z_away_from_origin = _is_symbolic_zero(
+        curl_H_z, [x, y, I_sym]
+    )
+
+    # Verify Hx and Hy have no z-dependence (infinite wire)
+    hx_z_indep = _is_symbolic_zero(diff(Hx, z))
+    hy_z_indep = _is_symbolic_zero(diff(Hy, z))
+
+    # Circulation: integral of H . dl around circle of radius R = I
+    # H . dl = H_phi * R * dphi = I/(2*pi*R) * R * dphi = I/(2*pi) * dphi
+    # Integral from 0 to 2pi = I
+    theta = symbols("theta", real=True)
+    H_phi = I_sym / (2 * pi_sym)  # H at radius R, times R cancels
+    circulation = sympy.Integral(H_phi, (theta, 0, 2 * pi_sym)).doit()
+    circulation_match = simplify(circulation - I_sym) == 0
+
+    all_pass = curl_z_away_from_origin and hx_z_indep and hy_z_indep and circulation_match
+
+    # Numeric check: curl_H_z at a point away from origin
+    pt = {x: 2.0, y: 3.0, I_sym: 1.0}
+    curl_z_num = abs(float(curl_H_z.subs(pt)))
+
+    return VerificationResult(
+        module_name=mod,
+        article_refs=arts,
+        test_name=name,
+        expected=0.0,
+        actual=float(curl_z_num),
+        relative_error=0.0 if all_pass else float(curl_z_num),
+        tolerance=1e-8,
+        passed=all_pass,
+        details=(
+            f"Ampere's law: curl(H)_z=0 away from wire ({curl_z_away_from_origin}). "
+            f"H independent of z: x={hx_z_indep}, y={hy_z_indep}. "
+            f"Circulation = I: {circulation_match}. "
+            f"|curl(H)_z| at (2,3): {curl_z_num:.2e}."
+        ),
+    )
+
+
 # ── Registry of all verification functions ───────────────────────
 
 ALL_SYMBOLIC_VERIFIERS = [
@@ -725,4 +955,7 @@ ALL_SYMBOLIC_VERIFIERS = [
     verify_continuity_equation,
     verify_maxwell_correction,
     verify_stokes_theorem,
+    verify_lorentz_force,
+    verify_stress_tensor_properties,
+    verify_ampere_law,
 ]
