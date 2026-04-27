@@ -65,6 +65,23 @@ from maxwell.verification.convergence import (
     measure_grid_convergence,
 )
 
+# SymPy symbolic verification
+from maxwell.verification.sympy_verify import (
+    verify_div_curl,
+    verify_grad_curl,
+    verify_wave_equation_1d,
+    verify_laplace_spherical,
+    verify_coulomb_law_symbolic,
+    verify_biot_savart,
+    verify_faraday_symbolic,
+    verify_continuity_equation,
+    verify_maxwell_correction,
+    verify_stokes_theorem,
+    verify_lorentz_force,
+    verify_stress_tensor_properties,
+    verify_ampere_law,
+)
+
 # Legacy exports (kept for backward compatibility)
 from maxwell.verification.equation_extractor import EquationExtractor
 from maxwell.verification.equation_registry import EquationRegistry
@@ -92,6 +109,20 @@ __all__ = [
     # Convergence
     "measure_spherical_harmonic_convergence",
     "measure_grid_convergence",
+    # SymPy symbolic verification
+    "verify_div_curl",
+    "verify_grad_curl",
+    "verify_wave_equation_1d",
+    "verify_laplace_spherical",
+    "verify_coulomb_law_symbolic",
+    "verify_biot_savart",
+    "verify_faraday_symbolic",
+    "verify_continuity_equation",
+    "verify_maxwell_correction",
+    "verify_stokes_theorem",
+    "verify_lorentz_force",
+    "verify_stress_tensor_properties",
+    "verify_ampere_law",
     # Legacy
     "EquationExtractor",
     "EquationRegistry",

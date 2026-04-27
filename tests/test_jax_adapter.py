@@ -416,6 +416,24 @@ try:
 except ImportError:
     HAS_SPH_HARM = False
 
+try:
+    from maxwell.jax.electromagnetism.forces import (
+        LorentzForceJAX,
+        MaxwellStressTensorJAX,
+        force_on_wire_jax,
+        force_on_charge_jax,
+        torque_on_loop_jax,
+        force_density_jax,
+        parallel_current_force_jax,
+        stress_tensor_jax,
+        electromagnetic_pressure_jax,
+        surface_force_jax,
+    )
+
+    HAS_FORCES = True
+except ImportError:
+    HAS_FORCES = False
+
 
 # ── Faraday Induction JAX ─────────────────────────────────────────
 
@@ -860,3 +878,291 @@ class TestSphericalHarmonicsJAX:
         expansion = SphericalHarmonicExpansionJAX(max_l=3)
         assert expansion.coefficients.shape == (4, 7)
         assert jnp.allclose(expansion.coefficients, 0.0, atol=1e-15)
+
+
+# ── Lorentz Force JAX ───────────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_FORCES, reason="maxwell.jax.electromagnetism.forces not installed")
+class TestLorentzForceJAX:
+    """Test LorentzForceJAX against Maxwell's theory (Arts. 490-492)."""
+
+    def test_force_on_wire_basic(self):
+        """F = I * (L x B) for wire along x, B along z."""
+        force = LorentzForceJAX(
+            current=1.0,
+            length=jnp.array([10.0, 0.0, 0.0]),
+            B_field=jnp.array([0.0, 0.0, 1000.0]),
+        )
+        F = force.force_vector
+        # L x B = (10,0,0) x (0,0,1000) = (0, -10000, 0)
+        expected = jnp.array([0.0, -10000.0, 0.0])
+        assert jnp.allclose(F, expected, atol=1e-10)
+
+    def test_force_magnitude(self):
+        """Magnitude |F| = I * |L| * |B| * sin(theta)."""
+        force = LorentzForceJAX(
+            current=1.0,
+            length=jnp.array([5.0, 0.0, 0.0]),
+            B_field=jnp.array([0.0, 0.0, 2000.0]),
+        )
+        assert abs(force.magnitude - 10000.0) < 1e-10
+
+    def test_force_direction(self):
+        """Force direction is unit vector."""
+        force = LorentzForceJAX(
+            current=1.0,
+            length=jnp.array([3.0, 4.0, 0.0]),
+            B_field=jnp.array([0.0, 0.0, 100.0]),
+        )
+        direction = force.direction
+        mag = jnp.linalg.norm(direction)
+        assert abs(mag - 1.0) < 1e-10
+
+    def test_force_on_charge(self):
+        """F = q * (v x B) for a moving charge."""
+        F = force_on_charge_jax(
+            charge=1.0,
+            velocity=jnp.array([1e8, 0.0, 0.0]),
+            B_field=jnp.array([0.0, 0.0, 100.0]),
+        )
+        # v x B = (1e8,0,0) x (0,0,100) = (0, -1e10, 0)
+        expected = jnp.array([0.0, -1e10, 0.0])
+        assert jnp.allclose(F, expected, atol=1e-6)
+
+    def test_force_on_charge_zero_velocity(self):
+        """Stationary charge experiences no magnetic force."""
+        F = force_on_charge_jax(
+            charge=1.0,
+            velocity=jnp.zeros(3),
+            B_field=jnp.array([0.0, 0.0, 100.0]),
+        )
+        assert jnp.allclose(F, jnp.zeros(3), atol=1e-15)
+
+    def test_torque_on_loop(self):
+        """tau = m x B for a current loop."""
+        tau = torque_on_loop_jax(
+            magnetic_moment=jnp.array([0.0, 0.0, 500.0]),
+            B_field=jnp.array([100.0, 0.0, 0.0]),
+        )
+        # m x B = (0,0,500) x (100,0,0) = (0, 50000, 0)
+        expected = jnp.array([0.0, 50000.0, 0.0])
+        assert jnp.allclose(tau, expected, atol=1e-10)
+
+    def test_force_density(self):
+        """f = J x B for current density in magnetic field."""
+        f = force_density_jax(
+            J=jnp.array([1.0, 0.0, 0.0]),
+            B=jnp.array([0.0, 0.0, 100.0]),
+        )
+        expected = jnp.array([0.0, -100.0, 0.0])
+        assert jnp.allclose(f, expected, atol=1e-10)
+
+    def test_parallel_current_force(self):
+        """F = 2 * I1 * I2 * L / r for parallel wires."""
+        F = parallel_current_force_jax(
+            I1=1.0, I2=1.0, separation=1.0, wire_length=10.0,
+        )
+        expected = 2.0 * 1.0 * 1.0 * 10.0 / 1.0  # = 20
+        assert abs(F - expected) < 1e-10
+
+    def test_parallel_current_opposite_direction(self):
+        """Opposite currents give repulsive (negative) force."""
+        F = parallel_current_force_jax(
+            I1=1.0, I2=-1.0, separation=1.0, wire_length=10.0,
+        )
+        assert F < 0  # Repulsive
+
+    def test_standalone_force_on_wire(self):
+        """Standalone force_on_wire_jax function."""
+        F = force_on_wire_jax(
+            current=2.0,
+            length=jnp.array([0.0, 5.0, 0.0]),
+            B_field=jnp.array([0.0, 0.0, 500.0]),
+        )
+        # L x B = (0,5,0) x (0,0,500) = (2500, 0, 0), F = 2 * 2500 = 5000
+        expected = jnp.array([5000.0, 0.0, 0.0])
+        assert jnp.allclose(F, expected, atol=1e-10)
+
+    def test_jit_force_on_wire(self):
+        """Force on wire works under JIT."""
+
+        @jax.jit
+        def jit_force(current, length, B):
+            return force_on_wire_jax(current, length, B)
+
+        F = jit_force(1.0, jnp.array([1.0, 0.0, 0.0]), jnp.array([0.0, 1.0, 0.0]))
+        assert F.shape == (3,)
+
+    def test_vmap_force_on_charge(self):
+        """vmap over multiple charges."""
+
+        def single_force(velocity):
+            return force_on_charge_jax(1.0, velocity, jnp.array([0.0, 0.0, 100.0]))
+
+        velocities = jnp.array([
+            [1e6, 0.0, 0.0],
+            [0.0, 1e6, 0.0],
+            [0.0, 0.0, 1e6],
+        ])
+        forces = jax.vmap(single_force)(velocities)
+        assert forces.shape == (3, 3)
+        # Third velocity is parallel to B, so force should be zero
+        assert jnp.allclose(forces[2], jnp.zeros(3), atol=1e-10)
+
+    def test_grad_force_wrt_current(self):
+        """dF/dI = L x B."""
+        def force_mag(current):
+            return force_on_wire_jax(
+                current, jnp.array([1.0, 0.0, 0.0]), jnp.array([0.0, 0.0, 100.0])
+            )[1]
+
+        g = jax.grad(force_mag)(1.0)
+        # dF_y/dI = -(L_x * B_z) = -100
+        assert abs(g - (-100.0)) < 1e-10
+
+
+# ── Maxwell Stress Tensor JAX ─────────────────────────────────────────
+
+
+@pytest.mark.skipif(not HAS_FORCES, reason="maxwell.jax.electromagnetism.forces not installed")
+class TestMaxwellStressTensorJAX:
+    """Test MaxwellStressTensorJAX (Arts. 641-646)."""
+
+    def test_stress_tensor_electric_only(self):
+        """T_ij for pure electric field along z."""
+        tensor = MaxwellStressTensorJAX(
+            E_field=jnp.array([0.0, 0.0, 100.0]),
+            H_field=jnp.zeros(3),
+        )
+        T = tensor.stress_tensor()
+        assert T.shape == (3, 3)
+        # T_22 should be positive (tension along field lines)
+        # T_zz = (Ez^2)/(4pi) - (Ez^2)/(8pi) = Ez^2/(8pi)
+        expected_Tzz = 100.0**2 / (8.0 * jnp.pi)
+        assert abs(T[2, 2] - expected_Tzz) < 1e-10
+
+    def test_stress_tensor_magnetic_only(self):
+        """T_ij for pure magnetic field along z."""
+        tensor = MaxwellStressTensorJAX(
+            E_field=jnp.zeros(3),
+            H_field=jnp.array([0.0, 0.0, 50.0]),
+        )
+        T = tensor.stress_tensor()
+        expected_Tzz = 50.0**2 / (8.0 * jnp.pi)
+        assert abs(T[2, 2] - expected_Tzz) < 1e-10
+
+    def test_electromagnetic_pressure(self):
+        """P = (1/8pi)(E^2 + H^2)."""
+        tensor = MaxwellStressTensorJAX(
+            E_field=jnp.array([100.0, 0.0, 0.0]),
+            H_field=jnp.array([0.0, 50.0, 0.0]),
+        )
+        P = tensor.electromagnetic_pressure
+        expected = (100.0**2 + 50.0**2) / (8.0 * jnp.pi)
+        assert abs(P - expected) < 1e-10
+
+    def test_stress_tensor_symmetry(self):
+        """T_ij = T_ji (stress tensor is symmetric)."""
+        tensor = MaxwellStressTensorJAX(
+            E_field=jnp.array([1.0, 2.0, 3.0]),
+            H_field=jnp.array([4.0, 5.0, 6.0]),
+        )
+        T = tensor.stress_tensor()
+        assert abs(T[0, 1] - T[1, 0]) < 1e-15
+        assert abs(T[0, 2] - T[2, 0]) < 1e-15
+        assert abs(T[1, 2] - T[2, 1]) < 1e-15
+
+    def test_stress_tensor_trace(self):
+        """Tr(T) = -(1/4pi)(E^2 + H^2)."""
+        tensor = MaxwellStressTensorJAX(
+            E_field=jnp.array([3.0, 0.0, 4.0]),
+            H_field=jnp.array([0.0, 5.0, 0.0]),
+        )
+        T = tensor.stress_tensor()
+        trace = T[0, 0] + T[1, 1] + T[2, 2]
+        E_sq = 3.0**2 + 4.0**2  # = 25
+        H_sq = 5.0**2  # = 25
+        # Trace = (E^2+H^2)/(4pi) - 3*(E^2+H^2)/(8pi) = -(E^2+H^2)/(8pi)
+        expected_trace = -(E_sq + H_sq) / (8.0 * jnp.pi)
+        assert abs(trace - expected_trace) < 1e-10
+
+    def test_surface_force(self):
+        """F = T . n * A for a surface."""
+        tensor = MaxwellStressTensorJAX(
+            E_field=jnp.array([0.0, 0.0, 100.0]),
+            H_field=jnp.zeros(3),
+        )
+        normal = jnp.array([0.0, 0.0, 1.0])
+        F = tensor.surface_force(normal, area=1.0)
+        assert F.shape == (3,)
+        # Force along z direction (field line tension)
+        assert F[2] > 0
+
+    def test_zero_fields_zero_tensor(self):
+        """Zero fields produce zero stress tensor."""
+        tensor = MaxwellStressTensorJAX(
+            E_field=jnp.zeros(3),
+            H_field=jnp.zeros(3),
+        )
+        T = tensor.stress_tensor()
+        assert jnp.allclose(T, jnp.zeros((3, 3)), atol=1e-15)
+        assert tensor.electromagnetic_pressure == 0.0
+
+    def test_standalone_stress_tensor(self):
+        """Standalone stress_tensor_jax function."""
+        T = stress_tensor_jax(
+            E_field=jnp.array([10.0, 0.0, 0.0]),
+            H_field=jnp.array([0.0, 10.0, 0.0]),
+        )
+        assert T.shape == (3, 3)
+
+    def test_standalone_electromagnetic_pressure(self):
+        """Standalone electromagnetic_pressure_jax function."""
+        P = electromagnetic_pressure_jax(
+            E_field=jnp.array([100.0, 0.0, 0.0]),
+            H_field=jnp.zeros(3),
+        )
+        expected = 100.0**2 / (8.0 * jnp.pi)
+        assert abs(P - expected) < 1e-10
+
+    def test_standalone_surface_force(self):
+        """Standalone surface_force_jax function."""
+        F = surface_force_jax(
+            E_field=jnp.array([0.0, 0.0, 100.0]),
+            H_field=jnp.zeros(3),
+            normal=jnp.array([0.0, 0.0, 1.0]),
+            area=1.0,
+        )
+        assert F.shape == (3,)
+
+    def test_jit_stress_tensor(self):
+        """Stress tensor works under JIT."""
+
+        @jax.jit
+        def jit_stress(E, H):
+            return stress_tensor_jax(E, H)
+
+        T = jit_stress(jnp.array([1.0, 0.0, 0.0]), jnp.array([0.0, 1.0, 0.0]))
+        assert T.shape == (3, 3)
+
+    def test_jit_electromagnetic_pressure(self):
+        """Electromagnetic pressure works under JIT."""
+
+        @jax.jit
+        def jit_pressure(E, H):
+            return electromagnetic_pressure_jax(E, H)
+
+        P = jit_pressure(jnp.array([100.0, 0.0, 0.0]), jnp.zeros(3))
+        assert P > 0
+
+    def test_grad_pressure_wrt_field(self):
+        """dP/dE = E/(4pi) for electromagnetic pressure."""
+
+        def pressure_from_E(Ex):
+            E = jnp.array([Ex, 0.0, 0.0])
+            return electromagnetic_pressure_jax(E, jnp.zeros(3))
+
+        g = jax.grad(pressure_from_E)(100.0)
+        expected = 100.0 / (4.0 * jnp.pi)
+        assert abs(g - expected) < 1e-10
