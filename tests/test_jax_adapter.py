@@ -2495,6 +2495,23 @@ except ImportError:
     HAS_ENERGY = False
     HAS_MAGNETIC_ENERGY = False
 
+try:
+    from maxwell.jax.electromagnetism.electrokinetic import (
+        CoupledCircuitEnergyJAX,
+        ElectrokineticEnergyJAX,
+        analyze_electrokinetic_energy_jax,
+        calc_coupled_circuits_energy_jax,
+        calc_coupling_coefficient_jax,
+        calc_electrokinetic_energy_jax,
+        calc_mutual_inductance_energy_jax,
+        calc_single_circuit_energy_jax,
+        calc_two_circuit_energy_jax,
+        verify_coupled_circuits_energy_jax,
+    )
+    HAS_ELECTROKINETIC = True
+except ImportError:
+    HAS_ELECTROKINETIC = False
+
 
 # ── ElectrostaticEnergyJAX ────────────────────────────────────────────────
 
@@ -4331,3 +4348,544 @@ class TestVectorPotentialNumpyCrossValidation:
 
         # Auto-diff should be more accurate than numerical, so they agree to ~6 digits
         assert jnp.allclose(B_jax, jnp.array(B_np), atol=1e-5)
+
+
+# -- ElectrokineticEnergyJAX --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestElectrokineticEnergyJAX:
+    """Test ElectrokineticEnergyJAX against NumPy reference (Arts. 634-638)."""
+
+    def setup_method(self):
+        self.energy = ElectrokineticEnergyJAX.from_single_circuit(
+            inductance=10.0, current=5.0
+        )
+
+    def test_single_circuit_energy(self):
+        """T = (1/2) * L * I^2 for L=10, I=5."""
+        T = self.energy.energy
+        expected = 0.5 * 10.0 * 5.0 ** 2  # = 125.0
+        assert abs(float(T) - expected) < 1e-10
+
+    def test_single_circuit_zero_current(self):
+        """Zero current gives zero energy."""
+        energy = ElectrokineticEnergyJAX.from_single_circuit(10.0, 0.0)
+        assert energy.energy == 0.0
+
+    def test_from_single_circuit(self):
+        """from_single_circuit creates correct instance."""
+        energy = ElectrokineticEnergyJAX.from_single_circuit(20.0, 3.0)
+        expected = 0.5 * 20.0 * 3.0 ** 2  # = 90.0
+        assert abs(float(energy.energy) - expected) < 1e-10
+
+    def test_from_coupled_circuits(self):
+        """from_coupled_circuits with 2x2 matrix."""
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I = jnp.array([3.0, 4.0])
+        energy = ElectrokineticEnergyJAX.from_coupled_circuits(L, I)
+        # T = 0.5 * (10*9 + 2*3*4 + 2*4*3 + 5*16) = 0.5 * (90+24+24+80) = 109
+        expected = 109.0
+        assert abs(float(energy.energy) - expected) < 1e-10
+
+    def test_energy_from_fields(self):
+        """T = (1/2) * (A . J) * V."""
+        A = jnp.array([100.0, 0.0, 0.0])
+        J = jnp.array([1.0, 0.0, 0.0])
+        T = self.energy.energy_from_fields(A, J, 1.0)
+        expected = 0.5 * 100.0 * 1.0  # = 50.0
+        assert abs(float(T) - expected) < 1e-10
+
+    def test_energy_from_two_circuits(self):
+        """Two coupled circuits energy."""
+        T = self.energy.energy_from_two_circuits(10.0, 5.0, 2.0, 3.0, 4.0)
+        # 0.5*10*9 + 0.5*5*16 + 2*3*4 = 45+40+24 = 109
+        expected = 109.0
+        assert abs(float(T) - expected) < 1e-10
+
+    def test_coupling_coefficient(self):
+        """k = M / sqrt(L1 * L2)."""
+        k = self.energy.coupling_coefficient(10.0, 5.0, 2.0)
+        expected = 2.0 / jnp.sqrt(10.0 * 5.0)
+        assert abs(float(k) - expected) < 1e-10
+
+    def test_coupling_coefficient_zero_inductance(self):
+        """k returns 0 when L1*L2 = 0."""
+        k = self.energy.coupling_coefficient(0.0, 5.0, 2.0)
+        assert float(k) == 0.0
+
+    def test_pytree_flatten(self):
+        """ElectrokineticEnergyJAX can be flattened and unflattened."""
+        energy = ElectrokineticEnergyJAX.from_single_circuit(10.0, 5.0)
+        leaves, treedef = jax.tree_util.tree_flatten(energy)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert restored.inductance == energy.inductance
+        assert restored.current == energy.current
+
+    def test_pytree_flatten_coupled(self):
+        """Coupled circuit pytree flattens correctly."""
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I = jnp.array([3.0, 4.0])
+        energy = ElectrokineticEnergyJAX.from_coupled_circuits(L, I)
+        leaves, treedef = jax.tree_util.tree_flatten(energy)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert jnp.allclose(restored.inductance_matrix, L)
+        assert jnp.allclose(restored.currents, I)
+
+
+# -- CoupledCircuitEnergyJAX --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestCoupledCircuitEnergyJAX:
+    """Test CoupledCircuitEnergyJAX (Arts. 636-637)."""
+
+    def setup_method(self):
+        self.L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        self.coupled = CoupledCircuitEnergyJAX(inductance_matrix=self.L)
+
+    def test_from_currents(self):
+        """Total energy T = (1/2) * I^T . L . I."""
+        I = jnp.array([3.0, 4.0])
+        T = self.coupled.from_currents(I)
+        expected = 109.0
+        assert abs(float(T) - expected) < 1e-10
+
+    def test_from_currents_at(self):
+        """Energy with custom inductance matrix."""
+        I = jnp.array([3.0, 4.0])
+        L2 = jnp.array([[20.0, 3.0], [3.0, 10.0]])
+        T = self.coupled.from_currents_at(I, L2)
+        # 0.5 * (20*9 + 3*12 + 3*12 + 10*16) = 0.5 * (180+36+36+160) = 206
+        expected = 206.0
+        assert abs(float(T) - expected) < 1e-10
+
+    def test_self_energies(self):
+        """Per-circuit self energy."""
+        I = jnp.array([3.0, 4.0])
+        self_e = self.coupled.self_energies(I)
+        # 0.5 * 10 * 9 = 45, 0.5 * 5 * 16 = 40
+        assert abs(float(self_e[0]) - 45.0) < 1e-10
+        assert abs(float(self_e[1]) - 40.0) < 1e-10
+
+    def test_mutual_energy(self):
+        """Mutual energy from off-diagonal terms."""
+        I = jnp.array([3.0, 4.0])
+        M_e = self.coupled.mutual_energy(I)
+        # 2 * 3 * 4 = 24
+        assert abs(float(M_e) - 24.0) < 1e-10
+
+    def test_coupling_matrix(self):
+        """Pairwise coupling coefficients."""
+        I = jnp.array([3.0, 4.0])
+        K = self.coupled.coupling_matrix(I)
+        # k_11 = 1, k_22 = 1, k_12 = 2/sqrt(10*5)
+        assert abs(float(K[0, 0]) - 1.0) < 1e-10
+        assert abs(float(K[1, 1]) - 1.0) < 1e-10
+        expected_off = 2.0 / jnp.sqrt(10.0 * 5.0)
+        assert abs(float(K[0, 1]) - expected_off) < 1e-10
+
+    def test_pytree_flatten(self):
+        """CoupledCircuitEnergyJAX flattens correctly."""
+        leaves, treedef = jax.tree_util.tree_flatten(self.coupled)
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert jnp.allclose(restored.inductance_matrix, self.L)
+
+
+# -- ElectrokineticStandaloneFunctions --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestElectrokineticStandaloneFunctions:
+    """Test standalone electrokinetic energy functions."""
+
+    def test_calc_electrokinetic_energy_jax(self):
+        """Field formulation T = (1/2) * A . J * V."""
+        A = jnp.array([100.0, 0.0, 0.0])
+        J = jnp.array([1.0, 0.0, 0.0])
+        T = calc_electrokinetic_energy_jax(A, J, 1.0)
+        assert abs(float(T) - 50.0) < 1e-10
+
+    def test_calc_single_circuit_energy_jax(self):
+        """T = (1/2) * L * I^2."""
+        T = calc_single_circuit_energy_jax(10.0, 5.0)
+        assert abs(float(T) - 125.0) < 1e-10
+
+    def test_calc_coupled_circuits_energy_jax(self):
+        """T = (1/2) * I^T . L . I."""
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I = jnp.array([3.0, 4.0])
+        T = calc_coupled_circuits_energy_jax(L, I)
+        assert abs(float(T) - 109.0) < 1e-10
+
+    def test_calc_mutual_inductance_energy_jax(self):
+        """T_mutual = M * I1 * I2."""
+        T = calc_mutual_inductance_energy_jax(2.0, 3.0, 4.0)
+        assert abs(float(T) - 24.0) < 1e-10
+
+    def test_calc_two_circuit_energy_jax(self):
+        """T = (1/2)*L1*I1^2 + (1/2)*L2*I2^2 + M*I1*I2."""
+        T = calc_two_circuit_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(T) - 109.0) < 1e-10
+
+    def test_calc_coupling_coefficient_jax(self):
+        """k = M / sqrt(L1 * L2)."""
+        k = calc_coupling_coefficient_jax(2.0, 10.0, 5.0)
+        expected = 2.0 / jnp.sqrt(50.0)
+        assert abs(float(k) - expected) < 1e-10
+
+    def test_verify_coupled_circuits_energy_jax(self):
+        """Scalar and matrix approaches agree."""
+        result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert bool(result["verified"])
+        assert abs(float(result["scalar_total"]) - float(result["matrix_total"])) < 1e-10
+
+    def test_analyze_electrokinetic_energy_jax_single(self):
+        """Analysis with single circuit."""
+        result = analyze_electrokinetic_energy_jax(inductance=10.0, current=5.0)
+        assert "single_energy" in result
+        assert abs(float(result["single_energy"]) - 125.0) < 1e-10
+
+    def test_analyze_electrokinetic_energy_jax_two_circuit(self):
+        """Analysis with two coupled circuits."""
+        result = analyze_electrokinetic_energy_jax(L1=10.0, L2=5.0, M=2.0, I1=3.0, I2=4.0)
+        assert "two_circuit_energy" in result
+        assert abs(float(result["two_circuit_energy"]) - 109.0) < 1e-10
+        assert "coupling_coefficient" in result
+
+    def test_analyze_electrokinetic_energy_jax_matrix(self):
+        """Analysis with inductance matrix."""
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I = jnp.array([3.0, 4.0])
+        result = analyze_electrokinetic_energy_jax(inductance_matrix=L, currents=I)
+        assert "matrix_energy" in result
+        assert abs(float(result["matrix_energy"]) - 109.0) < 1e-10
+
+
+# -- ElectrokineticVerification --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestElectrokineticVerification:
+    """Verify electrokinetic energy formula consistency."""
+
+    def test_scalar_matrix_equivalence(self):
+        """Scalar and matrix formulations give same result."""
+        result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(result["scalar_total"]) - float(result["matrix_total"])) < 1e-10
+        assert bool(result["verified"])
+
+    def test_component_sum_equals_total(self):
+        """Self + mutual = total energy."""
+        result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(result["component_sum"]) - float(result["scalar_total"])) < 1e-10
+
+    def test_verification_with_different_parameters(self):
+        """Verification works with different inductance values."""
+        result = verify_coupled_circuits_energy_jax(20.0, 8.0, 3.0, 5.0, 2.0)
+        assert bool(result["verified"])
+
+    def test_mutual_energy_component(self):
+        """Mutual energy = M * I1 * I2."""
+        result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(result["mutual_energy"]) - 24.0) < 1e-10
+
+    def test_self_energy_components(self):
+        """Self energies: (1/2)*L1*I1^2, (1/2)*L2*I2^2."""
+        result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(result["self_energy_1"]) - 45.0) < 1e-10
+        assert abs(float(result["self_energy_2"]) - 40.0) < 1e-10
+
+    def test_zero_mutual_inductance(self):
+        """Decoupled circuits: M=0."""
+        result = verify_coupled_circuits_energy_jax(10.0, 5.0, 0.0, 3.0, 4.0)
+        assert bool(result["verified"])
+        assert abs(float(result["mutual_energy"])) < 1e-10
+
+
+# -- ElectrokineticAutoDiff --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestElectrokineticAutoDiff:
+    """Test JAX auto-differentiation on electrokinetic energy formulas."""
+
+    def test_grad_single_circuit_wrt_current(self):
+        """d/dI (1/2*L*I^2) = L*I."""
+        def energy_I(I):
+            return calc_single_circuit_energy_jax(10.0, I)
+        g = jax.grad(energy_I)(5.0)
+        assert abs(g - 10.0 * 5.0) < 1e-10
+
+    def test_grad_single_circuit_wrt_inductance(self):
+        """d/dL (1/2*L*I^2) = (1/2)*I^2."""
+        def energy_L(L):
+            return calc_single_circuit_energy_jax(L, 5.0)
+        g = jax.grad(energy_L)(10.0)
+        assert abs(g - 0.5 * 25.0) < 1e-10
+
+    def test_grad_two_circuit_wrt_I1(self):
+        """d/dI1 T = L1*I1 + M*I2."""
+        def energy_I1(I1):
+            return calc_two_circuit_energy_jax(10.0, 5.0, 2.0, I1, 4.0)
+        g = jax.grad(energy_I1)(3.0)
+        expected = 10.0 * 3.0 + 2.0 * 4.0
+        assert abs(g - expected) < 1e-10
+
+    def test_grad_two_circuit_wrt_M(self):
+        """d/dM T = I1*I2."""
+        def energy_M(M):
+            return calc_two_circuit_energy_jax(10.0, 5.0, M, 3.0, 4.0)
+        g = jax.grad(energy_M)(2.0)
+        assert abs(g - 3.0 * 4.0) < 1e-10
+
+    def test_grad_coupled_wrt_currents(self):
+        """d/dI (1/2 * I^T L I) = L . I."""
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        def energy_I(I):
+            return calc_coupled_circuits_energy_jax(L, I)
+        I = jnp.array([3.0, 4.0])
+        g = jax.grad(energy_I)(I)
+        expected = jnp.dot(L, I)
+        assert jnp.allclose(g, expected, atol=1e-10)
+
+    def test_grad_fields_energy_wrt_A(self):
+        """d/dA (1/2 * A.J * V) = (1/2) * J * V."""
+        J = jnp.array([1.0, 0.0, 0.0])
+        def energy_A(Ax):
+            A = jnp.array([Ax, 0.0, 0.0])
+            return calc_electrokinetic_energy_jax(A, J, 1.0)
+        g = jax.grad(energy_A)(100.0)
+        assert abs(g - 0.5 * 1.0 * 1.0) < 1e-10
+
+    def test_grad_coupling_coefficient_wrt_M(self):
+        """d/dM k = 1/sqrt(L1*L2)."""
+        def k_M(M):
+            return calc_coupling_coefficient_jax(M, 10.0, 5.0)
+        g = jax.grad(k_M)(2.0)
+        expected = 1.0 / jnp.sqrt(10.0 * 5.0)
+        assert abs(g - expected) < 1e-10
+
+
+# -- ElectrokineticJIT --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestElectrokineticJIT:
+    """Test JIT compilation compatibility."""
+
+    def test_jit_single_circuit(self):
+        """Single circuit energy works under JIT."""
+        @jax.jit
+        def jit_fn(L, I):
+            return calc_single_circuit_energy_jax(L, I)
+        T = jit_fn(10.0, 5.0)
+        assert abs(float(T) - 125.0) < 1e-10
+
+    def test_jit_two_circuit(self):
+        """Two circuit energy works under JIT."""
+        @jax.jit
+        def jit_fn(L1, L2, M, I1, I2):
+            return calc_two_circuit_energy_jax(L1, L2, M, I1, I2)
+        T = jit_fn(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(T) - 109.0) < 1e-10
+
+    def test_jit_coupled_circuits(self):
+        """Coupled circuits energy works under JIT."""
+        @jax.jit
+        def jit_fn(L, I):
+            return calc_coupled_circuits_energy_jax(L, I)
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I = jnp.array([3.0, 4.0])
+        T = jit_fn(L, I)
+        assert abs(float(T) - 109.0) < 1e-10
+
+    def test_jit_fields_energy(self):
+        """Fields energy works under JIT."""
+        @jax.jit
+        def jit_fn(A, J, V):
+            return calc_electrokinetic_energy_jax(A, J, V)
+        A = jnp.array([100.0, 0.0, 0.0])
+        J = jnp.array([1.0, 0.0, 0.0])
+        T = jit_fn(A, J, 1.0)
+        assert abs(float(T) - 50.0) < 1e-10
+
+    def test_jit_coupling_coefficient(self):
+        """Coupling coefficient works under JIT."""
+        @jax.jit
+        def jit_fn(M, L1, L2):
+            return calc_coupling_coefficient_jax(M, L1, L2)
+        k = jit_fn(2.0, 10.0, 5.0)
+        expected = 2.0 / jnp.sqrt(50.0)
+        assert abs(float(k) - expected) < 1e-10
+
+    def test_jit_static_method_single(self):
+        """Static method _single_energy_jit works under JIT."""
+        @jax.jit
+        def jit_fn(L, I):
+            return ElectrokineticEnergyJAX._single_energy_jit(L, I)
+        T = jit_fn(10.0, 5.0)
+        assert abs(float(T) - 125.0) < 1e-10
+
+    def test_jit_static_method_two_circuit(self):
+        """Static method _two_circuit_energy_jit works under JIT."""
+        @jax.jit
+        def jit_fn(L1, L2, M, I1, I2):
+            return ElectrokineticEnergyJAX._two_circuit_energy_jit(L1, L2, M, I1, I2)
+        T = jit_fn(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(T) - 109.0) < 1e-10
+
+    def test_jit_static_method_coupled(self):
+        """Static method _coupled_energy_jit works under JIT."""
+        @jax.jit
+        def jit_fn(L, I):
+            return ElectrokineticEnergyJAX._coupled_energy_jit(L, I)
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I = jnp.array([3.0, 4.0])
+        T = jit_fn(L, I)
+        assert abs(float(T) - 109.0) < 1e-10
+
+    def test_jit_verify(self):
+        """Verify function works under JIT."""
+        @jax.jit
+        def jit_fn(L1, L2, M, I1, I2):
+            r = verify_coupled_circuits_energy_jax(L1, L2, M, I1, I2)
+            return r["scalar_total"]
+        T = jit_fn(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(T) - 109.0) < 1e-10
+
+
+# -- ElectrokineticVmap --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestElectrokineticVmap:
+    """Test batched evaluation via vmap."""
+
+    def test_vmap_single_circuit_energy(self):
+        """vmap over batch of currents."""
+        vmap_fn = jax.vmap(calc_single_circuit_energy_jax, in_axes=(None, 0))
+        results = vmap_fn(10.0, jnp.array([1.0, 2.0, 3.0, 5.0]))
+        assert results.shape == (4,)
+        expected = 0.5 * 10.0 * jnp.array([1.0, 4.0, 9.0, 25.0])
+        assert jnp.allclose(results, expected, atol=1e-10)
+
+    def test_vmap_two_circuit_energy_currents(self):
+        """vmap over batch of I1 values."""
+        def energy_fn(I1):
+            return calc_two_circuit_energy_jax(10.0, 5.0, 2.0, I1, 4.0)
+        results = jax.vmap(energy_fn)(jnp.array([1.0, 2.0, 3.0]))
+        assert results.shape == (3,)
+
+    def test_vmap_coupling_coefficient(self):
+        """vmap over batch of M values."""
+        vmap_fn = jax.vmap(calc_coupling_coefficient_jax, in_axes=(0, None, None))
+        results = vmap_fn(jnp.array([1.0, 2.0, 3.0]), 10.0, 5.0)
+        assert results.shape == (3,)
+
+    def test_vmap_mutual_inductance_energy(self):
+        """vmap over batch of I1 values."""
+        def energy_fn(I1):
+            return calc_mutual_inductance_energy_jax(2.0, I1, 4.0)
+        results = jax.vmap(energy_fn)(jnp.array([1.0, 2.0, 3.0]))
+        assert results.shape == (3,)
+        expected = 2.0 * jnp.array([1.0, 2.0, 3.0]) * 4.0
+        assert jnp.allclose(results, expected, atol=1e-10)
+
+    def test_vmap_fields_energy(self):
+        """vmap over batch of A vectors."""
+        A_batch = jnp.array([
+            [100.0, 0.0, 0.0],
+            [200.0, 0.0, 0.0],
+            [300.0, 0.0, 0.0],
+        ])
+        J = jnp.array([1.0, 0.0, 0.0])
+        results = jax.vmap(lambda A: calc_electrokinetic_energy_jax(A, J, 1.0))(A_batch)
+        assert results.shape == (3,)
+        assert results[0] < results[1] < results[2]
+
+    def test_vmap_coupled_circuits(self):
+        """vmap over batch of current vectors."""
+        L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I_batch = jnp.array([
+            [1.0, 2.0],
+            [3.0, 4.0],
+            [5.0, 6.0],
+        ])
+        results = jax.vmap(lambda I: calc_coupled_circuits_energy_jax(L, I))(I_batch)
+        assert results.shape == (3,)
+
+
+# -- ElectrokineticNumpyCrossValidation --
+
+
+@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+class TestElectrokineticNumpyCrossValidation:
+    """Test JAX results against NumPy reference implementation."""
+
+    def test_single_circuit_matches_numpy(self):
+        """JAX single circuit energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrokinetic import (
+            calc_single_circuit_energy,
+        )
+        T_np = calc_single_circuit_energy(10.0, 5.0)
+        T_jax = calc_single_circuit_energy_jax(10.0, 5.0)
+        assert abs(float(T_jax) - T_np) < 1e-10
+
+    def test_coupled_circuits_matches_numpy(self):
+        """JAX coupled circuits energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrokinetic import (
+            calc_coupled_circuits_energy,
+        )
+        L_np = np.array([[10.0, 2.0], [2.0, 5.0]])
+        I_np = np.array([3.0, 4.0])
+        L_jax = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I_jax = jnp.array([3.0, 4.0])
+        T_np = calc_coupled_circuits_energy(L_np, I_np)
+        T_jax = calc_coupled_circuits_energy_jax(L_jax, I_jax)
+        assert abs(float(T_jax) - T_np) < 1e-10
+
+    def test_mutual_inductance_matches_numpy(self):
+        """JAX mutual inductance energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrokinetic import (
+            calc_mutual_inductance_energy,
+        )
+        T_np = calc_mutual_inductance_energy(2.0, 3.0, 4.0)
+        T_jax = calc_mutual_inductance_energy_jax(2.0, 3.0, 4.0)
+        assert abs(float(T_jax) - T_np) < 1e-10
+
+    def test_two_circuit_matches_numpy(self):
+        """JAX two circuit energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrokinetic import (
+            calc_two_circuit_energy,
+        )
+        T_np = calc_two_circuit_energy(10.0, 5.0, 2.0, 3.0, 4.0)
+        T_jax = calc_two_circuit_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
+        assert abs(float(T_jax) - T_np) < 1e-10
+
+    def test_coupling_coefficient_matches_numpy(self):
+        """JAX coupling coefficient matches NumPy."""
+        from maxwell.electromagnetism.energy.electrokinetic import (
+            calc_coupling_coefficient,
+        )
+        k_np = calc_coupling_coefficient(2.0, 10.0, 5.0)
+        k_jax = calc_coupling_coefficient_jax(2.0, 10.0, 5.0)
+        assert abs(float(k_jax) - k_np) < 1e-10
+
+    def test_class_single_matches_numpy(self):
+        """ElectrokineticEnergyJAX single energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrokinetic import ElectrokineticEnergy
+        np_energy = ElectrokineticEnergy.from_single_circuit(10.0, 5.0)
+        jax_energy = ElectrokineticEnergyJAX.from_single_circuit(10.0, 5.0)
+        assert abs(float(jax_energy.energy) - np_energy.energy) < 1e-10
+
+    def test_class_coupled_matches_numpy(self):
+        """ElectrokineticEnergyJAX coupled energy matches NumPy."""
+        from maxwell.electromagnetism.energy.electrokinetic import ElectrokineticEnergy
+        L_np = np.array([[10.0, 2.0], [2.0, 5.0]])
+        I_np = np.array([3.0, 4.0])
+        np_energy = ElectrokineticEnergy.from_coupled_circuits(L_np, I_np)
+        L_jax = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+        I_jax = jnp.array([3.0, 4.0])
+        jax_energy = ElectrokineticEnergyJAX.from_coupled_circuits(L_jax, I_jax)
+        assert abs(float(jax_energy.energy) - np_energy.energy) < 1e-10

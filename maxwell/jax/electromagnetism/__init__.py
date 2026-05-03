@@ -64,6 +64,18 @@ from maxwell.jax.electromagnetism.magnetic_energy import (
     calc_total_magnetic_energy_jax,
     verify_magnetic_energy_density_jax,
 )
+from maxwell.jax.electromagnetism.electrokinetic import (
+    CoupledCircuitEnergyJAX,
+    ElectrokineticEnergyJAX,
+    analyze_electrokinetic_energy_jax,
+    calc_coupled_circuits_energy_jax,
+    calc_coupling_coefficient_jax,
+    calc_electrokinetic_energy_jax,
+    calc_mutual_inductance_energy_jax,
+    calc_single_circuit_energy_jax,
+    calc_two_circuit_energy_jax,
+    verify_coupled_circuits_energy_jax,
+)
 from maxwell.jax.electromagnetism.forces import (
     LorentzForceJAX,
     MaxwellStressTensorJAX,
@@ -118,4 +130,15 @@ __all__ = [
     # Faraday
     "FaradayInductionJAX",
     "analyze_faraday_induction_jax",
+    # Electrokinetic energy
+    "ElectrokineticEnergyJAX",
+    "CoupledCircuitEnergyJAX",
+    "calc_electrokinetic_energy_jax",
+    "calc_single_circuit_energy_jax",
+    "calc_coupled_circuits_energy_jax",
+    "calc_mutual_inductance_energy_jax",
+    "calc_two_circuit_energy_jax",
+    "calc_coupling_coefficient_jax",
+    "verify_coupled_circuits_energy_jax",
+    "analyze_electrokinetic_energy_jax",
 ]
