@@ -32,7 +32,8 @@ maxwell/jax/
 │   ├── forces.py                # LorentzForceJAX, MaxwellStressTensorJAX
 │   ├── ampere_maxwell.py        # DisplacementCurrentJAX, AmpereMaxwellLawJAX
 │   ├── field.py                 # ElectricFieldJAX (flux, Gauss's law, EMF)
-│   └── energy.py                # ElectrostaticEnergyJAX, CapacitorEnergyJAX
+│   ├── energy.py                # ElectrostaticEnergyJAX, CapacitorEnergyJAX
+│   └── electrokinetic.py        # ElectrokineticEnergyJAX, CoupledCircuitEnergyJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -370,6 +371,73 @@ dU_dEx = grad(lambda Ex: ElectrostaticEnergyJAX._density_jit(
 ))(100.0)
 ```
 
+## Electrokinetic Energy
+
+```python
+from maxwell.jax.electromagnetism.electrokinetic import (
+    ElectrokineticEnergyJAX,
+    CoupledCircuitEnergyJAX,
+    calc_single_circuit_energy_jax,
+    calc_two_circuit_energy_jax,
+    calc_coupled_circuits_energy_jax,
+    calc_mutual_inductance_energy_jax,
+    calc_coupling_coefficient_jax,
+    analyze_electrokinetic_energy_jax,
+    verify_coupled_circuits_energy_jax,
+)
+
+# Single circuit energy T = (1/2) * L * I^2 (Art. 635)
+U = calc_single_circuit_energy_jax(inductance=100.0, current=5.0)
+# U = 0.5 * 100 * 25 = 1250.0 erg
+
+# Using the class interface
+ek = ElectrokineticEnergyJAX.from_single_circuit(inductance=100.0, current=5.0)
+U = ek.energy  # 1250.0 erg
+
+# Two coupled circuits with mutual inductance (Arts. 636-637)
+T = calc_two_circuit_energy_jax(L1=100.0, L2=200.0, M=30.0, I1=5.0, I2=3.0)
+# T = 0.5*100*25 + 0.5*200*9 + 30*5*3 = 1250 + 900 + 450 = 2600.0 erg
+
+# Coupled circuits via inductance matrix
+L_matrix = jnp.array([[100.0, 30.0], [30.0, 200.0]])
+I_vec = jnp.array([5.0, 3.0])
+T_matrix = calc_coupled_circuits_energy_jax(L_matrix, I_vec)
+# T = (1/2) * I^T . L . I = 2600.0 erg
+
+# Using CoupledCircuitEnergyJAX for matrix-based analysis
+coupled = CoupledCircuitEnergyJAX(inductance_matrix=L_matrix)
+T_total = coupled.from_currents(I_vec)               # total energy
+T_self = coupled.self_energies(I_vec)                 # per-circuit self energy
+T_mutual = coupled.mutual_energy(I_vec)               # mutual energy contribution
+K = coupled.coupling_matrix(I_vec)                    # pairwise coupling coefficients
+
+# Coupling coefficient k = M / sqrt(L1 * L2) (Art. 638)
+k = calc_coupling_coefficient_jax(M=30.0, L1=100.0, L2=200.0)
+# k = 30 / sqrt(20000) = 0.212...
+
+# Mutual inductance energy contribution
+T_mutual = calc_mutual_inductance_energy_jax(M=30.0, I1=5.0, I2=3.0)
+# T_mutual = 30 * 5 * 3 = 450.0 erg
+
+# Comprehensive analysis
+result = analyze_electrokinetic_energy_jax(
+    L1=100.0, L2=200.0, M=30.0, I1=5.0, I2=3.0,
+)
+# result['two_circuit_energy'], result['coupling_coefficient'],
+# result['self_energy_1'], result['self_energy_2'], result['mutual_energy']
+
+# Verify consistency between scalar and matrix formulations
+verification = verify_coupled_circuits_energy_jax(
+    L1=100.0, L2=200.0, M=30.0, I1=5.0, I2=3.0,
+)
+# verification['verified'] = True (difference < 1e-10)
+
+# Auto-differentiation: dT/dI1
+from jax import grad
+dT_dI1 = grad(lambda I1: calc_two_circuit_energy_jax(100.0, 200.0, 30.0, I1, 3.0))(5.0)
+# = L1*I1 + M*I2 = 100*5 + 30*3 = 590.0
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -393,7 +461,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-330 tests cover:
+440 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -412,6 +480,7 @@ dVdq = grad(potential_at_q)(1.0)
 - Standalone functions (8 tests): tension, flux, gauss_law, superposition
 - MagnetJAX (23 tests): MagneticPole, magnet properties, force, torque, mutual action
 - Electrostatic energy (60 tests): energy density, capacitor energy, E.D dot, isotropy, auto-diff
+- Electrokinetic energy (61 tests): single circuit, coupled circuits, mutual inductance, coupling coefficient, verification, auto-diff
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -438,4 +507,6 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | CapacitorEnergyJAX | Arts. 630-631 |
 | MagneticEnergyJAX | Arts. 632-633 |
 | InductorEnergyJAX | Arts. 632-633 |
+| ElectrokineticEnergyJAX | Arts. 634-638 |
+| CoupledCircuitEnergyJAX | Arts. 634-638 |
 | ellipk_jax, ellipe_jax | Arts. 149-152 |
