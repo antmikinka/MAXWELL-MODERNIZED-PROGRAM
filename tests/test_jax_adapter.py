@@ -3685,3 +3685,649 @@ class TestMagneticNumpyCrossValidation:
         )
 
         assert abs(float(jax_energy.energy_density) - np_energy.energy_density) < 1e-10
+
+
+# -- Vector Potential: VectorPotentialJAX --
+
+
+from maxwell.jax.core.vector_potential import (
+    VectorPotentialJAX,
+    curl_jax,
+    curl_autodiff_jax,
+    dipole_vector_potential_jax,
+    B_from_dipole_autodiff_jax,
+    verify_vector_potential_curl_jax,
+    current_element_potential_jax,
+)
+
+
+class TestVectorPotentialJAXCreation:
+    """Test VectorPotentialJAX creation and basic properties."""
+
+    def test_create_with_arrays(self):
+        """VectorPotentialJAX can be created with JAX arrays."""
+        A = VectorPotentialJAX(
+            A_field=jnp.array([1.0, 2.0, 3.0]),
+            position=jnp.array([0.0, 0.0, 0.0]),
+        )
+        assert jnp.allclose(A.A_field, jnp.array([1.0, 2.0, 3.0]))
+        assert jnp.allclose(A.position, jnp.zeros(3))
+
+    def test_create_with_lists_converts_to_array(self):
+        """Lists are converted to JAX arrays in __post_init__."""
+        A = VectorPotentialJAX(
+            A_field=[1.0, 0.0, 0.0],
+            position=[5.0, 0.0, 0.0],
+        )
+        assert isinstance(A.A_field, jax.Array)
+        assert isinstance(A.position, jax.Array)
+
+    def test_dtype_is_float64(self):
+        """Arrays are stored as float64."""
+        A = VectorPotentialJAX(
+            A_field=[1.0, 2.0, 3.0],
+            position=[0.0, 0.0, 0.0],
+        )
+        assert A.A_field.dtype == jnp.float64
+        assert A.position.dtype == jnp.float64
+
+
+class TestVectorPotentialJAXProperties:
+    """Test VectorPotentialJAX magnitude and direction properties."""
+
+    def test_magnitude_simple(self):
+        """|A| = sqrt(1^2 + 2^2 + 3^2) = sqrt(14)."""
+        A = VectorPotentialJAX(
+            A_field=jnp.array([1.0, 2.0, 3.0]),
+            position=jnp.zeros(3),
+        )
+        expected = jnp.sqrt(14.0)
+        assert jnp.allclose(A.magnitude, expected, atol=1e-10)
+
+    def test_magnitude_unit_vector(self):
+        """|A| = 1 for unit vector."""
+        A = VectorPotentialJAX(
+            A_field=jnp.array([1.0, 0.0, 0.0]),
+            position=jnp.zeros(3),
+        )
+        assert jnp.allclose(A.magnitude, 1.0, atol=1e-10)
+
+    def test_magnitude_zero(self):
+        """|A| = 0 for zero field."""
+        A = VectorPotentialJAX(
+            A_field=jnp.zeros(3),
+            position=jnp.zeros(3),
+        )
+        assert jnp.allclose(A.magnitude, 0.0, atol=1e-10)
+
+    def test_direction_unit_vector(self):
+        """Direction is A / |A|."""
+        A = VectorPotentialJAX(
+            A_field=jnp.array([3.0, 4.0, 0.0]),
+            position=jnp.zeros(3),
+        )
+        expected = jnp.array([0.6, 0.8, 0.0])
+        assert jnp.allclose(A.direction, expected, atol=1e-10)
+
+    def test_direction_zero_field(self):
+        """Direction is zero vector when A is zero."""
+        A = VectorPotentialJAX(
+            A_field=jnp.zeros(3),
+            position=jnp.zeros(3),
+        )
+        assert jnp.allclose(A.direction, jnp.zeros(3), atol=1e-10)
+
+
+class TestVectorPotentialJAXPytree:
+    """Test VectorPotentialJAX pytree registration."""
+
+    def test_pytree_flatten(self):
+        """VectorPotentialJAX can be flattened and unflattened."""
+        A = VectorPotentialJAX(
+            A_field=jnp.array([1.0, 2.0, 3.0]),
+            position=jnp.array([5.0, 0.0, 0.0]),
+        )
+        leaves, treedef = jax.tree_util.tree_flatten(A)
+        assert len(leaves) == 2  # A_field and position
+        restored = jax.tree_util.tree_unflatten(treedef, leaves)
+        assert jnp.allclose(restored.A_field, A.A_field)
+        assert jnp.allclose(restored.position, A.position)
+
+    def test_jit_compatible(self):
+        """VectorPotentialJAX works with jax.jit."""
+
+        @jax.jit
+        def compute_magnitude(A_field, position):
+            vp = VectorPotentialJAX(A_field=A_field, position=position)
+            return vp.magnitude
+
+        result = compute_magnitude(jnp.array([1.0, 0.0, 0.0]), jnp.zeros(3))
+        assert jnp.allclose(result, 1.0, atol=1e-10)
+
+    def test_vmap_compatible(self):
+        """VectorPotentialJAX fields can be vmapped over."""
+
+        def magnitude_from_field(A_field):
+            vp = VectorPotentialJAX(A_field=A_field, position=jnp.zeros(3))
+            return vp.magnitude
+
+        fields = jnp.array([
+            [1.0, 0.0, 0.0],
+            [0.0, 2.0, 0.0],
+            [0.0, 0.0, 3.0],
+        ])
+        result = jax.vmap(magnitude_from_field)(fields)
+        assert result.shape == (3,)
+        assert jnp.allclose(result, jnp.array([1.0, 2.0, 3.0]), atol=1e-10)
+
+
+# -- Dipole Vector Potential --
+
+
+class TestDipoleVectorPotentialJAX:
+    """Test dipole vector potential calculations."""
+
+    def test_dipole_A_along_axis(self):
+        """A = (m x r) / r^3: on z-axis with m along z, A = 0 (parallel cross product)."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([0.0, 0.0, 5.0])
+        A = dipole_vector_potential_jax(m, obs)
+        assert jnp.allclose(A, jnp.zeros(3), atol=1e-10)
+
+    def test_dipole_A_perpendicular(self):
+        """A = (m x r) / r^3: m along z, obs on x-axis -> A along y."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([5.0, 0.0, 0.0])
+        A = dipole_vector_potential_jax(m, obs)
+        # m x r = (0,0,1) x (5,0,0) = (0, 5, 0)
+        # r^3 = 125
+        expected = jnp.array([0.0, 5.0 / 125.0, 0.0])
+        assert jnp.allclose(A, expected, atol=1e-10)
+
+    def test_dipole_A_at_origin_zero(self):
+        """A at dipole position should be zero (safe handling)."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.zeros(3)
+        A = dipole_vector_potential_jax(m, obs)
+        assert jnp.allclose(A, jnp.zeros(3), atol=1e-10)
+
+    def test_dipole_A_with_offset_position(self):
+        """Dipole at non-origin position."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        dipole_pos = jnp.array([1.0, 0.0, 0.0])
+        obs = jnp.array([1.0, 5.0, 0.0])
+        A = dipole_vector_potential_jax(m, obs, dipole_pos)
+        # r_vec = (1,5,0) - (1,0,0) = (0,5,0)
+        # m x r = (0,0,1) x (0,5,0) = (-5, 0, 0)
+        # r^3 = 125
+        expected = jnp.array([-5.0 / 125.0, 0.0, 0.0])
+        assert jnp.allclose(A, expected, atol=1e-10)
+
+    def test_dipole_A_magnitude_scales_as_1_over_r2(self):
+        """|A| scales as 1/r^2 for dipole (since |m x r|/r^3 = m*sin(theta)/r^2)."""
+        m = jnp.array([0.0, 0.0, 100.0])
+        obs1 = jnp.array([1.0, 0.0, 0.0])
+        obs2 = jnp.array([2.0, 0.0, 0.0])
+        A1 = dipole_vector_potential_jax(m, obs1)
+        A2 = dipole_vector_potential_jax(m, obs2)
+        # |A1|/|A2| should be (r2/r1)^2 = 4
+        ratio = jnp.linalg.norm(A1) / jnp.linalg.norm(A2)
+        assert abs(float(ratio) - 4.0) < 1e-10
+
+
+# -- B Field from Dipole via Auto-Diff --
+
+
+class TestBDipoleAutodiffJAX:
+    """Test B field from dipole via auto-diff curl."""
+
+    def test_B_from_dipole_on_axis(self):
+        """B on z-axis for m along z: B = 2m/r^3 in z direction."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([0.0, 0.0, 5.0])
+        B = B_from_dipole_autodiff_jax(m, obs)
+        # Analytical: B = 2*m/r^3 along z for points on axis
+        expected_z = 2.0 / (5.0 ** 3)
+        assert jnp.allclose(B, jnp.array([0.0, 0.0, expected_z]), atol=1e-6)
+
+    def test_B_from_dipole_equatorial(self):
+        """B on x-axis for m along z: B = -m/r^3 in z direction."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([5.0, 0.0, 0.0])
+        B = B_from_dipole_autodiff_jax(m, obs)
+        # Analytical: B = -m/r^3 in z for equatorial points
+        expected_z = -1.0 / (5.0 ** 3)
+        assert jnp.allclose(B, jnp.array([0.0, 0.0, expected_z]), atol=1e-6)
+
+    def test_B_from_dipole_at_origin_zero(self):
+        """B at dipole position should be zero (safe handling)."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.zeros(3)
+        B = B_from_dipole_autodiff_jax(m, obs)
+        assert jnp.allclose(B, jnp.zeros(3), atol=1e-10)
+
+
+# -- Curl Verification --
+
+
+class TestVectorPotentialCurlVerification:
+    """Test that curl(A) = B for magnetic dipole."""
+
+    def test_curl_equals_B_on_axis(self):
+        """curl(A) matches analytical B on the dipole axis."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([0.0, 0.0, 5.0])
+        result = verify_vector_potential_curl_jax(m, obs)
+        assert bool(result["verified"])
+        assert result["residual"] < 1e-6
+
+    def test_curl_equals_B_equatorial(self):
+        """curl(A) matches analytical B on equatorial plane."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([5.0, 0.0, 0.0])
+        result = verify_vector_potential_curl_jax(m, obs)
+        assert bool(result["verified"])
+        assert result["residual"] < 1e-6
+
+    def test_curl_residual_is_small(self):
+        """Residual |B_curl - B_analytical| is very small."""
+        m = jnp.array([1.0, 2.0, 3.0])
+        obs = jnp.array([3.0, 4.0, 5.0])
+        result = verify_vector_potential_curl_jax(m, obs)
+        assert result["residual"] < 1e-6
+
+    def test_curl_verification_returns_A(self):
+        """Verification returns non-zero A field."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([1.0, 0.0, 0.0])
+        result = verify_vector_potential_curl_jax(m, obs)
+        assert jnp.linalg.norm(result["A"]) > 0
+
+
+# -- Numerical curl vs Auto-Diff curl --
+
+
+class TestCurlJAX:
+    """Test numerical and auto-diff curl operations."""
+
+    def test_curl_autodiff_linear_field(self):
+        """curl of A = (0, 0, x) should be (0, -1, 0)."""
+
+        def A_field(pos):
+            return jnp.array([0.0, 0.0, pos[0]])
+
+        result = curl_autodiff_jax(A_field, jnp.array([1.0, 2.0, 3.0]))
+        # curl A = (dA_z/dy - dA_y/dz, dA_x/dz - dA_z/dx, dA_y/dx - dA_x/dy)
+        # = (0 - 0, 0 - 1, 0 - 0) = (0, -1, 0)
+        assert jnp.allclose(result, jnp.array([0.0, -1.0, 0.0]), atol=1e-10)
+
+    def test_curl_autodiff_zero_curl(self):
+        """curl of gradient field (x, y, z) = 0."""
+
+        def A_field(pos):
+            return pos
+
+        result = curl_autodiff_jax(A_field, jnp.array([1.0, 2.0, 3.0]))
+        assert jnp.allclose(result, jnp.zeros(3), atol=1e-10)
+
+    def test_curl_autodiff_constant_rotation(self):
+        """curl of A = (-y, x, 0) = 2*z_hat."""
+
+        def A_field(pos):
+            return jnp.array([-pos[1], pos[0], 0.0])
+
+        result = curl_autodiff_jax(A_field, jnp.array([1.0, 2.0, 3.0]))
+        # curl = (0-0, 0-0, 1-(-1)) = (0, 0, 2)
+        assert jnp.allclose(result, jnp.array([0.0, 0.0, 2.0]), atol=1e-10)
+
+    def test_curl_numerical_matches_autodiff(self):
+        """Numerical curl approximates auto-diff curl for smooth fields."""
+
+        def A_field(pos):
+            return jnp.array([-pos[1], pos[0], pos[0] * pos[1]])
+
+        point = jnp.array([1.0, 2.0, 3.0])
+        numerical = curl_jax(A_field, point, dx=1e-6)
+        autodiff = curl_autodiff_jax(A_field, point)
+        # Should match within ~1e-5 for dx=1e-6
+        assert jnp.allclose(numerical, autodiff, atol=1e-5)
+
+    def test_curl_numerical_converges_with_dx(self):
+        """Smaller dx gives better numerical curl accuracy."""
+
+        def A_field(pos):
+            # Use transcendental functions so truncation error is visible
+            return jnp.array([
+                jnp.sin(pos[1]),
+                jnp.cos(pos[0] * pos[2]),
+                jnp.exp(pos[0] + pos[1]),
+            ])
+
+        point = jnp.array([1.0, 2.0, 3.0])
+        exact = curl_autodiff_jax(A_field, point)
+
+        err_large = jnp.linalg.norm(curl_jax(A_field, point, dx=0.1) - exact)
+        err_small = jnp.linalg.norm(curl_jax(A_field, point, dx=1e-6) - exact)
+        assert err_small < err_large
+
+
+# -- Current Element Vector Potential --
+
+
+class TestCurrentElementPotentialJAX:
+    """Test current element vector potential."""
+
+    def test_current_element_basic(self):
+        """A = Idl / r for current element."""
+        Idl = jnp.array([1.0, 0.0, 0.0])
+        src = jnp.zeros(3)
+        obs = jnp.array([5.0, 0.0, 0.0])
+        A = current_element_potential_jax(Idl, src, obs)
+        expected = jnp.array([1.0 / 5.0, 0.0, 0.0])
+        assert jnp.allclose(A, expected, atol=1e-10)
+
+    def test_current_element_at_source_zero(self):
+        """A at source position should be zero (safe handling)."""
+        Idl = jnp.array([1.0, 0.0, 0.0])
+        src = jnp.array([1.0, 2.0, 3.0])
+        obs = jnp.array([1.0, 2.0, 3.0])
+        A = current_element_potential_jax(Idl, src, obs)
+        assert jnp.allclose(A, jnp.zeros(3), atol=1e-10)
+
+    def test_current_element_1_over_r_scaling(self):
+        """|A| scales as 1/r."""
+        Idl = jnp.array([1.0, 0.0, 0.0])
+        src = jnp.zeros(3)
+        A1 = current_element_potential_jax(Idl, src, jnp.array([1.0, 0.0, 0.0]))
+        A2 = current_element_potential_jax(Idl, src, jnp.array([2.0, 0.0, 0.0]))
+        # |A1| / |A2| = r2/r1 = 2
+        ratio = jnp.linalg.norm(A1) / jnp.linalg.norm(A2)
+        assert abs(float(ratio) - 2.0) < 1e-10
+
+
+# -- Auto-Differentiation --
+
+
+class TestVectorPotentialAutodiff:
+    """Test auto-differentiation of vector potential quantities."""
+
+    def test_dA_dm(self):
+        """dA/dm exists and is non-trivial."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([1.0, 0.0, 0.0])
+
+        def A_x(mz):
+            test_m = jnp.array([0.0, 0.0, mz])
+            return dipole_vector_potential_jax(test_m, obs)[0]
+
+        grad_A_x = jax.grad(A_x)(1.0)
+        # A_x for m=(0,0,mz) at (x,0,0): (m x r)_x = 0, so A_x = 0
+        assert jnp.allclose(grad_A_x, 0.0, atol=1e-10)
+
+    def test_dA_dm_y_component(self):
+        """dA_y/dmz at (x,0,0) = x/r^3."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([5.0, 0.0, 0.0])
+
+        def A_y(mz):
+            test_m = jnp.array([0.0, 0.0, mz])
+            return dipole_vector_potential_jax(test_m, obs)[1]
+
+        grad_A_y = jax.grad(A_y)(1.0)
+        # A_y = mz * x / r^3 = 1 * 5 / 125 = 0.04
+        # dA_y/dmz = x / r^3 = 5/125 = 0.04
+        expected = 5.0 / 125.0
+        assert abs(float(grad_A_y) - expected) < 1e-10
+
+    def test_dB_dm_autodiff(self):
+        """dB/dm via auto-diff is computable."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([0.0, 0.0, 5.0])
+
+        def B_z(mz):
+            test_m = jnp.array([0.0, 0.0, mz])
+            return B_from_dipole_autodiff_jax(test_m, obs)[2]
+
+        grad_B_z = jax.grad(B_z)(1.0)
+        # B_z = 2*mz/r^3 = 2/125 = 0.016
+        # dB_z/dmz = 2/r^3 = 2/125 = 0.016
+        expected = 2.0 / 125.0
+        assert abs(float(grad_B_z) - expected) < 1e-6
+
+
+# -- JIT Compilation --
+
+
+class TestVectorPotentialJIT:
+    """Test JIT compilation of vector potential functions."""
+
+    def test_jit_dipole_potential(self):
+        """dipole_vector_potential_jax works under jax.jit."""
+
+        @jax.jit
+        def compute_A(mx, my, mz, ox, oy, oz):
+            m = jnp.array([mx, my, mz])
+            obs = jnp.array([ox, oy, oz])
+            return dipole_vector_potential_jax(m, obs)
+
+        result = compute_A(0.0, 0.0, 1.0, 5.0, 0.0, 0.0)
+        assert result.shape == (3,)
+
+    def test_jit_curl_autodiff(self):
+        """curl_autodiff_jax works under jax.jit."""
+
+        @jax.jit
+        def compute_curl(px, py, pz):
+
+            def A_field(pos):
+                return jnp.array([-pos[1], pos[0], 0.0])
+
+            return curl_autodiff_jax(A_field, jnp.array([px, py, pz]))
+
+        result = compute_curl(1.0, 2.0, 3.0)
+        assert jnp.allclose(result, jnp.array([0.0, 0.0, 2.0]), atol=1e-10)
+
+    def test_jit_verify_curl(self):
+        """verify_vector_potential_curl_jax works under jax.jit."""
+
+        @jax.jit
+        def check_curl(mx, my, mz, ox, oy, oz):
+            m = jnp.array([mx, my, mz])
+            obs = jnp.array([ox, oy, oz])
+            result = verify_vector_potential_curl_jax(m, obs)
+            return result["residual"]
+
+        residual = check_curl(0.0, 0.0, 1.0, 3.0, 4.0, 5.0)
+        assert float(residual) < 1e-6
+
+    def test_jit_current_element(self):
+        """current_element_potential_jax works under jax.jit."""
+
+        @jax.jit
+        def compute_A_element(idl_x, idl_y, idl_z, ox, oy, oz):
+            Idl = jnp.array([idl_x, idl_y, idl_z])
+            obs = jnp.array([ox, oy, oz])
+            return current_element_potential_jax(Idl, jnp.zeros(3), obs)
+
+        result = compute_A_element(1.0, 0.0, 0.0, 5.0, 0.0, 0.0)
+        assert jnp.allclose(result, jnp.array([0.2, 0.0, 0.0]), atol=1e-10)
+
+
+# -- vmap: Batched Evaluation --
+
+
+class TestVectorPotentialVmap:
+    """Test vmap over batches of observation points."""
+
+    def test_vmap_dipole_potential_over_points(self):
+        """vmap dipole_vector_potential_jax over multiple observation points."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        points = jnp.array([
+            [1.0, 0.0, 0.0],
+            [0.0, 2.0, 0.0],
+            [0.0, 0.0, 3.0],
+        ])
+        A_batch = jax.vmap(lambda p: dipole_vector_potential_jax(m, p))(points)
+        assert A_batch.shape == (3, 3)
+        # Third point (on axis) should give A = 0
+        assert jnp.allclose(A_batch[2], jnp.zeros(3), atol=1e-10)
+
+    def test_vmap_B_from_dipole_over_points(self):
+        """vmap B_from_dipole_autodiff_jax over multiple observation points."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        points = jnp.array([
+            [0.0, 0.0, 5.0],
+            [5.0, 0.0, 0.0],
+            [0.0, 5.0, 0.0],
+        ])
+        B_batch = jax.vmap(lambda p: B_from_dipole_autodiff_jax(m, p))(points)
+        assert B_batch.shape == (3, 3)
+
+    def test_vmap_current_element_over_points(self):
+        """vmap current_element_potential_jax over observation points."""
+        Idl = jnp.array([1.0, 0.0, 0.0])
+        src = jnp.zeros(3)
+        points = jnp.array([
+            [1.0, 0.0, 0.0],
+            [2.0, 0.0, 0.0],
+            [5.0, 0.0, 0.0],
+        ])
+        A_batch = jax.vmap(lambda p: current_element_potential_jax(Idl, src, p))(points)
+        assert A_batch.shape == (3, 3)
+        # 1/r scaling: [1, 0.5, 0.2]
+        assert jnp.allclose(A_batch[:, 0], jnp.array([1.0, 0.5, 0.2]), atol=1e-10)
+
+    def test_vmap_verify_curl(self):
+        """vmap verify_vector_potential_curl_jax over multiple points."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        points = jnp.array([
+            [3.0, 0.0, 0.0],
+            [0.0, 3.0, 0.0],
+            [0.0, 0.0, 3.0],
+        ])
+
+        def check_one(p):
+            result = verify_vector_potential_curl_jax(m, p)
+            return result["residual"]
+
+        residuals = jax.vmap(check_one)(points)
+        assert residuals.shape == (3,)
+        assert jnp.all(residuals < 1e-6)
+
+
+# -- VectorPotentialJAX B field methods --
+
+
+class TestVectorPotentialJAXBField:
+    """Test VectorPotentialJAX compute_B_field methods."""
+
+    def test_compute_B_field_numerical(self):
+        """compute_B_field uses numerical curl correctly."""
+
+        def A_func(pos):
+            return jnp.array([-pos[1], pos[0], 0.0])
+
+        vp = VectorPotentialJAX(
+            A_field=A_func(jnp.array([1.0, 2.0, 3.0])),
+            position=jnp.array([1.0, 2.0, 3.0]),
+        )
+        B = vp.compute_B_field(A_func, dx=1e-6)
+        # curl of (-y, x, 0) = (0, 0, 2)
+        assert jnp.allclose(B, jnp.array([0.0, 0.0, 2.0]), atol=1e-5)
+
+    def test_compute_B_field_autodiff(self):
+        """compute_B_field_autodiff uses auto-diff curl."""
+
+        def A_func(pos):
+            return jnp.array([-pos[1], pos[0], 0.0])
+
+        vp = VectorPotentialJAX(
+            A_field=A_func(jnp.array([1.0, 2.0, 3.0])),
+            position=jnp.array([1.0, 2.0, 3.0]),
+        )
+        B = vp.compute_B_field_autodiff(A_func)
+        assert jnp.allclose(B, jnp.array([0.0, 0.0, 2.0]), atol=1e-10)
+
+    def test_B_dipole_via_VectorPotentialJAX(self):
+        """VectorPotentialJAX with dipole A gives correct B via autodiff."""
+        m = jnp.array([0.0, 0.0, 1.0])
+        obs = jnp.array([0.0, 0.0, 5.0])
+
+        def dipole_A(pos):
+            return dipole_vector_potential_jax(m, pos)
+
+        A_at_obs = dipole_A(obs)
+        vp = VectorPotentialJAX(A_field=A_at_obs, position=obs)
+        B = vp.compute_B_field_autodiff(dipole_A)
+
+        expected_z = 2.0 / (5.0 ** 3)
+        assert jnp.allclose(B, jnp.array([0.0, 0.0, expected_z]), atol=1e-6)
+
+
+# -- VectorPotential: NumPy Cross-Validation --
+
+
+class TestVectorPotentialNumpyCrossValidation:
+    """Test JAX vector potential results against NumPy reference."""
+
+    def test_dipole_A_matches_numpy(self):
+        """JAX dipole vector potential matches NumPy reference."""
+        from maxwell.calculus.vector_potential import VectorPotential as NumPyVP
+
+        m = np.array([0.0, 0.0, 1.0])
+        dipole_pos = np.zeros(3)
+        obs = np.array([5.0, 0.0, 0.0])
+
+        np_vp = NumPyVP.from_dipole(m, dipole_pos, obs)
+        jax_A = dipole_vector_potential_jax(jnp.array(m), jnp.array(obs), jnp.array(dipole_pos))
+
+        assert jnp.allclose(jax_A, jnp.array(np_vp.value), atol=1e-10)
+
+    def test_dipole_A_matches_numpy_on_axis(self):
+        """JAX dipole A = 0 on axis matches NumPy."""
+        from maxwell.calculus.vector_potential import VectorPotential as NumPyVP
+
+        m = np.array([0.0, 0.0, 1.0])
+        dipole_pos = np.zeros(3)
+        obs = np.array([0.0, 0.0, 5.0])
+
+        np_vp = NumPyVP.from_dipole(m, dipole_pos, obs)
+        jax_A = dipole_vector_potential_jax(jnp.array(m), jnp.array(obs))
+
+        assert jnp.allclose(jax_A, jnp.array(np_vp.value), atol=1e-10)
+
+    def test_magnitude_matches_numpy(self):
+        """JAX magnitude matches NumPy magnitude."""
+        from maxwell.calculus.vector_potential import VectorPotential as NumPyVP
+
+        m = np.array([1.0, 2.0, 3.0])
+        dipole_pos = np.zeros(3)
+        obs = np.array([3.0, 4.0, 5.0])
+
+        np_vp = NumPyVP.from_dipole(m, dipole_pos, obs)
+        jax_A_val = dipole_vector_potential_jax(jnp.array(m), jnp.array(obs))
+        jax_vp = VectorPotentialJAX(
+            A_field=jax_A_val,
+            position=jnp.array(obs),
+        )
+
+        assert abs(float(jax_vp.magnitude) - np_vp.magnitude) < 1e-10
+
+    def test_B_from_curl_matches_numerical_reference(self):
+        """JAX auto-diff B matches NumPy numerical curl result."""
+        from maxwell.calculus.vector_potential import (
+            calc_B_from_vector_potential,
+            VectorPotential as NumPyVP,
+        )
+
+        m = np.array([0.0, 0.0, 1.0])
+        obs = np.array([3.0, 4.0, 0.0])
+
+        def np_A_func(pos):
+            return NumPyVP.from_dipole(m, np.zeros(3), pos).value
+
+        B_np = calc_B_from_vector_potential(np_A_func, obs, h=1e-8)
+        B_jax = B_from_dipole_autodiff_jax(jnp.array(m), jnp.array(obs))
+
+        # Auto-diff should be more accurate than numerical, so they agree to ~6 digits
+        assert jnp.allclose(B_jax, jnp.array(B_np), atol=1e-5)
