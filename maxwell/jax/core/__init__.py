@@ -13,6 +13,11 @@ Implemented:
 - pole_force_jax: Coulomb's law for magnetic poles (Art. 376)
 - mutual_action_jax: Mutual action between two magnets (Art. 392)
 - torque_on_magnet_jax: Torque on magnet in uniform field (Art. 373)
+- VectorPotentialJAX: Magnetic vector potential A (Arts. 405-406)
+- curl_jax/curl_autodiff_jax: Numerical and auto-diff curl operations
+- dipole_vector_potential_jax: A from magnetic dipole (Art. 406)
+- B_from_dipole_autodiff_jax: B = curl(A) verification for dipole
+- current_element_potential_jax: A from current element (Art. 405)
 
 Category: B (user_original) — JAX adapter layer.
 """
@@ -33,6 +38,15 @@ from maxwell.jax.core.magnet import (
     torque_on_magnet_jax,
     pole_force_gradient,
 )
+from maxwell.jax.core.vector_potential import (
+    VectorPotentialJAX,
+    curl_jax,
+    curl_autodiff_jax,
+    dipole_vector_potential_jax,
+    B_from_dipole_autodiff_jax,
+    verify_vector_potential_curl_jax,
+    current_element_potential_jax,
+)
 
 __all__ = [
     "PointChargeJAX",
@@ -45,4 +59,11 @@ __all__ = [
     "mutual_action_jax",
     "torque_on_magnet_jax",
     "pole_force_gradient",
+    "VectorPotentialJAX",
+    "curl_jax",
+    "curl_autodiff_jax",
+    "dipole_vector_potential_jax",
+    "B_from_dipole_autodiff_jax",
+    "verify_vector_potential_curl_jax",
+    "current_element_potential_jax",
 ]
