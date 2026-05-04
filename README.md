@@ -29,6 +29,8 @@ From PyPI (recommended):
 pip install maxwell           # Core library
 pip install maxwell[viz]      # With visualization support
 pip install maxwell[dev]      # With development tools
+pip install maxwell[accel]    # With JAX GPU/TPU acceleration
+pip install maxwell[all]      # Everything
 ```
 
 From source:
@@ -63,7 +65,7 @@ E_field = gradient(potential_field)
 
 ```bash
 pytest tests/ -v
-# 548 passed in X.XXs
+# 1539 passed in X.XXs
 ```
 
 ## What Can I Use This For?
@@ -126,17 +128,50 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | Metric | Count |
 |--------|-------|
 | Articles covered | 866 / 866 (100%) |
-| Python modules | 241 |
-| Functions | 1,174 |
-| Classes | 244 |
-| Tests | 548 / 548 passing |
+| Python modules | 260+ |
+| Functions | 1,250+ |
+| Classes | 270+ |
+| Tests | 1539 / 1539 passing |
 | Math validations | 50 / 50 passing |
+| SymPy verifiers | 66 / 66 passing |
+| JAX adapters | 20+ |
 
 ### Validation
 
+- 1539/1539 tests passing (629 core + 847 JAX + 66 SymPy)
 - 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
 - 100% citation compliance -- every public function is linked to its source article
-- All 241 modules import without errors
+- All 260+ modules import without errors
+
+### JAX GPU/TPU Acceleration
+
+The `maxwell.jax` package provides JAX-compatible implementations of core Maxwell calculations, enabling:
+
+- **GPU/TPU execution** -- vectorized batch evaluation of fields, forces, and energies across thousands of points
+- **Automatic differentiation** -- exact gradients via `jax.grad` for field derivatives and sensitivity analysis
+- **JIT compilation** -- compiled kernels for repeated evaluation via `jax.jit`
+- **CGS-EMU precision** -- 64-bit floats (`jax_enable_x64`) preserve unit consistency
+
+20+ JAX adapters cover all four Parts of the Treatise: `PointChargeJAX`, `MagneticPoleJAX`, `MagnetJAX`, `VectorPotentialJAX`, `ElectricFieldJAX`, `FaradayInductionJAX`, `MaxwellEquationsJAX`, `SphericalHarmonicExpansionJAX`, `LorentzForceJAX`, `MaxwellStressTensorJAX`, `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX`, `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX`, `MagneticEnergyJAX`, `InductorEnergyJAX`, `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX`, `OhmsLawJAX`, `NetworkSolverJAX`, `Conduction3DJAX`, `FaradayLawsJAX`, `ElectrolysisCellJAX`, `JouleHeatingJAX`, and more.
+
+```python
+import jax
+from maxwell.jax.core.charge import PointChargeJAX
+
+charge = PointChargeJAX(q=1.0, position=jax.numpy.array([0.0, 0.0, 0.0]))
+
+# Auto-differentiation: dV/dq at r=1
+V_at = lambda q: PointChargeJAX(q=q, position=jax.numpy.zeros(3)).potential_at(
+    jax.numpy.array([1.0, 0.0, 0.0])
+)
+dVdq = jax.grad(V_at)(1.0)  # = 1.0
+
+# Batched field evaluation over 1000 points
+points = jax.numpy.linspace(-10, 10, 1000).reshape(-1, 3)
+E_batch = charge.field_at_batched(points)  # shape (1000, 3)
+```
+
+Install with `pip install maxwell[accel]` for the JAX runtime. See `maxwell/jax/README.md` for the complete adapter registry.
 
 ## Documentation
 
@@ -232,7 +267,7 @@ maxwell/
     meta/                # Citation system (@maxwell_cite)
     ... and more
 tests/
-    test_*.py            # 548 tests across electrostatics, electromagnetism, etc.
+    test_*.py            # 1539 tests (629 core + 847 JAX + 66 SymPy)
 archive/                 # Legacy development documents
 docs/                    # API reference, coverage, validation
 ```

@@ -37,6 +37,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Education",
     "Topic :: Scientific/Engineering :: Mathematics",
@@ -71,6 +72,21 @@ symbolic = [
 accel = [
     "jax>=0.4.0",
 ]
+all = [
+    "maxwell[dev,enhanced,viz,symbolic,accel]",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+markers = [
+    "jax: tests requiring JAX (accel extra)",
+    "sympy: tests requiring SymPy (symbolic extra)",
+    "slow: tests that take a long time to run",
+    "visualization: tests for matplotlib visualization",
+]
 
 [project.urls]
 Homepage = "https://github.com/maxwell-treatise/modernized-program"
@@ -86,12 +102,6 @@ exclude = ["tests*", "agents*", "archive*", ".claude*", ".pytest_cache*", ".benc
 
 [tool.setuptools.package-data]
 maxwell = ["*.json", "*.md"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_functions = ["test_*"]
-addopts = "-v --tb=short"
 
 [tool.mypy]
 python_version = "3.10"
