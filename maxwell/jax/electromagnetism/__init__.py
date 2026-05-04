@@ -64,6 +64,26 @@ from maxwell.jax.electromagnetism.magnetic_energy import (
     calc_total_magnetic_energy_jax,
     verify_magnetic_energy_density_jax,
 )
+from maxwell.jax.electromagnetism.ohms_law import (
+    ConductivityJAX,
+    OhmsLawJAX,
+    PowerDissipationJAX,
+    ResistanceJAX,
+    analyze_ohms_law_jax,
+    calc_conductance_jax,
+    calc_conductivity_jax,
+    calc_current_jax,
+    calc_power_from_I2R_jax,
+    calc_power_from_IV_jax,
+    calc_power_from_V2R_jax,
+    calc_resistance_jax,
+    calc_resistivity_jax,
+    calc_voltage_jax,
+    parallel_resistance_jax,
+    series_resistance_jax,
+    temperature_corrected_resistance_jax,
+    verify_ohms_law_jax,
+)
 from maxwell.jax.electromagnetism.electrokinetic import (
     CoupledCircuitEnergyJAX,
     ElectrokineticEnergyJAX,
@@ -86,6 +106,25 @@ from maxwell.jax.electromagnetism.induction import (
 )
 
 __all__ = [
+    # Ohm's law / Part II Electrokinematics
+    "OhmsLawJAX",
+    "ResistanceJAX",
+    "ConductivityJAX",
+    "PowerDissipationJAX",
+    "calc_voltage_jax",
+    "calc_current_jax",
+    "calc_resistance_jax",
+    "calc_conductance_jax",
+    "calc_resistivity_jax",
+    "calc_conductivity_jax",
+    "series_resistance_jax",
+    "parallel_resistance_jax",
+    "temperature_corrected_resistance_jax",
+    "calc_power_from_IV_jax",
+    "calc_power_from_I2R_jax",
+    "calc_power_from_V2R_jax",
+    "verify_ohms_law_jax",
+    "analyze_ohms_law_jax",
     # Ampere-Maxwell
     "AmpereMaxwellLawJAX",
     "DisplacementCurrentJAX",
