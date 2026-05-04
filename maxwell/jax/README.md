@@ -38,6 +38,7 @@ maxwell/jax/
 │   └── network_solver.py        # NetworkSolverJAX, KirchhoffJAX, WheatstoneBridgeJAX, ReciprocityVerifierJAX
 │   └── conduction_3d.py         # Conduction3DJAX, SpreadingResistanceJAX, EffectiveConductivityJAX
 │   └── electrolysis.py          # FaradayLawsJAX, IonTransportJAX, PolarizationJAX, ElectrolysisCellJAX
+│   └── joule_heating.py         # JouleHeatingJAX, HeatDissipationJAX, SubstanceResistanceJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -1026,6 +1027,173 @@ result = verify_electrolysis_jax()
 # result['verified'] = True
 ```
 
+## Joule Heating & Heat Dissipation
+
+```python
+from maxwell.jax.electromagnetism.joule_heating import (
+    JouleHeatingJAX,
+    HeatDissipationJAX,
+    SubstanceResistanceJAX,
+    joule_heating_power_jax,
+    joule_energy_dissipated_jax,
+    joule_power_density_jax,
+    joule_temperature_rise_jax,
+    joule_heating_from_voltage_jax,
+    cooling_rate_jax,
+    steady_state_temperature_jax,
+    substance_resistivity_at_temp_jax,
+    substance_resistance_jax,
+    verify_joule_heating_jax,
+    analyze_joule_heating_jax,
+)
+```
+
+### Joule's Law (Arts. 351-358)
+
+```python
+# Joule heating power: P = I^2 * R (Arts. 351-352)
+P = joule_heating_power_jax(current=2.0, resistance=5.0)
+# P = 20.0 erg/s
+
+# Energy dissipated: E = I^2 * R * t (Arts. 351-352)
+E = joule_energy_dissipated_jax(current=2.0, resistance=5.0, time=10.0)
+# E = 200.0 erg
+
+# Power density: p = J^2 * rho (Arts. 353-354)
+p = joule_power_density_jax(
+    current_density=2.0,   # abA/cm^2
+    resistivity=5.0,       # abohm*cm
+)
+# p = 20.0 erg/s/cm^3
+
+# Temperature rise from Joule heating (Arts. 355-356)
+dT = joule_temperature_rise_jax(
+    current=2.0,
+    resistance=5.0,
+    time=10.0,
+    mass=10.0,                       # g
+    specific_heat=4.18e7,            # erg/(g*K), water
+)
+# dT = 200 / (10 * 4.18e7) K
+
+# From voltage: P = V^2 / R (Arts. 351-352)
+P_V = joule_heating_from_voltage_jax(voltage=10.0, resistance=5.0)
+# P = 20.0 erg/s
+
+# Using the class interface
+heating = JouleHeatingJAX(resistance=5.0)
+P = heating.power(current=2.0)               # I^2 * R
+E = heating.energy_dissipated(2.0, 10.0)     # I^2 * R * t
+p = heating.power_density(2.0, 5.0)          # J^2 * rho
+dT = heating.temperature_rise(2.0, 10.0, 10.0, 4.18e7)
+P_V = heating.from_voltage(10.0)             # V^2 / R
+
+# Verification: P = I^2*R == V^2/R consistency
+result = verify_joule_heating_jax()
+# result['verified'] = True
+```
+
+### Heat Dissipation & Thermal Analysis (Arts. 357-358)
+
+```python
+# Heat dissipation with thermal properties
+thermal = HeatDissipationJAX(
+    specific_heat=4.18e7,        # erg/(g*K), water
+    mass=10.0,                   # g
+    thermal_conductivity=1.0e5,  # erg/(s*cm*K)
+)
+
+# Temperature rise from deposited energy
+dT = thermal.temperature_from_energy(energy=200.0)
+# dT = 200 / (10 * 4.18e7) K
+
+# Cooling rate: dQ/dt = h * A * dT
+cooling = cooling_rate_jax(
+    surface_area=10.0,           # cm^2
+    temp_diff=50.0,              # K
+    heat_transfer_coeff=1.0e5,   # erg/(s*cm^2*K)
+)
+# cooling = 5.0e7 erg/s
+
+# Steady-state temperature: T_ss = T_amb + P/(h*A)
+T_ss = steady_state_temperature_jax(
+    power=20.0,                  # erg/s
+    ambient_temp=293.15,         # K
+    surface_area=10.0,
+    heat_transfer_coeff=1.0e5,
+)
+# T_ss = 293.15 + 2.0e-5 K
+
+# Transient temperature: T(t) = T_amb + dT_ss * (1 - exp(-t/tau))
+T_t = thermal.transient_temperature(
+    power_input=20.0,
+    time=100.0,
+    ambient_temp=293.15,
+    surface_area=10.0,
+    h_coeff=1.0e5,
+)
+
+# Full analysis
+result = analyze_joule_heating_jax(
+    current=1.0,
+    resistance=1.0,
+    time=1.0,
+    mass=1.0,
+    specific_heat=4.18e7,
+    surface_area=1.0,
+    ambient_temp=293.15,
+    heat_transfer_coeff=1.0e5,
+)
+# result['power_erg_s'], result['energy_erg'],
+# result['temperature_rise_K'], result['steady_state_temp_K'],
+# result['cooling_rate_erg_s']
+```
+
+### Substance Resistance (Arts. 359-370)
+
+```python
+# Temperature-dependent resistivity: rho(T) = rho_0 * (1 + alpha*(T - T0))
+rho = substance_resistivity_at_temp_jax(
+    rho_0=1.7e-6,       # copper, abohm*cm
+    alpha=0.00393,      # per degree C
+    temp=100.0,         # C
+    ref_temp=20.0,
+)
+# rho = 1.7e-6 * (1 + 0.00393 * 80) = 2.236e-6 abohm*cm
+
+# Resistance from geometry: R = rho * L / A
+R = substance_resistance_jax(
+    rho=rho,
+    length=100.0,        # cm
+    area=0.01,           # cm^2
+)
+# R = 2.236e-6 * 100 / 0.01 = 0.02236 abohms
+
+# Using the class interface
+substance = SubstanceResistanceJAX(
+    base_resistivity=1.7e-6,
+    temperature_coefficient=0.00393,
+    reference_temp=20.0,
+)
+rho_T = substance.at_temperature(100.0)
+R_geom = substance.resistance_from_geometry(
+    length=100.0,
+    cross_section_area=0.01,
+    temp=100.0,
+)
+
+# Compare multiple substances at once
+rho_values = jnp.array([1.7e-6, 2.82e-6, 1.59e-6])   # Cu, Al, Ag
+alpha_values = jnp.array([0.00393, 0.00429, 0.00386])
+R_all = substance.compare_substances(
+    substances_resistivities=rho_values,
+    substances_alphas=alpha_values,
+    temp=100.0,
+    length=100.0,
+    cross_section_area=0.01,
+)
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -1049,7 +1217,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-767 tests cover:
+847 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -1073,6 +1241,7 @@ dVdq = grad(potential_at_q)(1.0)
 - Network analysis & Kirchhoff's laws (79 tests): NetworkSolverJAX conductance matrix, node potentials, branch currents, branch power, effective resistance, KirchhoffJAX KCL/KVL verification, WheatstoneBridgeJAX balance/Thevenin/galvanometer current, ReciprocityVerifierJAX transfer resistance, standalone functions, auto-diff
 - 3D conduction & effective conductivity (75 tests): Conduction3DJAX scalar/tensor conductivity, current density, electric field recovery, power density, resistivity conversion, SpreadingResistanceJAX spherical/hemispherical/circular/cylindrical geometries, EffectiveConductivityJAX series/parallel/Maxwell-Garnett/Brickell mixing models, verification round-trip, comprehensive analysis, auto-diff
 - Electrolysis & ion transport (80 tests): FaradayLawsJAX mass from charge/current, electrochemical equivalent, required charge/current, IonTransportJAX migration velocity, electrolyte conductivity, transference numbers, limiting current density, PolarizationJAX Butler-Volmer activation overpotential, concentration overpotential, decomposition voltage, total polarization EMF, ElectrolysisCellJAX cell resistance, mass deposited, required voltage, energy per gram, comprehensive analysis, standalone functions (Faraday's laws, polarization EMF, decomposition voltage, ion migration velocity, electrolyte conductivity, Kohlrausch's law, concentration polarization, battery back EMF, transference numbers), verification consistency, auto-diff
+- Joule heating & heat dissipation (80 tests): JouleHeatingJAX power, energy, power density, temperature rise, voltage-based power, HeatDissipationJAX temperature from energy, cooling rate, steady-state temperature, transient temperature, SubstanceResistanceJAX temperature-dependent resistivity, geometry-based resistance, multi-substance comparison, standalone functions (joule_heating_power, joule_energy_dissipated, joule_power_density, joule_temperature_rise, joule_heating_from_voltage, cooling_rate, steady_state_temperature, substance_resistivity_at_temp, substance_resistance), verification consistency, comprehensive analysis, auto-diff
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -1117,3 +1286,6 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | IonTransportJAX | Arts. 257-263 |
 | PolarizationJAX | Arts. 253-256 |
 | ElectrolysisCellJAX | Arts. 249-263 |
+| JouleHeatingJAX | Arts. 351-358 |
+| HeatDissipationJAX | Arts. 351-358 |
+| SubstanceResistanceJAX | Arts. 359-370 |
