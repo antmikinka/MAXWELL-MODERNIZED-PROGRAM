@@ -33,11 +33,12 @@ maxwell/jax/
 │   ├── ampere_maxwell.py        # DisplacementCurrentJAX, AmpereMaxwellLawJAX
 │   ├── field.py                 # ElectricFieldJAX (flux, Gauss's law, EMF)
 │   ├── energy.py                # ElectrostaticEnergyJAX, CapacitorEnergyJAX
-│   └── electrokinetic.py        # ElectrokineticEnergyJAX, CoupledCircuitEnergyJAX
-│   └── ohms_law.py              # OhmsLawJAX, ResistanceJAX, ConductivityJAX, PowerDissipationJAX
-│   └── network_solver.py        # NetworkSolverJAX, KirchhoffJAX, WheatstoneBridgeJAX, ReciprocityVerifierJAX
-│   └── conduction_3d.py         # Conduction3DJAX, SpreadingResistanceJAX, EffectiveConductivityJAX
-│   └── electrolysis.py          # FaradayLawsJAX, IonTransportJAX, PolarizationJAX, ElectrolysisCellJAX
+│   ├── electrokinetic.py        # ElectrokineticEnergyJAX, CoupledCircuitEnergyJAX
+│   ├── magnetic_energy.py       # MagneticEnergyJAX, InductorEnergyJAX
+│   ├── ohms_law.py              # OhmsLawJAX, ResistanceJAX, ConductivityJAX, PowerDissipationJAX
+│   ├── network_solver.py        # NetworkSolverJAX, KirchhoffJAX, WheatstoneBridgeJAX, ReciprocityVerifierJAX
+│   ├── conduction_3d.py         # Conduction3DJAX, SpreadingResistanceJAX, EffectiveConductivityJAX
+│   ├── electrolysis.py          # FaradayLawsJAX, IonTransportJAX, PolarizationJAX, ElectrolysisCellJAX
 │   └── joule_heating.py         # JouleHeatingJAX, HeatDissipationJAX, SubstanceResistanceJAX
 └── math/
     ├── __init__.py
@@ -451,64 +452,68 @@ from maxwell.jax.electromagnetism.ohms_law import (
     ResistanceJAX,
     ConductivityJAX,
     PowerDissipationJAX,
-    calc_ohms_law_jax,
-    calc_series_resistance_jax,
-    calc_parallel_resistance_jax,
+    calc_voltage_jax,
+    calc_current_jax,
+    calc_resistance_jax,
+    series_resistance_jax,
+    parallel_resistance_jax,
     calc_conductivity_jax,
-    calc_power_dissipation_jax,
+    calc_power_from_IV_jax,
+    calc_power_from_I2R_jax,
+    calc_power_from_V2R_jax,
     analyze_ohms_law_jax,
 )
 
 # Ohm's Law: V = I * R (Art. 230)
 ohm = OhmsLawJAX(voltage=10.0, current=2.0, resistance=5.0)
-V = ohm.from_current_and_resistance(current=2.0, resistance=5.0)  # V = 10.0
-I = ohm.from_voltage_and_resistance(voltage=10.0, resistance=5.0)  # I = 2.0
-R = ohm.from_voltage_and_current(voltage=10.0, current=2.0)        # R = 5.0
+V = ohm.voltage_from(I=2.0, R=5.0)          # V = 10.0
+I = ohm.current_from(V=10.0, R=5.0)         # I = 2.0
+R = ohm.resistance_from(V=10.0, I=2.0)      # R = 5.0
 
-# Standalone function
-V = calc_ohms_law_jax(current=2.0, resistance=5.0)  # V = 10.0
+# Standalone functions
+V = calc_voltage_jax(I=2.0, R=5.0)           # V = 10.0
+I = calc_current_jax(V=10.0, R=5.0)          # I = 2.0
+R = calc_resistance_jax(V=10.0, I=2.0)       # R = 5.0
 
-# Series and parallel resistance (Arts. 273-284)
-R_series = calc_series_resistance_jax([10.0, 20.0, 30.0])  # 60.0 ohms
-R_parallel = calc_parallel_resistance_jax([10.0, 20.0, 30.0])  # 5.454... ohms
+# Series and parallel resistance (Arts. 245-246)
+R_series = series_resistance_jax([10.0, 20.0, 30.0])  # 60.0 ohms
+R_parallel = parallel_resistance_jax([10.0, 20.0, 30.0])  # 5.454... ohms
 
-# Using the class interface
-res = ResistanceJAX(values=[10.0, 20.0, 30.0])
-R_s = res.series()        # 60.0
-R_p = res.parallel()      # 5.454...
-R_temp = res.temperature(  # temperature-dependent resistance
-    reference_resistance=10.0,
-    temperature_coefficient=0.004,
-    temperature_change=50.0,
-)
+# Using the ResistanceJAX class
+res = ResistanceJAX(base_resistance=10.0, temperature_coefficient=0.004)
+R_s = res.series_combine([10.0, 20.0, 30.0])  # 60.0
+R_p = res.parallel_combine([10.0, 20.0, 30.0])  # 5.454...
+R_temp = res.at_temperature(70.0, ref_temp=20.0)  # temperature-corrected resistance
 
-# Conductivity: sigma = 1/rho (Arts. 285-288)
+# Conductivity: sigma = 1/rho (Arts. 251-260)
 cond = ConductivityJAX(conductivity=5.96e7)  # copper, S/m
 rho = cond.resistivity                        # 1.678e-8 ohm*m
 sigma = ConductivityJAX.from_resistivity(1.678e-8).conductivity  # round-trip
 
 # Standalone
-sigma = calc_conductivity_jax(resistivity=1.678e-8)
+sigma = calc_conductivity_jax(rho=1.678e-8)
 
-# Joule heating: P = I^2 * R = V^2 / R = V * I (Art. 230)
-power = PowerDissipationJAX(current=2.0, resistance=5.0)
-P1 = power.from_current()   # P = I^2 * R = 20.0 W
-P2 = power.from_voltage()   # P = V^2 / R = 20.0 W
-P3 = power.from_VI()        # P = V * I = 20.0 W
+# Joule heating: P = I^2 * R = V^2 / R = V * I (Arts. 261-263)
+power = PowerDissipationJAX(resistance=5.0)
+P1 = power.from_current(I=2.0)   # P = I^2 * R = 20.0 W
+P2 = power.from_voltage(V=10.0)  # P = V^2 / R = 20.0 W
+P3 = power.from_IV(V=10.0, I=2.0)  # P = V * I = 20.0 W
 
 # Standalone
-P = calc_power_dissipation_jax(current=2.0, resistance=5.0)
+P = calc_power_from_IV_jax(V=10.0, I=2.0)
+P = calc_power_from_I2R_jax(I=2.0, R=5.0)
+P = calc_power_from_V2R_jax(V=10.0, R=5.0)
 
 # Comprehensive analysis
 result = analyze_ohms_law_jax(
     voltage=10.0, current=2.0, resistance=5.0,
 )
-# result['calculated_voltage'], result['calculated_current'],
-# result['calculated_resistance'], result['power_dissipation']
+# result['resistance'], result['current'], result['voltage'],
+# result['power_IV'], result['power_I2R'], result['power_V2R']
 
 # Auto-differentiation: dP/dI = 2*I*R
 from jax import grad
-dP_dI = grad(lambda I: calc_power_dissipation_jax(current=I, resistance=5.0))(2.0)
+dP_dI = grad(lambda I: calc_power_from_I2R_jax(I, 5.0))(2.0)
 # = 2 * I * R = 20.0
 ```
 
@@ -1289,3 +1294,53 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | JouleHeatingJAX | Arts. 351-358 |
 | HeatDissipationJAX | Arts. 351-358 |
 | SubstanceResistanceJAX | Arts. 359-370 |
+
+## Troubleshooting
+
+### JAX is not installed
+
+If you see `ModuleNotFoundError: No module named 'jax'`, install the accel extra:
+```bash
+pip install maxwell[accel]
+```
+
+### Float64 not enabled
+
+If you see precision issues or CGS unit mismatches, ensure x64 is enabled **before** any JAX operations:
+```python
+import jax
+jax.config.update("jax_enable_x64", True)
+```
+
+### GPU not detected
+
+JAX should auto-detect GPU. To check:
+```python
+import jax
+print(jax.devices())  # Should list GPU devices if available
+```
+
+If no GPU appears, verify:
+- NVIDIA drivers are installed (for CUDA)
+- `jax[cuda12]` is installed: `pip install "jax[cuda12]"`
+
+### Import error on maxwell.jax modules
+
+All JAX modules require the `accel` extra. The core library works without JAX:
+```bash
+pip install maxwell        # Core only (NumPy)
+pip install maxwell[accel] # With JAX
+```
+
+### Pytree registration errors
+
+If you see `TypeError: <class> is not a valid JAX type`, ensure the class uses the `@jax_tree` decorator from `maxwell.jax._compat`:
+```python
+from maxwell.jax._compat import jax_tree
+from dataclasses import dataclass
+
+@jax_tree
+@dataclass
+class MyClass:
+    field: jax.Array
+```

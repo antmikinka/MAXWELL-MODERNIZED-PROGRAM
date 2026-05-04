@@ -104,6 +104,14 @@ pytest tests/test_math_verification.py -v
 
 # Run a single test file
 pytest tests/test_electrostatics.py -v
+
+# Run test subsets using pytest markers
+pytest -m jax           # JAX adapter tests (requires `pip install .[accel]`)
+pytest -m sympy         # SymPy symbolic verification tests (requires `pip install .[symbolic]`)
+pytest -m slow          # Long-running tests
+pytest -m visualization # Visualization tests (requires `pip install .[viz]`)
+pytest -m "jax and not slow"  # Combine markers
+pytest -m "not jax"     # Exclude JAX tests for fast core-only runs
 ```
 
 ### Writing Tests
