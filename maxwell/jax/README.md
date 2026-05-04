@@ -35,6 +35,7 @@ maxwell/jax/
 │   ├── energy.py                # ElectrostaticEnergyJAX, CapacitorEnergyJAX
 │   └── electrokinetic.py        # ElectrokineticEnergyJAX, CoupledCircuitEnergyJAX
 │   └── ohms_law.py              # OhmsLawJAX, ResistanceJAX, ConductivityJAX, PowerDissipationJAX
+│   └── network_solver.py        # NetworkSolverJAX, KirchhoffJAX, WheatstoneBridgeJAX, ReciprocityVerifierJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -508,6 +509,169 @@ dP_dI = grad(lambda I: calc_power_dissipation_jax(current=I, resistance=5.0))(2.
 # = 2 * I * R = 20.0
 ```
 
+## Network Analysis & Kirchhoff's Laws
+
+```python
+from maxwell.jax.electromagnetism.network_solver import (
+    NetworkSolverJAX,
+    KirchhoffJAX,
+    WheatstoneBridgeJAX,
+    ReciprocityVerifierJAX,
+    kirchhoff_junction_rule_jax,
+    kirchhoff_loop_rule_jax,
+    analyze_network_jax,
+    wheatstone_bridge_balance_jax,
+    wheatstone_bridge_sensitivity_jax,
+    reciprocity_theorem_jax,
+)
+```
+
+### Network Solver — Conductance Matrix Method (Arts. 276-280)
+
+For a network of linear conductors, node potentials are found by solving `G @ V = I`,
+where `G` is the conductance (admittance) matrix.
+
+```python
+# Simple 3-node network:
+#   Node 0 (ground) --g=0.1-- Node 1 --g=0.2-- Node 2
+#   Current injection: 1.0A into Node 1, -1.0A out of Node 2
+solver = NetworkSolverJAX.from_edges(
+    n_nodes=3,
+    edges=[
+        (0, 1, 0.1),  # conductance between nodes 0 and 1
+        (1, 2, 0.2),  # conductance between nodes 1 and 2
+    ],
+    current_sources=[
+        (1, 1.0),   # inject 1A at node 1
+        (2, -1.0),  # extract 1A at node 2
+    ],
+    reference_node=0,
+)
+
+# Node potentials (V_0 = 0 by definition)
+V = solver.node_potentials
+# V = [0.0, 15.0, 5.0] volts
+
+# Branch currents: I[i,j] = -G[i,j] * (V[i] - V[j])
+I_branch = solver.branch_currents
+# I_branch[0,1] = 1.5A (from node 0 to node 1)
+# I_branch[1,2] = 2.0A (from node 1 to node 2)
+
+# Branch power dissipation: P[i,j] = I[i,j]^2 / |G[i,j]|
+P_branch = solver.branch_power
+
+# Total power dissipated (each branch counted once)
+P_total = solver.total_power
+```
+
+### Effective Resistance Between Nodes
+
+```python
+# Effective resistance between nodes 1 and 2
+# (inject 1A at node 1, extract at node 2, measure voltage difference)
+R_eff = solver.effective_resistance(1, 2)
+# R_eff = V_1 - V_2 = 10.0 ohms (for 0.2S conductance)
+
+# Verify Kirchhoff's current law: G @ V == I
+result = solver.verify_kirchhoff()
+# result['kcl_satisfied'] = True
+# result['max_residual'] < 1e-10
+```
+
+### Wheatstone Bridge (Arts. 281-284)
+
+```python
+# Balanced bridge: R1*R4 = R2*R3
+bridge = WheatstoneBridgeJAX(R1=100.0, R2=200.0, R3=300.0, R4=600.0)
+
+# Balance check
+balanced = bridge.is_balanced          # True
+error = bridge.balance_error            # 0.0 (R1*R4 - R2*R3)
+R4_for_balance = bridge.balance_point_R4  # R4 = R2*R3/R1
+
+# Thevenin equivalent seen by galvanometer
+V_th = bridge.thevenin_voltage(V_battery=10.0)
+R_th = bridge.thevenin_resistance()
+
+# Galvanometer current with 50 ohm meter resistance
+I_galv = bridge.galvanometer_current(V_battery=10.0, R_galvanometer=50.0)
+
+# Comprehensive balance analysis
+result = wheatstone_bridge_balance_jax(
+    R1=100.0, R2=200.0, R3=300.0, R4=600.0,
+)
+# result['is_balanced'], result['ratio_1_2'], result['ratio_3_4']
+
+# Sensitivity analysis (unbalanced bridge)
+sensitivity = wheatstone_bridge_sensitivity_jax(
+    R1=100.0, R2=200.0, R3=300.0, R4=601.0,  # slightly unbalanced
+    V_battery=10.0,
+    R_galvanometer=50.0,
+)
+# sensitivity['galvanometer_current'], sensitivity['thevenin_voltage']
+```
+
+### Reciprocity Theorem (Arts. 277-278)
+
+Maxwell's reciprocity theorem: for any linear passive network, the transfer
+resistance between two port pairs is symmetric (R_12 = R_21).
+
+```python
+# Using the same conductance matrix from the 3-node network above
+verifier = ReciprocityVerifierJAX(
+    conductance_matrix=solver.conductance_matrix,
+    reference_node=0,
+)
+
+# Transfer resistance: inject at port_a, measure at port_b
+R_transfer = verifier.transfer_resistance(port_a=1, port_b=2)
+
+# Verify reciprocity between two port pairs
+result = verifier.verify(
+    port1_a=1, port1_b=2,
+    port2_a=2, port2_b=1,
+)
+# result['R_12'], result['R_21'], result['is_reciprocal'] = True
+
+# Standalone reciprocity verification
+result = reciprocity_theorem_jax(
+    conductance_matrix=solver.conductance_matrix,
+    port1=(1, 0),
+    port2=(2, 0),
+    reference_node=0,
+)
+```
+
+### Kirchhoff's Laws — Junction and Loop Rules
+
+```python
+# Junction rule: sum of currents at a node = 0 (Arts. 273-274)
+junction = kirchhoff_junction_rule_jax(
+    currents=jnp.array([1.0, -0.6, -0.4])
+)
+# junction['sum'] = 0.0, junction['satisfied'] = True
+
+# Loop rule: sum of voltage drops around a closed loop = 0 (Art. 275)
+loop = kirchhoff_loop_rule_jax(
+    voltage_drops=jnp.array([5.0, -3.0, -2.0])
+)
+# loop['sum'] = 0.0, loop['satisfied'] = True
+```
+
+### Comprehensive Network Analysis
+
+```python
+# Full analysis from edge list
+result = analyze_network_jax(
+    edges=[(0, 1, 0.1), (1, 2, 0.2), (0, 2, 0.05)],
+    current_sources=[(1, 1.0), (2, -1.0)],
+    reference_node=0,
+)
+# result['node_potentials'], result['branch_currents'],
+# result['total_power'], result['kirchhoff_verification'],
+# result['effective_resistances']
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -531,7 +695,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-533 tests cover:
+612 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -552,6 +716,7 @@ dVdq = grad(potential_at_q)(1.0)
 - Electrostatic energy (60 tests): energy density, capacitor energy, E.D dot, isotropy, auto-diff
 - Electrokinetic energy (61 tests): single circuit, coupled circuits, mutual inductance, coupling coefficient, verification, auto-diff
 - Ohm's law & resistance (93 tests): Ohm's law V=IR, series/parallel/temperature resistance, conductivity, power dissipation, Joule heating, auto-diff
+- Network analysis & Kirchhoff's laws (79 tests): NetworkSolverJAX conductance matrix, node potentials, branch currents, branch power, effective resistance, KirchhoffJAX KCL/KVL verification, WheatstoneBridgeJAX balance/Thevenin/galvanometer current, ReciprocityVerifierJAX transfer resistance, standalone functions, auto-diff
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -585,3 +750,7 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | ConductivityJAX | Arts. 285-288 |
 | PowerDissipationJAX | Art. 230 |
 | ellipk_jax, ellipe_jax | Arts. 149-152 |
+| NetworkSolverJAX | Arts. 276-280 |
+| KirchhoffJAX | Arts. 273-275 |
+| WheatstoneBridgeJAX | Arts. 281-284 |
+| ReciprocityVerifierJAX | Arts. 277-278 |
