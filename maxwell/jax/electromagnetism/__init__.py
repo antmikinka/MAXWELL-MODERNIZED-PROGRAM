@@ -160,6 +160,23 @@ from maxwell.jax.electromagnetism.electrolysis import (
     verify_electrolysis_jax,
 )
 
+from maxwell.jax.electromagnetism.joule_heating import (
+    JouleHeatingJAX,
+    HeatDissipationJAX,
+    SubstanceResistanceJAX,
+    joule_heating_power_jax,
+    joule_energy_dissipated_jax,
+    joule_power_density_jax,
+    joule_temperature_rise_jax,
+    joule_heating_from_voltage_jax,
+    cooling_rate_jax,
+    steady_state_temperature_jax,
+    substance_resistivity_at_temp_jax,
+    substance_resistance_jax,
+    verify_joule_heating_jax,
+    analyze_joule_heating_jax,
+)
+
 __all__ = [
     # Ohm's law / Part II Electrokinematics
     "OhmsLawJAX",
@@ -284,4 +301,19 @@ __all__ = [
     "battery_back_emf_jax",
     "transference_number_jax",
     "verify_electrolysis_jax",
+    # Joule heating and substance resistance (Arts. 351-370)
+    "JouleHeatingJAX",
+    "HeatDissipationJAX",
+    "SubstanceResistanceJAX",
+    "joule_heating_power_jax",
+    "joule_energy_dissipated_jax",
+    "joule_power_density_jax",
+    "joule_temperature_rise_jax",
+    "joule_heating_from_voltage_jax",
+    "cooling_rate_jax",
+    "steady_state_temperature_jax",
+    "substance_resistivity_at_temp_jax",
+    "substance_resistance_jax",
+    "verify_joule_heating_jax",
+    "analyze_joule_heating_jax",
 ]
