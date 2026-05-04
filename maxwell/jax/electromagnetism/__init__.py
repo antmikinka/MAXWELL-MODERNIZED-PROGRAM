@@ -15,6 +15,9 @@ Implemented:
 - ElectricFieldJAX: Electric field definition, flux, Gauss's law, EMF
 - ElectrostaticEnergyJAX, CapacitorEnergyJAX: Electrostatic energy (Arts. 630-631)
 - MagneticEnergyJAX, InductorEnergyJAX: Magnetic energy (Arts. 632-633)
+- NetworkSolverJAX, KirchhoffJAX: Network analysis, KCL/KVL (Arts. 273-280)
+- WheatstoneBridgeJAX: Wheatstone bridge theory (Arts. 281-284)
+- ReciprocityVerifierJAX: Reciprocity theorem (Arts. 277-278)
 
 Category: B (user_original) — JAX adapter layer.
 """
@@ -104,6 +107,20 @@ from maxwell.jax.electromagnetism.induction import (
     FaradayInductionJAX,
     analyze_faraday_induction_jax,
 )
+from maxwell.jax.electromagnetism.network_solver import (
+    KirchhoffJAX,
+    NetworkSolverJAX,
+    ReciprocityVerifierJAX,
+    WheatstoneBridgeJAX,
+    analyze_network_jax,
+    kirchhoff_junction_rule_jax,
+    kirchhoff_loop_rule_jax,
+    reciprocity_theorem_jax,
+    solve_network_jax,
+    verify_network_solution_jax,
+    wheatstone_bridge_balance_jax,
+    wheatstone_bridge_sensitivity_jax,
+)
 
 __all__ = [
     # Ohm's law / Part II Electrokinematics
@@ -180,4 +197,17 @@ __all__ = [
     "calc_coupling_coefficient_jax",
     "verify_coupled_circuits_energy_jax",
     "analyze_electrokinetic_energy_jax",
+    # Network solver / Kirchhoff / Wheatstone bridge (Arts. 273-284)
+    "NetworkSolverJAX",
+    "KirchhoffJAX",
+    "WheatstoneBridgeJAX",
+    "ReciprocityVerifierJAX",
+    "kirchhoff_junction_rule_jax",
+    "kirchhoff_loop_rule_jax",
+    "solve_network_jax",
+    "wheatstone_bridge_balance_jax",
+    "wheatstone_bridge_sensitivity_jax",
+    "reciprocity_theorem_jax",
+    "verify_network_solution_jax",
+    "analyze_network_jax",
 ]

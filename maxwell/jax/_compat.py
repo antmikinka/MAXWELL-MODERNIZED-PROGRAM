@@ -29,32 +29,62 @@ __all__ = [
 
 # ── Pytree Registration ─────────────────────────────────────────
 
-def jax_tree(cls: Type[T]) -> Type[T]:
-    """Class decorator that registers a dataclass as a JAX pytree node.
+class jax_tree:
+    """Class decorator (or decorator factory) that registers a dataclass as a JAX pytree node.
 
-    All dataclass fields become tree leaves (JAX-traced). Use this on any
-    dataclass that should work with jax.jit, jax.grad, jax.vmap.
+    All dataclass fields become tree leaves (JAX-traced) unless listed in
+    static_fields, which are passed as auxiliary data and remain concrete
+    (required for JIT when used in control flow or indexing).
 
-    Example:
+    Usage:
         @jax_tree
         @dataclass
         class PointChargeJAX:
             q: float
             position: jax.Array
+
+        @jax_tree(static_fields=("mode",))
+        @dataclass
+        class SolverJAX:
+            matrix: jax.Array
+            mode: str  # static, not traced
     """
-    if not hasattr(cls, "__dataclass_fields__"):
-        raise TypeError(f"@jax_tree requires a dataclass, got {cls.__name__}")
 
-    field_names = tuple(f.name for f in fields(cls))
+    def __init__(self, cls: Type[T] | None = None, static_fields: tuple[str, ...] = ()):
+        self._cls = cls
+        self._static_fields = static_fields
 
-    def flatten(tree: Any) -> tuple[tuple, Any]:
-        return tuple(getattr(tree, name) for name in field_names), field_names
+    def __call__(self, cls: Type[T]) -> Type[T]:
+        if not hasattr(cls, "__dataclass_fields__"):
+            raise TypeError(f"@jax_tree requires a dataclass, got {cls.__name__}")
 
-    def unflatten(aux_data: tuple, children: tuple) -> Any:
-        return cls(**dict(zip(aux_data, children)))
+        all_field_names = tuple(f.name for f in fields(cls))
+        leaf_names = tuple(n for n in all_field_names if n not in self._static_fields)
 
-    register_pytree_node(cls, flatten, unflatten)
-    return cls
+        def flatten(tree: Any) -> tuple[tuple, tuple]:
+            children = tuple(getattr(tree, name) for name in leaf_names)
+            static_vals = tuple(getattr(tree, name) for name in self._static_fields)
+            return children, (leaf_names, self._static_fields, static_vals)
+
+        def unflatten(aux_data: tuple, children: tuple) -> Any:
+            leaf_names_aux, static_names, static_vals = aux_data
+            values = dict(zip(leaf_names_aux, children))
+            values.update(zip(static_names, static_vals))
+            return cls(**values)
+
+        register_pytree_node(cls, flatten, unflatten)
+        return cls
+
+    def __new__(cls, *args, **kwargs):
+        # If called as @jax_tree (no parentheses), args[0] is the class
+        if args and len(args) == 1 and isinstance(args[0], type) and not kwargs:
+            # Direct decorator usage: @jax_tree
+            instance = super().__new__(cls)
+            instance._cls = args[0]
+            instance._static_fields = ()
+            return instance(instance._cls)
+        # Called as @jax_tree(...) or @jax_tree(static_fields=...)
+        return super().__new__(cls)
 
 
 # ── Safe Arithmetic ─────────────────────────────────────────────
