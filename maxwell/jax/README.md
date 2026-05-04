@@ -36,6 +36,7 @@ maxwell/jax/
 │   └── electrokinetic.py        # ElectrokineticEnergyJAX, CoupledCircuitEnergyJAX
 │   └── ohms_law.py              # OhmsLawJAX, ResistanceJAX, ConductivityJAX, PowerDissipationJAX
 │   └── network_solver.py        # NetworkSolverJAX, KirchhoffJAX, WheatstoneBridgeJAX, ReciprocityVerifierJAX
+│   └── conduction_3d.py         # Conduction3DJAX, SpreadingResistanceJAX, EffectiveConductivityJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -672,6 +673,143 @@ result = analyze_network_jax(
 # result['effective_resistances']
 ```
 
+## 3D Conduction & Effective Conductivity
+
+```python
+from maxwell.jax.electromagnetism.conduction_3d import (
+    Conduction3DJAX,
+    SpreadingResistanceJAX,
+    EffectiveConductivityJAX,
+    ohms_law_3d_jax,
+    conduction_power_density_jax,
+    spherical_spreading_resistance_jax,
+    hemispherical_spreading_resistance_jax,
+    circular_contact_resistance_jax,
+    maxwell_garnett_conductivity_jax,
+    effective_conductivity_series_jax,
+    effective_conductivity_parallel_jax,
+    verify_conduction_3d_jax,
+    analyze_conduction_jax,
+)
+```
+
+### Scalar & Tensor Conductivity (Arts. 285-288)
+
+```python
+# Isotropic conduction: J = sigma * E
+cond = Conduction3DJAX(conductivity=5.96e7)  # copper, S/m
+E = jnp.array([1.0, 0.0, 0.0])
+J = cond.current_density(E)
+# J = [5.96e7, 0.0, 0.0] A/m^2
+
+# Recover E from J
+E_recovered = cond.electric_field(J)
+# E_recovered = [1.0, 0.0, 0.0] (round-trip verified)
+
+# Power density: P = J . E
+P = cond.power_density(E)
+# P = 5.96e7 W/m^3
+
+# Create from resistivity: sigma = 1/rho
+cond2 = Conduction3DJAX.from_resistivity(jnp.array(1.678e-8))  # copper resistivity
+
+# Anisotropic conduction: J = sigma @ E (3x3 tensor conductivity)
+sigma_tensor = jnp.array([
+    [5.0, 1.0, 0.0],
+    [1.0, 3.0, 0.0],
+    [0.0, 0.0, 2.0],
+])
+cond_aniso = Conduction3DJAX(conductivity=sigma_tensor)
+cond_aniso.is_anisotropic  # True
+
+J_aniso = cond_aniso.current_density(jnp.array([1.0, 0.0, 0.0]))
+# J = [5.0, 1.0, 0.0] (tensor cross-coupling)
+
+# Standalone 3D Ohm's law
+J = ohms_law_3d_jax(jnp.array([1.0, 0.0, 0.0]), sigma=5.96e7)
+
+# Verification: J = sigma*E, E = J/sigma, P = J.E consistency
+result = verify_conduction_3d_jax(E=jnp.array([1.0, 0.0, 0.0]), sigma=1.0)
+# result['verified'] = True (round-trip error < 1e-10)
+```
+
+### Spreading Resistance (Arts. 297-309)
+
+```python
+# Spreading resistance for various electrode geometries
+sr = SpreadingResistanceJAX(conductivity=0.01)  # soil, S/m
+
+# Spherical electrode in infinite medium: R = 1/(4*pi*sigma*r)
+R_sphere = sr.spherical_surface(radius=0.5)
+# R = 1/(4*pi*0.01*0.5) = 15.915... ohms
+
+# Hemispherical contact on surface: R = 1/(2*pi*sigma*r)
+R_hemi = sr.hemispherical_surface(radius=0.5)
+# R = 1/(2*pi*0.01*0.5) = 31.831... ohms (2x spherical)
+
+# Circular disk contact: R = 1/(4*sigma*r)
+R_disk = sr.circular_contact(radius=0.5)
+# R = 1/(4*0.01*0.5) = 50.0 ohms
+
+# Cylindrical wire contact
+R_wire = sr.cylindrical_wire(radius=0.001, length=1.0)
+# R = ln(2*l/r) / (2*pi*sigma*l)
+
+# Standalone functions
+R = spherical_spreading_resistance_jax(sigma=0.01, radius=0.5)
+R = hemispherical_spreading_resistance_jax(sigma=0.01, radius=0.5)
+R = circular_contact_resistance_jax(sigma=0.01, radius=0.5)
+
+# Comprehensive analysis with spreading resistance
+result = analyze_conduction_jax(
+    E=jnp.array([1.0, 0.0, 0.0]),
+    sigma=0.01,
+    geometry={'type': 'sphere', 'radius': 0.5},
+)
+# result['current_density'], result['power_density'],
+# result['spreading_resistance'], result['is_anisotropic']
+```
+
+### Effective Conductivity Mixing Models (Arts. 310-324)
+
+```python
+# Maxwell-Garnett effective medium theory
+ec = EffectiveConductivityJAX(
+    sigma_matrix=1.0,
+    sigma_inclusion=100.0,
+    volume_fraction=0.3,
+)
+
+# Series mixing (lower bound): sigma_eff = 1 / (f/sigma2 + (1-f)/sigma1)
+sigma_series = ec.series_mix()
+# sigma_eff = 1 / (0.3/100 + 0.7/1.0) = 1.424...
+
+# Parallel mixing (upper bound): sigma_eff = (1-f)*sigma1 + f*sigma2
+sigma_parallel = ec.parallel_mix()
+# sigma_eff = 0.7*1.0 + 0.3*100 = 30.7
+
+# Maxwell-Garnett: for dilute spherical inclusions
+sigma_mg = ec.maxwell_garnett()
+# sigma_eff = sigma_m * (sigma_i + 2*sigma_m - 2*f*(sigma_m - sigma_i)) /
+#                      (sigma_i + 2*sigma_m + f*(sigma_m - sigma_i))
+
+# Brickell/Bruggeman symmetric model (higher concentration)
+sigma_brickell = ec.brickell()
+# Analytical solution: sigma_eff = (1/4)*(B + sqrt(B^2 + 8*sigma1*sigma2))
+
+# Bounds check: series < MG < MG < parallel
+# sigma_series < sigma_mg < sigma_parallel
+
+# Standalone mixing functions
+sigma_eff = maxwell_garnett_conductivity_jax(sigma_m=1.0, sigma_i=100.0, vol_frac=0.3)
+sigma_eff = effective_conductivity_series_jax(sigma1=1.0, sigma2=100.0, f=0.3)
+sigma_eff = effective_conductivity_parallel_jax(sigma1=1.0, sigma2=100.0, f=0.3)
+
+# Auto-differentiation: d(sigma_eff)/d(vol_frac)
+from jax import grad
+d_sigma_df = grad(lambda f: EffectiveConductivityJAX._maxwell_garnett_jit(1.0, 100.0, f))(0.3)
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -695,7 +833,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-612 tests cover:
+687 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -717,6 +855,7 @@ dVdq = grad(potential_at_q)(1.0)
 - Electrokinetic energy (61 tests): single circuit, coupled circuits, mutual inductance, coupling coefficient, verification, auto-diff
 - Ohm's law & resistance (93 tests): Ohm's law V=IR, series/parallel/temperature resistance, conductivity, power dissipation, Joule heating, auto-diff
 - Network analysis & Kirchhoff's laws (79 tests): NetworkSolverJAX conductance matrix, node potentials, branch currents, branch power, effective resistance, KirchhoffJAX KCL/KVL verification, WheatstoneBridgeJAX balance/Thevenin/galvanometer current, ReciprocityVerifierJAX transfer resistance, standalone functions, auto-diff
+- 3D conduction & effective conductivity (75 tests): Conduction3DJAX scalar/tensor conductivity, current density, electric field recovery, power density, resistivity conversion, SpreadingResistanceJAX spherical/hemispherical/circular/cylindrical geometries, EffectiveConductivityJAX series/parallel/Maxwell-Garnett/Brickell mixing models, verification round-trip, comprehensive analysis, auto-diff
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -754,3 +893,6 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | KirchhoffJAX | Arts. 273-275 |
 | WheatstoneBridgeJAX | Arts. 281-284 |
 | ReciprocityVerifierJAX | Arts. 277-278 |
+| Conduction3DJAX | Arts. 285-288 |
+| SpreadingResistanceJAX | Arts. 297-309 |
+| EffectiveConductivityJAX | Arts. 310-324 |
