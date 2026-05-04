@@ -121,6 +121,22 @@ from maxwell.jax.electromagnetism.network_solver import (
     wheatstone_bridge_balance_jax,
     wheatstone_bridge_sensitivity_jax,
 )
+from maxwell.jax.electromagnetism.conduction_3d import (
+    Conduction3DJAX,
+    EffectiveConductivityJAX,
+    SpreadingResistanceJAX,
+    analyze_conduction_jax,
+    circular_contact_resistance_jax,
+    conduction_power_density_jax,
+    effective_conductivity_parallel_jax,
+    effective_conductivity_series_jax,
+    electric_field_from_current_density_jax,
+    hemispherical_spreading_resistance_jax,
+    maxwell_garnett_conductivity_jax,
+    ohms_law_3d_jax,
+    spherical_spreading_resistance_jax,
+    verify_conduction_3d_jax,
+)
 
 __all__ = [
     # Ohm's law / Part II Electrokinematics
@@ -210,4 +226,19 @@ __all__ = [
     "reciprocity_theorem_jax",
     "verify_network_solution_jax",
     "analyze_network_jax",
+    # 3D conduction / spreading resistance / effective conductivity (Arts. 285-296, 297-324)
+    "Conduction3DJAX",
+    "SpreadingResistanceJAX",
+    "EffectiveConductivityJAX",
+    "ohms_law_3d_jax",
+    "electric_field_from_current_density_jax",
+    "conduction_power_density_jax",
+    "spherical_spreading_resistance_jax",
+    "hemispherical_spreading_resistance_jax",
+    "circular_contact_resistance_jax",
+    "maxwell_garnett_conductivity_jax",
+    "effective_conductivity_series_jax",
+    "effective_conductivity_parallel_jax",
+    "verify_conduction_3d_jax",
+    "analyze_conduction_jax",
 ]
