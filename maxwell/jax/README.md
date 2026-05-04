@@ -34,6 +34,7 @@ maxwell/jax/
 │   ├── field.py                 # ElectricFieldJAX (flux, Gauss's law, EMF)
 │   ├── energy.py                # ElectrostaticEnergyJAX, CapacitorEnergyJAX
 │   └── electrokinetic.py        # ElectrokineticEnergyJAX, CoupledCircuitEnergyJAX
+│   └── ohms_law.py              # OhmsLawJAX, ResistanceJAX, ConductivityJAX, PowerDissipationJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -438,6 +439,75 @@ dT_dI1 = grad(lambda I1: calc_two_circuit_energy_jax(100.0, 200.0, 30.0, I1, 3.0
 # = L1*I1 + M*I2 = 100*5 + 30*3 = 590.0
 ```
 
+## Ohm's Law & Resistance
+
+```python
+from maxwell.jax.electromagnetism.ohms_law import (
+    OhmsLawJAX,
+    ResistanceJAX,
+    ConductivityJAX,
+    PowerDissipationJAX,
+    calc_ohms_law_jax,
+    calc_series_resistance_jax,
+    calc_parallel_resistance_jax,
+    calc_conductivity_jax,
+    calc_power_dissipation_jax,
+    analyze_ohms_law_jax,
+)
+
+# Ohm's Law: V = I * R (Art. 230)
+ohm = OhmsLawJAX(voltage=10.0, current=2.0, resistance=5.0)
+V = ohm.from_current_and_resistance(current=2.0, resistance=5.0)  # V = 10.0
+I = ohm.from_voltage_and_resistance(voltage=10.0, resistance=5.0)  # I = 2.0
+R = ohm.from_voltage_and_current(voltage=10.0, current=2.0)        # R = 5.0
+
+# Standalone function
+V = calc_ohms_law_jax(current=2.0, resistance=5.0)  # V = 10.0
+
+# Series and parallel resistance (Arts. 273-284)
+R_series = calc_series_resistance_jax([10.0, 20.0, 30.0])  # 60.0 ohms
+R_parallel = calc_parallel_resistance_jax([10.0, 20.0, 30.0])  # 5.454... ohms
+
+# Using the class interface
+res = ResistanceJAX(values=[10.0, 20.0, 30.0])
+R_s = res.series()        # 60.0
+R_p = res.parallel()      # 5.454...
+R_temp = res.temperature(  # temperature-dependent resistance
+    reference_resistance=10.0,
+    temperature_coefficient=0.004,
+    temperature_change=50.0,
+)
+
+# Conductivity: sigma = 1/rho (Arts. 285-288)
+cond = ConductivityJAX(conductivity=5.96e7)  # copper, S/m
+rho = cond.resistivity                        # 1.678e-8 ohm*m
+sigma = ConductivityJAX.from_resistivity(1.678e-8).conductivity  # round-trip
+
+# Standalone
+sigma = calc_conductivity_jax(resistivity=1.678e-8)
+
+# Joule heating: P = I^2 * R = V^2 / R = V * I (Art. 230)
+power = PowerDissipationJAX(current=2.0, resistance=5.0)
+P1 = power.from_current()   # P = I^2 * R = 20.0 W
+P2 = power.from_voltage()   # P = V^2 / R = 20.0 W
+P3 = power.from_VI()        # P = V * I = 20.0 W
+
+# Standalone
+P = calc_power_dissipation_jax(current=2.0, resistance=5.0)
+
+# Comprehensive analysis
+result = analyze_ohms_law_jax(
+    voltage=10.0, current=2.0, resistance=5.0,
+)
+# result['calculated_voltage'], result['calculated_current'],
+# result['calculated_resistance'], result['power_dissipation']
+
+# Auto-differentiation: dP/dI = 2*I*R
+from jax import grad
+dP_dI = grad(lambda I: calc_power_dissipation_jax(current=I, resistance=5.0))(2.0)
+# = 2 * I * R = 20.0
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -461,7 +531,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-440 tests cover:
+533 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -481,6 +551,7 @@ dVdq = grad(potential_at_q)(1.0)
 - MagnetJAX (23 tests): MagneticPole, magnet properties, force, torque, mutual action
 - Electrostatic energy (60 tests): energy density, capacitor energy, E.D dot, isotropy, auto-diff
 - Electrokinetic energy (61 tests): single circuit, coupled circuits, mutual inductance, coupling coefficient, verification, auto-diff
+- Ohm's law & resistance (93 tests): Ohm's law V=IR, series/parallel/temperature resistance, conductivity, power dissipation, Joule heating, auto-diff
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -509,4 +580,8 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | InductorEnergyJAX | Arts. 632-633 |
 | ElectrokineticEnergyJAX | Arts. 634-638 |
 | CoupledCircuitEnergyJAX | Arts. 634-638 |
+| OhmsLawJAX | Arts. 230-234 |
+| ResistanceJAX | Arts. 273-284, 359-362 |
+| ConductivityJAX | Arts. 285-288 |
+| PowerDissipationJAX | Art. 230 |
 | ellipk_jax, ellipe_jax | Arts. 149-152 |
