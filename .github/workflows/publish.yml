@@ -51,3 +51,27 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  smoke-test:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Wait for PyPI propagation
+        run: sleep 60
+
+      - name: Install from PyPI
+        run: |
+          pip install maxwell[accel]
+
+      - name: Smoke test imports
+        run: |
+          python -c "import maxwell; print(f'maxwell {maxwell.__version__}')"
+          python -c "from maxwell.core.charge import PointCharge; print('Core OK')"
+          python -c "from maxwell.jax.core.charge import PointChargeJAX; print('JAX OK')"
+          python -c "from maxwell.math.spherical_harmonics import SphericalHarmonicExpansion; print('Math OK')"
+          python -c "from maxwell.electromagnetism.forces.lorentz import LorentzForce; print('EM OK')"

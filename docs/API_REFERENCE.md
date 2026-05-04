@@ -3,7 +3,7 @@
 **Version:** 0.1.0
 **Generated:** 2026-04-26
 **Coverage:** 866/866 articles (100%) across all 4 Parts of Maxwell's Treatise
-**Tests:** 548/548 passing
+**Tests:** 1542/1542 passing (629 core + 847 JAX + 66 SymPy)
 **Modules:** 241 Python modules, 80+ subpackages
 
 ---
@@ -567,6 +567,49 @@ Subpackage `constitutive/`:
 | Module | Public API | Articles |
 |---|---|---|
 | `medium_check` | `MediumProperties`, `WaveProperties` — medium property verification | 865, 866 |
+
+### maxwell.jax — JAX GPU/TPU Acceleration
+
+> GPU/TPU-accelerated, auto-differentiable implementations. All adapters preserve CGS-EMU units and citation traceability.
+> Install with `pip install maxwell[accel]`. See `maxwell/jax/README.md` for full documentation.
+
+#### Core Adapters
+
+| Module | Public API | Articles |
+|---|---|---|
+| `core.charge` | `PointChargeJAX` — `field_at()`, `potential_at()`, `field_at_batched()` | 29-30 |
+| `core.magnet` | `MagneticPoleJAX`, `MagnetJAX` — `field_at()`, `force_in_field()`, `torque_in_uniform_field()`, `mutual_action_jax()` | 371-376, 392 |
+
+#### Electromagnetism Adapters
+
+| Module | Public API | Articles |
+|---|---|---|
+| `electromagnetism.induction` | `FaradayInductionJAX` — `induced_emf()`, `magnetic_flux()`, `analyze_faraday_induction_jax()` | 528-531, 542 |
+| `electromagnetism.equations` | `MaxwellEquationsJAX` — `gauss_law_electric()`, `gauss_law_magnetic()`, `equation_A_faraday()`, `verify_maxwell_equations_jax()` | 594-603 |
+| `electromagnetism.forces` | `LorentzForceJAX`, `MaxwellStressTensorJAX` — `force_vector`, `stress_tensor()`, `force_on_charge_jax()`, `stress_tensor_jax()` | 490-492, 641-646 |
+| `electromagnetism.ampere_maxwell` | `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX` | 606-607 |
+| `electromagnetism.field` | `ElectricFieldJAX` — `from_point_charge()`, `superposition()`, `electric_flux_jax()`, `gauss_law_closed_surface_jax()`, `field_from_potential_jax()` | 44-49, 68-76 |
+| `electromagnetism.energy` | `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX` — `energy_density`, `from_voltage()`, `from_charge()`, `calc_electrostatic_energy_density_jax()`, `calc_capacitor_energy_jax()` | 630-631 |
+| `electromagnetism.electrokinetic` | `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX` — `from_single_circuit()`, `from_currents()`, `calc_two_circuit_energy_jax()`, `calc_coupling_coefficient_jax()` | 634-638 |
+| `electromagnetism.ohms_law` | `OhmsLawJAX`, `ResistanceJAX`, `ConductivityJAX`, `PowerDissipationJAX` — `from_current_and_resistance()`, `series()`, `parallel()`, `calc_ohms_law_jax()` | 230-234, 273-288 |
+| `electromagnetism.network_solver` | `NetworkSolverJAX`, `KirchhoffJAX`, `WheatstoneBridgeJAX`, `ReciprocityVerifierJAX` — `from_edges()`, `node_potentials`, `is_balanced()`, `verify()` | 273-284, 277-278 |
+| `electromagnetism.conduction_3d` | `Conduction3DJAX`, `SpreadingResistanceJAX`, `EffectiveConductivityJAX` — `current_density()`, `spherical_surface()`, `maxwell_garnett()` | 285-288, 297-324 |
+| `electromagnetism.electrolysis` | `FaradayLawsJAX`, `IonTransportJAX`, `PolarizationJAX`, `ElectrolysisCellJAX` — `mass_from_charge()`, `migration_velocity()`, `activation_overpotential()`, `mass_deposited()` | 249-263 |
+| `electromagnetism.joule_heating` | `JouleHeatingJAX`, `HeatDissipationJAX`, `SubstanceResistanceJAX` — `power()`, `temperature_rise()`, `at_temperature()` | 351-370 |
+
+#### Math Adapters
+
+| Module | Public API | Articles |
+|---|---|---|
+| `math.spherical_harmonics` | `SphericalHarmonicExpansionJAX` — `compute_coefficients()`, `reconstruct()`, `legendre_batched()`, `addition_theorem_jax()` | 128-146 |
+
+#### Infrastructure
+
+| Module | Public API | Description |
+|---|---|---|
+| `_compat` | `jax_tree` decorator, `safe_div()`, `safe_sqrt()`, `safe_norm()` | Pytree registration, safe arithmetic |
+| `_scipy_special` | `lpmv_jax()`, `legendre_jax()`, `sph_harm_y_jax()` | Pure JAX special function wrappers |
+| `_elliptic` | `ellipk_jax()`, `ellipe_jax()` | AGM-based elliptic integrals (no scipy) |
 
 ---
 

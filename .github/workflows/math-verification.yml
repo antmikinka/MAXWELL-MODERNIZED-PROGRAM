@@ -243,4 +243,4 @@ jobs:
           echo "7. Energy density formulas"
           echo "8. Elliptic integrals"
           echo "9. Constitutive relations"
-          echo "10. Full test suite (1539 tests)"
+          echo "10. Full test suite (1542 tests)"

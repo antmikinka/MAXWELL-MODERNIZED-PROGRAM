@@ -116,7 +116,7 @@ warn_unused_ignores = true
 
 [tool.black]
 line-length = 88
-target-version = ["py310", "py311", "py312"]
+target-version = ["py310", "py311", "py312", "py313"]
 include = '\.pyi?$'
 
 [tool.isort]

@@ -3,7 +3,7 @@
 [![Tests](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml)
 [![Math Verification](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml)
 [![Coverage](https://img.shields.io/badge/coverage-866%2F866%20articles-brightgreen)](docs/COVERAGE_SUMMARY.md)
-[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > A computational implementation of James Clerk Maxwell's 1873 _A Treatise on Electricity and Magnetism_ -- all 866 articles, modernized in Python.
@@ -65,7 +65,7 @@ E_field = gradient(potential_field)
 
 ```bash
 pytest tests/ -v
-# 1539 passed in X.XXs
+# 1542 passed in <N> seconds  (update with actual timing after test run)
 ```
 
 ## What Can I Use This For?
@@ -131,14 +131,15 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | Python modules | 260+ |
 | Functions | 1,250+ |
 | Classes | 270+ |
-| Tests | 1539 / 1539 passing |
+| Tests | 1542 / 1542 passing |
 | Math validations | 50 / 50 passing |
 | SymPy verifiers | 66 / 66 passing |
 | JAX adapters | 20+ |
+| Visualization modules | 6 |
 
 ### Validation
 
-- 1539/1539 tests passing (629 core + 847 JAX + 66 SymPy)
+- 1542/1542 tests passing (629 core + 847 JAX + 66 SymPy)
 - 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
 - 100% citation compliance -- every public function is linked to its source article
 - All 260+ modules import without errors
@@ -181,6 +182,7 @@ Install with `pip install maxwell[accel]` for the JAX runtime. See `maxwell/jax/
 | [docs/API_REFERENCE.md](docs/API_REFERENCE.md) | Module-by-module API index with function counts and article mappings |
 | [docs/COVERAGE_SUMMARY.md](docs/COVERAGE_SUMMARY.md) | Article coverage by Part, chapter, and module |
 | [docs/validation_report.md](docs/validation_report.md) | Test results, math validation, import verification |
+| [maxwell/jax/README.md](maxwell/jax/README.md) | JAX GPU/TPU adapter documentation, auto-diff, JIT compilation |
 
 The `archive/docs/` directory contains 24 legacy development documents (architecture maps, OCR audits, integration reports) preserved for historical reference.
 
@@ -267,7 +269,7 @@ maxwell/
     meta/                # Citation system (@maxwell_cite)
     ... and more
 tests/
-    test_*.py            # 1539 tests (629 core + 847 JAX + 66 SymPy)
+    test_*.py            # 1542 tests (629 core + 847 JAX + 66 SymPy)
 archive/                 # Legacy development documents
 docs/                    # API reference, coverage, validation
 ```
