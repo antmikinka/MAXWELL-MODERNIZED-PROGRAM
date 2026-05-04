@@ -37,6 +37,7 @@ maxwell/jax/
 │   └── ohms_law.py              # OhmsLawJAX, ResistanceJAX, ConductivityJAX, PowerDissipationJAX
 │   └── network_solver.py        # NetworkSolverJAX, KirchhoffJAX, WheatstoneBridgeJAX, ReciprocityVerifierJAX
 │   └── conduction_3d.py         # Conduction3DJAX, SpreadingResistanceJAX, EffectiveConductivityJAX
+│   └── electrolysis.py          # FaradayLawsJAX, IonTransportJAX, PolarizationJAX, ElectrolysisCellJAX
 └── math/
     ├── __init__.py
     └── spherical_harmonics.py   # SphericalHarmonicExpansionJAX
@@ -810,6 +811,221 @@ from jax import grad
 d_sigma_df = grad(lambda f: EffectiveConductivityJAX._maxwell_garnett_jit(1.0, 100.0, f))(0.3)
 ```
 
+## Electrolysis & Ion Transport
+
+```python
+from maxwell.jax.electromagnetism.electrolysis import (
+    FaradayLawsJAX,
+    IonTransportJAX,
+    PolarizationJAX,
+    ElectrolysisCellJAX,
+    FARADAY_CONSTANT_JAX,
+    faraday_first_law_jax,
+    faraday_second_law_jax,
+    electrochemical_equivalent_jax,
+    ion_migration_velocity_jax,
+    transference_number_jax,
+    polarization_emf_jax,
+    decomposition_voltage_jax,
+    verify_electrolysis_jax,
+)
+```
+
+### Faraday's Laws of Electrolysis (Arts. 249-252)
+
+```python
+# Faraday's first law: m = I * t * Z (Arts. 249-250)
+m = faraday_first_law_jax(
+    current=1.0,        # 1 abA
+    time=100.0,         # 100 s
+    Z=1.118e-3,         # electrochemical equivalent of Ag, g/abC
+)
+# m = 0.1118 g of silver deposited
+
+# Faraday's second law: m = I*t*M/(n*F) (Arts. 251-252)
+m = faraday_second_law_jax(
+    current=1.0,
+    time=100.0,
+    molar_mass=107.87,  # Ag molar mass, g/mol
+    valence=1.0,
+)
+# m = I*t*M/(n*F) = 100*107.87/96485.33 = 0.1118 g
+
+# Using the class interface
+faraday = FaradayLawsJAX()
+
+# Electrochemical equivalent: Z = M/(n*F)
+Z_ag = faraday.electrochemical_equivalent(molar_mass=107.87, valence=1.0)
+Z_cu = faraday.electrochemical_equivalent(molar_mass=63.55, valence=2.0)
+# Z_Cu < Z_Ag -- copper requires 2 electrons per atom
+
+# Mass from charge directly
+m = faraday.mass_from_charge(
+    charge=100.0,       # 100 abcoulombs
+    molar_mass=107.87,
+    valence=1.0,
+)
+
+# Current required to deposit a target mass in given time
+I_needed = faraday.current_for_mass_time(
+    mass=1.0,           # 1 gram
+    time=3600.0,        # 1 hour
+    molar_mass=107.87,
+    valence=1.0,
+)
+
+# Charge required for a target mass
+Q_needed = faraday.required_charge(
+    mass=1.0,
+    molar_mass=107.87,
+    valence=1.0,
+)
+
+# Standalone
+Z = electrochemical_equivalent_jax(molar_mass=107.87, valence=1.0)
+```
+
+### Ion Transport & Conductivity (Arts. 257-263)
+
+```python
+# Ion migration velocity: v = u * z * E
+v = ion_migration_velocity_jax(
+    ion_mobility=5.0e-4,    # cm^2/(abV*s)
+    electric_field=100.0,    # abV/cm
+    charge_number=1.0,
+)
+# v = 0.05 cm/s
+
+# Multi-ion transport system
+transport = IonTransportJAX(
+    ion_mobilities=jnp.array([5.0e-4, 8.0e-4]),  # cation, anion
+    ion_charges=jnp.array([1.0, -1.0]),
+)
+
+# Migration velocities for both ions
+v_ions = transport.migration_velocity(electric_field=100.0)
+# v = [0.05, -0.08] cm/s (opposite directions)
+
+# Electrolyte conductivity: sigma = F * sum(c*|z|*u)
+sigma = transport.electrolyte_conductivity(
+    concentrations=jnp.array([1.0e-6, 1.0e-6]),  # mol/cm^3
+)
+
+# Transference numbers: t_i = |z_i|*u_i / sum(|z_j|*u_j)
+t = transport.transference_numbers()
+# t['t_i'] -- fraction of current carried by each ion
+# t['total'] -- total conductivity contribution
+
+# Standalone transference numbers
+t_numbers = transference_number_jax(
+    lambda_cation=54.0,   # Cu2+ limiting ionic conductivity
+    lambda_anion=80.0,    # SO4^2- limiting ionic conductivity
+)
+# t['t_cation'], t['t_anion'], t['Lambda_0']
+```
+
+### Polarization & Butler-Volmer (Arts. 253-256)
+
+```python
+# Polarization with activation overpotential (Butler-Volmer)
+pol = PolarizationJAX(
+    reversible_emf=1.23e8,         # water electrolysis, abvolts
+    exchange_current_density=1e-6, # abA/cm^2
+    transfer_coefficient=0.5,
+    temperature=298.15,
+)
+
+# Activation overpotential via Butler-Volmer:
+# eta = (RT/F) * asinh(j/(2*j0)) / alpha
+eta = pol.activation_overpotential(current_density=1e-3)
+# eta > 0 -- extra voltage needed beyond reversible EMF
+
+# Concentration overpotential (mass transport limitation)
+eta_conc = pol.concentration_overpotential(
+    bulk_conc=1.0e-3,
+    surface_conc=5.0e-4,
+    diffusion_coeff=1.0e-5,
+    diffusion_thickness=1.0e-3,
+    current_density=1e-3,
+    charge_number=1.0,
+)
+
+# Total decomposition voltage:
+# E_decomp = E_rev + eta_a + |eta_c| + IR
+V_decomp = pol.decomposition_voltage(
+    anode_overpotential=0.4e8,
+    cathode_overpotential=-0.1e8,
+    ohmic_drop=0.05e8,
+)
+# V_decomp = E_rev + 0.4e8 + 0.1e8 + 0.05e8
+
+# Total polarization EMF: E_rev + activation overpotential
+E_total = pol.total_polarization_emf(current_density=1e-3)
+
+# Standalone functions
+E_pol = polarization_emf_jax(
+    reversible_potential=1.23e8,
+    current_density=1e-3,
+    exchange_current_density=1e-6,
+    transfer_coefficient=0.5,
+    temperature=298.15,
+)
+
+V_decomp = decomposition_voltage_jax(
+    reversible_emf=1.23e8,
+    anode_overpotential=0.4e8,
+    cathode_overpotential=-0.1e8,
+    ohmic_drop=0.05e8,
+)
+```
+
+### Complete Electrolysis Cell (Arts. 249-263)
+
+```python
+# Full cell model for silver electrolysis
+cell = ElectrolysisCellJAX(
+    electrode_area=10.0,            # cm^2
+    electrode_spacing=2.0,          # cm
+    electrolyte_conductivity=0.1,   # abmho/cm
+    molar_mass=107.87,              # Ag, g/mol
+    valence=1.0,
+    reversible_emf=0.8e8,           # abvolts
+)
+
+# Cell resistance: R = d / (sigma * A)
+R = cell.cell_resistance()
+# R = 2.0 / (0.1 * 10.0) = 2.0 abohms
+
+# Mass deposited at given current over time
+m = cell.mass_deposited(current=1.0, time=100.0)
+# m = I*t*M/(n*F) grams of silver
+
+# Required voltage (includes IR + overpotential)
+V_req = cell.required_voltage(current=1.0)
+# V_req = E_rev + I*R + eta_activation
+
+# Energy cost per gram
+E_per_g = cell.energy_per_gram(current=1.0)
+# erg per gram of deposited silver
+
+# Comprehensive analysis
+result = cell.analyze(current=1.0, time=100.0)
+# result['mass_deposited'], result['charge_passed'],
+# result['cell_resistance'], result['ir_drop'],
+# result['overpotential'], result['required_voltage'],
+# result['energy_consumed'], result['energy_per_gram'],
+# result['power']
+
+# Auto-differentiation: d(mass)/d(current)
+from jax import grad
+dm_dI = grad(lambda I: cell.mass_deposited(I, 100.0))(1.0)
+# = t*M/(n*F) -- mass sensitivity to current
+
+# Verification
+result = verify_electrolysis_jax()
+# result['verified'] = True
+```
+
 ## Automatic Differentiation
 
 ```python
@@ -833,7 +1049,7 @@ dVdq = grad(potential_at_q)(1.0)
 
 ## Test Suite
 
-687 tests cover:
+767 tests cover:
 - Pytree registration (3 tests)
 - PointChargeJAX correctness (9 tests)
 - Multi-charge systems (3 tests)
@@ -856,6 +1072,7 @@ dVdq = grad(potential_at_q)(1.0)
 - Ohm's law & resistance (93 tests): Ohm's law V=IR, series/parallel/temperature resistance, conductivity, power dissipation, Joule heating, auto-diff
 - Network analysis & Kirchhoff's laws (79 tests): NetworkSolverJAX conductance matrix, node potentials, branch currents, branch power, effective resistance, KirchhoffJAX KCL/KVL verification, WheatstoneBridgeJAX balance/Thevenin/galvanometer current, ReciprocityVerifierJAX transfer resistance, standalone functions, auto-diff
 - 3D conduction & effective conductivity (75 tests): Conduction3DJAX scalar/tensor conductivity, current density, electric field recovery, power density, resistivity conversion, SpreadingResistanceJAX spherical/hemispherical/circular/cylindrical geometries, EffectiveConductivityJAX series/parallel/Maxwell-Garnett/Brickell mixing models, verification round-trip, comprehensive analysis, auto-diff
+- Electrolysis & ion transport (80 tests): FaradayLawsJAX mass from charge/current, electrochemical equivalent, required charge/current, IonTransportJAX migration velocity, electrolyte conductivity, transference numbers, limiting current density, PolarizationJAX Butler-Volmer activation overpotential, concentration overpotential, decomposition voltage, total polarization EMF, ElectrolysisCellJAX cell resistance, mass deposited, required voltage, energy per gram, comprehensive analysis, standalone functions (Faraday's laws, polarization EMF, decomposition voltage, ion migration velocity, electrolyte conductivity, Kohlrausch's law, concentration polarization, battery back EMF, transference numbers), verification consistency, auto-diff
 
 ```bash
 pytest tests/test_jax_adapter.py -v
@@ -896,3 +1113,7 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 | Conduction3DJAX | Arts. 285-288 |
 | SpreadingResistanceJAX | Arts. 297-309 |
 | EffectiveConductivityJAX | Arts. 310-324 |
+| FaradayLawsJAX | Arts. 249-252 |
+| IonTransportJAX | Arts. 257-263 |
+| PolarizationJAX | Arts. 253-256 |
+| ElectrolysisCellJAX | Arts. 249-263 |

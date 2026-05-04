@@ -32,7 +32,7 @@ Maxwell Modernized translates every one of the 866 articles into executable Pyth
 
 - **866/866 articles covered** (100% of the Treatise)
 - **246 Python modules**, 1,140 functions, 246 classes
-- **1382 tests** passing (629 core + 687 JAX adapter + 66 SymPy verification), 50 mathematical validations, 81 cross-module verification checks
+- **1462 tests** passing (629 core + 767 JAX adapter + 66 SymPy verification), 50 mathematical validations, 81 cross-module verification checks
 - MIT-licensed, PyPI-installable, CI-verified on three platforms and three Python versions
 
 The library serves historians of science (executable primary-source analysis), physics educators (teaching classical electromagnetism from original formulations), computational physicists (verified analytical formulas for benchmarking numerical solvers), and engineers (reference calculations in CGS-EMU units). This is a computational edition of Maxwell's Treatise -- every formula, every derivation, every article -- implemented as reproducible, testable Python code with full scholarly traceability.
@@ -294,7 +294,7 @@ The project maintains 1382 tests across 25 test modules, all passing. The test s
 - Module import verification (all 246 modules import without errors)
 - Cross-module consistency (stress tensor, Faraday, Maxwell equations, CGS-SI roundtrip)
 - Convergence analysis (spherical harmonic expansion, grid resolution)
-- JAX adapter (pytree registration, JIT compilation, auto-differentiation, batched evaluation, elliptic integrals, Faraday induction, Maxwell equations, spherical harmonics, Lorentz force, Maxwell stress tensor, displacement current, Ampere-Maxwell law, electric field, electric flux, Gauss's law, field from potential, permanent magnets, magnetic pole force, mutual magnet action, electrostatic energy density, capacitor energy, magnetic energy density, inductor energy, electrokinetic energy, coupled circuit energy, Ohm's law V=IR, series/parallel/temperature resistance, conductivity, power dissipation, Joule heating, network analysis, Kirchhoff's laws, Wheatstone bridge, reciprocity theorem, 3D conduction, tensor conductivity, spreading resistance, effective medium theory)
+- JAX adapter (pytree registration, JIT compilation, auto-differentiation, batched evaluation, elliptic integrals, Faraday induction, Maxwell equations, spherical harmonics, Lorentz force, Maxwell stress tensor, displacement current, Ampere-Maxwell law, electric field, electric flux, Gauss's law, field from potential, permanent magnets, magnetic pole force, mutual magnet action, electrostatic energy density, capacitor energy, magnetic energy density, inductor energy, electrokinetic energy, coupled circuit energy, Ohm's law V=IR, series/parallel/temperature resistance, conductivity, power dissipation, Joule heating, network analysis, Kirchhoff's laws, Wheatstone bridge, reciprocity theorem, 3D conduction, tensor conductivity, spreading resistance, effective medium theory, electrolysis, Faraday's laws, ion transport, polarization, Butler-Volmer)
 - SymPy symbolic verification (div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem, Lorentz force orthogonality, stress tensor properties, Ampere's law)
 
 Tests run on Ubuntu, Windows, and macOS with Python 3.10, 3.11, and 3.12 via GitHub Actions, providing six platform/version combinations per commit.
@@ -360,7 +360,7 @@ The verification framework (`maxwell/verification/`) provides four layers of aut
 
 Two GitHub Actions workflows ensure ongoing correctness:
 
-- **`test.yml`**: Runs the full 1382-test suite on Ubuntu, Windows, and macOS with Python 3.10, 3.11, and 3.12 (6 job combinations). Verifies imports of key modules. Triggers on push to `main` and all `feat/**` branches, and on pull requests.
+- **`test.yml`**: Runs the full 1462-test suite on Ubuntu, Windows, and macOS with Python 3.10, 3.11, and 3.12 (6 job combinations). Verifies imports of key modules. Triggers on push to `main` and all `feat/**` branches, and on pull requests.
 
 - **`math-verification.yml`**: Runs the 10-step mathematical verification pipeline on Ubuntu with Python 3.12, including dimensional analysis, speed-of-light verification, vector calculus identities, spherical harmonics, Maxwell equations, Gauss's law (Monte Carlo), energy density formulas, elliptic integrals, constitutive relations, and the full test suite.
 
