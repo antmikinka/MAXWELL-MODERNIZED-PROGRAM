@@ -293,12 +293,13 @@ class IonTransportJAX:
         layer_thickness = jnp.asarray(layer_thickness, dtype=jnp.float64)
         charge_numbers = jnp.asarray(charge_numbers, dtype=jnp.float64)
         faraday_constant = jnp.asarray(faraday_constant, dtype=jnp.float64)
-        return (
+        return safe_div(
             jnp.abs(charge_numbers)
             * faraday_constant
             * diffusion_coeffs
-            * concentrations
-            / layer_thickness
+            * concentrations,
+            layer_thickness,
+            safe_default=0.0,
         )
 
 
@@ -471,7 +472,7 @@ class ElectrolysisCellJAX:
     electrode_spacing: float
     electrolyte_conductivity: float
     molar_mass: float
-    valence: int
+    valence: float
     reversible_emf: float
     temperature: float = 298.15
 

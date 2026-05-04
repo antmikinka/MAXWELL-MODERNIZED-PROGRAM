@@ -278,7 +278,7 @@ class TestPolarizationJAXPytree:
 class TestPolarizationJAXComputation:
     """Computation correctness."""
 
-    def test_activation_overpositive_current(self):
+    def test_activation_overpotential_positive_current(self):
         obj = PolarizationJAX(
             reversible_emf=1.23e8,
             exchange_current_density=1e-6,
