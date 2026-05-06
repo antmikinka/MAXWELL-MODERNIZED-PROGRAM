@@ -131,15 +131,15 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | Python modules | 260+ |
 | Functions | 1,250+ |
 | Classes | 270+ |
-| Tests | 1618 / 1618 passing |
+| Tests | 1662 / 1662 passing |
 | Math validations | 50 / 50 passing |
 | SymPy verifiers | 66 / 66 passing |
 | JAX adapters | 20+ |
-| Visualization modules | 11 (8 visualizations) |
+| Visualization modules | 13 (10 visualizations) |
 
 ### Validation
 
-- 1618/1618 tests passing (629 core + 847 JAX + 66 SymPy + 76 visualization)
+- 1662/1662 tests passing (629 core + 847 JAX + 66 SymPy + 120 visualization)
 - 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
 - 100% citation compliance -- every public function is linked to its source article
 - All 260+ modules import without errors
