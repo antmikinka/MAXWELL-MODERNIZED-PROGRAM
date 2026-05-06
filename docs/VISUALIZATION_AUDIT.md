@@ -8,7 +8,7 @@
 
 ---
 
-## Part 1: Visualization Audit -- 17 Planned vs. 8 Implemented
+## Part 1: Visualization Audit -- 17 Planned vs. 10 Implemented
 
 ### Implementation Status Overview
 
@@ -21,8 +21,8 @@
 | 5 | **Unit Tubes of Flow** | II | Art. 290 | `maxwell.vis.flow.render_tubes()` | **NOT DONE** | 3D current flow tubes |
 | 6 | **Thermal Gradients** | II | Art. 242/249 | `maxwell.vis.scalar.render_joule_heating()` | **NOT DONE** | Current+temperature overlay |
 | 7 | **Dielectric Soakage** | II | Art. 329 | `maxwell.vis.plots.plot_transient_recovery()` | **[DONE]** `calc_dielectric_absorption()`, `plot_dielectric_soakage()` | Time-domain multi-exponential decay current plot |
-| 8 | **Magnetic Shell** | III | Art. 409 | `maxwell.vis.geometry.render_solid_angle_cap()` | **NOT DONE** | Solid angle surface rendering |
-| 9 | **Spherical Harmonic Globes** | III | Art. 467 | `maxwell.vis.geophysics.render_gauss_harmonics()` | **NOT DONE** | 3D globe with Gauss coefficients |
+| 8 | **Magnetic Shell** | III | Art. 409 | `maxwell.vis.geometry.render_solid_angle_cap()` | **[DONE]** `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` | 3D/2D magnetic shell with current loop equivalence and solid angle calculation |
+| 9 | **Spherical Harmonic Globes** | III | Art. 467 | `maxwell.vis.geophysics.render_gauss_harmonics()` | **[DONE]** `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` | 3D globe and 2D map visualization of Gauss coefficient decomposition |
 | 10 | **Hysteresis Loops** | III | Art. 442 | `maxwell.vis.plots.animate_hysteresis_cycle()` | **[DONE]** `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` | B-H loop with coercivity/retentivity labels, area shading, material comparison |
 | 11 | **Electrotonic State (Vector Potential A)** | IV | Art. 540/617 | `maxwell.vis.vector.render_vector_potential_A()` | **NOT DONE** | Swirling vector potential field |
 | 12 | **Maxwell Stress Tensor** | IV | Art. 641 | `maxwell.vis.tensor.render_stress_ellipsoids()` | **[DONE]** `plot_stress_tensor_2d()` | 2D stress plot, 3D ellipsoids pending |
@@ -36,15 +36,15 @@
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| Implemented | 8 | 47% |
+| Implemented | 10 | 59% |
 | Partially implemented | 0 | 0% |
-| Not implemented | 9 | 53% |
+| Not implemented | 7 | 41% |
 
-### Current vis/ Package (11 modules)
+### Current vis/ Package (13 modules)
 
 | Module | Content |
 |--------|---------|
-| `__init__.py` | Package exports with graceful degradation (20 exports) |
+| `__init__.py` | Package exports with graceful degradation (29 exports) |
 | `_base.py` | Mesh grid and evaluation utilities |
 | `_compat.py` | Matplotlib import with graceful fallback |
 | `field_lines.py` | 2D electric/magnetic field line plotting |
@@ -55,6 +55,8 @@
 | `dielectric_soakage.py` | Dielectric absorption time-domain decay (Art. 329) |
 | `hysteresis_loops.py` | Magnetic B-H hysteresis loops + material comparison (Arts. 442-446) |
 | `em_wave_propagation.py` | EM wave propagation & polarization (Art. 791) |
+| `magnetic_shell.py` | Magnetic shell / solid angle visualization (Art. 409) |
+| `spherical_harmonics.py` | Spherical harmonic globe visualization (Art. 467) |
 
 ### What Each Implemented Visualization Does
 
@@ -90,6 +92,19 @@
 - Includes `calc_wedge_field()`, `calc_edge_singularity()`, `plot_singularity_comparison()`
 - Comparison plot shows singularity strength for different wedge angles
 
+**6. `plot_magnetic_shell()`** (magnetic_shell.py)
+- Visualizes Maxwell's magnetic shell theory with current loop equivalence (Art. 409)
+- Computes solid angle subtended by a current loop: Omega = 2*pi*(1 - cos(theta))
+- Calculates shell potential: V = (I / 4*pi) * Omega
+- 3D surface plot of solid angle, 2D contour plot of shell potential
+- Includes `calc_solid_angle()`, `calc_shell_potential()`, `plot_shell_potential()`
+
+**7. `plot_harmonic_globe()`** (spherical_harmonics.py)
+- Visualizes Gauss coefficient spherical harmonic decomposition of terrestrial magnetism (Art. 467)
+- 3D globe with color-mapped scalar field from spherical harmonic expansion
+- 2D contour map and mode decomposition plots
+- Includes `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_modes()`, `plot_harmonic_contour()`
+
 ### Tech Stack per Visualization Strategy
 
 | Technology | Purpose | Status |
@@ -120,8 +135,8 @@ These are the foundation -- everything else builds on these.
 | 5 | Unit Tubes of Flow | High | 3D current density field | Art. 290 |
 | 6 | Thermal Gradients | Medium | Joule heating solver (exists) | Art. 242/249 |
 | 7 | Dielectric Soakage | Low | Time-series plotting | Art. 329 |
-| 8 | Magnetic Shell | Medium | Solid angle computation | Art. 409 |
-| 9 | Spherical Harmonic Globes | High | PyVista or matplotlib 3D sphere | Art. 467 |
+| 8 | Magnetic Shell | Medium | Solid angle computation | Art. 409 | **DONE** |
+| 9 | Spherical Harmonic Globes | High | PyVista or matplotlib 3D sphere | Art. 467 | **DONE** |
 | 10 | Hysteresis Loops | Low | B-H data from hysteresis.py | Art. 442 |
 
 **New modules needed:**
@@ -242,15 +257,14 @@ Add a GitHub Actions workflow to the architecture repo that:
 ### This Session
 
 - [x] Complete visualization audit (this document)
+- [x] Magnetic Shell visualization (`maxwell/vis/magnetic_shell.py`) -- Art. 409
+- [x] Spherical Harmonic Globes visualization (`maxwell/vis/spherical_harmonics.py`) -- Art. 467
 - [ ] Commit this document to codebase repo
-- [ ] Update MASTER_PLAN.md with full visualization gap analysis
 
 ### Next Session
 
-- [ ] Create `maxwell/vis/geometry.py` -- Method of Images + Magnetic Shell visualizations
-- [ ] Create `maxwell/vis/plots.py` -- Hysteresis loops + Dielectric soakage + Transient recovery
 - [ ] Create `maxwell/vis/flow.py` -- Unit tubes of flow
-- [ ] Create `maxwell/vis/scalar.py` -- Edge singularities + Joule heating heatmap
+- [ ] Create thermal gradients visualization -- Joule heating overlay (Art. 242/249)
 - [ ] Add PyVista as optional dependency (`[viz3d]`)
 - [ ] Create 3D stress tensor ellipsoid visualization
 
@@ -271,8 +285,8 @@ Add a GitHub Actions workflow to the architecture repo that:
 
 | Metric | Value |
 |--------|-------|
-| Visualization modules | 11 (10 code + 1 init) |
-| Visualization test functions | 99 (37 base + 62 new: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian - 3 reorganized) |
+| Visualization modules | 13 (12 code + 1 init) |
+| Visualization test functions | 143 (37 base + 106 new: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian + 22 magnetic shell + 22 spherical harmonics - 3 reorganized) |
 | Matplotlib dependency | Optional (`[viz]`) |
 | PyVista integration | None |
 | Manim integration | None |
@@ -283,10 +297,10 @@ Add a GitHub Actions workflow to the architecture repo that:
 |------|----------------------|-------------|-----|
 | I: Electrostatics | 4 | 4 (equipotential, field lines, method of images, edge singularities) | 0 |
 | II: Electrokinematics | 3 | 1 (dielectric soakage) | 2 |
-| III: Magnetism | 3 | 1 (hysteresis loops) | 2 |
+| III: Magnetism | 3 | 3 (hysteresis loops, magnetic shell, spherical harmonics) | 0 |
 | IV: Electromagnetism | 5 | 2 (stress tensor 2D, EM wave propagation) | 3 |
 | VI: Scalar Physics | 2 | 0 | 2 |
-| **Total** | **17** | **8** | **9** |
+| **Total** | **17** | **10** | **7** |
 
 ### Test Coverage
 
@@ -303,6 +317,8 @@ Add a GitHub Actions workflow to the architecture repo that:
 | `test_vis_hysteresis_loops_*` | PASS (14 new tests) |
 | `test_vis_em_wave_propagation_*` | PASS (15 new tests) |
 | `test_lagrangian_*` | PASS (18 new tests, dynamics package) |
+| `test_vis_magnetic_shell_*` | PASS (22 new tests) |
+| `test_vis_spherical_harmonics_*` | PASS (22 new tests) |
 
 ---
 

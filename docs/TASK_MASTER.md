@@ -15,10 +15,10 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | **Total implementation tasks completed** | **~195 modules** | -- |
-| **Total test tasks completed** | **27 files / 1618 tests** | 100% |
+| **Total test tasks completed** | **27 files / 1662 tests** | 100% |
 | **JAX adapters completed** | **37 classes / 17 files** | -- |
 | **SymPy verifiers completed** | **13 / 13** | 100% |
-| **Visualizations completed** | **8 / 17** | 47% |
+| **Visualizations completed** | **10 / 17** | 59% |
 | **CI workflows completed** | **5 / 5** | 100% |
 | **Documentation files completed** | **13 / 13** | 100% |
 | **Architecture layers complete** | **~70 / 97** | 72% |
@@ -35,7 +35,7 @@
 | Test files | 27 | ~10 | ~37 |
 | JAX adapter classes | 37 | ~15 | ~52 |
 | SymPy verifiers | 13 | 0 | 13 |
-| Visualizations | 8 | 9 | 17 |
+| Visualizations | 10 | 7 | 17 |
 | CI workflows | 5 | 1 | 6 |
 | Documentation | 13 | ~6 | ~19 |
 | Infrastructure layers | ~70 | ~27 | ~97 |
@@ -543,7 +543,7 @@
 - [x] `maxwell/electromagnetism/components/solenoids.py` -- Solenoid components
 
 #### Remaining Tasks
-- [ ] Implement Magnetic Shell visualization (`render_solid_angle_cap()`) -- Art. 409
+- ~~[ ] Implement Magnetic Shell visualization (`render_solid_angle_cap()`) -- Art. 409~~ -- **DONE** in `maxwell/vis/magnetic_shell.py` (Cycle 8)
 - [ ] Add solid angle computation module
 - [ ] Add shell force/torque calculations
 
@@ -601,7 +601,7 @@
 - [x] `maxwell/jax/math/spherical_harmonics.py` -- SphericalHarmonicExpansionJAX
 
 #### Remaining Tasks
-- [ ] Implement Spherical Harmonic Globes visualization (`render_gauss_harmonics()`) -- Art. 467
+- ~~[ ] Implement Spherical Harmonic Globes visualization (`render_gauss_harmonics()`) -- Art. 467~~ -- **DONE** in `maxwell/vis/spherical_harmonics.py` (Cycle 8)
 - [ ] Populate `maxwell/magnetism/geophysics/` -- Currently empty scaffold
 - [ ] Add IGRF coefficient loading
 - [ ] Add geomagnetic field line tracing
@@ -632,10 +632,12 @@
 
 #### Completed
 - [x] `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` in `hysteresis_loops.py` -- Hysteresis Loops (Arts. 442-446)
+- [x] `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` in `magnetic_shell.py` -- Magnetic Shell (Art. 409)
+- [x] `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` in `spherical_harmonics.py` -- Spherical Harmonic Globes (Art. 467)
 
 #### Remaining
-- [ ] `render_solid_angle_cap()` -- Magnetic Shell (Art. 409)
-- [ ] `render_gauss_harmonics()` -- Spherical Harmonic Globes (Art. 467)
+- ~~`render_solid_angle_cap()` -- Magnetic Shell (Art. 409)~~ -- **DONE** in `magnetic_shell.py`
+- ~~`render_gauss_harmonics()` -- Spherical Harmonic Globes (Art. 467)~~ -- **DONE** in `spherical_harmonics.py`
 
 ### Part III Empty Scaffolds
 - [ ] `maxwell/magnetism/calculus/` -- Only `__init__.py`
@@ -1433,10 +1435,10 @@
 
 ## Visualization
 
-### Completed (8/17)
+### Completed (10/17)
 
 #### Visualization Infrastructure
-- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (57 lines, 20 exports)
+- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (57 lines, 29 exports)
 - [x] `maxwell/vis/_base.py` -- Mesh grid and evaluation utilities (89 lines)
 - [x] `maxwell/vis/_compat.py` -- Matplotlib import with graceful fallback (100 lines)
 
@@ -1449,6 +1451,8 @@
 - [x] `maxwell/vis/dielectric_soakage.py` -- `calc_dielectric_absorption()`, `plot_dielectric_soakage()` -- Dielectric absorption time-domain decay (Art. 329)
 - [x] `maxwell/vis/hysteresis_loops.py` -- `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` -- Magnetic B-H hysteresis loops (Arts. 442-446)
 - [x] `maxwell/vis/em_wave_propagation.py` -- `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` -- EM wave propagation & polarization (Art. 791)
+- [x] `maxwell/vis/magnetic_shell.py` -- `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` -- Magnetic shell / solid angle visualization (Art. 409)
+- [x] `maxwell/vis/spherical_harmonics.py` -- `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` -- Spherical harmonic globe visualization (Art. 467)
 - [x] `maxwell/electromagnetism/vis/circular_fields.py` -- Circular field visualization (Art. 702)
 - [x] `maxwell/dynamics/lagrangian.py` -- `GeneralizedSystem`, `derive_forces()`, `derive_electrostatic_force()` -- Lagrangian kernel with JAX auto-diff (Layer 52)
 - [x] Tests: `test_vis.py` (242+ lines, 37 test functions)
@@ -1456,6 +1460,8 @@
 - [x] Tests: `test_vis_hysteresis_loops.py` (14 tests)
 - [x] Tests: `test_vis_em_wave_propagation.py` (15 tests)
 - [x] Tests: `test_lagrangian.py` (18 tests)
+- [x] Tests: `test_vis_magnetic_shell.py` (22 tests)
+- [x] Tests: `test_vis_spherical_harmonics.py` (22 tests)
 
 ### Remaining Visualizations by Part
 
@@ -1468,9 +1474,9 @@
 - [ ] `render_joule_heating()` -- Thermal Gradients overlay (Art. 242/249) -- Module: `maxwell/vis/scalar.py`
 - ~~`plot_transient_recovery()` -- Dielectric Soakage (Art. 329)~~ -- **DONE** in `dielectric_soakage.py`
 
-#### Part III: Magnetism (2 remaining)
-- [ ] `render_solid_angle_cap()` -- Magnetic Shell (Art. 409) -- Module: `maxwell/vis/geometry.py`
-- [ ] `render_gauss_harmonics()` -- Spherical Harmonic Globes (Art. 467) -- Module: `maxwell/vis/geophysics.py`
+#### Part III: Magnetism (0 remaining)
+- ~~`render_solid_angle_cap()` -- Magnetic Shell (Art. 409)~~ -- **DONE** in `magnetic_shell.py` (Cycle 8)
+- ~~`render_gauss_harmonics()` -- Spherical Harmonic Globes (Art. 467)~~ -- **DONE** in `spherical_harmonics.py` (Cycle 8)
 - ~~`animate_hysteresis_cycle()` -- Hysteresis Loops (Art. 442)~~ -- **DONE** in `hysteresis_loops.py`
 
 #### Part IV: Electromagnetism (4 remaining)
@@ -1876,7 +1882,7 @@
 |------|----------|--------|---------|-------|-------------|----------------|------------|
 | I: Electrostatics | 203 | 13 | 15+ | 629+ | 5 | 4/4 | 95% |
 | II: Electrokinematics | 141 | 18 | 15+ | 847+ | 13 | 0/3 | 85% |
-| III: Magnetism | 104 | 13 | 10+ | 1005+ | 3 | 0/3 | 70% |
+| III: Magnetism | 104 | 13 | 10+ | 1005+ | 3 | 3/3 | 70% |
 | IV: Electromagnetism | 392 | 44 | 50+ | 6000+ | 9 | 1/5 | 82% |
 | V: Infrastructure | 16 | 5 | 5+ | 213+ | 0 | 0/0 | 60% |
 | VI: Scalar Physics | 10 | 3 | 0 | 0 | 0 | 0/2 | 0% |
@@ -1887,7 +1893,7 @@
 |--------|-------|
 | Total Python modules | 276 (81 init + 195 implementation) |
 | Total test files | 27 |
-| Total test functions | 1,618 |
+| Total test functions | 1,662 |
 | Total lines of test code | ~19,142 |
 | JAX adapter files | 24 |
 | JAX adapter classes | 37 |
