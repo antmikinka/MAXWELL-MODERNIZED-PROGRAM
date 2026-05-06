@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Dielectric Soakage visualization** (`maxwell.vis.dielectric_soakage`) -- `calc_dielectric_absorption()`, `plot_dielectric_soakage()` for time-domain multi-exponential decay current with component breakdown (Art. 329)
+- **Hysteresis Loops visualization** (`maxwell.vis.hysteresis_loops`) -- `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` for magnetic B-H loop with coercivity/retentivity labels, area shading, and material comparison (soft iron vs steel vs permanent magnet) (Arts. 442-446)
+- **EM Wave Propagation visualization** (`maxwell.vis.em_wave_propagation`) -- `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` for orthogonal E/B fields vs position with 3D vector field and linear/circular/elliptical polarization support (Art. 791)
+- **Lagrangian Kernel** (`maxwell.dynamics.lagrangian`) -- Layer 52 implementation with `GeneralizedSystem` dataclass, `potential_energy()`, `kinetic_energy()`, `lagrangian()`, `derive_forces()`, and `derive_electrostatic_force()` proof-of-concept (JAX auto-diff force derivation from energy)
+- **Dynamics package** (`maxwell.dynamics`) -- New top-level package for mechanics-based formulations
 - **JAX adapter package** (`maxwell.jax`) -- 20+ JAX adapters enabling GPU/TPU acceleration, automatic differentiation, and JIT compilation for all four Parts of the Treatise
 - **Method of Images visualization** (`maxwell.vis.method_of_images`) -- `calc_method_of_images()` and `plot_method_of_images()` for visualizing a point charge above a conducting plane with image charge technique (Art. 155)
 - **Edge Singularities visualization** (`maxwell.vis.edge_singularities`) -- `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, and `plot_singularity_comparison()` for visualizing power-law field enhancement near conducting wedge edges (Art. 191)
@@ -16,15 +21,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **JAX classes**: `PointChargeJAX`, `MagneticPoleJAX`, `MagnetJAX`, `VectorPotentialJAX`, `ElectricFieldJAX`, `FaradayInductionJAX`, `MaxwellEquationsJAX`, `SphericalHarmonicExpansionJAX`, `LorentzForceJAX`, `MaxwellStressTensorJAX`, `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX`, `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX`, `MagneticEnergyJAX`, `InductorEnergyJAX`, `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX`, `OhmsLawJAX`, `NetworkSolverJAX`, `Conduction3DJAX`, `SpreadingResistanceJAX`, `EffectiveConductivityJAX`, `FaradayLawsJAX`, `IonTransportJAX`, `PolarizationJAX`, `ElectrolysisCellJAX`, `JouleHeatingJAX`, `HeatDissipationJAX`, `SubstanceResistanceJAX`
 - **JAX infrastructure**: `@jax_tree` pytree registration, `safe_div`/`safe_sqrt`/`safe_log` arithmetic, AGM-based elliptic integrals, pure-JAX special functions (Legendre polynomials, spherical harmonics)
 - **SymPy symbolic verifiers** -- 13 verifiers proving div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem, Lorentz force, stress tensor properties, Ampere's law
-- **Test suite growth**: 548 → 1556 tests (629 core + 847 JAX + 66 SymPy + 14 visualization), all passing
+- **Test suite growth**: 548 → 1618 tests (629 core + 847 JAX + 66 SymPy + 76 visualization), all passing
 - `[all]` optional dependency in `pyproject.toml` for installing everything at once
 - Python 3.13 classifier
 
 ### Changed
-- CI workflows now install `.[dev,accel]` to run the full 1556-test suite in GitHub Actions
+- `maxwell.vis` exports expanded from 12 to 20 (added `calc_dielectric_absorption`, `plot_dielectric_soakage`, `calc_hysteresis_loop`, `plot_hysteresis_loops`, `plot_material_comparison`, `calc_em_wave`, `plot_em_wave_propagation`, `plot_wave_snapshot_3d`)
+- Test count: 1556 -> 1618 (+62 tests: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian)
+- CI workflows now install `.[dev,accel]` to run the full 1618-test suite in GitHub Actions
 - `jax_tree` decorator converted to callable class supporting `static_fields` parameter for PyTree registration
-- `maxwell.vis` exports expanded from 5 to 12 (added `calc_method_of_images`, `plot_method_of_images`, `calc_wedge_field`, `calc_edge_singularity`, `plot_edge_singularity`, `plot_singularity_comparison`)
-- Test count: 1542 → 1556 (+14 visualization tests for Method of Images and Edge Singularities)
+
+### Fixed
+- PEP 639 license classifier removed from `pyproject.toml` (build now succeeds)
+- `maxwell.vis` exports expanded from 5 to 12 (Cycle 6: method of images, edge singularities), then from 12 to 20 (Cycle 7: dielectric soakage, hysteresis, EM wave propagation)
+- Test count: 1542 → 1556 → 1618 (+14 Cycle 6, +62 Cycle 7)
 
 ## [0.1.0] - 2026-04-25
 

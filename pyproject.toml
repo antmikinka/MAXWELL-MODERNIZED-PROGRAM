@@ -41,7 +41,6 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Education",
     "Topic :: Scientific/Engineering :: Mathematics",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
 ]
 dependencies = [
