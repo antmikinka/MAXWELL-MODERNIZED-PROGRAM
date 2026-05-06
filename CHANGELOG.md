@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Unit Tubes of Flow visualization** (`maxwell.vis.flow_tubes`) -- `calc_unit_tubes()`, `plot_unit_tubes_of_flow()`, `plot_unit_tubes_3d()` for 3D current density field visualization with streamlines/quiver arrows representing Maxwell's unit tubes of flow theory (Art. 290)
 - **Magnetic Shell visualization** (`maxwell.vis.magnetic_shell`) -- `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` for 3D/2D visualization of Maxwell's magnetic shell theory with current loop equivalence and solid angle calculation (Art. 409)
 - **Spherical Harmonic Globes visualization** (`maxwell.vis.spherical_harmonics`) -- `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` for 3D globe and 2D map visualization of Gauss coefficient spherical harmonic decomposition of terrestrial magnetism (Art. 467)
 - **Hysteresis Loops visualization** (`maxwell.vis.hysteresis_loops`) -- `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` for magnetic B-H loop with coercivity/retentivity labels, area shading, and material comparison (soft iron vs steel vs permanent magnet) (Arts. 442-446)
@@ -22,13 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **JAX classes**: `PointChargeJAX`, `MagneticPoleJAX`, `MagnetJAX`, `VectorPotentialJAX`, `ElectricFieldJAX`, `FaradayInductionJAX`, `MaxwellEquationsJAX`, `SphericalHarmonicExpansionJAX`, `LorentzForceJAX`, `MaxwellStressTensorJAX`, `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX`, `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX`, `MagneticEnergyJAX`, `InductorEnergyJAX`, `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX`, `OhmsLawJAX`, `NetworkSolverJAX`, `Conduction3DJAX`, `SpreadingResistanceJAX`, `EffectiveConductivityJAX`, `FaradayLawsJAX`, `IonTransportJAX`, `PolarizationJAX`, `ElectrolysisCellJAX`, `JouleHeatingJAX`, `HeatDissipationJAX`, `SubstanceResistanceJAX`
 - **JAX infrastructure**: `@jax_tree` pytree registration, `safe_div`/`safe_sqrt`/`safe_log` arithmetic, AGM-based elliptic integrals, pure-JAX special functions (Legendre polynomials, spherical harmonics)
 - **SymPy symbolic verifiers** -- 13 verifiers proving div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem, Lorentz force, stress tensor properties, Ampere's law
-- **Test suite growth**: 548 → 1618 tests (629 core + 847 JAX + 66 SymPy + 76 visualization), all passing
+- **Test suite growth**: 548 → 1662 tests (629 core + 847 JAX + 66 SymPy + 120 visualization), all passing
 - `[all]` optional dependency in `pyproject.toml` for installing everything at once
 - Python 3.13 classifier
 
 ### Changed
-- `maxwell.vis` exports expanded from 20 to 29 (added `calc_solid_angle`, `calc_shell_potential`, `plot_magnetic_shell`, `plot_shell_potential`, `calc_gauss_harmonics`, `calc_field_intensity`, `plot_harmonic_globe`, `plot_harmonic_modes`, `plot_harmonic_contour`)
-- Test count: 1618 -> 1662 (+44 tests: 22 magnetic shell + 22 spherical harmonics)
+- `maxwell.vis` exports expanded from 29 to 32 (added `calc_unit_tubes`, `plot_unit_tubes_of_flow`, `plot_unit_tubes_3d`)
+- Test count: 1618 -> 1683 (+65 tests: 22 magnetic shell + 22 spherical harmonics + 21 flow tubes)
 - CI workflows now install `.[dev,accel]` to run the full 1618-test suite in GitHub Actions
 - `jax_tree` decorator converted to callable class supporting `static_fields` parameter for PyTree registration
 

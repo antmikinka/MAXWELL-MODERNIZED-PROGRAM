@@ -21,6 +21,7 @@ Submodules:
     em_wave_propagation   -- EM wave propagation and polarization (Art. 791)
     magnetic_shell        -- Magnetic shell and solid angle (Art. 409)
     spherical_harmonics   -- Spherical harmonic globes (Art. 467)
+    flow_tubes            -- Unit tubes of flow (Art. 290)
 """
 
 from __future__ import annotations
@@ -73,6 +74,11 @@ if HAS_MATPLOTLIB:
         plot_harmonic_modes,
         plot_harmonic_contour,
     )
+    from maxwell.vis.flow_tubes import (
+        calc_unit_tubes,
+        plot_unit_tubes_of_flow,
+        plot_unit_tubes_3d,
+    )
 
     __all__ += [
         "create_meshgrid",
@@ -103,4 +109,7 @@ if HAS_MATPLOTLIB:
         "plot_harmonic_globe",
         "plot_harmonic_modes",
         "plot_harmonic_contour",
+        "calc_unit_tubes",
+        "plot_unit_tubes_of_flow",
+        "plot_unit_tubes_3d",
     ]

@@ -82,6 +82,28 @@ jobs:
         run: |
           twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
+  smoke-test-testpypi:
+    needs: publish-testpypi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Wait for Test PyPI propagation
+        run: sleep 60
+
+      - name: Install from Test PyPI
+        run: |
+          pip install --index-url https://test.pypi.org/simple/ maxwell
+
+      - name: Smoke test imports
+        run: |
+          python -c "import maxwell; print(f'maxwell {maxwell.__version__}')"
+          python -c "from maxwell.core.charge import PointCharge; print('Core OK')"
+          python -c "from maxwell.electromagnetism.forces.lorentz import LorentzForce; print('EM OK')"
+
   smoke-test:
     needs: publish
     if: github.event_name == 'release'

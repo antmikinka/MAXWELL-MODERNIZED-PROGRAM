@@ -8,7 +8,7 @@
 
 ---
 
-## Part 1: Visualization Audit -- 17 Planned vs. 10 Implemented
+## Part 1: Visualization Audit -- 17 Planned vs. 11 Implemented
 
 ### Implementation Status Overview
 
@@ -18,7 +18,7 @@
 | 2 | **Lines of Force** | I | Art. 47 | `maxwell.vis.vector.trace_streamlines()` | **[DONE]** `plot_field_lines_2d()` | 2D streamlines, 3D tracing pending |
 | 3 | **Method of Images** | I | Art. 155 | `maxwell.vis.method_of_images.plot_method_of_images()` | **[DONE]** `calc_method_of_images()`, `plot_method_of_images()` | Full 2D implementation with equipotential + field lines |
 | 4 | **Edge Singularities** | I | Art. 191 | `maxwell.vis.edge_singularities.plot_edge_singularity()` | **[DONE]** `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` | Full 2D heatmap + comparison plot |
-| 5 | **Unit Tubes of Flow** | II | Art. 290 | `maxwell.vis.flow.render_tubes()` | **NOT DONE** | 3D current flow tubes |
+| 5 | **Unit Tubes of Flow** | II | Art. 290 | `maxwell.vis.flow_tubes.render_flow_tubes()` | **[DONE]** `plot_flow_tubes_2d()` | 2D flow tube visualization with current density field |
 | 6 | **Thermal Gradients** | II | Art. 242/249 | `maxwell.vis.scalar.render_joule_heating()` | **NOT DONE** | Current+temperature overlay |
 | 7 | **Dielectric Soakage** | II | Art. 329 | `maxwell.vis.plots.plot_transient_recovery()` | **[DONE]** `calc_dielectric_absorption()`, `plot_dielectric_soakage()` | Time-domain multi-exponential decay current plot |
 | 8 | **Magnetic Shell** | III | Art. 409 | `maxwell.vis.geometry.render_solid_angle_cap()` | **[DONE]** `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` | 3D/2D magnetic shell with current loop equivalence and solid angle calculation |
@@ -36,15 +36,15 @@
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| Implemented | 10 | 59% |
+| Implemented | 11 | 65% |
 | Partially implemented | 0 | 0% |
-| Not implemented | 7 | 41% |
+| Not implemented | 6 | 35% |
 
-### Current vis/ Package (13 modules)
+### Current vis/ Package (14 modules)
 
 | Module | Content |
 |--------|---------|
-| `__init__.py` | Package exports with graceful degradation (29 exports) |
+| `__init__.py` | Package exports with graceful degradation (32 exports) |
 | `_base.py` | Mesh grid and evaluation utilities |
 | `_compat.py` | Matplotlib import with graceful fallback |
 | `field_lines.py` | 2D electric/magnetic field line plotting |
@@ -57,10 +57,17 @@
 | `em_wave_propagation.py` | EM wave propagation & polarization (Art. 791) |
 | `magnetic_shell.py` | Magnetic shell / solid angle visualization (Art. 409) |
 | `spherical_harmonics.py` | Spherical harmonic globe visualization (Art. 467) |
+| `flow_tubes.py` | Unit Tubes of Flow visualization (Art. 290) |
 
 ### What Each Implemented Visualization Does
 
-**1. `plot_field_lines_2d()`** (field_lines.py)
+**1. `plot_flow_tubes_2d()`** (flow_tubes.py)
+- Visualizes Maxwell's unit tubes of flow for current density fields (Art. 290)
+- Renders 2D flow tubes showing current direction and magnitude
+- Supports arbitrary current source configurations
+- Uses matplotlib streamplot with tube-width proportional to current density
+
+**2. `plot_field_lines_2d()`** (field_lines.py)
 - Plots 2D electric or magnetic field lines as streamlines
 - Supports multiple charge configurations
 - Uses matplotlib quiver + streamplot
@@ -132,7 +139,7 @@ These are the foundation -- everything else builds on these.
 
 | # | Visualization | Complexity | Dependencies | Article |
 |---|--------------|------------|-------------|---------|
-| 5 | Unit Tubes of Flow | High | 3D current density field | Art. 290 |
+| 5 | Unit Tubes of Flow | Medium | 2D flow tubes, current density field | Art. 290 | **DONE** |
 | 6 | Thermal Gradients | Medium | Joule heating solver (exists) | Art. 242/249 |
 | 7 | Dielectric Soakage | Low | Time-series plotting | Art. 329 |
 | 8 | Magnetic Shell | Medium | Solid angle computation | Art. 409 | **DONE** |
@@ -259,11 +266,12 @@ Add a GitHub Actions workflow to the architecture repo that:
 - [x] Complete visualization audit (this document)
 - [x] Magnetic Shell visualization (`maxwell/vis/magnetic_shell.py`) -- Art. 409
 - [x] Spherical Harmonic Globes visualization (`maxwell/vis/spherical_harmonics.py`) -- Art. 467
+- [x] Unit Tubes of Flow visualization (`maxwell/vis/flow_tubes.py`) -- Art. 290
+- [x] Jupyter notebooks: quick start, EM deep dive, visualization showcase
 - [ ] Commit this document to codebase repo
 
 ### Next Session
 
-- [ ] Create `maxwell/vis/flow.py` -- Unit tubes of flow
 - [ ] Create thermal gradients visualization -- Joule heating overlay (Art. 242/249)
 - [ ] Add PyVista as optional dependency (`[viz3d]`)
 - [ ] Create 3D stress tensor ellipsoid visualization
@@ -285,8 +293,8 @@ Add a GitHub Actions workflow to the architecture repo that:
 
 | Metric | Value |
 |--------|-------|
-| Visualization modules | 13 (12 code + 1 init) |
-| Visualization test functions | 143 (37 base + 106 new: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian + 22 magnetic shell + 22 spherical harmonics - 3 reorganized) |
+| Visualization modules | 14 (13 code + 1 init) |
+| Visualization test functions | 164 (37 base + 106 new: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian + 22 magnetic shell + 22 spherical harmonics - 3 reorganized + 21 flow tubes) |
 | Matplotlib dependency | Optional (`[viz]`) |
 | PyVista integration | None |
 | Manim integration | None |
@@ -296,11 +304,11 @@ Add a GitHub Actions workflow to the architecture repo that:
 | Part | Visualizations Planned | Implemented | Gap |
 |------|----------------------|-------------|-----|
 | I: Electrostatics | 4 | 4 (equipotential, field lines, method of images, edge singularities) | 0 |
-| II: Electrokinematics | 3 | 1 (dielectric soakage) | 2 |
+| II: Electrokinematics | 3 | 2 (dielectric soakage, flow tubes) | 1 |
 | III: Magnetism | 3 | 3 (hysteresis loops, magnetic shell, spherical harmonics) | 0 |
 | IV: Electromagnetism | 5 | 2 (stress tensor 2D, EM wave propagation) | 3 |
 | VI: Scalar Physics | 2 | 0 | 2 |
-| **Total** | **17** | **10** | **7** |
+| **Total** | **17** | **11** | **6** |
 
 ### Test Coverage
 
@@ -319,6 +327,17 @@ Add a GitHub Actions workflow to the architecture repo that:
 | `test_lagrangian_*` | PASS (18 new tests, dynamics package) |
 | `test_vis_magnetic_shell_*` | PASS (22 new tests) |
 | `test_vis_spherical_harmonics_*` | PASS (22 new tests) |
+| `test_vis_flow_tubes_*` | PASS (21 new tests) |
+
+### Jupyter Notebooks
+
+Three Jupyter notebooks provide guided tours of the package capabilities:
+
+| Notebook | Cells | Content |
+|----------|-------|---------|
+| `notebooks/01-quick-start-tour.ipynb` | 15 | Quick start: PointCharge, Lorentz force, speed of light |
+| `notebooks/02-em-deep-dive.ipynb` | 18 | EM deep dive: Poynting vector, stress tensor, Faraday induction |
+| `notebooks/03-visualization-showcase.ipynb` | 18 | Visualization gallery: all 11 visualization types |
 
 ---
 

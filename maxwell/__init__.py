@@ -11,7 +11,7 @@ Coverage:
     Part III — Magnetism            (Arts. 371–474)
     Part IV  — Electromagnetism     (Arts. 475–866)
 
-Total: 866 articles, 241 modules, 80+ subpackages.
+Total: 866 articles, 283+ modules, 80+ subpackages.
 
 Unit System: CGS (centimeter-gram-second) primary, SI secondary.
 Citation:  Every function is traceable to a Maxwell article via @maxwell_cite.

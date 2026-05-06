@@ -15,10 +15,10 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | **Total implementation tasks completed** | **~195 modules** | -- |
-| **Total test tasks completed** | **27 files / 1662 tests** | 100% |
+| **Total test tasks completed** | **29 files / 1683 tests** | 100% |
 | **JAX adapters completed** | **37 classes / 17 files** | -- |
 | **SymPy verifiers completed** | **13 / 13** | 100% |
-| **Visualizations completed** | **10 / 17** | 59% |
+| **Visualizations completed** | **11 / 17** | 65% |
 | **CI workflows completed** | **5 / 5** | 100% |
 | **Documentation files completed** | **13 / 13** | 100% |
 | **Architecture layers complete** | **~70 / 97** | 72% |
@@ -35,7 +35,7 @@
 | Test files | 27 | ~10 | ~37 |
 | JAX adapter classes | 37 | ~15 | ~52 |
 | SymPy verifiers | 13 | 0 | 13 |
-| Visualizations | 10 | 7 | 17 |
+| Visualizations | 11 | 6 | 17 |
 | CI workflows | 5 | 1 | 6 |
 | Documentation | 13 | ~6 | ~19 |
 | Infrastructure layers | ~70 | ~27 | ~97 |
@@ -347,7 +347,7 @@
 - [x] Tests: `test_conduction_3d_jax.py` (618 lines)
 
 #### Remaining Tasks
-- [ ] Implement Unit Tubes of Flow visualization (`render_tubes()`) -- Art. 290
+- ~~[ ] Implement Unit Tubes of Flow visualization (`render_tubes()`) -- Art. 290~~ -- **DONE** in `maxwell/vis/flow_tubes.py` (Cycle 9)
 - [ ] Add current density vector field module
 - [ ] Add stream function calculations
 
@@ -465,9 +465,10 @@
 
 #### Completed
 - [x] `calc_dielectric_absorption()`, `plot_dielectric_soakage()` in `dielectric_soakage.py` -- Dielectric Soakage (Art. 329)
+- [x] `plot_flow_tubes_2d()` in `flow_tubes.py` -- Unit Tubes of Flow (Art. 290)
 
 #### Remaining
-- [ ] `render_tubes()` -- Unit Tubes of Flow (Art. 290)
+- ~~`render_tubes()` -- Unit Tubes of Flow (Art. 290)~~ -- **DONE** in `flow_tubes.py`
 - [ ] `render_joule_heating()` -- Thermal Gradients overlay (Art. 242/249)
 
 ---
@@ -1435,10 +1436,10 @@
 
 ## Visualization
 
-### Completed (10/17)
+### Completed (11/17)
 
 #### Visualization Infrastructure
-- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (57 lines, 29 exports)
+- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (57 lines, 32 exports)
 - [x] `maxwell/vis/_base.py` -- Mesh grid and evaluation utilities (89 lines)
 - [x] `maxwell/vis/_compat.py` -- Matplotlib import with graceful fallback (100 lines)
 
@@ -1453,6 +1454,7 @@
 - [x] `maxwell/vis/em_wave_propagation.py` -- `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` -- EM wave propagation & polarization (Art. 791)
 - [x] `maxwell/vis/magnetic_shell.py` -- `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` -- Magnetic shell / solid angle visualization (Art. 409)
 - [x] `maxwell/vis/spherical_harmonics.py` -- `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` -- Spherical harmonic globe visualization (Art. 467)
+- [x] `maxwell/vis/flow_tubes.py` -- `plot_flow_tubes_2d()` -- Unit Tubes of Flow visualization (Art. 290)
 - [x] `maxwell/electromagnetism/vis/circular_fields.py` -- Circular field visualization (Art. 702)
 - [x] `maxwell/dynamics/lagrangian.py` -- `GeneralizedSystem`, `derive_forces()`, `derive_electrostatic_force()` -- Lagrangian kernel with JAX auto-diff (Layer 52)
 - [x] Tests: `test_vis.py` (242+ lines, 37 test functions)
@@ -1462,6 +1464,7 @@
 - [x] Tests: `test_lagrangian.py` (18 tests)
 - [x] Tests: `test_vis_magnetic_shell.py` (22 tests)
 - [x] Tests: `test_vis_spherical_harmonics.py` (22 tests)
+- [x] Tests: `test_vis_flow_tubes.py` (21 tests)
 
 ### Remaining Visualizations by Part
 
@@ -1469,8 +1472,8 @@
 
 ~~Method of Images and Edge Singularities completed in Cycle 6.~~
 
-#### Part II: Electrokinematics (2 remaining)
-- [ ] `render_tubes()` -- Unit Tubes of Flow (Art. 290) -- Module: `maxwell/vis/flow.py`
+#### Part II: Electrokinematics (1 remaining)
+- ~~`render_tubes()` -- Unit Tubes of Flow (Art. 290)~~ -- **DONE** in `flow_tubes.py` (Cycle 9)
 - [ ] `render_joule_heating()` -- Thermal Gradients overlay (Art. 242/249) -- Module: `maxwell/vis/scalar.py`
 - ~~`plot_transient_recovery()` -- Dielectric Soakage (Art. 329)~~ -- **DONE** in `dielectric_soakage.py`
 
@@ -1550,7 +1553,7 @@
 - [x] `pyproject.toml` -- Build configuration with optional dependencies
 
 #### docs/ Directory (13 files)
-- [x] `docs/API_REFERENCE.md` -- Module-by-module API index (updated for 1542 tests)
+- [x] `docs/API_REFERENCE.md` -- Module-by-module API index (updated for 1683 tests)
 - [x] `docs/COVERAGE_SUMMARY.md` -- Article coverage by Part (866/866)
 - [x] `docs/USE_CASES.md` -- Practical guide with 20+ code examples
 - [x] `docs/validation_report.md` -- Test results, math validation, import verification
@@ -1564,11 +1567,20 @@
 - [x] `docs/PHASE2_EXECUTION_PLAN.md` -- Phase 2 planning document
 - [x] `docs/STRATEGIC_ROADMAP.md` -- Strategic roadmap
 
+#### notebooks/ Directory (3 files)
+- [x] `notebooks/01-quick-start-tour.ipynb` -- 15-cell quick start tour
+- [x] `notebooks/02-em-deep-dive.ipynb` -- 18-cell EM deep dive
+- [x] `notebooks/03-visualization-showcase.ipynb` -- 18-cell visualization gallery
+
 #### Package-Level Documentation
 - [x] `maxwell/jax/README.md` -- JAX adapter registry documentation
 
 ### Remaining Documentation Tasks
-- [ ] Create `examples/` directory with 5-10 Jupyter notebooks
+- [x] Create `notebooks/` directory with 3 Jupyter notebooks
+  - [x] Notebook: Quick start tour (PointCharge, Lorentz force, speed of light)
+  - [x] Notebook: EM deep dive (Poynting vector, stress tensor, Faraday induction)
+  - [x] Notebook: Visualization showcase (all 11 visualization types)
+- [ ] Create `examples/` directory with additional example scripts
   - [ ] Notebook: Coulomb's law and electric fields
   - [ ] Notebook: Lorentz force and particle trajectories
   - [ ] Notebook: Faraday induction and self-inductance
@@ -1881,7 +1893,7 @@
 | Part | Articles | Layers | Modules | Tests | JAX Classes | Visualizations | % Complete |
 |------|----------|--------|---------|-------|-------------|----------------|------------|
 | I: Electrostatics | 203 | 13 | 15+ | 629+ | 5 | 4/4 | 95% |
-| II: Electrokinematics | 141 | 18 | 15+ | 847+ | 13 | 0/3 | 85% |
+| II: Electrokinematics | 141 | 18 | 15+ | 847+ | 13 | 2/3 | 85% |
 | III: Magnetism | 104 | 13 | 10+ | 1005+ | 3 | 3/3 | 70% |
 | IV: Electromagnetism | 392 | 44 | 50+ | 6000+ | 9 | 1/5 | 82% |
 | V: Infrastructure | 16 | 5 | 5+ | 213+ | 0 | 0/0 | 60% |
@@ -1893,7 +1905,7 @@
 |--------|-------|
 | Total Python modules | 276 (81 init + 195 implementation) |
 | Total test files | 27 |
-| Total test functions | 1,662 |
+| Total test functions | 1,683 |
 | Total lines of test code | ~19,142 |
 | JAX adapter files | 24 |
 | JAX adapter classes | 37 |
