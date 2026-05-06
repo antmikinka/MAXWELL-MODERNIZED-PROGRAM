@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **Dielectric Soakage visualization** (`maxwell.vis.dielectric_soakage`) -- `calc_dielectric_absorption()`, `plot_dielectric_soakage()` for time-domain multi-exponential decay current with component breakdown (Art. 329)
+- **Magnetic Shell visualization** (`maxwell.vis.magnetic_shell`) -- `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` for 3D/2D visualization of Maxwell's magnetic shell theory with current loop equivalence and solid angle calculation (Art. 409)
+- **Spherical Harmonic Globes visualization** (`maxwell.vis.spherical_harmonics`) -- `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` for 3D globe and 2D map visualization of Gauss coefficient spherical harmonic decomposition of terrestrial magnetism (Art. 467)
 - **Hysteresis Loops visualization** (`maxwell.vis.hysteresis_loops`) -- `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` for magnetic B-H loop with coercivity/retentivity labels, area shading, and material comparison (soft iron vs steel vs permanent magnet) (Arts. 442-446)
 - **EM Wave Propagation visualization** (`maxwell.vis.em_wave_propagation`) -- `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` for orthogonal E/B fields vs position with 3D vector field and linear/circular/elliptical polarization support (Art. 791)
 - **Lagrangian Kernel** (`maxwell.dynamics.lagrangian`) -- Layer 52 implementation with `GeneralizedSystem` dataclass, `potential_energy()`, `kinetic_energy()`, `lagrangian()`, `derive_forces()`, and `derive_electrostatic_force()` proof-of-concept (JAX auto-diff force derivation from energy)
@@ -26,8 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Python 3.13 classifier
 
 ### Changed
-- `maxwell.vis` exports expanded from 12 to 20 (added `calc_dielectric_absorption`, `plot_dielectric_soakage`, `calc_hysteresis_loop`, `plot_hysteresis_loops`, `plot_material_comparison`, `calc_em_wave`, `plot_em_wave_propagation`, `plot_wave_snapshot_3d`)
-- Test count: 1556 -> 1618 (+62 tests: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian)
+- `maxwell.vis` exports expanded from 20 to 29 (added `calc_solid_angle`, `calc_shell_potential`, `plot_magnetic_shell`, `plot_shell_potential`, `calc_gauss_harmonics`, `calc_field_intensity`, `plot_harmonic_globe`, `plot_harmonic_modes`, `plot_harmonic_contour`)
+- Test count: 1618 -> 1662 (+44 tests: 22 magnetic shell + 22 spherical harmonics)
 - CI workflows now install `.[dev,accel]` to run the full 1618-test suite in GitHub Actions
 - `jax_tree` decorator converted to callable class supporting `static_fields` parameter for PyTree registration
 

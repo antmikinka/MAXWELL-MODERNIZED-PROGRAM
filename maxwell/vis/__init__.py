@@ -3,7 +3,7 @@
 Provides publication-quality plotting for electrostatic fields, equipotential
 surfaces, magnetic field lines, Maxwell stress tensor visualization, method
 of images, edge singularity analysis, dielectric soakage, hysteresis loops,
-and electromagnetic wave propagation.
+electromagnetic wave propagation, magnetic shells, and spherical harmonics.
 
 All modules gracefully degrade when matplotlib is not installed.
 Install with: pip install maxwell[viz]
@@ -19,6 +19,8 @@ Submodules:
     dielectric_soakage    -- Dielectric absorption current decay (Art. 329)
     hysteresis_loops      -- Magnetic hysteresis B-H loops (Arts. 442-446)
     em_wave_propagation   -- EM wave propagation and polarization (Art. 791)
+    magnetic_shell        -- Magnetic shell and solid angle (Art. 409)
+    spherical_harmonics   -- Spherical harmonic globes (Art. 467)
 """
 
 from __future__ import annotations
@@ -58,6 +60,19 @@ if HAS_MATPLOTLIB:
         plot_em_wave_propagation,
         plot_wave_snapshot_3d,
     )
+    from maxwell.vis.magnetic_shell import (
+        calc_solid_angle,
+        calc_shell_potential,
+        plot_magnetic_shell,
+        plot_shell_potential,
+    )
+    from maxwell.vis.spherical_harmonics import (
+        calc_gauss_harmonics,
+        calc_field_intensity,
+        plot_harmonic_globe,
+        plot_harmonic_modes,
+        plot_harmonic_contour,
+    )
 
     __all__ += [
         "create_meshgrid",
@@ -79,4 +94,13 @@ if HAS_MATPLOTLIB:
         "calc_em_wave",
         "plot_em_wave_propagation",
         "plot_wave_snapshot_3d",
+        "calc_solid_angle",
+        "calc_shell_potential",
+        "plot_magnetic_shell",
+        "plot_shell_potential",
+        "calc_gauss_harmonics",
+        "calc_field_intensity",
+        "plot_harmonic_globe",
+        "plot_harmonic_modes",
+        "plot_harmonic_contour",
     ]
