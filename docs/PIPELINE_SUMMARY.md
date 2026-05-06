@@ -835,3 +835,53 @@ This session executed a complete four-agent pipeline to cross-reference all 16 a
 - Regression: 1662/1662 tests, zero failures
 - Build: PASS (twine check PASS)
 - Git tag: v0.1.0 created
+
+---
+
+## Session 6: Cycle 9 -- Jupyter Notebooks + Unit Tubes + Test PyPI Smoke Test
+
+**Date:** 2026-05-06
+**Branch:** feat/pypi-package
+
+### Pipeline Execution
+1. Technical writer: Analyzed current state, planned Cycle 9 deliverables (3 Jupyter notebooks, Unit Tubes visualization, Test PyPI smoke test)
+2. Implementation: 1 new visualization module + 1 test file + 3 notebooks + documentation updates across 6 files
+3. Quality review: All physics/math verified correct, 21 new tests passing
+4. Final validation: 1683/1683 tests, zero failures, build and twine check PASS
+
+### Changes Made
+| File | Action | Description |
+|------|--------|-------------|
+| `notebooks/01-quick-start-tour.ipynb` | Created | 15-cell quick start: PointCharge, Lorentz force, speed of light |
+| `notebooks/02-em-deep-dive.ipynb` | Created | 18-cell EM deep dive: Poynting vector, stress tensor, Faraday induction |
+| `notebooks/03-visualization-showcase.ipynb` | Created | 18-cell visualization gallery: all 11 visualization types |
+| `maxwell/vis/flow_tubes.py` | Created | Unit Tubes of Flow visualization -- `plot_flow_tubes_2d()` (Art. 290) |
+| `tests/test_vis_flow_tubes.py` | Created | 21 tests for flow tubes visualization |
+| `maxwell/vis/__init__.py` | Modified | Added 3 new exports (29 -> 32 total) |
+| `.github/workflows/publish.yml` | Modified | Added `smoke-test-testpypi` job |
+| `MANIFEST.in` | Modified | Added `recursive-include notebooks *.ipynb` |
+| `README.md` | Modified | Updated counts (283+ modules, 1683 tests, 14 vis modules, 11 visualizations) |
+| `CHANGELOG.md` | Modified | Added Unit Tubes entry, notebook suite |
+| `maxwell/__init__.py` | Modified | Updated docstring counts |
+| `docs/VISUALIZATION_AUDIT.md` | Modified | Updated: 10/17 -> 11/17 visualizations, Part II: 1 -> 2 |
+| `docs/TASK_MASTER.md` | Modified | Updated visualization counts, marked Unit Tubes + notebooks complete |
+| `docs/COVERAGE_SUMMARY.md` | Modified | Updated test counts to 1683, vis modules to 14 |
+
+### Metrics Evolution
+| Metric | Before | After | Delta |
+|--------|--------|-------|-------|
+| Visualization files | 13 | 14 | +1 |
+| Visualization functions | 29 | 32 | +3 |
+| Visualization tests | 143 | 164 | +21 |
+| Jupyter notebooks | 0 | 3 | +3 |
+| Total tests | 1662 | 1683 | +21 |
+| Visualizations implemented | 10/17 (59%) | 11/17 (65%) | +1 |
+| vis package exports | 29 | 32 | +3 |
+| CI jobs (publish) | 3 | 4 | +1 |
+
+### Quality Assurance
+- Quality review: All physics/math correct -- PASS
+- New tests: 21/21 passing (flow tubes)
+- Regression: 1683/1683 tests, zero failures
+- Build: PASS (twine check PASS)
+- Test PyPI smoke test: Added to CI pipeline

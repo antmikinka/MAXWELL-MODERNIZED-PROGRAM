@@ -65,7 +65,7 @@ E_field = gradient(potential_field)
 
 ```bash
 pytest tests/ -v
-# 1618 passed in <N> seconds  (update with actual timing after test run)
+# 1683 passed in <N> seconds
 ```
 
 ## What Can I Use This For?
@@ -128,18 +128,18 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | Metric | Count |
 |--------|-------|
 | Articles covered | 866 / 866 (100%) |
-| Python modules | 260+ |
+| Python modules | 283+ |
 | Functions | 1,250+ |
 | Classes | 270+ |
-| Tests | 1662 / 1662 passing |
+| Tests | 1683 / 1683 passing |
 | Math validations | 50 / 50 passing |
 | SymPy verifiers | 66 / 66 passing |
 | JAX adapters | 20+ |
-| Visualization modules | 13 (10 visualizations) |
+| Visualization modules | 14 (11 visualizations) |
 
 ### Validation
 
-- 1662/1662 tests passing (629 core + 847 JAX + 66 SymPy + 120 visualization)
+- 1683/1683 tests passing (629 core + 847 JAX + 66 SymPy + 141 visualization)
 - 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
 - 100% citation compliance -- every public function is linked to its source article
 - All 260+ modules import without errors
@@ -284,7 +284,7 @@ maxwell/
     meta/                # Citation system (@maxwell_cite)
     ... and more
 tests/
-    test_*.py            # 1618 tests (629 core + 847 JAX + 66 SymPy + 76 visualization)
+    test_*.py            # 1683 tests (629 core + 847 JAX + 66 SymPy + 141 visualization)
 archive/                 # Legacy development documents
 docs/                    # API reference, coverage, validation
 ```
