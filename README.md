@@ -65,7 +65,7 @@ E_field = gradient(potential_field)
 
 ```bash
 pytest tests/ -v
-# 1556 passed in <N> seconds  (update with actual timing after test run)
+# 1618 passed in <N> seconds  (update with actual timing after test run)
 ```
 
 ## What Can I Use This For?
@@ -131,18 +131,33 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | Python modules | 260+ |
 | Functions | 1,250+ |
 | Classes | 270+ |
-| Tests | 1556 / 1556 passing |
+| Tests | 1618 / 1618 passing |
 | Math validations | 50 / 50 passing |
 | SymPy verifiers | 66 / 66 passing |
 | JAX adapters | 20+ |
-| Visualization modules | 8 (5 visualizations) |
+| Visualization modules | 11 (8 visualizations) |
 
 ### Validation
 
-- 1556/1556 tests passing (629 core + 847 JAX + 66 SymPy + 14 visualization)
+- 1618/1618 tests passing (629 core + 847 JAX + 66 SymPy + 76 visualization)
 - 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
 - 100% citation compliance -- every public function is linked to its source article
 - All 260+ modules import without errors
+
+### Lagrangian Kernel (Layer 52)
+
+The `maxwell.dynamics.lagrangian` package provides a JAX-powered Lagrangian mechanics framework:
+
+- **`GeneralizedSystem`** -- dataclass representing a system in generalized coordinates (q, p state)
+- **Force-from-energy derivation** -- forces computed via `jax.grad` of potential/kinetic energy
+- **Proof of concept** -- `derive_electrostatic_force()` derives Coulomb force from U = q1*q2/r via auto-diff
+
+```python
+from maxwell.dynamics.lagrangian import GeneralizedSystem, derive_electrostatic_force
+
+# Derive Coulomb force from potential energy via JAX auto-diff
+force = derive_electrostatic_force(q1=1.0, q2=1.0, r=1.0)  # Uses jax.grad internally
+```
 
 ### JAX GPU/TPU Acceleration
 
@@ -269,7 +284,7 @@ maxwell/
     meta/                # Citation system (@maxwell_cite)
     ... and more
 tests/
-    test_*.py            # 1556 tests (629 core + 847 JAX + 66 SymPy + 14 visualization)
+    test_*.py            # 1618 tests (629 core + 847 JAX + 66 SymPy + 76 visualization)
 archive/                 # Legacy development documents
 docs/                    # API reference, coverage, validation
 ```

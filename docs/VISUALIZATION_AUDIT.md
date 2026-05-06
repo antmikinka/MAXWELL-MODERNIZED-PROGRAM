@@ -8,7 +8,7 @@
 
 ---
 
-## Part 1: Visualization Audit -- 17 Planned vs. 3 Implemented
+## Part 1: Visualization Audit -- 17 Planned vs. 8 Implemented
 
 ### Implementation Status Overview
 
@@ -20,15 +20,15 @@
 | 4 | **Edge Singularities** | I | Art. 191 | `maxwell.vis.edge_singularities.plot_edge_singularity()` | **[DONE]** `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` | Full 2D heatmap + comparison plot |
 | 5 | **Unit Tubes of Flow** | II | Art. 290 | `maxwell.vis.flow.render_tubes()` | **NOT DONE** | 3D current flow tubes |
 | 6 | **Thermal Gradients** | II | Art. 242/249 | `maxwell.vis.scalar.render_joule_heating()` | **NOT DONE** | Current+temperature overlay |
-| 7 | **Dielectric Soakage** | II | Art. 329 | `maxwell.vis.plots.plot_transient_recovery()` | **NOT DONE** | Time-series transient recovery plot |
+| 7 | **Dielectric Soakage** | II | Art. 329 | `maxwell.vis.plots.plot_transient_recovery()` | **[DONE]** `calc_dielectric_absorption()`, `plot_dielectric_soakage()` | Time-domain multi-exponential decay current plot |
 | 8 | **Magnetic Shell** | III | Art. 409 | `maxwell.vis.geometry.render_solid_angle_cap()` | **NOT DONE** | Solid angle surface rendering |
 | 9 | **Spherical Harmonic Globes** | III | Art. 467 | `maxwell.vis.geophysics.render_gauss_harmonics()` | **NOT DONE** | 3D globe with Gauss coefficients |
-| 10 | **Hysteresis Loops** | III | Art. 442 | `maxwell.vis.plots.animate_hysteresis_cycle()` | **NOT DONE** | Animated B-H curve |
+| 10 | **Hysteresis Loops** | III | Art. 442 | `maxwell.vis.plots.animate_hysteresis_cycle()` | **[DONE]** `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` | B-H loop with coercivity/retentivity labels, area shading, material comparison |
 | 11 | **Electrotonic State (Vector Potential A)** | IV | Art. 540/617 | `maxwell.vis.vector.render_vector_potential_A()` | **NOT DONE** | Swirling vector potential field |
 | 12 | **Maxwell Stress Tensor** | IV | Art. 641 | `maxwell.vis.tensor.render_stress_ellipsoids()` | **[DONE]** `plot_stress_tensor_2d()` | 2D stress plot, 3D ellipsoids pending |
 | 13 | **Helicoidal Potentials** | IV | Art. 487 | `maxwell.vis.topology.render_cyclic_surface()` | **NOT DONE** | Spiraling multi-valued surface |
 | 14 | **Molecular Vortices** | IV | Art. 822 | `maxwell.vis.mechanical.animate_vortex_lattice()` | **NOT DONE** | Spinning vortex lattice animation |
-| 15 | **EM Wave Propagation** | IV | Art. 791 | `maxwell.vis.optics.render_plane_wave()` | **NOT DONE** | Animated orthogonal E/B waves |
+| 15 | **EM Wave Propagation** | IV | Art. 791 | `maxwell.vis.optics.render_plane_wave()` | **[DONE]** `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` | Orthogonal E/B fields vs position, 3D vector field, linear/circular/elliptical polarization |
 | 16 | **Aharonov-Bohm Phase** | VI | Extension | `maxwell.vis.scalar.render_potential_fog()` | **NOT DONE** | Part VI not implemented |
 | 17 | **Longitudinal Waves** | VI | Extension | `maxwell.vis.scalar.animate_longitudinal_pulse()` | **NOT DONE** | Part VI not implemented |
 
@@ -36,22 +36,25 @@
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| Implemented (2D) | 5 | 29% |
+| Implemented | 8 | 47% |
 | Partially implemented | 0 | 0% |
-| Not implemented | 12 | 71% |
+| Not implemented | 9 | 53% |
 
-### Current vis/ Package (8 modules, ~1080 lines)
+### Current vis/ Package (11 modules)
 
-| Module | Lines | Content |
-|--------|-------|---------|
-| `__init__.py` | 57 | Package exports with graceful degradation |
-| `_base.py` | 89 | Mesh grid and evaluation utilities |
-| `_compat.py` | 100 | Matplotlib import with graceful fallback |
-| `field_lines.py` | 154 | 2D electric/magnetic field line plotting |
-| `equipotential.py` | 134 | 2D equipotential contour plotting |
-| `stress.py` | 159 | 2D Maxwell stress tensor visualization |
-| `method_of_images.py` | 183 | Method of Images visualization (Art. 155) |
-| `edge_singularities.py` | 225 | Edge singularity heatmap + comparison (Art. 191) |
+| Module | Content |
+|--------|---------|
+| `__init__.py` | Package exports with graceful degradation (20 exports) |
+| `_base.py` | Mesh grid and evaluation utilities |
+| `_compat.py` | Matplotlib import with graceful fallback |
+| `field_lines.py` | 2D electric/magnetic field line plotting |
+| `equipotential.py` | 2D equipotential contour plotting |
+| `stress.py` | 2D Maxwell stress tensor visualization |
+| `method_of_images.py` | Method of Images visualization (Art. 155) |
+| `edge_singularities.py` | Edge singularity heatmap + comparison (Art. 191) |
+| `dielectric_soakage.py` | Dielectric absorption time-domain decay (Art. 329) |
+| `hysteresis_loops.py` | Magnetic B-H hysteresis loops + material comparison (Arts. 442-446) |
+| `em_wave_propagation.py` | EM wave propagation & polarization (Art. 791) |
 
 ### What Each Implemented Visualization Does
 
@@ -268,9 +271,8 @@ Add a GitHub Actions workflow to the architecture repo that:
 
 | Metric | Value |
 |--------|-------|
-| Visualization modules | 8 (7 code + 1 init) |
-| Visualization lines of code | ~1080 |
-| Visualization test functions | 37 (in test_vis.py) |
+| Visualization modules | 11 (10 code + 1 init) |
+| Visualization test functions | 99 (37 base + 62 new: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian - 3 reorganized) |
 | Matplotlib dependency | Optional (`[viz]`) |
 | PyVista integration | None |
 | Manim integration | None |
@@ -280,11 +282,11 @@ Add a GitHub Actions workflow to the architecture repo that:
 | Part | Visualizations Planned | Implemented | Gap |
 |------|----------------------|-------------|-----|
 | I: Electrostatics | 4 | 4 (equipotential, field lines, method of images, edge singularities) | 0 |
-| II: Electrokinematics | 3 | 0 | 3 |
-| III: Magnetism | 3 | 0 | 3 |
-| IV: Electromagnetism | 5 | 1 (stress tensor 2D) | 4 |
+| II: Electrokinematics | 3 | 1 (dielectric soakage) | 2 |
+| III: Magnetism | 3 | 1 (hysteresis loops) | 2 |
+| IV: Electromagnetism | 5 | 2 (stress tensor 2D, EM wave propagation) | 3 |
 | VI: Scalar Physics | 2 | 0 | 2 |
-| **Total** | **17** | **5** | **12** |
+| **Total** | **17** | **8** | **9** |
 
 ### Test Coverage
 
@@ -297,7 +299,10 @@ Add a GitHub Actions workflow to the architecture repo that:
 | `test_stress_tensor_basic` | PASS |
 | `test_method_of_images_*` | PASS (6 new tests) |
 | `test_edge_singularity_*` | PASS (8 new tests) |
-| +20 more test functions | PASS |
+| `test_vis_dielectric_soakage_*` | PASS (15 new tests) |
+| `test_vis_hysteresis_loops_*` | PASS (14 new tests) |
+| `test_vis_em_wave_propagation_*` | PASS (15 new tests) |
+| `test_lagrangian_*` | PASS (18 new tests, dynamics package) |
 
 ---
 

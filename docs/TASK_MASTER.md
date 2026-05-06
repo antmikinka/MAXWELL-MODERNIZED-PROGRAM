@@ -15,10 +15,10 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | **Total implementation tasks completed** | **~195 modules** | -- |
-| **Total test tasks completed** | **27 files / 1556 tests** | 100% |
+| **Total test tasks completed** | **27 files / 1618 tests** | 100% |
 | **JAX adapters completed** | **37 classes / 17 files** | -- |
 | **SymPy verifiers completed** | **13 / 13** | 100% |
-| **Visualizations completed** | **5 / 17** | 29% |
+| **Visualizations completed** | **8 / 17** | 47% |
 | **CI workflows completed** | **5 / 5** | 100% |
 | **Documentation files completed** | **13 / 13** | 100% |
 | **Architecture layers complete** | **~70 / 97** | 72% |
@@ -35,7 +35,7 @@
 | Test files | 27 | ~10 | ~37 |
 | JAX adapter classes | 37 | ~15 | ~52 |
 | SymPy verifiers | 13 | 0 | 13 |
-| Visualizations | 5 | 12 | 17 |
+| Visualizations | 8 | 9 | 17 |
 | CI workflows | 5 | 1 | 6 |
 | Documentation | 13 | ~6 | ~19 |
 | Infrastructure layers | ~70 | ~27 | ~97 |
@@ -321,9 +321,9 @@
 #### Completed Tasks
 - [x] `maxwell/electrokinematics/dielectric_conduction.py` -- Dielectric conduction (Arts. 325-334)
 - [x] `maxwell/jax/electromagnetism/electrolysis.py` -- PolarizationJAX class
+- [x] `maxwell/vis/dielectric_soakage.py` -- `calc_dielectric_absorption()`, `plot_dielectric_soakage()` (Art. 329)
 
 #### Remaining Tasks
-- [ ] Implement Dielectric Soakage visualization (`plot_transient_recovery()`) -- Art. 329
 - [ ] Add dielectric memory time-series model
 - [ ] Add Daniell cell model
 
@@ -463,10 +463,12 @@
 
 ### Part II Visualization Tasks
 
+#### Completed
+- [x] `calc_dielectric_absorption()`, `plot_dielectric_soakage()` in `dielectric_soakage.py` -- Dielectric Soakage (Art. 329)
+
 #### Remaining
 - [ ] `render_tubes()` -- Unit Tubes of Flow (Art. 290)
 - [ ] `render_joule_heating()` -- Thermal Gradients overlay (Art. 242/249)
-- [ ] `plot_transient_recovery()` -- Dielectric Soakage time-series (Art. 329)
 
 ---
 
@@ -573,9 +575,9 @@
 - [x] `maxwell/materials/saturation.py` -- Saturation modeling (Arts. 442-443)
 - [x] `maxwell/physics/magnetostriction.py` -- Magnetostriction (Art. 447)
 - [x] `maxwell/physics/molecular_theory.py` -- Molecular theory of magnetism (Art. 430)
+- [x] `maxwell/vis/hysteresis_loops.py` -- `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` (Arts. 442-446)
 
 #### Remaining Tasks
-- [ ] Implement Hysteresis Loops animation (`animate_hysteresis_cycle()`) -- Art. 442
 - [ ] Add Weber hysteresis model
 - [ ] Add Preisach model for hysteresis
 - [ ] Add magnetostriction strain calculations
@@ -628,10 +630,12 @@
 
 ### Part III Visualization Tasks
 
+#### Completed
+- [x] `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` in `hysteresis_loops.py` -- Hysteresis Loops (Arts. 442-446)
+
 #### Remaining
 - [ ] `render_solid_angle_cap()` -- Magnetic Shell (Art. 409)
 - [ ] `render_gauss_harmonics()` -- Spherical Harmonic Globes (Art. 467)
-- [ ] `animate_hysteresis_cycle()` -- Hysteresis Loops animation (Art. 442)
 
 ### Part III Empty Scaffolds
 - [ ] `maxwell/magnetism/calculus/` -- Only `__init__.py`
@@ -752,17 +756,18 @@
 - [ ] Add coupled circuit inductance matrix
 - [ ] Add energy dynamics verification tests
 
-### Layer 52: Lagrangian Kernel (CRITICAL GAP)
+### Layer 52: Lagrangian Kernel
+
+#### Completed Tasks
+- [x] `maxwell/dynamics/` directory created
+- [x] `maxwell/dynamics/lagrangian.py` -- `GeneralizedSystem` dataclass with `@jax_tree`, `potential_energy()`, `kinetic_energy()`, `lagrangian()`, `derive_forces()`, `derive_electrostatic_force()`
+- [x] `maxwell/dynamics/__init__.py` -- Dynamics package init
+- [x] Tests: `test_lagrangian.py` (18 tests)
+- [x] Force-from-energy derivation via JAX auto-diff (proof-of-concept: Coulomb from U=q1*q2/r)
 
 #### Remaining Tasks
-- [ ] Create `maxwell/dynamics/` directory
-- [ ] Create `maxwell/dynamics/lagrangian.py` -- GeneralizedSystem class (q, p state)
-- [ ] Create `maxwell/dynamics/lagrangian.py` -- KineticEnergy class (T = 1/2 L I^2)
-- [ ] Create `maxwell/dynamics/lagrangian.py` -- PotentialEnergy class
-- [ ] Create `maxwell/dynamics/lagrangian.py` -- LagrangianIntegrator class
 - [ ] Create `maxwell/dynamics/hamiltonian.py` -- Hamiltonian mechanics
-- [ ] Add JAX-based Lagrangian integrator with auto-diff
-- [ ] Add force-from-energy derivation via automatic differentiation
+- [ ] Add JAX-based Lagrangian integrator
 - [ ] Add generalized coordinate tests
 - [ ] Add Lagrangian verification tests
 
@@ -1019,6 +1024,7 @@
 - [x] `maxwell/optics/wave_equation.py` -- PlaneWave class, wave equation (Arts. 781-785)
 - [x] `maxwell/optics/velocity.py` -- Light velocity comparison (Arts. 786-787)
 - [x] `maxwell/electromagnetism/waves/wave_equation.py` -- EM wave equation
+- [x] `maxwell/vis/em_wave_propagation.py` -- `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` (Art. 791)
 - [x] SymPy verifier: `verify_wave_equation_1d`
 
 #### Remaining Tasks
@@ -1144,8 +1150,9 @@
 ### Layer 85: Visualization (Time-Domain)
 
 #### Completed Tasks
-- [x] `maxwell/vis/` -- 8 visualization modules (5 functional)
+- [x] `maxwell/vis/` -- 11 visualization modules (8 visualizations)
 - [x] `maxwell/electromagnetism/vis/circular_fields.py` -- Circular field visualization (Art. 702)
+- [x] `maxwell/dynamics/lagrangian.py` -- Lagrangian Kernel with JAX auto-diff (Layer 52)
 
 #### Remaining Tasks
 - [ ] Add time-domain visualization infrastructure
@@ -1185,12 +1192,12 @@
 
 #### Completed
 - [x] `plot_stress_tensor_2d()` in `stress.py` -- 2D Maxwell stress tensor
+- [x] `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` in `em_wave_propagation.py` -- EM Wave Propagation (Art. 791)
 
 #### Remaining
 - [ ] `render_vector_potential_A()` -- Electrotonic State 3D (Art. 540/617)
 - [ ] `render_cyclic_surface()` -- Helicoidal Potentials (Art. 487)
 - [ ] `animate_vortex_lattice()` -- Molecular Vortices animation (Art. 822)
-- [ ] `render_plane_wave()` -- EM Wave Propagation animation (Art. 791)
 
 ### Part IV Tests
 
@@ -1426,10 +1433,10 @@
 
 ## Visualization
 
-### Completed (5/17)
+### Completed (8/17)
 
 #### Visualization Infrastructure
-- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (57 lines)
+- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (57 lines, 20 exports)
 - [x] `maxwell/vis/_base.py` -- Mesh grid and evaluation utilities (89 lines)
 - [x] `maxwell/vis/_compat.py` -- Matplotlib import with graceful fallback (100 lines)
 
@@ -1439,8 +1446,16 @@
 - [x] `maxwell/vis/stress.py` -- `plot_stress_tensor_2d()` (159 lines) -- 2D Maxwell stress tensor quiver field
 - [x] `maxwell/vis/method_of_images.py` -- `calc_method_of_images()`, `plot_method_of_images()` (183 lines) -- Method of Images visualization (Art. 155)
 - [x] `maxwell/vis/edge_singularities.py` -- `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` (225 lines) -- Edge Singularities visualization (Art. 191)
+- [x] `maxwell/vis/dielectric_soakage.py` -- `calc_dielectric_absorption()`, `plot_dielectric_soakage()` -- Dielectric absorption time-domain decay (Art. 329)
+- [x] `maxwell/vis/hysteresis_loops.py` -- `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` -- Magnetic B-H hysteresis loops (Arts. 442-446)
+- [x] `maxwell/vis/em_wave_propagation.py` -- `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` -- EM wave propagation & polarization (Art. 791)
 - [x] `maxwell/electromagnetism/vis/circular_fields.py` -- Circular field visualization (Art. 702)
+- [x] `maxwell/dynamics/lagrangian.py` -- `GeneralizedSystem`, `derive_forces()`, `derive_electrostatic_force()` -- Lagrangian kernel with JAX auto-diff (Layer 52)
 - [x] Tests: `test_vis.py` (242+ lines, 37 test functions)
+- [x] Tests: `test_vis_dielectric_soakage.py` (15 tests)
+- [x] Tests: `test_vis_hysteresis_loops.py` (14 tests)
+- [x] Tests: `test_vis_em_wave_propagation.py` (15 tests)
+- [x] Tests: `test_lagrangian.py` (18 tests)
 
 ### Remaining Visualizations by Part
 
@@ -1448,22 +1463,22 @@
 
 ~~Method of Images and Edge Singularities completed in Cycle 6.~~
 
-#### Part II: Electrokinematics (3 remaining)
+#### Part II: Electrokinematics (2 remaining)
 - [ ] `render_tubes()` -- Unit Tubes of Flow (Art. 290) -- Module: `maxwell/vis/flow.py`
 - [ ] `render_joule_heating()` -- Thermal Gradients overlay (Art. 242/249) -- Module: `maxwell/vis/scalar.py`
-- [ ] `plot_transient_recovery()` -- Dielectric Soakage time-series (Art. 329) -- Module: `maxwell/vis/plots.py`
+- ~~`plot_transient_recovery()` -- Dielectric Soakage (Art. 329)~~ -- **DONE** in `dielectric_soakage.py`
 
-#### Part III: Magnetism (3 remaining)
+#### Part III: Magnetism (2 remaining)
 - [ ] `render_solid_angle_cap()` -- Magnetic Shell (Art. 409) -- Module: `maxwell/vis/geometry.py`
 - [ ] `render_gauss_harmonics()` -- Spherical Harmonic Globes (Art. 467) -- Module: `maxwell/vis/geophysics.py`
-- [ ] `animate_hysteresis_cycle()` -- Hysteresis Loops animation (Art. 442) -- Module: `maxwell/vis/plots.py`
+- ~~`animate_hysteresis_cycle()` -- Hysteresis Loops (Art. 442)~~ -- **DONE** in `hysteresis_loops.py`
 
-#### Part IV: Electromagnetism (5 remaining)
+#### Part IV: Electromagnetism (4 remaining)
 - [ ] `render_vector_potential_A()` -- Electrotonic State 3D (Art. 540/617) -- Module: `maxwell/vis/vector.py`
 - [ ] 3D Stress Tensor ellipsoids (Art. 641) -- Extend `maxwell/vis/stress.py`
 - [ ] `render_cyclic_surface()` -- Helicoidal Potentials (Art. 487) -- Module: `maxwell/vis/topology.py`
 - [ ] `animate_vortex_lattice()` -- Molecular Vortices (Art. 822) -- Module: `maxwell/vis/mechanical.py`
-- [ ] `render_plane_wave()` -- EM Wave Propagation (Art. 791) -- Module: `maxwell/vis/optics.py`
+- ~~`render_plane_wave()` -- EM Wave Propagation (Art. 791)~~ -- **DONE** in `em_wave_propagation.py`
 
 #### Part VI: Scalar Physics (2 remaining)
 - [ ] `render_potential_fog()` -- Aharonov-Bohm Phase (Extension) -- Requires Part VI implementation
@@ -1872,7 +1887,7 @@
 |--------|-------|
 | Total Python modules | 276 (81 init + 195 implementation) |
 | Total test files | 27 |
-| Total test functions | 1,556 |
+| Total test functions | 1,618 |
 | Total lines of test code | ~19,142 |
 | JAX adapter files | 24 |
 | JAX adapter classes | 37 |
