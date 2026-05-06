@@ -22,6 +22,7 @@ Submodules:
     magnetic_shell        -- Magnetic shell and solid angle (Art. 409)
     spherical_harmonics   -- Spherical harmonic globes (Art. 467)
     flow_tubes            -- Unit tubes of flow (Art. 290)
+    thermal_gradients     -- Joule heating and thermoelectric effects (Arts. 242, 249)
 """
 
 from __future__ import annotations
@@ -79,6 +80,14 @@ if HAS_MATPLOTLIB:
         plot_unit_tubes_of_flow,
         plot_unit_tubes_3d,
     )
+    from maxwell.vis.thermal_gradients import (
+        calc_joule_heat_distribution,
+        calc_thermal_gradients,
+        calc_peltier_junction,
+        plot_thermal_gradients,
+        plot_joule_heat_distribution,
+        plot_thermoelectric_effects,
+    )
 
     __all__ += [
         "create_meshgrid",
@@ -112,4 +121,10 @@ if HAS_MATPLOTLIB:
         "calc_unit_tubes",
         "plot_unit_tubes_of_flow",
         "plot_unit_tubes_3d",
+        "calc_joule_heat_distribution",
+        "calc_thermal_gradients",
+        "calc_peltier_junction",
+        "plot_thermal_gradients",
+        "plot_joule_heat_distribution",
+        "plot_thermoelectric_effects",
     ]
