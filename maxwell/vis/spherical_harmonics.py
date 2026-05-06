@@ -13,6 +13,7 @@ from __future__ import annotations
 from typing import Optional, Tuple
 
 import numpy as np
+from scipy.special import lpmv
 
 from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.meta.citation import maxwell_cite
@@ -71,7 +72,6 @@ def calc_gauss_harmonics(
 
         # Compute associated Legendre function P_n^m(cos(theta))
         cos_theta = np.cos(theta)
-        from scipy.special import lpmv
         P_nm = lpmv(mm, nn, cos_theta)
 
         # Azimuthal dependence
@@ -373,7 +373,6 @@ def plot_harmonic_modes(
 
             # Calculate real part of Y_l^m
             Y_lm = np.zeros_like(theta_grid, dtype=np.float64)
-            from scipy.special import lpmv
             cos_theta = np.cos(theta_grid)
             P_lm = lpmv(m, l, cos_theta)
 

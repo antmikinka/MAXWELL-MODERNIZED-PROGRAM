@@ -4,7 +4,7 @@
 **Total Articles in Treatise:** 866  
 **Articles Covered:** 866  
 **Coverage:** 100%  
-**Test Status:** 1618/1618 tests passing (100%) -- 629 core + 847 JAX + 66 SymPy + 76 visualization  
+**Test Status:** 1662/1662 tests passing (100%) -- 629 core + 847 JAX + 66 SymPy + 120 visualization  
 **Math Validation:** 50/50 checks passing (100%)
 
 ---
@@ -52,7 +52,7 @@ The Maxwell Modernized project has successfully modernized **100%** of Maxwell's
 
 ### Coverage Status
 
-All 126 articles in Part I are fully covered with implementations and tests. All 4 Part I visualizations are implemented (field lines, equipotentials, method of images, edge singularities). Part II now has 1 visualization (dielectric soakage). Part III now has 1 visualization (hysteresis loops). Part IV now has 2 visualizations (stress tensor, EM wave propagation).
+All 126 articles in Part I are fully covered with implementations and tests. All 4 Part I visualizations are implemented (field lines, equipotentials, method of images, edge singularities). Part II now has 1 visualization (dielectric soakage). Part III now has 3 visualizations (hysteresis loops, magnetic shell, spherical harmonics). Part IV now has 2 visualizations (stress tensor, EM wave propagation).
 
 ---
 
@@ -276,7 +276,7 @@ python -m maxwell.meta.citation --article 528
 | Metric | Value | Status |
 |--------|-------|--------|
 | Article Coverage | 866/866 | 100% Complete |
-| Test Coverage | 1618/1618 | 100% Passing |
+| Test Coverage | 1662/1662 | 100% Passing |
 | Math Validation | 50/50 | 100% Passing |
 | Module Count | 241 | Complete |
 | Function Count | 1,174 | Complete |
@@ -349,7 +349,7 @@ python -m maxwell.meta.citation --article 528
 | solvers | 2 | 12 | 4 | 5 |
 | theories | 1 | 8 | 1 | 3 |
 | verification | 3 | 0 | 6 | 0 |
-| vis | 11 | 20 | 0 | — |
+| vis | 13 | 29 | 0 | -- |
 | vortex_engine | 5 | 9 | 3 | 10 |
 | **TOTAL** | **246** | **1,186** | **245** | **866** |
 
