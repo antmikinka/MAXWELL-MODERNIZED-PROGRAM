@@ -234,9 +234,229 @@ class TestVisIntegration:
             plot_field_lines_2d,
             plot_equipotentials_2d,
             plot_stress_tensor_2d,
+            calc_method_of_images,
+            plot_method_of_images,
+            calc_wedge_field,
+            calc_edge_singularity,
+            plot_edge_singularity,
+            plot_singularity_comparison,
         )
         assert callable(create_meshgrid)
         assert callable(evaluate_on_grid)
         assert callable(plot_field_lines_2d)
         assert callable(plot_equipotentials_2d)
         assert callable(plot_stress_tensor_2d)
+        assert callable(calc_method_of_images)
+        assert callable(plot_method_of_images)
+        assert callable(calc_wedge_field)
+        assert callable(calc_edge_singularity)
+        assert callable(plot_edge_singularity)
+        assert callable(plot_singularity_comparison)
+
+
+class TestMethodOfImages:
+    """Test Method of Images visualization (Art. 155)."""
+
+    def test_method_of_images_potential_zero_on_plane(self):
+        """V=0 at x=0 (conducting plane symmetry)."""
+        from maxwell.vis.method_of_images import calc_method_of_images
+        from maxwell.vis._base import create_meshgrid
+
+        # Use odd number of points so x=0 is exactly in the grid
+        X, Y = create_meshgrid(-2, 2, -2, 2, 41, 41)
+        V, Ex, Ey = calc_method_of_images(q=1.0, d=1.0, x_grid=X, y_grid=Y)
+
+        # Find the column at x=0
+        x_zero_col = np.argmin(np.abs(X[0, :]))
+        assert np.abs(X[0, x_zero_col]) < 1e-10
+        v_at_plane = V[:, x_zero_col]
+        assert np.allclose(v_at_plane, 0.0, atol=1e-6)
+
+    def test_method_of_images_field_symmetry(self):
+        """Ex is symmetric and Ey is symmetric about x=0 for charge+image pair."""
+        from maxwell.vis.method_of_images import calc_method_of_images
+        from maxwell.vis._base import create_meshgrid
+
+        # Use odd number of points so x=0 is exactly centered
+        X, Y = create_meshgrid(-2, 2, -2, 2, 41, 41)
+        V, Ex, Ey = calc_method_of_images(q=1.0, d=1.0, x_grid=X, y_grid=Y)
+
+        # For points symmetric about x=0 (columns equidistant from center)
+        mid = X.shape[1] // 2  # This is column 20, x=0
+        offset = 5  # 5 columns away from center
+
+        left_col = mid - offset
+        right_col = mid + offset
+
+        # Verify x positions are symmetric
+        assert np.isclose(X[0, left_col], -X[0, right_col])
+
+        # Ex is symmetric: Ex(-x) = Ex(+x) for the charge+image configuration
+        # (The +q/-q arrangement means field points same direction on both sides)
+        assert np.allclose(Ex[:, left_col], Ex[:, right_col], atol=1e-6)
+
+        # Ey is antisymmetric: Ey(-x) = -Ey(+x)
+        # (y-component flips sign when reflected about x=0 due to charge asymmetry)
+        assert np.allclose(Ey[:, left_col], -Ey[:, right_col], atol=1e-6)
+
+        # V is antisymmetric: V(-x) = -V(+x)
+        assert np.allclose(V[:, left_col], -V[:, right_col], atol=1e-6)
+
+    def test_method_of_images_plot_returns_fig_ax(self):
+        """plot_method_of_images returns matplotlib figure and axis."""
+        from maxwell.vis.method_of_images import plot_method_of_images
+
+        fig, ax = plot_method_of_images(q=1.0, d=1.0, resolution=30)
+        assert fig is not None
+        assert ax is not None
+        import matplotlib.pyplot as mplt
+        mplt.close(fig)
+
+    def test_method_of_images_default_args(self):
+        """Works with no arguments (all defaults)."""
+        from maxwell.vis.method_of_images import plot_method_of_images
+
+        fig, ax = plot_method_of_images()
+        assert fig is not None
+        assert ax is not None
+        import matplotlib.pyplot as mplt
+        mplt.close(fig)
+
+    def test_method_of_images_calc_returns_arrays(self):
+        """calc_method_of_images returns correctly shaped arrays."""
+        from maxwell.vis.method_of_images import calc_method_of_images
+        from maxwell.vis._base import create_meshgrid
+
+        X, Y = create_meshgrid(-3, 3, -3, 3, 40, 40)
+        V, Ex, Ey = calc_method_of_images(q=2.0, d=0.5, x_grid=X, y_grid=Y)
+
+        assert V.shape == (40, 40)
+        assert Ex.shape == (40, 40)
+        assert Ey.shape == (40, 40)
+        assert not np.any(np.isnan(V))
+        assert not np.any(np.isnan(Ex))
+        assert not np.any(np.isnan(Ey))
+
+    def test_method_of_images_with_existing_ax(self):
+        """Plots onto an existing axes."""
+        import matplotlib.pyplot as mplt
+        from maxwell.vis.method_of_images import plot_method_of_images
+
+        fig, ax = mplt.subplots()
+        result_fig, result_ax = plot_method_of_images(ax=ax, resolution=20)
+        assert result_ax is ax
+        assert result_fig is fig
+        mplt.close(fig)
+
+
+class TestEdgeSingularities:
+    """Test Edge Singularity visualization (Art. 191)."""
+
+    def test_wedge_field_scaling(self):
+        """E ~ r^(pi/alpha - 1) power law."""
+        from maxwell.vis.edge_singularities import calc_wedge_field
+
+        alpha = np.pi / 2
+        exponent = np.pi / alpha - 1.0  # Should be 1.0 for 90-degree wedge
+
+        r_vals = np.linspace(0.1, 2.0, 20)
+        theta_vals = np.full_like(r_vals, np.pi / 4)
+
+        E_vals = calc_wedge_field(r_vals, theta_vals, alpha)
+
+        # Check power law: E / r^exponent should be approximately constant
+        ratio = E_vals / (r_vals**exponent)
+        # Normalize by sin(pi * theta / alpha)
+        expected = np.abs(np.sin(np.pi * theta_vals / alpha))
+        assert np.allclose(ratio, expected, rtol=1e-10)
+
+    def test_edge_singularity_90_degree(self):
+        """Correct behavior for alpha = pi/2."""
+        from maxwell.vis.edge_singularities import calc_edge_singularity
+        from maxwell.vis._base import create_meshgrid
+
+        X, Y = create_meshgrid(0.1, 3, -3, 3, 30, 30)
+        E = calc_edge_singularity(X, Y, alpha=np.pi / 2)
+
+        assert E.shape == (30, 30)
+        assert np.all(E >= 0)
+        # Field should increase with distance for 90-degree wedge (n=1)
+        # Points farther from origin should generally have higher field
+        far_mask = (X > 2) & (np.abs(Y) < 1)
+        near_mask = (X < 0.5) & (np.abs(Y) < 0.5)
+        assert np.nanmean(E[far_mask]) > np.nanmean(E[near_mask])
+
+    def test_edge_singularity_sharp_edge(self):
+        """Stronger singularity for smaller alpha (sharp edge)."""
+        from maxwell.vis.edge_singularities import calc_wedge_field
+
+        # Use r > 1 so that larger exponent means larger field value
+        r_test = np.array([2.0])
+        # Use a theta that's within all wedges
+        theta_test = np.array([np.pi / 8])
+
+        # Smaller alpha -> larger exponent -> stronger field at r > 1
+        E_sharp = calc_wedge_field(r_test, theta_test, alpha=np.pi / 4)
+        E_obtuse = calc_wedge_field(r_test, theta_test, alpha=3 * np.pi / 4)
+
+        # For r > 1, sharper wedge (larger exponent) produces stronger field
+        assert E_sharp[0] > E_obtuse[0]
+
+    def test_plot_edge_singularity_returns_fig_ax(self):
+        """plot_edge_singularity returns matplotlib figure and axis."""
+        from maxwell.vis.edge_singularities import plot_edge_singularity
+
+        fig, ax = plot_edge_singularity(alpha=np.pi / 2, resolution=30)
+        assert fig is not None
+        assert ax is not None
+        import matplotlib.pyplot as mplt
+        mplt.close(fig)
+
+    def test_plot_singularity_comparison_returns_fig_ax(self):
+        """plot_singularity_comparison returns matplotlib figure and axis."""
+        from maxwell.vis.edge_singularities import plot_singularity_comparison
+
+        fig, ax = plot_singularity_comparison(resolution=30)
+        assert fig is not None
+        assert ax is not None
+        import matplotlib.pyplot as mplt
+        mplt.close(fig)
+
+    def test_edge_singularity_default_args(self):
+        """Works with no arguments (all defaults)."""
+        from maxwell.vis.edge_singularities import (
+            plot_edge_singularity,
+            plot_singularity_comparison,
+        )
+
+        fig1, ax1 = plot_edge_singularity()
+        assert fig1 is not None
+        import matplotlib.pyplot as mplt
+        mplt.close(fig1)
+
+        fig2, ax2 = plot_singularity_comparison()
+        assert fig2 is not None
+        mplt.close(fig2)
+
+    def test_calc_edge_singularity_no_nan(self):
+        """calc_edge_singularity produces no NaN values."""
+        from maxwell.vis.edge_singularities import calc_edge_singularity
+        from maxwell.vis._base import create_meshgrid
+
+        X, Y = create_meshgrid(0.01, 3, -3, 3, 50, 50)
+        E = calc_edge_singularity(X, Y, alpha=np.pi / 2)
+
+        assert not np.any(np.isnan(E))
+        assert not np.any(np.isinf(E))
+
+    def test_calc_wedge_field_multiple_angles(self):
+        """Wedge field works for multiple wedge angles."""
+        from maxwell.vis.edge_singularities import calc_wedge_field
+
+        r = np.linspace(0.1, 2.0, 10)
+        theta = np.full_like(r, np.pi / 4)
+
+        for alpha in [np.pi / 6, np.pi / 4, np.pi / 2, np.pi]:
+            E = calc_wedge_field(r, theta, alpha)
+            assert E.shape == (10,)
+            assert np.all(E >= 0)

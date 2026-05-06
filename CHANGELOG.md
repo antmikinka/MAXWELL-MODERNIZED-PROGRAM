@@ -9,16 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **JAX adapter package** (`maxwell.jax`) -- 20+ JAX adapters enabling GPU/TPU acceleration, automatic differentiation, and JIT compilation for all four Parts of the Treatise
+- **Method of Images visualization** (`maxwell.vis.method_of_images`) -- `calc_method_of_images()` and `plot_method_of_images()` for visualizing a point charge above a conducting plane with image charge technique (Art. 155)
+- **Edge Singularities visualization** (`maxwell.vis.edge_singularities`) -- `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, and `plot_singularity_comparison()` for visualizing power-law field enhancement near conducting wedge edges (Art. 191)
+- **Test PyPI CI workflow** -- Automated Test PyPI publishing on `feat/pypi-package` branch pushes, with build verification and pip install smoke test
+- **JAX classes**: `PointChargeJAX`, `MagneticPoleJAX`, `MagnetJAX`, `VectorPotentialJAX`, `ElectricFieldJAX`, `FaradayInductionJAX`, `MaxwellEquationsJAX`, `SphericalHarmonicExpansionJAX`, `LorentzForceJAX`, `MaxwellStressTensorJAX`, `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX`, `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX`, `MagneticEnergyJAX`, `InductorEnergyJAX`, `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX`, `OhmsLawJAX`, `NetworkSolverJAX`, `Conduction3DJAX`, `SpreadingResistanceJAX`, `EffectiveConductivityJAX`, `FaradayLawsJAX`, `IonTransportJAX`, `PolarizationJAX`, `ElectrolysisCellJAX`, `JouleHeatingJAX`, `HeatDissipationJAX`, `SubstanceResistanceJAX`
 - **JAX classes**: `PointChargeJAX`, `MagneticPoleJAX`, `MagnetJAX`, `VectorPotentialJAX`, `ElectricFieldJAX`, `FaradayInductionJAX`, `MaxwellEquationsJAX`, `SphericalHarmonicExpansionJAX`, `LorentzForceJAX`, `MaxwellStressTensorJAX`, `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX`, `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX`, `MagneticEnergyJAX`, `InductorEnergyJAX`, `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX`, `OhmsLawJAX`, `NetworkSolverJAX`, `Conduction3DJAX`, `SpreadingResistanceJAX`, `EffectiveConductivityJAX`, `FaradayLawsJAX`, `IonTransportJAX`, `PolarizationJAX`, `ElectrolysisCellJAX`, `JouleHeatingJAX`, `HeatDissipationJAX`, `SubstanceResistanceJAX`
 - **JAX infrastructure**: `@jax_tree` pytree registration, `safe_div`/`safe_sqrt`/`safe_log` arithmetic, AGM-based elliptic integrals, pure-JAX special functions (Legendre polynomials, spherical harmonics)
 - **SymPy symbolic verifiers** -- 13 verifiers proving div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem, Lorentz force, stress tensor properties, Ampere's law
-- **Test suite growth**: 548 → 1542 tests (629 core + 847 JAX + 66 SymPy), all passing
+- **Test suite growth**: 548 → 1556 tests (629 core + 847 JAX + 66 SymPy + 14 visualization), all passing
 - `[all]` optional dependency in `pyproject.toml` for installing everything at once
 - Python 3.13 classifier
 
 ### Changed
-- CI workflows now install `.[dev,accel]` to run the full 1542-test suite in GitHub Actions
+- CI workflows now install `.[dev,accel]` to run the full 1556-test suite in GitHub Actions
 - `jax_tree` decorator converted to callable class supporting `static_fields` parameter for PyTree registration
+- `maxwell.vis` exports expanded from 5 to 12 (added `calc_method_of_images`, `plot_method_of_images`, `calc_wedge_field`, `calc_edge_singularity`, `plot_edge_singularity`, `plot_singularity_comparison`)
+- Test count: 1542 → 1556 (+14 visualization tests for Method of Images and Edge Singularities)
 
 ## [0.1.0] - 2026-04-25
 
