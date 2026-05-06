@@ -23,6 +23,8 @@ Submodules:
     spherical_harmonics   -- Spherical harmonic globes (Art. 467)
     flow_tubes            -- Unit tubes of flow (Art. 290)
     thermal_gradients     -- Joule heating and thermoelectric effects (Arts. 242, 249)
+    molecular_vortices    -- Molecular vortex lattice (Arts. 822-824)
+    helicoidal_potentials -- Helicoidal potential surfaces (Arts. 486-487)
 """
 
 from __future__ import annotations
@@ -88,6 +90,18 @@ if HAS_MATPLOTLIB:
         plot_joule_heat_distribution,
         plot_thermoelectric_effects,
     )
+    from maxwell.vis.molecular_vortices import (
+        calc_vortex_lattice,
+        calc_magnetic_field_from_vortices,
+        plot_molecular_vortices,
+        plot_vortex_3d_surface,
+    )
+    from maxwell.vis.helicoidal_potentials import (
+        calc_solid_angle_loop,
+        plot_helicoidal_potentials,
+        plot_loop_potential_3d,
+        plot_loop_field_lines,
+    )
 
     __all__ += [
         "create_meshgrid",
@@ -127,4 +141,12 @@ if HAS_MATPLOTLIB:
         "plot_thermal_gradients",
         "plot_joule_heat_distribution",
         "plot_thermoelectric_effects",
+        "calc_vortex_lattice",
+        "calc_magnetic_field_from_vortices",
+        "plot_molecular_vortices",
+        "plot_vortex_3d_surface",
+        "calc_solid_angle_loop",
+        "plot_helicoidal_potentials",
+        "plot_loop_potential_3d",
+        "plot_loop_field_lines",
     ]
