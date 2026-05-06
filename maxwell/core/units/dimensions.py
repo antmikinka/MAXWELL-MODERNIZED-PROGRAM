@@ -385,6 +385,9 @@ class ESUDimensions:
     #: Dielectric displacement: [M^(1/2) L^(-1/2) T^(-1)] — same as E in ESU
     DISPLACEMENT: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=-1, time_exp=-2)
 
+    #: Magnetic field: [M^(1/2) L^(-1/2) T^(-1)] — same as E in ESU (vacuum)
+    MAGNETIC_FIELD: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=-1, time_exp=-2)
+
 
 class EMUDimensions:
     """
@@ -491,6 +494,7 @@ def get_esu_dimensions(quantity: str) -> Dimension:
         "inductance": ESUDimensions.INDUCTANCE,
         "electric_field": ESUDimensions.ELECTRIC_FIELD,
         "displacement": ESUDimensions.DISPLACEMENT,
+        "magnetic_field": ESUDimensions.MAGNETIC_FIELD,
     }
     if quantity not in mapping:
         raise KeyError(

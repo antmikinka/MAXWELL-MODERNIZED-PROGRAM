@@ -40,6 +40,7 @@ jobs:
 
   publish:
     needs: build
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -58,7 +59,7 @@ jobs:
   publish-testpypi:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/pypi-package'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/pypi-package' && secrets.TEST_PYPI_API_TOKEN != ''
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -84,7 +85,7 @@ jobs:
 
   smoke-test-testpypi:
     needs: publish-testpypi
-    runs-on: ubuntu-latest
+    if: ${{ needs.publish-testpypi.result == 'success' }}
     steps:
       - name: Set up Python
         uses: actions/setup-python@v5
