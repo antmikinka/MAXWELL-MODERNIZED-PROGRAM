@@ -1063,6 +1063,30 @@ The following subpackages exist but contain only `__init__.py` with no implement
 - `maxwell/materials/database/` -- Only `__init__.py`
 - `maxwell/sim/` -- Only `__init__.py`
 
+### Cross-Repo Analysis Plan
+
+**Problem:** 16 architecture map documents in `archive/docs/` define the planned architecture layer-by-layer. The codebase (`maxwell/`) represents what was actually built. There is a growing gap between planned and implemented.
+
+**Solution:** Create a separate GitHub repository (`maxwell-treatise/architecture`) containing:
+- The 16 architecture map documents as authoritative planned specifications
+- A `validation/` directory with cross-analysis scripts that compare planned vs. implemented
+- Automated CI workflow to run weekly cross-checks against the codebase
+
+**Architecture Documents to Cross-Reference (16 files):**
+- `Maxwell's Treatise_ Modernized Architecture Map - PART I.md` through `PART VI.md` (6 files)
+- `Maxwell_Treatise_Part_I_Architecture_COMPLETE.md` through `Part_VI_Architecture_COMPLETE.md` (6 files)
+- `Maxwell's Treatise_ The Visualization Strategy.md` (1 file)
+- `Maxwell's Treatise_ The Master Synthesis - A Modern Computational Architecture for Classical Physics.md` (1 file)
+- Plus: `docs/MASTER_PLAN.md`, `docs/PIPELINE_SUMMARY.md`, `docs/VISUALIZATION_AUDIT.md`
+
+**Cross-Analysis Script Logic:**
+1. Parse architecture maps to extract planned layers, modules, classes, functions, article mappings
+2. Scan codebase via GitHub API or git submodule for actual files
+3. Cross-reference: for each planned layer, check if corresponding Python files exist
+4. Generate report: layers fully implemented, partially implemented, not implemented, orphan files
+
+**See:** `docs/VISUALIZATION_AUDIT.md` for full 17-visualization gap analysis
+
 ### Documentation Gaps
 
 - [ ] API reference documentation needs updating for all new JAX adapters
