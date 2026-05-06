@@ -1,6 +1,6 @@
 # Maxwell Modernized -- Visualization Audit & Cross-Repo Analysis Plan
 
-> **Comprehensive audit of all 17 planned visualizations vs. 3 implemented, plus plan for cross-analyzing the codebase against the 16 architecture map documents in a separate GitHub repository.**
+> **Comprehensive audit of all 17 planned visualizations vs. 5 implemented, plus plan for cross-analyzing the codebase against the 16 architecture map documents in a separate GitHub repository.**
 
 **Generated:** 2026-05-06
 **Source Document:** `Maxwell's Treatise_ The Visualization Strategy.md`
@@ -16,8 +16,8 @@
 |---|--------------|------|---------|----------------------|---------------|-------|
 | 1 | **Equipotential Surfaces** | I | Art. 46 | `maxwell.vis.scalar.render_isosurfaces()` | **[DONE]** `plot_equipotentials_2d()` | 2D contours only, 3D isosurfaces pending |
 | 2 | **Lines of Force** | I | Art. 47 | `maxwell.vis.vector.trace_streamlines()` | **[DONE]** `plot_field_lines_2d()` | 2D streamlines, 3D tracing pending |
-| 3 | **Method of Images** | I | Art. 155 | `maxwell.vis.geometry.render_virtual_images()` | **NOT DONE** | Virtual charge visualization needed |
-| 4 | **Edge Singularities** | I | Art. 191 | `maxwell.vis.scalar.render_density_heatmap()` | **NOT DONE** | Charge density heatmap at conductor edges |
+| 3 | **Method of Images** | I | Art. 155 | `maxwell.vis.method_of_images.plot_method_of_images()` | **[DONE]** `calc_method_of_images()`, `plot_method_of_images()` | Full 2D implementation with equipotential + field lines |
+| 4 | **Edge Singularities** | I | Art. 191 | `maxwell.vis.edge_singularities.plot_edge_singularity()` | **[DONE]** `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` | Full 2D heatmap + comparison plot |
 | 5 | **Unit Tubes of Flow** | II | Art. 290 | `maxwell.vis.flow.render_tubes()` | **NOT DONE** | 3D current flow tubes |
 | 6 | **Thermal Gradients** | II | Art. 242/249 | `maxwell.vis.scalar.render_joule_heating()` | **NOT DONE** | Current+temperature overlay |
 | 7 | **Dielectric Soakage** | II | Art. 329 | `maxwell.vis.plots.plot_transient_recovery()` | **NOT DONE** | Time-series transient recovery plot |
@@ -36,20 +36,22 @@
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| Implemented (2D) | 3 | 18% |
+| Implemented (2D) | 5 | 29% |
 | Partially implemented | 0 | 0% |
-| Not implemented | 14 | 82% |
+| Not implemented | 12 | 71% |
 
-### Current vis/ Package (673 lines)
+### Current vis/ Package (8 modules, ~1080 lines)
 
 | Module | Lines | Content |
 |--------|-------|---------|
-| `__init__.py` | 37 | Package exports with graceful degradation |
+| `__init__.py` | 57 | Package exports with graceful degradation |
 | `_base.py` | 89 | Mesh grid and evaluation utilities |
 | `_compat.py` | 100 | Matplotlib import with graceful fallback |
 | `field_lines.py` | 154 | 2D electric/magnetic field line plotting |
 | `equipotential.py` | 134 | 2D equipotential contour plotting |
 | `stress.py` | 159 | 2D Maxwell stress tensor visualization |
+| `method_of_images.py` | 183 | Method of Images visualization (Art. 155) |
+| `edge_singularities.py` | 225 | Edge singularity heatmap + comparison (Art. 191) |
 
 ### What Each Implemented Visualization Does
 
@@ -71,6 +73,20 @@
 - Supports uniform and computed stress fields
 - Single tensor or full stress computation
 
+**4. `plot_method_of_images()`** (method_of_images.py)
+- Visualizes Method of Images for a charge above conducting plane (Art. 155)
+- Shows equipotential contours, field lines, and charge positions
+- Real charge (+q) and image charge (-q) marked on plot
+- Conducting plane shown as dashed line at x=0
+- Includes `calc_method_of_images()` for underlying computation
+
+**5. `plot_edge_singularity()`** (edge_singularities.py)
+- Visualizes field enhancement near conducting wedge edges (Art. 191)
+- Power-law singularity: E ~ r^(pi/alpha - 1)
+- Supports logarithmic color scale for wide dynamic range
+- Includes `calc_wedge_field()`, `calc_edge_singularity()`, `plot_singularity_comparison()`
+- Comparison plot shows singularity strength for different wedge angles
+
 ### Tech Stack per Visualization Strategy
 
 | Technology | Purpose | Status |
@@ -87,14 +103,12 @@
 
 These are the foundation -- everything else builds on these.
 
-| # | Visualization | Complexity | Dependencies | Article |
-|---|--------------|------------|-------------|---------|
-| 3 | Method of Images | Medium | Image charge solver (exists) | Art. 155 |
-| 4 | Edge Singularities | Low-Medium | 2D heatmap, existing grid tools | Art. 191 |
+| # | Visualization | Complexity | Dependencies | Article | Status |
+|---|--------------|------------|-------------|---------|--------|
+| 3 | Method of Images | Medium | Image charge solver (exists) | Art. 155 | **DONE** |
+| 4 | Edge Singularities | Low-Medium | 2D heatmap, existing grid tools | Art. 191 | **DONE** |
 
-**New modules needed:**
-- `maxwell/vis/geometry.py` -- `render_virtual_images()`, `render_solid_angle_cap()`
-- Extend `maxwell/vis/scalar.py` or add to equipotential.py for edge singularities
+**New modules needed:** ~~`maxwell/vis/geometry.py`~~ -- Method of Images implemented in `method_of_images.py`; Edge Singularities implemented in `edge_singularities.py`
 
 ### Phase 2: Part II & III Visualizations
 
@@ -254,9 +268,9 @@ Add a GitHub Actions workflow to the architecture repo that:
 
 | Metric | Value |
 |--------|-------|
-| Visualization modules | 6 (5 code + 1 init) |
-| Visualization lines of code | 673 |
-| Visualization test functions | 23 (in test_vis.py) |
+| Visualization modules | 8 (7 code + 1 init) |
+| Visualization lines of code | ~1080 |
+| Visualization test functions | 37 (in test_vis.py) |
 | Matplotlib dependency | Optional (`[viz]`) |
 | PyVista integration | None |
 | Manim integration | None |
@@ -265,12 +279,12 @@ Add a GitHub Actions workflow to the architecture repo that:
 
 | Part | Visualizations Planned | Implemented | Gap |
 |------|----------------------|-------------|-----|
-| I: Electrostatics | 4 | 2 (equipotential, field lines) | 2 |
+| I: Electrostatics | 4 | 4 (equipotential, field lines, method of images, edge singularities) | 0 |
 | II: Electrokinematics | 3 | 0 | 3 |
 | III: Magnetism | 3 | 0 | 3 |
 | IV: Electromagnetism | 5 | 1 (stress tensor 2D) | 4 |
 | VI: Scalar Physics | 2 | 0 | 2 |
-| **Total** | **17** | **3** | **14** |
+| **Total** | **17** | **5** | **12** |
 
 ### Test Coverage
 
@@ -281,7 +295,9 @@ Add a GitHub Actions workflow to the architecture repo that:
 | `test_field_lines_basic` | PASS |
 | `test_equipotentials_basic` | PASS |
 | `test_stress_tensor_basic` | PASS |
-| +18 more test functions | PASS |
+| `test_method_of_images_*` | PASS (6 new tests) |
+| `test_edge_singularity_*` | PASS (8 new tests) |
+| +20 more test functions | PASS |
 
 ---
 

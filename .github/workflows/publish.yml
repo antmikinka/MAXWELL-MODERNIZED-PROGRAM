@@ -3,6 +3,9 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - feat/pypi-package
 
 permissions:
   contents: read
@@ -52,8 +55,36 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
+  publish-testpypi:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/pypi-package'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install twine
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine
+
+      - name: Upload to Test PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        run: |
+          twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
   smoke-test:
     needs: publish
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python

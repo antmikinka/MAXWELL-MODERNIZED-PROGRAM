@@ -15,10 +15,10 @@
 | Metric | Count | Percentage |
 |--------|-------|------------|
 | **Total implementation tasks completed** | **~195 modules** | -- |
-| **Total test tasks completed** | **27 files / 1542 tests** | 100% |
+| **Total test tasks completed** | **27 files / 1556 tests** | 100% |
 | **JAX adapters completed** | **37 classes / 17 files** | -- |
 | **SymPy verifiers completed** | **13 / 13** | 100% |
-| **Visualizations completed** | **3 / 17** | 18% |
+| **Visualizations completed** | **5 / 17** | 29% |
 | **CI workflows completed** | **5 / 5** | 100% |
 | **Documentation files completed** | **13 / 13** | 100% |
 | **Architecture layers complete** | **~70 / 97** | 72% |
@@ -35,7 +35,7 @@
 | Test files | 27 | ~10 | ~37 |
 | JAX adapter classes | 37 | ~15 | ~52 |
 | SymPy verifiers | 13 | 0 | 13 |
-| Visualizations | 3 | 14 | 17 |
+| Visualizations | 5 | 12 | 17 |
 | CI workflows | 5 | 1 | 6 |
 | Documentation | 13 | ~6 | ~19 |
 | Infrastructure layers | ~70 | ~27 | ~97 |
@@ -171,9 +171,9 @@
 #### Completed Tasks
 - [x] `maxwell/electrostatics/electric_images.py` -- Method of electric images (Arts. 155-172)
 - [x] `maxwell/electrostatics/confocal_surfaces.py` -- Confocal coordinate systems (Arts. 147-154)
+- [x] `maxwell/vis/method_of_images.py` -- `calc_method_of_images()`, `plot_method_of_images()` (Art. 155)
 
 #### Remaining Tasks
-- [ ] Implement Method of Images visualization (`render_virtual_images()`) -- Art. 155
 - [ ] Add geometric inversion transformation module
 - [ ] Add tests for image charge configurations
 
@@ -184,9 +184,9 @@
 - [x] `maxwell/math/elliptic_integrals.py` -- EllipticIntegral class (K, E, Pi)
 - [x] `maxwell/jax/_elliptic.py` -- Pure JAX elliptic integrals (AGM method)
 - [x] `maxwell/jax/_scipy_special.py` -- JAX wrappers for scipy.special
+- [x] `maxwell/vis/edge_singularities.py` -- `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` (Art. 191)
 
 #### Remaining Tasks
-- [ ] Implement Edge Singularities visualization (`render_density_heatmap()`) -- Art. 191
 - [ ] Add edge charge distribution analysis
 - [ ] Add complex potential conformal mapping module
 
@@ -236,10 +236,10 @@
 #### Completed
 - [x] `plot_equipotentials_2d()` in `equipotential.py` -- 2D equipotential contours
 - [x] `plot_field_lines_2d()` in `field_lines.py` -- 2D field line streamlines
+- [x] `calc_method_of_images()`, `plot_method_of_images()` in `method_of_images.py` -- Method of Images (Art. 155)
+- [x] `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` in `edge_singularities.py` -- Edge Singularities (Art. 191)
 
 #### Remaining
-- [ ] `render_virtual_images()` -- Method of Images visualization (Art. 155)
-- [ ] `render_density_heatmap()` -- Edge Singularities heatmap (Art. 191)
 - [ ] 3D equipotential isosurfaces
 - [ ] 3D field line tracing
 
@@ -1144,7 +1144,7 @@
 ### Layer 85: Visualization (Time-Domain)
 
 #### Completed Tasks
-- [x] `maxwell/vis/` -- 6 visualization modules (3 functional)
+- [x] `maxwell/vis/` -- 8 visualization modules (5 functional)
 - [x] `maxwell/electromagnetism/vis/circular_fields.py` -- Circular field visualization (Art. 702)
 
 #### Remaining Tasks
@@ -1426,10 +1426,10 @@
 
 ## Visualization
 
-### Completed (3/17)
+### Completed (5/17)
 
 #### Visualization Infrastructure
-- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (37 lines)
+- [x] `maxwell/vis/__init__.py` -- Package exports with graceful degradation (57 lines)
 - [x] `maxwell/vis/_base.py` -- Mesh grid and evaluation utilities (89 lines)
 - [x] `maxwell/vis/_compat.py` -- Matplotlib import with graceful fallback (100 lines)
 
@@ -1437,14 +1437,16 @@
 - [x] `maxwell/vis/field_lines.py` -- `plot_field_lines_2d()` (154 lines) -- 2D electric/magnetic field line streamlines
 - [x] `maxwell/vis/equipotential.py` -- `plot_equipotentials_2d()` (134 lines) -- 2D equipotential contour lines
 - [x] `maxwell/vis/stress.py` -- `plot_stress_tensor_2d()` (159 lines) -- 2D Maxwell stress tensor quiver field
+- [x] `maxwell/vis/method_of_images.py` -- `calc_method_of_images()`, `plot_method_of_images()` (183 lines) -- Method of Images visualization (Art. 155)
+- [x] `maxwell/vis/edge_singularities.py` -- `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` (225 lines) -- Edge Singularities visualization (Art. 191)
 - [x] `maxwell/electromagnetism/vis/circular_fields.py` -- Circular field visualization (Art. 702)
-- [x] Tests: `test_vis.py` (242 lines, 23 test functions)
+- [x] Tests: `test_vis.py` (242+ lines, 37 test functions)
 
 ### Remaining Visualizations by Part
 
-#### Part I: Electrostatics (2 remaining)
-- [ ] `render_virtual_images()` -- Method of Images visualization (Art. 155) -- Module: `maxwell/vis/geometry.py`
-- [ ] `render_density_heatmap()` -- Edge Singularities heatmap (Art. 191) -- Module: `maxwell/vis/scalar.py`
+#### Part I: Electrostatics (0 remaining)
+
+~~Method of Images and Edge Singularities completed in Cycle 6.~~
 
 #### Part II: Electrokinematics (3 remaining)
 - [ ] `render_tubes()` -- Unit Tubes of Flow (Art. 290) -- Module: `maxwell/vis/flow.py`
@@ -1610,7 +1612,7 @@
 - [x] `tests/test_part_iv_electromagnetism.py` (1227 lines) -- Core Part IV tests
 - [x] `tests/test_part_iv_advanced.py` (1081 lines) -- Advanced Part IV tests
 - [x] `tests/test_magnetic_measurements.py` (1005 lines) -- Magnetic measurement tests
-- [x] `tests/test_vis.py` (242 lines) -- Visualization tests
+- [x] `tests/test_vis.py` (242+ lines) -- Visualization tests (37 test functions)
 - [x] `tests/test_verification_framework.py` (213 lines) -- Verification framework tests
 - [x] `tests/test_convergence.py` (171 lines) -- Convergence tests
 - [x] `tests/test_cross_validation.py` (126 lines) -- Cross-validation tests
@@ -1801,8 +1803,8 @@
 
 | Priority | Task | Effort | Dependencies |
 |----------|------|--------|-------------|
-| **P1** | Method of Images visualization (Art. 155) | Medium | Image solver exists |
-| **P1** | Edge singularities heatmap (Art. 191) | Low-Medium | Grid tools exist |
+| ~~**P1**~~ | ~~Method of Images visualization (Art. 155)~~ | ~~Medium~~ | ~~Image solver exists~~ -- **DONE** |
+| ~~**P1**~~ | ~~Edge singularities heatmap (Art. 191)~~ | ~~Low-Medium~~ | ~~Grid tools exist~~ -- **DONE** |
 | **P1** | Hysteresis loop animation (Art. 442) | Low | Hysteresis model exists |
 | **P2** | Dielectric soakage transient plot (Art. 329) | Low | Time-series needed |
 | **P2** | Thermal gradients overlay (Art. 242/249) | Medium | Joule heating exists |
@@ -1857,7 +1859,7 @@
 
 | Part | Articles | Layers | Modules | Tests | JAX Classes | Visualizations | % Complete |
 |------|----------|--------|---------|-------|-------------|----------------|------------|
-| I: Electrostatics | 203 | 13 | 15+ | 629+ | 5 | 2/4 | 95% |
+| I: Electrostatics | 203 | 13 | 15+ | 629+ | 5 | 4/4 | 95% |
 | II: Electrokinematics | 141 | 18 | 15+ | 847+ | 13 | 0/3 | 85% |
 | III: Magnetism | 104 | 13 | 10+ | 1005+ | 3 | 0/3 | 70% |
 | IV: Electromagnetism | 392 | 44 | 50+ | 6000+ | 9 | 1/5 | 82% |
@@ -1870,7 +1872,7 @@
 |--------|-------|
 | Total Python modules | 276 (81 init + 195 implementation) |
 | Total test files | 27 |
-| Total test functions | 1,542 |
+| Total test functions | 1,556 |
 | Total lines of test code | ~19,142 |
 | JAX adapter files | 24 |
 | JAX adapter classes | 37 |
