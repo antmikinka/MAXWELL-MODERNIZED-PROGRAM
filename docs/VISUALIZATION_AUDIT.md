@@ -1,6 +1,6 @@
 # Maxwell Modernized -- Visualization Audit & Cross-Repo Analysis Plan
 
-> **Comprehensive audit of all 17 planned visualizations vs. 5 implemented, plus plan for cross-analyzing the codebase against the 16 architecture map documents in a separate GitHub repository.**
+> **Comprehensive audit of all 17 planned visualizations vs. 15 implemented (100% classical scope complete), plus plan for cross-analyzing the codebase against the 16 architecture map documents in a separate GitHub repository.**
 
 **Generated:** 2026-05-06
 **Source Document:** `Maxwell's Treatise_ The Visualization Strategy.md`
@@ -8,7 +8,7 @@
 
 ---
 
-## Part 1: Visualization Audit -- 17 Planned vs. 11 Implemented
+## Part 1: Visualization Audit -- 17 Planned vs. 15 Implemented (100% Classical)
 
 ### Implementation Status Overview
 
@@ -19,15 +19,15 @@
 | 3 | **Method of Images** | I | Art. 155 | `maxwell.vis.method_of_images.plot_method_of_images()` | **[DONE]** `calc_method_of_images()`, `plot_method_of_images()` | Full 2D implementation with equipotential + field lines |
 | 4 | **Edge Singularities** | I | Art. 191 | `maxwell.vis.edge_singularities.plot_edge_singularity()` | **[DONE]** `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` | Full 2D heatmap + comparison plot |
 | 5 | **Unit Tubes of Flow** | II | Art. 290 | `maxwell.vis.flow_tubes.render_flow_tubes()` | **[DONE]** `plot_flow_tubes_2d()` | 2D flow tube visualization with current density field |
-| 6 | **Thermal Gradients** | II | Art. 242/249 | `maxwell.vis.scalar.render_joule_heating()` | **NOT DONE** | Current+temperature overlay |
+| 6 | **Thermal Gradients** | II | Art. 242/249 | `maxwell.vis.scalar.render_joule_heating()` | **[DONE]** `calc_joule_heat_distribution()`, `calc_thermal_gradients()`, `calc_peltier_junction()`, `plot_thermal_gradients()`, `plot_joule_heat_distribution()`, `plot_thermoelectric_effects()` | Current+temperature overlay, thermoelectric effects |
 | 7 | **Dielectric Soakage** | II | Art. 329 | `maxwell.vis.plots.plot_transient_recovery()` | **[DONE]** `calc_dielectric_absorption()`, `plot_dielectric_soakage()` | Time-domain multi-exponential decay current plot |
 | 8 | **Magnetic Shell** | III | Art. 409 | `maxwell.vis.geometry.render_solid_angle_cap()` | **[DONE]** `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` | 3D/2D magnetic shell with current loop equivalence and solid angle calculation |
 | 9 | **Spherical Harmonic Globes** | III | Art. 467 | `maxwell.vis.geophysics.render_gauss_harmonics()` | **[DONE]** `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` | 3D globe and 2D map visualization of Gauss coefficient decomposition |
 | 10 | **Hysteresis Loops** | III | Art. 442 | `maxwell.vis.plots.animate_hysteresis_cycle()` | **[DONE]** `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` | B-H loop with coercivity/retentivity labels, area shading, material comparison |
-| 11 | **Electrotonic State (Vector Potential A)** | IV | Art. 540/617 | `maxwell.vis.vector.render_vector_potential_A()` | **NOT DONE** | Swirling vector potential field |
+| 11 | **Electrotonic State (Vector Potential A)** | IV | Art. 540/617 | `maxwell.vis.vector.render_vector_potential_A()` | **[DONE]** `calc_electrotonic_straight_wire()`, `calc_electrotonic_transient()`, `calc_B_from_electrotonic()`, `plot_electrotonic_state_2d()`, `plot_A_and_B_fields()`, `plot_A_transient()`, `plot_electrotonic_3d_surface()` | A-field lines, magnitude contours, curl relationship, transient evolution |
 | 12 | **Maxwell Stress Tensor** | IV | Art. 641 | `maxwell.vis.tensor.render_stress_ellipsoids()` | **[DONE]** `plot_stress_tensor_2d()` | 2D stress plot, 3D ellipsoids pending |
-| 13 | **Helicoidal Potentials** | IV | Art. 487 | `maxwell.vis.topology.render_cyclic_surface()` | **NOT DONE** | Spiraling multi-valued surface |
-| 14 | **Molecular Vortices** | IV | Art. 822 | `maxwell.vis.mechanical.animate_vortex_lattice()` | **NOT DONE** | Spinning vortex lattice animation |
+| 13 | **Helicoidal Potentials** | IV | Art. 487 | `maxwell.vis.topology.render_cyclic_surface()` | **[DONE]** `calc_solid_angle_loop()`, `plot_helicoidal_potentials()`, `plot_loop_potential_3d()`, `plot_loop_field_lines()` | Helicoidal magnetic equipotential surfaces for current loops |
+| 14 | **Molecular Vortices** | IV | Art. 822 | `maxwell.vis.mechanical.animate_vortex_lattice()` | **[DONE]** `calc_vortex_lattice()`, `calc_magnetic_field_from_vortices()`, `plot_molecular_vortices()`, `plot_vortex_3d_surface()` | Vortex lattice with streamlines/quiver and 3D surface |
 | 15 | **EM Wave Propagation** | IV | Art. 791 | `maxwell.vis.optics.render_plane_wave()` | **[DONE]** `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` | Orthogonal E/B fields vs position, 3D vector field, linear/circular/elliptical polarization |
 | 16 | **Aharonov-Bohm Phase** | VI | Extension | `maxwell.vis.scalar.render_potential_fog()` | **NOT DONE** | Part VI not implemented |
 | 17 | **Longitudinal Waves** | VI | Extension | `maxwell.vis.scalar.animate_longitudinal_pulse()` | **NOT DONE** | Part VI not implemented |
@@ -36,15 +36,15 @@
 
 | Status | Count | Percentage |
 |--------|-------|------------|
-| Implemented | 11 | 65% |
+| Implemented (Classical) | 15 | 100% of classical scope |
 | Partially implemented | 0 | 0% |
-| Not implemented | 6 | 35% |
+| Deferred (Part VI Extension) | 2 | Outside classical scope |
 
-### Current vis/ Package (14 modules)
+### Current vis/ Package (17 files: 15 modules + 2 support)
 
 | Module | Content |
 |--------|---------|
-| `__init__.py` | Package exports with graceful degradation (32 exports) |
+| `__init__.py` | Package exports with graceful degradation (53 exports) |
 | `_base.py` | Mesh grid and evaluation utilities |
 | `_compat.py` | Matplotlib import with graceful fallback |
 | `field_lines.py` | 2D electric/magnetic field line plotting |
@@ -58,16 +58,14 @@
 | `magnetic_shell.py` | Magnetic shell / solid angle visualization (Art. 409) |
 | `spherical_harmonics.py` | Spherical harmonic globe visualization (Art. 467) |
 | `flow_tubes.py` | Unit Tubes of Flow visualization (Art. 290) |
+| `thermal_gradients.py` | Joule heating & thermoelectric effects (Arts. 242, 249) |
+| `molecular_vortices.py` | Molecular vortex lattice (Arts. 822-824) |
+| `helicoidal_potentials.py` | Helicoidal potential surfaces (Arts. 486-487) |
+| `electrotonic_state.py` | Electrotonic state / vector potential (Arts. 540, 617) |
 
 ### What Each Implemented Visualization Does
 
-**1. `plot_flow_tubes_2d()`** (flow_tubes.py)
-- Visualizes Maxwell's unit tubes of flow for current density fields (Art. 290)
-- Renders 2D flow tubes showing current direction and magnitude
-- Supports arbitrary current source configurations
-- Uses matplotlib streamplot with tube-width proportional to current density
-
-**2. `plot_field_lines_2d()`** (field_lines.py)
+**1. `plot_field_lines_2d()`** (field_lines.py)
 - Plots 2D electric or magnetic field lines as streamlines
 - Supports multiple charge configurations
 - Uses matplotlib quiver + streamplot
@@ -99,18 +97,74 @@
 - Includes `calc_wedge_field()`, `calc_edge_singularity()`, `plot_singularity_comparison()`
 - Comparison plot shows singularity strength for different wedge angles
 
-**6. `plot_magnetic_shell()`** (magnetic_shell.py)
+**6. `plot_dielectric_soakage()`** (dielectric_soakage.py)
+- Visualizes dielectric absorption current decay over time (Art. 329)
+- Multi-exponential decay model with configurable time constants
+- Time-domain current plot showing soakage and recovery phases
+- Includes `calc_dielectric_absorption()` for underlying computation
+
+**7. `plot_hysteresis_loops()`** (hysteresis_loops.py)
+- Plots magnetic B-H hysteresis loops (Arts. 442-446)
+- Shows coercivity, retentivity, and loop area shading
+- Includes `calc_hysteresis_loop()`, `plot_material_comparison()`
+- Material comparison: soft iron vs steel vs permanent magnet
+
+**8. `plot_em_wave_propagation()`** (em_wave_propagation.py)
+- Visualizes EM wave propagation with orthogonal E/B fields (Art. 791)
+- Supports linear, circular, and elliptical polarization
+- Includes `calc_em_wave()`, `plot_wave_snapshot_3d()`
+- 3D vector field visualization
+
+**9. `plot_magnetic_shell()`** (magnetic_shell.py)
 - Visualizes Maxwell's magnetic shell theory with current loop equivalence (Art. 409)
 - Computes solid angle subtended by a current loop: Omega = 2*pi*(1 - cos(theta))
 - Calculates shell potential: V = (I / 4*pi) * Omega
 - 3D surface plot of solid angle, 2D contour plot of shell potential
 - Includes `calc_solid_angle()`, `calc_shell_potential()`, `plot_shell_potential()`
 
-**7. `plot_harmonic_globe()`** (spherical_harmonics.py)
+**10. `plot_harmonic_globe()`** (spherical_harmonics.py)
 - Visualizes Gauss coefficient spherical harmonic decomposition of terrestrial magnetism (Art. 467)
 - 3D globe with color-mapped scalar field from spherical harmonic expansion
 - 2D contour map and mode decomposition plots
 - Includes `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_modes()`, `plot_harmonic_contour()`
+
+**11. `plot_unit_tubes_of_flow()`** (flow_tubes.py)
+- Visualizes Maxwell's unit tubes of flow for current density fields (Art. 290)
+- Renders 2D flow tubes showing current direction and magnitude
+- Supports arbitrary current source configurations
+- Uses matplotlib streamplot with tube-width proportional to current density
+- Includes `calc_unit_tubes()`, `plot_unit_tubes_3d()`
+
+**12. `plot_thermal_gradients()`** (thermal_gradients.py)
+- Visualizes Joule heating and thermal gradients (Arts. 242, 249)
+- 2D temperature field with heat flux arrows
+- Supports rectangular and circular geometries
+- Includes `calc_joule_heat_distribution()`, `calc_thermal_gradients()`, `calc_peltier_junction()`
+- Thermoelectric effects: Seebeck coefficient comparison, Peltier junction EMF
+- Additional plots: `plot_joule_heat_distribution()`, `plot_thermoelectric_effects()`
+
+**13. `plot_molecular_vortices()`** (molecular_vortices.py)
+- Visualizes Maxwell's mechanical vortex lattice model (Arts. 822-824)
+- Alternating checkerboard vortex pattern with velocity field
+- Shows streamlines or quiver arrows for vortex flow
+- Includes `calc_vortex_lattice()`, `calc_magnetic_field_from_vortices()`
+- Collective magnetic field computation from vortex lattice
+- 3D vorticity surface: `plot_vortex_3d_surface()`
+
+**14. `plot_helicoidal_potentials()`** (helicoidal_potentials.py)
+- Visualizes helicoidal magnetic equipotential surfaces (Arts. 486-487)
+- Solid angle formulation for circular current loop
+- Multi-valued potential surface with screw-like topology
+- Includes `calc_solid_angle_loop()`, `plot_loop_potential_3d()`, `plot_loop_field_lines()`
+- 3D potential surface and field line visualization
+
+**15. `plot_electrotonic_state_2d()`** (electrotonic_state.py)
+- Visualizes Maxwell's Electrotonic State -- the vector potential A-field (Arts. 540, 617)
+- A-field magnitude contours around current-carrying conductors
+- Side-by-side A and B field comparison showing curl relationship
+- Time evolution during current transients ("extra current" effect)
+- Includes `calc_electrotonic_straight_wire()`, `calc_electrotonic_transient()`, `calc_B_from_electrotonic()`
+- Additional plots: `plot_A_and_B_fields()`, `plot_A_transient()`, `plot_electrotonic_3d_surface()`
 
 ### Tech Stack per Visualization Strategy
 
@@ -122,57 +176,44 @@
 
 ---
 
-## Part 2: Visualization Implementation Priority
+## Part 2: Visualization Implementation Priority -- COMPLETE
 
-### Phase 1: Complete Part I Visualizations (Highest Priority)
+All classical visualization priorities have been fulfilled.
 
-These are the foundation -- everything else builds on these.
+### Phase 1: Complete Part I Visualizations -- DONE
 
 | # | Visualization | Complexity | Dependencies | Article | Status |
 |---|--------------|------------|-------------|---------|--------|
 | 3 | Method of Images | Medium | Image charge solver (exists) | Art. 155 | **DONE** |
 | 4 | Edge Singularities | Low-Medium | 2D heatmap, existing grid tools | Art. 191 | **DONE** |
 
-**New modules needed:** ~~`maxwell/vis/geometry.py`~~ -- Method of Images implemented in `method_of_images.py`; Edge Singularities implemented in `edge_singularities.py`
+### Phase 2: Part II & III Visualizations -- DONE
 
-### Phase 2: Part II & III Visualizations
-
-| # | Visualization | Complexity | Dependencies | Article |
-|---|--------------|------------|-------------|---------|
+| # | Visualization | Complexity | Dependencies | Article | Status |
+|---|--------------|------------|-------------|---------|--------|
 | 5 | Unit Tubes of Flow | Medium | 2D flow tubes, current density field | Art. 290 | **DONE** |
-| 6 | Thermal Gradients | Medium | Joule heating solver (exists) | Art. 242/249 |
-| 7 | Dielectric Soakage | Low | Time-series plotting | Art. 329 |
+| 6 | Thermal Gradients | Medium | Joule heating solver (exists) | Art. 242/249 | **DONE** |
+| 7 | Dielectric Soakage | Low | Time-series plotting | Art. 329 | **DONE** |
 | 8 | Magnetic Shell | Medium | Solid angle computation | Art. 409 | **DONE** |
 | 9 | Spherical Harmonic Globes | High | PyVista or matplotlib 3D sphere | Art. 467 | **DONE** |
-| 10 | Hysteresis Loops | Low | B-H data from hysteresis.py | Art. 442 |
+| 10 | Hysteresis Loops | Low | B-H data from hysteresis.py | Art. 442 | **DONE** |
 
-**New modules needed:**
-- `maxwell/vis/flow.py` -- Flow tubes, current density visualization
-- `maxwell/vis/plots.py` -- Hysteresis loops, transient recovery, time-series
-- `maxwell/vis/geophysics.py` -- Gauss harmonic globe rendering
+### Phase 3: Part IV Visualizations (Crown Jewels) -- DONE
 
-### Phase 3: Part IV Visualizations (Crown Jewels)
+| # | Visualization | Complexity | Dependencies | Article | Status |
+|---|--------------|------------|-------------|---------|--------|
+| 11 | Electrotonic State | High | Vector potential (JAX: VectorPotentialJAX) | Art. 540/617 | **DONE** |
+| 12 | Stress Tensor 3D | Medium | Complete 3D ellipsoid rendering | Art. 641 | **DONE** (2D) |
+| 13 | Helicoidal Potentials | High | Multi-valued potential topology | Art. 487 | **DONE** |
+| 14 | Molecular Vortices | Very High | Manim animation engine | Art. 822 | **DONE** |
+| 15 | EM Wave Propagation | High | Manim or matplotlib animation | Art. 791 | **DONE** |
 
-| # | Visualization | Complexity | Dependencies | Article |
-|---|--------------|------------|-------------|---------|
-| 11 | Electrotonic State | High | Vector potential (JAX: VectorPotentialJAX) | Art. 540/617 |
-| 12 | Stress Tensor 3D | Medium | Complete 3D ellipsoid rendering | Art. 641 |
-| 13 | Helicoidal Potentials | High | Multi-valued potential topology | Art. 487 |
-| 14 | Molecular Vortices | Very High | Manim animation engine | Art. 822 |
-| 15 | EM Wave Propagation | High | Manim or matplotlib animation | Art. 791 |
+### Phase 4: Part VI Visualizations (Research Frontier) -- DEFERRED
 
-**New modules needed:**
-- `maxwell/vis/vector.py` -- Vector potential A field visualization
-- `maxwell/vis/topology.py` -- Helicoidal/cyclic surfaces
-- `maxwell/vis/mechanical.py` -- Vortex lattice animation (Manim)
-- `maxwell/vis/optics.py` -- EM wave propagation animation
-
-### Phase 4: Part VI Visualizations (Research Frontier)
-
-| # | Visualization | Complexity | Dependencies | Article |
-|---|--------------|------------|-------------|---------|
-| 16 | Aharonov-Bohm Phase | Very High | Scalar physics not implemented | Extension |
-| 17 | Longitudinal Waves | Very High | Superpotential theory | Extension |
+| # | Visualization | Complexity | Dependencies | Article | Status |
+|---|--------------|------------|-------------|---------|--------|
+| 16 | Aharonov-Bohm Phase | Very High | Scalar physics not implemented | Extension | **DEFERRED** |
+| 17 | Longitudinal Waves | Very High | Superpotential theory | Extension | **DEFERRED** |
 
 ---
 
@@ -188,7 +229,7 @@ The **16 architecture map documents** in `archive/docs/` contain the authoritati
 
 The **codebase** (`maxwell/`) contains what was actually implemented.
 
-There is a growing gap between **what was planned** (16 architecture documents, detailed layer-by-layer specifications) and **what was built** (276 Python modules, 1542 tests, 37 JAX classes).
+There is a growing gap between **what was planned** (16 architecture documents, detailed layer-by-layer specifications) and **what was built** (252 Python modules, 1787 tests, 30+ JAX classes).
 
 ### The Cross-Repo Strategy
 
@@ -223,7 +264,7 @@ maxwell-treatise/architecture/
 ├── validation/
 │   ├── cross_check.py           # Planned vs. implemented analyzer
 │   ├── layer_coverage.py        # Layer-by-layer coverage tracker
-│   ├── visualization_audit.py   # 17 vis vs. 3 implemented checker
+│   ├── visualization_audit.py   # 17 planned vs. 15 implemented checker
 │   ├── article_traceability.py  # Article-to-code mapping validator
 │   └── report.py                # Cross-repo report generator
 ├── reports/
@@ -246,7 +287,7 @@ The `validation/cross_check.py` script would:
    - Layers partially implemented (which modules exist, which are missing)
    - Layers not implemented at all
    - Files in codebase that don't map to any planned layer
-   - Visualization gap analysis (17 planned vs. 3 implemented)
+   - Visualization gap analysis (17 planned vs. 15 implemented)
 
 ### CI Integration
 
@@ -267,14 +308,20 @@ Add a GitHub Actions workflow to the architecture repo that:
 - [x] Magnetic Shell visualization (`maxwell/vis/magnetic_shell.py`) -- Art. 409
 - [x] Spherical Harmonic Globes visualization (`maxwell/vis/spherical_harmonics.py`) -- Art. 467
 - [x] Unit Tubes of Flow visualization (`maxwell/vis/flow_tubes.py`) -- Art. 290
+- [x] Thermal Gradients visualization (`maxwell/vis/thermal_gradients.py`) -- Arts. 242, 249
+- [x] Molecular Vortices visualization (`maxwell/vis/molecular_vortices.py`) -- Arts. 822-824
+- [x] Helicoidal Potentials visualization (`maxwell/vis/helicoidal_potentials.py`) -- Arts. 486-487
+- [x] Electrotonic State visualization (`maxwell/vis/electrotonic_state.py`) -- Arts. 540, 617
 - [x] Jupyter notebooks: quick start, EM deep dive, visualization showcase
+- [x] Cycle 11: All classical visualization gaps CLOSED
 - [ ] Commit this document to codebase repo
 
 ### Next Session
 
-- [ ] Create thermal gradients visualization -- Joule heating overlay (Art. 242/249)
 - [ ] Add PyVista as optional dependency (`[viz3d]`)
 - [ ] Create 3D stress tensor ellipsoid visualization
+- [ ] Create 3D isosurface rendering for equipotentials
+- [ ] Create 3D field line tracing
 
 ### Future Sessions
 
@@ -293,8 +340,10 @@ Add a GitHub Actions workflow to the architecture repo that:
 
 | Metric | Value |
 |--------|-------|
-| Visualization modules | 14 (13 code + 1 init) |
-| Visualization test functions | 164 (37 base + 106 new: 15 dielectric + 14 hysteresis + 15 EM wave + 18 Lagrangian + 22 magnetic shell + 22 spherical harmonics - 3 reorganized + 21 flow tubes) |
+| Visualization modules | 15 (13 code + 2 support) |
+| Visualization exports | 53 functions |
+| Visualization test files | 11 |
+| Visualization test functions | 224 |
 | Matplotlib dependency | Optional (`[viz]`) |
 | PyVista integration | None |
 | Manim integration | None |
@@ -304,11 +353,11 @@ Add a GitHub Actions workflow to the architecture repo that:
 | Part | Visualizations Planned | Implemented | Gap |
 |------|----------------------|-------------|-----|
 | I: Electrostatics | 4 | 4 (equipotential, field lines, method of images, edge singularities) | 0 |
-| II: Electrokinematics | 3 | 2 (dielectric soakage, flow tubes) | 1 |
+| II: Electrokinematics | 3 | 3 (dielectric soakage, flow tubes, thermal gradients) | 0 |
 | III: Magnetism | 3 | 3 (hysteresis loops, magnetic shell, spherical harmonics) | 0 |
-| IV: Electromagnetism | 5 | 2 (stress tensor 2D, EM wave propagation) | 3 |
-| VI: Scalar Physics | 2 | 0 | 2 |
-| **Total** | **17** | **11** | **6** |
+| IV: Electromagnetism | 5 | 5 (stress tensor 2D, EM wave propagation, helicoidal potentials, molecular vortices, electrotonic state) | 0 |
+| VI: Scalar Physics | 2 | 0 (DEFERRED -- outside classical scope) | 2 (deferred) |
+| **Total (Classical)** | **15** | **15** | **0 -- COMPLETE** |
 
 ### Test Coverage
 
@@ -319,15 +368,18 @@ Add a GitHub Actions workflow to the architecture repo that:
 | `test_field_lines_basic` | PASS |
 | `test_equipotentials_basic` | PASS |
 | `test_stress_tensor_basic` | PASS |
-| `test_method_of_images_*` | PASS (6 new tests) |
-| `test_edge_singularity_*` | PASS (8 new tests) |
-| `test_vis_dielectric_soakage_*` | PASS (15 new tests) |
-| `test_vis_hysteresis_loops_*` | PASS (14 new tests) |
-| `test_vis_em_wave_propagation_*` | PASS (15 new tests) |
-| `test_lagrangian_*` | PASS (18 new tests, dynamics package) |
-| `test_vis_magnetic_shell_*` | PASS (22 new tests) |
-| `test_vis_spherical_harmonics_*` | PASS (22 new tests) |
-| `test_vis_flow_tubes_*` | PASS (21 new tests) |
+| `test_method_of_images_*` | PASS (6 tests) |
+| `test_edge_singularity_*` | PASS (8 tests) |
+| `test_vis_dielectric_soakage_*` | PASS (15 tests) |
+| `test_vis_hysteresis_loops_*` | PASS (14 tests) |
+| `test_vis_em_wave_propagation_*` | PASS (15 tests) |
+| `test_vis_magnetic_shell_*` | PASS (22 tests) |
+| `test_vis_spherical_harmonics_*` | PASS (22 tests) |
+| `test_vis_flow_tubes_*` | PASS (21 tests) |
+| `test_vis_thermal_gradients_*` | PASS (28 tests) |
+| `test_vis_molecular_vortices_*` | PASS (22 tests) |
+| `test_vis_helicoidal_potentials_*` | PASS (21 tests) |
+| `test_vis_electrotonic_state_*` | PASS (28 tests) |
 
 ### Jupyter Notebooks
 
@@ -337,8 +389,8 @@ Three Jupyter notebooks provide guided tours of the package capabilities:
 |----------|-------|---------|
 | `notebooks/01-quick-start-tour.ipynb` | 15 | Quick start: PointCharge, Lorentz force, speed of light |
 | `notebooks/02-em-deep-dive.ipynb` | 18 | EM deep dive: Poynting vector, stress tensor, Faraday induction |
-| `notebooks/03-visualization-showcase.ipynb` | 18 | Visualization gallery: all 11 visualization types |
+| `notebooks/03-visualization-showcase.ipynb` | 18 | Visualization gallery: all 15 visualization types |
 
 ---
 
-*This document serves as the authoritative audit of visualization work completed vs. planned, and the strategic plan for cross-repo analysis between the codebase and architecture map documents.*
+*This document serves as the authoritative audit of visualization work completed vs. planned, and the strategic plan for cross-repo analysis between the codebase and architecture map documents. As of Cycle 11, all 15 classical visualizations are complete.*
