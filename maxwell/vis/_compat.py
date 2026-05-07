@@ -16,8 +16,6 @@ Usage:
 
 from __future__ import annotations
 
-from typing import Optional, Tuple
-
 # Attempt to import matplotlib
 try:
     import matplotlib
@@ -63,9 +61,9 @@ def get_default_colormap(name: str = "viridis") -> object:
 
 
 def create_figure(
-    figsize: Tuple[float, float] = (10.0, 8.0),
+    figsize: tuple[float, float] = (10.0, 8.0),
     dpi: int = 100,
-) -> Tuple[Figure, Axes]:
+) -> tuple[Figure, Axes]:
     """Create a new figure and axes with standard settings.
 
     Args:

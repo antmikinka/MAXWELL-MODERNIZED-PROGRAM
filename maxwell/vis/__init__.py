@@ -38,9 +38,18 @@ __all__ = [
 
 if HAS_MATPLOTLIB:
     from maxwell.vis._base import create_meshgrid, evaluate_on_grid
-    from maxwell.vis.field_lines import plot_field_lines_2d
-    from maxwell.vis.equipotential import plot_equipotentials_2d
-    from maxwell.vis.stress import plot_stress_tensor_2d
+    from maxwell.vis.field_lines import (
+        plot_field_lines_2d,
+        plot_dipole_field_lines,
+    )
+    from maxwell.vis.equipotential import (
+        plot_equipotentials_2d,
+        plot_dipole_equipotentials,
+    )
+    from maxwell.vis.stress import (
+        plot_stress_tensor_2d,
+        verify_stress_tensor_plot,
+    )
     from maxwell.vis.method_of_images import (
         calc_method_of_images,
         plot_method_of_images,
@@ -117,8 +126,11 @@ if HAS_MATPLOTLIB:
         "create_meshgrid",
         "evaluate_on_grid",
         "plot_field_lines_2d",
+        "plot_dipole_field_lines",
         "plot_equipotentials_2d",
+        "plot_dipole_equipotentials",
         "plot_stress_tensor_2d",
+        "verify_stress_tensor_plot",
         "calc_method_of_images",
         "plot_method_of_images",
         "calc_wedge_field",

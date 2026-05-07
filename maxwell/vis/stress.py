@@ -9,16 +9,23 @@ Part IV, Arts. 616-620 (stress in the dielectric medium).
 
 from __future__ import annotations
 
-from typing import Callable, Optional, Tuple
+from typing import Callable
 
-import numpy as np
-
+from maxwell.meta.citation import maxwell_cite
 from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.vis._base import create_meshgrid, format_axis_labels
 
+import numpy as np
 
+
+@maxwell_cite(
+    616, 617, 618, 619, 620,
+    part=4,
+    chapter="Electromagnetic Stress in the Dielectric",
+    description="Plot Maxwell stress tensor as principal stress ellipses on a 2D field.",
+)
 def plot_stress_tensor_2d(
-    field_func: Callable[[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]],
+    field_func: Callable[[np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray]],
     x_min: float = -5.0,
     x_max: float = 5.0,
     y_min: float = -5.0,
@@ -29,7 +36,7 @@ def plot_stress_tensor_2d(
     quiver_scale: float = 1.0,
     cmap: str = "seismic",
     title: str = "Maxwell Stress Tensor",
-    ax: Optional[Axes] = None,
+    ax: Axes | None = None,
 ) -> Figure:
     """Plot the Maxwell stress tensor as principal stress ellipses.
 
@@ -108,10 +115,16 @@ def plot_stress_tensor_2d(
     return fig
 
 
+@maxwell_cite(
+    616, 617, 618, 619, 620,
+    part=4,
+    chapter="Electromagnetic Stress in the Dielectric",
+    description="Verify stress tensor properties: symmetry, trace, and eigenvalue reality.",
+)
 def verify_stress_tensor_plot(
     stress_tensor_func=None,
-    E_field: Tuple[float, float, float] = (1.0, 0.0, 0.0),
-    B_field: Tuple[float, float, float] = (0.0, 1.0, 0.0),
+    E_field: tuple[float, float, float] = (1.0, 0.0, 0.0),
+    B_field: tuple[float, float, float] = (0.0, 1.0, 0.0),
 ) -> dict:
     """Verify stress tensor visualization properties.
 

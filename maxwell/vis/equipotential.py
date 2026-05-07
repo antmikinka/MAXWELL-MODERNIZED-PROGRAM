@@ -9,14 +9,21 @@ Part I, Arts. 16-19 (equipotential surfaces and lines of force).
 
 from __future__ import annotations
 
-from typing import Callable, Optional, Tuple
+from typing import Callable
 
-import numpy as np
-
+from maxwell.meta.citation import maxwell_cite
 from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.vis._base import create_meshgrid, format_axis_labels
 
+import numpy as np
 
+
+@maxwell_cite(
+    16, 17, 18, 19,
+    part=1,
+    chapter="On Equipotential Surfaces and Lines of Force",
+    description="Plot 2D equipotential contours for arbitrary potential functions.",
+)
 def plot_equipotentials_2d(
     potential_func: Callable[[np.ndarray, np.ndarray], np.ndarray],
     x_min: float = -5.0,
@@ -26,13 +33,13 @@ def plot_equipotentials_2d(
     nx: int = 200,
     ny: int = 200,
     n_levels: int = 20,
-    levels: Optional[np.ndarray] = None,
+    levels: np.ndarray | None = None,
     cmap: str = "RdBu_r",
     filled: bool = True,
-    charge_positions: Optional[list[Tuple[float, float]]] = None,
-    charge_signs: Optional[list[int]] = None,
+    charge_positions: list[tuple[float, float]] | None = None,
+    charge_signs: list[int] | None = None,
     title: str = "Equipotential Lines",
-    ax: Optional[Axes] = None,
+    ax: Axes | None = None,
 ) -> Figure:
     """Plot 2D equipotential contours.
 
@@ -97,6 +104,12 @@ def plot_equipotentials_2d(
     return fig
 
 
+@maxwell_cite(
+    16, 17, 18, 19,
+    part=1,
+    chapter="On Equipotential Surfaces and Lines of Force",
+    description="Plot equipotential lines for an electric dipole (convenience wrapper).",
+)
 def plot_dipole_equipotentials(
     charge_magnitude: float = 1.0,
     separation: float = 2.0,
@@ -116,7 +129,7 @@ def plot_dipole_equipotentials(
     """
     half_sep = separation / 2.0
 
-    def dipole_potential(x, y):
+    def dipole_potential(x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """Compute V from a dipole at (±separation/2, 0)."""
         eps = 1e-10
         dx_p = x - half_sep

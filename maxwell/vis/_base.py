@@ -6,11 +6,11 @@ between coordinate systems used across all visualization modules.
 
 from __future__ import annotations
 
-from typing import Callable, Tuple
+from typing import Callable
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib
+from maxwell.vis._compat import require_matplotlib, Axes
 
 
 def create_meshgrid(
@@ -20,7 +20,7 @@ def create_meshgrid(
     y_max: float,
     nx: int = 100,
     ny: int = 100,
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """Create a 2D evaluation meshgrid.
 
     Args:
@@ -67,7 +67,7 @@ def evaluate_on_grid(
 
 
 def format_axis_labels(
-    ax,
+    ax: Axes,
     xlabel: str = "x (cm)",
     ylabel: str = "y (cm)",
     title: str = "",

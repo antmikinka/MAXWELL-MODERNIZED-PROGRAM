@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added -- Cycle 12 (Consistency, Examples, Quality)
+- **@maxwell_cite decorators** added to `field_lines.py` (Arts. 52-61), `equipotential.py` (Arts. 16-19), `stress.py` (Arts. 616-620) -- 6 functions total for full citation traceability
+- **3 newly exported visualization functions**: `plot_dipole_field_lines`, `plot_dipole_equipotentials`, `verify_stress_tensor_plot` (previously internal, now public API)
+- **5 example scripts** in `examples/` directory demonstrating visualization workflows
+- **8 rendering validation tests** added to `test_vis.py` verifying figure generation and output
+- **Unified type annotations**: `Optional[X]` -> `X | None`, `Tuple` -> `tuple` across `field_lines.py`, `equipotential.py`, `stress.py`, `_base.py`, `_compat.py`
+
+### Changed -- Cycle 12
+- **Vis exports expanded** from 53 to 56 (+3: `plot_dipole_field_lines`, `plot_dipole_equipotentials`, `verify_stress_tensor_plot`)
+- **Pillow dependency** moved from `dev` to `viz` extra in `pyproject.toml` (required for rendering validation tests)
+- **Test count**: 1787 -> 1795 (+8 rendering validation tests)
+- **Type annotations** modernized to PEP 604 syntax across all visualization modules
+
+### Fixed -- Cycle 12
+- **Quality review**: Removed unused `Optional`/`Tuple` imports from `_compat.py` after type annotation modernization
+
+---
+
 ### Added -- Cycle 11 (Visualization Completion)
 - **Electrotonic State visualization** (`maxwell.vis.electrotonic_state`) -- `calc_electrotonic_straight_wire()`, `calc_electrotonic_transient()`, `calc_B_from_electrotonic()`, `plot_electrotonic_state_2d()`, `plot_A_and_B_fields()`, `plot_A_transient()`, `plot_electrotonic_3d_surface()` for visualizing Maxwell's vector potential A-field around current-carrying conductors, transient behavior, and curl relationship B = curl(A) (Arts. 540, 617). Completes the LAST classical visualization gap.
 - **Thermal Gradients visualization** (`maxwell.vis.thermal_gradients`) -- `calc_joule_heat_distribution()`, `calc_thermal_gradients()`, `calc_peltier_junction()`, `plot_thermal_gradients()`, `plot_joule_heat_distribution()`, `plot_thermoelectric_effects()` for Joule heating overlay and thermoelectric Peltier effects (Arts. 242, 249).
