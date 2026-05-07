@@ -2,10 +2,22 @@
 
 from __future__ import annotations
 
+import os
+import tempfile
+
 import numpy as np
 import pytest
 
 from maxwell.vis._compat import HAS_MATPLOTLIB, plt
+
+# Conditional Pillow import for rendering validation
+HAS_PILLOW = True
+try:
+    from PIL import Image
+except ImportError:
+    HAS_PILLOW = False
+
+render_skip = pytest.mark.skipif(not HAS_PILLOW, reason="Pillow not installed")
 
 # Skip all tests if matplotlib is not installed
 pytestmark = pytest.mark.skipif(
@@ -232,8 +244,11 @@ class TestVisIntegration:
             create_meshgrid,
             evaluate_on_grid,
             plot_field_lines_2d,
+            plot_dipole_field_lines,
             plot_equipotentials_2d,
+            plot_dipole_equipotentials,
             plot_stress_tensor_2d,
+            verify_stress_tensor_plot,
             calc_method_of_images,
             plot_method_of_images,
             calc_wedge_field,
@@ -244,8 +259,11 @@ class TestVisIntegration:
         assert callable(create_meshgrid)
         assert callable(evaluate_on_grid)
         assert callable(plot_field_lines_2d)
+        assert callable(plot_dipole_field_lines)
         assert callable(plot_equipotentials_2d)
+        assert callable(plot_dipole_equipotentials)
         assert callable(plot_stress_tensor_2d)
+        assert callable(verify_stress_tensor_plot)
         assert callable(calc_method_of_images)
         assert callable(plot_method_of_images)
         assert callable(calc_wedge_field)
@@ -460,3 +478,109 @@ class TestEdgeSingularities:
             E = calc_wedge_field(r, theta, alpha)
             assert E.shape == (10,)
             assert np.all(E >= 0)
+
+
+class TestRenderingValidation:
+    """Validate that visualization functions produce renderable PNG output."""
+
+    def _save_and_validate(self, fig, min_pixels=1000):
+        """Save figure to temp file and validate pixel count."""
+        tmp_path = None
+        try:
+            # On Windows we need delete=False and manual cleanup
+            f = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+            tmp_path = f.name
+            f.close()  # Release handle so savefig can write
+
+            fig.savefig(tmp_path, dpi=80, bbox_inches="tight")
+            assert os.path.exists(tmp_path), "PNG file was not created"
+            assert os.path.getsize(tmp_path) > 0, "PNG file is empty"
+
+            img = Image.open(tmp_path)
+            width, height = img.size
+            assert width * height >= min_pixels, (
+                f"Image too small: {width}x{height} = {width*height} pixels "
+                f"(minimum {min_pixels})"
+            )
+            img.close()
+        finally:
+            import matplotlib.pyplot as mplt
+            mplt.close(fig)
+            if tmp_path and os.path.exists(tmp_path):
+                try:
+                    os.unlink(tmp_path)
+                except PermissionError:
+                    pass  # Best-effort cleanup on Windows
+
+    @render_skip
+    def test_field_lines_rendering(self):
+        """plot_field_lines_2d produces a valid PNG."""
+        from maxwell.vis.field_lines import plot_field_lines_2d
+
+        def field(x, y):
+            return x, y
+
+        fig = plot_field_lines_2d(field, nx=20, ny=20)
+        self._save_and_validate(fig)
+
+    @render_skip
+    def test_dipole_field_lines_rendering(self):
+        """plot_dipole_field_lines produces a valid PNG."""
+        from maxwell.vis.field_lines import plot_dipole_field_lines
+
+        fig = plot_dipole_field_lines(nx=20, ny=20)
+        self._save_and_validate(fig)
+
+    @render_skip
+    def test_equipotentials_rendering(self):
+        """plot_equipotentials_2d produces a valid PNG."""
+        from maxwell.vis.equipotential import plot_equipotentials_2d
+
+        def potential(x, y):
+            return 1.0 / np.sqrt(x**2 + y**2 + 0.01)
+
+        fig = plot_equipotentials_2d(potential, nx=50, ny=50)
+        self._save_and_validate(fig)
+
+    @render_skip
+    def test_dipole_equipotentials_rendering(self):
+        """plot_dipole_equipotentials produces a valid PNG."""
+        from maxwell.vis.equipotential import plot_dipole_equipotentials
+
+        fig = plot_dipole_equipotentials(nx=50, ny=50)
+        self._save_and_validate(fig)
+
+    @render_skip
+    def test_stress_tensor_rendering(self):
+        """plot_stress_tensor_2d produces a valid PNG."""
+        from maxwell.vis.stress import plot_stress_tensor_2d
+
+        def field(x, y):
+            return np.ones_like(x) * 1.0, np.zeros_like(x)
+
+        fig = plot_stress_tensor_2d(field, nx=15, ny=15)
+        self._save_and_validate(fig)
+
+    @render_skip
+    def test_method_of_images_rendering(self):
+        """plot_method_of_images produces a valid PNG."""
+        from maxwell.vis import plot_method_of_images
+
+        fig, ax = plot_method_of_images(resolution=50)
+        self._save_and_validate(fig)
+
+    @render_skip
+    def test_edge_singularity_rendering(self):
+        """plot_edge_singularity produces a valid PNG."""
+        from maxwell.vis import plot_edge_singularity
+
+        fig, ax = plot_edge_singularity(alpha=np.pi / 2, resolution=50)
+        self._save_and_validate(fig)
+
+    @render_skip
+    def test_singularity_comparison_rendering(self):
+        """plot_singularity_comparison produces a valid PNG."""
+        from maxwell.vis import plot_singularity_comparison
+
+        fig, ax = plot_singularity_comparison(resolution=50)
+        self._save_and_validate(fig)

@@ -1,8 +1,8 @@
-# Visualization Master Document -- Cycle 11
+# Visualization Master Document -- Cycle 12
 
 > Comprehensive tracking document for all visualization modules in Maxwell Modernized.
 
-**Last Updated:** 2026-05-06 (Cycle 11)
+**Last Updated:** 2026-05-06 (Cycle 12)
 **Status:** All 15 classical visualizations COMPLETE (100% of classical scope)
 
 ---
@@ -12,14 +12,14 @@
 | Metric | Value |
 |--------|-------|
 | **Vis modules** | 15 (13 code + 2 support) |
-| **Vis exports** | 53 functions |
+| **Vis exports** | 56 functions |
 | **Vis test files** | 11 |
-| **Vis tests** | 224 |
-| **Total tests** | 1787 passing (100%) |
+| **Vis tests** | 232 |
+| **Total tests** | 1795 passing (100%) |
 | **Classical visualizations** | 15/15 complete |
 | **Deferred visualizations** | 2 (outside classical scope) |
 
-The visualization pipeline is now complete for all classical scope. Every Part of Maxwell's Treatise has corresponding visualizations, with the electrotonic state (Arts. 540, 617) closing the final gap in Cycle 11.
+The visualization pipeline is now complete for all classical scope. Every Part of Maxwell's Treatise has corresponding visualizations, with the electrotonic state (Arts. 540, 617) closing the final gap in Cycle 11. Cycle 12 focused on consistency improvements: added @maxwell_cite decorators to base visualization modules, exported 3 previously internal functions, unified type annotations to PEP 604 syntax, created 5 example scripts, and added 8 rendering validation tests.
 
 ---
 
@@ -32,7 +32,7 @@ The visualization pipeline is now complete for all classical scope. Every Part o
 - [x] **Method of Images** (`method_of_images.py`) -- `calc_method_of_images()`, `plot_method_of_images()` (Art. 155)
 - [x] **Edge Singularities** (`edge_singularities.py`) -- `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, `plot_singularity_comparison()` (Art. 191)
 
-**Part I: 4 modules, 12 exports**
+**Part I: 4 modules, 14 exports**
 
 ### Part II: Electrokinematics -- COMPLETE
 
@@ -58,7 +58,7 @@ The visualization pipeline is now complete for all classical scope. Every Part o
 - [x] **Molecular Vortices** (`molecular_vortices.py`) -- `calc_vortex_lattice()`, `calc_magnetic_field_from_vortices()`, `plot_molecular_vortices()`, `plot_vortex_3d_surface()` (Arts. 822-824)
 - [x] **Electrotonic State** (`electrotonic_state.py`) -- `calc_electrotonic_straight_wire()`, `calc_electrotonic_transient()`, `calc_B_from_electrotonic()`, `plot_electrotonic_state_2d()`, `plot_A_and_B_fields()`, `plot_A_transient()`, `plot_electrotonic_3d_surface()` (Arts. 540, 617)
 
-**Part IV: 5 modules, 21 exports**
+**Part IV: 5 modules, 22 exports**
 
 ### Part V: Material Science -- COVERED
 
@@ -73,7 +73,7 @@ Material science visualizations are covered by existing modules:
 
 ---
 
-## Function Inventory (All 53 Exports)
+## Function Inventory (All 56 Exports)
 
 ### Support Modules (2 exports)
 | Module | Function | Description |
@@ -82,11 +82,13 @@ Material science visualizations are covered by existing modules:
 | `_base` | `create_meshgrid` | Create 2D mesh grid |
 | `_base` | `evaluate_on_grid` | Evaluate function on grid |
 
-### Part I: Electrostatics (12 exports)
+### Part I: Electrostatics (14 exports)
 | Module | Function | Description |
 |--------|----------|-------------|
 | `field_lines` | `plot_field_lines_2d` | 2D electric/magnetic field lines |
+| `field_lines` | `plot_dipole_field_lines` | Dipole-specific field line plot |
 | `equipotential` | `plot_equipotentials_2d` | 2D equipotential contours |
+| `equipotential` | `plot_dipole_equipotentials` | Dipole-specific equipotential plot |
 | `method_of_images` | `calc_method_of_images` | Image charge computation |
 | `method_of_images` | `plot_method_of_images` | Image charge visualization |
 | `edge_singularities` | `calc_wedge_field` | Wedge field computation |
@@ -125,10 +127,11 @@ Material science visualizations are covered by existing modules:
 | `spherical_harmonics` | `plot_harmonic_modes` | Mode decomposition plot |
 | `spherical_harmonics` | `plot_harmonic_contour` | 2D contour map |
 
-### Part IV: Electromagnetism (21 exports)
+### Part IV: Electromagnetism (22 exports)
 | Module | Function | Description |
 |--------|----------|-------------|
 | `stress` | `plot_stress_tensor_2d` | 2D stress tensor plot |
+| `stress` | `verify_stress_tensor_plot` | Stress tensor visualization validation |
 | `em_wave_propagation` | `calc_em_wave` | EM wave computation |
 | `em_wave_propagation` | `plot_em_wave_propagation` | EM wave visualization |
 | `em_wave_propagation` | `plot_wave_snapshot_3d` | 3D wave snapshot |
@@ -170,7 +173,7 @@ Material science visualizations are covered by existing modules:
 | `helicoidal_potentials` | `test_vis_helicoidal_potentials` | 21 | PASS |
 | `electrotonic_state` | `test_vis_electrotonic_state` | 28 | PASS |
 
-**Total vis tests:** 224 across 11 test files (plus base vis import tests)
+**Total vis tests:** 232 across 11 test files (plus base vis import tests and 8 rendering validation tests)
 
 ---
 
@@ -225,19 +228,20 @@ Material science visualizations are covered by existing modules:
 | Cycle 9 | 2026-05-06 | a3e9039 | Method of Images refinements, Edge Singularities refinements |
 | Cycle 10 | 2026-05-06 | -- | Thermal Gradients, Molecular Vortices, Helicoidal Potentials |
 | Cycle 11 | 2026-05-06 | -- | Electrotonic State (final classical gap closed) |
+| Cycle 12 | 2026-05-06 | -- | Citation decorators, 3 new exports, type annotations, examples, rendering tests |
 
 ---
 
 ## Metrics Evolution
 
-| Metric | Cycle 1 | Cycle 6 | Cycle 7 | Cycle 8 | Cycle 10 | Cycle 11 |
-|--------|---------|---------|---------|---------|----------|----------|
-| Vis modules | 3 | 5 | 8 | 11 | 14 | 15 |
-| Vis exports | 5 | 12 | 20 | 32 | 46 | 53 |
-| Vis tests | 23 | 37 | 66 | 142 | 196 | 224 |
-| Total tests | 548 | 548 | 610 | 1683 | 1683 | 1787 |
-| Classical % | 20% | 33% | 53% | 73% | 93% | 100% |
+| Metric | Cycle 1 | Cycle 6 | Cycle 7 | Cycle 8 | Cycle 10 | Cycle 11 | Cycle 12 |
+|--------|---------|---------|---------|---------|----------|----------|----------|
+| Vis modules | 3 | 5 | 8 | 11 | 14 | 15 | 15 |
+| Vis exports | 5 | 12 | 20 | 32 | 46 | 53 | 56 |
+| Vis tests | 23 | 37 | 66 | 142 | 196 | 224 | 232 |
+| Total tests | 548 | 548 | 610 | 1683 | 1683 | 1787 | 1795 |
+| Classical % | 20% | 33% | 53% | 73% | 93% | 100% | 100% |
 
 ---
 
-*Generated by Claude Code -- Technical Writer Agent, Cycle 11*
+*Generated by Claude Code -- Technical Writer Agent, Cycle 12*

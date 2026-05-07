@@ -44,7 +44,7 @@
 
 | Module | Content |
 |--------|---------|
-| `__init__.py` | Package exports with graceful degradation (53 exports) |
+| `__init__.py` | Package exports with graceful degradation (56 exports) |
 | `_base.py` | Mesh grid and evaluation utilities |
 | `_compat.py` | Matplotlib import with graceful fallback |
 | `field_lines.py` | 2D electric/magnetic field line plotting |
@@ -314,6 +314,7 @@ Add a GitHub Actions workflow to the architecture repo that:
 - [x] Electrotonic State visualization (`maxwell/vis/electrotonic_state.py`) -- Arts. 540, 617
 - [x] Jupyter notebooks: quick start, EM deep dive, visualization showcase
 - [x] Cycle 11: All classical visualization gaps CLOSED
+- [x] Cycle 12: Citation decorators, new exports, type annotations, examples, rendering tests
 - [ ] Commit this document to codebase repo
 
 ### Next Session
@@ -341,9 +342,10 @@ Add a GitHub Actions workflow to the architecture repo that:
 | Metric | Value |
 |--------|-------|
 | Visualization modules | 15 (13 code + 2 support) |
-| Visualization exports | 53 functions |
+| Visualization exports | 56 functions |
 | Visualization test files | 11 |
-| Visualization test functions | 224 |
+| Visualization test functions | 232 (224 module tests + 8 rendering validation) |
+| Example scripts | 5 (in `examples/` directory) |
 | Matplotlib dependency | Optional (`[viz]`) |
 | PyVista integration | None |
 | Manim integration | None |
@@ -393,4 +395,33 @@ Three Jupyter notebooks provide guided tours of the package capabilities:
 
 ---
 
-*This document serves as the authoritative audit of visualization work completed vs. planned, and the strategic plan for cross-repo analysis between the codebase and architecture map documents. As of Cycle 11, all 15 classical visualizations are complete.*
+### Cycle 12 Quality Improvements
+
+**Citation Decorators:**
+- `field_lines.py` -- Arts. 52-61 (2 functions)
+- `equipotential.py` -- Arts. 16-19 (2 functions)
+- `stress.py` -- Arts. 616-620 (2 functions)
+
+**New Exports (previously internal):**
+- `plot_dipole_field_lines` (field_lines.py)
+- `plot_dipole_equipotentials` (equipotential.py)
+- `verify_stress_tensor_plot` (stress.py)
+
+**Type Annotation Modernization:**
+- `Optional[X]` -> `X | None` across all vis modules
+- `Tuple[X, ...]` -> `tuple[X, ...]` across all vis modules
+- Files updated: `field_lines.py`, `equipotential.py`, `stress.py`, `_base.py`, `_compat.py`
+
+**Examples Directory (`examples/`):**
+- 5 example scripts demonstrating visualization workflows
+- `examples/output/` added to `.gitignore` for generated figures
+- Scripts serve as executable documentation for users
+
+**Rendering Validation:**
+- 8 rendering validation tests added to `test_vis.py`
+- Tests verify figure generation, output quality, and plot structure
+- Pillow dependency moved from `dev` to `viz` extra in `pyproject.toml`
+
+---
+
+*This document serves as the authoritative audit of visualization work completed vs. planned, and the strategic plan for cross-repo analysis between the codebase and architecture map documents. As of Cycle 12, all 15 classical visualizations are complete, with 56 exports, 232 vis tests, and 5 example scripts.

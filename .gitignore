@@ -39,3 +39,6 @@ chroma_data/
 # PyPI build artifacts
 *.whl
 *.tar.gz
+
+# Example output (generated PNGs)
+examples/output/

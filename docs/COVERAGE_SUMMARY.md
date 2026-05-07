@@ -1,10 +1,10 @@
 # Maxwell Modernized - Coverage Summary
 
-**Generated:** 2026-04-12  
+**Generated:** 2026-05-06 (Cycle 12)  
 **Total Articles in Treatise:** 866  
 **Articles Covered:** 866  
 **Coverage:** 100%  
-**Test Status:** 1787/1787 tests passing (100%) -- 629 core + 847 JAX + 66 SymPy + 224 visualization + 21 dynamics  
+**Test Status:** 1795/1795 tests passing (100%) -- 629 core + 847 JAX + 66 SymPy + 232 visualization + 21 dynamics  
 **Math Validation:** 50/50 checks passing (100%)
 
 ---
@@ -52,7 +52,7 @@ The Maxwell Modernized project has successfully modernized **100%** of Maxwell's
 
 ### Coverage Status
 
-All 126 articles in Part I are fully covered with implementations and tests. All 4 Part I visualizations are implemented (field lines, equipotentials, method of images, edge singularities). Part II now has 3 visualizations (dielectric soakage, flow tubes, thermal gradients). Part III now has 3 visualizations (hysteresis loops, magnetic shell, spherical harmonics). Part IV now has 5 visualizations (stress tensor, EM wave propagation, helicoidal potentials, molecular vortices, electrotonic state). All classical visualization gaps are now closed (15/15 classical visualizations complete).
+All 126 articles in Part I are fully covered with implementations and tests. All 4 Part I visualizations are implemented (field lines, equipotentials, method of images, edge singularities). Part II now has 3 visualizations (dielectric soakage, flow tubes, thermal gradients). Part III now has 3 visualizations (hysteresis loops, magnetic shell, spherical harmonics). Part IV now has 5 visualizations (stress tensor, EM wave propagation, helicoidal potentials, molecular vortices, electrotonic state). All classical visualization gaps are now closed (15/15 classical visualizations complete). Cycle 12 added citation decorators to base visualization modules, exported 3 additional functions, unified type annotations, added 5 example scripts, and 8 rendering validation tests (1795 total tests, 56 vis exports).
 
 ---
 
@@ -271,16 +271,17 @@ python -m maxwell.meta.citation --article 528
 
 ## Coverage Milestones
 
-### Final Status (2026-04-12)
+### Final Status (2026-05-06)
 
 | Metric | Value | Status |
 |--------|-------|--------|
 | Article Coverage | 866/866 | 100% Complete |
-| Test Coverage | 1787/1787 | 100% Passing |
+| Test Coverage | 1795/1795 | 100% Passing |
 | Math Validation | 50/50 | 100% Passing |
 | Module Count | 252 | Complete |
 | Function Count | 1,239 | Complete |
 | Class Count | 244 | Complete |
+| Vis Exports | 56 | Complete |
 
 ### Version History
 
@@ -349,10 +350,10 @@ python -m maxwell.meta.citation --article 528
 | solvers | 2 | 12 | 4 | 5 |
 | theories | 1 | 8 | 1 | 3 |
 | verification | 3 | 0 | 6 | 0 |
-| vis | 15 | 53 | 0 | -- |
+| vis | 15 | 56 | 0 | -- |
 | notebooks | 3 | -- | -- | -- |
 | vortex_engine | 5 | 9 | 3 | 10 |
-| **TOTAL** | **252** | **1,239** | **245** | **866** |
+| **TOTAL** | **252** | **1,242** | **245** | **866** |
 
 ---
 

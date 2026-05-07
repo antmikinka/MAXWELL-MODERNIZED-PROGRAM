@@ -9,14 +9,21 @@ Part I (electrostatics) and Part IV (electromagnetism).
 
 from __future__ import annotations
 
-from typing import Callable, Optional, Tuple
+from typing import Callable
 
-import numpy as np
-
+from maxwell.meta.citation import maxwell_cite
 from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.vis._base import create_meshgrid, format_axis_labels
 
+import numpy as np
 
+
+@maxwell_cite(
+    52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
+    part=1,
+    chapter="On the Lines of Electric Force",
+    description="Plot 2D electric field lines using streamplot for arbitrary charge configurations.",
+)
 def plot_field_lines_2d(
     field_func: Callable[[np.ndarray, np.ndarray], np.ndarray],
     x_min: float = -5.0,
@@ -26,12 +33,12 @@ def plot_field_lines_2d(
     nx: int = 50,
     ny: int = 50,
     density: float = 1.5,
-    linewidth: Optional[np.ndarray] = None,
+    linewidth: np.ndarray | None = None,
     cmap: str = "autumn",
-    charge_positions: Optional[list[Tuple[float, float]]] = None,
-    charge_signs: Optional[list[int]] = None,
+    charge_positions: list[tuple[float, float]] | None = None,
+    charge_signs: list[int] | None = None,
     title: str = "Electric Field Lines",
-    ax: Optional[Axes] = None,
+    ax: Axes | None = None,
 ) -> Figure:
     """Plot 2D electric field lines using streamplot.
 
@@ -105,6 +112,12 @@ def plot_field_lines_2d(
     return fig
 
 
+@maxwell_cite(
+    52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
+    part=1,
+    chapter="On the Lines of Electric Force",
+    description="Plot field lines for an electric dipole (convenience wrapper).",
+)
 def plot_dipole_field_lines(
     charge_magnitude: float = 1.0,
     separation: float = 2.0,
@@ -125,7 +138,7 @@ def plot_dipole_field_lines(
     """
     half_sep = separation / 2.0
 
-    def dipole_field(x, y):
+    def dipole_field(x: np.ndarray, y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Compute E field from a dipole at (±separation/2, 0)."""
         eps = 1e-10  # Avoid singularity at charge positions
 
