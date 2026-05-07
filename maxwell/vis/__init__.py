@@ -25,6 +25,7 @@ Submodules:
     thermal_gradients     -- Joule heating and thermoelectric effects (Arts. 242, 249)
     molecular_vortices    -- Molecular vortex lattice (Arts. 822-824)
     helicoidal_potentials -- Helicoidal potential surfaces (Arts. 486-487)
+    electrotonic_state    -- Electrotonic state / vector potential (Arts. 540, 617)
 """
 
 from __future__ import annotations
@@ -102,6 +103,15 @@ if HAS_MATPLOTLIB:
         plot_loop_potential_3d,
         plot_loop_field_lines,
     )
+    from maxwell.vis.electrotonic_state import (
+        calc_electrotonic_straight_wire,
+        calc_electrotonic_transient,
+        calc_B_from_electrotonic,
+        plot_electrotonic_state_2d,
+        plot_A_and_B_fields,
+        plot_A_transient,
+        plot_electrotonic_3d_surface,
+    )
 
     __all__ += [
         "create_meshgrid",
@@ -149,4 +159,11 @@ if HAS_MATPLOTLIB:
         "plot_helicoidal_potentials",
         "plot_loop_potential_3d",
         "plot_loop_field_lines",
+        "calc_electrotonic_straight_wire",
+        "calc_electrotonic_transient",
+        "calc_B_from_electrotonic",
+        "plot_electrotonic_state_2d",
+        "plot_A_and_B_fields",
+        "plot_A_transient",
+        "plot_electrotonic_3d_surface",
     ]
