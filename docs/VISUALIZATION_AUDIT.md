@@ -3,6 +3,8 @@
 > **Comprehensive audit of all 17 planned visualizations vs. 15 implemented (100% classical scope complete), plus plan for cross-analyzing the codebase against the 16 architecture map documents in a separate GitHub repository.**
 
 **Generated:** 2026-05-06
+**Updated:** 2026-05-07 (v1.0.0 Release)
+**Version:** 1.0.0 (Beta)
 **Source Document:** `Maxwell's Treatise_ The Visualization Strategy.md`
 **Architecture Maps:** 16 documents in `archive/docs/`
 
@@ -424,4 +426,4 @@ Three Jupyter notebooks provide guided tours of the package capabilities:
 
 ---
 
-*This document serves as the authoritative audit of visualization work completed vs. planned, and the strategic plan for cross-repo analysis between the codebase and architecture map documents. As of Cycle 12, all 15 classical visualizations are complete, with 56 exports, 232 vis tests, and 5 example scripts.
+*This document serves as the authoritative audit of visualization work completed vs. planned, and the strategic plan for cross-repo analysis between the codebase and architecture map documents. As of v1.0.0, all 15 classical visualizations are complete, with 56 exports, 232 vis tests, and 5 example scripts.*
