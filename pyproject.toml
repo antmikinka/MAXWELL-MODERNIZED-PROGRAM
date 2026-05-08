@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "maxwell"
-version = "0.1.0"
+version = "1.0.0"
 description = "A computational implementation of Maxwell's 1873 Treatise on Electricity and Magnetism — all 866 articles, CGS-EMU units, citation-traceable."
 readme = "README.md"
 license = "MIT"
@@ -29,7 +29,7 @@ keywords = [
     "maxwell-treatise",
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Education",
     "Operating System :: OS Independent",
