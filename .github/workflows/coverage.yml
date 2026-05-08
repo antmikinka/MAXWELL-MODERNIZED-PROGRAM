@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,accel,symbolic]"
+          pip install -e ".[dev,accel,viz,symbolic]"
           pip install pytest-cov
 
       - name: Run tests with coverage

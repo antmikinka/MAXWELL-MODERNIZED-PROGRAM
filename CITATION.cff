@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "Maxwell Modernized"
-version: 0.1.0
-date-released: 2026-04-25
+version: 1.0.0
+date-released: 2026-05-07
 url: "https://github.com/maxwell-treatise/modernized-program"
 repository-code: "https://github.com/maxwell-treatise/modernized-program"
 license: MIT

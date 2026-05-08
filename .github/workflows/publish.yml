@@ -81,7 +81,7 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
         run: |
-          twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+          twine upload --repository testpypi dist/*
 
   smoke-test-testpypi:
     needs: publish-testpypi

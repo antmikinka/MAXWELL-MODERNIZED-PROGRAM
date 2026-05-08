@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-The Maxwell Modernized project has successfully modernized **100%** of Maxwell's Treatise on Electricity and Magnetism. The codebase contains **241 Python modules** with **1,174 functions** and **244 classes**, all traceable to Maxwell's original articles via the `@maxwell_cite` decorator system.
+The Maxwell Modernized project has successfully modernized **100%** of Maxwell's Treatise on Electricity and Magnetism. The codebase contains **290 Python modules** with **2,904 functions** and **290 classes**, all traceable to Maxwell's original articles via the `@maxwell_cite` decorator system.
 
 ### Coverage by Part
 
@@ -278,9 +278,9 @@ python -m maxwell.meta.citation --article 528
 | Article Coverage | 866/866 | 100% Complete |
 | Test Coverage | 1795/1795 | 100% Passing |
 | Math Validation | 50/50 | 100% Passing |
-| Module Count | 252 | Complete |
-| Function Count | 1,239 | Complete |
-| Class Count | 244 | Complete |
+| Module Count | 290 | Complete |
+| Function Count | 2,904 | Complete |
+| Class Count | 290 | Complete |
 | Vis Exports | 56 | Complete |
 
 ### Version History
@@ -353,7 +353,7 @@ python -m maxwell.meta.citation --article 528
 | vis | 15 | 56 | 0 | -- |
 | notebooks | 3 | -- | -- | -- |
 | vortex_engine | 5 | 9 | 3 | 10 |
-| **TOTAL** | **252** | **1,242** | **245** | **866** |
+| **TOTAL** | **290** | **2,904** | **290** | **866** |
 
 ---
 
