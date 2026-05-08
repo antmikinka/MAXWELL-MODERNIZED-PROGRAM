@@ -7,21 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added -- Cycle 12 (Consistency, Examples, Quality)
-- **@maxwell_cite decorators** added to `field_lines.py` (Arts. 52-61), `equipotential.py` (Arts. 16-19), `stress.py` (Arts. 616-620) -- 6 functions total for full citation traceability
-- **3 newly exported visualization functions**: `plot_dipole_field_lines`, `plot_dipole_equipotentials`, `verify_stress_tensor_plot` (previously internal, now public API)
+## [1.0.0] - 2026-05-07
+
+### Major Milestone -- First Stable Release
+
+First production-ready release of the complete computational implementation of Maxwell's 1873 Treatise on Electricity and Magnetism.
+
+### Added
+- **Complete coverage of all 866 articles** of Maxwell's 1873 Treatise across 4 Parts (electrostatics, electrokinematics, magnetism, electromagnetism)
+- **15 visualization modules** with 56 exported functions -- 100% of classical visualization scope complete (field lines, equipotentials, method of images, edge singularities, dielectric soakage, flow tubes, thermal gradients, magnetic shell, spherical harmonics, hysteresis loops, electrotonic state, stress tensor, helicoidal potentials, molecular vortices, EM wave propagation)
+- **JAX acceleration** (GPU/TPU) -- 20+ JAX adapters enabling JIT compilation and automatic differentiation for all four Parts of the Treatise
+- **SymPy verification layer** -- 13 symbolic verifiers proving div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem, Lorentz force, stress tensor properties, Ampere's law
+- **1795 tests passing** (100% pass rate) -- comprehensive coverage across core physics, JAX adapters, SymPy verifiers, visualization modules, and rendering validation
+- **CGS-EMU unit system** throughout with ESU/SI conversion utilities
+- **Citation traceability** via `@maxwell_cite` decorator linking every function to source articles
+- **Lagrangian dynamics kernel** with JAX auto-diff force derivation from energy
+- **Spherical harmonics infrastructure** (Legendre polynomials, associated Legendre functions, Y_lm, coefficient expansion)
+- **Elliptic integral computation** (complete and incomplete, K, E, Pi)
 - **5 example scripts** in `examples/` directory demonstrating visualization workflows
-- **8 rendering validation tests** added to `test_vis.py` verifying figure generation and output
-- **Unified type annotations**: `Optional[X]` -> `X | None`, `Tuple` -> `tuple` across `field_lines.py`, `equipotential.py`, `stress.py`, `_base.py`, `_compat.py`
+- **3 Jupyter notebooks** providing guided tours (quick start, EM deep dive, visualization showcase)
+- **CODE_OF_CONDUCT.md, SECURITY.md, GitHub issue/PR templates**
+- **CITATION.cff** for academic referencing
 
-### Changed -- Cycle 12
-- **Vis exports expanded** from 53 to 56 (+3: `plot_dipole_field_lines`, `plot_dipole_equipotentials`, `verify_stress_tensor_plot`)
-- **Pillow dependency** moved from `dev` to `viz` extra in `pyproject.toml` (required for rendering validation tests)
-- **Test count**: 1787 -> 1795 (+8 rendering validation tests)
-- **Type annotations** modernized to PEP 604 syntax across all visualization modules
+### Sprint 1 Fixes
+- PEP 639 license classifier handling in `pyproject.toml`
+- CI workflows updated to run full test suite with `.[dev,accel]` dependencies
+- Deprecation warnings resolved across test suite
+- `jax_tree` decorator converted to callable class supporting `static_fields` parameter
+- Graceful matplotlib degradation when absent
 
-### Fixed -- Cycle 12
-- **Quality review**: Removed unused `Optional`/`Tuple` imports from `_compat.py` after type annotation modernization
+### Sprint 2 Fixes
+- Dead code removal across visualization modules during quality review
+- Type annotation modernization to PEP 604 syntax (`Optional[X]` -> `X | None`, `Tuple` -> `tuple`)
+- Quality review of unused imports in `_compat.py` and visualization modules
+- `@maxwell_cite` decorators added to base visualization modules (field_lines, equipotential, stress)
+- 3 previously internal functions exported to public API (`plot_dipole_field_lines`, `plot_dipole_equipotentials`, `verify_stress_tensor_plot`)
+- Pillow dependency correctly categorized in `pyproject.toml` extras
+- All CI workflows updated to run all 1795 tests
 
 ---
 
@@ -48,8 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quality review: dead code removed from new visualization modules during Cycle 11 review
 
 ---
-
-### Previous Unreleased Items (Pre-Cycle 11)
 
 ### Added
 - **Unit Tubes of Flow visualization** (`maxwell.vis.flow_tubes`) -- `calc_unit_tubes()`, `plot_unit_tubes_of_flow()`, `plot_unit_tubes_3d()` for 3D current density field visualization with streamlines/quiver arrows representing Maxwell's unit tubes of flow theory (Art. 290)
