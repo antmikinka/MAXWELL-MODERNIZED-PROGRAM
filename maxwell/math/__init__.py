@@ -12,6 +12,22 @@ Coverage:
     - Conjugate functions (Arts. 182-206): 2D electrostatics
 """
 
+from maxwell.math.calculus_calculator import (
+    CalculusCalculator,
+    line_integral_circle,
+    line_integral_polygonal,
+    line_integral_scalar,
+    line_integral_vector,
+    surface_integral_scalar,
+    surface_integral_sphere,
+    surface_integral_vector,
+    verify_divergence_theorem,
+    verify_greens_theorem,
+    verify_stokes_theorem,
+    volume_integral_scalar,
+    volume_integral_spherical,
+    volume_integral_vector,
+)
 from maxwell.math.elliptic_integrals import (
     EllipticIntegral,
     analyze_elliptic_integrals,
@@ -75,4 +91,24 @@ __all__ = [
     "calc_complete_elliptic_integral_second_kind",
     "verify_elliptic_integrals",
     "analyze_elliptic_integrals",
+    # Calculus Calculator (unified interface)
+    # Volume integrals
+    "volume_integral_scalar",
+    "volume_integral_vector",
+    "volume_integral_spherical",
+    # Surface integrals
+    "surface_integral_vector",
+    "surface_integral_scalar",
+    "surface_integral_sphere",
+    # Line integrals
+    "line_integral_vector",
+    "line_integral_scalar",
+    "line_integral_circle",
+    "line_integral_polygonal",
+    # Theorem verifications
+    "verify_divergence_theorem",
+    "verify_stokes_theorem",
+    "verify_greens_theorem",
+    # Calculator class
+    "CalculusCalculator",
 ]
