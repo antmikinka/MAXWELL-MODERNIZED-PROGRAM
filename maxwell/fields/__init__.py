@@ -13,54 +13,50 @@ Category: A (maxwell_original) — Maxwell's magnetic field theory.
 
 from __future__ import annotations
 
-from maxwell.fields.force import (
-    MagneticForce,
-    magnetic_force_from_potential,
-    cylindric_cavity_force,
-    general_magnet_force,
-    elongated_cylinder_force,
-    compare_cavity_fields,
-    force_on_magnetic_pole,
-)
-
-from maxwell.fields.induction import (
-    MagneticInduction,
-    calc_magnetic_induction,
-    thin_disk_induction,
-    compare_H_and_B_measurements,
-    magnetic_flux,
-)
-
 from maxwell.fields.constitutive import (
-    MaterialType,
     MagneticConstitutiveRelation,
-    calc_constitutive_relation,
+    MaterialType,
     calc_B_linear,
+    calc_constitutive_relation,
     calc_magnetization,
-    extract_magnetization,
     calc_susceptibility,
+    extract_magnetization,
     permeability_cgs_to_si,
     permeability_si_to_cgs,
     typical_susceptibilities,
 )
-
-from maxwell.fields.solenoidal import (
-    MagneticInductionTube,
-    verify_solenoidal,
-    verify_zero_net_flux,
-    trace_flux_tube,
-    magnetic_flux_through_surface,
-    prove_no_magnetic_monopoles,
-)
-
 from maxwell.fields.decomposition import (
-    LamellarDistribution,
     ComplexLamellarDistribution,
+    LamellarDistribution,
+    helmholtz_decomposition,
+    is_lamellar_magnetization,
     lamellar_potential,
     lamellar_vector_potential,
-    helmholtz_decomposition,
     relate_scalar_vector_potential,
-    is_lamellar_magnetization,
+)
+from maxwell.fields.force import (
+    MagneticForce,
+    compare_cavity_fields,
+    cylindric_cavity_force,
+    elongated_cylinder_force,
+    force_on_magnetic_pole,
+    general_magnet_force,
+    magnetic_force_from_potential,
+)
+from maxwell.fields.induction import (
+    MagneticInduction,
+    calc_magnetic_induction,
+    compare_H_and_B_measurements,
+    magnetic_flux,
+    thin_disk_induction,
+)
+from maxwell.fields.solenoidal import (
+    MagneticInductionTube,
+    magnetic_flux_through_surface,
+    prove_no_magnetic_monopoles,
+    trace_flux_tube,
+    verify_solenoidal,
+    verify_zero_net_flux,
 )
 
 __all__ = [

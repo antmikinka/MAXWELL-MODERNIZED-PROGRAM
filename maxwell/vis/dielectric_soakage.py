@@ -11,8 +11,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -114,8 +114,15 @@ def plot_dielectric_soakage(
     for i, (taui, ai) in enumerate(zip(tau, A)):
         I_component = ai * np.exp(-t / taui)
         color = colors[i % len(colors)]
-        ax.plot(t, I_component, "--", color=color, linewidth=1.5, alpha=0.6,
-                label=f"tau={taui:.1f}s (A={ai:.2f})")
+        ax.plot(
+            t,
+            I_component,
+            "--",
+            color=color,
+            linewidth=1.5,
+            alpha=0.6,
+            label=f"tau={taui:.1f}s (A={ai:.2f})",
+        )
 
     ax.plot(t, I_total, "k-", linewidth=2.5, label="Total current")
 

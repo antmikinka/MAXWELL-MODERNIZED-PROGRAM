@@ -21,8 +21,8 @@ class TestGeneralizedSystemBasic:
     def test_lagrangian_equals_T_minus_U(self):
         """L = T - U."""
         system = GeneralizedSystem(
-            potential_fn=lambda q: jnp.sum(q ** 2),
-            kinetic_fn=lambda q, qd: 0.5 * jnp.sum(qd ** 2),
+            potential_fn=lambda q: jnp.sum(q**2),
+            kinetic_fn=lambda q, qd: 0.5 * jnp.sum(qd**2),
         )
         q = jnp.array([1.0, 2.0])
         q_dot = jnp.array([3.0, 4.0])
@@ -95,7 +95,7 @@ class TestForceDerivation:
     def test_derive_forces_static(self):
         """Static force = -dU/dq."""
         system = GeneralizedSystem(
-            potential_fn=lambda q: 0.5 * jnp.sum(q ** 2),
+            potential_fn=lambda q: 0.5 * jnp.sum(q**2),
         )
         q = jnp.array([1.0, 2.0, 3.0])
         q_dot = jnp.array([0.0, 0.0, 0.0])
@@ -119,8 +119,8 @@ class TestForceDerivation:
     def test_gradient_computation(self):
         """jax.grad works on lagrangian."""
         system = GeneralizedSystem(
-            potential_fn=lambda q: jnp.sum(q ** 2),
-            kinetic_fn=lambda q, qd: 0.5 * jnp.sum(qd ** 2),
+            potential_fn=lambda q: jnp.sum(q**2),
+            kinetic_fn=lambda q, qd: 0.5 * jnp.sum(qd**2),
         )
 
         q = jnp.array([1.0, 2.0])
@@ -149,8 +149,9 @@ class TestJaxCompatibility:
     @pytest.mark.jax
     def test_custom_potential_fn(self):
         """Custom potential function works."""
+
         def harmonic_oscillator(q):
-            return 0.5 * 10.0 * jnp.sum(q ** 2)
+            return 0.5 * 10.0 * jnp.sum(q**2)
 
         system = GeneralizedSystem(potential_fn=harmonic_oscillator)
         q = jnp.array([1.0])
@@ -160,11 +161,12 @@ class TestJaxCompatibility:
     @pytest.mark.jax
     def test_custom_kinetic_fn(self):
         """Custom kinetic function works."""
+
         def relativistic_kinetic(q, qd):
             m = 1.0
             c = 1.0
-            gamma = 1.0 / jnp.sqrt(1.0 - jnp.sum(qd ** 2) / (c ** 2) + 1e-30)
-            return (gamma - 1.0) * m * c ** 2
+            gamma = 1.0 / jnp.sqrt(1.0 - jnp.sum(qd**2) / (c**2) + 1e-30)
+            return (gamma - 1.0) * m * c**2
 
         system = GeneralizedSystem(
             kinetic_fn=relativistic_kinetic,
@@ -187,8 +189,8 @@ class TestJaxCompatibility:
     def test_pytree_registration(self):
         """GeneralizedSystem works with jax.tree_util."""
         system = GeneralizedSystem(
-            potential_fn=lambda q: jnp.sum(q ** 2),
-            kinetic_fn=lambda q, qd: 0.5 * jnp.sum(qd ** 2),
+            potential_fn=lambda q: jnp.sum(q**2),
+            kinetic_fn=lambda q, qd: 0.5 * jnp.sum(qd**2),
         )
         leaves, treedef = jax.tree_util.tree_flatten(system)
         restored = jax.tree_util.tree_unflatten(treedef, leaves)
@@ -207,11 +209,13 @@ class TestJaxCompatibility:
         def single_force(r):
             return system.derive_electrostatic_force(1.0, 1.0, r)
 
-        positions = jnp.array([
-            [1.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
-            [0.0, 0.0, 3.0],
-        ])
+        positions = jnp.array(
+            [
+                [1.0, 0.0, 0.0],
+                [0.0, 2.0, 0.0],
+                [0.0, 0.0, 3.0],
+            ]
+        )
 
         forces = vmap(single_force)(positions)
         assert forces.shape == (3, 3)
@@ -246,7 +250,7 @@ class TestLagrangianProperties:
     def test_derive_forces_with_velocity(self):
         """Forces computed with non-zero velocity."""
         system = GeneralizedSystem(
-            potential_fn=lambda q: 0.5 * jnp.sum(q ** 2),
+            potential_fn=lambda q: 0.5 * jnp.sum(q**2),
         )
         q = jnp.array([1.0])
         q_dot = jnp.array([5.0])

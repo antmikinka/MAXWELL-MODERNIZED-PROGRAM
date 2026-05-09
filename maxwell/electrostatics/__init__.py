@@ -28,176 +28,133 @@ Modules:
 
 from __future__ import annotations
 
-from maxwell.electrostatics.phenomena import (
-    # Electrification by Friction (Arts. 12–14)
-    electrification_by_friction,
-    vitreous_electrification_glass_silk,
-    resinous_electrification_resin_fur,
-    verify_friction_conservation,
-    # Electrification by Induction (Arts. 15–16)
-    electrification_by_induction,
-    induced_surface_distribution,
-    # Electrification by Contact (Art. 17)
-    electrification_by_contact,
-    charge_sharing_equal_spheres,
-    # Electric Scintillation (Art. 18)
-    electric_scintillation,
-    corona_discharge_at_point,
-    # Electric Sparks (Art. 19)
-    electric_spark_properties,
-    spark_gap_breakdown,
-    # Classification (Arts. 12–19)
-    phenomena_classifier,
-    complete_phenomenology,
-    # Enumerations and Data Classes
-    ElectrificationType,
-    PhenomenonClass,
-    FrictionPair,
-    DischargePhenomenon,
-    SparkProperties,
+from maxwell.electrostatics.confocal_surfaces import (  # Confocal Ellipsoid Potential (Arts. 147–150); Confocal Hyperboloid (Arts. 151–153); Ellipsoidal Coordinates (Arts. 154–156)
+    EllipsoidalHarmonic,
+    confocal_ellipsoid_potential,
+    confocal_field_lines,
+    confocal_hyperboloid,
+    ellipsoid_capacitance,
+    ellipsoidal_coordinates,
+    ellipsoidal_harmonic_expansion,
+    laplacian_ellipsoidal,
 )
-
-from maxwell.electrostatics.equilibrium_surfaces import (
-    # Points & Lines of Equilibrium (Arts. 112–116)
-    equilibrium_points,
-    equilibrium_lines,
-    saddle_point_analysis,
-    # Equipotential Surfaces (Arts. 117–123)
-    equipotential_surface,
-    surface_curvature,
-    field_line_tracing,
-    surface_charge_density,
-    # Simple Cases of Electrostatics (Arts. 124–127)
-    isolated_sphere,
-    parallel_plate_capacitor,
-    concentric_spheres,
-    coaxial_cylinders,
-)
-
 from maxwell.electrostatics.dielectrics import (
-    # Specific Inductive Capacity (Arts. 157–159)
-    specific_inductive_capacity,
-    table_specific_inductive_capacities,
-    # Dielectric Polarization (Arts. 160–161)
-    dielectric_polarization,
-    electric_susceptibility,
-    # Bound Charge (Arts. 162–163)
+    DielectricMaterial,
     bound_charge_density,
     bound_charge_density_linear,
-    surface_bound_charge,
-    # Dielectric Displacement (Art. 164)
-    dielectric_displacement,
-    gauss_law_dielectric,
-    # Electrification by Friction (Arts. 165–166) - alias to avoid conflict
-    electrification_by_friction as dielectric_electrification_by_friction,
-    # Electrification by Contact (Arts. 167–168) - alias to avoid conflict
-    electrification_by_contact as dielectric_electrification_by_contact,
     charge_distribution_conductor,
-    # Electrification by Induction (Arts. 169–170) - alias to avoid conflict
+    dielectric_displacement,
+    dielectric_polarization,
+    electric_susceptibility,
+)
+from maxwell.electrostatics.dielectrics import (
+    electrification_by_contact as dielectric_electrification_by_contact,
+)
+from maxwell.electrostatics.dielectrics import (
+    electrification_by_friction as dielectric_electrification_by_friction,  # Specific Inductive Capacity (Arts. 157–159); Dielectric Polarization (Arts. 160–161); Bound Charge (Arts. 162–163); Dielectric Displacement (Art. 164); Electrification by Friction (Arts. 165–166) - alias to avoid conflict; Electrification by Contact (Arts. 167–168) - alias to avoid conflict; Electrification by Induction (Arts. 169–170) - alias to avoid conflict; Dielectric Material Class
+)
+from maxwell.electrostatics.dielectrics import (
     electrification_by_induction as dielectric_electrification_by_induction,
+)
+from maxwell.electrostatics.dielectrics import (
+    gauss_law_dielectric,
     image_charge_induction,
-    # Dielectric Material Class
-    DielectricMaterial,
+    specific_inductive_capacity,
+    surface_bound_charge,
+    table_specific_inductive_capacities,
 )
-
-from maxwell.electrostatics.confocal_surfaces import (
-    # Confocal Ellipsoid Potential (Arts. 147–150)
-    confocal_ellipsoid_potential,
-    ellipsoid_capacitance,
-    # Confocal Hyperboloid (Arts. 151–153)
-    confocal_hyperboloid,
-    confocal_field_lines,
-    # Ellipsoidal Coordinates (Arts. 154–156)
-    ellipsoidal_coordinates,
-    laplacian_ellipsoidal,
-    ellipsoidal_harmonic_expansion,
-    EllipsoidalHarmonic,
-)
-
-from maxwell.electrostatics.electric_images import (
-    # Point Charge Above Plane (Arts. 171–173)
-    image_point_charge_plane,
-    # Point Charge Near Sphere (Arts. 174–176)
-    image_point_charge_sphere,
-    # Line Charge Near Cylinder (Arts. 177–178)
+from maxwell.electrostatics.electric_images import (  # Point Charge Above Plane (Arts. 171–173); Point Charge Near Sphere (Arts. 174–176); Line Charge Near Cylinder (Arts. 177–178); Electrical Inversion (Arts. 179–180); Image System Analysis (Art. 181); Force Calculations (Arts. 173, 175, 178)
+    force_charge_conductor,
     image_line_charge_cylinder,
-    # Electrical Inversion (Arts. 179–180)
+    image_point_charge_plane,
+    image_point_charge_sphere,
+    image_system_analysis,
     inversion_method,
     invert_sphere_to_plane,
-    # Image System Analysis (Art. 181)
-    image_system_analysis,
-    # Force Calculations (Arts. 173, 175, 178)
-    force_charge_conductor,
 )
-
-from maxwell.electrostatics.instruments import (
-    # Quadrant Electrometer (Arts. 207–215)
-    quadrant_electrometer,
-    QuadrantElectrometer,
-    # Absolute Electrometer (Arts. 216–220)
-    absolute_electrometer,
-    calibration_electrometer,
-    # Attracted Disk Electrometer (Arts. 221–225)
-    attracted_disk_electrometer,
-    attracted_disk_force,
-    # Torsion Electrometer (Arts. 226–228)
-    torsion_electrometer,
-    measure_charge_torsion,
-    # Henley Electrometer (Art. 229)
-    henley_electrometer,
-    # Sensitivity Analysis (Arts. 210–215)
-    electrometer_sensitivity,
+from maxwell.electrostatics.equilibrium_surfaces import (  # Points & Lines of Equilibrium (Arts. 112–116); Equipotential Surfaces (Arts. 117–123); Simple Cases of Electrostatics (Arts. 124–127)
+    coaxial_cylinders,
+    concentric_spheres,
+    equilibrium_lines,
+    equilibrium_points,
+    equipotential_surface,
+    field_line_tracing,
+    isolated_sphere,
+    parallel_plate_capacitor,
+    saddle_point_analysis,
+    surface_charge_density,
+    surface_curvature,
 )
-
-from maxwell.electrostatics.general_theorems import (
-    # Green's Theorem (Arts. 95–97)
-    greens_theorem,
-    # Green's Reciprocity Theorem (Arts. 98–99)
-    greens_reciprocity,
-    # Potential from Charge Distribution (Arts. 100–101)
-    potential_from_charge_distribution,
-    potential_from_point_charges,
-    # Uniqueness Theorem (Art. 102)
-    uniqueness_theorem,
-    # Electrostatic Energy (Arts. 86–88)
-    electrostatic_energy,
-    work_to_assemble_charges,
-    # Energy Density in Field (Arts. 89–90)
-    energy_density_field,
-    energy_density_uniform_field,
-    # Energy of System (Arts. 91–92)
-    energy_of_system,
-    energy_of_conductor_system,
-    # Virtual Work Principle (Arts. 93–94)
-    virtual_work_principle,
-    force_between_conductors_constant_charge,
-    force_between_conductors_constant_potential,
-)
-
-from maxwell.electrostatics.force_theory import (
-    # Force Theory (Arts. 27-28, 31-37, 41-42)
+from maxwell.electrostatics.force_theory import (  # Force Theory (Arts. 27-28, 31-37, 41-42); Elementary Theory of Electricity (Arts. 50-63, 65); Utility functions
+    ElectricityType,
+    InductionSystem,
+    charge_conservation,
+    charge_induction,
+    check_charge_conservation,
+    coulomb_force,
     electric_tension,
+    electrification_types,
     electrostatic_attraction,
-    repulsion_law,
+    field_concept,
+    field_from_charges,
+    field_reality_statement,
+    force_between_types,
     force_medium,
     force_superposition,
-    # Elementary Theory of Electricity (Arts. 50-63, 65)
-    two_fluid_theory,
-    one_fluid_theory,
-    charge_conservation,
-    verify_isolated_system_conservation,
-    electrification_types,
-    ElectricityType,
-    force_between_types,
-    charge_induction,
     induced_charge_distribution,
-    InductionSystem,
-    field_concept,
-    field_reality_statement,
-    # Utility functions
-    coulomb_force,
-    field_from_charges,
-    check_charge_conservation,
+    one_fluid_theory,
+    repulsion_law,
+    two_fluid_theory,
+    verify_isolated_system_conservation,
+)
+from maxwell.electrostatics.general_theorems import (  # Green's Theorem (Arts. 95–97); Green's Reciprocity Theorem (Arts. 98–99); Potential from Charge Distribution (Arts. 100–101); Uniqueness Theorem (Art. 102); Electrostatic Energy (Arts. 86–88); Energy Density in Field (Arts. 89–90); Energy of System (Arts. 91–92); Virtual Work Principle (Arts. 93–94)
+    electrostatic_energy,
+    energy_density_field,
+    energy_density_uniform_field,
+    energy_of_conductor_system,
+    energy_of_system,
+    force_between_conductors_constant_charge,
+    force_between_conductors_constant_potential,
+    greens_reciprocity,
+    greens_theorem,
+    potential_from_charge_distribution,
+    potential_from_point_charges,
+    uniqueness_theorem,
+    virtual_work_principle,
+    work_to_assemble_charges,
+)
+from maxwell.electrostatics.instruments import (  # Quadrant Electrometer (Arts. 207–215); Absolute Electrometer (Arts. 216–220); Attracted Disk Electrometer (Arts. 221–225); Torsion Electrometer (Arts. 226–228); Henley Electrometer (Art. 229); Sensitivity Analysis (Arts. 210–215)
+    QuadrantElectrometer,
+    absolute_electrometer,
+    attracted_disk_electrometer,
+    attracted_disk_force,
+    calibration_electrometer,
+    electrometer_sensitivity,
+    henley_electrometer,
+    measure_charge_torsion,
+    quadrant_electrometer,
+    torsion_electrometer,
+)
+from maxwell.electrostatics.phenomena import (  # Electrification by Friction (Arts. 12–14); Electrification by Induction (Arts. 15–16); Electrification by Contact (Art. 17); Electric Scintillation (Art. 18); Electric Sparks (Art. 19); Classification (Arts. 12–19); Enumerations and Data Classes
+    DischargePhenomenon,
+    ElectrificationType,
+    FrictionPair,
+    PhenomenonClass,
+    SparkProperties,
+    charge_sharing_equal_spheres,
+    complete_phenomenology,
+    corona_discharge_at_point,
+    electric_scintillation,
+    electric_spark_properties,
+    electrification_by_contact,
+    electrification_by_friction,
+    electrification_by_induction,
+    induced_surface_distribution,
+    phenomena_classifier,
+    resinous_electrification_resin_fur,
+    spark_gap_breakdown,
+    verify_friction_conservation,
+    vitreous_electrification_glass_silk,
 )
 
 __all__ = [

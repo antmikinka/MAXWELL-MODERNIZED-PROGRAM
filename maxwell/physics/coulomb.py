@@ -24,12 +24,15 @@ References:
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
-from maxwell.meta.citation import maxwell_cite
+
 from maxwell.config.constants import CONST
 from maxwell.core.charge import PointCharge
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -83,7 +86,8 @@ class ElectrostaticForce:
 
 @maxwell_cite(
     66,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Coulomb's law — force between two point charges",
 )
@@ -124,12 +128,13 @@ def coulomb_law(
     if r <= 0:
         raise ValueError(f"Separation must be positive, got {r}")
 
-    return q1 * q2 / (r ** 2)
+    return q1 * q2 / (r**2)
 
 
 @maxwell_cite(
     67,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Resultant force between two charged bodies",
 )
@@ -180,7 +185,8 @@ def resultant_force(
 
 @maxwell_cite(
     67,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Resultant force on a charge from multiple sources",
 )
@@ -228,7 +234,8 @@ def resultant_force_multiple(
 
 @maxwell_cite(
     68,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Resultant intensity of electric force at a point",
 )
@@ -269,7 +276,7 @@ def field_intensity(
             continue  # Skip singularity
 
         r_hat = r_vec / r_mag
-        E_mag = source.q / (r_mag ** 2)
+        E_mag = source.q / (r_mag**2)
 
         E_total += E_mag * r_hat
 
@@ -278,7 +285,8 @@ def field_intensity(
 
 @maxwell_cite(
     38,
-    part=1, chapter="Electrification",
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Measurement of force between electrified bodies",
 )
@@ -323,7 +331,8 @@ def measure_force(
 
 @maxwell_cite(
     39,
-    part=1, chapter="Electrification",
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Relation between force and quantities of electricity",
 )
@@ -357,12 +366,13 @@ def force_charge_relation(
     if known_charge == 0:
         raise ValueError("Known charge cannot be zero")
 
-    return force_dyne * (distance_cm ** 2) / known_charge
+    return force_dyne * (distance_cm**2) / known_charge
 
 
 @maxwell_cite(
     40,
-    part=1, chapter="Electrification",
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Variation of force with distance — inverse square law",
 )
@@ -397,18 +407,21 @@ def force_distance_law(
         if r <= 0:
             continue
         F = coulomb_law(q1, q2, r)
-        results.append({
-            "distance_cm": r,
-            "force_dyne": F,
-            "inverse_r_squared": 1.0 / (r ** 2),
-            "F_times_r_squared": F * (r ** 2),  # Should be constant = q1*q2
-        })
+        results.append(
+            {
+                "distance_cm": r,
+                "force_dyne": F,
+                "inverse_r_squared": 1.0 / (r**2),
+                "F_times_r_squared": F * (r**2),  # Should be constant = q1*q2
+            }
+        )
     return results
 
 
 @maxwell_cite(
     43,
-    part=1, chapter="Electrification",
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Proof of the inverse-square law — Cavendish's experiment",
 )
@@ -447,7 +460,7 @@ def verify_inverse_square_law(
         raise ValueError("Need at least 2 measurements")
 
     # Calculate F * r^2 for each measurement (should be constant)
-    fr_squared = [F * (r ** 2) for F, r in zip(measured_forces, distances) if r > 0]
+    fr_squared = [F * (r**2) for F, r in zip(measured_forces, distances) if r > 0]
 
     if len(fr_squared) < 2:
         raise ValueError("Need at least 2 valid measurements")
@@ -456,7 +469,11 @@ def verify_inverse_square_law(
     constant_std = np.std(fr_squared)
 
     # Calculate maximum fractional deviation
-    deviations = [abs(val - constant_mean) / constant_mean for val in fr_squared if constant_mean != 0]
+    deviations = [
+        abs(val - constant_mean) / constant_mean
+        for val in fr_squared
+        if constant_mean != 0
+    ]
     deviation_max = max(deviations)
 
     verified = deviation_max <= tolerance
@@ -472,7 +489,8 @@ def verify_inverse_square_law(
 
 @maxwell_cite(
     30,
-    part=1, chapter="Electrification",
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Conservation of charge in force interactions",
 )
@@ -505,7 +523,8 @@ def verify_charge_conservation_force(
 
 @maxwell_cite(
     84,
-    part=1, chapter="Electrified Systems in Equilibrium",
+    part=1,
+    chapter="Electrified Systems in Equilibrium",
     theory_class="maxwell_original",
     description="Superposition principle for electrostatic forces",
 )
@@ -536,7 +555,8 @@ def superposition_force(
 
 @maxwell_cite(
     44,
-    part=1, chapter="The Electric Field",
+    part=1,
+    chapter="The Electric Field",
     theory_class="maxwell_original",
     description="Electric field as force per unit charge",
 )

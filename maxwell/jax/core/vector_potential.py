@@ -25,7 +25,7 @@ from typing import Callable
 
 import jax
 import jax.numpy as jnp
-from jax import jit, vmap, jacfwd
+from jax import jacfwd, jit, vmap
 
 from maxwell.jax._compat import jax_tree, safe_div, safe_norm
 from maxwell.meta.citation import maxwell_cite
@@ -116,7 +116,8 @@ class VectorPotentialJAX:
 
 @maxwell_cite(
     405,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="standard_math",
     description="Numerical curl via finite differences in JAX",
 )
@@ -167,7 +168,8 @@ def curl_jax(
 
 @maxwell_cite(
     405,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="standard_math",
     description="Exact curl via JAX auto-diff (jacfwd)",
 )
@@ -192,11 +194,14 @@ def curl_autodiff_jax(
     point = jnp.asarray(point, dtype=jnp.float64)
     J = jacfwd(field_func)(point)  # shape (3, 3): J[i,j] = dA_i/dx_j
 
-    return jnp.array([
-        J[2, 1] - J[1, 2],  # x component
-        J[0, 2] - J[2, 0],  # y component
-        J[1, 0] - J[0, 1],  # z component
-    ], dtype=jnp.float64)
+    return jnp.array(
+        [
+            J[2, 1] - J[1, 2],  # x component
+            J[0, 2] - J[2, 0],  # y component
+            J[1, 0] - J[0, 1],  # z component
+        ],
+        dtype=jnp.float64,
+    )
 
 
 # ── Dipole vector potential ─────────────────────────────────────
@@ -204,7 +209,8 @@ def curl_autodiff_jax(
 
 @maxwell_cite(
     406,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Magnetic vector potential from a dipole: A = (m x r) / r^3",
 )
@@ -239,13 +245,15 @@ def dipole_vector_potential_jax(
     r_mag = safe_norm(r_vec[None, :], axis=-1)[0]
     r_mag_safe = jnp.maximum(r_mag, 1e-30)
 
-    A = jnp.cross(magnetic_moment, r_vec) / (r_mag_safe ** 3)
+    A = jnp.cross(magnetic_moment, r_vec) / (r_mag_safe**3)
     return jnp.where(r_mag < 1e-30, jnp.zeros(3), A)
 
 
 @maxwell_cite(
-    405, 406,
-    part=3, chapter="Vector Potential",
+    405,
+    406,
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="B field from dipole via auto-diff curl of A",
 )
@@ -286,8 +294,10 @@ def B_from_dipole_autodiff_jax(
 
 
 @maxwell_cite(
-    405, 406,
-    part=3, chapter="Vector Potential",
+    405,
+    406,
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Verify curl(A) = B for magnetic dipole",
 )
@@ -342,7 +352,7 @@ def verify_vector_potential_curl_jax(
     r_mag_safe = jnp.maximum(r_mag, 1e-30)
     r_hat = jnp.where(r_mag > 1e-30, r_vec / r_mag_safe, jnp.zeros(3))
     m_dot_r = jnp.dot(magnetic_moment, r_hat)
-    B_analytical = (3.0 * m_dot_r * r_hat - magnetic_moment) / (r_mag_safe ** 3)
+    B_analytical = (3.0 * m_dot_r * r_hat - magnetic_moment) / (r_mag_safe**3)
     B_analytical = jnp.where(r_mag < 1e-30, jnp.zeros(3), B_analytical)
 
     residual = safe_norm((B_from_curl - B_analytical)[None, :], axis=-1)[0]
@@ -362,7 +372,8 @@ def verify_vector_potential_curl_jax(
 
 @maxwell_cite(
     405,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Vector potential from current element: A = Idl / r (CGS-EMU)",
 )

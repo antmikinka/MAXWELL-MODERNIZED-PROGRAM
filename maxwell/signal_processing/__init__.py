@@ -5,14 +5,14 @@ including telegraphy and signal propagation along transmission lines.
 """
 
 from maxwell.signal_processing.telegraphy import (
-    TelegraphLine,
     SignalTransmission,
-    calc_signal_velocity,
+    TelegraphLine,
+    analyze_telegraph_line,
     calc_characteristic_impedance,
     calc_propagation_constant,
     calc_signal_delay,
+    calc_signal_velocity,
     verify_telegraph_line,
-    analyze_telegraph_line,
 )
 
 __all__ = [

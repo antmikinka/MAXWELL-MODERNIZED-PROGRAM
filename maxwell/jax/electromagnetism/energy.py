@@ -102,7 +102,9 @@ class ElectrostaticEnergyJAX:
             Energy density u (erg/cm^3), scalar.
         """
         E_mag_sq = jnp.dot(self.E_field, self.E_field)
-        return (jnp.asarray(self.permittivity, dtype=jnp.float64) / (8.0 * jnp.pi)) * E_mag_sq
+        return (
+            jnp.asarray(self.permittivity, dtype=jnp.float64) / (8.0 * jnp.pi)
+        ) * E_mag_sq
 
     # ── Methods ───────────────────────────────────────────────────
 
@@ -133,7 +135,9 @@ class ElectrostaticEnergyJAX:
         """
         E_field = jnp.asarray(E_field, dtype=jnp.float64)
         E_mag_sq = jnp.dot(E_field, E_field)
-        return (jnp.asarray(self.permittivity, dtype=jnp.float64) / (8.0 * jnp.pi)) * E_mag_sq
+        return (
+            jnp.asarray(self.permittivity, dtype=jnp.float64) / (8.0 * jnp.pi)
+        ) * E_mag_sq
 
     # ── Class methods ─────────────────────────────────────────────
 
@@ -229,7 +233,7 @@ class CapacitorEnergyJAX:
         """
         V = jnp.asarray(voltage, dtype=jnp.float64)
         C = jnp.asarray(self.capacitance, dtype=jnp.float64)
-        return 0.5 * C * V ** 2
+        return 0.5 * C * V**2
 
     def from_charge(self, charge: jax.Array) -> jax.Array:
         """Energy from capacitance and charge: U = Q^2 / (2*C).
@@ -244,7 +248,7 @@ class CapacitorEnergyJAX:
         """
         Q = jnp.asarray(charge, dtype=jnp.float64)
         C = jnp.asarray(self.capacitance, dtype=jnp.float64)
-        return safe_div(Q ** 2, 2.0 * C, safe_default=0.0)
+        return safe_div(Q**2, 2.0 * C, safe_default=0.0)
 
     def from_QV(self, charge: jax.Array, voltage: jax.Array) -> jax.Array:
         """Energy from charge and voltage: U = (1/2) * Q * V.
@@ -270,7 +274,7 @@ class CapacitorEnergyJAX:
         """JIT-compiled (1/2)*C*V^2."""
         C = jnp.asarray(capacitance, dtype=jnp.float64)
         V = jnp.asarray(voltage, dtype=jnp.float64)
-        return 0.5 * C * V ** 2
+        return 0.5 * C * V**2
 
     @staticmethod
     @jit
@@ -278,7 +282,7 @@ class CapacitorEnergyJAX:
         """JIT-compiled Q^2/(2*C)."""
         Q = jnp.asarray(charge, dtype=jnp.float64)
         C = jnp.asarray(capacitance, dtype=jnp.float64)
-        return safe_div(Q ** 2, 2.0 * C, safe_default=0.0)
+        return safe_div(Q**2, 2.0 * C, safe_default=0.0)
 
     @staticmethod
     @jit
@@ -294,7 +298,8 @@ class CapacitorEnergyJAX:
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate electrostatic energy density: u = (1/8*pi) * eps * E^2 (JAX)",
 )
@@ -323,7 +328,8 @@ def calc_electrostatic_energy_density_jax(
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy density from E and D dot product: u = (1/8*pi) * E.D (JAX)",
 )
@@ -354,7 +360,8 @@ def calc_energy_density_from_ED_dot_jax(
 
 @maxwell_cite(
     631,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate capacitor energy: U = (1/2)*C*V^2 or Q^2/(2*C) (JAX)",
 )
@@ -390,16 +397,17 @@ def calc_capacitor_energy_jax(
     # U = (1/2) * C * V^2
     if voltage is not None:
         V = jnp.asarray(voltage, dtype=jnp.float64)
-        return 0.5 * C * V ** 2
+        return 0.5 * C * V**2
 
     # U = Q^2 / (2*C)
     Q = jnp.asarray(charge, dtype=jnp.float64)
-    return safe_div(Q ** 2, 2.0 * C, safe_default=0.0)
+    return safe_div(Q**2, 2.0 * C, safe_default=0.0)
 
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate total electrostatic energy: U = u * V (JAX)",
 )
@@ -429,7 +437,8 @@ def calc_total_electrostatic_energy_jax(
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Verify electrostatic energy density formula — isotropy check (JAX)",
 )
@@ -469,7 +478,7 @@ def verify_electrostatic_energy_density_jax(
     u_y = calc_electrostatic_energy_density_jax(E_y, permittivity)
     u_z = calc_electrostatic_energy_density_jax(E_z, permittivity)
 
-    expected = (eps / (8.0 * jnp.pi)) * E_mag ** 2
+    expected = (eps / (8.0 * jnp.pi)) * E_mag**2
 
     tol = 1e-10
     all_match = (
@@ -489,8 +498,10 @@ def verify_electrostatic_energy_density_jax(
 
 
 @maxwell_cite(
-    630, 631,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    630,
+    631,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Complete electrostatic energy analysis (JAX)",
 )
@@ -560,6 +571,8 @@ def analyze_electrostatic_energy_jax(
         result["capacitor_energy"] = cap_energy
         if volume is not None:
             field_energy = energy_density * jnp.asarray(volume, dtype=jnp.float64)
-            result["energy_ratio"] = safe_div(field_energy, cap_energy, safe_default=0.0)
+            result["energy_ratio"] = safe_div(
+                field_energy, cap_energy, safe_default=0.0
+            )
 
     return result

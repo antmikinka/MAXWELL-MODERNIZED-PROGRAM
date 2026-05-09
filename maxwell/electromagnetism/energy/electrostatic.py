@@ -32,10 +32,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -116,7 +117,8 @@ class ElectrostaticEnergy:
     @classmethod
     @maxwell_cite(
         630,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Create electrostatic energy from E field and permittivity",
     )
@@ -147,7 +149,8 @@ class ElectrostaticEnergy:
 
     @maxwell_cite(
         630,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate energy density at a point",
     )
@@ -174,7 +177,8 @@ class ElectrostaticEnergy:
 
     @maxwell_cite(
         630,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate total energy in volume",
     )
@@ -200,7 +204,8 @@ class ElectrostaticEnergy:
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate electrostatic energy density: u = (1/8π) ε E²",
 )
@@ -253,7 +258,8 @@ def calc_electrostatic_energy_density(
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate total electrostatic energy: U = (1/8π) ∫ E·D dV",
 )
@@ -309,7 +315,8 @@ def calc_total_electrostatic_energy(
 
 @maxwell_cite(
     631,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate capacitor energy: U = (1/2) C V² = Q²/(2C)",
 )
@@ -359,18 +366,20 @@ def calc_capacitor_energy(
     provided = sum(x is not None for x in [capacitance, voltage, charge])
 
     if provided < 2:
-        raise ValueError("At least two of capacitance, voltage, charge must be provided")
+        raise ValueError(
+            "At least two of capacitance, voltage, charge must be provided"
+        )
 
     if capacitance is not None and capacitance <= 0:
         raise ValueError(f"Capacitance must be positive, got {capacitance}")
 
     # U = (1/2) C V²
     if capacitance is not None and voltage is not None:
-        return 0.5 * capacitance * voltage ** 2
+        return 0.5 * capacitance * voltage**2
 
     # U = Q²/(2C)
     if capacitance is not None and charge is not None:
-        return (charge ** 2) / (2.0 * capacitance)
+        return (charge**2) / (2.0 * capacitance)
 
     # U = (1/2) Q V
     if charge is not None and voltage is not None:
@@ -382,7 +391,8 @@ def calc_capacitor_energy(
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy in dielectric: u = (1/8π) E·D",
 )
@@ -446,7 +456,8 @@ def calc_energy_in_dielectric(
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy density from E and D dot product",
 )
@@ -482,7 +493,8 @@ def calc_energy_density_from_ED_dot(
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Verify electrostatic energy density formula",
 )
@@ -527,13 +539,13 @@ def verify_electrostatic_energy_density(
     u_z = calc_electrostatic_energy_density(E_z, permittivity)
 
     # Expected: u = (1/8π) ε E²
-    expected = (permittivity / (8.0 * np.pi)) * E_magnitude ** 2
+    expected = (permittivity / (8.0 * np.pi)) * E_magnitude**2
 
     # Verify all orientations give same result (isotropy)
     all_match = (
-        np.isclose(u_x, u_y, rtol=tolerance) and
-        np.isclose(u_y, u_z, rtol=tolerance) and
-        np.isclose(u_x, expected, rtol=tolerance)
+        np.isclose(u_x, u_y, rtol=tolerance)
+        and np.isclose(u_y, u_z, rtol=tolerance)
+        and np.isclose(u_x, expected, rtol=tolerance)
     )
 
     return {
@@ -548,8 +560,10 @@ def verify_electrostatic_energy_density(
 
 
 @maxwell_cite(
-    630, 631,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    630,
+    631,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Complete electrostatic energy analysis",
 )
@@ -627,7 +641,8 @@ def analyze_electrostatic_energy(
 
 @maxwell_cite(
     630,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy density integrated over 3D field",
 )

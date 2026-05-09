@@ -32,13 +32,13 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, Optional
-import numpy as np
 from functools import wraps
+from typing import Callable, Optional
 
+import numpy as np
+
+from maxwell.config.constants import C_APPROX, CONST, C
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
-
 
 # =============================================================================
 # CONSTANTS
@@ -64,11 +64,14 @@ REFERENCE_TEMPERATURE: float = 298.15
 # CONTACT EMF: METAL-ELECTROLYTE JUNCTION (Arts. 246-247)
 # =============================================================================
 
+
 @maxwell_cite(
-    246, 247,
-    part=2, chapter="EMF Between Bodies in Contact",
+    246,
+    247,
+    part=2,
+    chapter="EMF Between Bodies in Contact",
     theory_class="maxwell_original",
-    description="Calculate contact EMF between metal and electrolyte"
+    description="Calculate contact EMF between metal and electrolyte",
 )
 def contact_emf_metal_electrolyte(
     metal_work_function: float,
@@ -148,7 +151,9 @@ def contact_emf_metal_electrolyte(
 
     # Separate contributions
     work_function_contribution = -phi_metal_molar / (ion_valency * FARADAY_CONSTANT)
-    chemical_contribution = electrolyte_chemical_potential / (ion_valency * FARADAY_CONSTANT)
+    chemical_contribution = electrolyte_chemical_potential / (
+        ion_valency * FARADAY_CONSTANT
+    )
 
     return {
         "contact_emf": contact_emf,
@@ -162,10 +167,12 @@ def contact_emf_metal_electrolyte(
 
 
 @maxwell_cite(
-    246, 247,
-    part=2, chapter="EMF Between Bodies in Contact",
+    246,
+    247,
+    part=2,
+    chapter="EMF Between Bodies in Contact",
     theory_class="maxwell_original",
-    description="Calculate EMF from concentration cell (Nernst equation)"
+    description="Calculate EMF from concentration cell (Nernst equation)",
 )
 def concentration_cell_emf(
     concentration_1: float,
@@ -260,11 +267,13 @@ def concentration_cell_emf(
 # JUNCTION POTENTIAL (Art. 248)
 # =============================================================================
 
+
 @maxwell_cite(
     248,
-    part=2, chapter="EMF Between Bodies in Contact",
+    part=2,
+    chapter="EMF Between Bodies in Contact",
     theory_class="maxwell_original",
-    description="Calculate liquid junction potential (Planck-Henderson)"
+    description="Calculate liquid junction potential (Planck-Henderson)",
 )
 def junction_potential(
     cation_mobility: float,
@@ -367,9 +376,10 @@ def junction_potential(
 
 @maxwell_cite(
     248,
-    part=2, chapter="EMF Between Bodies in Contact",
+    part=2,
+    chapter="EMF Between Bodies in Contact",
     theory_class="maxwell_original",
-    description="Calculate junction potential for multiple electrolytes"
+    description="Calculate junction potential for multiple electrolytes",
 )
 def junction_potential_multi_ion(
     ion_data: list[dict],
@@ -427,9 +437,9 @@ def junction_potential_multi_ion(
     sum_zu_side2 = 0.0
 
     for ion in ion_data:
-        z = ion.get('valency', 1)
-        u = ion.get('mobility', 1.0)
-        conc_ratio = ion.get('concentration_ratio', concentration_2 / concentration_1)
+        z = ion.get("valency", 1)
+        u = ion.get("mobility", 1.0)
+        conc_ratio = ion.get("concentration_ratio", concentration_2 / concentration_1)
 
         c1 = concentration_1
         c2 = concentration_2 * conc_ratio
@@ -461,11 +471,15 @@ def junction_potential_multi_ion(
 # EMF SERIES OF BODIES (Arts. 246-248)
 # =============================================================================
 
+
 @maxwell_cite(
-    246, 247, 248,
-    part=2, chapter="EMF Between Bodies in Contact",
+    246,
+    247,
+    248,
+    part=2,
+    chapter="EMF Between Bodies in Contact",
     theory_class="maxwell_original",
-    description="Calculate total EMF of series of bodies in contact"
+    description="Calculate total EMF of series of bodies in contact",
 )
 def emf_series_bodies(
     bodies: list[dict],
@@ -539,27 +553,27 @@ def emf_series_bodies(
         junction_desc = f"{body_a['name']} | {body_b['name']}"
 
         # Both are metals (work functions given)
-        if 'work_function' in body_a and 'work_function' in body_b:
+        if "work_function" in body_a and "work_function" in body_b:
             # Contact potential: E = (phi_B - phi_A) * 1e8 abvolts/eV
-            phi_a = body_a['work_function']
-            phi_b = body_b['work_function']
+            phi_a = body_a["work_function"]
+            phi_b = body_b["work_function"]
             emf = (phi_b - phi_a) * 1e8
 
         # One or both are electrolytes
-        elif 'electrode_potential' in body_a or 'electrode_potential' in body_b:
-            E_a = body_a.get('electrode_potential', 0.0)
-            E_b = body_b.get('electrode_potential', 0.0)
+        elif "electrode_potential" in body_a or "electrode_potential" in body_b:
+            E_a = body_a.get("electrode_potential", 0.0)
+            E_b = body_b.get("electrode_potential", 0.0)
             # Cell EMF = E_cathode - E_anode = E_b - E_a
             emf = (E_b - E_a) * 1e8
 
         # Mixed: metal and electrolyte
-        elif 'work_function' in body_a and 'concentration' in body_b:
+        elif "work_function" in body_a and "concentration" in body_b:
             # Metal-electrolyte junction
             # Simplified: use work function and concentration
-            emf = body_a.get('work_function', 4.5) * 1e7  # Approximate
+            emf = body_a.get("work_function", 4.5) * 1e7  # Approximate
 
-        elif 'work_function' in body_b and 'concentration' in body_a:
-            emf = -body_b.get('work_function', 4.5) * 1e7  # Approximate
+        elif "work_function" in body_b and "concentration" in body_a:
+            emf = -body_b.get("work_function", 4.5) * 1e7  # Approximate
 
         else:
             # Unknown junction type
@@ -576,16 +590,19 @@ def emf_series_bodies(
         "junction_emfs": junction_emfs,
         "junctions": junctions,
         "n_junctions": len(junctions),
-        "bodies": [b.get('name', 'Unknown') for b in bodies],
+        "bodies": [b.get("name", "Unknown") for b in bodies],
         "temperature": temperature,
     }
 
 
 @maxwell_cite(
-    246, 247, 248,
-    part=2, chapter="EMF Between Bodies in Contact",
+    246,
+    247,
+    248,
+    part=2,
+    chapter="EMF Between Bodies in Contact",
     theory_class="maxwell_original",
-    description="Build Volta series table for common materials"
+    description="Build Volta series table for common materials",
 )
 def volta_series_table(
     reference: str = "copper",
@@ -641,7 +658,6 @@ def volta_series_table(
         "silver": {"work_function_ev": 4.74, "type": "metal"},
         "gold": {"work_function_ev": 5.10, "type": "metal"},
         "platinum": {"work_function_ev": 5.65, "type": "metal"},
-
         # Standard electrode potentials (V vs SHE)
         "li_ion": {"electrode_potential_v": -3.04, "type": "electrolyte"},
         "k_ion": {"electrode_potential_v": -2.93, "type": "electrolyte"},
@@ -662,11 +678,11 @@ def volta_series_table(
     # Get reference work function
     if reference.lower() in materials:
         ref_data = materials[reference.lower()]
-        if 'work_function_ev' in ref_data:
-            ref_wf = ref_data['work_function_ev']
+        if "work_function_ev" in ref_data:
+            ref_wf = ref_data["work_function_ev"]
         else:
             # Convert electrode potential to approximate work function
-            ref_wf = 4.5 + ref_data.get('electrode_potential_v', 0)
+            ref_wf = 4.5 + ref_data.get("electrode_potential_v", 0)
     else:
         ref_wf = 4.65  # Default to copper
 
@@ -677,24 +693,26 @@ def volta_series_table(
     # Sort by work function / electrode potential
     sorted_materials = sorted(
         materials.items(),
-        key=lambda x: x[1].get('work_function_ev', 4.5 + x[1].get('electrode_potential_v', 0))
+        key=lambda x: x[1].get(
+            "work_function_ev", 4.5 + x[1].get("electrode_potential_v", 0)
+        ),
     )
 
     for name, data in sorted_materials:
-        if 'work_function_ev' in data:
-            wf = data['work_function_ev']
+        if "work_function_ev" in data:
+            wf = data["work_function_ev"]
             # Contact potential vs reference (abvolts)
             contact_potential = (wf - ref_wf) * 1e8
         else:
-            E = data.get('electrode_potential_v', 0)
+            E = data.get("electrode_potential_v", 0)
             contact_potential = E * 1e8  # Convert V to abvolts
 
         table[name] = {
-            "work_function_ev": data.get('work_function_ev'),
-            "electrode_potential_v": data.get('electrode_potential_v'),
+            "work_function_ev": data.get("work_function_ev"),
+            "electrode_potential_v": data.get("electrode_potential_v"),
             "contact_potential_vs_ref": contact_potential,
             "volta_position": volta_position,
-            "type": data.get('type', 'unknown'),
+            "type": data.get("type", "unknown"),
         }
         volta_position += 1
 
@@ -704,6 +722,7 @@ def volta_series_table(
 # =============================================================================
 # CONTACT EMF ANALYZER CLASS
 # =============================================================================
+
 
 @dataclass
 class ContactEMFAnalyzer:
@@ -724,10 +743,12 @@ class ContactEMFAnalyzer:
     reference_material: str = "copper"
 
     @maxwell_cite(
-        246, 247,
-        part=2, chapter="EMF Between Bodies in Contact",
+        246,
+        247,
+        part=2,
+        chapter="EMF Between Bodies in Contact",
         theory_class="maxwell_original",
-        description="Analyze single metal-electrolyte junction"
+        description="Analyze single metal-electrolyte junction",
     )
     def analyze_metal_electrolyte_junction(
         self,
@@ -745,9 +766,10 @@ class ContactEMFAnalyzer:
 
     @maxwell_cite(
         248,
-        part=2, chapter="EMF Between Bodies in Contact",
+        part=2,
+        chapter="EMF Between Bodies in Contact",
         theory_class="maxwell_original",
-        description="Analyze liquid junction potential"
+        description="Analyze liquid junction potential",
     )
     def analyze_junction_potential(
         self,
@@ -766,10 +788,13 @@ class ContactEMFAnalyzer:
         )
 
     @maxwell_cite(
-        246, 247, 248,
-        part=2, chapter="EMF Between Bodies in Contact",
+        246,
+        247,
+        248,
+        part=2,
+        chapter="EMF Between Bodies in Contact",
         theory_class="maxwell_original",
-        description="Analyze complete electrochemical cell"
+        description="Analyze complete electrochemical cell",
     )
     def analyze_electrochemical_cell(
         self,
@@ -796,8 +821,8 @@ class ContactEMFAnalyzer:
         anode_data = table.get(anode_material.lower(), {})
         cathode_data = table.get(cathode_material.lower(), {})
 
-        E_anode = anode_data.get('electrode_potential_v', 0)
-        E_cathode = cathode_data.get('electrode_potential_v', 0)
+        E_anode = anode_data.get("electrode_potential_v", 0)
+        E_cathode = cathode_data.get("electrode_potential_v", 0)
 
         # Cell EMF (standard)
         E_cell_standard = (E_cathode - E_anode) * 1e8  # Convert to abvolts
@@ -810,12 +835,12 @@ class ContactEMFAnalyzer:
             temperature=self.temperature,
         )
 
-        E_cell_total = E_cell_standard + nernst_result['emf']
+        E_cell_total = E_cell_standard + nernst_result["emf"]
 
         return {
             "cell_emf": E_cell_total,
             "standard_emf": E_cell_standard,
-            "nernst_correction": nernst_result['emf'],
+            "nernst_correction": nernst_result["emf"],
             "anode_material": anode_material,
             "cathode_material": cathode_material,
             "electrolyte_concentration": electrolyte_concentration,
@@ -856,29 +881,33 @@ if __name__ == "__main__":
     result = junction_potential(u_k, u_cl, 0.01, 0.001)
     print(f"  KCl junction (0.01M | 0.001M):")
     print(f"    E_junction = {result['junction_potential']:.2e} abV")
-    print(f"    t+ = {result['transport_number_cation']:.3f}, t- = {result['transport_number_anion']:.3f}")
+    print(
+        f"    t+ = {result['transport_number_cation']:.3f}, t- = {result['transport_number_anion']:.3f}"
+    )
 
     # Test EMF series
     print("\n--- EMF Series of Bodies (Arts. 246-248) ---")
     bodies = [
-        {'name': 'Zn', 'work_function': 4.33},
-        {'name': 'Cu', 'work_function': 4.65},
-        {'name': 'Pt', 'work_function': 5.65},
+        {"name": "Zn", "work_function": 4.33},
+        {"name": "Cu", "work_function": 4.65},
+        {"name": "Pt", "work_function": 5.65},
     ]
     result = emf_series_bodies(bodies)
     print(f"  Zn | Cu | Pt series:")
     print(f"    Total EMF = {result['total_emf']:.2e} abV")
-    for junction, emf in zip(result['junctions'], result['junction_emfs']):
+    for junction, emf in zip(result["junctions"], result["junction_emfs"]):
         print(f"    {junction}: {emf:.2e} abV")
 
     # Test Volta series table
     print("\n--- Volta Series Table (Arts. 246-248) ---")
     table = volta_series_table(reference="copper")
     print(f"  Contact potentials vs Copper (abvolts):")
-    for material in ['zinc', 'iron', 'copper', 'silver', 'gold', 'platinum']:
+    for material in ["zinc", "iron", "copper", "silver", "gold", "platinum"]:
         if material in table:
             data = table[material]
-            print(f"    {material.capitalize()}: {data['contact_potential_vs_ref']:.2e} abV")
+            print(
+                f"    {material.capitalize()}: {data['contact_potential_vs_ref']:.2e} abV"
+            )
 
     print("\n" + "=" * 70)
     print("Module verification complete.")

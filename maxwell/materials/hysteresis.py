@@ -20,11 +20,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.materials.saturation import WeberModel
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -55,7 +56,8 @@ class HysteresisLoop:
     @classmethod
     @maxwell_cite(
         444,
-        part=3, chapter="Magnetic Hysteresis",
+        part=3,
+        chapter="Magnetic Hysteresis",
         theory_class="maxwell_original",
         description="Create hysteresis loop from measurements",
     )
@@ -85,8 +87,7 @@ class HysteresisLoop:
 
         # Check if loop is complete (starts and ends at same point)
         is_complete = (
-            np.abs(H_arr[0] - H_arr[-1]) < 1e-6 and
-            np.abs(I_arr[0] - I_arr[-1]) < 1e-6
+            np.abs(H_arr[0] - H_arr[-1]) < 1e-6 and np.abs(I_arr[0] - I_arr[-1]) < 1e-6
         )
 
         return cls(
@@ -97,7 +98,8 @@ class HysteresisLoop:
 
     @maxwell_cite(
         444,
-        part=3, chapter="Magnetic Hysteresis",
+        part=3,
+        chapter="Magnetic Hysteresis",
         theory_class="maxwell_original",
         description="Extract retentivity from loop",
     )
@@ -131,7 +133,8 @@ class HysteresisLoop:
 
     @maxwell_cite(
         444,
-        part=3, chapter="Magnetic Hysteresis",
+        part=3,
+        chapter="Magnetic Hysteresis",
         theory_class="maxwell_original",
         description="Extract coercive force from loop",
     )
@@ -152,7 +155,9 @@ class HysteresisLoop:
             return 0.0
 
         # Find points where I crosses zero
-        I_zero_crossings = np.where(np.abs(self.I_values) < np.max(np.abs(self.I_values)) * 0.01)[0]
+        I_zero_crossings = np.where(
+            np.abs(self.I_values) < np.max(np.abs(self.I_values)) * 0.01
+        )[0]
 
         if len(I_zero_crossings) == 0:
             # Find maximum reverse field as estimate
@@ -163,7 +168,8 @@ class HysteresisLoop:
 
     @maxwell_cite(
         445,
-        part=3, chapter="Magnetic Hysteresis",
+        part=3,
+        chapter="Magnetic Hysteresis",
         theory_class="maxwell_original",
         description="Calculate energy loss per cycle",
     )
@@ -196,7 +202,8 @@ class HysteresisLoop:
 
     @maxwell_cite(
         445,
-        part=3, chapter="Magnetic Hysteresis",
+        part=3,
+        chapter="Magnetic Hysteresis",
         theory_class="maxwell_original",
         description="Calculate Steinmetz coefficient from loop",
     )
@@ -234,7 +241,7 @@ class HysteresisLoop:
         n = 1.6
 
         # η = W_h / B_max^n
-        return float(W_loss / (B_max ** n))
+        return float(W_loss / (B_max**n))
 
     @property
     def loop_area(self) -> float:
@@ -278,7 +285,8 @@ class WeberModelWithHysteresis(WeberModel):
     @classmethod
     @maxwell_cite(
         446,
-        part=3, chapter="Magnetic Hysteresis",
+        part=3,
+        chapter="Magnetic Hysteresis",
         theory_class="maxwell_original",
         description="Create hysteresis model from parameters",
     )
@@ -310,7 +318,8 @@ class WeberModelWithHysteresis(WeberModel):
 
     @maxwell_cite(
         446,
-        part=3, chapter="Magnetic Hysteresis",
+        part=3,
+        chapter="Magnetic Hysteresis",
         theory_class="maxwell_original",
         description="Calculate magnetization with hysteresis",
     )
@@ -348,10 +357,14 @@ class WeberModelWithHysteresis(WeberModel):
         # Hysteresis shift
         if previous_state == "increasing":
             # Magnetization lags behind (lower than base)
-            hysteresis_shift = -self.coercive_field * self.saturation_magnetization * 0.01
+            hysteresis_shift = (
+                -self.coercive_field * self.saturation_magnetization * 0.01
+            )
         else:
             # Demagnetization lags behind (higher than base)
-            hysteresis_shift = +self.coercive_field * self.saturation_magnetization * 0.01
+            hysteresis_shift = (
+                +self.coercive_field * self.saturation_magnetization * 0.01
+            )
 
         return float(I_base + hysteresis_shift)
 
@@ -400,7 +413,8 @@ class WeberModelWithHysteresis(WeberModel):
 
 @maxwell_cite(
     444,
-    part=3, chapter="Magnetic Hysteresis",
+    part=3,
+    chapter="Magnetic Hysteresis",
     theory_class="maxwell_original",
     description="Explain hysteresis phenomena",
 )
@@ -462,8 +476,11 @@ def explain_hysteresis_phenomena() -> dict[str, str]:
 
 
 @maxwell_cite(
-    444, 445, 446,
-    part=3, chapter="Magnetic Hysteresis",
+    444,
+    445,
+    446,
+    part=3,
+    chapter="Magnetic Hysteresis",
     theory_class="maxwell_original",
     description="Analyze hysteresis loop characteristics",
 )
@@ -523,7 +540,8 @@ def analyze_hysteresis_loop(
 
 @maxwell_cite(
     445,
-    part=3, chapter="Magnetic Hysteresis",
+    part=3,
+    chapter="Magnetic Hysteresis",
     theory_class="maxwell_original",
     description="Calculate hysteresis loss by Steinmetz formula",
 )
@@ -561,12 +579,13 @@ def hysteresis_loss_steinmetz(
     Reference:
         Part III, Art. 445: Steinmetz loss formula.
     """
-    return float(steinmetz_eta * frequency * volume * (B_max ** exponent))
+    return float(steinmetz_eta * frequency * volume * (B_max**exponent))
 
 
 @maxwell_cite(
     446,
-    part=3, chapter="Magnetic Hysteresis",
+    part=3,
+    chapter="Magnetic Hysteresis",
     theory_class="maxwell_original",
     description="Generate theoretical hysteresis loop",
 )
@@ -644,8 +663,11 @@ def generate_theoretical_hysteresis_loop(
 
 
 @maxwell_cite(
-    444, 445, 446,
-    part=3, chapter="Magnetic Hysteresis",
+    444,
+    445,
+    446,
+    part=3,
+    chapter="Magnetic Hysteresis",
     theory_class="maxwell_original",
     description="Typical hysteresis parameters for materials",
 )
@@ -692,7 +714,6 @@ def typical_hysteresis_parameters() -> dict[str, dict[str, float]]:
             "initial_permeability": 5000,
             "application": "electromagnets",
         },
-
         # Hard magnetic materials (high H_c, wide loop)
         "alnico_5": {
             "coercivity_Hc": 600,

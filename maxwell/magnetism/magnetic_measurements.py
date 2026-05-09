@@ -37,16 +37,17 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional, Tuple, Callable
+from typing import Callable, Optional, Tuple
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # DEFLECTION MAGNETOMETER (Arts. 449-452)
 # =============================================================================
+
 
 @dataclass
 class DeflectionMagnetometer:
@@ -85,10 +86,12 @@ class DeflectionMagnetometer:
     needle_moment: float = 1.0  # emu (magnetic moment of compass needle)
 
     @maxwell_cite(
-        449, 450,
-        part=3, chapter="Magnetic Measurements",
+        449,
+        450,
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Deflection magnetometer measurement"
+        description="Deflection magnetometer measurement",
     )
     def measure_magnetic_moment(
         self,
@@ -130,17 +133,17 @@ class DeflectionMagnetometer:
 
         if self.position == "end_on":
             # M = (H * r^3 / 2) * tan(theta)
-            magnetic_moment = (H * r ** 3 / 2) * np.tan(theta)
+            magnetic_moment = (H * r**3 / 2) * np.tan(theta)
             field_factor = 2  # Field is 2M/r^3
         elif self.position == "broadside":
             # M = (H * r^3) * tan(theta)
-            magnetic_moment = (H * r ** 3) * np.tan(theta)
+            magnetic_moment = (H * r**3) * np.tan(theta)
             field_factor = 1  # Field is M/r^3
         else:
             raise ValueError(f"Unknown position: {self.position}")
 
         # Field produced by magnet at needle position
-        field_at_needle = field_factor * magnetic_moment / r ** 3
+        field_at_needle = field_factor * magnetic_moment / r**3
 
         return {
             "magnetic_moment": magnetic_moment,
@@ -153,10 +156,12 @@ class DeflectionMagnetometer:
         }
 
     @maxwell_cite(
-        449, 450,
-        part=3, chapter="Magnetic Measurements",
+        449,
+        450,
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Predict deflection from known magnetic moment"
+        description="Predict deflection from known magnetic moment",
     )
     def predict_deflection(
         self,
@@ -192,9 +197,9 @@ class DeflectionMagnetometer:
         H = self.earth_field_H
 
         if self.position == "end_on":
-            tan_theta = 2 * magnetic_moment / (H * r ** 3)
+            tan_theta = 2 * magnetic_moment / (H * r**3)
         elif self.position == "broadside":
-            tan_theta = magnetic_moment / (H * r ** 3)
+            tan_theta = magnetic_moment / (H * r**3)
         else:
             raise ValueError(f"Unknown position: {self.position}")
 
@@ -215,9 +220,10 @@ class DeflectionMagnetometer:
 
 @maxwell_cite(
     451,
-    part=3, chapter="Magnetic Measurements",
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Magnetometer Tan-A position (Gauss method)"
+    description="Magnetometer Tan-A position (Gauss method)",
 )
 def magnetometer_tan_position(
     magnetic_moment: float,
@@ -270,7 +276,7 @@ def magnetometer_tan_position(
     tan_theta = np.tan(deflection)
 
     # Gauss's constant for Tan-A position
-    gauss_constant = distance ** 3 / 2
+    gauss_constant = distance**3 / 2
 
     # M/H ratio from deflection
     M_over_H = gauss_constant * tan_theta
@@ -279,7 +285,7 @@ def magnetometer_tan_position(
     computed_M = earth_field_H * M_over_H
 
     # Field from magnet at needle
-    field_from_magnet = 2 * magnetic_moment / distance ** 3
+    field_from_magnet = 2 * magnetic_moment / distance**3
 
     return {
         "M_over_H": M_over_H,
@@ -296,9 +302,10 @@ def magnetometer_tan_position(
 
 @maxwell_cite(
     452,
-    part=3, chapter="Magnetic Measurements",
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Magnetometer Sin-A position measurement"
+    description="Magnetometer Sin-A position measurement",
 )
 def magnetometer_sine_position(
     magnetic_moment: float,
@@ -350,14 +357,14 @@ def magnetometer_sine_position(
     tan_alpha = np.tan(deflection)
 
     # M/H ratio from sine measurement
-    gauss_constant = distance ** 3 / 2
+    gauss_constant = distance**3 / 2
     M_over_H = gauss_constant * sin_alpha
 
     # M calculated from known H
     computed_M = earth_field_H * M_over_H
 
     # Field from magnet at needle
-    field_from_magnet = 2 * magnetic_moment / distance ** 3
+    field_from_magnet = 2 * magnetic_moment / distance**3
 
     # Comparison: error if tangent method were used
     tan_error = (tan_alpha - sin_alpha) / sin_alpha if sin_alpha != 0 else 0
@@ -378,10 +385,12 @@ def magnetometer_sine_position(
 
 
 @maxwell_cite(
-    451, 452,
-    part=3, chapter="Magnetic Measurements",
+    451,
+    452,
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Gauss's method for absolute H and M determination"
+    description="Gauss's method for absolute H and M determination",
 )
 def magnetometer_gauss_method(
     tan_deflection: float,
@@ -439,9 +448,9 @@ def magnetometer_gauss_method(
     """
     # Geometric factor
     if position == "tan_a":
-        geo_factor = distance ** 3 / 2
+        geo_factor = distance**3 / 2
     elif position == "tan_b":
-        geo_factor = distance ** 3
+        geo_factor = distance**3
     else:
         raise ValueError(f"Unknown position: {position}")
 
@@ -449,7 +458,7 @@ def magnetometer_gauss_method(
     M_over_H = geo_factor * tan_deflection
 
     # M*H from vibration: M*H = 4*pi^2 * I / T^2
-    MH_product = 4 * np.pi ** 2 * moment_of_inertia / vibration_period ** 2
+    MH_product = 4 * np.pi**2 * moment_of_inertia / vibration_period**2
 
     # Solve for H and M
     # H^2 = (M*H) / (M/H)
@@ -473,6 +482,7 @@ def magnetometer_gauss_method(
 # =============================================================================
 # SUSPENSION SYSTEMS (Arts. 453-456)
 # =============================================================================
+
 
 @dataclass
 class UnifilarSuspension:
@@ -515,13 +525,17 @@ class UnifilarSuspension:
     def __post_init__(self):
         """Compute torsion constant from fiber properties."""
         # kappa = (pi * G * r^4) / (2 * l)
-        self.torsion_constant = (np.pi * self.shear_modulus * self.fiber_radius ** 4) / (2 * self.fiber_length)
+        self.torsion_constant = (
+            np.pi * self.shear_modulus * self.fiber_radius**4
+        ) / (2 * self.fiber_length)
 
     @maxwell_cite(
-        453, 454,
-        part=3, chapter="Magnetic Measurements",
+        453,
+        454,
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Unifilar suspension oscillation"
+        description="Unifilar suspension oscillation",
     )
     def oscillation_period(
         self,
@@ -560,12 +574,14 @@ class UnifilarSuspension:
 
         # Natural frequency without field
         omega_0 = np.sqrt(kappa / I) if I > 0 and kappa > 0 else 0
-        T_0 = 2 * np.pi / omega_0 if omega_0 > 0 else float('inf')
+        T_0 = 2 * np.pi / omega_0 if omega_0 > 0 else float("inf")
 
         # With magnetic field
         MH_term = magnetic_moment * earth_field_H
         omega_with_field = np.sqrt((kappa + MH_term) / I) if I > 0 else 0
-        T_with_field = 2 * np.pi / omega_with_field if omega_with_field > 0 else float('inf')
+        T_with_field = (
+            2 * np.pi / omega_with_field if omega_with_field > 0 else float("inf")
+        )
 
         return {
             "period": T_with_field,
@@ -581,10 +597,12 @@ class UnifilarSuspension:
 
 
 @maxwell_cite(
-    453, 454,
-    part=3, chapter="Magnetic Measurements",
+    453,
+    454,
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Determine torsion constant of suspension fiber"
+    description="Determine torsion constant of suspension fiber",
 )
 def torsion_constant(
     fiber_length: float,
@@ -632,7 +650,7 @@ def torsion_constant(
         >>> print(f"Torsion constant: {result['torsion_constant']:.4f} dyne*cm/rad")
     """
     # Theoretical torsion constant
-    kappa_theoretical = (np.pi * shear_modulus * fiber_radius ** 4) / (2 * fiber_length)
+    kappa_theoretical = (np.pi * shear_modulus * fiber_radius**4) / (2 * fiber_length)
 
     result = {
         "torsion_constant": kappa_theoretical,
@@ -643,16 +661,22 @@ def torsion_constant(
 
     # Experimental determination if period is provided
     if measured_period is not None and suspended_inertia is not None:
-        kappa_experimental = 4 * np.pi ** 2 * suspended_inertia / measured_period ** 2
-        discrepancy = (kappa_theoretical - kappa_experimental) / kappa_theoretical if kappa_theoretical > 0 else 0
+        kappa_experimental = 4 * np.pi**2 * suspended_inertia / measured_period**2
+        discrepancy = (
+            (kappa_theoretical - kappa_experimental) / kappa_theoretical
+            if kappa_theoretical > 0
+            else 0
+        )
 
-        result.update({
-            "experimental_kappa": kappa_experimental,
-            "measured_period": measured_period,
-            "suspended_inertia": suspended_inertia,
-            "discrepancy": discrepancy,
-            "discrepancy_percent": discrepancy * 100,
-        })
+        result.update(
+            {
+                "experimental_kappa": kappa_experimental,
+                "measured_period": measured_period,
+                "suspended_inertia": suspended_inertia,
+                "discrepancy": discrepancy,
+                "discrepancy_percent": discrepancy * 100,
+            }
+        )
 
     return result
 
@@ -700,13 +724,17 @@ class BifilarSuspension:
         """Compute bifilar constant."""
         g = 980  # cm/s^2
         # D = (m * g * a * b) / l
-        self.bifilar_constant = (self.suspended_mass * g * self.top_separation * self.bottom_separation) / self.fiber_length
+        self.bifilar_constant = (
+            self.suspended_mass * g * self.top_separation * self.bottom_separation
+        ) / self.fiber_length
 
     @maxwell_cite(
-        455, 456,
-        part=3, chapter="Magnetic Measurements",
+        455,
+        456,
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Bifilar suspension for horizontal force measurement"
+        description="Bifilar suspension for horizontal force measurement",
     )
     def measure_horizontal_force(
         self,
@@ -778,9 +806,10 @@ class BifilarSuspension:
 
 @maxwell_cite(
     455,
-    part=3, chapter="Magnetic Measurements",
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Measure magnetic declination"
+    description="Measure magnetic declination",
 )
 def magnetic_declination(
     astronomical_azimuth: float,
@@ -852,6 +881,7 @@ def magnetic_declination(
 # KEW MAGNETOMETER (Arts. 457-459)
 # =============================================================================
 
+
 @dataclass
 class KewMagnetometer:
     """
@@ -890,13 +920,15 @@ class KewMagnetometer:
     def __post_init__(self):
         """Estimate moment of inertia."""
         # Approximate as thin rod: I = (1/12) * m * L^2
-        self.moment_of_inertia = (1/12) * self.magnet_mass * self.magnet_length ** 2
+        self.moment_of_inertia = (1 / 12) * self.magnet_mass * self.magnet_length**2
 
     @maxwell_cite(
-        457, 458,
-        part=3, chapter="Magnetic Measurements",
+        457,
+        458,
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Kew magnetometer absolute measurement"
+        description="Kew magnetometer absolute measurement",
     )
     def measure_absolute_H(
         self,
@@ -956,10 +988,10 @@ class KewMagnetometer:
         tan_theta = np.tan(theta)
 
         # M/H from deflection
-        M_over_H = (r ** 3 / 2) * tan_theta
+        M_over_H = (r**3 / 2) * tan_theta
 
         # M*H from vibration
-        MH_product = 4 * np.pi ** 2 * I / T ** 2
+        MH_product = 4 * np.pi**2 * I / T**2
 
         # H from combined equations
         H_squared = MH_product / M_over_H if M_over_H > 0 else 0
@@ -970,7 +1002,11 @@ class KewMagnetometer:
 
         # Consistency check: M should match deflecting_moment approximately
         # (they may differ due to experimental conditions)
-        measurement_quality = 1 - abs(magnetic_moment - deflecting_moment) / deflecting_moment if deflecting_moment > 0 else 0
+        measurement_quality = (
+            1 - abs(magnetic_moment - deflecting_moment) / deflecting_moment
+            if deflecting_moment > 0
+            else 0
+        )
 
         return {
             "earth_field_H": earth_field_H,
@@ -989,9 +1025,10 @@ class KewMagnetometer:
 
 @maxwell_cite(
     459,
-    part=3, chapter="Magnetic Measurements",
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Vibration magnetometer method"
+    description="Vibration magnetometer method",
 )
 def vibration_magnetometer(
     vibration_period: float,
@@ -1043,7 +1080,7 @@ def vibration_magnetometer(
         >>> print(f"M = {result['derived_M']:.2f} emu")
     """
     # M*H = 4*pi^2 * I / T^2
-    MH_product = 4 * np.pi ** 2 * moment_of_inertia / vibration_period ** 2
+    MH_product = 4 * np.pi**2 * moment_of_inertia / vibration_period**2
 
     # Natural frequency
     omega = 2 * np.pi / vibration_period
@@ -1067,6 +1104,7 @@ def vibration_magnetometer(
 # =============================================================================
 # DIP CIRCLE (Arts. 460-462)
 # =============================================================================
+
 
 @dataclass
 class DipCircle:
@@ -1104,10 +1142,12 @@ class DipCircle:
     reading_microscope: float = 0.1  # degrees
 
     @maxwell_cite(
-        460, 461,
-        part=3, chapter="Magnetic Measurements",
+        460,
+        461,
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Dip circle measurement of inclination"
+        description="Dip circle measurement of inclination",
     )
     def measure_dip(
         self,
@@ -1161,7 +1201,7 @@ class DipCircle:
         # Assume typical H to compute Z and F
         H = 0.18  # gauss (typical)
         Z = H * tan_I_true  # Vertical component
-        F = np.sqrt(H ** 2 + Z ** 2)  # Total field
+        F = np.sqrt(H**2 + Z**2)  # Total field
 
         return {
             "observed_dip": I_observed,
@@ -1178,9 +1218,10 @@ class DipCircle:
 
 @maxwell_cite(
     462,
-    part=3, chapter="Magnetic Measurements",
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Dip measurement corrections"
+    description="Dip measurement corrections",
 )
 def dip_correction(
     observed_dip: float,
@@ -1298,6 +1339,7 @@ def dip_correction(
 # BALANCE MAGNETOMETER (Arts. 463-464)
 # =============================================================================
 
+
 @dataclass
 class BalanceMagnetometer:
     """
@@ -1337,9 +1379,10 @@ class BalanceMagnetometer:
 
     @maxwell_cite(
         463,
-        part=3, chapter="Magnetic Measurements",
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Balance magnetometer for vertical force"
+        description="Balance magnetometer for vertical force",
     )
     def measure_vertical_force(
         self,
@@ -1411,9 +1454,10 @@ class BalanceMagnetometer:
 
 @maxwell_cite(
     464,
-    part=3, chapter="Magnetic Measurements",
+    part=3,
+    chapter="Magnetic Measurements",
     theory_class="maxwell_original",
-    description="Measure vertical intensity Z"
+    description="Measure vertical intensity Z",
 )
 def vertical_intensity(
     balance_reading: float,
@@ -1476,7 +1520,7 @@ def vertical_intensity(
 
     # Derived quantities (assuming typical H = 0.18 gauss)
     H = 0.18
-    total_field = np.sqrt(H ** 2 + vertical_intensity_Z ** 2)
+    total_field = np.sqrt(H**2 + vertical_intensity_Z**2)
     dip = np.arctan(vertical_intensity_Z / H)
 
     return {
@@ -1497,6 +1541,7 @@ def vertical_intensity(
 # =============================================================================
 # COMPREHENSIVE MAGNETIC SURVEY (All Articles 449-464)
 # =============================================================================
+
 
 @dataclass
 class MagneticSurvey:
@@ -1526,11 +1571,26 @@ class MagneticSurvey:
     date: str = None
 
     @maxwell_cite(
-        449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459,
-        460, 461, 462, 463, 464,
-        part=3, chapter="Magnetic Measurements",
+        449,
+        450,
+        451,
+        452,
+        453,
+        454,
+        455,
+        456,
+        457,
+        458,
+        459,
+        460,
+        461,
+        462,
+        463,
+        464,
+        part=3,
+        chapter="Magnetic Measurements",
         theory_class="maxwell_original",
-        description="Complete magnetic survey"
+        description="Complete magnetic survey",
     )
     def complete_survey(
         self,
@@ -1580,8 +1640,8 @@ class MagneticSurvey:
         """
         # 1. H from Gauss's method (Arts. 451-452, 457-459)
         tan_theta = np.tan(deflection_angle)
-        M_over_H = (deflection_distance ** 3 / 2) * tan_theta
-        MH_product = 4 * np.pi ** 2 * magnet_inertia / vibration_period ** 2
+        M_over_H = (deflection_distance**3 / 2) * tan_theta
+        MH_product = 4 * np.pi**2 * magnet_inertia / vibration_period**2
         H = np.sqrt(MH_product / M_over_H) if M_over_H > 0 else 0
         M = M_over_H * H
 
@@ -1600,7 +1660,7 @@ class MagneticSurvey:
         Z = Z_data["vertical_intensity_Z"]
 
         # 5. Compute remaining elements
-        F = np.sqrt(H ** 2 + Z ** 2)  # Total intensity
+        F = np.sqrt(H**2 + Z**2)  # Total intensity
         X = H * np.cos(decl_data["declination"])  # North component
         Y = H * np.sin(decl_data["declination"])  # East component
 

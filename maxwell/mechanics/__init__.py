@@ -13,21 +13,20 @@ from __future__ import annotations
 from maxwell.mechanics.potential_energy import (
     MagneticPotentialEnergy,
     calc_dipole_potential_energy,
-    work_rotating_dipole,
-    torque_on_dipole,
+    energy_of_magnetized_body,
     force_on_dipole,
     stable_equilibrium_orientation,
-    energy_of_magnetized_body,
+    torque_on_dipole,
+    work_rotating_dipole,
 )
-
 from maxwell.mechanics.shell_energy import (
     ShellEnergy,
     calc_shell_potential_energy,
     compute_shell_flux,
-    work_moving_shell,
     force_on_shell,
-    torque_on_shell,
     shell_equilibrium_orientation,
+    torque_on_shell,
+    work_moving_shell,
 )
 
 __all__ = [

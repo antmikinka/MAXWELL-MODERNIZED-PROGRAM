@@ -31,10 +31,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -57,8 +58,10 @@ class PonderomotiveForce:
     current_density: callable = None
 
     @maxwell_cite(
-        602, 603,
-        part=4, chapter="Ponderomotive Forces",
+        602,
+        603,
+        part=4,
+        chapter="Ponderomotive Forces",
         theory_class="maxwell_original",
         description="Calculate ponderomotive force density",
     )
@@ -109,8 +112,10 @@ class PonderomotiveForce:
         return f_electric + f_magnetic
 
     @maxwell_cite(
-        602, 603,
-        part=4, chapter="Ponderomotive Forces",
+        602,
+        603,
+        part=4,
+        chapter="Ponderomotive Forces",
         theory_class="maxwell_original",
         description="Calculate total force on volume",
     )
@@ -164,8 +169,10 @@ class PonderomotiveForce:
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Calculate electric force on charge distribution",
 )
@@ -195,8 +202,10 @@ def calc_electric_force_density(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Calculate magnetic force on current distribution",
 )
@@ -228,8 +237,10 @@ def calc_magnetic_force_density(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Calculate Lorentz force on current element: F = I*L×B",
 )
@@ -276,8 +287,10 @@ def calc_ponderomotive_force(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Calculate total ponderomotive force density",
 )
@@ -314,8 +327,10 @@ def calc_ponderomotive_force_density(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Calculate force on point charge",
 )
@@ -361,8 +376,10 @@ def calc_force_on_point_charge(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Calculate force on current-carrying wire",
 )
@@ -408,8 +425,10 @@ def calc_force_on_wire_ponderomotive(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Calculate Maxwell stress tensor force",
 )
@@ -455,9 +474,9 @@ def calc_force_from_stress_tensor(
     for i in range(3):
         for j in range(3):
             T[i, j] = (1.0 / (4.0 * np.pi)) * (
-                E_field[i] * E_field[j] +
-                B_field[i] * B_field[j] -
-                0.5 * (E_squared + B_squared) * (1 if i == j else 0)
+                E_field[i] * E_field[j]
+                + B_field[i] * B_field[j]
+                - 0.5 * (E_squared + B_squared) * (1 if i == j else 0)
             )
 
     # F = T · n * A
@@ -465,8 +484,10 @@ def calc_force_from_stress_tensor(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Verify ponderomotive force relations",
 )
@@ -539,8 +560,10 @@ def verify_ponderomotive_forces(
 
 
 @maxwell_cite(
-    602, 603,
-    part=4, chapter="Ponderomotive Forces",
+    602,
+    603,
+    part=4,
+    chapter="Ponderomotive Forces",
     theory_class="maxwell_original",
     description="Complete ponderomotive force analysis",
 )
@@ -590,6 +613,14 @@ def analyze_ponderomotive_forces(
         "force_density_magnetic": f_magnetic,
         "force_density_total": f_total,
         "total_force_on_volume": F_total,
-        "electric_fraction": np.linalg.norm(f_electric) / np.linalg.norm(f_total) if np.linalg.norm(f_total) > 0 else 0,
-        "magnetic_fraction": np.linalg.norm(f_magnetic) / np.linalg.norm(f_total) if np.linalg.norm(f_total) > 0 else 0,
+        "electric_fraction": (
+            np.linalg.norm(f_electric) / np.linalg.norm(f_total)
+            if np.linalg.norm(f_total) > 0
+            else 0
+        ),
+        "magnetic_fraction": (
+            np.linalg.norm(f_magnetic) / np.linalg.norm(f_total)
+            if np.linalg.norm(f_total) > 0
+            else 0
+        ),
     }

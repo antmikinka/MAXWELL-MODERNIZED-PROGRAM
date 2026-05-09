@@ -44,7 +44,9 @@ def derive_magnetic_rotation(
     H_equiv = vortex.magnetic_field_equivalent()
     # Verdet-like behavior: rotation ~ H * L / lambda^2
     # In vortex model: rotation ~ omega * r^2 * L / (c * lambda^2)
-    rotation = vortex.angular_velocity * vortex.radius**2 * path_length / (c * wavelength**2)
+    rotation = (
+        vortex.angular_velocity * vortex.radius**2 * path_length / (c * wavelength**2)
+    )
 
     return rotation
 
@@ -70,7 +72,9 @@ def compare_verdet_data(
         Comparison results dict.
     """
     discrepancy = abs(calculated_rotation - measured_rotation)
-    fractional_error = discrepancy / measured_rotation if measured_rotation != 0 else float("inf")
+    fractional_error = (
+        discrepancy / measured_rotation if measured_rotation != 0 else float("inf")
+    )
 
     return {
         "calculated": calculated_rotation,

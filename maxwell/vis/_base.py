@@ -10,7 +10,7 @@ from typing import Callable
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, Axes
+from maxwell.vis._compat import Axes, require_matplotlib
 
 
 def create_meshgrid(

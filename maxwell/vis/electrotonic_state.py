@@ -13,11 +13,12 @@ Part IV, Arts. 540, 617 (Electrotonic State).
 
 from __future__ import annotations
 
-import numpy as np
 from typing import Callable
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
+import numpy as np
+
 from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -139,7 +140,9 @@ def calc_electrotonic_transient(
     y = np.asarray(y, dtype=np.float64)
 
     # Current at time t (exponential rise/decay)
-    I_t = current_final + (current_initial - current_final) * np.exp(-time / time_constant)
+    I_t = current_final + (current_initial - current_final) * np.exp(
+        -time / time_constant
+    )
 
     r_cyl = np.sqrt(x**2 + y**2)
     A_z = -2.0 * I_t * np.log(np.maximum(r_cyl, 1e-10))
@@ -160,7 +163,9 @@ def calc_electrotonic_transient(
     description="Calculate B field from electrotonic state via curl.",
 )
 def calc_B_from_electrotonic(
-    A_func: Callable[[np.ndarray, np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray, np.ndarray]],
+    A_func: Callable[
+        [np.ndarray, np.ndarray, np.ndarray], tuple[np.ndarray, np.ndarray, np.ndarray]
+    ],
     x: np.ndarray,
     y: np.ndarray,
     z: np.ndarray,
@@ -278,7 +283,9 @@ def plot_electrotonic_state_2d(
     X, Y = np.meshgrid(x, y)
     Z = np.zeros_like(X)  # z = 0 cross-section
 
-    result = calc_electrotonic_straight_wire(X, Y, Z, current=current, wire_axis=wire_axis)
+    result = calc_electrotonic_straight_wire(
+        X, Y, Z, current=current, wire_axis=wire_axis
+    )
 
     if ax is None:
         fig, ax = plt.subplots(figsize=(8, 8))
@@ -291,7 +298,9 @@ def plot_electrotonic_state_2d(
         # Clip for visualization (avoid extreme values near wire)
         A_mag_clip = np.clip(A_mag, 0, np.percentile(A_mag, 95))
         cf = ax.contourf(
-            X, Y, A_mag_clip,
+            X,
+            Y,
+            A_mag_clip,
             levels=30,
             cmap="plasma",
         )
@@ -299,9 +308,13 @@ def plot_electrotonic_state_2d(
 
     # A-field contour lines
     A_z = result["A_z"]
-    A_z_clip = np.clip(A_z, -np.percentile(np.abs(A_z), 95), np.percentile(np.abs(A_z), 95))
+    A_z_clip = np.clip(
+        A_z, -np.percentile(np.abs(A_z), 95), np.percentile(np.abs(A_z), 95)
+    )
     ax.contour(
-        X, Y, A_z_clip,
+        X,
+        Y,
+        A_z_clip,
         levels=15,
         colors="white",
         linewidths=0.5,
@@ -318,9 +331,7 @@ def plot_electrotonic_state_2d(
 
     ax.set_xlabel("x (cm)")
     ax.set_ylabel("y (cm)")
-    ax.set_title(
-        f"Electrotonic State -- Straight Wire (Art. 540, I={current:.1f})"
-    )
+    ax.set_title(f"Electrotonic State -- Straight Wire (Art. 540, I={current:.1f})")
     ax.legend(loc="best", fontsize=9)
     ax.set_aspect("equal")
 
@@ -387,7 +398,9 @@ def plot_A_and_B_fields(
 
     # A-field quiver (A points along z, so show A_z as color + quiver of grad A_z)
     A_z = result["A_z"]
-    A_z_clip = np.clip(A_z, -np.percentile(np.abs(A_z), 95), np.percentile(np.abs(A_z), 95))
+    A_z_clip = np.clip(
+        A_z, -np.percentile(np.abs(A_z), 95), np.percentile(np.abs(A_z), 95)
+    )
     cf1 = ax1.contourf(X, Y, A_z_clip, levels=20, cmap="coolwarm")
     fig.colorbar(cf1, ax=ax1, label="A_z")
 
@@ -395,9 +408,14 @@ def plot_A_and_B_fields(
     dA_dx, dA_dy = np.gradient(A_z_clip)
     skip = max(1, resolution // 10)
     ax1.quiver(
-        X[::skip, ::skip], Y[::skip, ::skip],
-        dA_dx[::skip, ::skip], dA_dy[::skip, ::skip],
-        color="white", alpha=0.6, scale=30, width=0.003,
+        X[::skip, ::skip],
+        Y[::skip, ::skip],
+        dA_dx[::skip, ::skip],
+        dA_dy[::skip, ::skip],
+        color="white",
+        alpha=0.6,
+        scale=30,
+        width=0.003,
     )
     ax1.set_title("A-Field (Electrotonic State)")
     ax1.set_xlabel("x (cm)")
@@ -412,16 +430,25 @@ def plot_A_and_B_fields(
     B_x_norm = B_x / np.maximum(B_mag, 1e-10)
     B_y_norm = B_y / np.maximum(B_mag, 1e-10)
     ax2.quiver(
-        X[::skip, ::skip], Y[::skip, ::skip],
-        B_x_norm[::skip, ::skip], B_y_norm[::skip, ::skip],
-        color="white", alpha=0.6, scale=25, width=0.003,
+        X[::skip, ::skip],
+        Y[::skip, ::skip],
+        B_x_norm[::skip, ::skip],
+        B_y_norm[::skip, ::skip],
+        color="white",
+        alpha=0.6,
+        scale=25,
+        width=0.003,
     )
     ax2.set_title("B-Field (Magnetic Induction)")
     ax2.set_xlabel("x (cm)")
     ax2.set_ylabel("y (cm)")
     ax2.set_aspect("equal")
 
-    fig.suptitle("A and B Fields -- Electrotonic State (Art. 540)", fontsize=14, fontweight="bold")
+    fig.suptitle(
+        "A and B Fields -- Electrotonic State (Art. 540)",
+        fontsize=14,
+        fontweight="bold",
+    )
     fig.tight_layout()
     return fig, ax2
 
@@ -484,7 +511,8 @@ def plot_A_transient(
         A_t = []
         for ti in t:
             result = calc_electrotonic_transient(
-                np.array([px]), np.array([py]),
+                np.array([px]),
+                np.array([py]),
                 current_initial=current_initial,
                 current_final=current_final,
                 time_constant=time_constant,
@@ -506,10 +534,20 @@ def plot_A_transient(
     # Panel 2: Current I(t)
     I_t = current_final + (current_initial - current_final) * np.exp(-t / time_constant)
     ax2.plot(t, I_t, color="#e41a1c", linewidth=2, label="I(t)")
-    ax2.axhline(y=current_final, color="gray", linestyle="--", linewidth=1,
-                label=f"Final: {current_final}")
-    ax2.axhline(y=current_initial, color="gray", linestyle=":", linewidth=1,
-                label=f"Initial: {current_initial}")
+    ax2.axhline(
+        y=current_final,
+        color="gray",
+        linestyle="--",
+        linewidth=1,
+        label=f"Final: {current_final}",
+    )
+    ax2.axhline(
+        y=current_initial,
+        color="gray",
+        linestyle=":",
+        linewidth=1,
+        label=f"Initial: {current_initial}",
+    )
 
     # Mark time constant
     I_at_tau = current_final + (current_initial - current_final) * np.exp(-1)
@@ -521,7 +559,9 @@ def plot_A_transient(
     ax2.legend(loc="best", fontsize=9)
     ax2.grid(True, alpha=0.3)
 
-    fig.suptitle("Electrotonic State Transient (Art. 617)", fontsize=14, fontweight="bold")
+    fig.suptitle(
+        "Electrotonic State Transient (Art. 617)", fontsize=14, fontweight="bold"
+    )
     fig.tight_layout()
     return fig, [ax1, ax2]
 
@@ -576,6 +616,7 @@ def plot_electrotonic_3d_surface(
 
     try:
         from matplotlib import colormaps
+
         cmap_obj = colormaps.get_cmap("plasma")
     except Exception:
         cmap_obj = plt.cm.get_cmap("plasma")
@@ -584,7 +625,9 @@ def plot_electrotonic_3d_surface(
     colors = cmap_obj(0.5 * A_mag_clip / np.maximum(A_max, 1e-10))
 
     ax.plot_surface(
-        X, Y, A_mag_clip,
+        X,
+        Y,
+        A_mag_clip,
         facecolors=colors,
         alpha=0.85,
         linewidth=0,

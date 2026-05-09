@@ -35,15 +35,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional, Tuple
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # QUADRANT ELECTROMETER (Arts. 207-215)
 # =============================================================================
+
 
 @dataclass
 class QuadrantElectrometer:
@@ -94,10 +95,13 @@ class QuadrantElectrometer:
             self.sensitivity = C_prime * self.needle_potential / self.torsion_constant
 
     @maxwell_cite(
-        207, 208, 209,
-        part=1, chapter="Electrostatic Instruments",
+        207,
+        208,
+        209,
+        part=1,
+        chapter="Electrostatic Instruments",
         theory_class="maxwell_original",
-        description="Quadrant electrometer deflection"
+        description="Quadrant electrometer deflection",
     )
     def measure_potential_difference(
         self,
@@ -154,7 +158,12 @@ class QuadrantElectrometer:
         if mode == "heterostatic":
             # θ = (1/2κ) * (dC/dθ) * V_n * ΔV
             # Simplified: θ = S * ΔV where S is sensitivity
-            torque = self.sensitivity * self.torsion_constant * delta_V / self.needle_potential
+            torque = (
+                self.sensitivity
+                * self.torsion_constant
+                * delta_V
+                / self.needle_potential
+            )
             deflection = torque / self.torsion_constant
             effective_sensitivity = deflection / abs(delta_V) if delta_V != 0 else 0
 
@@ -162,7 +171,7 @@ class QuadrantElectrometer:
             # Needle connected to quadrant A: θ ∝ (ΔV)²
             # θ = k * (V_a - V_b)²
             k = self.sensitivity / (2 * self.needle_potential)
-            torque = k * delta_V ** 2 * self.torsion_constant
+            torque = k * delta_V**2 * self.torsion_constant
             deflection = torque / self.torsion_constant
             effective_sensitivity = deflection / abs(delta_V) if delta_V != 0 else 0
 
@@ -180,10 +189,13 @@ class QuadrantElectrometer:
         }
 
     @maxwell_cite(
-        210, 211, 212,
-        part=1, chapter="Electrostatic Instruments",
+        210,
+        211,
+        212,
+        part=1,
+        chapter="Electrostatic Instruments",
         theory_class="maxwell_original",
-        description="Quadrant electrometer sensitivity analysis"
+        description="Quadrant electrometer sensitivity analysis",
     )
     def analyze_sensitivity(
         self,
@@ -229,7 +241,7 @@ class QuadrantElectrometer:
         # Estimate moment of inertia (thin rod approximation)
         # I = (1/12) * m * l², assume m ≈ 0.01 g for aluminum needle
         needle_mass = 0.01  # grams
-        I = (1/12) * needle_mass * self.needle_length ** 2  # g·cm²
+        I = (1 / 12) * needle_mass * self.needle_length**2  # g·cm²
 
         # Natural frequency ω₀ = √(κ/I)
         natural_frequency = np.sqrt(self.torsion_constant / I) if I > 0 else 0
@@ -237,28 +249,40 @@ class QuadrantElectrometer:
         # Damping ratio (estimate from damping constant)
         # ζ = c / (2 * √(κ * I))
         critical_damping = 2 * np.sqrt(self.torsion_constant * I)
-        damping_ratio = self.damping_constant / critical_damping if critical_damping > 0 else 0
+        damping_ratio = (
+            self.damping_constant / critical_damping if critical_damping > 0 else 0
+        )
 
         # Response time (to 90% of final value)
         if damping_ratio < 1:
             # Underdamped: t_r ≈ π/(2*ω_d) where ω_d = ω₀√(1-ζ²)
-            omega_d = natural_frequency * np.sqrt(1 - damping_ratio ** 2)
-            response_time = np.pi / (2 * omega_d) if omega_d > 0 else float('inf')
+            omega_d = natural_frequency * np.sqrt(1 - damping_ratio**2)
+            response_time = np.pi / (2 * omega_d) if omega_d > 0 else float("inf")
         else:
             # Overdamped: t_r ≈ 3/(ζ*ω₀)
-            response_time = 3 / (damping_ratio * natural_frequency) if natural_frequency > 0 else float('inf')
+            response_time = (
+                3 / (damping_ratio * natural_frequency)
+                if natural_frequency > 0
+                else float("inf")
+            )
 
         # Minimum detectable potential difference
         # Limited by thermal noise: V_min ≈ √(k_B*T/C) / S
         # In CGS: k_B ≈ 1.38e-16 erg/K, assume C ≈ 1 statF
         k_B_cgs = 1.38e-16  # erg/K
         thermal_voltage = np.sqrt(k_B_cgs * temperature / self.quadrant_capacitance)
-        minimum_detectable = thermal_voltage / static_sensitivity if static_sensitivity > 0 else float('inf')
+        minimum_detectable = (
+            thermal_voltage / static_sensitivity
+            if static_sensitivity > 0
+            else float("inf")
+        )
 
         # Temperature correction for torsion constant
         # Quartz fiber: dκ/dT ≈ -0.01%/K
         temp_coefficient = -1e-4
-        kappa_corrected = self.torsion_constant * (1 + temp_coefficient * (temperature - 293.15))
+        kappa_corrected = self.torsion_constant * (
+            1 + temp_coefficient * (temperature - 293.15)
+        )
 
         return {
             "static_sensitivity": static_sensitivity,
@@ -274,10 +298,13 @@ class QuadrantElectrometer:
 
 
 @maxwell_cite(
-    213, 214, 215,
-    part=1, chapter="Electrostatic Instruments",
+    213,
+    214,
+    215,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Quadrant electrometer with AC signals"
+    description="Quadrant electrometer with AC signals",
 )
 def quadrant_electrometer(
     signal_potential: float,
@@ -326,7 +353,9 @@ def quadrant_electrometer(
         ... )
         >>> print(f"Deflection: {result['deflection']:.4f} rad")
     """
-    delta_V = signal_potential - (reference_potential if reference_potential is not None else 0)
+    delta_V = signal_potential - (
+        reference_potential if reference_potential is not None else 0
+    )
 
     # DC deflection (heterostatic)
     sensitivity = 1e-3  # rad/statvolt (typical)
@@ -355,8 +384,8 @@ def quadrant_electrometer(
     omega_0 = 2 * np.pi * natural_freq
     r = omega / omega_0
 
-    gain = 1.0 / np.sqrt((1 - r ** 2) ** 2 + (2 * damping_ratio * r) ** 2)
-    phase_shift = np.arctan2(2 * damping_ratio * r, 1 - r ** 2)
+    gain = 1.0 / np.sqrt((1 - r**2) ** 2 + (2 * damping_ratio * r) ** 2)
+    phase_shift = np.arctan2(2 * damping_ratio * r, 1 - r**2)
 
     ac_amplitude = dc_deflection * gain
 
@@ -387,11 +416,15 @@ def quadrant_electrometer(
 # ABSOLUTE ELECTROMETER (Arts. 216-220)
 # =============================================================================
 
+
 @maxwell_cite(
-    216, 217, 218,
-    part=1, chapter="Electrostatic Instruments",
+    216,
+    217,
+    218,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Absolute electrometer for direct potential measurement"
+    description="Absolute electrometer for direct potential measurement",
 )
 def absolute_electrometer(
     measured_potential: float,
@@ -448,10 +481,14 @@ def absolute_electrometer(
         >>> print(f"Force: {result['force_on_disk']:.2f} dynes")
     """
     # Force on disk: F = A * V² / (8π * d²)
-    force = electrode_area * measured_potential ** 2 / (8 * np.pi * electrode_separation ** 2)
+    force = (
+        electrode_area * measured_potential**2 / (8 * np.pi * electrode_separation**2)
+    )
 
     # Sensitivity dF/dV = A * V / (4π * d²)
-    sensitivity = electrode_area * measured_potential / (4 * np.pi * electrode_separation ** 2)
+    sensitivity = (
+        electrode_area * measured_potential / (4 * np.pi * electrode_separation**2)
+    )
 
     # Edge correction (guard ring effectiveness)
     # Without guard ring: ~10% error from fringing
@@ -463,7 +500,9 @@ def absolute_electrometer(
         edge_correction = 1.0 + 0.1 * (electrode_separation / np.sqrt(electrode_area))
 
     # Reconstruct potential from force (ideal case)
-    reconstructed_potential = electrode_separation * np.sqrt(8 * np.pi * force / electrode_area)
+    reconstructed_potential = electrode_separation * np.sqrt(
+        8 * np.pi * force / electrode_area
+    )
 
     return {
         "force_on_disk": force,
@@ -478,10 +517,12 @@ def absolute_electrometer(
 
 
 @maxwell_cite(
-    219, 220,
-    part=1, chapter="Electrostatic Instruments",
+    219,
+    220,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Calibration of absolute electrometer"
+    description="Calibration of absolute electrometer",
 )
 def calibration_electrometer(
     reference_voltage: float,
@@ -532,19 +573,21 @@ def calibration_electrometer(
         >>> print(f"Calibration factor: {result['calibration_factor']:.4f}")
     """
     # Theoretical geometric factor
-    k_theoretical = electrode_area / (8 * np.pi * electrode_separation ** 2)
+    k_theoretical = electrode_area / (8 * np.pi * electrode_separation**2)
 
     # Theoretical force
-    F_theoretical = k_theoretical * reference_voltage ** 2
+    F_theoretical = k_theoretical * reference_voltage**2
 
     # Measured geometric factor
-    k_measured = measured_force / reference_voltage ** 2
+    k_measured = measured_force / reference_voltage**2
 
     # Calibration factor (multiply readings by this to correct)
     calibration_factor = k_theoretical / k_measured if k_measured > 0 else 1.0
 
     # Calibration error
-    calibration_error = (F_theoretical - measured_force) / F_theoretical if F_theoretical > 0 else 0
+    calibration_error = (
+        (F_theoretical - measured_force) / F_theoretical if F_theoretical > 0 else 0
+    )
 
     return {
         "theoretical_force": F_theoretical,
@@ -561,11 +604,15 @@ def calibration_electrometer(
 # ATTRACTED DISK ELECTROMETER (Arts. 221-225)
 # =============================================================================
 
+
 @maxwell_cite(
-    221, 222, 223,
-    part=1, chapter="Electrostatic Instruments",
+    221,
+    222,
+    223,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Attracted disk electrometer (force measurement)"
+    description="Attracted disk electrometer (force measurement)",
 )
 def attracted_disk_electrometer(
     disk_potential: float,
@@ -625,7 +672,7 @@ def attracted_disk_electrometer(
     delta_V = disk_potential - plate_potential
 
     # Attractive force: F = A * ΔV² / (8π * d²)
-    attractive_force = disk_area * delta_V ** 2 / (8 * np.pi * disk_separation ** 2)
+    attractive_force = disk_area * delta_V**2 / (8 * np.pi * disk_separation**2)
 
     # Force gradient (important for stability)
     # dF/dd = -2 * A * ΔV² / (8π * d³) = -2F/d
@@ -644,7 +691,9 @@ def attracted_disk_electrometer(
     # When dF/dd exceeds restoring force gradient, disk pulls in
     # Critical separation: d_crit = (A * ΔV² / (4π * κ))^(1/3)
     if torsion_fiber_constant is not None:
-        stability_limit = (disk_area * delta_V ** 2 / (4 * np.pi * torsion_fiber_constant)) ** (1/3)
+        stability_limit = (
+            disk_area * delta_V**2 / (4 * np.pi * torsion_fiber_constant)
+        ) ** (1 / 3)
     else:
         stability_limit = disk_separation / 2  # Rule of thumb
 
@@ -663,10 +712,12 @@ def attracted_disk_electrometer(
 
 
 @maxwell_cite(
-    224, 225,
-    part=1, chapter="Electrostatic Instruments",
+    224,
+    225,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Force measurement with attracted disk"
+    description="Force measurement with attracted disk",
 )
 def attracted_disk_force(
     measured_force: float,
@@ -710,7 +761,9 @@ def attracted_disk_force(
         >>> print(f"V = {result['potential_difference']:.2f} statvolts")
     """
     # V = d * √(8π * F / A)
-    potential_difference = disk_separation * np.sqrt(8 * np.pi * measured_force / disk_area)
+    potential_difference = disk_separation * np.sqrt(
+        8 * np.pi * measured_force / disk_area
+    )
 
     # Force per unit area (pressure)
     force_per_unit_area = measured_force / disk_area
@@ -719,7 +772,7 @@ def attracted_disk_force(
     field_strength = potential_difference / disk_separation
 
     # Energy density in the gap
-    energy_density = field_strength ** 2 / (8 * np.pi)
+    energy_density = field_strength**2 / (8 * np.pi)
 
     return {
         "potential_difference": potential_difference,
@@ -736,11 +789,15 @@ def attracted_disk_force(
 # TORSION ELECTROMETER (Arts. 226-228)
 # =============================================================================
 
+
 @maxwell_cite(
-    226, 227, 228,
-    part=1, chapter="Electrostatic Instruments",
+    226,
+    227,
+    228,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Torsion electrometer (Coulomb's torsion balance)"
+    description="Torsion electrometer (Coulomb's torsion balance)",
 )
 def torsion_electrometer(
     charge_1: float,
@@ -799,7 +856,7 @@ def torsion_electrometer(
         >>> print(f"Deflection: {result['deflection_degrees']:.2f}°")
     """
     # Electrostatic force: F = q₁ * q₂ / r²
-    electrostatic_force = charge_1 * charge_2 / separation ** 2
+    electrostatic_force = charge_1 * charge_2 / separation**2
 
     # Torque: τ = F * L
     torque = electrostatic_force * arm_length
@@ -809,7 +866,7 @@ def torsion_electrometer(
     deflection_degrees = np.degrees(deflection_angle)
 
     # Sensitivity to charge_1
-    sensitivity = arm_length / (torsion_constant * separation ** 2) * charge_2
+    sensitivity = arm_length / (torsion_constant * separation**2) * charge_2
 
     return {
         "electrostatic_force": electrostatic_force,
@@ -826,10 +883,12 @@ def torsion_electrometer(
 
 
 @maxwell_cite(
-    226, 227,
-    part=1, chapter="Electrostatic Instruments",
+    226,
+    227,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Measure unknown charge using torsion balance"
+    description="Measure unknown charge using torsion balance",
 )
 def measure_charge_torsion(
     deflection_angle: float,
@@ -879,16 +938,23 @@ def measure_charge_torsion(
         >>> print(f"Unknown charge: {result['unknown_charge']:.2f} statC")
     """
     # q_unknown = κ * θ * r² / (L * q_known)
-    unknown_charge = torsion_constant * deflection_angle * separation ** 2 / (arm_length * known_charge)
+    unknown_charge = (
+        torsion_constant
+        * deflection_angle
+        * separation**2
+        / (arm_length * known_charge)
+    )
 
     # Electrostatic force
-    electrostatic_force = known_charge * unknown_charge / separation ** 2
+    electrostatic_force = known_charge * unknown_charge / separation**2
 
     # Torque
     torque = electrostatic_force * arm_length
 
     # Sensitivity dq/dθ
-    measurement_sensitivity = torsion_constant * separation ** 2 / (arm_length * known_charge)
+    measurement_sensitivity = (
+        torsion_constant * separation**2 / (arm_length * known_charge)
+    )
 
     return {
         "unknown_charge": unknown_charge,
@@ -905,11 +971,13 @@ def measure_charge_torsion(
 # HENLEY ELECTROMETER (Art. 229)
 # =============================================================================
 
+
 @maxwell_cite(
     229,
-    part=1, chapter="Electrostatic Instruments",
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Henley electrometer (simple electroscope)"
+    description="Henley electrometer (simple electroscope)",
 )
 def henley_electrometer(
     applied_potential: float,
@@ -969,7 +1037,7 @@ def henley_electrometer(
     # F_e ≈ Q_straw² / (2 * d²) where d is effective distance
     # Simplified: F_e ∝ V²
     effective_distance = straw_length / 2
-    electrostatic_force = Q_straw ** 2 / (2 * effective_distance ** 2)
+    electrostatic_force = Q_straw**2 / (2 * effective_distance**2)
 
     # Torque from electrostatic force
     torque_electric = electrostatic_force * straw_length
@@ -1012,11 +1080,18 @@ def henley_electrometer(
 # ELECTROMETER SENSITIVITY ANALYSIS (Arts. 210-215)
 # =============================================================================
 
+
 @maxwell_cite(
-    210, 211, 212, 213, 214, 215,
-    part=1, chapter="Electrostatic Instruments",
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    part=1,
+    chapter="Electrostatic Instruments",
     theory_class="maxwell_original",
-    description="Comprehensive electrometer sensitivity analysis"
+    description="Comprehensive electrometer sensitivity analysis",
 )
 def electrometer_sensitivity(
     electrometer_type: str = "quadrant",
@@ -1102,7 +1177,7 @@ def electrometer_sensitivity(
         # Assume A = 10 cm², d = 0.5 cm
         A = 10.0
         d = 0.5
-        static_sensitivity = A * needle_potential / (4 * np.pi * d ** 2)
+        static_sensitivity = A * needle_potential / (4 * np.pi * d**2)
 
         # Force noise from thermal fluctuations
         force_noise = np.sqrt(k_B_cgs * temperature * torsion_constant)
@@ -1117,7 +1192,7 @@ def electrometer_sensitivity(
         # S = dθ/dq = L * q / (κ * r²)
         L = 5.0  # arm length
         r = 2.0  # separation
-        static_sensitivity = L * needle_potential / (torsion_constant * r ** 2)
+        static_sensitivity = L * needle_potential / (torsion_constant * r**2)
 
         # Angular noise from thermal fluctuations
         angular_noise = np.sqrt(k_B_cgs * temperature / torsion_constant)
@@ -1162,15 +1237,12 @@ if __name__ == "__main__":
     print(f"  Deflection: {result['deflection_degrees']:.4f}°")
 
     result = quadrant_electrometer(
-        signal_potential=10, reference_potential=5,
-        needle_potential=1000
+        signal_potential=10, reference_potential=5, needle_potential=1000
     )
     print(f"  DC response: {result['deflection']:.4f} rad")
 
     result = electrometer_sensitivity(
-        electrometer_type="quadrant",
-        needle_potential=1000,
-        torsion_constant=0.001
+        electrometer_type="quadrant", needle_potential=1000, torsion_constant=0.001
     )
     print(f"  Sensitivity: {result['static_sensitivity']:.2f} rad/statV")
     print(f"  Voltage resolution: {result['voltage_resolution']:.2e} statV")
@@ -1178,9 +1250,7 @@ if __name__ == "__main__":
     # Test absolute electrometer
     print("\n--- Absolute Electrometer (Arts. 216-220) ---")
     result = absolute_electrometer(
-        measured_potential=100,
-        electrode_area=10.0,
-        electrode_separation=0.5
+        measured_potential=100, electrode_area=10.0, electrode_separation=0.5
     )
     print(f"  Force at V=100: {result['force_on_disk']:.2f} dynes")
     print(f"  Sensitivity: {result['sensitivity']:.2f} dyne/statV")
@@ -1189,7 +1259,7 @@ if __name__ == "__main__":
         reference_voltage=100,
         measured_force=79.58,
         electrode_area=10.0,
-        electrode_separation=0.5
+        electrode_separation=0.5,
     )
     print(f"  Calibration factor: {result['calibration_factor']:.4f}")
     print(f"  Calibration error: {result['calibration_error']:.2%}")
@@ -1197,25 +1267,20 @@ if __name__ == "__main__":
     # Test attracted disk electrometer
     print("\n--- Attracted Disk Electrometer (Arts. 221-225) ---")
     result = attracted_disk_electrometer(
-        disk_potential=100, plate_potential=0,
-        disk_area=5.0, disk_separation=0.2
+        disk_potential=100, plate_potential=0, disk_area=5.0, disk_separation=0.2
     )
     print(f"  Attractive force: {result['attractive_force']:.2f} dynes")
     print(f"  Force gradient: {result['force_gradient']:.2f} dyne/cm")
 
     result = attracted_disk_force(
-        measured_force=100,
-        disk_area=5.0,
-        disk_separation=0.2
+        measured_force=100, disk_area=5.0, disk_separation=0.2
     )
     print(f"  Reconstructed V: {result['potential_difference']:.2f} statV")
 
     # Test torsion electrometer
     print("\n--- Torsion Electrometer (Arts. 226-228) ---")
     result = torsion_electrometer(
-        charge_1=10, charge_2=10,
-        separation=2.0, torsion_constant=0.001,
-        arm_length=5.0
+        charge_1=10, charge_2=10, separation=2.0, torsion_constant=0.001, arm_length=5.0
     )
     print(f"  Deflection: {result['deflection_degrees']:.2f}°")
     print(f"  Torque: {result['torque']:.4f} dyne·cm")
@@ -1225,7 +1290,7 @@ if __name__ == "__main__":
         known_charge=10,
         separation=2.0,
         torsion_constant=0.001,
-        arm_length=5.0
+        arm_length=5.0,
     )
     print(f"  Measured charge: {result['unknown_charge']:.2f} statC")
 

@@ -19,10 +19,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -52,8 +53,16 @@ class CylindricalMagnet:
     axis: np.ndarray = None
 
     def __post_init__(self):
-        self.center = np.asarray(self.center, dtype=np.float64) if self.center is not None else np.zeros(3)
-        self.axis = np.asarray(self.axis, dtype=np.float64) if self.axis is not None else np.array([0, 0, 1])
+        self.center = (
+            np.asarray(self.center, dtype=np.float64)
+            if self.center is not None
+            else np.zeros(3)
+        )
+        self.axis = (
+            np.asarray(self.axis, dtype=np.float64)
+            if self.axis is not None
+            else np.array([0, 0, 1])
+        )
         self.axis = self.axis / np.linalg.norm(self.axis)
 
     @property
@@ -68,7 +77,8 @@ class CylindricalMagnet:
 
     @maxwell_cite(
         439,
-        part=3, chapter="Shape Solvers",
+        part=3,
+        chapter="Shape Solvers",
         theory_class="maxwell_original",
         description="Calculate on-axis field of cylindrical magnet",
     )
@@ -104,7 +114,8 @@ class CylindricalMagnet:
 
     @maxwell_cite(
         439,
-        part=3, chapter="Shape Solvers",
+        part=3,
+        chapter="Shape Solvers",
         theory_class="maxwell_original",
         description="Calculate demagnetizing factor for cylinder",
     )
@@ -129,7 +140,12 @@ class CylindricalMagnet:
 
         if aspect > 10:
             # Long thin cylinder
-            N = 4 * np.pi * (self.radius / self.length)**2 * np.log(self.length / self.radius)
+            N = (
+                4
+                * np.pi
+                * (self.radius / self.length) ** 2
+                * np.log(self.length / self.radius)
+            )
         elif aspect < 0.1:
             # Thin disk
             N = 4 * np.pi * (1 - 2 * aspect / np.pi)
@@ -143,7 +159,8 @@ class CylindricalMagnet:
     @classmethod
     @maxwell_cite(
         440,
-        part=3, chapter="Shape Solvers",
+        part=3,
+        chapter="Shape Solvers",
         theory_class="maxwell_original",
         description="Create cylinder from remanent field",
     )
@@ -185,7 +202,8 @@ class CylindricalMagnet:
 
     @maxwell_cite(
         439,
-        part=3, chapter="Shape Solvers",
+        part=3,
+        chapter="Shape Solvers",
         theory_class="maxwell_original",
         description="Calculate surface field of cylindrical magnet",
     )
@@ -243,7 +261,11 @@ class RectangularMagnet:
     def __post_init__(self):
         self.dimensions = np.asarray(self.dimensions, dtype=np.float64)
         self.magnetization = np.asarray(self.magnetization, dtype=np.float64)
-        self.center = np.asarray(self.center, dtype=np.float64) if self.center is not None else np.zeros(3)
+        self.center = (
+            np.asarray(self.center, dtype=np.float64)
+            if self.center is not None
+            else np.zeros(3)
+        )
 
     @property
     def volume(self) -> float:
@@ -257,7 +279,8 @@ class RectangularMagnet:
 
     @maxwell_cite(
         439,
-        part=3, chapter="Shape Solvers",
+        part=3,
+        chapter="Shape Solvers",
         theory_class="maxwell_original",
         description="Calculate field of rectangular magnet at point",
     )
@@ -339,7 +362,8 @@ class RectangularMagnet:
 
     @maxwell_cite(
         440,
-        part=3, chapter="Shape Solvers",
+        part=3,
+        chapter="Shape Solvers",
         theory_class="maxwell_original",
         description="Calculate demagnetizing factors for rectangular prism",
     )
@@ -395,7 +419,8 @@ class RectangularMagnet:
 
 @maxwell_cite(
     439,
-    part=3, chapter="Shape Solvers",
+    part=3,
+    chapter="Shape Solvers",
     theory_class="maxwell_original",
     description="Compare demagnetizing factors for different shapes",
 )
@@ -424,7 +449,7 @@ def compare_shape_demagnetizing_factors(
     """
     if shape == "sphere":
         # Sphere: radius from volume
-        R = (3 * volume / (4 * np.pi))**(1/3)
+        R = (3 * volume / (4 * np.pi)) ** (1 / 3)
         N = 4 * np.pi / 3
         return {"N_x": N, "N_y": N, "N_z": N, "shape": "sphere"}
 
@@ -436,12 +461,12 @@ def compare_shape_demagnetizing_factors(
             aspect = 1.0
 
         # L = aspect × D, V = πR²L = π(D/2)²L
-        L = (4 * volume * aspect / np.pi)**(1/3)
+        L = (4 * volume * aspect / np.pi) ** (1 / 3)
         R = L / (2 * aspect)
 
         # Demagnetizing factor
         if aspect > 10:
-            N_z = 4 * np.pi * (R / L)**2 * np.log(L / R)
+            N_z = 4 * np.pi * (R / L) ** 2 * np.log(L / R)
         elif aspect < 0.1:
             N_z = 4 * np.pi * (1 - 2 * aspect / np.pi)
         else:
@@ -450,17 +475,22 @@ def compare_shape_demagnetizing_factors(
 
         N_x = N_y = (4 * np.pi - N_z) / 2
 
-        return {"N_x": float(N_x), "N_y": float(N_y), "N_z": float(N_z), "shape": "cylinder"}
+        return {
+            "N_x": float(N_x),
+            "N_y": float(N_y),
+            "N_z": float(N_z),
+            "shape": "cylinder",
+        }
 
     elif shape == "rectangular":
         # Rectangular prism
         if dimensions:
-            a = dimensions.get("a", volume**(1/3))
-            b = dimensions.get("b", volume**(1/3))
-            c = dimensions.get("c", volume**(1/3))
+            a = dimensions.get("a", volume ** (1 / 3))
+            b = dimensions.get("b", volume ** (1 / 3))
+            c = dimensions.get("c", volume ** (1 / 3))
         else:
             # Cube
-            a = b = c = volume**(1/3)
+            a = b = c = volume ** (1 / 3)
 
         S_x = b * c
         S_y = a * c
@@ -477,15 +507,22 @@ def compare_shape_demagnetizing_factors(
         N_y *= 4 * np.pi / total
         N_z *= 4 * np.pi / total
 
-        return {"N_x": float(N_x), "N_y": float(N_y), "N_z": float(N_z), "shape": "rectangular"}
+        return {
+            "N_x": float(N_x),
+            "N_y": float(N_y),
+            "N_z": float(N_z),
+            "shape": "rectangular",
+        }
 
     else:
         return {"N_x": 0, "N_y": 0, "N_z": 0, "shape": "unknown"}
 
 
 @maxwell_cite(
-    439, 440,
-    part=3, chapter="Shape Solvers",
+    439,
+    440,
+    part=3,
+    chapter="Shape Solvers",
     theory_class="maxwell_original",
     description="Calculate shape-dependent magnetic energy",
 )
@@ -521,10 +558,10 @@ def shape_magnetostatic_energy(
 
     I = np.asarray(magnetization, dtype=np.float64)
 
-    W = 0.5 * volume * (
-        N["N_x"] * I[0]**2 +
-        N["N_y"] * I[1]**2 +
-        N["N_z"] * I[2]**2
+    W = (
+        0.5
+        * volume
+        * (N["N_x"] * I[0] ** 2 + N["N_y"] * I[1] ** 2 + N["N_z"] * I[2] ** 2)
     )
 
     return float(W)
@@ -532,7 +569,8 @@ def shape_magnetostatic_energy(
 
 @maxwell_cite(
     439,
-    part=3, chapter="Shape Solvers",
+    part=3,
+    chapter="Shape Solvers",
     theory_class="maxwell_original",
     description="Optimize shape for maximum external field",
 )
@@ -572,7 +610,7 @@ def optimize_shape_for_field(
         best_field = 0
 
         for aspect in np.linspace(0.1, 10, 100):
-            L = (4 * volume * aspect / np.pi)**(1/3)
+            L = (4 * volume * aspect / np.pi) ** (1 / 3)
             R = L / (2 * aspect)
 
             # Surface field at pole face
@@ -590,21 +628,25 @@ def optimize_shape_for_field(
 
     elif constraint == "fixed_length":
         # For fixed L, find optimal R
-        L = (volume)**(1/3)  # Assume L ~ V^(1/3)
+        L = (volume) ** (1 / 3)  # Assume L ~ V^(1/3)
         R = np.sqrt(volume / (np.pi * L))
 
         results["fixed_length"] = {
             "length": float(L),
             "radius": float(R),
-            "surface_field": float(2 * np.pi * magnetization * L / np.sqrt(L**2 + R**2)),
+            "surface_field": float(
+                2 * np.pi * magnetization * L / np.sqrt(L**2 + R**2)
+            ),
         }
 
     return results
 
 
 @maxwell_cite(
-    439, 440,
-    part=3, chapter="Shape Solvers",
+    439,
+    440,
+    part=3,
+    chapter="Shape Solvers",
     theory_class="maxwell_original",
     description="Verify shape solver calculations",
 )
@@ -635,11 +677,14 @@ def verify_shape_solvers() -> dict[str, any]:
     N_cube = cube.demagnetizing_factors()
     expected = 4 * np.pi / 3
 
-    cube_error = max(
-        abs(N_cube["N_x"] - expected),
-        abs(N_cube["N_y"] - expected),
-        abs(N_cube["N_z"] - expected),
-    ) / expected
+    cube_error = (
+        max(
+            abs(N_cube["N_x"] - expected),
+            abs(N_cube["N_y"] - expected),
+            abs(N_cube["N_z"] - expected),
+        )
+        / expected
+    )
 
     results["cube_demagnetizing"] = {
         "N_x": N_cube["N_x"],

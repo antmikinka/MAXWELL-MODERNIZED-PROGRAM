@@ -36,21 +36,25 @@ References:
 from __future__ import annotations
 
 from typing import Callable
+
 import numpy as np
 from scipy import integrate
 
 from maxwell.meta.citation import maxwell_cite
 
-
 # =============================================================================
 # GREEN'S THEOREM (Arts. 95-97)
 # =============================================================================
 
+
 @maxwell_cite(
-    95, 96, 97,
-    part=1, chapter="General Theorems in Electrostatics",
+    95,
+    96,
+    97,
+    part=1,
+    chapter="General Theorems in Electrostatics",
     theory_class="standard_math",
-    description="Green's theorem in three dimensions"
+    description="Green's theorem in three dimensions",
 )
 def greens_theorem(
     U: Callable[[np.ndarray], float],
@@ -109,7 +113,9 @@ def greens_theorem(
         >>> result = greens_theorem(U, V, bounds)
     """
 
-    def numerical_gradient(f: Callable[[np.ndarray], float], r: np.ndarray, h: float = 1e-6) -> np.ndarray:
+    def numerical_gradient(
+        f: Callable[[np.ndarray], float], r: np.ndarray, h: float = 1e-6
+    ) -> np.ndarray:
         """Compute gradient numerically using central differences."""
         grad = np.zeros(3)
         for i in range(3):
@@ -118,13 +124,15 @@ def greens_theorem(
             grad[i] = (f(r + delta) - f(r - delta)) / (2 * h)
         return grad
 
-    def numerical_laplacian(f: Callable[[np.ndarray], float], r: np.ndarray, h: float = 1e-4) -> float:
+    def numerical_laplacian(
+        f: Callable[[np.ndarray], float], r: np.ndarray, h: float = 1e-4
+    ) -> float:
         """Compute Laplacian numerically."""
         laplacian = 0.0
         for i in range(3):
             delta = np.zeros(3)
             delta[i] = h
-            laplacian += (f(r + delta) - 2 * f(r) + f(r - delta)) / (h ** 2)
+            laplacian += (f(r + delta) - 2 * f(r) + f(r - delta)) / (h**2)
         return laplacian
 
     # Use provided gradient functions or compute numerically
@@ -181,11 +189,14 @@ def greens_theorem(
 # GREEN'S RECIPROCITY THEOREM (Arts. 98-99)
 # =============================================================================
 
+
 @maxwell_cite(
-    98, 99,
-    part=1, chapter="General Theorems in Electrostatics",
+    98,
+    99,
+    part=1,
+    chapter="General Theorems in Electrostatics",
     theory_class="maxwell_original",
-    description="Green's reciprocity theorem for electrostatics"
+    description="Green's reciprocity theorem for electrostatics",
 )
 def greens_reciprocity(
     charges_1: list[tuple[float, np.ndarray]],
@@ -283,11 +294,14 @@ def greens_reciprocity(
 # POTENTIAL FROM CHARGE DISTRIBUTION (Arts. 100-101)
 # =============================================================================
 
+
 @maxwell_cite(
-    100, 101,
-    part=1, chapter="General Theorems in Electrostatics",
+    100,
+    101,
+    part=1,
+    chapter="General Theorems in Electrostatics",
     theory_class="maxwell_original",
-    description="Calculate potential from arbitrary charge distribution"
+    description="Calculate potential from arbitrary charge distribution",
 )
 def potential_from_charge_distribution(
     charge_density: Callable[[np.ndarray], float],
@@ -349,9 +363,7 @@ def potential_from_charge_distribution(
     (x0, x1), (y0, y1), (z0, z1) = integration_bounds
 
     # Compute potential
-    potential, error = integrate.tplquad(
-        integrand, x0, x1, y0, y1, z0, z1, epsabs=1e-8
-    )
+    potential, error = integrate.tplquad(integrand, x0, x1, y0, y1, z0, z1, epsabs=1e-8)
 
     # Compute total charge for reference
     def charge_integrand(x, y, z):
@@ -373,9 +385,10 @@ def potential_from_charge_distribution(
 
 @maxwell_cite(
     100,
-    part=1, chapter="General Theorems in Electrostatics",
+    part=1,
+    chapter="General Theorems in Electrostatics",
     theory_class="maxwell_original",
-    description="Potential from point charges — discrete sum"
+    description="Potential from point charges — discrete sum",
 )
 def potential_from_point_charges(
     charges: list[tuple[float, np.ndarray]],
@@ -423,9 +436,13 @@ def potential_from_point_charges(
         if distance > 1e-12:
             contrib = q / distance
             potential += contrib
-            contributions.append({"charge": q, "distance": distance, "contribution": contrib})
+            contributions.append(
+                {"charge": q, "distance": distance, "contribution": contrib}
+            )
         else:
-            contributions.append({"charge": q, "distance": 0.0, "contribution": float("inf")})
+            contributions.append(
+                {"charge": q, "distance": 0.0, "contribution": float("inf")}
+            )
 
     total_charge = sum(q for q, _ in charges)
 
@@ -441,11 +458,13 @@ def potential_from_point_charges(
 # UNIQUENESS THEOREM (Art. 102)
 # =============================================================================
 
+
 @maxwell_cite(
     102,
-    part=1, chapter="General Theorems in Electrostatics",
+    part=1,
+    chapter="General Theorems in Electrostatics",
     theory_class="maxwell_original",
-    description="Uniqueness theorem for electrostatic solutions"
+    description="Uniqueness theorem for electrostatic solutions",
 )
 def uniqueness_theorem(
     potential_1: Callable[[np.ndarray], float],
@@ -527,11 +546,15 @@ def uniqueness_theorem(
                 delta = np.zeros(3)
                 delta[i] = h
                 laplacian_1 += (
-                    potential_1(pt + delta) - 2 * potential_1(pt) + potential_1(pt - delta)
-                ) / (h ** 2)
+                    potential_1(pt + delta)
+                    - 2 * potential_1(pt)
+                    + potential_1(pt - delta)
+                ) / (h**2)
                 laplacian_2 += (
-                    potential_2(pt + delta) - 2 * potential_2(pt) + potential_2(pt - delta)
-                ) / (h ** 2)
+                    potential_2(pt + delta)
+                    - 2 * potential_2(pt)
+                    + potential_2(pt - delta)
+                ) / (h**2)
 
             lap_diff = abs(laplacian_1 - laplacian_2)
             max_laplacian_diff = max(max_laplacian_diff, lap_diff)
@@ -554,7 +577,9 @@ def uniqueness_theorem(
         "volume_match": volume_match,
         "max_volume_difference": max_volume_diff,
         "laplacian_match": laplacian_match if charge_density is not None else None,
-        "max_laplacian_difference": max_laplacian_diff if charge_density is not None else None,
+        "max_laplacian_difference": (
+            max_laplacian_diff if charge_density is not None else None
+        ),
         "solutions_identical": solutions_identical,
     }
 
@@ -563,11 +588,15 @@ def uniqueness_theorem(
 # ELECTROSTATIC ENERGY (Arts. 86-88)
 # =============================================================================
 
+
 @maxwell_cite(
-    86, 87, 88,
-    part=1, chapter="Electrical Work and Energy",
+    86,
+    87,
+    88,
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Electrostatic energy of a charge system"
+    description="Electrostatic energy of a charge system",
 )
 def electrostatic_energy(
     charges: list[tuple[float, np.ndarray]],
@@ -652,10 +681,12 @@ def electrostatic_energy(
 
 
 @maxwell_cite(
-    86, 87,
-    part=1, chapter="Electrical Work and Energy",
+    86,
+    87,
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Work to assemble charges from infinity"
+    description="Work to assemble charges from infinity",
 )
 def work_to_assemble_charges(
     charges: list[tuple[float, np.ndarray]],
@@ -717,11 +748,14 @@ def work_to_assemble_charges(
 # ENERGY DENSITY IN THE FIELD (Arts. 89-90)
 # =============================================================================
 
+
 @maxwell_cite(
-    89, 90,
-    part=1, chapter="Electrical Work and Energy",
+    89,
+    90,
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Energy density in the electric field"
+    description="Energy density in the electric field",
 )
 def energy_density_field(
     electric_field: np.ndarray | Callable[[np.ndarray], np.ndarray],
@@ -789,7 +823,7 @@ def energy_density_field(
             position = np.asarray(position, dtype=np.float64)
 
     E_mag = np.linalg.norm(E_vec)
-    energy_density = (E_mag ** 2) / (8.0 * np.pi)
+    energy_density = (E_mag**2) / (8.0 * np.pi)
 
     result["energy_density"] = energy_density
     result["field_magnitude"] = E_mag
@@ -799,11 +833,12 @@ def energy_density_field(
 
     # Volume integral if bounds provided
     if integration_bounds is not None and callable(electric_field):
+
         def energy_integrand(x, y, z):
             r = np.array([x, y, z])
             E = electric_field(r)
             E_mag = np.linalg.norm(E)
-            return (E_mag ** 2) / (8.0 * np.pi)
+            return (E_mag**2) / (8.0 * np.pi)
 
         (x0, x1), (y0, y1), (z0, z1) = integration_bounds
         total_energy, error = integrate.tplquad(
@@ -817,10 +852,12 @@ def energy_density_field(
 
 
 @maxwell_cite(
-    89, 90,
-    part=1, chapter="Electrical Work and Energy",
+    89,
+    90,
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Energy density for uniform electric field"
+    description="Energy density for uniform electric field",
 )
 def energy_density_uniform_field(
     field_magnitude: float,
@@ -846,7 +883,7 @@ def energy_density_uniform_field(
     References:
         Part I, Art. 89: Energy density formula.
     """
-    energy_density = (field_magnitude ** 2) / (8.0 * np.pi)
+    energy_density = (field_magnitude**2) / (8.0 * np.pi)
 
     return {
         "energy_density": energy_density,
@@ -858,11 +895,14 @@ def energy_density_uniform_field(
 # ENERGY OF A SYSTEM (Arts. 91-92)
 # =============================================================================
 
+
 @maxwell_cite(
-    91, 92,
-    part=1, chapter="Electrical Work and Energy",
+    91,
+    92,
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Total energy of an electrified system"
+    description="Total energy of an electrified system",
 )
 def energy_of_system(
     charges: list[tuple[float, np.ndarray]] = None,
@@ -944,11 +984,12 @@ def energy_of_system(
 
     # Method 2: Field energy
     if field_func is not None and integration_bounds is not None:
+
         def energy_integrand(x, y, z):
             r = np.array([x, y, z])
             E = field_func(r)
             E_mag = np.linalg.norm(E)
-            return (E_mag ** 2) / (8.0 * np.pi)
+            return (E_mag**2) / (8.0 * np.pi)
 
         (x0, x1), (y0, y1), (z0, z1) = integration_bounds
         total_energy, error = integrate.tplquad(
@@ -968,9 +1009,10 @@ def energy_of_system(
 
 @maxwell_cite(
     91,
-    part=1, chapter="Electrical Work and Energy",
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Energy of a system of charged conductors"
+    description="Energy of a system of charged conductors",
 )
 def energy_of_conductor_system(
     charges: list[float],
@@ -1013,7 +1055,11 @@ def energy_of_conductor_system(
         conductor_energies.append(W)
 
     total_charge = sum(charges)
-    avg_potential = sum(q * V for q, V in zip(charges, potentials)) / total_charge if total_charge != 0 else 0
+    avg_potential = (
+        sum(q * V for q, V in zip(charges, potentials)) / total_charge
+        if total_charge != 0
+        else 0
+    )
 
     return {
         "total_energy": energy,
@@ -1028,11 +1074,14 @@ def energy_of_conductor_system(
 # PRINCIPLE OF VIRTUAL WORK (Arts. 93-94)
 # =============================================================================
 
+
 @maxwell_cite(
-    93, 94,
-    part=1, chapter="Electrical Work and Energy",
+    93,
+    94,
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Force from energy derivative — virtual work principle"
+    description="Force from energy derivative — virtual work principle",
 )
 def virtual_work_principle(
     energy_func: Callable[[float], float],
@@ -1099,9 +1148,10 @@ def virtual_work_principle(
 
 @maxwell_cite(
     93,
-    part=1, chapter="Electrical Work and Energy",
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Force between conductors at constant charge"
+    description="Force between conductors at constant charge",
 )
 def force_between_conductors_constant_charge(
     charges: list[float],
@@ -1157,9 +1207,10 @@ def force_between_conductors_constant_charge(
 
 @maxwell_cite(
     94,
-    part=1, chapter="Electrical Work and Energy",
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
-    description="Force between conductors at constant potential"
+    description="Force between conductors at constant potential",
 )
 def force_between_conductors_constant_potential(
     potentials: list[float],
@@ -1229,8 +1280,13 @@ if __name__ == "__main__":
 
     # Test Green's theorem
     print("\n--- Green's Theorem (Arts. 95-97) ---")
-    def U(r): return 1.0 / np.linalg.norm(r + 0.1)
-    def V(r): return np.sum(r ** 2)
+
+    def U(r):
+        return 1.0 / np.linalg.norm(r + 0.1)
+
+    def V(r):
+        return np.sum(r**2)
+
     bounds = ((0.1, 1), (0.1, 1), (0.1, 1))
     result = greens_theorem(U, V, bounds)
     print(f"  Green's identity LHS: {result['greens_identity_lhs']:.6f}")
@@ -1254,8 +1310,13 @@ if __name__ == "__main__":
 
     # Test uniqueness theorem
     print("\n--- Uniqueness Theorem (Art. 102) ---")
-    def V1(r): return 1.0 / np.linalg.norm(r + 0.1)
-    def V2(r): return 1.0 / np.linalg.norm(r + 0.1)
+
+    def V1(r):
+        return 1.0 / np.linalg.norm(r + 0.1)
+
+    def V2(r):
+        return 1.0 / np.linalg.norm(r + 0.1)
+
     boundary = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]])
     volume = np.array([[0.5, 0.5, 0.5]])
     result = uniqueness_theorem(V1, V2, boundary, volume)
@@ -1269,7 +1330,11 @@ if __name__ == "__main__":
 
     # Test work to assemble charges
     print("\n--- Work to Assemble Charges (Arts. 86-87) ---")
-    charges = [(1.0, np.array([0, 0, 0])), (2.0, np.array([1, 0, 0])), (3.0, np.array([0, 1, 0]))]
+    charges = [
+        (1.0, np.array([0, 0, 0])),
+        (2.0, np.array([1, 0, 0])),
+        (3.0, np.array([0, 1, 0])),
+    ]
     result = work_to_assemble_charges(charges)
     print(f"  Total work: {result['total_work']:.6f} ergs")
     print(f"  Step works: {[f'{w:.4f}' for w in result['step_works']]}")
@@ -1302,9 +1367,11 @@ if __name__ == "__main__":
 
     # Test virtual work principle
     print("\n--- Virtual Work Principle (Arts. 93-94) ---")
+
     def energy_func(x):
         # Simple harmonic oscillator energy
-        return 0.5 * 100.0 * x ** 2
+        return 0.5 * 100.0 * x**2
+
     result = virtual_work_principle(energy_func, coordinate=0.1)
     print(f"  At x = 0.1: F = {result['force']:.4f} dynes")
     print(f"  Expected: F = -k*x = -100 * 0.1 = -10 dynes")
@@ -1312,19 +1379,23 @@ if __name__ == "__main__":
     # Test force at constant charge
     print("\n--- Force at Constant Charge (Art. 93) ---")
     charges = [1.0, -1.0]
+
     def potentials_func(x):
         # Two conductors: V1 = q1*C11 + q2*C12, etc.
         # Simplified: V = q / C where C depends on x
         return [1.0 / (x + 0.1), -1.0 / (x + 0.1)]
+
     result = force_between_conductors_constant_charge(charges, potentials_func, 0.5)
     print(f"  Force at x = 0.5: {result['force']:.4f} dynes")
 
     # Test force at constant potential
     print("\n--- Force at Constant Potential (Art. 94) ---")
     potentials = [1.0, -1.0]
+
     def charges_func(x):
         # Q = C * V, C depends on x
         return [(x + 0.1) * 1.0, -(x + 0.1) * 1.0]
+
     result = force_between_conductors_constant_potential(potentials, charges_func, 0.5)
     print(f"  Force at x = 0.5: {result['force']:.4f} dynes")
 

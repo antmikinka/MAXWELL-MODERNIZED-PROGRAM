@@ -17,16 +17,18 @@ All tests verify:
 """
 
 from __future__ import annotations
-import pytest
-import numpy as np
+
 from typing import Any
 
-from maxwell.meta.citation import get_citation, MaxwellCitation
+import numpy as np
+import pytest
 
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # FIXTURES
 # =============================================================================
+
 
 @pytest.fixture
 def earth_field_H() -> float:
@@ -92,6 +94,7 @@ def sample_moment_of_inertia() -> float:
 # CITATION TESTS
 # =============================================================================
 
+
 class TestMagneticMeasurementsCitations:
     """Test citation decorator compliance for magnetic measurements."""
 
@@ -99,6 +102,7 @@ class TestMagneticMeasurementsCitations:
     def setup_magnetic_measurements(self) -> None:
         """Import the magnetic measurements module."""
         from maxwell.magnetism import magnetic_measurements
+
         self.module = magnetic_measurements
 
     def test_deflection_magnetometer_class_has_citations(
@@ -117,9 +121,7 @@ class TestMagneticMeasurementsCitations:
     ) -> None:
         """Verify magnetometer_tan_position has correct citation."""
         validate_citation_articles(
-            self.module.magnetometer_tan_position,
-            part=3,
-            articles=[451]
+            self.module.magnetometer_tan_position, part=3, articles=[451]
         )
 
     def test_magnetometer_sine_position_has_citation(
@@ -127,9 +129,7 @@ class TestMagneticMeasurementsCitations:
     ) -> None:
         """Verify magnetometer_sine_position has correct citation."""
         validate_citation_articles(
-            self.module.magnetometer_sine_position,
-            part=3,
-            articles=[452]
+            self.module.magnetometer_sine_position, part=3, articles=[452]
         )
 
     def test_magnetometer_gauss_method_has_citation(
@@ -137,14 +137,10 @@ class TestMagneticMeasurementsCitations:
     ) -> None:
         """Verify magnetometer_gauss_method has correct citation."""
         validate_citation_articles(
-            self.module.magnetometer_gauss_method,
-            part=3,
-            articles=[451, 452]
+            self.module.magnetometer_gauss_method, part=3, articles=[451, 452]
         )
 
-    def test_unifilar_suspension_class_has_citations(
-        self, require_citation
-    ) -> None:
+    def test_unifilar_suspension_class_has_citations(self, require_citation) -> None:
         """Verify UnifilarSuspension methods have citations."""
         from maxwell.magnetism import UnifilarSuspension
 
@@ -157,14 +153,10 @@ class TestMagneticMeasurementsCitations:
     ) -> None:
         """Verify torsion_constant has correct citation."""
         validate_citation_articles(
-            self.module.torsion_constant,
-            part=3,
-            articles=[453, 454]
+            self.module.torsion_constant, part=3, articles=[453, 454]
         )
 
-    def test_bifilar_suspension_class_has_citations(
-        self, require_citation
-    ) -> None:
+    def test_bifilar_suspension_class_has_citations(self, require_citation) -> None:
         """Verify BifilarSuspension methods have citations."""
         from maxwell.magnetism import BifilarSuspension
 
@@ -177,14 +169,10 @@ class TestMagneticMeasurementsCitations:
     ) -> None:
         """Verify magnetic_declination has correct citation."""
         validate_citation_articles(
-            self.module.magnetic_declination,
-            part=3,
-            articles=[455]
+            self.module.magnetic_declination, part=3, articles=[455]
         )
 
-    def test_kew_magnetometer_class_has_citations(
-        self, require_citation
-    ) -> None:
+    def test_kew_magnetometer_class_has_citations(self, require_citation) -> None:
         """Verify KewMagnetometer methods have citations."""
         from maxwell.magnetism import KewMagnetometer
 
@@ -197,14 +185,10 @@ class TestMagneticMeasurementsCitations:
     ) -> None:
         """Verify vibration_magnetometer has correct citation."""
         validate_citation_articles(
-            self.module.vibration_magnetometer,
-            part=3,
-            articles=[459]
+            self.module.vibration_magnetometer, part=3, articles=[459]
         )
 
-    def test_dip_circle_class_has_citations(
-        self, require_citation
-    ) -> None:
+    def test_dip_circle_class_has_citations(self, require_citation) -> None:
         """Verify DipCircle methods have citations."""
         from maxwell.magnetism import DipCircle
 
@@ -216,15 +200,9 @@ class TestMagneticMeasurementsCitations:
         self, require_citation, validate_citation_articles
     ) -> None:
         """Verify dip_correction has correct citation."""
-        validate_citation_articles(
-            self.module.dip_correction,
-            part=3,
-            articles=[462]
-        )
+        validate_citation_articles(self.module.dip_correction, part=3, articles=[462])
 
-    def test_balance_magnetometer_class_has_citations(
-        self, require_citation
-    ) -> None:
+    def test_balance_magnetometer_class_has_citations(self, require_citation) -> None:
         """Verify BalanceMagnetometer methods have citations."""
         from maxwell.magnetism import BalanceMagnetometer
 
@@ -236,14 +214,10 @@ class TestMagneticMeasurementsCitations:
     ) -> None:
         """Verify vertical_intensity has correct citation."""
         validate_citation_articles(
-            self.module.vertical_intensity,
-            part=3,
-            articles=[464]
+            self.module.vertical_intensity, part=3, articles=[464]
         )
 
-    def test_magnetic_survey_class_has_citations(
-        self, require_citation
-    ) -> None:
+    def test_magnetic_survey_class_has_citations(self, require_citation) -> None:
         """Verify MagneticSurvey covers all articles 449-464."""
         from maxwell.magnetism import MagneticSurvey
 
@@ -251,12 +225,15 @@ class TestMagneticMeasurementsCitations:
         assert citation.part == 3
         # Should cover all articles from 449 to 464
         for art in range(449, 465):
-            assert art in citation.articles, f"Article {art} missing from survey citation"
+            assert (
+                art in citation.articles
+            ), f"Article {art} missing from survey citation"
 
 
 # =============================================================================
 # DEFLECTION MAGNETOMETER TESTS (Arts. 449-452)
 # =============================================================================
+
 
 class TestDeflectionMagnetometer:
     """Tests for DeflectionMagnetometer class (Arts. 449-450)."""
@@ -270,13 +247,15 @@ class TestDeflectionMagnetometer:
         dm = DeflectionMagnetometer(
             earth_field_H=earth_field_H,
             needle_distance=sample_distance,
-            position="end_on"
+            position="end_on",
         )
 
         result = dm.measure_magnetic_moment(sample_deflection_angle)
 
         # M = (H * r^3 / 2) * tan(theta)
-        expected_M = (earth_field_H * sample_distance ** 3 / 2) * np.tan(sample_deflection_angle)
+        expected_M = (earth_field_H * sample_distance**3 / 2) * np.tan(
+            sample_deflection_angle
+        )
 
         assert abs(result["magnetic_moment"] - expected_M) < 1e-10
         assert result["position"] == "end_on"
@@ -291,13 +270,15 @@ class TestDeflectionMagnetometer:
         dm = DeflectionMagnetometer(
             earth_field_H=earth_field_H,
             needle_distance=sample_distance,
-            position="broadside"
+            position="broadside",
         )
 
         result = dm.measure_magnetic_moment(sample_deflection_angle)
 
         # M = (H * r^3) * tan(theta) for broadside
-        expected_M = earth_field_H * sample_distance ** 3 * np.tan(sample_deflection_angle)
+        expected_M = (
+            earth_field_H * sample_distance**3 * np.tan(sample_deflection_angle)
+        )
 
         assert abs(result["magnetic_moment"] - expected_M) < 1e-10
         assert result["position"] == "broadside"
@@ -311,13 +292,13 @@ class TestDeflectionMagnetometer:
         dm = DeflectionMagnetometer(
             earth_field_H=earth_field_H,
             needle_distance=sample_distance,
-            position="end_on"
+            position="end_on",
         )
 
         result = dm.predict_deflection(sample_magnetic_moment)
 
         # tan(theta) = 2*M / (H * r^3)
-        expected_tan = 2 * sample_magnetic_moment / (earth_field_H * sample_distance ** 3)
+        expected_tan = 2 * sample_magnetic_moment / (earth_field_H * sample_distance**3)
 
         assert abs(result["tan_theta"] - expected_tan) < 1e-10
         assert "deflection_radians" in result
@@ -337,8 +318,11 @@ class TestMagnetometerTanPosition:
     """Tests for magnetometer_tan_position function (Art. 451)."""
 
     def test_tan_a_position_basic(
-        self, sample_magnetic_moment, earth_field_H,
-        sample_distance, sample_deflection_angle
+        self,
+        sample_magnetic_moment,
+        earth_field_H,
+        sample_distance,
+        sample_deflection_angle,
     ) -> None:
         """Test Tan-A position measurement."""
         from maxwell.magnetism import magnetometer_tan_position
@@ -347,22 +331,25 @@ class TestMagnetometerTanPosition:
             magnetic_moment=sample_magnetic_moment,
             earth_field_H=earth_field_H,
             distance=sample_distance,
-            deflection=sample_deflection_angle
+            deflection=sample_deflection_angle,
         )
 
         # M/H = (r^3 / 2) * tan(theta)
-        expected_M_over_H = (sample_distance ** 3 / 2) * np.tan(sample_deflection_angle)
+        expected_M_over_H = (sample_distance**3 / 2) * np.tan(sample_deflection_angle)
 
         assert abs(result["M_over_H"] - expected_M_over_H) < 1e-10
-        assert result["gauss_constant"] == sample_distance ** 3 / 2
+        assert result["gauss_constant"] == sample_distance**3 / 2
 
 
 class TestMagnetometerSinePosition:
     """Tests for magnetometer_sine_position function (Art. 452)."""
 
     def test_sine_position_basic(
-        self, sample_magnetic_moment, earth_field_H,
-        sample_distance, sample_deflection_angle
+        self,
+        sample_magnetic_moment,
+        earth_field_H,
+        sample_distance,
+        sample_deflection_angle,
     ) -> None:
         """Test Sin-A position measurement."""
         from maxwell.magnetism import magnetometer_sine_position
@@ -371,11 +358,11 @@ class TestMagnetometerSinePosition:
             magnetic_moment=sample_magnetic_moment,
             earth_field_H=earth_field_H,
             distance=sample_distance,
-            deflection=sample_deflection_angle
+            deflection=sample_deflection_angle,
         )
 
         # M/H = r^3 * sin(theta) for sine method
-        expected_M_over_H = (sample_distance ** 3 / 2) * np.sin(sample_deflection_angle)
+        expected_M_over_H = (sample_distance**3 / 2) * np.sin(sample_deflection_angle)
 
         assert abs(result["M_over_H"] - expected_M_over_H) < 1e-10
         assert result["sin_deflection"] == np.sin(sample_deflection_angle)
@@ -385,8 +372,10 @@ class TestMagnetometerSinePosition:
         from maxwell.magnetism import magnetometer_sine_position
 
         result = magnetometer_sine_position(
-            magnetic_moment=100, earth_field_H=0.18,
-            distance=20.0, deflection=np.radians(45)
+            magnetic_moment=100,
+            earth_field_H=0.18,
+            distance=20.0,
+            deflection=np.radians(45),
         )
 
         # For 45 degrees, tan and sin differ significantly
@@ -397,8 +386,7 @@ class TestMagnetometerGaussMethod:
     """Tests for magnetometer_gauss_method function (Arts. 451-452)."""
 
     def test_gauss_method_tan_a(
-        self, sample_vibration_period, sample_distance,
-        sample_moment_of_inertia
+        self, sample_vibration_period, sample_distance, sample_moment_of_inertia
     ) -> None:
         """Test Gauss's method in Tan-A position."""
         from maxwell.magnetism import magnetometer_gauss_method
@@ -410,15 +398,17 @@ class TestMagnetometerGaussMethod:
             vibration_period=sample_vibration_period,
             distance=sample_distance,
             moment_of_inertia=sample_moment_of_inertia,
-            position="tan_a"
+            position="tan_a",
         )
 
         # Verify M*H from vibration
-        expected_MH = 4 * np.pi ** 2 * sample_moment_of_inertia / sample_vibration_period ** 2
+        expected_MH = (
+            4 * np.pi**2 * sample_moment_of_inertia / sample_vibration_period**2
+        )
         assert abs(result["MH_product"] - expected_MH) < 1e-10
 
         # Verify M/H from deflection
-        expected_M_over_H = (sample_distance ** 3 / 2) * tan_theta
+        expected_M_over_H = (sample_distance**3 / 2) * tan_theta
         assert abs(result["M_over_H"] - expected_M_over_H) < 1e-10
 
         # Verify H and M are positive
@@ -434,7 +424,7 @@ class TestMagnetometerGaussMethod:
             vibration_period=10.0,
             distance=20.0,
             moment_of_inertia=100.0,
-            position="tan_b"
+            position="tan_b",
         )
 
         # Tan-B has different geometric factor (r^3 instead of r^3/2)
@@ -446,15 +436,18 @@ class TestMagnetometerGaussMethod:
 
         with pytest.raises(ValueError):
             magnetometer_gauss_method(
-                tan_deflection=0.5, vibration_period=10.0,
-                distance=20.0, moment_of_inertia=100.0,
-                position="invalid"
+                tan_deflection=0.5,
+                vibration_period=10.0,
+                distance=20.0,
+                moment_of_inertia=100.0,
+                position="invalid",
             )
 
 
 # =============================================================================
 # SUSPENSION SYSTEMS TESTS (Arts. 453-456)
 # =============================================================================
+
 
 class TestUnifilarSuspension:
     """Tests for UnifilarSuspension class (Arts. 453-454)."""
@@ -464,13 +457,11 @@ class TestUnifilarSuspension:
         from maxwell.magnetism import UnifilarSuspension
 
         uf = UnifilarSuspension(
-            fiber_length=30.0,
-            fiber_radius=0.005,
-            shear_modulus=3e11
+            fiber_length=30.0, fiber_radius=0.005, shear_modulus=3e11
         )
 
         # kappa = (pi * G * r^4) / (2 * l)
-        expected_kappa = (np.pi * 3e11 * 0.005 ** 4) / (2 * 30.0)
+        expected_kappa = (np.pi * 3e11 * 0.005**4) / (2 * 30.0)
 
         assert abs(uf.torsion_constant - expected_kappa) < 1e-6
 
@@ -482,7 +473,7 @@ class TestUnifilarSuspension:
             fiber_length=30.0,
             fiber_radius=0.005,
             shear_modulus=3e11,
-            moment_of_inertia=100.0
+            moment_of_inertia=100.0,
         )
 
         result = uf.oscillation_period(magnetic_moment=0, earth_field_H=0)
@@ -500,7 +491,7 @@ class TestUnifilarSuspension:
             fiber_length=30.0,
             fiber_radius=0.005,
             shear_modulus=3e11,
-            moment_of_inertia=100.0
+            moment_of_inertia=100.0,
         )
 
         result = uf.oscillation_period(magnetic_moment=100, earth_field_H=0.18)
@@ -517,12 +508,10 @@ class TestTorsionConstant:
         from maxwell.magnetism import torsion_constant
 
         result = torsion_constant(
-            fiber_length=30.0,
-            fiber_radius=0.005,
-            shear_modulus=3e11
+            fiber_length=30.0, fiber_radius=0.005, shear_modulus=3e11
         )
 
-        expected = (np.pi * 3e11 * 0.005 ** 4) / (2 * 30.0)
+        expected = (np.pi * 3e11 * 0.005**4) / (2 * 30.0)
 
         assert abs(result["torsion_constant"] - expected) < 1e-6
         assert result["fiber_length"] == 30.0
@@ -541,10 +530,10 @@ class TestTorsionConstant:
             fiber_radius=0.005,
             shear_modulus=3e11,
             measured_period=T,
-            suspended_inertia=I
+            suspended_inertia=I,
         )
 
-        expected_exp = 4 * np.pi ** 2 * I / T ** 2
+        expected_exp = 4 * np.pi**2 * I / T**2
 
         assert abs(result["experimental_kappa"] - expected_exp) < 1e-6
         assert "discrepancy" in result
@@ -562,7 +551,7 @@ class TestBifilarSuspension:
             fiber_length=30.0,
             top_separation=2.0,
             bottom_separation=2.0,
-            suspended_mass=50.0
+            suspended_mass=50.0,
         )
 
         # D = (m * g * a * b) / l
@@ -574,14 +563,10 @@ class TestBifilarSuspension:
         """Test horizontal force measurement."""
         from maxwell.magnetism import BifilarSuspension
 
-        bf = BifilarSuspension(
-            fiber_length=30.0,
-            suspended_mass=50.0
-        )
+        bf = BifilarSuspension(fiber_length=30.0, suspended_mass=50.0)
 
         result = bf.measure_horizontal_force(
-            equilibrium_angle=np.radians(30),
-            magnetic_moment=100
+            equilibrium_angle=np.radians(30), magnetic_moment=100
         )
 
         assert result["earth_field_H"] > 0
@@ -597,8 +582,7 @@ class TestMagneticDeclination:
         from maxwell.magnetism import magnetic_declination
 
         result = magnetic_declination(
-            astronomical_azimuth=0,
-            magnetic_azimuth=np.radians(5)
+            astronomical_azimuth=0, magnetic_azimuth=np.radians(5)
         )
 
         assert result["declination_degrees"] > 0
@@ -610,8 +594,7 @@ class TestMagneticDeclination:
         from maxwell.magnetism import magnetic_declination
 
         result = magnetic_declination(
-            astronomical_azimuth=0,
-            magnetic_azimuth=np.radians(-5)
+            astronomical_azimuth=0, magnetic_azimuth=np.radians(-5)
         )
 
         assert result["declination_degrees"] < 0
@@ -622,8 +605,7 @@ class TestMagneticDeclination:
         from maxwell.magnetism import magnetic_declination
 
         result = magnetic_declination(
-            astronomical_azimuth=0,
-            magnetic_azimuth=np.radians(370)  # Should normalize
+            astronomical_azimuth=0, magnetic_azimuth=np.radians(370)  # Should normalize
         )
 
         assert -180 <= result["declination_degrees"] <= 180
@@ -633,6 +615,7 @@ class TestMagneticDeclination:
 # KEW MAGNETOMETER TESTS (Arts. 457-459)
 # =============================================================================
 
+
 class TestKewMagnetometer:
     """Tests for KewMagnetometer class (Arts. 457-458)."""
 
@@ -640,13 +623,10 @@ class TestKewMagnetometer:
         """Test moment of inertia calculation."""
         from maxwell.magnetism import KewMagnetometer
 
-        km = KewMagnetometer(
-            magnet_length=10.0,
-            magnet_mass=50.0
-        )
+        km = KewMagnetometer(magnet_length=10.0, magnet_mass=50.0)
 
         # I = (1/12) * m * L^2 for thin rod
-        expected_I = (1/12) * 50.0 * 10.0 ** 2
+        expected_I = (1 / 12) * 50.0 * 10.0**2
 
         assert abs(km.moment_of_inertia - expected_I) < 1e-10
 
@@ -660,7 +640,7 @@ class TestKewMagnetometer:
             deflection_angle=np.radians(30),
             vibration_period=10.0,
             deflecting_moment=100,
-            deflection_distance=30.0
+            deflection_distance=30.0,
         )
 
         assert result["earth_field_H"] > 0
@@ -673,20 +653,26 @@ class TestKewMagnetometer:
 class TestVibrationMagnetometer:
     """Tests for vibration_magnetometer function (Art. 459)."""
 
-    def test_MH_product(self, sample_vibration_period, sample_moment_of_inertia) -> None:
+    def test_MH_product(
+        self, sample_vibration_period, sample_moment_of_inertia
+    ) -> None:
         """Test M*H product from vibration."""
         from maxwell.magnetism import vibration_magnetometer
 
         result = vibration_magnetometer(
             vibration_period=sample_vibration_period,
-            moment_of_inertia=sample_moment_of_inertia
+            moment_of_inertia=sample_moment_of_inertia,
         )
 
-        expected_MH = 4 * np.pi ** 2 * sample_moment_of_inertia / sample_vibration_period ** 2
+        expected_MH = (
+            4 * np.pi**2 * sample_moment_of_inertia / sample_vibration_period**2
+        )
 
         assert abs(result["MH_product"] - expected_MH) < 1e-10
 
-    def test_derive_M_from_H(self, sample_vibration_period, sample_moment_of_inertia) -> None:
+    def test_derive_M_from_H(
+        self, sample_vibration_period, sample_moment_of_inertia
+    ) -> None:
         """Test deriving M when H is known."""
         from maxwell.magnetism import vibration_magnetometer
 
@@ -695,13 +681,15 @@ class TestVibrationMagnetometer:
         result = vibration_magnetometer(
             vibration_period=sample_vibration_period,
             moment_of_inertia=sample_moment_of_inertia,
-            earth_field_H=H
+            earth_field_H=H,
         )
 
         assert result["derived_M"] is not None
         assert result["derived_M"] > 0
 
-    def test_derive_H_from_M(self, sample_vibration_period, sample_moment_of_inertia) -> None:
+    def test_derive_H_from_M(
+        self, sample_vibration_period, sample_moment_of_inertia
+    ) -> None:
         """Test deriving H when M is known."""
         from maxwell.magnetism import vibration_magnetometer
 
@@ -710,7 +698,7 @@ class TestVibrationMagnetometer:
         result = vibration_magnetometer(
             vibration_period=sample_vibration_period,
             moment_of_inertia=sample_moment_of_inertia,
-            magnetic_moment=M
+            magnetic_moment=M,
         )
 
         assert result["derived_H"] is not None
@@ -720,6 +708,7 @@ class TestVibrationMagnetometer:
 # =============================================================================
 # DIP CIRCLE TESTS (Arts. 460-462)
 # =============================================================================
+
 
 class TestDipCircle:
     """Tests for DipCircle class (Arts. 460-461)."""
@@ -744,8 +733,7 @@ class TestDipCircle:
 
         # When dip circle is rotated from meridian, apparent dip increases
         result = dc.measure_dip(
-            observed_dip=np.radians(60),
-            azimuth_from_meridian=np.radians(10)
+            observed_dip=np.radians(60), azimuth_from_meridian=np.radians(10)
         )
 
         # True dip should be less than observed when not in meridian
@@ -760,8 +748,7 @@ class TestDipCorrection:
         from maxwell.magnetism import dip_correction
 
         result = dip_correction(
-            observed_dip=np.radians(60),
-            needle_reversed_dip=np.radians(59.5)
+            observed_dip=np.radians(60), needle_reversed_dip=np.radians(59.5)
         )
 
         # Corrected dip should be average
@@ -775,8 +762,7 @@ class TestDipCorrection:
         from maxwell.magnetism import dip_correction
 
         result = dip_correction(
-            observed_dip=np.radians(60),
-            azimuth_error=np.radians(5)
+            observed_dip=np.radians(60), azimuth_error=np.radians(5)
         )
 
         assert result["azimuth_correction"] != 0
@@ -789,7 +775,7 @@ class TestDipCorrection:
             observed_dip=np.radians(60),
             needle_reversed_dip=np.radians(60),
             azimuth_error=0,
-            eccentricity_error=0
+            eccentricity_error=0,
         )
 
         # No corrections should mean output equals input
@@ -799,6 +785,7 @@ class TestDipCorrection:
 # =============================================================================
 # BALANCE MAGNETOMETER TESTS (Arts. 463-464)
 # =============================================================================
+
 
 class TestBalanceMagnetometer:
     """Tests for BalanceMagnetometer class (Arts. 463-464)."""
@@ -825,7 +812,9 @@ class TestBalanceMagnetometer:
         result_large = bm.measure_vertical_force(np.radians(10))
 
         # Z should scale approximately with tan(theta)
-        ratio = result_large["vertical_component_Z"] / result_small["vertical_component_Z"]
+        ratio = (
+            result_large["vertical_component_Z"] / result_small["vertical_component_Z"]
+        )
         expected_ratio = np.tan(np.radians(10)) / np.tan(np.radians(1))
 
         assert abs(ratio - expected_ratio) < 1e-6
@@ -838,10 +827,7 @@ class TestVerticalIntensity:
         """Test basic vertical intensity measurement."""
         from maxwell.magnetism import vertical_intensity
 
-        result = vertical_intensity(
-            balance_reading=0.42,
-            calibration_constant=1.0
-        )
+        result = vertical_intensity(balance_reading=0.42, calibration_constant=1.0)
 
         assert result["vertical_intensity_Z"] == 0.42
         assert result["total_field_F"] > 0
@@ -854,7 +840,7 @@ class TestVerticalIntensity:
         result = vertical_intensity(
             balance_reading=0.42,
             calibration_constant=1.0,
-            temperature=298.15  # 5 degrees above reference
+            temperature=298.15,  # 5 degrees above reference
         )
 
         assert result["temperature_corrected_Z"] != result["vertical_intensity_Z"]
@@ -864,6 +850,7 @@ class TestVerticalIntensity:
 # =============================================================================
 # MAGNETIC SURVEY TESTS (Arts. 449-464)
 # =============================================================================
+
 
 class TestMagneticSurvey:
     """Tests for MagneticSurvey class (complete survey Arts. 449-464)."""
@@ -933,17 +920,18 @@ class TestMagneticSurvey:
 # INTEGRATION TESTS
 # =============================================================================
 
+
 class TestMagneticMeasurementsIntegration:
     """Integration tests for complete magnetic measurements workflow."""
 
     def test_full_measurement_chain(self) -> None:
         """Test complete chain from raw measurements to field elements."""
         from maxwell.magnetism import (
-            DeflectionMagnetometer,
-            magnetometer_gauss_method,
-            DipCircle,
             BalanceMagnetometer,
+            DeflectionMagnetometer,
+            DipCircle,
             MagneticSurvey,
+            magnetometer_gauss_method,
         )
 
         # Step 1: Deflection measurement
@@ -955,7 +943,7 @@ class TestMagneticMeasurementsIntegration:
             tan_deflection=np.tan(np.radians(30)),
             vibration_period=10.0,
             distance=20.0,
-            moment_of_inertia=100.0
+            moment_of_inertia=100.0,
         )
 
         # Step 3: Dip measurement

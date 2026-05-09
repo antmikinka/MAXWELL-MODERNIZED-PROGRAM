@@ -19,16 +19,19 @@ References:
 """
 
 from __future__ import annotations
+
 import json
 import os
 from pathlib import Path
 from typing import Any, Generator, Iterator
+
 from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Load article-level JSON array from Mathpix OCR output",
 )
@@ -78,16 +81,15 @@ def load_article_json(filepath: str | os.PathLike) -> list[dict[str, Any]]:
         required_keys = {"page_number", "raw_text", "mathpix_markdown"}
         missing = required_keys - set(page.keys())
         if missing:
-            raise ValueError(
-                f"Page {i} missing required keys {missing} in {filepath}"
-            )
+            raise ValueError(f"Page {i} missing required keys {missing} in {filepath}")
 
     return data
 
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Load chapter-level JSON object from Mathpix OCR output",
 )
@@ -133,16 +135,15 @@ def load_chapter_json(filepath: str | os.PathLike) -> dict[str, str]:
     # Validate structure - keys should be page numbers
     for key, value in data.items():
         if not isinstance(value, str):
-            raise ValueError(
-                f"Page '{key}' value is not a string in {filepath}"
-            )
+            raise ValueError(f"Page '{key}' value is not a string in {filepath}")
 
     return data
 
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Lazy load volume result JSON for large OCR files",
 )
@@ -210,6 +211,7 @@ def load_volume_result(
 
                     # Parse articles one at a time
                     import re
+
                     article_pattern = r'"(\d+)":\s*\['
 
                     for match in re.finditer(article_pattern, articles_content):
@@ -226,7 +228,9 @@ def load_volume_result(
                                 bracket_count -= 1
                             end_idx += 1
 
-                        article_json = "[" + articles_content[start_idx:end_idx-1] + "]"
+                        article_json = (
+                            "[" + articles_content[start_idx : end_idx - 1] + "]"
+                        )
                         try:
                             article_data = json.loads(article_json)
                             yield {
@@ -251,7 +255,8 @@ def load_volume_result(
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Scan directory for available article JSON files",
 )
@@ -286,7 +291,8 @@ def list_available_articles(
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Batch load multiple article JSON files from a directory",
 )
@@ -351,7 +357,8 @@ def batch_load_articles(
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract article number from filename",
 )
@@ -372,6 +379,7 @@ def extract_article_number_from_filename(filename: str | Path) -> int | None:
     """
     filename = Path(filename).stem
     import re
+
     match = re.search(r"ARTICLE[_\s]*(\d+)", filename, re.IGNORECASE)
     if match:
         return int(match.group(1))

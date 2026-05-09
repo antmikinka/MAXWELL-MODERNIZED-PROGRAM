@@ -34,6 +34,7 @@ __all__ = [
 
 # -- Data classes -------------------------------------------------------------------
 
+
 @jax_tree(static_fields=("reference_node",))
 @dataclass
 class NetworkSolverJAX:
@@ -55,7 +56,9 @@ class NetworkSolverJAX:
     reference_node: int = 0
 
     def __post_init__(self) -> None:
-        self.conductance_matrix = jnp.asarray(self.conductance_matrix, dtype=jnp.float64)
+        self.conductance_matrix = jnp.asarray(
+            self.conductance_matrix, dtype=jnp.float64
+        )
         self.current_vector = jnp.asarray(self.current_vector, dtype=jnp.float64)
 
     @property
@@ -87,7 +90,9 @@ class NetworkSolverJAX:
             G = G.at[i, i].add(g).at[j, j].add(g).at[i, j].add(-g).at[j, i].add(-g)
         for node, current in current_sources:
             I = I.at[node].add(current)
-        return cls(conductance_matrix=G, current_vector=I, reference_node=reference_node)
+        return cls(
+            conductance_matrix=G, current_vector=I, reference_node=reference_node
+        )
 
     @staticmethod
     def _solve_potentials(G: jax.Array, I: jax.Array, ref_node: int) -> jax.Array:
@@ -121,7 +126,7 @@ class NetworkSolverJAX:
         # Off-diagonal entries are negative conductances; diagonal is self-conductance
         abs_G = jnp.abs(G)
         safe_G = jnp.where(abs_G > 0, abs_G, 1.0)
-        return jnp.where(abs_G > 0, I_branch ** 2 / safe_G, 0.0)
+        return jnp.where(abs_G > 0, I_branch**2 / safe_G, 0.0)
 
     @property
     def total_power(self) -> jax.Array:
@@ -134,7 +139,9 @@ class NetworkSolverJAX:
         Inject 1A at node_a, extract at node_b, measure voltage difference.
         """
         n = self.conductance_matrix.shape[0]
-        I_test = jnp.zeros(n, dtype=jnp.float64).at[node_a].set(1.0).at[node_b].set(-1.0)
+        I_test = (
+            jnp.zeros(n, dtype=jnp.float64).at[node_a].set(1.0).at[node_b].set(-1.0)
+        )
         V = self._solve_potentials(self.conductance_matrix, I_test, self.reference_node)
         return safe_div(V[node_a] - V[node_b], 1.0, safe_default=0.0)
 
@@ -145,7 +152,9 @@ class NetworkSolverJAX:
         residual = jnp.abs(I_computed - self.current_vector)
         # Only check non-reference nodes
         n = self.conductance_matrix.shape[0]
-        idx = jnp.array([i for i in range(n) if i != self.reference_node], dtype=jnp.int32)
+        idx = jnp.array(
+            [i for i in range(n) if i != self.reference_node], dtype=jnp.int32
+        )
         non_ref_residual = residual[idx]
         return {
             "max_residual": jnp.max(non_ref_residual),
@@ -175,15 +184,21 @@ class KirchhoffJAX:
 
     def __post_init__(self) -> None:
         self.node_potentials = jnp.asarray(self.node_potentials, dtype=jnp.float64)
-        self.conductance_matrix = jnp.asarray(self.conductance_matrix, dtype=jnp.float64)
+        self.conductance_matrix = jnp.asarray(
+            self.conductance_matrix, dtype=jnp.float64
+        )
         self.current_vector = jnp.asarray(self.current_vector, dtype=jnp.float64)
 
     @property
     def kcl_residuals(self) -> jax.Array:
         """I_injected - G @ V for non-reference nodes. Should be ~0."""
         n = self.conductance_matrix.shape[0]
-        idx = jnp.array([i for i in range(n) if i != self.reference_node], dtype=jnp.int32)
-        full_residual = self.current_vector - jnp.dot(self.conductance_matrix, self.node_potentials)
+        idx = jnp.array(
+            [i for i in range(n) if i != self.reference_node], dtype=jnp.int32
+        )
+        full_residual = self.current_vector - jnp.dot(
+            self.conductance_matrix, self.node_potentials
+        )
         return full_residual[idx]
 
     @property
@@ -213,9 +228,14 @@ class KirchhoffJAX:
             def inner_body(j, val2):
                 I_ij = -G[i, j] * (V[i] - V[j])
                 return val2 + I_ij * (V[i] - V[j])
-            return val + jax.lax.fori_loop(i + 1, n, inner_body, jnp.array(0.0, dtype=jnp.float64))
 
-        P_dissipated = jax.lax.fori_loop(0, n - 1, outer_body, jnp.array(0.0, dtype=jnp.float64))
+            return val + jax.lax.fori_loop(
+                i + 1, n, inner_body, jnp.array(0.0, dtype=jnp.float64)
+            )
+
+        P_dissipated = jax.lax.fori_loop(
+            0, n - 1, outer_body, jnp.array(0.0, dtype=jnp.float64)
+        )
         return P_source - P_dissipated
 
 
@@ -278,7 +298,9 @@ class WheatstoneBridgeJAX:
         R24 = safe_div(self.R2 * self.R4, self.R2 + self.R4, safe_default=0.0)
         return R13 + R24
 
-    def galvanometer_current(self, V_battery: float, R_galvanometer: float) -> jax.Array:
+    def galvanometer_current(
+        self, V_battery: float, R_galvanometer: float
+    ) -> jax.Array:
         """Current through galvanometer: V_th / (R_th + R_g)."""
         Vth = self.thevenin_voltage(V_battery)
         Rth = self.thevenin_resistance()
@@ -293,7 +315,9 @@ class WheatstoneBridgeJAX:
 
     @staticmethod
     @jax.jit
-    def _thevenin_voltage_jit(R1: float, R2: float, R3: float, R4: float, V: float) -> jax.Array:
+    def _thevenin_voltage_jit(
+        R1: float, R2: float, R3: float, R4: float, V: float
+    ) -> jax.Array:
         V = jnp.asarray(V, dtype=jnp.float64)
         R1, R2, R3, R4 = [jnp.asarray(r, dtype=jnp.float64) for r in (R1, R2, R3, R4)]
         Vl = V * safe_div(R3, R1 + R3, safe_default=0.0)
@@ -307,7 +331,10 @@ class WheatstoneBridgeJAX:
         R1, R2, R3, R4 = [jnp.asarray(r, dtype=jnp.float64) for r in (R1, R2, R3, R4)]
         R13 = safe_div(R1 * R3, R1 + R3, safe_default=0.0)
         R24 = safe_div(R2 * R4, R2 + R4, safe_default=0.0)
-        Vth = V * (safe_div(R3, R1 + R3, safe_default=0.0) - safe_div(R4, R2 + R4, safe_default=0.0))
+        Vth = V * (
+            safe_div(R3, R1 + R3, safe_default=0.0)
+            - safe_div(R4, R2 + R4, safe_default=0.0)
+        )
         return safe_div(Vth, R13 + R24 + Rg, safe_default=0.0)
 
 
@@ -329,13 +356,23 @@ class ReciprocityVerifierJAX:
     reference_node: int = 0
 
     def __post_init__(self) -> None:
-        self.conductance_matrix = jnp.asarray(self.conductance_matrix, dtype=jnp.float64)
+        self.conductance_matrix = jnp.asarray(
+            self.conductance_matrix, dtype=jnp.float64
+        )
 
     def transfer_resistance(self, port_a: int, port_b: int) -> jax.Array:
         """Transfer resistance: V_port_b / I_applied at port_a (with -I at reference)."""
         n = self.conductance_matrix.shape[0]
-        I = jnp.zeros(n, dtype=jnp.float64).at[port_a].set(1.0).at[self.reference_node].set(-1.0)
-        V = NetworkSolverJAX._solve_potentials(self.conductance_matrix, I, self.reference_node)
+        I = (
+            jnp.zeros(n, dtype=jnp.float64)
+            .at[port_a]
+            .set(1.0)
+            .at[self.reference_node]
+            .set(-1.0)
+        )
+        V = NetworkSolverJAX._solve_potentials(
+            self.conductance_matrix, I, self.reference_node
+        )
         return safe_div(V[port_b] - V[self.reference_node], 1.0, safe_default=0.0)
 
     def verify(
@@ -362,8 +399,14 @@ class ReciprocityVerifierJAX:
 
 # -- Standalone functions -------------------------------------------------------------
 
-@maxwell_cite(273, 274, part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Kirchhoff's junction rule (current conservation)")
+
+@maxwell_cite(
+    273,
+    274,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Kirchhoff's junction rule (current conservation)",
+)
 def kirchhoff_junction_rule_jax(currents: jax.Array) -> Dict[str, Any]:
     """Verify Kirchhoff's current law. Arts. 273-274.
 
@@ -381,8 +424,12 @@ def kirchhoff_junction_rule_jax(currents: jax.Array) -> Dict[str, Any]:
     return {"sum": total, "satisfied": bool(satisfied)}
 
 
-@maxwell_cite(275, part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Kirchhoff's loop rule (voltage conservation)")
+@maxwell_cite(
+    275,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Kirchhoff's loop rule (voltage conservation)",
+)
 def kirchhoff_loop_rule_jax(voltage_drops: jax.Array) -> Dict[str, Any]:
     """Verify Kirchhoff's voltage law. Art. 275.
 
@@ -396,12 +443,19 @@ def kirchhoff_loop_rule_jax(voltage_drops: jax.Array) -> Dict[str, Any]:
     """
     voltage_drops = jnp.asarray(voltage_drops, dtype=jnp.float64)
     total = jnp.sum(voltage_drops)
-    satisfied = jnp.abs(total) < 1e-10 * jnp.maximum(1.0, jnp.max(jnp.abs(voltage_drops)))
+    satisfied = jnp.abs(total) < 1e-10 * jnp.maximum(
+        1.0, jnp.max(jnp.abs(voltage_drops))
+    )
     return {"sum": total, "satisfied": bool(satisfied)}
 
 
-@maxwell_cite(279, 280, part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Solve resistor network via conductance matrix")
+@maxwell_cite(
+    279,
+    280,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Solve resistor network via conductance matrix",
+)
 def solve_network_jax(
     conductance_matrix: jax.Array,
     current_vector: jax.Array,
@@ -431,8 +485,13 @@ def solve_network_jax(
     }
 
 
-@maxwell_cite(281, 282, part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Wheatstone bridge balance analysis")
+@maxwell_cite(
+    281,
+    282,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Wheatstone bridge balance analysis",
+)
 def wheatstone_bridge_balance_jax(
     R1: float, R2: float, R3: float, R4: float
 ) -> Dict[str, Any]:
@@ -455,11 +514,20 @@ def wheatstone_bridge_balance_jax(
     }
 
 
-@maxwell_cite(283, 284, part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Wheatstone bridge sensitivity analysis")
+@maxwell_cite(
+    283,
+    284,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Wheatstone bridge sensitivity analysis",
+)
 def wheatstone_bridge_sensitivity_jax(
-    R1: float, R2: float, R3: float, R4: float,
-    V_battery: float, R_galvanometer: float,
+    R1: float,
+    R2: float,
+    R3: float,
+    R4: float,
+    V_battery: float,
+    R_galvanometer: float,
 ) -> Dict[str, Any]:
     """Analyze Wheatstone bridge sensitivity. Arts. 283-284.
 
@@ -480,8 +548,13 @@ def wheatstone_bridge_sensitivity_jax(
     }
 
 
-@maxwell_cite(277, 278, part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Reciprocity theorem verification")
+@maxwell_cite(
+    277,
+    278,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Reciprocity theorem verification",
+)
 def reciprocity_theorem_jax(
     conductance_matrix: jax.Array,
     port1: Tuple[int, int],
@@ -508,8 +581,14 @@ def reciprocity_theorem_jax(
     return verifier.verify(port1[0], port1[1], port2[0], port2[1])
 
 
-@maxwell_cite(273, 274, 275, part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Verify network solution satisfies Kirchhoff's laws")
+@maxwell_cite(
+    273,
+    274,
+    275,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Verify network solution satisfies Kirchhoff's laws",
+)
 def verify_network_solution_jax(
     G: jax.Array,
     V: jax.Array,
@@ -548,7 +627,7 @@ def verify_network_solution_jax(
     I_branch = -G * (V[:, None] - V[None, :])
     abs_G = jnp.abs(G)
     safe_G = jnp.where(abs_G > 0, abs_G, 1.0)
-    P_branch = jnp.where(abs_G > 0, I_branch ** 2 / safe_G, 0.0)
+    P_branch = jnp.where(abs_G > 0, I_branch**2 / safe_G, 0.0)
     P_dissipated = jnp.sum(P_branch) / 2.0
 
     return {
@@ -559,9 +638,19 @@ def verify_network_solution_jax(
     }
 
 
-@maxwell_cite(273, 274, 275, 276, 277, 278, 279, 280,
-              part=2, chapter="Theory of Linear Systems of Conductors",
-              description="Comprehensive network analysis")
+@maxwell_cite(
+    273,
+    274,
+    275,
+    276,
+    277,
+    278,
+    279,
+    280,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
+    description="Comprehensive network analysis",
+)
 def analyze_network_jax(
     edges: List[Tuple[int, int, float]],
     current_sources: List[Tuple[int, float]],

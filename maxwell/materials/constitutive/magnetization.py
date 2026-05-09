@@ -33,10 +33,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -66,7 +67,8 @@ class Magnetization:
 
     @maxwell_cite(
         605,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate magnetic induction B from H",
     )
@@ -87,7 +89,8 @@ class Magnetization:
 
     @maxwell_cite(
         605,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate magnetization intensity I from H",
     )
@@ -110,7 +113,8 @@ class Magnetization:
 
     @maxwell_cite(
         605,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate H from B",
     )
@@ -132,7 +136,8 @@ class Magnetization:
 
 @maxwell_cite(
     605,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate magnetic induction: B = μH",
 )
@@ -167,7 +172,8 @@ def calc_magnetic_induction(
 
 @maxwell_cite(
     605,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate magnetization: I = χH",
 )
@@ -200,7 +206,8 @@ def calc_magnetization_intensity(
 
 @maxwell_cite(
     605,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate permeability from susceptibility",
 )
@@ -226,7 +233,8 @@ def calc_permeability(susceptibility: float) -> float:
 
 @maxwell_cite(
     605,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate susceptibility from permeability",
 )
@@ -252,7 +260,8 @@ def calc_susceptibility(permeability: float) -> float:
 
 @maxwell_cite(
     605,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate magnetic moment of magnetized body",
 )
@@ -283,7 +292,8 @@ def calc_magnetic_moment(
 
 @maxwell_cite(
     605,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Verify magnetization relations",
 )
@@ -320,7 +330,11 @@ def verify_magnetization(
     B_from_I = H_field + 4.0 * np.pi * I
 
     # Verify B = H + 4πI = μH
-    B_error = np.linalg.norm(B_from_mu - B_from_I) / np.linalg.norm(B_from_mu) if np.linalg.norm(B_from_mu) > 0 else 0
+    B_error = (
+        np.linalg.norm(B_from_mu - B_from_I) / np.linalg.norm(B_from_mu)
+        if np.linalg.norm(B_from_mu) > 0
+        else 0
+    )
 
     # Verify μ = 1 + 4πχ
     mu_check = calc_permeability(susceptibility)
@@ -341,7 +355,8 @@ def verify_magnetization(
 
 @maxwell_cite(
     605,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Complete magnetization analysis",
 )

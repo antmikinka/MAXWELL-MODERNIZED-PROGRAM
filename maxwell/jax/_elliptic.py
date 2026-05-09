@@ -36,6 +36,7 @@ __all__ = [
 
 # ── Arithmetic-Geometric Mean ───────────────────────────────────
 
+
 def agm(a: jax.Array, b: jax.Array, max_iter: int = 50) -> jax.Array:
     """Compute the arithmetic-geometric mean of a and b.
 
@@ -75,6 +76,7 @@ def agm(a: jax.Array, b: jax.Array, max_iter: int = 50) -> jax.Array:
 
 
 # ── Complete Elliptic Integral of the First Kind ────────────────
+
 
 def ellipk_jax(m: jax.Array) -> jax.Array:
     """Complete elliptic integral of the first kind K(m).
@@ -120,6 +122,7 @@ def ellipk_jax(m: jax.Array) -> jax.Array:
 
 # ── Complete Elliptic Integral of the Second Kind ───────────────
 
+
 def ellipe_jax(m: jax.Array) -> jax.Array:
     """Complete elliptic integral of the second kind E(m).
 
@@ -154,7 +157,7 @@ def ellipe_jax(m: jax.Array) -> jax.Array:
         a_next = (a_n + b_n) / 2.0
         b_next = jnp.sqrt(a_n * b_n)
         c_next = (a_n - b_n) / 2.0
-        s_next = s_n + power * c_n ** 2
+        s_next = s_n + power * c_n**2
         return a_next, b_next, c_next, s_next, power * 2.0, _
 
     def cond(state: tuple) -> jax.Array:
@@ -166,7 +169,7 @@ def ellipe_jax(m: jax.Array) -> jax.Array:
         a_next = (a_n + b_n) / 2.0
         b_next = jnp.sqrt(jnp.maximum(a_n * b_n, 0.0))
         c_next = (a_n - b_n) / 2.0
-        s_next = s_n + power * c_n ** 2
+        s_next = s_n + power * c_n**2
         return a_next, b_next, c_next, s_next, power * 2.0, i + 1
 
     result = lax.while_loop(cond, step_fn, (a0, b0, c0, s0, 1.0, 0))
@@ -177,6 +180,7 @@ def ellipe_jax(m: jax.Array) -> jax.Array:
 
 
 # ── Incomplete Elliptic Integrals ───────────────────────────────
+
 
 def ellipf_jax(phi: jax.Array, m: jax.Array) -> jax.Array:
     """Incomplete elliptic integral of the first kind F(phi|m).
@@ -262,6 +266,7 @@ def ellipe_inc_jax(phi: jax.Array, m: jax.Array) -> jax.Array:
 
 # ── Verification ────────────────────────────────────────────────
 
+
 def verify_elliptic_integrals() -> dict[str, float]:
     """Verify AGM elliptic integrals against known values.
 
@@ -294,9 +299,7 @@ def verify_elliptic_integrals() -> dict[str, float]:
     results["E(0.5)_expected"] = 1.3506438810476755
     results["E(0.5)_error"] = abs(e05 - 1.3506438810476755)
 
-    all_pass = all(
-        results[k] < 1e-10 for k in results if k.endswith("_error")
-    )
+    all_pass = all(results[k] < 1e-10 for k in results if k.endswith("_error"))
     results["all_pass"] = all_pass
 
     return results

@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -16,8 +17,8 @@ pytestmark = pytest.mark.skipif(
 )
 
 from maxwell.vis.molecular_vortices import (
-    calc_vortex_lattice,
     calc_magnetic_field_from_vortices,
+    calc_vortex_lattice,
     plot_molecular_vortices,
     plot_vortex_3d_surface,
 )
@@ -82,8 +83,12 @@ class TestCalcVortexLattice:
         x = np.linspace(-0.5, 0.5, 20)
         y = np.linspace(-0.5, 0.5, 20)
         X, Y = np.meshgrid(x, y)
-        r1 = calc_vortex_lattice(X, Y, vortex_centers=[(0, 0)], vortex_signs=[1], core_radius=0.1)
-        r2 = calc_vortex_lattice(X, Y, vortex_centers=[(0, 0)], vortex_signs=[1], core_radius=0.5)
+        r1 = calc_vortex_lattice(
+            X, Y, vortex_centers=[(0, 0)], vortex_signs=[1], core_radius=0.1
+        )
+        r2 = calc_vortex_lattice(
+            X, Y, vortex_centers=[(0, 0)], vortex_signs=[1], core_radius=0.5
+        )
         assert r1["v_magnitude"].max() >= r2["v_magnitude"].max()
 
     def test_returns_all_keys(self):
@@ -92,7 +97,14 @@ class TestCalcVortexLattice:
         y = np.linspace(-2, 2, 10)
         X, Y = np.meshgrid(x, y)
         result = calc_vortex_lattice(X, Y)
-        expected_keys = {"v_x", "v_y", "v_magnitude", "omega", "vortex_centers", "vortex_signs"}
+        expected_keys = {
+            "v_x",
+            "v_y",
+            "v_magnitude",
+            "omega",
+            "vortex_centers",
+            "vortex_signs",
+        }
         assert set(result.keys()) == expected_keys
 
     def test_strength_scaling(self):
@@ -102,7 +114,9 @@ class TestCalcVortexLattice:
         X, Y = np.meshgrid(x, y)
         r1 = calc_vortex_lattice(X, Y, vortex_strength=1.0)
         r2 = calc_vortex_lattice(X, Y, vortex_strength=2.0)
-        assert np.isclose(r2["v_magnitude"].max(), 2.0 * r1["v_magnitude"].max(), rtol=1e-3)
+        assert np.isclose(
+            r2["v_magnitude"].max(), 2.0 * r1["v_magnitude"].max(), rtol=1e-3
+        )
 
 
 # ============================================================

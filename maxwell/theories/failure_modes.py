@@ -44,10 +44,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -82,8 +83,8 @@ def _weber_force(r: float, r_dot: float, r_ddot: float, q1: float, q2: float) ->
     """
     if r < 1e-15:
         return 0.0
-    coulomb = q1 * q2 / r ** 2
-    correction = 1 + (r * r_ddot) / CONST.C ** 2 - r_dot ** 2 / (2 * CONST.C ** 2)
+    coulomb = q1 * q2 / r**2
+    correction = 1 + (r * r_ddot) / CONST.C**2 - r_dot**2 / (2 * CONST.C**2)
     return coulomb * correction
 
 
@@ -94,7 +95,7 @@ def _action_at_distance_field(r: float, q: float) -> float:
     """
     if r < 1e-15:
         return 0.0
-    return q / r ** 2
+    return q / r**2
 
 
 def _maxwell_field_retarded(r: float, q: float, t: float, freq: float) -> float:
@@ -106,14 +107,16 @@ def _maxwell_field_retarded(r: float, q: float, t: float, freq: float) -> float:
     """
     if r < 1e-15:
         return 0.0
-    coulomb = q / r ** 2
-    radiation = q * freq ** 2 * np.sin(freq * (t - r / CONST.C)) / (CONST.C ** 2 * r)
+    coulomb = q / r**2
+    radiation = q * freq**2 * np.sin(freq * (t - r / CONST.C)) / (CONST.C**2 * r)
     return coulomb + radiation
 
 
 @maxwell_cite(
-    857, 858,
-    part=4, chapter="Failure Modes",
+    857,
+    858,
+    part=4,
+    chapter="Failure Modes",
     theory_class="maxwell_original",
     description="Analyze action-at-distance failure",
 )
@@ -146,7 +149,7 @@ def analyze_action_at_distance_failure(
     E_maxwell = _maxwell_field_retarded(distance, charge, t, frequency)
 
     # Radiation field amplitude
-    E_radiation = charge * frequency ** 2 / (CONST.C ** 2 * distance)
+    E_radiation = charge * frequency**2 / (CONST.C**2 * distance)
 
     # At large distances, radiation >> static field
     radiation_dominates = E_radiation > E_aad
@@ -165,8 +168,10 @@ def analyze_action_at_distance_failure(
 
 
 @maxwell_cite(
-    857, 858,
-    part=4, chapter="Failure Modes",
+    857,
+    858,
+    part=4,
+    chapter="Failure Modes",
     theory_class="maxwell_original",
     description="Analyze Weber's electrodynamics failure",
 )
@@ -190,7 +195,7 @@ def analyze_weber_failure(
         TheoryResult with analysis.
     """
     # Coulomb force
-    F_coulomb = charge ** 2 / separation ** 2
+    F_coulomb = charge**2 / separation**2
 
     # Weber force with accelerating charges
     # For oscillating charges: r_dot ~ omega*a, r_ddot ~ omega^2*a
@@ -217,8 +222,10 @@ def analyze_weber_failure(
 
 
 @maxwell_cite(
-    858, 859,
-    part=4, chapter="Failure Modes",
+    858,
+    859,
+    part=4,
+    chapter="Failure Modes",
     theory_class="maxwell_original",
     description="Analyze mechanical ether failure",
 )
@@ -261,8 +268,11 @@ def analyze_mechanical_ether_failure() -> TheoryResult:
 
 
 @maxwell_cite(
-    857, 858, 859,
-    part=4, chapter="Failure Modes",
+    857,
+    858,
+    859,
+    part=4,
+    chapter="Failure Modes",
     theory_class="maxwell_original",
     description="Verify Maxwell's theory succeeds where others fail",
 )
@@ -296,20 +306,20 @@ def verify_maxwell_supremacy(
     # Energy conservation: field energy density
     E = 1.0  # 1 statvolt/cm
     B = 1.0  # 1 gauss
-    u = (E ** 2 + B ** 2) / (8 * np.pi)  # erg/cm^3
+    u = (E**2 + B**2) / (8 * np.pi)  # erg/cm^3
     energy_positive = u > 0
 
     # Poynting vector: energy flux
-    S = CONST.C / (4 * np.pi) * np.cross(
-        np.array([E, 0, 0]), np.array([0, B, 0])
-    )
+    S = CONST.C / (4 * np.pi) * np.cross(np.array([E, 0, 0]), np.array([0, B, 0]))
     energy_flows = np.linalg.norm(S) > 0
 
-    all_failures_identified = all([
-        aad.discrepancy,
-        weber.discrepancy,
-        ether.discrepancy,
-    ])
+    all_failures_identified = all(
+        [
+            aad.discrepancy,
+            weber.discrepancy,
+            ether.discrepancy,
+        ]
+    )
 
     maxwell_valid = speed_agrees and energy_positive and energy_flows
 
@@ -327,8 +337,11 @@ def verify_maxwell_supremacy(
 
 
 @maxwell_cite(
-    857, 858, 859,
-    part=4, chapter="Failure Modes",
+    857,
+    858,
+    859,
+    part=4,
+    chapter="Failure Modes",
     theory_class="maxwell_original",
     description="Complete competing theory failure analysis",
 )

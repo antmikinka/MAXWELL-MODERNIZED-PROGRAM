@@ -6,11 +6,11 @@ References:
 
 from maxwell.math.gauge.manager import (
     GaugeTransformation,
+    analyze_gauge_transformations,
     apply_coulomb_gauge,
     apply_lorenz_gauge,
-    verify_gauge_condition,
     transform_potentials,
-    analyze_gauge_transformations,
+    verify_gauge_condition,
 )
 
 __all__ = [

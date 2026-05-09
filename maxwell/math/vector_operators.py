@@ -36,10 +36,10 @@ References:
 from __future__ import annotations
 
 from typing import Callable, Tuple
+
 import numpy as np
 
 from maxwell.meta.citation import maxwell_cite
-
 
 # Type alias for 3D vector field components
 VectorField = Tuple[float, float, float]
@@ -47,8 +47,15 @@ ScalarFieldResult = float
 
 
 @maxwell_cite(
-    71, 72, 73, 74, 75, 76, 77,
-    part=1, chapter="On the Potential",
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    part=1,
+    chapter="On the Potential",
     theory_class="standard_math",
     description="Compute gradient of scalar potential (Art. 71-77)",
 )
@@ -98,7 +105,8 @@ def gradient(
 
 @maxwell_cite(
     77,
-    part=1, chapter="On the Potential",
+    part=1,
+    chapter="On the Potential",
     theory_class="standard_math",
     description="Compute divergence of vector field (Art. 77)",
 )
@@ -149,7 +157,8 @@ def divergence(
 
 @maxwell_cite(
     77,
-    part=1, chapter="On the Potential",
+    part=1,
+    chapter="On the Potential",
     theory_class="standard_math",
     description="Compute curl of vector field (Art. 77)",
 )
@@ -212,8 +221,10 @@ def curl(
 
 
 @maxwell_cite(
-    77, 100,
-    part=1, chapter="On the Potential",
+    77,
+    100,
+    part=1,
+    chapter="On the Potential",
     theory_class="standard_math",
     description="Compute Laplacian of scalar field (Arts. 77, 100)",
 )
@@ -257,16 +268,30 @@ def laplacian(
         >>> print(f"Laplacian (should be ~0): {lap:.2e}")
     """
     # Second derivatives using central difference
-    d2phi_dx2 = (phi_func(x + h, y, z) - 2 * phi_func(x, y, z) + phi_func(x - h, y, z)) / (h ** 2)
-    d2phi_dy2 = (phi_func(x, y + h, z) - 2 * phi_func(x, y, z) + phi_func(x, y - h, z)) / (h ** 2)
-    d2phi_dz2 = (phi_func(x, y, z + h) - 2 * phi_func(x, y, z) + phi_func(x, y, z - h)) / (h ** 2)
+    d2phi_dx2 = (
+        phi_func(x + h, y, z) - 2 * phi_func(x, y, z) + phi_func(x - h, y, z)
+    ) / (h**2)
+    d2phi_dy2 = (
+        phi_func(x, y + h, z) - 2 * phi_func(x, y, z) + phi_func(x, y - h, z)
+    ) / (h**2)
+    d2phi_dz2 = (
+        phi_func(x, y, z + h) - 2 * phi_func(x, y, z) + phi_func(x, y, z - h)
+    ) / (h**2)
 
     return d2phi_dx2 + d2phi_dy2 + d2phi_dz2
 
 
 @maxwell_cite(
-    103, 104, 105, 106, 107, 108, 109, 110,
-    part=1, chapter="Vector Identities",
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    part=1,
+    chapter="Vector Identities",
     theory_class="standard_math",
     description="Compute vector Laplacian (Arts. 103-110)",
 )
@@ -317,8 +342,16 @@ def vector_laplacian(
 
 
 @maxwell_cite(
-    103, 104, 105, 106, 107, 108, 109, 110,
-    part=1, chapter="Vector Identities",
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    part=1,
+    chapter="Vector Identities",
     theory_class="standard_math",
     description="Verify curl(grad phi) = 0 identity (Arts. 103-110)",
 )
@@ -379,8 +412,16 @@ def identity_curl_grad_zero(
 
 
 @maxwell_cite(
-    103, 104, 105, 106, 107, 108, 109, 110,
-    part=1, chapter="Vector Identities",
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    part=1,
+    chapter="Vector Identities",
     theory_class="standard_math",
     description="Verify div(curl F) = 0 identity (Arts. 103-110)",
 )
@@ -434,7 +475,9 @@ def identity_div_curl_zero(
         return curl(Fx, Fy, Fz, px, py, pz, h)[2]
 
     # Compute divergence of curl
-    div_curl = divergence(Cx, Cy, Cz, x, y, z, h * 10)  # Larger h for nested derivatives
+    div_curl = divergence(
+        Cx, Cy, Cz, x, y, z, h * 10
+    )  # Larger h for nested derivatives
 
     # Check if near zero
     tolerance = 1e-3  # Relaxed tolerance for nested numerical differentiation
@@ -443,8 +486,16 @@ def identity_div_curl_zero(
 
 
 @maxwell_cite(
-    103, 104, 105, 106, 107, 108, 109, 110,
-    part=1, chapter="Vector Identities",
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    part=1,
+    chapter="Vector Identities",
     theory_class="standard_math",
     description="Verify curl(curl F) identity (Arts. 103-110)",
 )

@@ -33,15 +33,19 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
-    670, 671, 672,
-    part=4, chapter="Circular Coils",
+    670,
+    671,
+    672,
+    part=4,
+    chapter="Circular Coils",
     theory_class="maxwell_original",
     description="Calculate magnetic field on axis of circular coil",
 )
@@ -73,11 +77,11 @@ def calc_coil_on_axis(
     a = coil_radius
     z = axial_distance
 
-    denom = (a ** 2 + z ** 2) ** 1.5
+    denom = (a**2 + z**2) ** 1.5
     if denom < 1e-30:
         return 0.0
 
-    return 2.0 * np.pi * n_turns * current * a ** 2 / (CONST.C * denom)
+    return 2.0 * np.pi * n_turns * current * a**2 / (CONST.C * denom)
 
 
 def _elliptic_K(m: float) -> float:
@@ -105,8 +109,11 @@ def _elliptic_E(m: float) -> float:
 
 
 @maxwell_cite(
-    673, 674, 675,
-    part=4, chapter="Circular Coils",
+    673,
+    674,
+    675,
+    part=4,
+    chapter="Circular Coils",
     theory_class="maxwell_original",
     description="Calculate magnetic field at arbitrary point from circular coil",
 )
@@ -150,21 +157,27 @@ def calc_coil_off_axis(
         return np.zeros(3)
 
     # k^2 parameter
-    k_sq = 4.0 * a * rho / ((a + rho) ** 2 + z ** 2)
+    k_sq = 4.0 * a * rho / ((a + rho) ** 2 + z**2)
     k_sq = min(max(k_sq, 0), 1 - 1e-15)
 
     K = _elliptic_K(k_sq)
     E = _elliptic_E(k_sq)
 
     # Field components in cylindrical coordinates
-    alpha_sq = (a + rho) ** 2 + z ** 2
+    alpha_sq = (a + rho) ** 2 + z**2
     prefactor = 2.0 * n_turns * current / (CONST.C * alpha_sq)
 
     # B_z component
-    B_z = prefactor * (E * (a ** 2 - rho ** 2 - z ** 2) / (alpha_sq - 4 * a * rho + 1e-30) + K)
+    B_z = prefactor * (
+        E * (a**2 - rho**2 - z**2) / (alpha_sq - 4 * a * rho + 1e-30) + K
+    )
 
     # B_rho component
-    B_rho = prefactor * (z / rho) * (E * (a ** 2 + rho ** 2 + z ** 2) / (alpha_sq - 4 * a * rho + 1e-30) - K)
+    B_rho = (
+        prefactor
+        * (z / rho)
+        * (E * (a**2 + rho**2 + z**2) / (alpha_sq - 4 * a * rho + 1e-30) - K)
+    )
 
     # Convert to Cartesian
     cos_phi = position[0] / rho if rho > 1e-15 else 1.0
@@ -177,8 +190,10 @@ def calc_coil_off_axis(
 
 
 @maxwell_cite(
-    676, 677,
-    part=4, chapter="Circular Coils",
+    676,
+    677,
+    part=4,
+    chapter="Circular Coils",
     theory_class="maxwell_original",
     description="Calculate magnetic field from double coil (Helmholtz)",
 )
@@ -222,8 +237,10 @@ def calc_double_coil_field(
 
 
 @maxwell_cite(
-    678, 679,
-    part=4, chapter="Circular Coils",
+    678,
+    679,
+    part=4,
+    chapter="Circular Coils",
     theory_class="maxwell_original",
     description="Calculate magnetic field from coaxial coil pair with opposite currents",
 )
@@ -293,7 +310,8 @@ class CircularCoil:
 
     @maxwell_cite(
         670,
-        part=4, chapter="Circular Coils",
+        part=4,
+        chapter="Circular Coils",
         theory_class="maxwell_original",
         description="Calculate coil field at position",
     )
@@ -304,8 +322,10 @@ class CircularCoil:
         return calc_coil_off_axis(self.current, self.radius, rel_pos, self.n_turns)
 
     @maxwell_cite(
-        670, 671,
-        part=4, chapter="Circular Coils",
+        670,
+        671,
+        part=4,
+        chapter="Circular Coils",
         theory_class="maxwell_original",
         description="Calculate field at coil center",
     )
@@ -321,8 +341,11 @@ class CircularCoil:
 
 
 @maxwell_cite(
-    670, 671, 672,
-    part=4, chapter="Circular Coils",
+    670,
+    671,
+    672,
+    part=4,
+    chapter="Circular Coils",
     theory_class="maxwell_original",
     description="Verify circular coil field relations",
 )
@@ -350,18 +373,24 @@ def verify_coil_field(
     # Center field
     B_center = calc_coil_on_axis(current, coil_radius, 0)
     B_expected = 2.0 * np.pi * current / (CONST.C * coil_radius)
-    center_error = abs(B_center - B_expected) / B_expected if B_expected > 1e-15 else abs(B_center)
+    center_error = (
+        abs(B_center - B_expected) / B_expected if B_expected > 1e-15 else abs(B_center)
+    )
 
     # Far field (dipole): B ~ 2*pi*I*a^2/(c*z^3)
     z_far = 100 * coil_radius
     B_far = calc_coil_on_axis(current, coil_radius, z_far)
-    B_dipole = 2.0 * np.pi * current * coil_radius ** 2 / (CONST.C * z_far ** 3)
+    B_dipole = 2.0 * np.pi * current * coil_radius**2 / (CONST.C * z_far**3)
     far_error = abs(B_far - B_dipole) / B_dipole if B_dipole > 1e-15 else abs(B_far)
 
     # On-axis field at z = a
     B_at_a = calc_coil_on_axis(current, coil_radius, coil_radius)
-    B_at_a_expected = 2.0 * np.pi * current / (CONST.C * coil_radius * 2 ** 1.5)
-    at_a_error = abs(B_at_a - B_at_a_expected) / B_at_a_expected if B_at_a_expected > 1e-15 else abs(B_at_a)
+    B_at_a_expected = 2.0 * np.pi * current / (CONST.C * coil_radius * 2**1.5)
+    at_a_error = (
+        abs(B_at_a - B_at_a_expected) / B_at_a_expected
+        if B_at_a_expected > 1e-15
+        else abs(B_at_a)
+    )
 
     return {
         "B_center": B_center,
@@ -376,13 +405,19 @@ def verify_coil_field(
         "center_verified": bool(center_error < tolerance),
         "far_field_verified": bool(far_error < tolerance),
         "at_radius_verified": bool(at_a_error < tolerance),
-        "verified": bool(center_error < tolerance and far_error < tolerance and at_a_error < tolerance),
+        "verified": bool(
+            center_error < tolerance
+            and far_error < tolerance
+            and at_a_error < tolerance
+        ),
     }
 
 
 @maxwell_cite(
-    676, 677,
-    part=4, chapter="Circular Coils",
+    676,
+    677,
+    part=4,
+    chapter="Circular Coils",
     theory_class="maxwell_original",
     description="Verify Helmholtz coil uniformity",
 )
@@ -435,8 +470,16 @@ def verify_helmholtz_uniformity(
 
 
 @maxwell_cite(
-    670, 671, 672, 673, 674, 675, 676, 677,
-    part=4, chapter="Circular Coils",
+    670,
+    671,
+    672,
+    673,
+    674,
+    675,
+    676,
+    677,
+    part=4,
+    chapter="Circular Coils",
     theory_class="maxwell_original",
     description="Complete circular coil analysis",
 )
@@ -483,10 +526,12 @@ def analyze_circular_coil(
         off_axis_fields.append(B)
 
     # Helmholtz pair
-    B_helmholtz = calc_double_coil_field(current, coil_radius, np.array([0, 0, 0]), n_turns=n_turns)
+    B_helmholtz = calc_double_coil_field(
+        current, coil_radius, np.array([0, 0, 0]), n_turns=n_turns
+    )
 
     # Dipole moment
-    m = current * np.pi * coil_radius ** 2 * n_turns
+    m = current * np.pi * coil_radius**2 * n_turns
 
     return {
         "current": current,

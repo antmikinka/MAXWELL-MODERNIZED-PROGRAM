@@ -40,10 +40,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -130,12 +131,24 @@ class MaxwellEquations:
         if self.permeability <= 0:
             raise ValueError(f"Permeability must be positive, got {self.permeability}")
         if self.conductivity < 0:
-            raise ValueError(f"Conductivity must be non-negative, got {self.conductivity}")
+            raise ValueError(
+                f"Conductivity must be non-negative, got {self.conductivity}"
+            )
 
     @classmethod
     @maxwell_cite(
-        594, 595, 596, 597, 598, 599, 600, 601, 602, 603,
-        part=4, chapter="General Equations of the Electromagnetic Field",
+        594,
+        595,
+        596,
+        597,
+        598,
+        599,
+        600,
+        601,
+        602,
+        603,
+        part=4,
+        chapter="General Equations of the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Create Maxwell equations calculator with material properties",
     )
@@ -173,7 +186,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         598,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Equation (A) — Faraday's Law",
     )
@@ -206,7 +220,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         598,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Equation (B) — General EMF with motion and potentials",
     )
@@ -268,7 +283,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         599,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Equation (C) — Ponderomotive Force",
     )
@@ -317,7 +333,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         599,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Equation (D) — Magnetic Induction",
     )
@@ -353,7 +370,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         600,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Equation (E) — Ampere-Maxwell Law",
     )
@@ -396,7 +414,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         600,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Equation (F) — Electric Displacement",
     )
@@ -429,7 +448,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         600,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Equation (G) — Conduction Current (Ohm's Law)",
     )
@@ -461,7 +481,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         594,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Gauss's Law for electric field",
     )
@@ -494,7 +515,8 @@ class MaxwellEquations:
 
     @maxwell_cite(
         594,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Gauss's Law for magnetic field",
     )
@@ -527,7 +549,8 @@ class MaxwellEquations:
 
 @maxwell_cite(
     598,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate Faraday's Law: ∇ × E = -(1/c)·∂B/∂t",
 )
@@ -571,7 +594,8 @@ def calc_faradays_law(
 
 @maxwell_cite(
     598,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate general EMF: E = (1/c)(v × B) - (1/c)·∂A/∂t - ∇φ",
 )
@@ -651,7 +675,8 @@ def calc_general_emf(
 
 @maxwell_cite(
     599,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate ponderomotive force: F = ρE + (1/c)(J × B)",
 )
@@ -713,7 +738,8 @@ def calc_ponderomotive_force(
 
 @maxwell_cite(
     599,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate magnetic induction: B = H + 4πM",
 )
@@ -760,7 +786,8 @@ def calc_magnetic_induction(
 
 @maxwell_cite(
     600,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate Ampere-Maxwell law: ∇ × H = (4π/c)·J + (1/c)·∂D/∂t",
 )
@@ -838,7 +865,8 @@ def calc_ampere_maxwell(
 
 @maxwell_cite(
     600,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate electric displacement: D = εE",
 )
@@ -889,7 +917,8 @@ def calc_electric_displacement(
 
 @maxwell_cite(
     600,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate conduction current: J = σE (Ohm's law)",
 )
@@ -940,7 +969,8 @@ def calc_conduction_current(
 
 @maxwell_cite(
     594,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate Gauss's law for electricity: ∇ · D = 4πρ",
 )
@@ -999,14 +1029,17 @@ def calc_gauss_law_electric(
 
     if charge_density is not None:
         result["charge_density_input"] = charge_density
-        result["verified"] = np.isclose(divergence_D, 4.0 * np.pi * charge_density, rtol=1e-10)
+        result["verified"] = np.isclose(
+            divergence_D, 4.0 * np.pi * charge_density, rtol=1e-10
+        )
 
     return result
 
 
 @maxwell_cite(
     594,
-    part=4, chapter="General Equations",
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate Gauss's law for magnetism: ∇ · B = 0",
 )
@@ -1062,8 +1095,12 @@ def calc_gauss_law_magnetic(
 
 
 @maxwell_cite(
-    594, 598, 599, 600,
-    part=4, chapter="General Equations",
+    594,
+    598,
+    599,
+    600,
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate numerical divergence of 3D vector field",
 )
@@ -1134,8 +1171,10 @@ def numerical_divergence(
 
 
 @maxwell_cite(
-    598, 600,
-    part=4, chapter="General Equations",
+    598,
+    600,
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Calculate numerical curl of 3D vector field",
 )
@@ -1206,16 +1245,19 @@ def numerical_curl(
         curl = np.zeros((3,) + field.shape[1:])
 
         # Curl x-component: ∂Fz/∂y - ∂Fy/∂z
-        curl[0] = (np.gradient(field[2], grid_spacing[1], axis=2) -
-                   np.gradient(field[1], grid_spacing[2], axis=3))
+        curl[0] = np.gradient(field[2], grid_spacing[1], axis=2) - np.gradient(
+            field[1], grid_spacing[2], axis=3
+        )
 
         # Curl y-component: ∂Fx/∂z - ∂Fz/∂x
-        curl[1] = (np.gradient(field[0], grid_spacing[2], axis=3) -
-                   np.gradient(field[2], grid_spacing[0], axis=1))
+        curl[1] = np.gradient(field[0], grid_spacing[2], axis=3) - np.gradient(
+            field[2], grid_spacing[0], axis=1
+        )
 
         # Curl z-component: ∂Fy/∂x - ∂Fx/∂y
-        curl[2] = (np.gradient(field[1], grid_spacing[0], axis=1) -
-                   np.gradient(field[0], grid_spacing[1], axis=2))
+        curl[2] = np.gradient(field[1], grid_spacing[0], axis=1) - np.gradient(
+            field[0], grid_spacing[1], axis=2
+        )
 
         return curl
     else:
@@ -1223,8 +1265,15 @@ def numerical_curl(
 
 
 @maxwell_cite(
-    594, 598, 599, 600, 601, 602, 603,
-    part=4, chapter="General Equations",
+    594,
+    598,
+    599,
+    600,
+    601,
+    602,
+    603,
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Verify all Maxwell's general equations",
 )
@@ -1268,10 +1317,10 @@ def verify_maxwell_equations(
     curl_E = calc_faradays_law(dB_dt)
     expected_curl_E = -(1.0 / CONST.C) * dB_dt
     faraday_verified = np.allclose(curl_E, expected_curl_E, rtol=tolerance)
-    results['faraday_A'] = {
-        'verified': faraday_verified,
-        'curl_E': curl_E,
-        'expected': expected_curl_E,
+    results["faraday_A"] = {
+        "verified": faraday_verified,
+        "curl_E": curl_E,
+        "expected": expected_curl_E,
     }
     all_verified = all_verified and faraday_verified
 
@@ -1281,10 +1330,10 @@ def verify_maxwell_equations(
     E_motional = calc_general_emf(v, B, np.zeros(3), 0, np.zeros(3))
     expected_motional = (1.0 / CONST.C) * np.cross(v, B)
     emf_verified = np.allclose(E_motional, expected_motional, rtol=tolerance)
-    results['general_emf_B'] = {
-        'verified': emf_verified,
-        'E': E_motional,
-        'expected': expected_motional,
+    results["general_emf_B"] = {
+        "verified": emf_verified,
+        "E": E_motional,
+        "expected": expected_motional,
     }
     all_verified = all_verified and emf_verified
 
@@ -1296,10 +1345,10 @@ def verify_maxwell_equations(
     F = calc_ponderomotive_force(rho, E, J, B_force)
     expected_F = rho * E
     force_verified = np.allclose(F, expected_F, rtol=tolerance)
-    results['ponderomotive_C'] = {
-        'verified': force_verified,
-        'F': F,
-        'expected': expected_F,
+    results["ponderomotive_C"] = {
+        "verified": force_verified,
+        "F": F,
+        "expected": expected_F,
     }
     all_verified = all_verified and force_verified
 
@@ -1309,21 +1358,23 @@ def verify_maxwell_equations(
     B_ind = calc_magnetic_induction(H, M)
     expected_B = H + 4.0 * np.pi * M
     induction_verified = np.allclose(B_ind, expected_B, rtol=tolerance)
-    results['magnetic_induction_D'] = {
-        'verified': induction_verified,
-        'B': B_ind,
-        'expected': expected_B,
+    results["magnetic_induction_D"] = {
+        "verified": induction_verified,
+        "B": B_ind,
+        "expected": expected_B,
     }
     all_verified = all_verified and induction_verified
 
     # Test 5: Ampere-Maxwell (E)
     result_ampere = calc_ampere_maxwell(np.zeros(3), np.array([1, 0, 0]), np.zeros(3))
     expected_conduction = (4.0 * np.pi / CONST.C) * np.array([1, 0, 0])
-    ampere_verified = np.allclose(result_ampere['conduction_term'], expected_conduction, rtol=tolerance)
-    results['ampere_maxwell_E'] = {
-        'verified': ampere_verified,
-        'curl_H': result_ampere['curl_H'],
-        'expected': expected_conduction,
+    ampere_verified = np.allclose(
+        result_ampere["conduction_term"], expected_conduction, rtol=tolerance
+    )
+    results["ampere_maxwell_E"] = {
+        "verified": ampere_verified,
+        "curl_H": result_ampere["curl_H"],
+        "expected": expected_conduction,
     }
     all_verified = all_verified and ampere_verified
 
@@ -1332,10 +1383,10 @@ def verify_maxwell_equations(
     D = calc_electric_displacement(E_disp)
     expected_D = E_disp  # vacuum, ε = 1
     displacement_verified = np.allclose(D, expected_D, rtol=tolerance)
-    results['electric_displacement_F'] = {
-        'verified': displacement_verified,
-        'D': D,
-        'expected': expected_D,
+    results["electric_displacement_F"] = {
+        "verified": displacement_verified,
+        "D": D,
+        "expected": expected_D,
     }
     all_verified = all_verified and displacement_verified
 
@@ -1345,42 +1396,59 @@ def verify_maxwell_equations(
     J_cond = calc_conduction_current(E_cond, sigma)
     expected_J = sigma * E_cond
     conduction_verified = np.allclose(J_cond, expected_J, rtol=tolerance)
-    results['conduction_current_G'] = {
-        'verified': conduction_verified,
-        'J': J_cond,
-        'expected': expected_J,
+    results["conduction_current_G"] = {
+        "verified": conduction_verified,
+        "J": J_cond,
+        "expected": expected_J,
     }
     all_verified = all_verified and conduction_verified
 
     # Test 8: Gauss Electric
     D_uniform = np.array([1000, 0, 0])
     gauss_e = calc_gauss_law_electric(D_uniform)
-    gauss_e_verified = gauss_e.get('verified', True)
-    results['gauss_electric'] = {
-        'verified': gauss_e_verified,
-        'divergence_D': gauss_e['divergence_D'],
+    gauss_e_verified = gauss_e.get("verified", True)
+    results["gauss_electric"] = {
+        "verified": gauss_e_verified,
+        "divergence_D": gauss_e["divergence_D"],
     }
     all_verified = all_verified and gauss_e_verified
 
     # Test 9: Gauss Magnetic
     B_uniform = np.array([1000, 0, 0])
     gauss_m = calc_gauss_law_magnetic(B_uniform)
-    gauss_m_verified = gauss_m['verified']
-    results['gauss_magnetic'] = {
-        'verified': gauss_m_verified,
-        'divergence_B': gauss_m['divergence_B'],
+    gauss_m_verified = gauss_m["verified"]
+    results["gauss_magnetic"] = {
+        "verified": gauss_m_verified,
+        "divergence_B": gauss_m["divergence_B"],
     }
     all_verified = all_verified and gauss_m_verified
 
-    results['all_verified'] = all_verified
-    results['equations_tested'] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'Gauss_E', 'Gauss_M']
+    results["all_verified"] = all_verified
+    results["equations_tested"] = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "Gauss_E",
+        "Gauss_M",
+    ]
 
     return results
 
 
 @maxwell_cite(
-    594, 598, 599, 600, 601, 602, 603,
-    part=4, chapter="General Equations",
+    594,
+    598,
+    599,
+    600,
+    601,
+    602,
+    603,
+    part=4,
+    chapter="General Equations",
     theory_class="maxwell_original",
     description="Complete field analysis using Maxwell's equations",
 )
@@ -1529,11 +1597,14 @@ class GeneralEquationsCalculator:
         if self.permeability <= 0:
             raise ValueError(f"Permeability must be positive, got {self.permeability}")
         if self.conductivity < 0:
-            raise ValueError(f"Conductivity must be non-negative, got {self.conductivity}")
+            raise ValueError(
+                f"Conductivity must be non-negative, got {self.conductivity}"
+            )
 
     @maxwell_cite(
         598,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Faraday's Law",
     )
@@ -1543,7 +1614,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         598,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate general EMF",
     )
@@ -1566,7 +1638,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         599,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate ponderomotive force",
     )
@@ -1582,7 +1655,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         599,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate magnetic induction",
     )
@@ -1596,7 +1670,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         600,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate Ampere-Maxwell law",
     )
@@ -1610,7 +1685,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         600,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate electric displacement",
     )
@@ -1620,7 +1696,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         600,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Calculate conduction current",
     )
@@ -1630,7 +1707,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         594,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Verify Gauss's law for electricity",
     )
@@ -1640,7 +1718,8 @@ class GeneralEquationsCalculator:
 
     @maxwell_cite(
         594,
-        part=4, chapter="General Equations",
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Verify Gauss's law for magnetism",
     )
@@ -1649,8 +1728,12 @@ class GeneralEquationsCalculator:
         return calc_gauss_law_magnetic(B_field)
 
     @maxwell_cite(
-        594, 598, 599, 600,
-        part=4, chapter="General Equations",
+        594,
+        598,
+        599,
+        600,
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Perform complete field analysis",
     )
@@ -1673,8 +1756,12 @@ class GeneralEquationsCalculator:
         )
 
     @maxwell_cite(
-        594, 598, 599, 600,
-        part=4, chapter="General Equations",
+        594,
+        598,
+        599,
+        600,
+        part=4,
+        chapter="General Equations",
         theory_class="maxwell_original",
         description="Verify all Maxwell equations",
     )

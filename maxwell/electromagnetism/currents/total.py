@@ -27,10 +27,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -55,7 +56,8 @@ class TotalCurrent:
 
     @maxwell_cite(
         610,
-        part=4, chapter="Total Current",
+        part=4,
+        chapter="Total Current",
         theory_class="maxwell_original",
         description="Calculate total current density",
     )
@@ -92,7 +94,8 @@ class TotalCurrent:
 
     @maxwell_cite(
         610,
-        part=4, chapter="Total Current",
+        part=4,
+        chapter="Total Current",
         theory_class="maxwell_original",
         description="Calculate displacement current",
     )
@@ -114,7 +117,8 @@ class TotalCurrent:
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate total current density: J_total = J + J_d",
 )
@@ -147,7 +151,8 @@ def calc_total_current_density(
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate displacement current from dE/dt",
 )
@@ -176,7 +181,8 @@ def calc_displacement_current_from_dEdt(
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate total current through surface",
 )
@@ -216,7 +222,8 @@ def calc_total_current_through_surface(
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate curl of H from total current",
 )
@@ -245,7 +252,8 @@ def calc_curl_H_from_total_current(
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Verify continuity equation with total current",
 )
@@ -313,7 +321,8 @@ def verify_continuity_with_total_current(
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Verify total current in capacitor",
 )
@@ -355,7 +364,9 @@ def verify_capacitor_total_current(
     I_disp = J_disp_mag * plate_area
 
     # Verify I_disp = I_cond
-    current_error = abs(I_disp - charging_current) / charging_current if charging_current > 0 else 0
+    current_error = (
+        abs(I_disp - charging_current) / charging_current if charging_current > 0 else 0
+    )
 
     return {
         "charging_current": charging_current,
@@ -375,7 +386,8 @@ calc_total_current = calc_total_current_density
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate total current magnitude",
 )
@@ -405,7 +417,8 @@ def calc_total_current_magnitude(
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate displacement current fraction",
 )
@@ -450,7 +463,8 @@ def calc_displacement_fraction(
 # Add methods to TotalCurrent class for test compatibility
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate total current",
 )
@@ -465,7 +479,8 @@ def _total_current_total(
 
 @maxwell_cite(
     610,
-    part=4, chapter="Total Current",
+    part=4,
+    chapter="Total Current",
     theory_class="maxwell_original",
     description="Calculate displacement fraction",
 )
@@ -481,6 +496,8 @@ def _total_current_fraction(
 # Add methods to class
 TotalCurrent.total = _total_current_total
 TotalCurrent.displacement_fraction = _total_current_fraction
+
+
 def analyze_total_current(
     E_field: np.ndarray,
     dE_dt: np.ndarray,
@@ -523,7 +540,7 @@ def analyze_total_current(
     J_total_mag = np.linalg.norm(J_total)
 
     # Ratio
-    ratio = J_disp_mag / J_cond_mag if J_cond_mag > 0 else float('inf')
+    ratio = J_disp_mag / J_cond_mag if J_cond_mag > 0 else float("inf")
 
     # Regime
     if ratio > 10:

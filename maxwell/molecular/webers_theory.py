@@ -32,10 +32,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -67,7 +68,8 @@ class WeberForce:
 
     @maxwell_cite(
         841,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate Weber force between charges",
     )
@@ -93,13 +95,13 @@ class WeberForce:
         a = self.relative_acceleration
         c = CONST.C
 
-        r_squared = r ** 2
-        v_squared = v ** 2
+        r_squared = r**2
+        v_squared = v**2
 
         # Weber force formula
         coulomb_term = q1q2 / r_squared
-        velocity_correction = v_squared / (2.0 * c ** 2)
-        acceleration_correction = (r * a) / (c ** 2)
+        velocity_correction = v_squared / (2.0 * c**2)
+        acceleration_correction = (r * a) / (c**2)
 
         F = coulomb_term * (1.0 - velocity_correction + acceleration_correction)
 
@@ -107,7 +109,8 @@ class WeberForce:
 
     @maxwell_cite(
         842,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate Weber potential energy",
     )
@@ -131,7 +134,7 @@ class WeberForce:
         c = CONST.C
 
         coulomb_potential = q1q2 / r
-        velocity_correction = (v ** 2) / (2.0 * c ** 2)
+        velocity_correction = (v**2) / (2.0 * c**2)
 
         V = coulomb_potential * (1.0 - velocity_correction)
 
@@ -139,7 +142,8 @@ class WeberForce:
 
     @maxwell_cite(
         843,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate force in Coulomb limit",
     )
@@ -157,11 +161,12 @@ class WeberForce:
         Reference:
             Part IV, Art. 843: Coulomb limit.
         """
-        return (self.q1 * self.q2) / (self.separation ** 2)
+        return (self.q1 * self.q2) / (self.separation**2)
 
     @maxwell_cite(
         844,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate velocity correction factor",
     )
@@ -181,11 +186,12 @@ class WeberForce:
         """
         v = self.relative_velocity
         c = CONST.C
-        return 1.0 - (v ** 2) / (2.0 * c ** 2)
+        return 1.0 - (v**2) / (2.0 * c**2)
 
     @maxwell_cite(
         845,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate acceleration correction factor",
     )
@@ -206,7 +212,7 @@ class WeberForce:
         r = self.separation
         a = self.relative_acceleration
         c = CONST.C
-        return 1.0 + (r * a) / (c ** 2)
+        return 1.0 + (r * a) / (c**2)
 
 
 @dataclass
@@ -225,7 +231,8 @@ class WebersTheory:
 
     @maxwell_cite(
         846,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate force between current elements",
     )
@@ -269,13 +276,14 @@ class WebersTheory:
         dl_dot = np.dot(dl1, dl2)
 
         # Force proportional to currents and dot product
-        F = -(i1 * i2 / r ** 2) * dl_dot
+        F = -(i1 * i2 / r**2) * dl_dot
 
         return F
 
     @maxwell_cite(
         847,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate induced EMF by Weber's law",
     )
@@ -306,14 +314,17 @@ class WebersTheory:
             Part IV, Art. 847: Induced EMF.
         """
         # Simplified: assume characteristic time scale
-        characteristic_time = 1.0 / abs(primary_velocity) if primary_velocity != 0 else 1.0
+        characteristic_time = (
+            1.0 / abs(primary_velocity) if primary_velocity != 0 else 1.0
+        )
         dI_dt = primary_current / characteristic_time
 
         return -mutual_inductance * dI_dt
 
     @maxwell_cite(
         841,
-        part=4, chapter="Weber's Theory",
+        part=4,
+        chapter="Weber's Theory",
         theory_class="maxwell_original",
         description="Calculate Weber force vector between moving charges",
     )
@@ -359,14 +370,14 @@ class WebersTheory:
 
         # Weber force velocity correction using radial velocity components
         c = CONST.C
-        coulomb_term = (q1 * q2) / (r ** 2)
+        coulomb_term = (q1 * q2) / (r**2)
 
         # Radial components of velocities (along r_hat)
         v1_r = np.dot(v1, r_hat)
         v2_r = np.dot(v2, r_hat)
 
         # Velocity correction: depends on squared radial velocities
-        velocity_correction = (v1_r ** 2 + v2_r ** 2) / (2.0 * c ** 2)
+        velocity_correction = (v1_r**2 + v2_r**2) / (2.0 * c**2)
 
         F_magnitude = coulomb_term * (1.0 - velocity_correction)
 
@@ -375,7 +386,8 @@ class WebersTheory:
 
 @maxwell_cite(
     841,
-    part=4, chapter="Weber's Theory",
+    part=4,
+    chapter="Weber's Theory",
     theory_class="maxwell_original",
     description="Calculate Weber force between charges",
 )
@@ -421,7 +433,8 @@ def calc_weber_force(
 
 @maxwell_cite(
     842,
-    part=4, chapter="Weber's Theory",
+    part=4,
+    chapter="Weber's Theory",
     theory_class="maxwell_original",
     description="Calculate Weber potential energy",
 )
@@ -458,8 +471,18 @@ def calc_weber_potential(
 
 
 @maxwell_cite(
-    841, 842, 843, 844, 845, 846, 847, 848, 849, 850,
-    part=4, chapter="Weber's Theory",
+    841,
+    842,
+    843,
+    844,
+    845,
+    846,
+    847,
+    848,
+    849,
+    850,
+    part=4,
+    chapter="Weber's Theory",
     theory_class="maxwell_original",
     description="Verify Weber's theory relations",
 )
@@ -494,7 +517,7 @@ def verify_webers_theory(
     """
     # Stationary case (Coulomb limit)
     F_static = calc_weber_force(q1, q2, separation, 0, 0)
-    F_coulomb = (q1 * q2) / (separation ** 2)
+    F_coulomb = (q1 * q2) / (separation**2)
     coulomb_error = abs(F_static - F_coulomb) / F_coulomb if F_coulomb > 0 else 0
 
     # Moving case (velocity correction)
@@ -534,8 +557,18 @@ def verify_webers_theory(
 
 
 @maxwell_cite(
-    841, 842, 843, 844, 845, 846, 847, 848, 849, 850,
-    part=4, chapter="Weber's Theory",
+    841,
+    842,
+    843,
+    844,
+    845,
+    846,
+    847,
+    848,
+    849,
+    850,
+    part=4,
+    chapter="Weber's Theory",
     theory_class="maxwell_original",
     description="Complete analysis of Weber's theory",
 )
@@ -583,7 +616,7 @@ def analyze_webers_theory(
         corrections.append(corr)
 
     # Coulomb baseline
-    F_coulomb = (q1 * q2) / (separation ** 2)
+    F_coulomb = (q1 * q2) / (separation**2)
     V_coulomb = (q1 * q2) / separation
 
     return {
@@ -609,9 +642,11 @@ WeberTheory = WebersTheory
 # STANDALONE FUNCTIONS FOR DIRECT IMPORT (as expected by tests)
 # =============================================================================
 
+
 @maxwell_cite(
     841,
-    part=4, chapter="Weber's Theory",
+    part=4,
+    chapter="Weber's Theory",
     theory_class="maxwell_original",
     description="Calculate Weber force vector between moving charges",
 )
@@ -664,7 +699,7 @@ def weber_force(
 
     # Weber force velocity correction using radial velocity components
     c = CONST.C
-    coulomb_term = (q1 * q2) / (r ** 2)
+    coulomb_term = (q1 * q2) / (r**2)
 
     # Radial components of velocities (along r_hat)
     v1_r = np.dot(v1, r_hat)
@@ -672,7 +707,7 @@ def weber_force(
 
     # Velocity correction: depends on squared radial velocities
     # Each particle's radial velocity contributes independently
-    velocity_correction = (v1_r ** 2 + v2_r ** 2) / (2.0 * c ** 2)
+    velocity_correction = (v1_r**2 + v2_r**2) / (2.0 * c**2)
 
     F_magnitude = coulomb_term * (1.0 - velocity_correction)
 
@@ -681,7 +716,8 @@ def weber_force(
 
 @maxwell_cite(
     842,
-    part=4, chapter="Weber's Theory",
+    part=4,
+    chapter="Weber's Theory",
     theory_class="maxwell_original",
     description="Calculate Weber potential energy",
 )
@@ -714,6 +750,6 @@ def weber_potential(
     """
     c = CONST.C
     coulomb_potential = (q1 * q2) / r
-    velocity_correction = (r_dot ** 2) / (2.0 * c ** 2)
+    velocity_correction = (r_dot**2) / (2.0 * c**2)
 
     return coulomb_potential * (1.0 - velocity_correction)

@@ -22,10 +22,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -86,7 +87,8 @@ class MagneticPotentialEnergy:
     @classmethod
     @maxwell_cite(
         389,
-        part=3, chapter="Magnetic Energy",
+        part=3,
+        chapter="Magnetic Energy",
         theory_class="maxwell_original",
         description="Create energy from moment and field",
     )
@@ -113,7 +115,8 @@ class MagneticPotentialEnergy:
 
 @maxwell_cite(
     389,
-    part=3, chapter="Magnetic Energy",
+    part=3,
+    chapter="Magnetic Energy",
     theory_class="maxwell_original",
     description="Calculate dipole potential energy W = -m·B",
 )
@@ -156,7 +159,8 @@ def calc_dipole_potential_energy(
 
 @maxwell_cite(
     389,
-    part=3, chapter="Magnetic Energy",
+    part=3,
+    chapter="Magnetic Energy",
     theory_class="maxwell_original",
     description="Work done rotating dipole in field",
 )
@@ -198,7 +202,8 @@ def work_rotating_dipole(
 
 @maxwell_cite(
     389,
-    part=3, chapter="Magnetic Energy",
+    part=3,
+    chapter="Magnetic Energy",
     theory_class="maxwell_original",
     description="Torque on dipole in magnetic field",
 )
@@ -235,7 +240,8 @@ def torque_on_dipole(
 
 @maxwell_cite(
     389,
-    part=3, chapter="Magnetic Energy",
+    part=3,
+    chapter="Magnetic Energy",
     theory_class="maxwell_original",
     description="Force on dipole in non-uniform field",
 )
@@ -291,7 +297,8 @@ def force_on_dipole(
 
 @maxwell_cite(
     389,
-    part=3, chapter="Magnetic Energy",
+    part=3,
+    chapter="Magnetic Energy",
     theory_class="maxwell_original",
     description="Stable equilibrium orientation of dipole",
 )
@@ -364,7 +371,8 @@ def stable_equilibrium_orientation(
 
 @maxwell_cite(
     389,
-    part=3, chapter="Magnetic Energy",
+    part=3,
+    chapter="Magnetic Energy",
     theory_class="maxwell_original",
     description="Energy of magnetized body in external field",
 )

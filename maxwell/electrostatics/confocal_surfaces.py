@@ -42,22 +42,27 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable, Optional, Tuple, Union
+
 import numpy as np
-from scipy import special, integrate
+from scipy import integrate, special
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # CONFOCAL ELLIPSOID POTENTIAL (Arts. 147-150)
 # =============================================================================
 
+
 @maxwell_cite(
-    147, 148, 149, 150,
-    part=1, chapter="Confocal Surfaces",
+    147,
+    148,
+    149,
+    150,
+    part=1,
+    chapter="Confocal Surfaces",
     theory_class="maxwell_original",
-    description="Potential of charged conducting ellipsoid"
+    description="Potential of charged conducting ellipsoid",
 )
 def confocal_ellipsoid_potential(
     total_charge: float,
@@ -110,7 +115,9 @@ def confocal_ellipsoid_potential(
 
     # Surface area of ellipsoid (approximate formula by Knud Thomsen)
     p = 1.6075
-    surface_area = 4 * np.pi * ((a**p * b**p + a**p * c**p + b**p * c**p) / 3) ** (1/p)
+    surface_area = (
+        4 * np.pi * ((a**p * b**p + a**p * c**p + b**p * c**p) / 3) ** (1 / p)
+    )
 
     # Average surface charge density
     sigma_avg = total_charge / surface_area
@@ -120,14 +127,14 @@ def confocal_ellipsoid_potential(
     def surface_charge_density(x: float, y: float, z: float) -> float:
         """Calculate surface charge density at point (x, y, z) on ellipsoid."""
         # Verify point is on ellipsoid surface
-        on_surface = (x**2/a**2 + y**2/b**2 + z**2/c**2)
+        on_surface = x**2 / a**2 + y**2 / b**2 + z**2 / c**2
         if not np.isclose(on_surface, 1.0, rtol=1e-6):
             # Return density for nearest surface point
             scale = 1.0 / np.sqrt(on_surface)
             x, y, z = x * scale, y * scale, z * scale
 
         # Surface charge density formula
-        factor = np.sqrt((x**2/a**4 + y**2/b**4 + z**2/c**4))
+        factor = np.sqrt((x**2 / a**4 + y**2 / b**4 + z**2 / c**4))
         sigma = total_charge / (4 * np.pi * a * b * c * factor)
         return sigma
 
@@ -146,10 +153,10 @@ def confocal_ellipsoid_potential(
 
     # Eccentricity for prolate case (a > b = c)
     if np.isclose(b, c):
-        eccentricity = np.sqrt(1 - (c/a)**2)
+        eccentricity = np.sqrt(1 - (c / a) ** 2)
     elif np.isclose(a, b):
         # Oblate case
-        eccentricity = np.sqrt(1 - (c/a)**2)
+        eccentricity = np.sqrt(1 - (c / a) ** 2)
     else:
         eccentricity = None
 
@@ -162,7 +169,7 @@ def confocal_ellipsoid_potential(
         x, y, z = evaluation_point
 
         # Check if point is outside ellipsoid
-        ellipsoid_check = x**2/a**2 + y**2/b**2 + z**2/c**2
+        ellipsoid_check = x**2 / a**2 + y**2 / b**2 + z**2 / c**2
 
         if ellipsoid_check >= 1.0:
             # Outside ellipsoid - use approximation for far field
@@ -200,15 +207,21 @@ def confocal_ellipsoid_potential(
         "potential_at_point": potential_at_point,
         "field_at_point": field_at_point,
         "eccentricity": eccentricity,
-        "ellipsoid_type": "prolate" if np.isclose(b, c) else ("oblate" if np.isclose(a, b) else "triaxial"),
+        "ellipsoid_type": (
+            "prolate"
+            if np.isclose(b, c)
+            else ("oblate" if np.isclose(a, b) else "triaxial")
+        ),
     }
 
 
 @maxwell_cite(
-    147, 148,
-    part=1, chapter="Confocal Surfaces",
+    147,
+    148,
+    part=1,
+    chapter="Confocal Surfaces",
     theory_class="maxwell_original",
-    description="Capacitance of ellipsoidal conductor"
+    description="Capacitance of ellipsoidal conductor",
 )
 def ellipsoid_capacitance(
     semi_axes: Tuple[float, float, float],
@@ -253,16 +266,18 @@ def ellipsoid_capacitance(
 
     elif np.isclose(b, c):
         ellipsoid_type = "prolate"
-        eccentricity = np.sqrt(1 - (c/a)**2)
+        eccentricity = np.sqrt(1 - (c / a) ** 2)
         if eccentricity > 0:
             # Prolate spheroid: C = 2a*e / ln((1+e)/(1-e))
-            capacitance = 2 * a * eccentricity / np.log((1 + eccentricity) / (1 - eccentricity))
+            capacitance = (
+                2 * a * eccentricity / np.log((1 + eccentricity) / (1 - eccentricity))
+            )
         else:
             capacitance = a
 
     elif np.isclose(a, b):
         ellipsoid_type = "oblate"
-        eccentricity = np.sqrt(1 - (c/a)**2)
+        eccentricity = np.sqrt(1 - (c / a) ** 2)
         if eccentricity > 0:
             # Oblate spheroid: C = a*e / arcsin(e)
             capacitance = a * eccentricity / np.arcsin(eccentricity)
@@ -296,11 +311,15 @@ def ellipsoid_capacitance(
 # CONFOCAL HYPERBOLOID (Arts. 151-153)
 # =============================================================================
 
+
 @maxwell_cite(
-    151, 152, 153,
-    part=1, chapter="Confocal Surfaces",
+    151,
+    152,
+    153,
+    part=1,
+    chapter="Confocal Surfaces",
     theory_class="maxwell_original",
-    description="Confocal hyperboloid equipotentials"
+    description="Confocal hyperboloid equipotentials",
 )
 def confocal_hyperboloid(
     focal_distance: float,
@@ -377,7 +396,11 @@ def confocal_hyperboloid(
     # Asymptotic cone (surface approached at large distances)
     # For one sheet: x^2/a_h^2 + y^2/b_h^2 = z^2/c_h^2
     # For two sheets: same form
-    cone_semi_angle = np.arctan(c_h / a_h) if hyperboloid_type == "one_sheet" else np.arctan(a_h / c_h)
+    cone_semi_angle = (
+        np.arctan(c_h / a_h)
+        if hyperboloid_type == "one_sheet"
+        else np.arctan(a_h / c_h)
+    )
 
     # Check if evaluation point is on the hyperboloid
     point_on_surface = None
@@ -391,9 +414,9 @@ def confocal_hyperboloid(
             Value of left-hand side minus 1 (zero on surface).
         """
         if hyperboloid_type == "one_sheet":
-            return x**2/a_h**2 + y**2/b_h**2 - z**2/c_h**2 - 1
+            return x**2 / a_h**2 + y**2 / b_h**2 - z**2 / c_h**2 - 1
         else:
-            return x**2/a_h**2 - y**2/b_h**2 - z**2/c_h**2 - 1
+            return x**2 / a_h**2 - y**2 / b_h**2 - z**2 / c_h**2 - 1
 
     surface_function = hyperboloid_equation
 
@@ -441,10 +464,12 @@ def confocal_hyperboloid(
 
 
 @maxwell_cite(
-    151, 152,
-    part=1, chapter="Confocal Surfaces",
+    151,
+    152,
+    part=1,
+    chapter="Confocal Surfaces",
     theory_class="maxwell_original",
-    description="Field lines orthogonal to confocal surfaces"
+    description="Field lines orthogonal to confocal surfaces",
 )
 def confocal_field_lines(
     ellipsoid_axes: Tuple[float, float, float],
@@ -487,7 +512,7 @@ def confocal_field_lines(
         """Calculate unit normal to ellipsoid at point r."""
         x, y, z = r
         # Gradient of f(x,y,z) = x^2/a^2 + y^2/b^2 + z^2/c^2
-        grad_f = np.array([2*x/a**2, 2*y/b**2, 2*z/c**2])
+        grad_f = np.array([2 * x / a**2, 2 * y / b**2, 2 * z / c**2])
         grad_norm = np.linalg.norm(grad_f)
         if grad_norm > 0:
             return grad_f / grad_norm
@@ -507,7 +532,7 @@ def confocal_field_lines(
     field_line[0] = starting_point
 
     for i in range(1, num_points):
-        r = field_line[i-1]
+        r = field_line[i - 1]
         direction = field_direction(r)
         field_line[i] = r + step_size * direction
 
@@ -516,7 +541,7 @@ def confocal_field_lines(
     inward_line[0] = starting_point
 
     for i in range(1, num_points):
-        r = inward_line[i-1]
+        r = inward_line[i - 1]
         direction = -field_direction(r)  # Inward
         inward_line[i] = r + step_size * direction
 
@@ -536,14 +561,20 @@ def confocal_field_lines(
 # ELLIPSOIDAL COORDINATES (Arts. 154-156)
 # =============================================================================
 
+
 @maxwell_cite(
-    154, 155, 156,
-    part=1, chapter="Confocal Surfaces",
+    154,
+    155,
+    156,
+    part=1,
+    chapter="Confocal Surfaces",
     theory_class="maxwell_original",
-    description="Convert Cartesian to ellipsoidal coordinates"
+    description="Convert Cartesian to ellipsoidal coordinates",
 )
 def ellipsoidal_coordinates(
-    x: float, y: float, z: float,
+    x: float,
+    y: float,
+    z: float,
     semi_axes: Tuple[float, float, float],
 ) -> dict[str, float]:
     """
@@ -604,8 +635,10 @@ def ellipsoidal_coordinates(
     # Polynomial coefficients (descending powers)
     coef_s3 = -1.0
     coef_s2 = a2 + b2 + c2 + x2 + y2 + z2
-    coef_s1 = -(a2*b2 + b2*c2 + c2*a2 + x2*(b2+c2) + y2*(a2+c2) + z2*(a2+b2))
-    coef_s0 = a2*b2*c2 + x2*b2*c2 + y2*a2*c2 + z2*a2*b2
+    coef_s1 = -(
+        a2 * b2 + b2 * c2 + c2 * a2 + x2 * (b2 + c2) + y2 * (a2 + c2) + z2 * (a2 + b2)
+    )
+    coef_s0 = a2 * b2 * c2 + x2 * b2 * c2 + y2 * a2 * c2 + z2 * a2 * b2
 
     # Normalize to monic polynomial
     coef_s2 /= coef_s3
@@ -622,8 +655,8 @@ def ellipsoidal_coordinates(
 
     # Assign to coordinates based on inequalities
     lambda_coord = roots_real[0]  # Smallest root
-    mu_coord = roots_real[1]       # Middle root
-    nu_coord = roots_real[2]       # Largest root
+    mu_coord = roots_real[1]  # Middle root
+    nu_coord = roots_real[2]  # Largest root
 
     # Scale factors (Lamé coefficients) for ellipsoidal coordinates
     # h_lambda^2 = (lambda-mu)(lambda-nu) / (4*(a^2-lambda)(b^2-lambda)(c^2-lambda))
@@ -655,14 +688,19 @@ def ellipsoidal_coordinates(
 
 
 @maxwell_cite(
-    154, 155, 156,
-    part=1, chapter="Confocal Surfaces",
+    154,
+    155,
+    156,
+    part=1,
+    chapter="Confocal Surfaces",
     theory_class="maxwell_original",
-    description="Laplace equation in ellipsoidal coordinates"
+    description="Laplace equation in ellipsoidal coordinates",
 )
 def laplacian_ellipsoidal(
     potential_func: Callable[[float, float, float], float],
-    lambda_coord: float, mu_coord: float, nu_coord: float,
+    lambda_coord: float,
+    mu_coord: float,
+    nu_coord: float,
     semi_axes: Tuple[float, float, float],
     h: float = 1e-5,
 ) -> dict[str, float]:
@@ -703,8 +741,7 @@ def laplacian_ellipsoidal(
 
     # Get scale factors at the evaluation point
     coords = ellipsoidal_coordinates(
-        lambda_coord, mu_coord, nu_coord,  # Use as Cartesian proxy
-        semi_axes
+        lambda_coord, mu_coord, nu_coord, semi_axes  # Use as Cartesian proxy
     )
 
     # For numerical Laplacian, we need to work in actual space
@@ -715,14 +752,23 @@ def laplacian_ellipsoidal(
     def d2V_dq2(q, dq, other1, other2, axis):
         """Second derivative with respect to coordinate q."""
         if axis == 0:
-            return (potential_func(q+h, other1, other2) - 2*potential_func(q, other1, other2)
-                    + potential_func(q-h, other1, other2)) / h**2
+            return (
+                potential_func(q + h, other1, other2)
+                - 2 * potential_func(q, other1, other2)
+                + potential_func(q - h, other1, other2)
+            ) / h**2
         elif axis == 1:
-            return (potential_func(other1, q+h, other2) - 2*potential_func(other1, q, other2)
-                    + potential_func(other1, q-h, other2)) / h**2
+            return (
+                potential_func(other1, q + h, other2)
+                - 2 * potential_func(other1, q, other2)
+                + potential_func(other1, q - h, other2)
+            ) / h**2
         else:
-            return (potential_func(other1, other2, q+h) - 2*potential_func(other1, other2, q)
-                    + potential_func(other1, other2, q-h)) / h**2
+            return (
+                potential_func(other1, other2, q + h)
+                - 2 * potential_func(other1, other2, q)
+                + potential_func(other1, other2, q - h)
+            ) / h**2
 
     # Numerical second derivatives
     d2V_dlambda2 = d2V_dq2(lambda_coord, h, mu_coord, nu_coord, 0)
@@ -757,10 +803,13 @@ def laplacian_ellipsoidal(
 
 
 @maxwell_cite(
-    154, 155, 156,
-    part=1, chapter="Confocal Surfaces",
+    154,
+    155,
+    156,
+    part=1,
+    chapter="Confocal Surfaces",
     theory_class="maxwell_original",
-    description="Ellipsoidal harmonic expansion"
+    description="Ellipsoidal harmonic expansion",
 )
 def ellipsoidal_harmonic_expansion(
     boundary_potential: Callable[[float, float, float], float],
@@ -804,7 +853,7 @@ def ellipsoidal_harmonic_expansion(
     # Generate sample points on ellipsoid surface
     n_samples = 100
     theta = np.linspace(0, np.pi, n_samples)
-    phi = np.linspace(0, 2*np.pi, n_samples)
+    phi = np.linspace(0, 2 * np.pi, n_samples)
     theta, phi = np.meshgrid(theta, phi)
 
     # Parametric equations for ellipsoid surface
@@ -816,7 +865,7 @@ def ellipsoidal_harmonic_expansion(
     V_boundary = np.zeros_like(x)
     for i in range(n_samples):
         for j in range(n_samples):
-            V_boundary[i, j] = boundary_potential(x[i,j], y[i,j], z[i,j])
+            V_boundary[i, j] = boundary_potential(x[i, j], y[i, j], z[i, j])
 
     # For a proper ellipsoidal harmonic expansion, we would need
     # to compute Lamé functions. Here we use a simplified approach
@@ -828,37 +877,49 @@ def ellipsoidal_harmonic_expansion(
     # First order (dipole): linear terms
     # V_1 = A_x * x + A_y * y + A_z * z
     # Use least squares to fit
-    design_matrix = np.column_stack([
-        x.flatten(), y.flatten(), z.flatten()
-    ])
-    coeffs_1, _, _, _ = np.linalg.lstsq(
-        design_matrix, V_boundary.flatten(), rcond=None
-    )
+    design_matrix = np.column_stack([x.flatten(), y.flatten(), z.flatten()])
+    coeffs_1, _, _, _ = np.linalg.lstsq(design_matrix, V_boundary.flatten(), rcond=None)
     A_10, A_11, A_12 = coeffs_1
 
     # Second order (quadrupole): quadratic terms
     # V_2 = A_xx * x^2 + A_yy * y^2 + A_zz * z^2 + A_xy * xy + ...
-    design_matrix_2 = np.column_stack([
-        x.flatten()**2, y.flatten()**2, z.flatten()**2,
-        (x*y).flatten(), (y*z).flatten(), (x*z).flatten()
-    ])
+    design_matrix_2 = np.column_stack(
+        [
+            x.flatten() ** 2,
+            y.flatten() ** 2,
+            z.flatten() ** 2,
+            (x * y).flatten(),
+            (y * z).flatten(),
+            (x * z).flatten(),
+        ]
+    )
 
     # Residual after removing monopole and dipole
-    V_residual = V_boundary.flatten() - A_00 - A_10*x.flatten() - A_11*y.flatten() - A_12*z.flatten()
-
-    coeffs_2, residuals, _, _ = np.linalg.lstsq(
-        design_matrix_2, V_residual, rcond=None
+    V_residual = (
+        V_boundary.flatten()
+        - A_00
+        - A_10 * x.flatten()
+        - A_11 * y.flatten()
+        - A_12 * z.flatten()
     )
+
+    coeffs_2, residuals, _, _ = np.linalg.lstsq(design_matrix_2, V_residual, rcond=None)
 
     # Reconstruction
     V_reconstruct = (
-        A_00 +
-        A_10 * x + A_11 * y + A_12 * z +
-        coeffs_2[0] * x**2 + coeffs_2[1] * y**2 + coeffs_2[2] * z**2 +
-        coeffs_2[3] * x*y + coeffs_2[4] * y*z + coeffs_2[5] * x*z
+        A_00
+        + A_10 * x
+        + A_11 * y
+        + A_12 * z
+        + coeffs_2[0] * x**2
+        + coeffs_2[1] * y**2
+        + coeffs_2[2] * z**2
+        + coeffs_2[3] * x * y
+        + coeffs_2[4] * y * z
+        + coeffs_2[5] * x * z
     )
 
-    reconstruction_error = np.sqrt(np.mean((V_boundary - V_reconstruct)**2))
+    reconstruction_error = np.sqrt(np.mean((V_boundary - V_reconstruct) ** 2))
 
     return {
         "expansion_coefficients": {
@@ -877,6 +938,7 @@ def ellipsoidal_harmonic_expansion(
 # =============================================================================
 # ELLIPSOIDAL HARMONIC CLASS
 # =============================================================================
+
 
 @dataclass
 class EllipsoidalHarmonic:
@@ -913,13 +975,18 @@ class EllipsoidalHarmonic:
                 self.eigenvalue = (a**2 + b**2 + c**2) / 3
             else:
                 # Higher orders require numerical solution
-                self.eigenvalue = self.order * (self.order + 1) * (a**2 + b**2 + c**2) / 3
+                self.eigenvalue = (
+                    self.order * (self.order + 1) * (a**2 + b**2 + c**2) / 3
+                )
 
     @maxwell_cite(
-        154, 155, 156,
-        part=1, chapter="Confocal Surfaces",
+        154,
+        155,
+        156,
+        part=1,
+        chapter="Confocal Surfaces",
         theory_class="maxwell_original",
-        description="Evaluate ellipsoidal harmonic at point"
+        description="Evaluate ellipsoidal harmonic at point",
     )
     def evaluate(self, lambda_coord: float, mu_coord: float, nu_coord: float) -> float:
         """
@@ -947,7 +1014,9 @@ class EllipsoidalHarmonic:
             return (lambda_coord * mu_coord * nu_coord) ** (self.order / 3)
 
     @classmethod
-    def generate_basis(cls, semi_axes: Tuple[float, float, float], max_order: int) -> list:
+    def generate_basis(
+        cls, semi_axes: Tuple[float, float, float], max_order: int
+    ) -> list:
         """
         Generate a complete basis of ellipsoidal harmonics up to max_order.
 
@@ -961,7 +1030,7 @@ class EllipsoidalHarmonic:
         basis = []
         for n in range(max_order + 1):
             # Each order n has (2n+1) harmonics
-            for m in range(2*n + 1):
+            for m in range(2 * n + 1):
                 harmonic = cls(order=n, semi_axes=semi_axes)
                 basis.append(harmonic)
         return basis
@@ -982,9 +1051,11 @@ if __name__ == "__main__":
     result = confocal_ellipsoid_potential(
         total_charge=100,
         semi_axes=(3.0, 2.0, 1.0),
-        evaluation_point=np.array([5.0, 0.0, 0.0])
+        evaluation_point=np.array([5.0, 0.0, 0.0]),
     )
-    print(f"  Semi-axes: a={result['semi_axes'][0]}, b={result['semi_axes'][1]}, c={result['semi_axes'][2]} cm")
+    print(
+        f"  Semi-axes: a={result['semi_axes'][0]}, b={result['semi_axes'][1]}, c={result['semi_axes'][2]} cm"
+    )
     print(f"  Type: {result['ellipsoid_type']}")
     print(f"  Total charge: Q = {result['total_charge']} statC")
     print(f"  Capacitance: C = {result['capacitance']:.4f} cm")
@@ -1010,14 +1081,14 @@ if __name__ == "__main__":
     # Test 3: Confocal hyperboloid
     print("\n--- Confocal Hyperboloid (Arts. 151-153) ---")
     result = confocal_hyperboloid(
-        focal_distance=2.0,
-        hyperboloid_parameter=-1.0,  # One sheet
-        potential_value=100
+        focal_distance=2.0, hyperboloid_parameter=-1.0, potential_value=100  # One sheet
     )
     print(f"  Hyperboloid of one sheet:")
     print(f"    Type: {result['hyperboloid_type']}")
     print(f"    Semi-axes: {result['semi_axes']}")
-    print(f"    Asymptotic cone angle: {np.degrees(result['asymptotic_cone_angle']):.2f} degrees")
+    print(
+        f"    Asymptotic cone angle: {np.degrees(result['asymptotic_cone_angle']):.2f} degrees"
+    )
     print(f"    Waist radius: {result['waist_radius']:.4f} cm")
 
     result = confocal_hyperboloid(
@@ -1033,7 +1104,7 @@ if __name__ == "__main__":
     result = confocal_field_lines(
         ellipsoid_axes=(3.0, 2.0, 1.0),
         starting_point=np.array([4.0, 0.0, 0.0]),
-        num_points=50
+        num_points=50,
     )
     print(f"  Field line traced from (4, 0, 0)")
     print(f"  Number of points: {result['num_points']}")
@@ -1042,10 +1113,7 @@ if __name__ == "__main__":
 
     # Test 5: Ellipsoidal coordinates
     print("\n--- Ellipsoidal Coordinates (Arts. 154-156) ---")
-    result = ellipsoidal_coordinates(
-        x=4.0, y=2.0, z=1.0,
-        semi_axes=(3.0, 2.0, 1.0)
-    )
+    result = ellipsoidal_coordinates(x=4.0, y=2.0, z=1.0, semi_axes=(3.0, 2.0, 1.0))
     print(f"  Cartesian: (4, 2, 1)")
     print(f"  Ellipsoidal coordinates:")
     print(f"    lambda = {result['lambda_coord']:.4f}")
@@ -1055,13 +1123,16 @@ if __name__ == "__main__":
 
     # Test 6: Laplacian check
     print("\n--- Laplacian in Ellipsoidal Coordinates (Art. 156) ---")
+
     def V_simple(l, m, n):
         return l + m + n  # Linear function (should be harmonic)
 
     result = laplacian_ellipsoidal(
         potential_func=V_simple,
-        lambda_coord=0.5, mu_coord=1.5, nu_coord=2.5,
-        semi_axes=(3.0, 2.0, 1.0)
+        lambda_coord=0.5,
+        mu_coord=1.5,
+        nu_coord=2.5,
+        semi_axes=(3.0, 2.0, 1.0),
     )
     print(f"  Linear potential V = lambda + mu + nu")
     print(f"  Laplacian: {result['laplacian']:.2e} (should be ~0)")
@@ -1069,17 +1140,20 @@ if __name__ == "__main__":
 
     # Test 7: Harmonic expansion
     print("\n--- Ellipsoidal Harmonic Expansion (Arts. 154-156) ---")
+
     def V_boundary(x, y, z):
-        return 100 + 10*x + 5*y + 2*z  # Linear + constant
+        return 100 + 10 * x + 5 * y + 2 * z  # Linear + constant
 
     result = ellipsoidal_harmonic_expansion(
-        boundary_potential=V_boundary,
-        semi_axes=(2.0, 1.5, 1.0),
-        max_order=2
+        boundary_potential=V_boundary, semi_axes=(2.0, 1.5, 1.0), max_order=2
     )
     print(f"  Boundary potential: V = 100 + 10x + 5y + 2z")
-    print(f"  Monopole coefficient: A_00 = {result['expansion_coefficients']['monopole']:.4f}")
-    print(f"  Dipole coefficients: (A_x, A_y, A_z) = {result['expansion_coefficients']['dipole']}")
+    print(
+        f"  Monopole coefficient: A_00 = {result['expansion_coefficients']['monopole']:.4f}"
+    )
+    print(
+        f"  Dipole coefficients: (A_x, A_y, A_z) = {result['expansion_coefficients']['dipole']}"
+    )
     print(f"  Reconstruction error: {result['reconstruction_error']:.4e}")
 
     # Test 8: EllipsoidalHarmonic class

@@ -41,6 +41,7 @@ __all__ = [
 
 # -- Data classes -------------------------------------------------------------------
 
+
 @jax_tree
 @dataclass
 class JouleHeatingJAX:
@@ -63,7 +64,9 @@ class JouleHeatingJAX:
         """E = I^2 * R * t (erg)."""
         return self._energy_jit(current, self.resistance, time)
 
-    def power_density(self, current_density: jax.Array, resistivity: jax.Array) -> jax.Array:
+    def power_density(
+        self, current_density: jax.Array, resistivity: jax.Array
+    ) -> jax.Array:
         """p = J^2 * rho (erg/s/cm^3)."""
         return self._power_density_jit(current_density, resistivity)
 
@@ -86,7 +89,7 @@ class JouleHeatingJAX:
     def _power_jit(I: jax.Array, R: jax.Array) -> jax.Array:
         I = jnp.asarray(I, dtype=jnp.float64)
         R = jnp.asarray(R, dtype=jnp.float64)
-        return I ** 2 * R
+        return I**2 * R
 
     @staticmethod
     @jax.jit
@@ -94,14 +97,14 @@ class JouleHeatingJAX:
         I = jnp.asarray(I, dtype=jnp.float64)
         R = jnp.asarray(R, dtype=jnp.float64)
         t = jnp.asarray(t, dtype=jnp.float64)
-        return I ** 2 * R * t
+        return I**2 * R * t
 
     @staticmethod
     @jax.jit
     def _power_density_jit(J: jax.Array, rho: jax.Array) -> jax.Array:
         J = jnp.asarray(J, dtype=jnp.float64)
         rho = jnp.asarray(rho, dtype=jnp.float64)
-        return J ** 2 * rho
+        return J**2 * rho
 
     @staticmethod
     @jax.jit
@@ -113,7 +116,7 @@ class JouleHeatingJAX:
         t = jnp.asarray(t, dtype=jnp.float64)
         m = jnp.asarray(m, dtype=jnp.float64)
         c = jnp.asarray(c, dtype=jnp.float64)
-        energy = I ** 2 * R * t
+        energy = I**2 * R * t
         return safe_div(energy, m * c)
 
     @staticmethod
@@ -121,7 +124,7 @@ class JouleHeatingJAX:
     def _from_voltage_jit(V: jax.Array, R: jax.Array) -> jax.Array:
         V = jnp.asarray(V, dtype=jnp.float64)
         R = jnp.asarray(R, dtype=jnp.float64)
-        return safe_div(V ** 2, R)
+        return safe_div(V**2, R)
 
 
 @jax_tree
@@ -148,9 +151,7 @@ class HeatDissipationJAX:
 
     def temperature_from_energy(self, energy: jax.Array) -> jax.Array:
         """dT = E / (m * c)."""
-        return self._temp_from_energy_jit(
-            energy, self.mass, self.specific_heat
-        )
+        return self._temp_from_energy_jit(energy, self.mass, self.specific_heat)
 
     def cooling_rate(
         self,
@@ -159,9 +160,7 @@ class HeatDissipationJAX:
         heat_transfer_coeff: jax.Array,
     ) -> jax.Array:
         """dQ/dt = h * A * dT (erg/s)."""
-        return self._cooling_rate_jit(
-            surface_area, temp_diff, heat_transfer_coeff
-        )
+        return self._cooling_rate_jit(surface_area, temp_diff, heat_transfer_coeff)
 
     def steady_state_temperature(
         self,
@@ -171,9 +170,7 @@ class HeatDissipationJAX:
         h_coeff: jax.Array,
     ) -> jax.Array:
         """T_ss = T_amb + P / (h * A)."""
-        return self._steady_state_jit(
-            power_input, ambient_temp, surface_area, h_coeff
-        )
+        return self._steady_state_jit(power_input, ambient_temp, surface_area, h_coeff)
 
     def transient_temperature(
         self,
@@ -188,15 +185,18 @@ class HeatDissipationJAX:
         tau = m*c / (h*A), dT_ss = P/(h*A).
         """
         return self._transient_jit(
-            power_input, time, ambient_temp, surface_area,
-            h_coeff, self.mass, self.specific_heat
+            power_input,
+            time,
+            ambient_temp,
+            surface_area,
+            h_coeff,
+            self.mass,
+            self.specific_heat,
         )
 
     @staticmethod
     @jax.jit
-    def _temp_from_energy_jit(
-        E: jax.Array, m: jax.Array, c: jax.Array
-    ) -> jax.Array:
+    def _temp_from_energy_jit(E: jax.Array, m: jax.Array, c: jax.Array) -> jax.Array:
         E = jnp.asarray(E, dtype=jnp.float64)
         m = jnp.asarray(m, dtype=jnp.float64)
         c = jnp.asarray(c, dtype=jnp.float64)
@@ -204,9 +204,7 @@ class HeatDissipationJAX:
 
     @staticmethod
     @jax.jit
-    def _cooling_rate_jit(
-        A: jax.Array, dT: jax.Array, h: jax.Array
-    ) -> jax.Array:
+    def _cooling_rate_jit(A: jax.Array, dT: jax.Array, h: jax.Array) -> jax.Array:
         A = jnp.asarray(A, dtype=jnp.float64)
         dT = jnp.asarray(dT, dtype=jnp.float64)
         h = jnp.asarray(h, dtype=jnp.float64)
@@ -271,21 +269,19 @@ class SubstanceResistanceJAX:
     reference_temp: float = 20.0
 
     def __post_init__(self) -> None:
-        self.base_resistivity = jnp.asarray(
-            self.base_resistivity, dtype=jnp.float64
-        )
+        self.base_resistivity = jnp.asarray(self.base_resistivity, dtype=jnp.float64)
         self.temperature_coefficient = jnp.asarray(
             self.temperature_coefficient, dtype=jnp.float64
         )
-        self.reference_temp = jnp.asarray(
-            self.reference_temp, dtype=jnp.float64
-        )
+        self.reference_temp = jnp.asarray(self.reference_temp, dtype=jnp.float64)
 
     def at_temperature(self, temp: jax.Array) -> jax.Array:
         """rho(T) = rho_0 * (1 + alpha*(T - T0))."""
         return self._at_temp_jit(
-            self.base_resistivity, self.temperature_coefficient,
-            temp, self.reference_temp
+            self.base_resistivity,
+            self.temperature_coefficient,
+            temp,
+            self.reference_temp,
         )
 
     def resistance_from_geometry(
@@ -293,8 +289,12 @@ class SubstanceResistanceJAX:
     ) -> jax.Array:
         """R = rho(T) * L / A."""
         return self._r_from_geom_jit(
-            self.base_resistivity, self.temperature_coefficient,
-            self.reference_temp, length, cross_section_area, temp
+            self.base_resistivity,
+            self.temperature_coefficient,
+            self.reference_temp,
+            length,
+            cross_section_area,
+            temp,
         )
 
     def compare_substances(
@@ -307,8 +307,12 @@ class SubstanceResistanceJAX:
     ) -> jax.Array:
         """Compare resistances of multiple substances at a given temp."""
         return self._compare_jit(
-            substances_resistivities, substances_alphas,
-            self.reference_temp, temp, length, cross_section_area
+            substances_resistivities,
+            substances_alphas,
+            self.reference_temp,
+            temp,
+            length,
+            cross_section_area,
         )
 
     @staticmethod
@@ -325,8 +329,12 @@ class SubstanceResistanceJAX:
     @staticmethod
     @jax.jit
     def _r_from_geom_jit(
-        rho_0: jax.Array, alpha: jax.Array, T0: jax.Array,
-        L: jax.Array, A: jax.Array, T: jax.Array
+        rho_0: jax.Array,
+        alpha: jax.Array,
+        T0: jax.Array,
+        L: jax.Array,
+        A: jax.Array,
+        T: jax.Array,
     ) -> jax.Array:
         rho_0 = jnp.asarray(rho_0, dtype=jnp.float64)
         alpha = jnp.asarray(alpha, dtype=jnp.float64)
@@ -340,8 +348,12 @@ class SubstanceResistanceJAX:
     @staticmethod
     @jax.jit
     def _compare_jit(
-        rhos: jax.Array, alphas: jax.Array, T0: jax.Array,
-        T: jax.Array, L: jax.Array, A: jax.Array
+        rhos: jax.Array,
+        alphas: jax.Array,
+        T0: jax.Array,
+        T: jax.Array,
+        L: jax.Array,
+        A: jax.Array,
     ) -> jax.Array:
         rhos = jnp.asarray(rhos, dtype=jnp.float64)
         alphas = jnp.asarray(alphas, dtype=jnp.float64)
@@ -355,8 +367,14 @@ class SubstanceResistanceJAX:
 
 # -- Standalone functions -------------------------------------------------------------
 
-@maxwell_cite(351, 352, part=2, chapter="Electrokinematics",
-              description="Joule heating power: P = I^2 * R")
+
+@maxwell_cite(
+    351,
+    352,
+    part=2,
+    chapter="Electrokinematics",
+    description="Joule heating power: P = I^2 * R",
+)
 def joule_heating_power_jax(
     current: jax.Array,
     resistance: jax.Array,
@@ -374,11 +392,16 @@ def joule_heating_power_jax(
     """
     current = jnp.asarray(current, dtype=jnp.float64)
     resistance = jnp.asarray(resistance, dtype=jnp.float64)
-    return current ** 2 * resistance
+    return current**2 * resistance
 
 
-@maxwell_cite(351, 352, part=2, chapter="Electrokinematics",
-              description="Joule energy dissipated: E = I^2 * R * t")
+@maxwell_cite(
+    351,
+    352,
+    part=2,
+    chapter="Electrokinematics",
+    description="Joule energy dissipated: E = I^2 * R * t",
+)
 def joule_energy_dissipated_jax(
     current: jax.Array,
     resistance: jax.Array,
@@ -399,11 +422,16 @@ def joule_energy_dissipated_jax(
     current = jnp.asarray(current, dtype=jnp.float64)
     resistance = jnp.asarray(resistance, dtype=jnp.float64)
     time = jnp.asarray(time, dtype=jnp.float64)
-    return current ** 2 * resistance * time
+    return current**2 * resistance * time
 
 
-@maxwell_cite(353, 354, part=2, chapter="Electrokinematics",
-              description="Joule power density: p = J^2 * rho")
+@maxwell_cite(
+    353,
+    354,
+    part=2,
+    chapter="Electrokinematics",
+    description="Joule power density: p = J^2 * rho",
+)
 def joule_power_density_jax(
     current_density: jax.Array,
     resistivity: jax.Array,
@@ -421,11 +449,16 @@ def joule_power_density_jax(
     """
     current_density = jnp.asarray(current_density, dtype=jnp.float64)
     resistivity = jnp.asarray(resistivity, dtype=jnp.float64)
-    return current_density ** 2 * resistivity
+    return current_density**2 * resistivity
 
 
-@maxwell_cite(355, 356, part=2, chapter="Electrokinematics",
-              description="Temperature rise from Joule heating: dT = I^2*R*t/(m*c)")
+@maxwell_cite(
+    355,
+    356,
+    part=2,
+    chapter="Electrokinematics",
+    description="Temperature rise from Joule heating: dT = I^2*R*t/(m*c)",
+)
 def joule_temperature_rise_jax(
     current: jax.Array,
     resistance: jax.Array,
@@ -452,12 +485,17 @@ def joule_temperature_rise_jax(
     time = jnp.asarray(time, dtype=jnp.float64)
     mass = jnp.asarray(mass, dtype=jnp.float64)
     specific_heat = jnp.asarray(specific_heat, dtype=jnp.float64)
-    energy = current ** 2 * resistance * time
+    energy = current**2 * resistance * time
     return safe_div(energy, mass * specific_heat)
 
 
-@maxwell_cite(351, 352, part=2, chapter="Electrokinematics",
-              description="Joule heating from voltage: P = V^2 / R")
+@maxwell_cite(
+    351,
+    352,
+    part=2,
+    chapter="Electrokinematics",
+    description="Joule heating from voltage: P = V^2 / R",
+)
 def joule_heating_from_voltage_jax(
     voltage: jax.Array,
     resistance: jax.Array,
@@ -475,11 +513,16 @@ def joule_heating_from_voltage_jax(
     """
     voltage = jnp.asarray(voltage, dtype=jnp.float64)
     resistance = jnp.asarray(resistance, dtype=jnp.float64)
-    return safe_div(voltage ** 2, resistance)
+    return safe_div(voltage**2, resistance)
 
 
-@maxwell_cite(357, 358, part=2, chapter="Electrokinematics",
-              description="Cooling rate: dQ/dt = h * A * dT")
+@maxwell_cite(
+    357,
+    358,
+    part=2,
+    chapter="Electrokinematics",
+    description="Cooling rate: dQ/dt = h * A * dT",
+)
 def cooling_rate_jax(
     surface_area: jax.Array,
     temp_diff: jax.Array,
@@ -503,8 +546,13 @@ def cooling_rate_jax(
     return heat_transfer_coeff * surface_area * temp_diff
 
 
-@maxwell_cite(357, 358, part=2, chapter="Electrokinematics",
-              description="Steady state temperature: T_ss = T_amb + P/(h*A)")
+@maxwell_cite(
+    357,
+    358,
+    part=2,
+    chapter="Electrokinematics",
+    description="Steady state temperature: T_ss = T_amb + P/(h*A)",
+)
 def steady_state_temperature_jax(
     power: jax.Array,
     ambient_temp: jax.Array,
@@ -532,8 +580,13 @@ def steady_state_temperature_jax(
     return ambient_temp + dT_ss
 
 
-@maxwell_cite(359, 360, part=2, chapter="Electrokinematics",
-              description="Substance resistivity at temperature")
+@maxwell_cite(
+    359,
+    360,
+    part=2,
+    chapter="Electrokinematics",
+    description="Substance resistivity at temperature",
+)
 def substance_resistivity_at_temp_jax(
     rho_0: jax.Array,
     alpha: jax.Array,
@@ -560,8 +613,13 @@ def substance_resistivity_at_temp_jax(
     return rho_0 * (1.0 + alpha * (temp - ref_temp))
 
 
-@maxwell_cite(361, 362, part=2, chapter="Electrokinematics",
-              description="Resistance from geometry: R = rho * L / A")
+@maxwell_cite(
+    361,
+    362,
+    part=2,
+    chapter="Electrokinematics",
+    description="Resistance from geometry: R = rho * L / A",
+)
 def substance_resistance_jax(
     rho: jax.Array,
     length: jax.Array,
@@ -585,8 +643,17 @@ def substance_resistance_jax(
     return safe_div(rho * length, area)
 
 
-@maxwell_cite(351, 352, 353, 354, 355, 356, part=2, chapter="Electrokinematics",
-              description="Verify Joule heating relations")
+@maxwell_cite(
+    351,
+    352,
+    353,
+    354,
+    355,
+    356,
+    part=2,
+    chapter="Electrokinematics",
+    description="Verify Joule heating relations",
+)
 def verify_joule_heating_jax(
     tol: float = 1e-10,
 ) -> Dict[str, Any]:
@@ -605,10 +672,10 @@ def verify_joule_heating_jax(
         Dictionary with verification results.
     """
     # Test parameters
-    I = jnp.array(2.0, dtype=jnp.float64)   # 2 abamperes
-    R = jnp.array(5.0, dtype=jnp.float64)    # 5 abohms
-    t = jnp.array(10.0, dtype=jnp.float64)   # 10 seconds
-    V = I * R                                 # 10 abvolts
+    I = jnp.array(2.0, dtype=jnp.float64)  # 2 abamperes
+    R = jnp.array(5.0, dtype=jnp.float64)  # 5 abohms
+    t = jnp.array(10.0, dtype=jnp.float64)  # 10 seconds
+    V = I * R  # 10 abvolts
 
     # 1. Power formula consistency: I^2*R == V^2/R
     P_I2R = joule_heating_power_jax(I, R)
@@ -630,7 +697,7 @@ def verify_joule_heating_jax(
     density_consistent = jnp.abs(P_from_density - P_I2R) < tol
 
     # 4. Temperature rise: dT = E / (m*c)
-    m = jnp.array(10.0, dtype=jnp.float64)   # 10 g
+    m = jnp.array(10.0, dtype=jnp.float64)  # 10 g
     c = jnp.array(4.18e7, dtype=jnp.float64)  # water ~4.18 J/(g*K) = 4.18e7 erg/(g*K)
     dT = joule_temperature_rise_jax(I, R, t, m, c)
     dT_expected = E / (m * c)
@@ -656,9 +723,19 @@ def verify_joule_heating_jax(
     }
 
 
-@maxwell_cite(351, 352, 353, 354, 355, 356, 357, 358, part=2,
-              chapter="Electrokinematics",
-              description="Complete Joule heating analysis")
+@maxwell_cite(
+    351,
+    352,
+    353,
+    354,
+    355,
+    356,
+    357,
+    358,
+    part=2,
+    chapter="Electrokinematics",
+    description="Complete Joule heating analysis",
+)
 def analyze_joule_heating_jax(
     current: float = 1.0,
     resistance: float = 1.0,

@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -17,8 +18,8 @@ pytestmark = pytest.mark.skipif(
 
 from maxwell.vis.flow_tubes import (
     calc_unit_tubes,
-    plot_unit_tubes_of_flow,
     plot_unit_tubes_3d,
+    plot_unit_tubes_of_flow,
 )
 
 
@@ -49,9 +50,12 @@ class TestCalcUnitTubes:
         """Single charge produces radially outward field."""
         positions = np.array([[0.0, 0.0, 0.0]])
         magnitudes = np.array([1.0])
-        result = calc_unit_tubes(positions, magnitudes,
-                                 grid_range=(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0),
-                                 resolution=15)
+        result = calc_unit_tubes(
+            positions,
+            magnitudes,
+            grid_range=(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0),
+            resolution=15,
+        )
         # At point away from origin, field should point outward (positive x component for x>0)
         # Grid: -2..2 with 15 points -> index 11 is at x ~ 0.57
         ix = 11
@@ -62,9 +66,12 @@ class TestCalcUnitTubes:
         """Between dipole charges, field points from +q to -q (positive x direction)."""
         positions = np.array([[1.0, 0.0, 0.0], [-1.0, 0.0, 0.0]])
         magnitudes = np.array([1.0, -1.0])
-        result = calc_unit_tubes(positions, magnitudes,
-                                 grid_range=(-3.0, 3.0, -3.0, 3.0, -3.0, 3.0),
-                                 resolution=20)
+        result = calc_unit_tubes(
+            positions,
+            magnitudes,
+            grid_range=(-3.0, 3.0, -3.0, 3.0, -3.0, 3.0),
+            resolution=20,
+        )
         # At origin (midpoint between +1 and -1 on x axis),
         # field from +q (at x=1) points left (negative x),
         # field from -q (at x=-1) points left (toward -q, also negative x)
@@ -91,9 +98,12 @@ class TestCalcUnitTubes:
         """Custom grid range is respected."""
         positions = np.array([[0.0, 0.0, 0.0]])
         magnitudes = np.array([1.0])
-        result = calc_unit_tubes(positions, magnitudes,
-                                 grid_range=(-5.0, 5.0, -3.0, 3.0, -2.0, 2.0),
-                                 resolution=10)
+        result = calc_unit_tubes(
+            positions,
+            magnitudes,
+            grid_range=(-5.0, 5.0, -3.0, 3.0, -2.0, 2.0),
+            resolution=10,
+        )
         assert np.isclose(result["x"][0], -5.0, atol=0.6)
         assert np.isclose(result["x"][-1], 5.0, atol=0.6)
         assert np.isclose(result["y"][0], -3.0, atol=0.4)
@@ -103,9 +113,12 @@ class TestCalcUnitTubes:
         """Field weakens with distance from charges."""
         positions = np.array([[0.0, 0.0, 0.0]])
         magnitudes = np.array([1.0])
-        result = calc_unit_tubes(positions, magnitudes,
-                                 grid_range=(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0),
-                                 resolution=20)
+        result = calc_unit_tubes(
+            positions,
+            magnitudes,
+            grid_range=(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0),
+            resolution=20,
+        )
         # Center (near charge) should have stronger field than corners
         center_mag = result["J_magnitude"][10, 10, 10]
         corner_mag = result["J_magnitude"][0, 0, 0]

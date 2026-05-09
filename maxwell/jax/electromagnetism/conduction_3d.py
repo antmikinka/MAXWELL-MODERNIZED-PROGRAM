@@ -36,6 +36,7 @@ __all__ = [
 
 # -- Data classes -------------------------------------------------------------------
 
+
 @jax_tree
 @dataclass
 class Conduction3DJAX:
@@ -180,7 +181,9 @@ class SpreadingResistanceJAX:
         """R = 1/(4*pi*sigma*r)."""
         sigma = jnp.asarray(sigma, dtype=jnp.float64)
         radius = jnp.asarray(radius, dtype=jnp.float64)
-        return safe_div(jnp.array(1.0, dtype=jnp.float64), 4.0 * jnp.pi * sigma * radius)
+        return safe_div(
+            jnp.array(1.0, dtype=jnp.float64), 4.0 * jnp.pi * sigma * radius
+        )
 
     @staticmethod
     @jax.jit
@@ -188,7 +191,9 @@ class SpreadingResistanceJAX:
         """R = 1/(2*pi*sigma*r)."""
         sigma = jnp.asarray(sigma, dtype=jnp.float64)
         radius = jnp.asarray(radius, dtype=jnp.float64)
-        return safe_div(jnp.array(1.0, dtype=jnp.float64), 2.0 * jnp.pi * sigma * radius)
+        return safe_div(
+            jnp.array(1.0, dtype=jnp.float64), 2.0 * jnp.pi * sigma * radius
+        )
 
     @staticmethod
     @jax.jit
@@ -306,13 +311,19 @@ class EffectiveConductivityJAX:
         sigma2 = jnp.asarray(sigma2, dtype=jnp.float64)
         f = jnp.asarray(f, dtype=jnp.float64)
         B = (3.0 * f - 1.0) * sigma2 + (2.0 - 3.0 * f) * sigma1
-        return 0.25 * (B + jnp.sqrt(B ** 2 + 8.0 * sigma1 * sigma2))
+        return 0.25 * (B + jnp.sqrt(B**2 + 8.0 * sigma1 * sigma2))
 
 
 # -- Standalone functions -------------------------------------------------------------
 
-@maxwell_cite(285, 286, part=2, chapter="Conduction in Three Dimensions",
-              description="3D Ohm's law: J = sigma * E")
+
+@maxwell_cite(
+    285,
+    286,
+    part=2,
+    chapter="Conduction in Three Dimensions",
+    description="3D Ohm's law: J = sigma * E",
+)
 def ohms_law_3d_jax(
     E: jax.Array,
     sigma: jax.Array,
@@ -332,8 +343,13 @@ def ohms_law_3d_jax(
     return Conduction3DJAX._current_density_jit(sigma, E)
 
 
-@maxwell_cite(285, 286, part=2, chapter="Conduction in Three Dimensions",
-              description="Inverse 3D Ohm's law: E = J / sigma")
+@maxwell_cite(
+    285,
+    286,
+    part=2,
+    chapter="Conduction in Three Dimensions",
+    description="Inverse 3D Ohm's law: E = J / sigma",
+)
 def electric_field_from_current_density_jax(
     J: jax.Array,
     sigma: jax.Array,
@@ -353,8 +369,13 @@ def electric_field_from_current_density_jax(
     return Conduction3DJAX._electric_field_jit(sigma, J)
 
 
-@maxwell_cite(285, 286, part=2, chapter="Conduction in Three Dimensions",
-              description="Conduction power density: P = J . E")
+@maxwell_cite(
+    285,
+    286,
+    part=2,
+    chapter="Conduction in Three Dimensions",
+    description="Conduction power density: P = J . E",
+)
 def conduction_power_density_jax(
     E: jax.Array,
     sigma: jax.Array,
@@ -373,8 +394,13 @@ def conduction_power_density_jax(
     return Conduction3DJAX._power_density_jit(sigma, E)
 
 
-@maxwell_cite(297, 298, part=2, chapter="Spreading Resistance",
-              description="Spherical spreading resistance")
+@maxwell_cite(
+    297,
+    298,
+    part=2,
+    chapter="Spreading Resistance",
+    description="Spherical spreading resistance",
+)
 def spherical_spreading_resistance_jax(
     sigma: float,
     radius: float,
@@ -393,8 +419,13 @@ def spherical_spreading_resistance_jax(
     return SpreadingResistanceJAX._spherical_jit(sigma, radius)
 
 
-@maxwell_cite(299, 300, part=2, chapter="Spreading Resistance",
-              description="Hemispherical spreading resistance")
+@maxwell_cite(
+    299,
+    300,
+    part=2,
+    chapter="Spreading Resistance",
+    description="Hemispherical spreading resistance",
+)
 def hemispherical_spreading_resistance_jax(
     sigma: float,
     radius: float,
@@ -413,8 +444,13 @@ def hemispherical_spreading_resistance_jax(
     return SpreadingResistanceJAX._hemispherical_jit(sigma, radius)
 
 
-@maxwell_cite(301, 302, part=2, chapter="Spreading Resistance",
-              description="Circular contact resistance")
+@maxwell_cite(
+    301,
+    302,
+    part=2,
+    chapter="Spreading Resistance",
+    description="Circular contact resistance",
+)
 def circular_contact_resistance_jax(
     sigma: float,
     radius: float,
@@ -433,8 +469,14 @@ def circular_contact_resistance_jax(
     return SpreadingResistanceJAX._circular_jit(sigma, radius)
 
 
-@maxwell_cite(310, 311, 312, part=2, chapter="Effective Conductivity",
-              description="Maxwell-Garnett effective medium formula")
+@maxwell_cite(
+    310,
+    311,
+    312,
+    part=2,
+    chapter="Effective Conductivity",
+    description="Maxwell-Garnett effective medium formula",
+)
 def maxwell_garnett_conductivity_jax(
     sigma_m: float,
     sigma_i: float,
@@ -456,8 +498,12 @@ def maxwell_garnett_conductivity_jax(
     return EffectiveConductivityJAX._maxwell_garnett_jit(sigma_m, sigma_i, vol_frac)
 
 
-@maxwell_cite(310, part=2, chapter="Effective Conductivity",
-              description="Series mixing effective conductivity")
+@maxwell_cite(
+    310,
+    part=2,
+    chapter="Effective Conductivity",
+    description="Series mixing effective conductivity",
+)
 def effective_conductivity_series_jax(
     sigma1: float,
     sigma2: float,
@@ -478,8 +524,12 @@ def effective_conductivity_series_jax(
     return EffectiveConductivityJAX._series_jit(sigma1, sigma2, f)
 
 
-@maxwell_cite(310, part=2, chapter="Effective Conductivity",
-              description="Parallel mixing effective conductivity")
+@maxwell_cite(
+    310,
+    part=2,
+    chapter="Effective Conductivity",
+    description="Parallel mixing effective conductivity",
+)
 def effective_conductivity_parallel_jax(
     sigma1: float,
     sigma2: float,
@@ -500,8 +550,15 @@ def effective_conductivity_parallel_jax(
     return EffectiveConductivityJAX._parallel_jit(sigma1, sigma2, f)
 
 
-@maxwell_cite(285, 286, 287, 288, part=2, chapter="Conduction in Three Dimensions",
-              description="Verify 3D conduction relations")
+@maxwell_cite(
+    285,
+    286,
+    287,
+    288,
+    part=2,
+    chapter="Conduction in Three Dimensions",
+    description="Verify 3D conduction relations",
+)
 def verify_conduction_3d_jax(
     E: jax.Array = jnp.array([1.0, 0.0, 0.0]),
     sigma: jax.Array = jnp.array(1.0),
@@ -545,9 +602,20 @@ def verify_conduction_3d_jax(
     }
 
 
-@maxwell_cite(285, 286, 297, 298, 299, 300, 310, 311, 312, part=2,
-              chapter="Conduction in Three Dimensions",
-              description="Comprehensive 3D conduction analysis")
+@maxwell_cite(
+    285,
+    286,
+    297,
+    298,
+    299,
+    300,
+    310,
+    311,
+    312,
+    part=2,
+    chapter="Conduction in Three Dimensions",
+    description="Comprehensive 3D conduction analysis",
+)
 def analyze_conduction_jax(
     E: jax.Array,
     sigma: jax.Array,

@@ -24,10 +24,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -58,14 +59,22 @@ class MagneticEllipsoid:
 
     def __post_init__(self):
         self.semi_axes = np.asarray(self.semi_axes, dtype=np.float64)
-        self.center = np.asarray(self.center, dtype=np.float64) if self.center is not None else np.zeros(3)
-        self.magnetization = np.asarray(self.magnetization, dtype=np.float64) if self.magnetization is not None else np.zeros(3)
+        self.center = (
+            np.asarray(self.center, dtype=np.float64)
+            if self.center is not None
+            else np.zeros(3)
+        )
+        self.magnetization = (
+            np.asarray(self.magnetization, dtype=np.float64)
+            if self.magnetization is not None
+            else np.zeros(3)
+        )
 
     @property
     def volume(self) -> float:
         """Volume of ellipsoid: V = (4/3)πabc."""
         a, b, c = self.semi_axes
-        return (4/3) * np.pi * a * b * c
+        return (4 / 3) * np.pi * a * b * c
 
     @property
     def total_magnetic_moment(self) -> np.ndarray:
@@ -74,7 +83,8 @@ class MagneticEllipsoid:
 
     @maxwell_cite(
         437,
-        part=3, chapter="Magnetic Ellipsoids",
+        part=3,
+        chapter="Magnetic Ellipsoids",
         theory_class="maxwell_original",
         description="Calculate demagnetizing factors for ellipsoid",
     )
@@ -120,10 +130,14 @@ class MagneticEllipsoid:
         """Calculate factors for spheroid (b = c)."""
         if a > b:
             # Prolate spheroid (cigar-shaped)
-            e = np.sqrt(1 - (b/a)**2)  # Eccentricity
+            e = np.sqrt(1 - (b / a) ** 2)  # Eccentricity
             if e > 1e-6:
-                N_x = 4 * np.pi * (1 - e**2) / (2 * e**3) * (
-                    np.log((1 + e) / (1 - e)) - 2*e
+                N_x = (
+                    4
+                    * np.pi
+                    * (1 - e**2)
+                    / (2 * e**3)
+                    * (np.log((1 + e) / (1 - e)) - 2 * e)
                 )
             else:
                 N_x = 4 * np.pi / 3
@@ -131,11 +145,9 @@ class MagneticEllipsoid:
 
         else:
             # Oblate spheroid (disk-shaped)
-            e = np.sqrt((a/b)**2 - 1)
+            e = np.sqrt((a / b) ** 2 - 1)
             if e > 1e-6:
-                N_x = 4 * np.pi * (1 + e**2) / e**3 * (
-                    e - np.arctan(e)
-                )
+                N_x = 4 * np.pi * (1 + e**2) / e**3 * (e - np.arctan(e))
             else:
                 N_x = 4 * np.pi / 3
             N_y = N_z = (4 * np.pi - N_x) / 2
@@ -155,6 +167,7 @@ class MagneticEllipsoid:
 
         # Gaussian quadrature points and weights
         from scipy.special import roots_legendre
+
         n_points = 64
         xi, wi = roots_legendre(n_points)
 
@@ -185,7 +198,8 @@ class MagneticEllipsoid:
 
     @maxwell_cite(
         437,
-        part=3, chapter="Magnetic Ellipsoids",
+        part=3,
+        chapter="Magnetic Ellipsoids",
         theory_class="maxwell_original",
         description="Calculate internal field of magnetized ellipsoid",
     )
@@ -218,7 +232,8 @@ class MagneticEllipsoid:
     @classmethod
     @maxwell_cite(
         438,
-        part=3, chapter="Magnetic Ellipsoids",
+        part=3,
+        chapter="Magnetic Ellipsoids",
         theory_class="maxwell_original",
         description="Create ellipsoid induced by external field",
     )
@@ -304,7 +319,8 @@ class ProlateSpheroid(MagneticEllipsoid):
 
     @maxwell_cite(
         437,
-        part=3, chapter="Magnetic Ellipsoids",
+        part=3,
+        chapter="Magnetic Ellipsoids",
         theory_class="maxwell_original",
         description="Calculate prolate spheroid demagnetizing factors",
     )
@@ -330,7 +346,8 @@ class ProlateSpheroid(MagneticEllipsoid):
     @classmethod
     @maxwell_cite(
         438,
-        part=3, chapter="Magnetic Ellipsoids",
+        part=3,
+        chapter="Magnetic Ellipsoids",
         theory_class="maxwell_original",
         description="Create prolate spheroid for rod magnet",
     )
@@ -401,7 +418,8 @@ class OblateSpheroid(MagneticEllipsoid):
 
     @maxwell_cite(
         437,
-        part=3, chapter="Magnetic Ellipsoids",
+        part=3,
+        chapter="Magnetic Ellipsoids",
         theory_class="maxwell_original",
         description="Calculate oblate spheroid demagnetizing factors",
     )
@@ -427,7 +445,8 @@ class OblateSpheroid(MagneticEllipsoid):
     @classmethod
     @maxwell_cite(
         438,
-        part=3, chapter="Magnetic Ellipsoids",
+        part=3,
+        chapter="Magnetic Ellipsoids",
         theory_class="maxwell_original",
         description="Create oblate spheroid for disk magnet",
     )
@@ -467,7 +486,8 @@ class OblateSpheroid(MagneticEllipsoid):
 
 @maxwell_cite(
     437,
-    part=3, chapter="Magnetic Ellipsoids",
+    part=3,
+    chapter="Magnetic Ellipsoids",
     theory_class="maxwell_original",
     description="Calculate field of uniformly magnetized ellipsoid",
 )
@@ -507,7 +527,11 @@ def ellipsoid_field(
 
     # Check if inside ellipsoid: (x/a)² + (y/b)² + (z/c)² < 1
     r = position - center
-    normalized = (r[0]/semi_axes[0])**2 + (r[1]/semi_axes[1])**2 + (r[2]/semi_axes[2])**2
+    normalized = (
+        (r[0] / semi_axes[0]) ** 2
+        + (r[1] / semi_axes[1]) ** 2
+        + (r[2] / semi_axes[2]) ** 2
+    )
 
     if normalized < 1:
         # Inside: uniform demagnetizing field
@@ -515,7 +539,7 @@ def ellipsoid_field(
         return ellipsoid.internal_field()
     else:
         # Outside: approximate as dipole
-        volume = (4/3) * np.pi * semi_axes[0] * semi_axes[1] * semi_axes[2]
+        volume = (4 / 3) * np.pi * semi_axes[0] * semi_axes[1] * semi_axes[2]
         m = magnetization * volume
 
         r_mag = np.linalg.norm(r)
@@ -527,7 +551,8 @@ def ellipsoid_field(
 
 @maxwell_cite(
     438,
-    part=3, chapter="Magnetic Ellipsoids",
+    part=3,
+    chapter="Magnetic Ellipsoids",
     theory_class="maxwell_original",
     description="Calculate induced magnetization of ellipsoid",
 )
@@ -570,7 +595,8 @@ def ellipsoid_induced_magnetization(
 
 @maxwell_cite(
     437,
-    part=3, chapter="Magnetic Ellipsoids",
+    part=3,
+    chapter="Magnetic Ellipsoids",
     theory_class="maxwell_original",
     description="Calculate demagnetizing energy of ellipsoid",
 )
@@ -602,25 +628,27 @@ def ellipsoid_demagnetizing_energy(
         Part III, Art. 437: Demagnetizing energy.
     """
     if volume is None:
-        volume = (4/3) * np.pi * semi_axes[0] * semi_axes[1] * semi_axes[2]
+        volume = (4 / 3) * np.pi * semi_axes[0] * semi_axes[1] * semi_axes[2]
 
     ellipsoid = MagneticEllipsoid(semi_axes=semi_axes, magnetization=magnetization)
     N = ellipsoid.demagnetizing_factors()
 
     I = np.asarray(magnetization, dtype=np.float64)
 
-    W = 0.5 * volume * (
-        N["N_x"] * I[0]**2 +
-        N["N_y"] * I[1]**2 +
-        N["N_z"] * I[2]**2
+    W = (
+        0.5
+        * volume
+        * (N["N_x"] * I[0] ** 2 + N["N_y"] * I[1] ** 2 + N["N_z"] * I[2] ** 2)
     )
 
     return float(W)
 
 
 @maxwell_cite(
-    437, 438,
-    part=3, chapter="Magnetic Ellipsoids",
+    437,
+    438,
+    part=3,
+    chapter="Magnetic Ellipsoids",
     theory_class="maxwell_original",
     description="Find easy axis of ellipsoidal magnet",
 )
@@ -662,8 +690,10 @@ def find_easy_axis(semi_axes: np.ndarray) -> tuple[str, np.ndarray]:
 
 
 @maxwell_cite(
-    437, 438,
-    part=3, chapter="Magnetic Ellipsoids",
+    437,
+    438,
+    part=3,
+    chapter="Magnetic Ellipsoids",
     theory_class="maxwell_original",
     description="Verify ellipsoid magnetism calculations",
 )

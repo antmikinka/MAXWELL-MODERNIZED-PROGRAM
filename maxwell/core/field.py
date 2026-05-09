@@ -18,12 +18,15 @@ References:
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
-from maxwell.meta.citation import maxwell_cite
+
 from maxwell.config.constants import CONST
 from maxwell.core.charge import PointCharge
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -71,14 +74,14 @@ class ElectricField:
 
     @classmethod
     @maxwell_cite(
-        44, 47,
-        part=1, chapter="The Electric Field",
+        44,
+        47,
+        part=1,
+        chapter="The Electric Field",
         theory_class="maxwell_original",
         description="Create electric field from a point charge",
     )
-    def from_point_charge(
-        cls, charge: PointCharge, point: np.ndarray
-    ) -> ElectricField:
+    def from_point_charge(cls, charge: PointCharge, point: np.ndarray) -> ElectricField:
         """
         Create electric field due to a point charge at a given position.
 
@@ -102,7 +105,8 @@ class ElectricField:
     @classmethod
     @maxwell_cite(
         44,
-        part=1, chapter="The Electric Field",
+        part=1,
+        chapter="The Electric Field",
         theory_class="maxwell_original",
         description="Superposition of electric fields from multiple charges",
     )
@@ -133,7 +137,8 @@ class ElectricField:
 
     @maxwell_cite(
         68,
-        part=1, chapter="Mathematical Definitions",
+        part=1,
+        chapter="Mathematical Definitions",
         theory_class="maxwell_original",
         description="Resultant electric intensity at a point",
     )
@@ -154,7 +159,8 @@ class ElectricField:
 
     @maxwell_cite(
         49,
-        part=1, chapter="The Electric Field",
+        part=1,
+        chapter="The Electric Field",
         theory_class="maxwell_original",
         description="Electromotive force along a path",
     )
@@ -200,7 +206,8 @@ class ElectricField:
 
 @maxwell_cite(
     46,
-    part=1, chapter="The Electric Field",
+    part=1,
+    chapter="The Electric Field",
     theory_class="maxwell_original",
     description="Equipotential surface — surface of constant potential",
 )
@@ -228,11 +235,14 @@ class EquipotentialSurface:
 
     @maxwell_cite(
         46,
-        part=1, chapter="The Electric Field",
+        part=1,
+        chapter="The Electric Field",
         theory_class="maxwell_original",
         description="Verify point lies on equipotential surface",
     )
-    def contains_point(self, point: np.ndarray, charge: PointCharge, tolerance: float = 1e-10) -> bool:
+    def contains_point(
+        self, point: np.ndarray, charge: PointCharge, tolerance: float = 1e-10
+    ) -> bool:
         """
         Check if a point lies on this equipotential surface.
 
@@ -253,7 +263,8 @@ class EquipotentialSurface:
 
 @maxwell_cite(
     47,
-    part=1, chapter="The Electric Field",
+    part=1,
+    chapter="The Electric Field",
     theory_class="maxwell_original",
     description="Line of force — curve tangent to electric field",
 )
@@ -333,7 +344,8 @@ class LineOfForce:
 
 @maxwell_cite(
     48,
-    part=1, chapter="The Electric Field",
+    part=1,
+    chapter="The Electric Field",
     theory_class="maxwell_original",
     description="Electric tension along a line of force",
 )
@@ -360,7 +372,8 @@ def electric_tension(field: ElectricField) -> float:
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Electric flux through a surface — Gauss's theorem",
 )
@@ -414,7 +427,8 @@ def electric_flux(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Gauss's law — flux through closed surface",
 )
@@ -447,7 +461,8 @@ def gauss_law_closed_surface(
 
 @maxwell_cite(
     71,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Electric field as gradient of potential",
 )
@@ -494,7 +509,8 @@ def field_from_potential(
 
 @maxwell_cite(
     69,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Line integral of electric intensity",
 )

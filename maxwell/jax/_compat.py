@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, fields
 from typing import Any, Callable, Type, TypeVar
+
 import jax
 import jax.numpy as jnp
 from jax.tree_util import register_pytree_node, register_pytree_node_class
@@ -28,6 +29,7 @@ __all__ = [
 
 
 # ── Pytree Registration ─────────────────────────────────────────
+
 
 class jax_tree:
     """Class decorator (or decorator factory) that registers a dataclass as a JAX pytree node.
@@ -88,6 +90,7 @@ class jax_tree:
 
 
 # ── Safe Arithmetic ─────────────────────────────────────────────
+
 
 def safe_div(
     numerator: jax.Array,
@@ -156,5 +159,5 @@ def safe_norm(
     Returns:
         L2 norm along axis, guaranteed >= safe_default.
     """
-    sq_sum = jnp.sum(x ** 2, axis=axis)
-    return jnp.sqrt(jnp.maximum(sq_sum, safe_default ** 2))
+    sq_sum = jnp.sum(x**2, axis=axis)
+    return jnp.sqrt(jnp.maximum(sq_sum, safe_default**2))

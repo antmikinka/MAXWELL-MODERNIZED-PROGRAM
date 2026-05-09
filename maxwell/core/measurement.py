@@ -13,22 +13,33 @@ Category: B (user_original) — Measurement theory for Maxwell's Treatise.
 """
 
 from __future__ import annotations
-from functools import wraps
-from dataclasses import dataclass, field
-from typing import Any
-import numpy as np
-from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
 
+from dataclasses import dataclass, field
+from functools import wraps
+from typing import Any
+
+import numpy as np
+
+from maxwell.config.constants import C_APPROX, CONST, C
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # PRELIMINARY — MEASUREMENT OF QUANTITIES (Arts. 2-11)
 # =============================================================================
 
-@maxwell_cite(2, 3, 4, part=1, chapter="Measurement of Quantities",
-              theory_class="user_original",
-              description="Principles of physical measurement — magnitude, ratio, standard.")
-def measurement_of_quantities(quantity_value: float, standard_value: float) -> dict[str, float]:
+
+@maxwell_cite(
+    2,
+    3,
+    4,
+    part=1,
+    chapter="Measurement of Quantities",
+    theory_class="user_original",
+    description="Principles of physical measurement — magnitude, ratio, standard.",
+)
+def measurement_of_quantities(
+    quantity_value: float, standard_value: float
+) -> dict[str, float]:
     """
     Perform measurement of a physical quantity by comparison with a standard.
 
@@ -53,7 +64,9 @@ def measurement_of_quantities(quantity_value: float, standard_value: float) -> d
         raise ValueError("Standard value cannot be zero")
 
     numerical_value = quantity_value / standard_value
-    magnitude_order = np.floor(np.log10(abs(numerical_value))) if numerical_value != 0 else 0
+    magnitude_order = (
+        np.floor(np.log10(abs(numerical_value))) if numerical_value != 0 else 0
+    )
 
     # Estimate relative error based on numerical precision
     relative_error = np.finfo(float).eps ** 0.5  # ~1e-8 for double precision
@@ -65,11 +78,18 @@ def measurement_of_quantities(quantity_value: float, standard_value: float) -> d
     }
 
 
-@maxwell_cite(5, 6, 7, part=1, chapter="Numerical Value and Units",
-              theory_class="user_original",
-              description="Numerical value, unit definition, and the relation between them.")
-def numerical_value_units(measured_value: float, unit_name: str,
-                          base_units: dict[str, float] | None = None) -> dict[str, Any]:
+@maxwell_cite(
+    5,
+    6,
+    7,
+    part=1,
+    chapter="Numerical Value and Units",
+    theory_class="user_original",
+    description="Numerical value, unit definition, and the relation between them.",
+)
+def numerical_value_units(
+    measured_value: float, unit_name: str, base_units: dict[str, float] | None = None
+) -> dict[str, Any]:
     """
     Express a numerical value in terms of defined units.
 
@@ -121,10 +141,17 @@ def numerical_value_units(measured_value: float, unit_name: str,
     }
 
 
-@maxwell_cite(8, 9, part=1, chapter="Dimensional Analysis",
-              theory_class="user_original",
-              description="Dimensional formulas and the method of dimensions.")
-def dimensional_analysis(quantity_type: str, dimensions: dict[str, float] | None = None) -> dict[str, Any]:
+@maxwell_cite(
+    8,
+    9,
+    part=1,
+    chapter="Dimensional Analysis",
+    theory_class="user_original",
+    description="Dimensional formulas and the method of dimensions.",
+)
+def dimensional_analysis(
+    quantity_type: str, dimensions: dict[str, float] | None = None
+) -> dict[str, Any]:
     """
     Perform dimensional analysis using Maxwell's method of dimensions.
 
@@ -183,15 +210,19 @@ def dimensional_analysis(quantity_type: str, dimensions: dict[str, float] | None
 
     if dimensions is None:
         if quantity_type not in standard_dimensions:
-            raise KeyError(f"Unknown quantity type: {quantity_type!r}. "
-                          f"Available: {list(standard_dimensions.keys())}")
+            raise KeyError(
+                f"Unknown quantity type: {quantity_type!r}. "
+                f"Available: {list(standard_dimensions.keys())}"
+            )
         dimensions = standard_dimensions[quantity_type]
 
     def dimensional_equation() -> str:
         parts = []
-        for base, exp in [("L", dimensions.get("L", 0)),
-                          ("M", dimensions.get("M", 0)),
-                          ("T", dimensions.get("T", 0))]:
+        for base, exp in [
+            ("L", dimensions.get("L", 0)),
+            ("M", dimensions.get("M", 0)),
+            ("T", dimensions.get("T", 0)),
+        ]:
             if exp != 0:
                 if exp == 1:
                     parts.append(f"[{base}]")
@@ -216,9 +247,9 @@ def dimensional_analysis(quantity_type: str, dimensions: dict[str, float] | None
             return True
         reference = equation_terms[0]
         return all(
-            abs(term.get("L", 0) - reference.get("L", 0)) < 1e-10 and
-            abs(term.get("M", 0) - reference.get("M", 0)) < 1e-10 and
-            abs(term.get("T", 0) - reference.get("T", 0)) < 1e-10
+            abs(term.get("L", 0) - reference.get("L", 0)) < 1e-10
+            and abs(term.get("M", 0) - reference.get("M", 0)) < 1e-10
+            and abs(term.get("T", 0) - reference.get("T", 0)) < 1e-10
             for term in equation_terms
         )
 
@@ -230,10 +261,16 @@ def dimensional_analysis(quantity_type: str, dimensions: dict[str, float] | None
     }
 
 
-@maxwell_cite(10, part=1, chapter="Derived Units",
-              theory_class="user_original",
-              description="Derivation of units from fundamental standards.")
-def derived_units(derived_quantity: str, fundamental_units: dict[str, float] | None = None) -> dict[str, Any]:
+@maxwell_cite(
+    10,
+    part=1,
+    chapter="Derived Units",
+    theory_class="user_original",
+    description="Derivation of units from fundamental standards.",
+)
+def derived_units(
+    derived_quantity: str, fundamental_units: dict[str, float] | None = None
+) -> dict[str, Any]:
     """
     Express derived units in terms of fundamental units.
 
@@ -261,23 +298,55 @@ def derived_units(derived_quantity: str, fundamental_units: dict[str, float] | N
     # Derivation rules for common quantities
     derivations = {
         "velocity": {"formula": "length / time", "dims": {"L": 1, "M": 0, "T": -1}},
-        "acceleration": {"formula": "length / time^2", "dims": {"L": 1, "M": 0, "T": -2}},
-        "force": {"formula": "mass * length / time^2", "dims": {"L": 1, "M": 1, "T": -2}},
-        "energy": {"formula": "mass * length^2 / time^2", "dims": {"L": 2, "M": 1, "T": -2}},
-        "power": {"formula": "mass * length^2 / time^3", "dims": {"L": 2, "M": 1, "T": -3}},
-        "pressure": {"formula": "mass / (length * time^2)", "dims": {"L": -1, "M": 1, "T": -2}},
+        "acceleration": {
+            "formula": "length / time^2",
+            "dims": {"L": 1, "M": 0, "T": -2},
+        },
+        "force": {
+            "formula": "mass * length / time^2",
+            "dims": {"L": 1, "M": 1, "T": -2},
+        },
+        "energy": {
+            "formula": "mass * length^2 / time^2",
+            "dims": {"L": 2, "M": 1, "T": -2},
+        },
+        "power": {
+            "formula": "mass * length^2 / time^3",
+            "dims": {"L": 2, "M": 1, "T": -3},
+        },
+        "pressure": {
+            "formula": "mass / (length * time^2)",
+            "dims": {"L": -1, "M": 1, "T": -2},
+        },
         "density": {"formula": "mass / length^3", "dims": {"L": -3, "M": 1, "T": 0}},
-        "esu_charge": {"formula": "mass^0.5 * length^1.5 / time", "dims": {"L": 1.5, "M": 0.5, "T": -1}},
-        "emu_charge": {"formula": "mass^0.5 * length^0.5", "dims": {"L": 0.5, "M": 0.5, "T": 0}},
-        "esu_resistance": {"formula": "time * mass / length", "dims": {"L": -1, "M": 1, "T": 1}},
-        "emu_resistance": {"formula": "length / time", "dims": {"L": 1, "M": 1, "T": -1}},
+        "esu_charge": {
+            "formula": "mass^0.5 * length^1.5 / time",
+            "dims": {"L": 1.5, "M": 0.5, "T": -1},
+        },
+        "emu_charge": {
+            "formula": "mass^0.5 * length^0.5",
+            "dims": {"L": 0.5, "M": 0.5, "T": 0},
+        },
+        "esu_resistance": {
+            "formula": "time * mass / length",
+            "dims": {"L": -1, "M": 1, "T": 1},
+        },
+        "emu_resistance": {
+            "formula": "length / time",
+            "dims": {"L": 1, "M": 1, "T": -1},
+        },
         "esu_capacitance": {"formula": "length", "dims": {"L": 1, "M": 0, "T": 0}},
-        "emu_capacitance": {"formula": "time^2 / (mass * length^2)", "dims": {"L": -2, "M": -1, "T": 2}},
+        "emu_capacitance": {
+            "formula": "time^2 / (mass * length^2)",
+            "dims": {"L": -2, "M": -1, "T": 2},
+        },
     }
 
     if derived_quantity not in derivations:
-        raise KeyError(f"Unknown derived quantity: {derived_quantity!r}. "
-                      f"Available: {list(derivations.keys())}")
+        raise KeyError(
+            f"Unknown derived quantity: {derived_quantity!r}. "
+            f"Available: {list(derivations.keys())}"
+        )
 
     derivation = derivations[derived_quantity]
 
@@ -289,11 +358,16 @@ def derived_units(derived_quantity: str, fundamental_units: dict[str, float] | N
     }
 
 
-@maxwell_cite(11, part=1, chapter="Unit Conversion",
-              theory_class="user_original",
-              description="Conversion between different unit systems.")
-def unit_conversion(value: float, from_system: str, to_system: str,
-                    quantity_type: str) -> dict[str, float]:
+@maxwell_cite(
+    11,
+    part=1,
+    chapter="Unit Conversion",
+    theory_class="user_original",
+    description="Conversion between different unit systems.",
+)
+def unit_conversion(
+    value: float, from_system: str, to_system: str, quantity_type: str
+) -> dict[str, float]:
     """
     Convert a value between different unit systems.
 
@@ -336,11 +410,36 @@ def unit_conversion(value: float, from_system: str, to_system: str,
     # Conversion factors (all relative to ESU as base)
     # The key relationship: ESU/EMU = c^n where n depends on quantity
     conversion_factors = {
-        "charge": {"esu_to_emu": 1/C, "emu_to_esu": C, "esu_to_si": 1/(10*C), "si_to_esu": 10*C},
-        "potential": {"esu_to_emu": C, "emu_to_esu": 1/C, "esu_to_si": 1/300, "si_to_esu": 300},
-        "current": {"esu_to_emu": 1/C, "emu_to_esu": C, "esu_to_si": 1/(10*C), "si_to_esu": 10*C},
-        "resistance": {"esu_to_emu": 1/(C**2), "emu_to_esu": C**2, "esu_to_si": 1/(9e11), "si_to_esu": 9e11},
-        "capacitance": {"esu_to_emu": 1/(C**2), "emu_to_esu": C**2, "esu_to_si": 1/(9e11), "si_to_esu": 9e11},
+        "charge": {
+            "esu_to_emu": 1 / C,
+            "emu_to_esu": C,
+            "esu_to_si": 1 / (10 * C),
+            "si_to_esu": 10 * C,
+        },
+        "potential": {
+            "esu_to_emu": C,
+            "emu_to_esu": 1 / C,
+            "esu_to_si": 1 / 300,
+            "si_to_esu": 300,
+        },
+        "current": {
+            "esu_to_emu": 1 / C,
+            "emu_to_esu": C,
+            "esu_to_si": 1 / (10 * C),
+            "si_to_esu": 10 * C,
+        },
+        "resistance": {
+            "esu_to_emu": 1 / (C**2),
+            "emu_to_esu": C**2,
+            "esu_to_si": 1 / (9e11),
+            "si_to_esu": 9e11,
+        },
+        "capacitance": {
+            "esu_to_emu": 1 / (C**2),
+            "emu_to_esu": C**2,
+            "esu_to_si": 1 / (9e11),
+            "si_to_esu": 9e11,
+        },
     }
 
     if quantity_type not in conversion_factors:
@@ -387,9 +486,15 @@ def unit_conversion(value: float, from_system: str, to_system: str,
 # ELEMENTARY MATHEMATICAL THEORY — UNITS (Arts. 20-26)
 # =============================================================================
 
-@maxwell_cite(20, 21, part=1, chapter="Unit of Resistance",
-              theory_class="user_original",
-              description="Definition and measurement of electrical resistance in CGS.")
+
+@maxwell_cite(
+    20,
+    21,
+    part=1,
+    chapter="Unit of Resistance",
+    theory_class="user_original",
+    description="Definition and measurement of electrical resistance in CGS.",
+)
 def resistance_unit(resistance_value: float, system: str = "cgs") -> dict[str, Any]:
     """
     Define and convert the unit of electrical resistance.
@@ -422,7 +527,7 @@ def resistance_unit(resistance_value: float, system: str = "cgs") -> dict[str, A
 
     # CGS-ESU: resistance has dimensions [T][L]^-1
     # Conversion: 1 statohm = c^2 abohm
-    cgs_esu_value = resistance_value / (C ** 2)
+    cgs_esu_value = resistance_value / (C**2)
 
     return {
         "cgs_emu_value": float(cgs_emu_value),
@@ -436,9 +541,14 @@ def resistance_unit(resistance_value: float, system: str = "cgs") -> dict[str, A
     }
 
 
-@maxwell_cite(22, 23, part=1, chapter="Unit of Potential",
-              theory_class="user_original",
-              description="Definition of potential and electromotive force units.")
+@maxwell_cite(
+    22,
+    23,
+    part=1,
+    chapter="Unit of Potential",
+    theory_class="user_original",
+    description="Definition of potential and electromotive force units.",
+)
 def potential_unit(potential_value: float, system: str = "cgs") -> dict[str, Any]:
     """
     Define and convert the unit of electric potential.
@@ -498,9 +608,13 @@ def potential_unit(potential_value: float, system: str = "cgs") -> dict[str, Any
     }
 
 
-@maxwell_cite(24, part=1, chapter="Unit of Current",
-              theory_class="user_original",
-              description="Definition of electrical current unit.")
+@maxwell_cite(
+    24,
+    part=1,
+    chapter="Unit of Current",
+    theory_class="user_original",
+    description="Definition of electrical current unit.",
+)
 def current_unit(current_value: float, system: str = "cgs") -> dict[str, Any]:
     """
     Define and convert the unit of electric current.
@@ -559,9 +673,13 @@ def current_unit(current_value: float, system: str = "cgs") -> dict[str, Any]:
     }
 
 
-@maxwell_cite(25, part=1, chapter="Unit of Quantity",
-              theory_class="user_original",
-              description="Definition of quantity of electricity (charge) unit.")
+@maxwell_cite(
+    25,
+    part=1,
+    chapter="Unit of Quantity",
+    theory_class="user_original",
+    description="Definition of quantity of electricity (charge) unit.",
+)
 def quantity_unit(quantity_value: float, system: str = "cgs") -> dict[str, Any]:
     """
     Define and convert the unit of quantity of electricity (charge).
@@ -621,9 +739,13 @@ def quantity_unit(quantity_value: float, system: str = "cgs") -> dict[str, Any]:
     }
 
 
-@maxwell_cite(26, part=1, chapter="Unit of Capacity",
-              theory_class="user_original",
-              description="Definition of electrical capacity (capacitance) unit.")
+@maxwell_cite(
+    26,
+    part=1,
+    chapter="Unit of Capacity",
+    theory_class="user_original",
+    description="Definition of electrical capacity (capacitance) unit.",
+)
 def capacity_unit(capacity_value: float, system: str = "cgs") -> dict[str, Any]:
     """
     Define and convert the unit of electrical capacity (capacitance).
@@ -656,7 +778,7 @@ def capacity_unit(capacity_value: float, system: str = "cgs") -> dict[str, Any]:
         cgs_esu_value = capacity_value
     elif system == "cgs_emu":
         # C_emu = C_esu / c^2, so C_esu = c^2 * C_emu
-        cgs_esu_value = capacity_value * (C ** 2)
+        cgs_esu_value = capacity_value * (C**2)
     elif system == "practical":
         # 1 Farad = 9e11 cm (ESU)
         cgs_esu_value = capacity_value * 9e11
@@ -664,7 +786,7 @@ def capacity_unit(capacity_value: float, system: str = "cgs") -> dict[str, Any]:
         raise ValueError(f"Unknown system: {system!r}")
 
     # CGS-EMU: C_emu = C_esu / c^2
-    cgs_emu_value = cgs_esu_value / (C ** 2)
+    cgs_emu_value = cgs_esu_value / (C**2)
 
     # Practical: 1 Farad = 9e11 cm (ESU) ≈ 1/(9e11) statfarads
     practical_value = cgs_esu_value / 9e11
@@ -687,6 +809,7 @@ def capacity_unit(capacity_value: float, system: str = "cgs") -> dict[str, Any]:
 # =============================================================================
 # UTILITY FUNCTIONS
 # =============================================================================
+
 
 def get_all_dimensional_formulae() -> dict[str, dict[str, float]]:
     """
@@ -746,6 +869,9 @@ def verify_dimensional_homogeneity(terms: list[dict[str, float]]) -> tuple[bool,
     for i, term in enumerate(terms[1:], 1):
         for dim in ["L", "M", "T"]:
             if abs(term.get(dim, 0) - reference.get(dim, 0)) > 1e-10:
-                return False, f"Term {i} differs in [{dim}]: expected {reference.get(dim, 0)}, got {term.get(dim, 0)}"
+                return (
+                    False,
+                    f"Term {i} differs in [{dim}]: expected {reference.get(dim, 0)}, got {term.get(dim, 0)}",
+                )
 
     return True, "All terms are dimensionally consistent"

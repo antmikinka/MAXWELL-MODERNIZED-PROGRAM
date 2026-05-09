@@ -28,7 +28,7 @@ from dataclasses import dataclass
 
 import jax
 import jax.numpy as jnp
-from jax import vmap, grad, jit
+from jax import grad, jit, vmap
 
 from maxwell.jax._compat import jax_tree, safe_norm
 from maxwell.jax.core.charge import PointChargeJAX
@@ -86,8 +86,10 @@ class ElectricFieldJAX:
 
     @classmethod
     @maxwell_cite(
-        44, 47,
-        part=1, chapter="The Electric Field",
+        44,
+        47,
+        part=1,
+        chapter="The Electric Field",
         theory_class="maxwell_original",
         description="Create electric field from a point charge (JAX)",
     )
@@ -111,8 +113,10 @@ class ElectricFieldJAX:
 
     @classmethod
     @maxwell_cite(
-        44, 84,
-        part=1, chapter="The Electric Field",
+        44,
+        84,
+        part=1,
+        chapter="The Electric Field",
         theory_class="maxwell_original",
         description="Superposition of electric fields from multiple charges (JAX)",
     )
@@ -141,7 +145,8 @@ class ElectricFieldJAX:
 
     @maxwell_cite(
         68,
-        part=1, chapter="Mathematical Definitions",
+        part=1,
+        chapter="Mathematical Definitions",
         theory_class="maxwell_original",
         description="Resultant electric intensity at a point (JAX)",
     )
@@ -158,7 +163,8 @@ class ElectricFieldJAX:
 
     @maxwell_cite(
         49,
-        part=1, chapter="The Electric Field",
+        part=1,
+        chapter="The Electric Field",
         theory_class="maxwell_original",
         description="Electromotive force along a path (JAX)",
     )
@@ -213,9 +219,11 @@ class ElectricFieldJAX:
 
 # ── Standalone functions ───────────────────────────────────────────
 
+
 @maxwell_cite(
     48,
-    part=1, chapter="The Electric Field",
+    part=1,
+    chapter="The Electric Field",
     theory_class="maxwell_original",
     description="Electric tension along a line of force (JAX)",
 )
@@ -238,7 +246,8 @@ def electric_tension_jax(field_value: jax.Array) -> jax.Array:
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Electric flux through a surface (JAX)",
 )
@@ -270,7 +279,8 @@ def electric_flux_jax(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Gauss's law — flux through closed surface (JAX)",
 )
@@ -296,7 +306,8 @@ def gauss_law_closed_surface_jax(
 
 @maxwell_cite(
     71,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Electric field as gradient of potential (JAX)",
 )
@@ -328,7 +339,8 @@ def field_from_potential_jax(
 
 @maxwell_cite(
     69,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Line integral of electric intensity (JAX)",
 )
@@ -376,7 +388,8 @@ def electromotive_force_jax(
 
 @maxwell_cite(
     84,
-    part=1, chapter="The Electric Field",
+    part=1,
+    chapter="The Electric Field",
     theory_class="maxwell_original",
     description="Superposition of electric fields from multiple charges (JAX standalone)",
 )

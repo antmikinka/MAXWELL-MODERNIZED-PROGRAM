@@ -12,8 +12,8 @@ Category: A (maxwell_original) — Maxwell's engineering applications.
 from __future__ import annotations
 
 from maxwell.engineering.naval import (
-    ShipMagnetism,
     MagneticCompass,
+    ShipMagnetism,
     flinders_bar_correction,
     quadrantal_correctors,
     simulate_compass_swinging,

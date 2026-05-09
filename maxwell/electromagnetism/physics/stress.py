@@ -34,15 +34,17 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
     501,
-    part=4, chapter="Electromagnetic Stress",
+    part=4,
+    chapter="Electromagnetic Stress",
     theory_class="maxwell_original",
     description="Calculate Maxwell stress tensor",
 )
@@ -120,7 +122,8 @@ class MaxwellStress:
 
     @maxwell_cite(
         501,
-        part=4, chapter="Electromagnetic Stress",
+        part=4,
+        chapter="Electromagnetic Stress",
         theory_class="maxwell_original",
         description="Get stress tensor",
     )
@@ -135,7 +138,8 @@ class MaxwellStress:
 
     @maxwell_cite(
         501,
-        part=4, chapter="Electromagnetic Stress",
+        part=4,
+        chapter="Electromagnetic Stress",
         theory_class="maxwell_original",
         description="Calculate electromagnetic energy density",
     )
@@ -158,7 +162,8 @@ class MaxwellStress:
 
     @maxwell_cite(
         501,
-        part=4, chapter="Electromagnetic Stress",
+        part=4,
+        chapter="Electromagnetic Stress",
         theory_class="maxwell_original",
         description="Calculate stress along a direction",
     )
@@ -186,7 +191,8 @@ class MaxwellStress:
 
     @maxwell_cite(
         501,
-        part=4, chapter="Electromagnetic Stress",
+        part=4,
+        chapter="Electromagnetic Stress",
         theory_class="maxwell_original",
         description="Calculate tension along field lines",
     )
@@ -208,7 +214,8 @@ class MaxwellStress:
 
     @maxwell_cite(
         501,
-        part=4, chapter="Electromagnetic Stress",
+        part=4,
+        chapter="Electromagnetic Stress",
         theory_class="maxwell_original",
         description="Calculate pressure perpendicular to field lines",
     )
@@ -231,7 +238,8 @@ class MaxwellStress:
 
 @maxwell_cite(
     501,
-    part=4, chapter="Electromagnetic Stress",
+    part=4,
+    chapter="Electromagnetic Stress",
     theory_class="maxwell_original",
     description="Calculate force from stress tensor",
 )
@@ -268,7 +276,8 @@ def calc_force_from_stress(
 
 @maxwell_cite(
     501,
-    part=4, chapter="Electromagnetic Stress",
+    part=4,
+    chapter="Electromagnetic Stress",
     theory_class="maxwell_original",
     description="Calculate stress on a plane",
 )
@@ -318,7 +327,8 @@ def calc_stress_on_plane(
 
 @maxwell_cite(
     501,
-    part=4, chapter="Electromagnetic Stress",
+    part=4,
+    chapter="Electromagnetic Stress",
     theory_class="maxwell_original",
     description="Verify stress tensor properties",
 )
@@ -374,7 +384,9 @@ def verify_stress_tensor(
     # Verify tension along field = pressure perpendicular
     tension_along = abs(T[2, 2]) if B2 > 0 else 0
     pressure_perp = T[0, 0] if B2 > 0 else 0
-    tension_pressure_ratio = tension_along / pressure_perp if pressure_perp > 1e-15 else 0
+    tension_pressure_ratio = (
+        tension_along / pressure_perp if pressure_perp > 1e-15 else 0
+    )
 
     return {
         "stress_tensor": T,
@@ -400,7 +412,8 @@ def verify_stress_tensor(
 
 @maxwell_cite(
     501,
-    part=4, chapter="Electromagnetic Stress",
+    part=4,
+    chapter="Electromagnetic Stress",
     theory_class="maxwell_original",
     description="Verify stress tensor for pure electric field",
 )
@@ -434,7 +447,11 @@ def verify_electric_stress(
     E2_8pi = E2 / (8.0 * np.pi)
 
     # Find the direction of E
-    e_dir = E_field / np.linalg.norm(E_field) if np.linalg.norm(E_field) > 1e-15 else np.array([0, 0, 1])
+    e_dir = (
+        E_field / np.linalg.norm(E_field)
+        if np.linalg.norm(E_field) > 1e-15
+        else np.array([0, 0, 1])
+    )
 
     # For E along z: T_xx = T_yy = E^2/(8pi), T_zz = -E^2/(8pi)
     expected_T = np.zeros((3, 3))
@@ -444,7 +461,7 @@ def verify_electric_stress(
                 expected_T[i, j] = E_field[i] * E_field[j] - 0.5 * E2
             else:
                 expected_T[i, j] = E_field[i] * E_field[j]
-    expected_T /= (4.0 * np.pi)
+    expected_T /= 4.0 * np.pi
 
     error = np.linalg.norm(T - expected_T)
 
@@ -460,7 +477,8 @@ def verify_electric_stress(
 
 @maxwell_cite(
     501,
-    part=4, chapter="Electromagnetic Stress",
+    part=4,
+    chapter="Electromagnetic Stress",
     theory_class="maxwell_original",
     description="Complete stress tensor analysis",
 )

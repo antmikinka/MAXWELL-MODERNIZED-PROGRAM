@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -17,10 +18,10 @@ pytestmark = pytest.mark.skipif(
 
 from maxwell.vis.thermal_gradients import (
     calc_joule_heat_distribution,
-    calc_thermal_gradients,
     calc_peltier_junction,
-    plot_thermal_gradients,
+    calc_thermal_gradients,
     plot_joule_heat_distribution,
+    plot_thermal_gradients,
     plot_thermoelectric_effects,
 )
 
@@ -129,8 +130,17 @@ class TestCalcThermalGradients:
         y = np.linspace(-0.75, 0.75, 30)
         X, Y = np.meshgrid(x, y)
         T_boundary = 350.0
-        result = calc_thermal_gradients(X, Y, T_boundary=T_boundary, geometry="rectangular")
-        T_edges = np.concatenate([result["T"][0, :], result["T"][-1, :], result["T"][:, 0], result["T"][:, -1]])
+        result = calc_thermal_gradients(
+            X, Y, T_boundary=T_boundary, geometry="rectangular"
+        )
+        T_edges = np.concatenate(
+            [
+                result["T"][0, :],
+                result["T"][-1, :],
+                result["T"][:, 0],
+                result["T"][:, -1],
+            ]
+        )
         assert np.allclose(T_edges, T_boundary, atol=1e-6)
 
 

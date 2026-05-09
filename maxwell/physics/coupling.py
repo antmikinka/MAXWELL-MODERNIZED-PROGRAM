@@ -18,12 +18,13 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.magnet import Magnet
 from maxwell.core.moment import MagneticMoment
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -61,7 +62,8 @@ class DipoleInteraction:
 
 @maxwell_cite(
     387,
-    part=3, chapter="Dipole Interaction",
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Complete dipole-dipole force and torque",
 )
@@ -125,7 +127,7 @@ def calc_dipole_interaction(
 
     # Field from dipole 1 at position of dipole 2
     m1_dot_r = np.dot(moment1, r_hat)
-    H1 = (3 * m1_dot_r * r_hat - moment1) / (r_mag ** 3)
+    H1 = (3 * m1_dot_r * r_hat - moment1) / (r_mag**3)
 
     # Torque on dipole 2: τ = m2 × H1
     torque = np.cross(moment2, H1)
@@ -140,11 +142,11 @@ def calc_dipole_interaction(
     m2_dot_r = np.dot(moment2, r_hat)
     m1_dot_m2 = np.dot(moment1, moment2)
 
-    force = (3 / (r_mag ** 4)) * (
-        m1_dot_m2 * r_hat +
-        m1_dot_r * moment2 +
-        m2_dot_r * moment1 -
-        5 * m1_dot_r * m2_dot_r * r_hat
+    force = (3 / (r_mag**4)) * (
+        m1_dot_m2 * r_hat
+        + m1_dot_r * moment2
+        + m2_dot_r * moment1
+        - 5 * m1_dot_r * m2_dot_r * r_hat
     )
 
     return DipoleInteraction(
@@ -157,7 +159,8 @@ def calc_dipole_interaction(
 
 @maxwell_cite(
     387,
-    part=3, chapter="Dipole Interaction",
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Force between dipoles from field gradient",
 )
@@ -195,7 +198,8 @@ def dipole_force_from_gradient(
 
 @maxwell_cite(
     387,
-    part=3, chapter="Dipole Interaction",
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Potential energy of dipole pair",
 )
@@ -242,12 +246,13 @@ def dipole_potential_energy(
     m1_dot_r = np.dot(moment1, r_hat)
     m2_dot_r = np.dot(moment2, r_hat)
 
-    return (m1_dot_m2 - 3 * m1_dot_r * m2_dot_r) / (r_mag ** 3)
+    return (m1_dot_m2 - 3 * m1_dot_r * m2_dot_r) / (r_mag**3)
 
 
 @maxwell_cite(
     388,
-    part=3, chapter="Dipole Interaction",
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Torque on dipole in field of another dipole",
 )
@@ -290,15 +295,17 @@ def dipole_torque(
 
     # Field from dipole 1
     m1_dot_r = np.dot(moment1, r_hat)
-    H1 = (3 * m1_dot_r * r_hat - moment1) / (r_mag ** 3)
+    H1 = (3 * m1_dot_r * r_hat - moment1) / (r_mag**3)
 
     # Torque = m2 × H1
     return np.cross(moment2, H1)
 
 
 @maxwell_cite(
-    387, 388,
-    part=3, chapter="Dipole Interaction",
+    387,
+    388,
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Special dipole configurations: aligned, perpendicular, collinear",
 )
@@ -400,7 +407,8 @@ def special_dipole_cases(
 
 @maxwell_cite(
     387,
-    part=3, chapter="Dipole Interaction",
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Equilibrium orientations for dipole pair",
 )
@@ -442,7 +450,7 @@ def dipole_equilibrium_orientations(
 
     # Field direction from dipole 1
     m1_dot_r = np.dot(moment1, r_hat)
-    H1 = (3 * m1_dot_r * r_hat - moment1) / (r_mag ** 3)
+    H1 = (3 * m1_dot_r * r_hat - moment1) / (r_mag**3)
 
     H1_mag = np.linalg.norm(H1)
     if H1_mag == 0:
@@ -477,8 +485,10 @@ def dipole_equilibrium_orientations(
 
 
 @maxwell_cite(
-    387, 388,
-    part=3, chapter="Dipole Interaction",
+    387,
+    388,
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Angular dependence of dipole interaction",
 )
@@ -551,8 +561,10 @@ def angular_dependence(
 
 
 @maxwell_cite(
-    387, 388,
-    part=3, chapter="Dipole Interaction",
+    387,
+    388,
+    part=3,
+    chapter="Dipole Interaction",
     theory_class="maxwell_original",
     description="Force between two magnet objects",
 )

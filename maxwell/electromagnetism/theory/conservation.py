@@ -33,10 +33,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -70,8 +71,10 @@ class EnergyConservation:
             raise ValueError(f"Resistance must be non-negative")
 
     @maxwell_cite(
-        543, 544,
-        part=4, chapter="Energy Conservation",
+        543,
+        544,
+        part=4,
+        chapter="Energy Conservation",
         theory_class="maxwell_original",
         description="Calculate stored electromagnetic energy",
     )
@@ -90,7 +93,7 @@ class EnergyConservation:
         Returns:
             Stored energy (ergs).
         """
-        energy = 0.5 * self.inductance * current ** 2
+        energy = 0.5 * self.inductance * current**2
 
         if self.mutual_inductance != 0 and current2 != 0:
             energy += self.mutual_inductance * current * current2
@@ -98,8 +101,10 @@ class EnergyConservation:
         return energy
 
     @maxwell_cite(
-        543, 544,
-        part=4, chapter="Energy Conservation",
+        543,
+        544,
+        part=4,
+        chapter="Energy Conservation",
         theory_class="maxwell_original",
         description="Calculate power dissipation",
     )
@@ -117,7 +122,7 @@ class EnergyConservation:
         Returns:
             Power dissipated (ergs/s).
         """
-        return current ** 2 * self.resistance
+        return current**2 * self.resistance
 
     def joule_heat(self, current: float, resistance: float = None) -> float:
         """
@@ -131,7 +136,7 @@ class EnergyConservation:
             Joule heating power (ergs/s).
         """
         R = resistance if resistance is not None else self.resistance
-        return current ** 2 * R
+        return current**2 * R
 
     def electrical_power(self, emf: float, current: float) -> float:
         """
@@ -149,8 +154,10 @@ class EnergyConservation:
         return emf * current
 
     @maxwell_cite(
-        543, 544,
-        part=4, chapter="Energy Conservation",
+        543,
+        544,
+        part=4,
+        chapter="Energy Conservation",
         theory_class="maxwell_original",
         description="Calculate rate of energy storage",
     )
@@ -172,8 +179,10 @@ class EnergyConservation:
         return self.inductance * current * dI_dt
 
     @maxwell_cite(
-        543, 544,
-        part=4, chapter="Energy Conservation",
+        543,
+        544,
+        part=4,
+        chapter="Energy Conservation",
         theory_class="maxwell_original",
         description="Verify energy balance",
     )
@@ -205,7 +214,9 @@ class EnergyConservation:
         power_dissipated = self.power_dissipated(current)
 
         balance = power_in - power_stored - power_dissipated
-        relative_error = abs(balance) / abs(power_in) if abs(power_in) > 1e-15 else abs(balance)
+        relative_error = (
+            abs(balance) / abs(power_in) if abs(power_in) > 1e-15 else abs(balance)
+        )
 
         return {
             "power_in": power_in,
@@ -218,8 +229,10 @@ class EnergyConservation:
 
 
 @maxwell_cite(
-    543, 544,
-    part=4, chapter="Energy Conservation",
+    543,
+    544,
+    part=4,
+    chapter="Energy Conservation",
     theory_class="maxwell_original",
     description="Calculate electromagnetic energy in circuit",
 )
@@ -251,18 +264,20 @@ def calc_electromagnetic_energy(
     Reference:
         Part IV, Arts. 543-544: Electromagnetic energy.
     """
-    energy = 0.5 * inductance * current ** 2
+    energy = 0.5 * inductance * current**2
 
     if mutual_inductance != 0:
-        energy += 0.5 * 0 * current2 ** 2  # L2 assumed 0 if not provided
+        energy += 0.5 * 0 * current2**2  # L2 assumed 0 if not provided
         energy += mutual_inductance * current * current2
 
     return energy
 
 
 @maxwell_cite(
-    543, 544,
-    part=4, chapter="Energy Conservation",
+    543,
+    544,
+    part=4,
+    chapter="Energy Conservation",
     theory_class="maxwell_original",
     description="Calculate power supplied to circuit",
 )
@@ -291,8 +306,10 @@ def calc_power_supplied(
 
 
 @maxwell_cite(
-    543, 544,
-    part=4, chapter="Energy Conservation",
+    543,
+    544,
+    part=4,
+    chapter="Energy Conservation",
     theory_class="maxwell_original",
     description="Calculate work done by EMF",
 )
@@ -326,8 +343,10 @@ def calc_work_by_emf(
 
 
 @maxwell_cite(
-    543, 544,
-    part=4, chapter="Energy Conservation",
+    543,
+    544,
+    part=4,
+    chapter="Energy Conservation",
     theory_class="maxwell_original",
     description="Verify energy conservation in circuit",
 )
@@ -361,13 +380,17 @@ def verify_energy_conservation(
         Dictionary with verification results.
     """
     electrical_power = emf * current
-    heat_power = current ** 2 * resistance
+    heat_power = current**2 * resistance
 
     # Energy balance: electrical = mechanical + heat + stored
     stored_power = electrical_power - heat_power - mechanical_power
 
     balance = electrical_power - (mechanical_power + heat_power + stored_power)
-    relative_error = abs(balance) / abs(electrical_power) if abs(electrical_power) > 1e-15 else abs(balance)
+    relative_error = (
+        abs(balance) / abs(electrical_power)
+        if abs(electrical_power) > 1e-15
+        else abs(balance)
+    )
 
     return {
         "electrical_power": electrical_power,
@@ -381,8 +404,10 @@ def verify_energy_conservation(
 
 
 @maxwell_cite(
-    543, 544,
-    part=4, chapter="Energy Conservation",
+    543,
+    544,
+    part=4,
+    chapter="Energy Conservation",
     theory_class="maxwell_original",
     description="Verify energy conservation in RL circuit",
 )
@@ -414,7 +439,7 @@ def verify_energy_conservation_rl(
     """
     if test_times is None:
         tau = inductance / resistance
-        test_times = [0.01*tau, 0.1*tau, 0.5*tau, tau, 2*tau, 5*tau]
+        test_times = [0.01 * tau, 0.1 * tau, 0.5 * tau, tau, 2 * tau, 5 * tau]
 
     I_final = voltage / resistance
     tau = inductance / resistance
@@ -432,25 +457,29 @@ def verify_energy_conservation_rl(
         # Power calculations
         power_in = voltage * I
         power_stored = inductance * I * dI_dt
-        power_dissipated = I ** 2 * resistance
+        power_dissipated = I**2 * resistance
 
         # Check balance
         balance = power_in - power_stored - power_dissipated
-        relative_error = abs(balance) / abs(power_in) if abs(power_in) > 1e-15 else abs(balance)
+        relative_error = (
+            abs(balance) / abs(power_in) if abs(power_in) > 1e-15 else abs(balance)
+        )
 
         verified = relative_error < tolerance
         all_verified = all_verified and verified
 
-        results.append({
-            "time": t,
-            "current": I,
-            "power_in": power_in,
-            "power_stored": power_stored,
-            "power_dissipated": power_dissipated,
-            "balance_error": balance,
-            "relative_error": relative_error,
-            "verified": verified,
-        })
+        results.append(
+            {
+                "time": t,
+                "current": I,
+                "power_in": power_in,
+                "power_stored": power_stored,
+                "power_dissipated": power_dissipated,
+                "balance_error": balance,
+                "relative_error": relative_error,
+                "verified": verified,
+            }
+        )
 
     return {
         "inductance": inductance,
@@ -465,8 +494,10 @@ def verify_energy_conservation_rl(
 
 
 @maxwell_cite(
-    543, 544,
-    part=4, chapter="Energy Conservation",
+    543,
+    544,
+    part=4,
+    chapter="Energy Conservation",
     theory_class="maxwell_original",
     description="Calculate energy transfer between coupled circuits",
 )
@@ -514,8 +545,10 @@ def calc_energy_transfer(
 
 
 @maxwell_cite(
-    543, 544,
-    part=4, chapter="Energy Conservation",
+    543,
+    544,
+    part=4,
+    chapter="Energy Conservation",
     theory_class="maxwell_original",
     description="Complete energy conservation analysis",
 )
@@ -564,13 +597,15 @@ def analyze_energy_conservation(
         I = I_final * (1.0 - np.exp(-t / tau)) + initial_current * np.exp(-t / tau)
 
         # dI/dt
-        dI_dt = ((voltage - initial_current * resistance) / inductance) * np.exp(-t / tau)
+        dI_dt = ((voltage - initial_current * resistance) / inductance) * np.exp(
+            -t / tau
+        )
 
         # Energy and power
-        W = 0.5 * inductance * I ** 2
+        W = 0.5 * inductance * I**2
         P_in = voltage * I
         P_stored = inductance * I * dI_dt
-        P_dissipated = I ** 2 * resistance
+        P_dissipated = I**2 * resistance
 
         energies.append(W)
         powers_in.append(P_in)
@@ -579,7 +614,7 @@ def analyze_energy_conservation(
 
     # Final values
     W_final = energies[-1]
-    W_max = 0.5 * inductance * I_final ** 2
+    W_max = 0.5 * inductance * I_final**2
     efficiency = W_final / W_max if W_max > 0 else 0
 
     return {
@@ -598,6 +633,8 @@ def analyze_energy_conservation(
         "charging_efficiency": efficiency,
         "energy_balance_verified": all(
             abs(p_in - p_stored - p_diss) / max(abs(p_in), 1e-15) < 1e-10
-            for p_in, p_stored, p_diss in zip(powers_in, powers_stored, powers_dissipated)
+            for p_in, p_stored, p_diss in zip(
+                powers_in, powers_stored, powers_dissipated
+            )
         ),
     }

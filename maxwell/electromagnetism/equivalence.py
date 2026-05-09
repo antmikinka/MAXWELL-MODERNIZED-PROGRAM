@@ -28,10 +28,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -63,14 +64,22 @@ class MagneticShell:
     def __post_init__(self):
         """Validate and set defaults."""
         if self.boundary_curve is None:
-            self.boundary_curve = [np.array([1.0, 0.0, 0.0]),
-                                   np.array([0.0, 1.0, 0.0]),
-                                   np.array([-1.0, 0.0, 0.0]),
-                                   np.array([0.0, -1.0, 0.0])]
+            self.boundary_curve = [
+                np.array([1.0, 0.0, 0.0]),
+                np.array([0.0, 1.0, 0.0]),
+                np.array([-1.0, 0.0, 0.0]),
+                np.array([0.0, -1.0, 0.0]),
+            ]
         else:
-            self.boundary_curve = [np.asarray(p, dtype=np.float64) for p in self.boundary_curve]
+            self.boundary_curve = [
+                np.asarray(p, dtype=np.float64) for p in self.boundary_curve
+            ]
 
-        self.shell_normal = np.asarray(self.shell_normal, dtype=np.float64) if self.shell_normal is not None else np.array([0.0, 0.0, 1.0])
+        self.shell_normal = (
+            np.asarray(self.shell_normal, dtype=np.float64)
+            if self.shell_normal is not None
+            else np.array([0.0, 0.0, 1.0])
+        )
         norm = np.linalg.norm(self.shell_normal)
         if norm > 0:
             self.shell_normal = self.shell_normal / norm
@@ -86,8 +95,10 @@ class MagneticShell:
         return self.current
 
     @maxwell_cite(
-        482, 483,
-        part=4, chapter="Circuit-Shell Equivalence",
+        482,
+        483,
+        part=4,
+        chapter="Circuit-Shell Equivalence",
         theory_class="maxwell_original",
         description="Calculate potential from magnetic shell",
     )
@@ -165,8 +176,10 @@ class MagneticShell:
         return total_omega
 
     @maxwell_cite(
-        484, 485,
-        part=4, chapter="Circuit-Shell Equivalence",
+        484,
+        485,
+        part=4,
+        chapter="Circuit-Shell Equivalence",
         theory_class="maxwell_original",
         description="Calculate field from shell (equivalent to circuit field)",
     )
@@ -218,16 +231,19 @@ class CurrentCircuit:
     def __post_init__(self):
         """Validate and set defaults."""
         if self.vertices is None:
-            self.vertices = [np.array([1.0, 0.0, 0.0]),
-                            np.array([0.0, 1.0, 0.0]),
-                            np.array([-1.0, 0.0, 0.0]),
-                            np.array([0.0, -1.0, 0.0])]
+            self.vertices = [
+                np.array([1.0, 0.0, 0.0]),
+                np.array([0.0, 1.0, 0.0]),
+                np.array([-1.0, 0.0, 0.0]),
+                np.array([0.0, -1.0, 0.0]),
+            ]
         else:
             self.vertices = [np.asarray(v, dtype=np.float64) for v in self.vertices]
 
     @maxwell_cite(
         482,
-        part=4, chapter="Circuit-Shell Equivalence",
+        part=4,
+        chapter="Circuit-Shell Equivalence",
         theory_class="maxwell_original",
         description="Calculate field from circuit using Biot-Savart",
     )
@@ -272,7 +288,7 @@ class CurrentCircuit:
             # Biot-Savart: dH = I * (dl × r) / (4*pi*r³)
             # In CGS-EMU with our conventions: dH = I * (dl × r_hat) / r²
             r_hat = r_vec / r_mag
-            dH = self.current * np.cross(dl, r_hat) / (r_mag ** 2)
+            dH = self.current * np.cross(dl, r_hat) / (r_mag**2)
 
             # Factor for finite segment (approximate)
             segment_factor = np.linalg.norm(dl) / (4.0 * np.pi * r_mag)
@@ -297,9 +313,7 @@ class CurrentCircuit:
             Part IV, Arts. 482-485: Circuit-shell equivalence.
         """
         return MagneticShell(
-            current=self.current,
-            boundary_curve=self.vertices,
-            shell_normal=normal
+            current=self.current, boundary_curve=self.vertices, shell_normal=normal
         )
 
 
@@ -320,8 +334,10 @@ class CircuitEquivalence:
     area: float = 1.0
 
     @maxwell_cite(
-        482, 483,
-        part=4, chapter="Circuit-Shell Equivalence",
+        482,
+        483,
+        part=4,
+        chapter="Circuit-Shell Equivalence",
         theory_class="maxwell_original",
         description="Calculate magnetic moment from circuit area and current",
     )
@@ -346,8 +362,10 @@ class CircuitEquivalence:
 
 
 @maxwell_cite(
-    482, 483,
-    part=4, chapter="Circuit-Shell Equivalence",
+    482,
+    483,
+    part=4,
+    chapter="Circuit-Shell Equivalence",
     theory_class="maxwell_original",
     description="Calculate solid angle of circular loop on axis",
 )
@@ -374,15 +392,19 @@ def calc_solid_angle(
     """
     R = radius
     z = abs(distance)
-    r = np.sqrt(R ** 2 + z ** 2)
+    r = np.sqrt(R**2 + z**2)
     if r < 1e-15:
         return 2.0 * np.pi
     return 2.0 * np.pi * (1.0 - z / r)
 
 
 @maxwell_cite(
-    482, 483, 484, 485,
-    part=4, chapter="Circuit-Shell Equivalence",
+    482,
+    483,
+    484,
+    485,
+    part=4,
+    chapter="Circuit-Shell Equivalence",
     theory_class="maxwell_original",
     description="Verify circuit-shell equivalence theorem",
 )
@@ -417,7 +439,10 @@ def verify_circuit_shell_equivalence(
     # Create circular circuit approximation
     n_segments = 16
     angles = np.linspace(0, 2 * np.pi, n_segments, endpoint=False)
-    vertices = [np.array([circuit_radius * np.cos(a), circuit_radius * np.sin(a), 0]) for a in angles]
+    vertices = [
+        np.array([circuit_radius * np.cos(a), circuit_radius * np.sin(a), 0])
+        for a in angles
+    ]
 
     circuit = CurrentCircuit(current=current, vertices=vertices)
     shell = circuit.get_equivalent_shell(normal=np.array([0.0, 0.0, 1.0]))
@@ -470,8 +495,10 @@ def verify_circuit_shell_equivalence(
 
 
 @maxwell_cite(
-    482, 483,
-    part=4, chapter="Circuit-Shell Equivalence",
+    482,
+    483,
+    part=4,
+    chapter="Circuit-Shell Equivalence",
     theory_class="maxwell_original",
     description="Calculate solid angle of arbitrary planar loop",
 )
@@ -507,7 +534,11 @@ def calc_solid_angle_loop(
     v0 = vertices[1] - vertices[0]
     v1 = vertices[2] - vertices[0]
     normal = np.cross(v0, v1)
-    normal = normal / np.linalg.norm(normal) if np.linalg.norm(normal) > 0 else np.array([0, 0, 1])
+    normal = (
+        normal / np.linalg.norm(normal)
+        if np.linalg.norm(normal) > 0
+        else np.array([0, 0, 1])
+    )
 
     total_omega = 0.0
 
@@ -538,8 +569,10 @@ def calc_solid_angle_loop(
 
 
 @maxwell_cite(
-    484, 485,
-    part=4, chapter="Circuit-Shell Equivalence",
+    484,
+    485,
+    part=4,
+    chapter="Circuit-Shell Equivalence",
     theory_class="maxwell_original",
     description="Calculate magnetic moment of current loop",
 )
@@ -595,8 +628,12 @@ def calc_magnetic_moment(
 
 
 @maxwell_cite(
-    482, 483, 484, 485,
-    part=4, chapter="Circuit-Shell Equivalence",
+    482,
+    483,
+    484,
+    485,
+    part=4,
+    chapter="Circuit-Shell Equivalence",
     theory_class="maxwell_original",
     description="Complete circuit-shell equivalence analysis",
 )

@@ -27,10 +27,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -61,7 +62,11 @@ class LenzLawCalculator:
         if self.circuit_area <= 0:
             raise ValueError(f"Circuit area must be positive, got {self.circuit_area}")
 
-        self.circuit_normal = np.asarray(self.circuit_normal, dtype=np.float64) if self.circuit_normal is not None else np.array([0.0, 0.0, 1.0])
+        self.circuit_normal = (
+            np.asarray(self.circuit_normal, dtype=np.float64)
+            if self.circuit_normal is not None
+            else np.array([0.0, 0.0, 1.0])
+        )
         norm = np.linalg.norm(self.circuit_normal)
         if norm > 0:
             self.circuit_normal = self.circuit_normal / norm
@@ -81,7 +86,8 @@ class LenzLawCalculator:
 
     @maxwell_cite(
         542,
-        part=4, chapter="Lenz's Law",
+        part=4,
+        chapter="Lenz's Law",
         theory_class="maxwell_original",
         description="Calculate induced EMF from flux change",
     )
@@ -105,7 +111,8 @@ class LenzLawCalculator:
 
     @maxwell_cite(
         542,
-        part=4, chapter="Lenz's Law",
+        part=4,
+        chapter="Lenz's Law",
         theory_class="maxwell_original",
         description="Calculate induced current from EMF",
     )
@@ -128,7 +135,8 @@ class LenzLawCalculator:
 
     @maxwell_cite(
         542,
-        part=4, chapter="Lenz's Law",
+        part=4,
+        chapter="Lenz's Law",
         theory_class="maxwell_original",
         description="Calculate induced current direction",
     )
@@ -157,11 +165,14 @@ class LenzLawCalculator:
 
     @maxwell_cite(
         542,
-        part=4, chapter="Lenz's Law",
+        part=4,
+        chapter="Lenz's Law",
         theory_class="maxwell_original",
         description="Calculate EMF from moving conductor",
     )
-    def motional_emf(self, velocity: np.ndarray, B_field: np.ndarray, length: float) -> float:
+    def motional_emf(
+        self, velocity: np.ndarray, B_field: np.ndarray, length: float
+    ) -> float:
         """
         Calculate motional EMF from conductor moving in magnetic field.
 
@@ -196,7 +207,8 @@ class LenzLawCalculator:
 
 @maxwell_cite(
     542,
-    part=4, chapter="Lenz's Law",
+    part=4,
+    chapter="Lenz's Law",
     theory_class="maxwell_original",
     description="Calculate induced EMF: EMF = -d(Phi)/dt",
 )
@@ -231,7 +243,8 @@ def calc_induced_emf(
 
 @maxwell_cite(
     542,
-    part=4, chapter="Lenz's Law",
+    part=4,
+    chapter="Lenz's Law",
     theory_class="maxwell_original",
     description="Calculate induced current: I = -(1/R)*d(Phi)/dt",
 )
@@ -262,7 +275,8 @@ def calc_induced_current(
 
 @maxwell_cite(
     542,
-    part=4, chapter="Lenz's Law",
+    part=4,
+    chapter="Lenz's Law",
     theory_class="maxwell_original",
     description="Calculate motional EMF: EMF = (v × B) · L",
 )
@@ -305,7 +319,8 @@ def calc_motional_emf_lenz(
 
 @maxwell_cite(
     542,
-    part=4, chapter="Lenz's Law",
+    part=4,
+    chapter="Lenz's Law",
     theory_class="maxwell_original",
     description="Calculate EMF from rotating coil",
 )
@@ -350,7 +365,8 @@ calc_induced_emf_lenz = calc_induced_emf
 
 @maxwell_cite(
     542,
-    part=4, chapter="Lenz's Law",
+    part=4,
+    chapter="Lenz's Law",
     theory_class="maxwell_original",
     description="Verify Lenz's law direction",
 )
@@ -412,7 +428,8 @@ def verify_lenz_law_direction(
 
 @maxwell_cite(
     542,
-    part=4, chapter="Lenz's Law",
+    part=4,
+    chapter="Lenz's Law",
     theory_class="maxwell_original",
     description="Complete Lenz's law analysis",
 )
@@ -461,7 +478,9 @@ def analyze_lenz_law(
 
         emf = calc_induced_emf(dPhi_dt)
         current = calc_induced_current(dPhi_dt, resistance)
-        direction = "opposing" if dPhi_dt > 0 else ("reinforcing" if dPhi_dt < 0 else "none")
+        direction = (
+            "opposing" if dPhi_dt > 0 else ("reinforcing" if dPhi_dt < 0 else "none")
+        )
 
         emfs.append(emf)
         currents.append(current)
@@ -475,5 +494,7 @@ def analyze_lenz_law(
         "directions": directions,
         "max_emf": max(abs(e) for e in emfs),
         "max_current": max(abs(c) for c in currents),
-        "direction_changes": sum(1 for i in range(1, len(directions)) if directions[i] != directions[i - 1]),
+        "direction_changes": sum(
+            1 for i in range(1, len(directions)) if directions[i] != directions[i - 1]
+        ),
     }

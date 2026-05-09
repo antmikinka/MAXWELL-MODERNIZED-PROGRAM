@@ -30,16 +30,16 @@ Tests verify:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
-from maxwell.meta.citation import get_citation, MaxwellCitation
-
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # CYCLIC POTENTIAL TESTS (Art. 480)
 # =============================================================================
+
 
 class TestCyclicPotential:
     """Test multivalued magnetic potential around current-carrying wire."""
@@ -50,7 +50,9 @@ class TestCyclicPotential:
         For I = 1 abampere, phi = pi/2:
         Omega = -2 * 1 * pi/2 = -pi oersted*cm
         """
-        from maxwell.electromagnetism.potentials.multivalued import calc_cyclic_potential
+        from maxwell.electromagnetism.potentials.multivalued import (
+            calc_cyclic_potential,
+        )
 
         current = 1.0  # 1 abampere
         angle = np.pi / 2  # 90 degrees
@@ -60,14 +62,17 @@ class TestCyclicPotential:
         expected = -2.0 * current * angle
         assert_cgs_close(Omega, expected, cgs_tolerance)
 
-    def test_cyclic_potential_one_revolution(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_cyclic_potential_one_revolution(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify Delta(Omega) = -4*pi*I per revolution.
 
         For I = 1 abampere, one complete circuit:
         Delta(Omega) = Omega(2*pi) - Omega(0) = -4*pi oersted*cm
         """
         from maxwell.electromagnetism.potentials.multivalued import (
-            calc_cyclic_potential, calc_potential_difference
+            calc_cyclic_potential,
+            calc_potential_difference,
         )
 
         current = 1.0
@@ -80,10 +85,12 @@ class TestCyclicPotential:
 
         assert_cgs_close(delta_Omega, expected, cgs_tolerance)
 
-    def test_cyclic_potential_branch_independence(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_cyclic_potential_branch_independence(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify potential difference is branch-independent."""
         from maxwell.electromagnetism.potentials.multivalued import (
-            calc_cyclic_potential
+            calc_cyclic_potential,
         )
 
         current = 1.0
@@ -91,26 +98,36 @@ class TestCyclicPotential:
         angle2 = 3 * np.pi / 4
 
         # Calculate difference at branch 0
-        diff_0 = (calc_cyclic_potential(current, angle2, branch=0) -
-                  calc_cyclic_potential(current, angle1, branch=0))
+        diff_0 = calc_cyclic_potential(
+            current, angle2, branch=0
+        ) - calc_cyclic_potential(current, angle1, branch=0)
 
         # Calculate difference at branch 1
-        diff_1 = (calc_cyclic_potential(current, angle2, branch=1) -
-                  calc_cyclic_potential(current, angle1, branch=1))
+        diff_1 = calc_cyclic_potential(
+            current, angle2, branch=1
+        ) - calc_cyclic_potential(current, angle1, branch=1)
 
         # Should be identical (branch constant cancels)
         assert_cgs_close(diff_0, diff_1, cgs_tolerance)
 
-    def test_cyclic_potential_zero_current(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_cyclic_potential_zero_current(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify zero current produces zero potential."""
-        from maxwell.electromagnetism.potentials.multivalued import calc_cyclic_potential
+        from maxwell.electromagnetism.potentials.multivalued import (
+            calc_cyclic_potential,
+        )
 
         Omega = calc_cyclic_potential(0.0, np.pi)
         assert_cgs_close(Omega, 0.0, cgs_tolerance)
 
-    def test_potential_difference_formula(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_potential_difference_formula(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify Delta(Omega) = -2*I*(phi2 - phi1)."""
-        from maxwell.electromagnetism.potentials.multivalued import calc_potential_difference
+        from maxwell.electromagnetism.potentials.multivalued import (
+            calc_potential_difference,
+        )
 
         current = 1.0
         angle1 = 0.0
@@ -136,7 +153,9 @@ class TestCyclicPotential:
         For m = 1 emu, I = 1 abampere, 1 loop:
         W = 4*pi*1*1 = 4*pi ergs
         """
-        from maxwell.electromagnetism.potentials.multivalued import calc_work_on_magnetic_pole
+        from maxwell.electromagnetism.potentials.multivalued import (
+            calc_work_on_magnetic_pole,
+        )
 
         pole_strength = 1.0  # 1 emu
         current = 1.0  # 1 abampere
@@ -149,7 +168,9 @@ class TestCyclicPotential:
 
     def test_verify_cyclic_potential(self) -> None:
         """Verify cyclic potential relations pass verification."""
-        from maxwell.electromagnetism.potentials.multivalued import verify_cyclic_potential
+        from maxwell.electromagnetism.potentials.multivalued import (
+            verify_cyclic_potential,
+        )
 
         result = verify_cyclic_potential(current=1.0)
 
@@ -161,16 +182,21 @@ class TestCyclicPotential:
 # PARALLEL CURRENT ATTRACTION TESTS (Arts. 496-497)
 # =============================================================================
 
+
 class TestParallelCurrentAttraction:
     """Test force between parallel current-carrying conductors."""
 
-    def test_force_per_unit_length_formula(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_force_per_unit_length_formula(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify F/L = 2*I1*I2/r formula.
 
         For I1 = I2 = 1 abampere, r = 1 cm:
         F/L = 2*1*1/1 = 2 dynes/cm
         """
-        from maxwell.electromagnetism.dynamics.attraction import calc_force_per_unit_length
+        from maxwell.electromagnetism.dynamics.attraction import (
+            calc_force_per_unit_length,
+        )
 
         I1 = 1.0
         I2 = 1.0
@@ -187,7 +213,9 @@ class TestParallelCurrentAttraction:
         For I1 = I2 = 1 abampere, r = 1 cm, L = 10 cm:
         F = 2*1*1*10/1 = 20 dynes
         """
-        from maxwell.electromagnetism.dynamics.attraction import calc_force_parallel_wires
+        from maxwell.electromagnetism.dynamics.attraction import (
+            calc_force_parallel_wires,
+        )
 
         I1 = 1.0
         I2 = 1.0
@@ -201,21 +229,29 @@ class TestParallelCurrentAttraction:
 
     def test_attractive_for_same_direction(self) -> None:
         """Verify positive force (attraction) for same-direction currents."""
-        from maxwell.electromagnetism.dynamics.attraction import calc_force_parallel_wires
+        from maxwell.electromagnetism.dynamics.attraction import (
+            calc_force_parallel_wires,
+        )
 
         F = calc_force_parallel_wires(1.0, 1.0, 1.0, 1.0)
         assert F > 0  # Positive = attractive
 
     def test_repulsive_for_opposite_direction(self) -> None:
         """Verify negative force (repulsion) for opposite-direction currents."""
-        from maxwell.electromagnetism.dynamics.attraction import calc_force_parallel_wires
+        from maxwell.electromagnetism.dynamics.attraction import (
+            calc_force_parallel_wires,
+        )
 
         F = calc_force_parallel_wires(1.0, -1.0, 1.0, 1.0)
         assert F < 0  # Negative = repulsive
 
-    def test_force_inverse_distance_relationship(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_force_inverse_distance_relationship(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify F ∝ 1/r inverse distance relationship."""
-        from maxwell.electromagnetism.dynamics.attraction import calc_force_parallel_wires
+        from maxwell.electromagnetism.dynamics.attraction import (
+            calc_force_parallel_wires,
+        )
 
         I1 = 1.0
         I2 = 1.0
@@ -230,9 +266,13 @@ class TestParallelCurrentAttraction:
         expected = F1 / 2.0
         assert_cgs_close(F2, expected, cgs_tolerance)
 
-    def test_force_proportional_to_current_product(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_force_proportional_to_current_product(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify F ∝ I1*I2 proportionality."""
-        from maxwell.electromagnetism.dynamics.attraction import calc_force_per_unit_length
+        from maxwell.electromagnetism.dynamics.attraction import (
+            calc_force_per_unit_length,
+        )
 
         r = 1.0
 
@@ -251,7 +291,9 @@ class TestParallelCurrentAttraction:
         For I1 = I2 = 1, r1 = 1, r2 = 2:
         W = 2*1*1*ln(2) = 2*ln(2) ergs
         """
-        from maxwell.electromagnetism.dynamics.attraction import calc_work_parallel_wires
+        from maxwell.electromagnetism.dynamics.attraction import (
+            calc_work_parallel_wires,
+        )
 
         I1 = 1.0
         I2 = 1.0
@@ -263,11 +305,15 @@ class TestParallelCurrentAttraction:
 
         assert_cgs_close(W, expected, cgs_tolerance)
 
-    def test_parallel_conductor_force_class(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_parallel_conductor_force_class(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify ParallelConductorForce class properties."""
         from maxwell.electromagnetism.dynamics.attraction import ParallelConductorForce
 
-        pcf = ParallelConductorForce(current1=1.0, current2=1.0, separation=1.0, length=10.0)
+        pcf = ParallelConductorForce(
+            current1=1.0, current2=1.0, separation=1.0, length=10.0
+        )
 
         assert_cgs_close(pcf.force_per_unit_length, 2.0, cgs_tolerance)
         assert_cgs_close(pcf.total_force, 20.0, cgs_tolerance)
@@ -275,7 +321,9 @@ class TestParallelCurrentAttraction:
 
     def test_verify_parallel_force_law(self) -> None:
         """Verify parallel force law verification passes."""
-        from maxwell.electromagnetism.dynamics.attraction import verify_parallel_force_law
+        from maxwell.electromagnetism.dynamics.attraction import (
+            verify_parallel_force_law,
+        )
 
         result = verify_parallel_force_law(current1=1.0, current2=1.0)
 
@@ -289,6 +337,7 @@ class TestParallelCurrentAttraction:
 # ELEMENTAL FORCE TESTS (Arts. 510-515)
 # =============================================================================
 
+
 class TestElementalForces:
     """Test forces between current elements (Ampere, Grassmann, Neumann forms)."""
 
@@ -300,7 +349,7 @@ class TestElementalForces:
             current=1.0,
             position=np.array([0.0, 0.0, 0.0]),
             direction=np.array([1.0, 0.0, 0.0]),
-            length=0.001
+            length=0.001,
         )
 
         assert np.linalg.norm(elem.direction) == 1.0  # Normalized
@@ -312,7 +361,8 @@ class TestElementalForces:
         d²F = (I1*I2/r²) * [2(dl1·r)(dl2·r)/r² - (dl1·dl2)] * r_hat
         """
         from maxwell.electromagnetism.forces.elemental import (
-            CurrentElement, calc_ampere_force
+            CurrentElement,
+            calc_ampere_force,
         )
 
         # Two parallel elements separated by 1 cm
@@ -320,13 +370,13 @@ class TestElementalForces:
             current=1.0,
             position=np.array([0.0, 0.0, 0.0]),
             direction=np.array([1.0, 0.0, 0.0]),
-            length=0.001
+            length=0.001,
         )
         elem2 = CurrentElement(
             current=1.0,
             position=np.array([0.0, 1.0, 0.0]),
             direction=np.array([1.0, 0.0, 0.0]),
-            length=0.001
+            length=0.001,
         )
 
         F = calc_ampere_force(elem1, elem2)
@@ -339,20 +389,21 @@ class TestElementalForces:
     def test_grassmann_force_formula(self, cgs_tolerance, assert_vectors_close) -> None:
         """Verify Grassmann force law: dF = (I1*I2/r²) * dl2 × (dl1 × r_hat)."""
         from maxwell.electromagnetism.forces.elemental import (
-            CurrentElement, calc_grassmann_force
+            CurrentElement,
+            calc_grassmann_force,
         )
 
         elem1 = CurrentElement(
             current=1.0,
             position=np.array([0.0, 0.0, 0.0]),
             direction=np.array([1.0, 0.0, 0.0]),
-            length=0.001
+            length=0.001,
         )
         elem2 = CurrentElement(
             current=1.0,
             position=np.array([0.0, 1.0, 0.0]),
             direction=np.array([1.0, 0.0, 0.0]),
-            length=0.001
+            length=0.001,
         )
 
         F = calc_grassmann_force(elem1, elem2)
@@ -363,20 +414,21 @@ class TestElementalForces:
     def test_mutual_energy_formula(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify mutual energy: d²W = -(I1*I2/r) * (dl1·dl2)."""
         from maxwell.electromagnetism.forces.elemental import (
-            CurrentElement, calc_element_mutual_energy
+            CurrentElement,
+            calc_element_mutual_energy,
         )
 
         elem1 = CurrentElement(
             current=1.0,
             position=np.array([0.0, 0.0, 0.0]),
             direction=np.array([1.0, 0.0, 0.0]),
-            length=0.001
+            length=0.001,
         )
         elem2 = CurrentElement(
             current=1.0,
             position=np.array([0.0, 1.0, 0.0]),
             direction=np.array([1.0, 0.0, 0.0]),
-            length=0.001
+            length=0.001,
         )
 
         W = calc_element_mutual_energy(elem1, elem2)
@@ -389,18 +441,16 @@ class TestElementalForces:
         from maxwell.electromagnetism.forces.elemental import verify_force_equivalence
 
         result = verify_force_equivalence(
-            current1=1.0,
-            current2=1.0,
-            loop_radius=1.0,
-            n_segments=32,
-            tolerance=1e-2
+            current1=1.0, current2=1.0, loop_radius=1.0, n_segments=32, tolerance=1e-2
         )
 
         assert result["equivalence_verified"] is True
 
     def test_parallel_element_force(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify force between parallel current elements."""
-        from maxwell.electromagnetism.forces.elemental import calc_parallel_element_force
+        from maxwell.electromagnetism.forces.elemental import (
+            calc_parallel_element_force,
+        )
 
         # Perpendicular elements: parallel to each other, perpendicular to separation
         F = calc_parallel_element_force(
@@ -409,7 +459,7 @@ class TestElementalForces:
             length1=0.001,
             length2=0.001,
             separation=1.0,
-            element_angle=np.pi / 2  # Perpendicular to separation
+            element_angle=np.pi / 2,  # Perpendicular to separation
         )
 
         # Force should be attractive (negative along separation)
@@ -420,10 +470,13 @@ class TestElementalForces:
 # LENZ'S LAW TESTS (Art. 542)
 # =============================================================================
 
+
 class TestLenzLaw:
     """Test Lenz's law: induced EMF opposes change in flux."""
 
-    def test_induced_emf_opposes_increasing_flux(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_induced_emf_opposes_increasing_flux(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify negative EMF for increasing flux (dPhi/dt > 0)."""
         from maxwell.electromagnetism.induction.lenz import calc_induced_emf_lenz
 
@@ -433,7 +486,9 @@ class TestLenzLaw:
         assert emf < 0  # Opposes increase
         assert_cgs_close(emf, -1000.0, cgs_tolerance)
 
-    def test_induced_emf_opposes_decreasing_flux(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_induced_emf_opposes_decreasing_flux(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify positive EMF for decreasing flux (dPhi/dt < 0)."""
         from maxwell.electromagnetism.induction.lenz import calc_induced_emf_lenz
 
@@ -443,7 +498,9 @@ class TestLenzLaw:
         assert emf > 0  # Opposes decrease
         assert_cgs_close(emf, 1000.0, cgs_tolerance)
 
-    def test_induced_emf_zero_flux_change(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_induced_emf_zero_flux_change(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify zero EMF for constant flux."""
         from maxwell.electromagnetism.induction.lenz import calc_induced_emf_lenz
 
@@ -464,6 +521,7 @@ class TestLenzLaw:
 # =============================================================================
 # SELF-INDUCTION TESTS (Arts. 546-551)
 # =============================================================================
+
 
 class TestSelfInduction:
     """Test self-induction: EMF = -L*dI/dt."""
@@ -510,7 +568,7 @@ class TestSelfInduction:
         current = 5.0
 
         W = calc_magnetic_energy(inductance, current)
-        expected = 0.5 * inductance * current ** 2
+        expected = 0.5 * inductance * current**2
 
         assert_cgs_close(W, expected, cgs_tolerance)
 
@@ -531,10 +589,13 @@ class TestSelfInduction:
 # ELECTROTONIC STATE TESTS (Arts. 540-541)
 # =============================================================================
 
+
 class TestElectrotonicState:
     """Test Faraday's electrotonic state (vector potential)."""
 
-    def test_electrotonic_state_formula(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_electrotonic_state_formula(
+        self, cgs_tolerance, assert_vectors_close
+    ) -> None:
         """Verify electrotonic state A (vector potential).
 
         For infinite wire: A_phi = 2I*ln(r) (in azimuthal direction)
@@ -549,17 +610,22 @@ class TestElectrotonicState:
         # Vector potential should be azimuthal (y-direction at this point)
         assert A[0] < 1e-10  # No radial component
 
-    def test_electrotonic_state_zero_current(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_electrotonic_state_zero_current(
+        self, cgs_tolerance, assert_vectors_close
+    ) -> None:
         """Verify zero electrotonic state for zero current."""
         from maxwell.electromagnetism.fields.electrotonic import calc_electrotonic_state
 
         A = calc_electrotonic_state(0.0, np.array([1.0, 0.0, 0.0]))
         assert_vectors_close(A, np.zeros(3), cgs_tolerance)
 
-    def test_electrotonic_state_curl_gives_B(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_electrotonic_state_curl_gives_B(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify curl(A) = B relationship."""
         from maxwell.electromagnetism.fields.electrotonic import (
-            ElectrotonicState, verify_electrotonic_state
+            ElectrotonicState,
+            verify_electrotonic_state,
         )
 
         result = verify_electrotonic_state(current=1.0, tolerance=1e-4)
@@ -570,6 +636,7 @@ class TestElectrotonicState:
 # =============================================================================
 # FORCE LAW COMPARISONS TESTS (Arts. 526-527)
 # =============================================================================
+
 
 class TestForceLawComparisons:
     """Test comparisons between Ampere, Grassmann, and Weber force laws."""
@@ -620,18 +687,18 @@ class TestForceLawComparisons:
 # ENERGY CONSERVATION TESTS (Arts. 543-544)
 # =============================================================================
 
+
 class TestEnergyConservation:
     """Test Helmholtz/Thomson energy conservation derivation."""
 
     def test_energy_balance_formula(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify energy balance: dW_electric = dW_mechanical + dW_heat."""
-        from maxwell.electromagnetism.theory.conservation import verify_energy_conservation
+        from maxwell.electromagnetism.theory.conservation import (
+            verify_energy_conservation,
+        )
 
         result = verify_energy_conservation(
-            emf=1000.0,
-            current=1.0,
-            resistance=10.0,
-            mechanical_power=500.0
+            emf=1000.0, current=1.0, resistance=10.0, mechanical_power=500.0
         )
 
         assert result["energy_conserved"] is True
@@ -654,6 +721,7 @@ class TestEnergyConservation:
 # =============================================================================
 # DYNAMICAL MODEL TESTS (Arts. 568-577)
 # =============================================================================
+
 
 class TestDynamicalModel:
     """Test Maxwell's dynamical model of electromagnetic fields."""
@@ -690,10 +758,13 @@ class TestDynamicalModel:
 # GENERALIZED FORCES TESTS (Arts. 573-575)
 # =============================================================================
 
+
 class TestGeneralizedForces:
     """Test generalized force: F_x = dT/dx from energy."""
 
-    def test_generalized_force_from_energy(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_generalized_force_from_energy(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify F_x = dT/dx relationship."""
         from maxwell.electromagnetism.forces.generalized import calc_generalized_force
 
@@ -702,7 +773,7 @@ class TestGeneralizedForces:
         current = 2.0
 
         F = calc_generalized_force(inductance_gradient, current)
-        expected = 0.5 * current ** 2 * inductance_gradient
+        expected = 0.5 * current**2 * inductance_gradient
 
         assert_cgs_close(F, expected, cgs_tolerance)
 
@@ -711,12 +782,17 @@ class TestGeneralizedForces:
 # PONDEROMOTIVE FORCE TESTS (Arts. 602-603)
 # =============================================================================
 
+
 class TestPonderomotiveForce:
     """Test general ponderomotive force equations."""
 
-    def test_ponderomotive_force_basic(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_ponderomotive_force_basic(
+        self, cgs_tolerance, assert_vectors_close
+    ) -> None:
         """Verify ponderomotive force on current element: F = I*L×B."""
-        from maxwell.electromagnetism.forces.ponderomotive import calc_ponderomotive_force
+        from maxwell.electromagnetism.forces.ponderomotive import (
+            calc_ponderomotive_force,
+        )
 
         current = 1.0
         length = np.array([1.0, 0.0, 0.0])
@@ -734,6 +810,7 @@ class TestPonderomotiveForce:
 # =============================================================================
 # SLIDING CONTACT / MOTIONAL EMF TESTS (Arts. 594-597)
 # =============================================================================
+
 
 class TestSlidingContact:
     """Test motional EMF from sliding contact: EMF = v×B×L."""
@@ -762,7 +839,9 @@ class TestSlidingContact:
         emf = calc_motional_emf(np.zeros(3), np.array([0.0, 0.0, 1000.0]), 10.0)
         assert_cgs_close(emf, 0.0, cgs_tolerance)
 
-    def test_motional_emf_parallel_motion(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_motional_emf_parallel_motion(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify zero EMF when motion parallel to field."""
         from maxwell.electromagnetism.forces.sliding import calc_motional_emf
 
@@ -777,6 +856,7 @@ class TestSlidingContact:
 # =============================================================================
 # CIRCUIT EQUIVALENCE TESTS (Arts. 482-485)
 # =============================================================================
+
 
 class TestCircuitEquivalence:
     """Test equivalence of closed circuit to magnetic shell."""
@@ -806,19 +886,18 @@ class TestCircuitEquivalence:
 # MUTUAL ENERGY TESTS (Arts. 520-521)
 # =============================================================================
 
+
 class TestMutualEnergy:
     """Test mutual potential energy of circuits: M = integral(dl1*dl2/r)."""
 
     def test_mutual_inductance_formula(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify mutual inductance M between coaxial loops."""
-        from maxwell.electromagnetism.potentials.mutual_energy import calc_mutual_inductance
+        from maxwell.electromagnetism.potentials.mutual_energy import (
+            calc_mutual_inductance,
+        )
 
         # Two coaxial loops, radius 1 cm, separation 2 cm
-        M = calc_mutual_inductance(
-            radius1=1.0,
-            radius2=1.0,
-            separation=2.0
-        )
+        M = calc_mutual_inductance(radius1=1.0, radius2=1.0, separation=2.0)
 
         assert M > 0  # Mutual inductance is positive
 
@@ -840,6 +919,7 @@ class TestMutualEnergy:
 # DIRECTRIX FUNCTION TESTS (Arts. 517-519)
 # =============================================================================
 
+
 class TestDirectrixFunction:
     """Test directrix function for geometric interaction."""
 
@@ -852,7 +932,7 @@ class TestDirectrixFunction:
             current=1.0,
             element_position=np.array([0.0, 0.0, 0.0]),
             element_direction=np.array([1.0, 0.0, 0.0]),
-            observation_point=np.array([0.0, 1.0, 0.0])
+            observation_point=np.array([0.0, 1.0, 0.0]),
         )
 
         assert isinstance(directrix, np.ndarray)
@@ -862,6 +942,7 @@ class TestDirectrixFunction:
 # =============================================================================
 # EQUIPOTENTIAL SURFACE TESTS (Arts. 486-487)
 # =============================================================================
+
 
 class TestEquipotentialSurface:
     """Test helicoidal equipotential surfaces around wires."""
@@ -890,6 +971,7 @@ class TestEquipotentialSurface:
 # GENERALIZED INDUCTION TESTS (Arts. 576-577)
 # =============================================================================
 
+
 class TestGeneralizedInduction:
     """Test generalized induction: EMF = -d/dt(p)."""
 
@@ -910,13 +992,12 @@ class TestGeneralizedInduction:
 # CITATION COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestCoreCitationCompliance:
     """Test citation decorator compliance for all core modules."""
 
     def test_cyclic_potential_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify cyclic potential functions have correct citations."""
         from maxwell.electromagnetism.potentials.multivalued import (
@@ -930,9 +1011,7 @@ class TestCoreCitationCompliance:
         assert 480 in citation.articles
 
     def test_parallel_current_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify parallel current functions have correct citations."""
         from maxwell.electromagnetism.dynamics.attraction import (
@@ -945,9 +1024,7 @@ class TestCoreCitationCompliance:
         assert any(a in citation.articles for a in [496, 497])
 
     def test_elemental_force_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify elemental force functions have correct citations."""
         from maxwell.electromagnetism.forces.elemental import (
@@ -960,9 +1037,7 @@ class TestCoreCitationCompliance:
         assert any(a in citation.articles for a in [510, 511, 512])
 
     def test_lenz_law_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Lenz's law functions have correct citations."""
         from maxwell.electromagnetism.induction.lenz import calc_induced_emf_lenz
@@ -972,9 +1047,7 @@ class TestCoreCitationCompliance:
         assert 542 in citation.articles
 
     def test_self_induction_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify self-induction functions have correct citations."""
         from maxwell.electromagnetism.induction.self import calc_self_induction_emf

@@ -18,13 +18,16 @@ References:
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 from scipy import ndimage
-from maxwell.meta.citation import maxwell_cite
+
 from maxwell.core.charge import PointCharge
 from maxwell.core.field import ElectricField
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -57,11 +60,14 @@ class ElectricPotential:
     @classmethod
     @maxwell_cite(
         70,
-        part=1, chapter="Mathematical Definitions",
+        part=1,
+        chapter="Mathematical Definitions",
         theory_class="maxwell_original",
         description="Electric potential at a point",
     )
-    def from_point_charge(cls, charge: PointCharge, point: np.ndarray) -> ElectricPotential:
+    def from_point_charge(
+        cls, charge: PointCharge, point: np.ndarray
+    ) -> ElectricPotential:
         """
         Create electric potential due to a point charge at a given position.
 
@@ -84,7 +90,8 @@ class ElectricPotential:
     @classmethod
     @maxwell_cite(
         73,
-        part=1, chapter="Mathematical Definitions",
+        part=1,
+        chapter="Mathematical Definitions",
         theory_class="maxwell_original",
         description="Potential from multiple charges — superposition",
     )
@@ -116,7 +123,8 @@ class ElectricPotential:
     @classmethod
     @maxwell_cite(
         72,
-        part=1, chapter="Mathematical Definitions",
+        part=1,
+        chapter="Mathematical Definitions",
         theory_class="maxwell_original",
         description="Conductor is an equipotential volume",
     )
@@ -162,7 +170,8 @@ class ElectricPotential:
 
 @maxwell_cite(
     77,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Laplace's equation — potential in charge-free region",
 )
@@ -192,13 +201,14 @@ def laplace_equation(
         Part I, Art. 77: Poisson's extension of Laplace's equation.
     """
     # Use scipy's Laplacian operator
-    laplacian = ndimage.laplace(potential_grid) / (grid_spacing ** 2)
+    laplacian = ndimage.laplace(potential_grid) / (grid_spacing**2)
     return laplacian
 
 
 @maxwell_cite(
     77,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Poisson's equation — potential with charge density",
 )
@@ -237,7 +247,8 @@ def poisson_equation(
 
 @maxwell_cite(
     77,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Solve Poisson's equation for given charge distribution",
 )
@@ -291,7 +302,7 @@ def solve_poisson(
 
     # SOR iteration
     omega = 1.5  # Over-relaxation parameter (1 < omega < 2)
-    factor = -4.0 * np.pi * (grid_spacing ** 2)
+    factor = -4.0 * np.pi * (grid_spacing**2)
 
     for iteration in range(max_iterations):
         max_change = 0.0
@@ -302,9 +313,12 @@ def solve_poisson(
                 for k in range(1, nx - 1):
                     # Five-point stencil (3D: seven-point)
                     neighbor_sum = (
-                        V[i+1, j, k] + V[i-1, j, k] +
-                        V[i, j+1, k] + V[i, j-1, k] +
-                        V[i, j, k+1] + V[i, j, k-1]
+                        V[i + 1, j, k]
+                        + V[i - 1, j, k]
+                        + V[i, j + 1, k]
+                        + V[i, j - 1, k]
+                        + V[i, j, k + 1]
+                        + V[i, j, k - 1]
                     )
 
                     # Gauss-Seidel update
@@ -323,7 +337,8 @@ def solve_poisson(
 
 @maxwell_cite(
     77,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Solve Laplace's equation with boundary conditions",
 )
@@ -382,9 +397,12 @@ def solve_laplace(
             for j in range(1, ny - 1):
                 for k in range(1, nx - 1):
                     V_new[i, j, k] = (
-                        V[i+1, j, k] + V[i-1, j, k] +
-                        V[i, j+1, k] + V[i, j-1, k] +
-                        V[i, j, k+1] + V[i, j, k-1]
+                        V[i + 1, j, k]
+                        + V[i - 1, j, k]
+                        + V[i, j + 1, k]
+                        + V[i, j - 1, k]
+                        + V[i, j, k + 1]
+                        + V[i, j, k - 1]
                     ) / 6.0
                     max_change = max(max_change, abs(V_new[i, j, k] - V[i, j, k]))
 
@@ -398,7 +416,8 @@ def solve_laplace(
 
 @maxwell_cite(
     78,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Boundary condition — continuity of potential",
 )
@@ -429,7 +448,8 @@ def boundary_condition_potential(
 
 @maxwell_cite(
     78,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Boundary condition — discontinuity of normal field",
 )
@@ -468,7 +488,8 @@ def boundary_condition_normal_derivative(
 
 @maxwell_cite(
     78,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Boundary condition — continuity of tangential field",
 )
@@ -501,12 +522,15 @@ def boundary_condition_tangential(
     """
     field_tangential_inside = np.asarray(field_tangential_inside)
     field_tangential_outside = np.asarray(field_tangential_outside)
-    return np.allclose(field_tangential_inside, field_tangential_outside, atol=tolerance)
+    return np.allclose(
+        field_tangential_inside, field_tangential_outside, atol=tolerance
+    )
 
 
 @maxwell_cite(
     85,
-    part=1, chapter="Electrified Systems in Equilibrium",
+    part=1,
+    chapter="Electrified Systems in Equilibrium",
     theory_class="maxwell_original",
     description="Energy of an electrified system in terms of potentials",
 )
@@ -545,7 +569,8 @@ def system_energy(
 
 @maxwell_cite(
     70,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="standard_math",
     description="Potential difference between two points",
 )
@@ -577,7 +602,8 @@ def potential_difference(
 
 @maxwell_cite(
     45,
-    part=1, chapter="The Electric Field",
+    part=1,
+    chapter="The Electric Field",
     theory_class="maxwell_original",
     description="Electromotive force as potential difference",
 )

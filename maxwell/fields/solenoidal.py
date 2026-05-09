@@ -26,10 +26,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -56,7 +57,9 @@ class MagneticInductionTube:
 
     def __post_init__(self):
         self.axis_curve = np.asarray(self.axis_curve, dtype=np.float64)
-        self.cross_section_areas = np.asarray(self.cross_section_areas, dtype=np.float64)
+        self.cross_section_areas = np.asarray(
+            self.cross_section_areas, dtype=np.float64
+        )
 
         if len(self.axis_curve.shape) != 2 or self.axis_curve.shape[1] != 3:
             raise ValueError("axis_curve must be (N, 3) array")
@@ -67,7 +70,8 @@ class MagneticInductionTube:
 
     @maxwell_cite(
         404,
-        part=3, chapter="Solenoidal Nature of B",
+        part=3,
+        chapter="Solenoidal Nature of B",
         theory_class="maxwell_original",
         description="Verify flux conservation in tube",
     )
@@ -107,12 +111,13 @@ class MagneticInductionTube:
         """Total length of the tube along its axis."""
         total = 0.0
         for i in range(len(self.axis_curve) - 1):
-            total += np.linalg.norm(self.axis_curve[i+1] - self.axis_curve[i])
+            total += np.linalg.norm(self.axis_curve[i + 1] - self.axis_curve[i])
         return float(total)
 
     @maxwell_cite(
         404,
-        part=3, chapter="Solenoidal Nature of B",
+        part=3,
+        chapter="Solenoidal Nature of B",
         theory_class="maxwell_original",
         description="Calculate B magnitude variation along tube",
     )
@@ -145,7 +150,8 @@ class MagneticInductionTube:
 
 @maxwell_cite(
     403,
-    part=3, chapter="Solenoidal Nature of B",
+    part=3,
+    chapter="Solenoidal Nature of B",
     theory_class="maxwell_original",
     description="Verify ∇·B = 0 numerically",
 )
@@ -220,7 +226,8 @@ def verify_solenoidal(
 
 @maxwell_cite(
     403,
-    part=3, chapter="Solenoidal Nature of B",
+    part=3,
+    chapter="Solenoidal Nature of B",
     theory_class="maxwell_original",
     description="Verify ∯B·dA = 0 for closed surface",
 )
@@ -301,7 +308,7 @@ def verify_zero_net_flux(
     if abs(outward_flux) > 1e-15 and abs(inward_flux) > 1e-15:
         flux_balance = abs(inward_flux) / abs(outward_flux)
     else:
-        flux_balance = 1.0 if abs(net_flux) < tolerance else float('inf')
+        flux_balance = 1.0 if abs(net_flux) < tolerance else float("inf")
 
     return {
         "net_flux": net_flux,
@@ -315,7 +322,8 @@ def verify_zero_net_flux(
 
 @maxwell_cite(
     404,
-    part=3, chapter="Solenoidal Nature of B",
+    part=3,
+    chapter="Solenoidal Nature of B",
     theory_class="maxwell_original",
     description="Trace magnetic flux tube",
 )
@@ -392,8 +400,10 @@ def trace_flux_tube(
 
 
 @maxwell_cite(
-    403, 404,
-    part=3, chapter="Solenoidal Nature of B",
+    403,
+    404,
+    part=3,
+    chapter="Solenoidal Nature of B",
     theory_class="maxwell_original",
     description="Magnetic flux through open surface",
 )
@@ -453,7 +463,8 @@ def magnetic_flux_through_surface(
 
 @maxwell_cite(
     404,
-    part=3, chapter="Solenoidal Nature of B",
+    part=3,
+    chapter="Solenoidal Nature of B",
     theory_class="maxwell_original",
     description="Proof that magnetic monopoles do not exist",
 )

@@ -33,10 +33,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -103,8 +104,10 @@ class OerstedField:
 
     @classmethod
     @maxwell_cite(
-        475, 476,
-        part=4, chapter="Oersted's Discovery",
+        475,
+        476,
+        part=4,
+        chapter="Oersted's Discovery",
         theory_class="maxwell_original",
         description="Create Oersted field from current and distance",
     )
@@ -135,7 +138,8 @@ class OerstedField:
 
     @maxwell_cite(
         477,
-        part=4, chapter="Oersted's Discovery",
+        part=4,
+        chapter="Oersted's Discovery",
         theory_class="maxwell_original",
         description="Calculate field magnitude at specified position",
     )
@@ -181,7 +185,8 @@ class OerstedField:
 
     @maxwell_cite(
         476,
-        part=4, chapter="Oersted's Discovery",
+        part=4,
+        chapter="Oersted's Discovery",
         theory_class="maxwell_original",
         description="Calculate field direction at a point",
     )
@@ -217,7 +222,8 @@ class OerstedField:
 
     @maxwell_cite(
         477,
-        part=4, chapter="Oersted's Discovery",
+        part=4,
+        chapter="Oersted's Discovery",
         theory_class="maxwell_original",
         description="Calculate field magnitude at a point",
     )
@@ -245,14 +251,17 @@ class OerstedField:
         r_mag = np.linalg.norm(radial_vector)
 
         if r_mag == 0:
-            return float('inf')  # Singularity on wire
+            return float("inf")  # Singularity on wire
 
         return 2.0 * self.current / r_mag
 
 
 @maxwell_cite(
-    475, 476, 477,
-    part=4, chapter="Oersted's Discovery",
+    475,
+    476,
+    477,
+    part=4,
+    chapter="Oersted's Discovery",
     theory_class="maxwell_original",
     description="Oersted field for infinite straight wire: H = 2I/r",
 )
@@ -304,8 +313,10 @@ def calc_oersted_field(
 
 
 @maxwell_cite(
-    477, 478,
-    part=4, chapter="Oersted's Discovery",
+    477,
+    478,
+    part=4,
+    chapter="Oersted's Discovery",
     theory_class="maxwell_original",
     description="Field from a current element (Biot-Savart law in CGS)",
 )
@@ -356,12 +367,13 @@ def calc_field_from_element(
         raise ValueError(f"Distance must be positive, got {distance}")
 
     # Biot-Savart: dB = I * dl * sin(θ) / r²
-    return current * element_length * np.sin(angle) / (distance ** 2)
+    return current * element_length * np.sin(angle) / (distance**2)
 
 
 @maxwell_cite(
     479,
-    part=4, chapter="Oersted's Discovery",
+    part=4,
+    chapter="Oersted's Discovery",
     theory_class="maxwell_original",
     description="Force on magnetic pole near current-carrying wire",
 )
@@ -422,8 +434,10 @@ def calc_force_on_pole(
 
 
 @maxwell_cite(
-    475, 476,
-    part=4, chapter="Oersted's Discovery",
+    475,
+    476,
+    part=4,
+    chapter="Oersted's Discovery",
     theory_class="maxwell_original",
     description="Field direction vector from right-hand rule",
 )
@@ -487,8 +501,12 @@ def calc_circular_field_direction(
 
 
 @maxwell_cite(
-    475, 476, 477, 478,
-    part=4, chapter="Oersted's Discovery",
+    475,
+    476,
+    477,
+    478,
+    part=4,
+    chapter="Oersted's Discovery",
     theory_class="maxwell_original",
     description="Verify inverse-distance law H ∝ 1/r",
 )
@@ -570,8 +588,10 @@ def verify_inverse_distance_law(
 
 
 @maxwell_cite(
-    477, 478,
-    part=4, chapter="Oersted's Discovery",
+    477,
+    478,
+    part=4,
+    chapter="Oersted's Discovery",
     theory_class="maxwell_original",
     description="Calculate field at point from finite wire segment",
 )
@@ -635,8 +655,8 @@ def calc_field_from_finite_wire(
 
     # Distances to endpoints along perpendicular plane
     # cos(θ) = s / sqrt(s² + r_perp²)
-    r1_mag = np.sqrt(s ** 2 + r_perp ** 2)  # Distance to start
-    r2_mag = np.sqrt((s - wire_length) ** 2 + r_perp ** 2)  # Distance to end
+    r1_mag = np.sqrt(s**2 + r_perp**2)  # Distance to start
+    r2_mag = np.sqrt((s - wire_length) ** 2 + r_perp**2)  # Distance to end
 
     cos_theta1 = s / r1_mag if r1_mag > 0 else 0
     cos_theta2 = (s - wire_length) / r2_mag if r2_mag > 0 else 0
@@ -653,7 +673,8 @@ def calc_field_from_finite_wire(
 
 @maxwell_cite(
     479,
-    part=4, chapter="Oersted's Discovery",
+    part=4,
+    chapter="Oersted's Discovery",
     theory_class="maxwell_original",
     description="Force and torque on dipole in Oersted field",
 )
@@ -729,11 +750,15 @@ def calc_dipole_interaction(
     # F ≈ (m · r_hat) * (dH/dr) in the radial direction
     # dH/dr = -2I/r² = -H/r
 
-    radial_dir = (dipole_position - np.dot(dipole_position, wire_axis) * wire_axis)
-    radial_dir = radial_dir / np.linalg.norm(radial_dir) if np.linalg.norm(radial_dir) > 0 else np.zeros(3)
+    radial_dir = dipole_position - np.dot(dipole_position, wire_axis) * wire_axis
+    radial_dir = (
+        radial_dir / np.linalg.norm(radial_dir)
+        if np.linalg.norm(radial_dir) > 0
+        else np.zeros(3)
+    )
 
     # Gradient contribution (simplified for central field)
-    dH_dr = -2.0 * current / (r_perp ** 2)
+    dH_dr = -2.0 * current / (r_perp**2)
 
     # Force from field gradient
     m_radial = np.dot(magnetic_moment, radial_dir)

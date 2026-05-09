@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -18,8 +19,8 @@ pytestmark = pytest.mark.skipif(
 from maxwell.vis.helicoidal_potentials import (
     calc_solid_angle_loop,
     plot_helicoidal_potentials,
-    plot_loop_potential_3d,
     plot_loop_field_lines,
+    plot_loop_potential_3d,
 )
 
 
@@ -146,9 +147,7 @@ class TestPlotLoopPotential3D:
 
     def test_custom_parameters(self):
         """Works with custom loop radius and resolution."""
-        fig, ax = plot_loop_potential_3d(
-            loop_radius=2.0, current=3.0, resolution=20
-        )
+        fig, ax = plot_loop_potential_3d(loop_radius=2.0, current=3.0, resolution=20)
         assert fig is not None
         mplt.close(fig)
 
@@ -188,8 +187,6 @@ class TestPlotLoopFieldLines:
 
     def test_custom_parameters(self):
         """Works with custom loop radius and current."""
-        fig, ax = plot_loop_field_lines(
-            loop_radius=2.0, current=5.0, resolution=40
-        )
+        fig, ax = plot_loop_field_lines(loop_radius=2.0, current=5.0, resolution=40)
         assert fig is not None
         mplt.close(fig)

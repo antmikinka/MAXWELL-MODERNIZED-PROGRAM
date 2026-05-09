@@ -13,9 +13,11 @@ Category: C (standard_math) — CGS unit conventions.
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import ClassVar
-from maxwell.config.constants import CONST, C, C_APPROX
+
+from maxwell.config.constants import C_APPROX, CONST, C
 
 
 @dataclass(frozen=True)
@@ -75,14 +77,14 @@ class CGSUnitConverter:
 
         r_emu = r_esu / c^2
         """
-        return r_esu / self.c ** 2
+        return r_esu / self.c**2
 
     def emu_to_esu_resistance(self, r_emu: float) -> float:
         """Convert resistance from EMU to ESU.
 
         r_esu = r_emu * c^2
         """
-        return r_emu * self.c ** 2
+        return r_emu * self.c**2
 
     # ── Current ──────────────────────────────────────────────────
     def esu_to_emu_current(self, i_esu: float) -> float:
@@ -105,10 +107,12 @@ class CGSUnitConverter:
 
         c_emu = c_esu / c^2
         """
-        return c_esu / self.c ** 2
+        return c_esu / self.c**2
 
     # ── Magnetic field ───────────────────────────────────────────
-    def magnetic_field_to_induction(self, H: float, magnetization: float = 0.0) -> float:
+    def magnetic_field_to_induction(
+        self, H: float, magnetization: float = 0.0
+    ) -> float:
         """Convert magnetic force H to magnetic induction B.
 
         B = H + 4*pi*I  (Art. 400)
@@ -125,6 +129,7 @@ class CGSUnitConverter:
             magnetic induction, and magnetization.
         """
         import math
+
         return H + 4.0 * math.pi * magnetization
 
 
@@ -181,8 +186,7 @@ class MagneticDimensions:
         if quantity not in standard:
             raise KeyError(f"Unknown quantity: {quantity!r}")
         return all(
-            abs(dims.get(d, 0.0) - v) < 1e-10
-            for d, v in standard[quantity].items()
+            abs(dims.get(d, 0.0) - v) < 1e-10 for d, v in standard[quantity].items()
         )
 
 

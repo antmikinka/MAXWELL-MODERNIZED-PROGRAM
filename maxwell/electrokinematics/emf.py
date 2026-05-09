@@ -37,11 +37,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable
+
 import numpy as np
 
+from maxwell.config.constants import C_APPROX, CONST, C
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
-
 
 # =============================================================================
 # FARADAY CONSTANT (imported from electrolysis module for consistency)
@@ -68,11 +68,14 @@ REFERENCE_TEMPERATURE: float = 298.15
 # CONTACT ELECTROMOTIVE FORCE (Arts. 264-266)
 # =============================================================================
 
+
 @maxwell_cite(
-    264, 265,
-    part=2, chapter="Electromotive Force",
+    264,
+    265,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate contact potential between two metals (Volta effect)"
+    description="Calculate contact potential between two metals (Volta effect)",
 )
 def contact_potential(
     metal_a_work_function: float,
@@ -125,10 +128,12 @@ def contact_potential(
 
 
 @maxwell_cite(
-    264, 265,
-    part=2, chapter="Electromotive Force",
+    264,
+    265,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate contact potential from work functions in electron-volts"
+    description="Calculate contact potential from work functions in electron-volts",
 )
 def contact_potential_from_ev(
     metal_a_work_function_ev: float,
@@ -164,9 +169,10 @@ def contact_potential_from_ev(
 
 @maxwell_cite(
     266,
-    part=2, chapter="Electromotive Force",
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate total EMF of series-connected voltaic cells"
+    description="Calculate total EMF of series-connected voltaic cells",
 )
 def volta_series_emf(
     cell_emfs: list[float],
@@ -230,10 +236,10 @@ def volta_series_emf(
         if total_resistance > 0:
             short_circuit_current = total_emf / total_resistance
         else:
-            short_circuit_current = float('inf')
+            short_circuit_current = float("inf")
     else:
         total_resistance = None
-        short_circuit_current = float('inf')
+        short_circuit_current = float("inf")
 
     return {
         "total_emf": total_emf,
@@ -246,11 +252,14 @@ def volta_series_emf(
 # CHEMICAL ELECTROMOTIVE FORCE (Arts. 267-269)
 # =============================================================================
 
+
 @maxwell_cite(
-    267, 268,
-    part=2, chapter="Electromotive Force",
+    267,
+    268,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate chemical EMF from Gibbs free energy change"
+    description="Calculate chemical EMF from Gibbs free energy change",
 )
 def chemical_emf(
     gibbs_free_energy: float,
@@ -297,7 +306,9 @@ def chemical_emf(
         >>> print(f"Daniell cell EMF: {E:.2e} abV ({E/1e8:.2f} V)")
     """
     if electrons_transferred == 0:
-        raise ValueError(f"Number of electrons must be non-zero, got {electrons_transferred}")
+        raise ValueError(
+            f"Number of electrons must be non-zero, got {electrons_transferred}"
+        )
     if faraday_constant <= 0:
         raise ValueError(f"Faraday constant must be positive, got {faraday_constant}")
 
@@ -309,9 +320,10 @@ def chemical_emf(
 
 @maxwell_cite(
     269,
-    part=2, chapter="Electromotive Force",
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate cell EMF using the Nernst equation"
+    description="Calculate cell EMF using the Nernst equation",
 )
 def nernst_equation(
     standard_emf: float,
@@ -373,7 +385,9 @@ def nernst_equation(
         >>> print(f"Cell EMF: {E:.2e} abV ({E/1e8:.3f} V)")
     """
     if electrons_transferred == 0:
-        raise ValueError(f"Number of electrons must be non-zero, got {electrons_transferred}")
+        raise ValueError(
+            f"Number of electrons must be non-zero, got {electrons_transferred}"
+        )
     if reaction_quotient <= 0:
         raise ValueError(f"Reaction quotient must be positive, got {reaction_quotient}")
     if faraday_constant <= 0:
@@ -385,7 +399,9 @@ def nernst_equation(
     thermal_voltage = gas_constant * temperature / faraday_constant
 
     # Nernst equation: E = E^0 - (RT/nF) * ln(Q)
-    emf = standard_emf - (thermal_voltage / electrons_transferred) * np.log(reaction_quotient)
+    emf = standard_emf - (thermal_voltage / electrons_transferred) * np.log(
+        reaction_quotient
+    )
 
     return emf
 
@@ -394,11 +410,14 @@ def nernst_equation(
 # THERMOELECTRIC EFFECTS (Arts. 270-272)
 # =============================================================================
 
+
 @maxwell_cite(
-    270, 271,
-    part=2, chapter="Electromotive Force",
+    270,
+    271,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate Seebeck EMF for a thermocouple"
+    description="Calculate Seebeck EMF for a thermocouple",
 )
 def seebeck_effect(
     seebeck_coefficient_a: float,
@@ -454,7 +473,9 @@ def seebeck_effect(
     if hot_junction_temp <= 0 or cold_junction_temp <= 0:
         raise ValueError("Temperatures must be positive (Kelvin)")
     if hot_junction_temp < cold_junction_temp:
-        raise ValueError("Hot junction temperature must exceed cold junction temperature")
+        raise ValueError(
+            "Hot junction temperature must exceed cold junction temperature"
+        )
 
     # Temperature difference
     delta_t = hot_junction_temp - cold_junction_temp
@@ -469,10 +490,12 @@ def seebeck_effect(
 
 
 @maxwell_cite(
-    270, 271,
-    part=2, chapter="Electromotive Force",
+    270,
+    271,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate Seebeck EMF with temperature-dependent coefficients"
+    description="Calculate Seebeck EMF with temperature-dependent coefficients",
 )
 def seebeck_effect_temperature_dependent(
     seebeck_coeffs_a: list[float],
@@ -528,16 +551,17 @@ def seebeck_effect_temperature_dependent(
     for n, coeff in enumerate(diff_coeffs):
         power = n + 1
         integral_coeff = coeff / power
-        emf += integral_coeff * (hot_junction_temp ** power - cold_junction_temp ** power)
+        emf += integral_coeff * (hot_junction_temp**power - cold_junction_temp**power)
 
     return emf
 
 
 @maxwell_cite(
     271,
-    part=2, chapter="Electromotive Force",
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate Peltier heat at a junction"
+    description="Calculate Peltier heat at a junction",
 )
 def peltier_effect(
     peltier_coefficient: float,
@@ -599,9 +623,10 @@ def peltier_effect(
 
 @maxwell_cite(
     271,
-    part=2, chapter="Electromotive Force",
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate Peltier coefficient from Seebeck coefficient"
+    description="Calculate Peltier coefficient from Seebeck coefficient",
 )
 def peltier_coefficient_from_seebeck(
     seebeck_coefficient: float,
@@ -648,9 +673,10 @@ def peltier_coefficient_from_seebeck(
 
 @maxwell_cite(
     272,
-    part=2, chapter="Electromotive Force",
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate Thomson heat in a temperature gradient"
+    description="Calculate Thomson heat in a temperature gradient",
 )
 def thomson_effect(
     thomson_coefficient: float,
@@ -721,9 +747,10 @@ def thomson_effect(
 
 @maxwell_cite(
     272,
-    part=2, chapter="Electromotive Force",
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate Thomson coefficient from Seebeck temperature dependence"
+    description="Calculate Thomson coefficient from Seebeck temperature dependence",
 )
 def thomson_coefficient_from_seebeck(
     seebeck_coefficient: float,
@@ -772,10 +799,13 @@ def thomson_coefficient_from_seebeck(
 
 
 @maxwell_cite(
-    270, 271, 272,
-    part=2, chapter="Electromotive Force",
+    270,
+    271,
+    272,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Calculate all three thermoelectric effects and verify Kelvin relations"
+    description="Calculate all three thermoelectric effects and verify Kelvin relations",
 )
 def kelvin_relations(
     seebeck_coefficient_a: float,
@@ -868,10 +898,14 @@ def kelvin_relations(
 
     # Thomson coefficients
     sigma_a = thomson_coefficient_from_seebeck(
-        seebeck_coefficient_a, seebeck_temp_coef_a, (hot_junction_temp + cold_junction_temp) / 2
+        seebeck_coefficient_a,
+        seebeck_temp_coef_a,
+        (hot_junction_temp + cold_junction_temp) / 2,
     )
     sigma_b = thomson_coefficient_from_seebeck(
-        seebeck_coefficient_b, seebeck_temp_coef_b, (hot_junction_temp + cold_junction_temp) / 2
+        seebeck_coefficient_b,
+        seebeck_temp_coef_b,
+        (hot_junction_temp + cold_junction_temp) / 2,
     )
 
     # Thomson heat in each conductor
@@ -908,6 +942,7 @@ def kelvin_relations(
 # EMF SOURCE CLASS
 # =============================================================================
 
+
 @dataclass
 class EMFSource:
     """
@@ -943,10 +978,13 @@ class EMFSource:
     temperature: float = REFERENCE_TEMPERATURE
 
     @maxwell_cite(
-        264, 265, 266,
-        part=2, chapter="Electromotive Force",
+        264,
+        265,
+        266,
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Calculate terminal voltage under load"
+        description="Calculate terminal voltage under load",
     )
     def terminal_voltage(self, current: float) -> float:
         """Calculate the terminal voltage when delivering current.
@@ -973,9 +1011,10 @@ class EMFSource:
 
     @maxwell_cite(
         266,
-        part=2, chapter="Electromotive Force",
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Calculate short-circuit current"
+        description="Calculate short-circuit current",
     )
     def short_circuit_current(self) -> float:
         """Calculate the maximum current when short-circuited.
@@ -992,14 +1031,15 @@ class EMFSource:
             Part II, Art. 266: Maximum current from a source.
         """
         if self.internal_resistance <= 0:
-            return float('inf')
+            return float("inf")
         return self.emf / self.internal_resistance
 
     @maxwell_cite(
         266,
-        part=2, chapter="Electromotive Force",
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Calculate open-circuit voltage"
+        description="Calculate open-circuit voltage",
     )
     def open_circuit_voltage(self) -> float:
         """Calculate the open-circuit voltage (no load).
@@ -1017,9 +1057,10 @@ class EMFSource:
 
     @maxwell_cite(
         266,
-        part=2, chapter="Electromotive Force",
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Calculate power delivered to load"
+        description="Calculate power delivered to load",
     )
     def power_delivered(self, load_resistance: float) -> float:
         """Calculate the power delivered to an external load.
@@ -1043,22 +1084,25 @@ class EMFSource:
             Part II, Art. 266: Power transfer to load.
         """
         if load_resistance < 0:
-            raise ValueError(f"Load resistance must be non-negative, got {load_resistance}")
+            raise ValueError(
+                f"Load resistance must be non-negative, got {load_resistance}"
+            )
 
         total_resistance = self.internal_resistance + load_resistance
         if total_resistance <= 0:
-            return float('inf')
+            return float("inf")
 
         current = self.emf / total_resistance
-        power = current ** 2 * load_resistance
+        power = current**2 * load_resistance
 
         return power
 
     @maxwell_cite(
         266,
-        part=2, chapter="Electromotive Force",
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Calculate maximum power transfer"
+        description="Calculate maximum power transfer",
     )
     def maximum_power(self) -> float:
         """Calculate the maximum power that can be delivered.
@@ -1072,15 +1116,16 @@ class EMFSource:
             Maximum power in ergs/s.
         """
         if self.internal_resistance <= 0:
-            return float('inf')
+            return float("inf")
 
-        return self.emf ** 2 / (4.0 * self.internal_resistance)
+        return self.emf**2 / (4.0 * self.internal_resistance)
 
     @maxwell_cite(
         266,
-        part=2, chapter="Electromotive Force",
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Calculate efficiency at given load"
+        description="Calculate efficiency at given load",
     )
     def efficiency(self, load_resistance: float) -> float:
         """Calculate the efficiency of power delivery.
@@ -1100,7 +1145,9 @@ class EMFSource:
             Part II, Art. 266: Efficiency of power transfer.
         """
         if load_resistance < 0:
-            raise ValueError(f"Load resistance must be non-negative, got {load_resistance}")
+            raise ValueError(
+                f"Load resistance must be non-negative, got {load_resistance}"
+            )
 
         total_resistance = self.internal_resistance + load_resistance
         if total_resistance <= 0:
@@ -1111,11 +1158,12 @@ class EMFSource:
     @classmethod
     @maxwell_cite(
         266,
-        part=2, chapter="Electromotive Force",
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Create series combination of EMF sources"
+        description="Create series combination of EMF sources",
     )
-    def series_combine(cls, sources: list['EMFSource']) -> 'EMFSource':
+    def series_combine(cls, sources: list["EMFSource"]) -> "EMFSource":
         """Create an equivalent source from series-connected sources.
 
         Art. 266: When EMF sources are connected in series, their EMFs
@@ -1148,11 +1196,12 @@ class EMFSource:
     @classmethod
     @maxwell_cite(
         266,
-        part=2, chapter="Electromotive Force",
+        part=2,
+        chapter="Electromotive Force",
         theory_class="maxwell_original",
-        description="Create parallel combination of identical EMF sources"
+        description="Create parallel combination of identical EMF sources",
     )
-    def parallel_combine(cls, sources: list['EMFSource']) -> 'EMFSource':
+    def parallel_combine(cls, sources: list["EMFSource"]) -> "EMFSource":
         """Create an equivalent source from parallel-connected sources.
 
         Art. 266: For N identical EMF sources in parallel:
@@ -1191,10 +1240,10 @@ class EMFSource:
             )
         else:
             # General case: use conductance-weighted average
-            conductances = [1.0 / r if r > 0 else float('inf') for r in resistances]
+            conductances = [1.0 / r if r > 0 else float("inf") for r in resistances]
             total_conductance = sum(conductances)
 
-            if total_conductance == float('inf'):
+            if total_conductance == float("inf"):
                 # All zero resistance
                 return cls(
                     emf=sum(emfs) / len(emfs),
@@ -1217,11 +1266,21 @@ class EMFSource:
 # COMPREHENSIVE ANALYSIS FUNCTIONS
 # =============================================================================
 
+
 @maxwell_cite(
-    264, 265, 266, 267, 268, 269, 270, 271, 272,
-    part=2, chapter="Electromotive Force",
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271,
+    272,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Complete analysis of a voltaic cell"
+    description="Complete analysis of a voltaic cell",
 )
 def analyze_voltaic_cell(
     standard_emf: float,
@@ -1268,7 +1327,9 @@ def analyze_voltaic_cell(
         Part II, Arts. 264-269: Complete voltaic cell theory.
     """
     # Nernst EMF
-    emf_nernst = nernst_equation(standard_emf, temperature, electrons_transferred, reaction_quotient)
+    emf_nernst = nernst_equation(
+        standard_emf, temperature, electrons_transferred, reaction_quotient
+    )
 
     # Total EMF including contact potential
     total_emf = emf_nernst + contact_potential
@@ -1276,23 +1337,23 @@ def analyze_voltaic_cell(
     # Circuit analysis
     total_resistance = internal_resistance + load_resistance
     if total_resistance <= 0:
-        current = float('inf')
+        current = float("inf")
         terminal_voltage = 0.0
-        power_delivered = float('inf')
+        power_delivered = float("inf")
         power_dissipated = 0.0
         efficiency = 0.0
     else:
         current = total_emf / total_resistance
         terminal_voltage = total_emf - current * internal_resistance
-        power_delivered = current ** 2 * load_resistance
-        power_dissipated = current ** 2 * internal_resistance
+        power_delivered = current**2 * load_resistance
+        power_dissipated = current**2 * internal_resistance
         efficiency = load_resistance / total_resistance
 
     # Short-circuit current
     if internal_resistance > 0:
         short_circuit_current = total_emf / internal_resistance
     else:
-        short_circuit_current = float('inf')
+        short_circuit_current = float("inf")
 
     return {
         "nernst_emf": emf_nernst,
@@ -1312,10 +1373,13 @@ def analyze_voltaic_cell(
 
 
 @maxwell_cite(
-    270, 271, 272,
-    part=2, chapter="Electromotive Force",
+    270,
+    271,
+    272,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Complete analysis of a thermoelectric generator"
+    description="Complete analysis of a thermoelectric generator",
 )
 def analyze_thermoelectric_generator(
     seebeck_coefficient_a: float,
@@ -1371,13 +1435,13 @@ def analyze_thermoelectric_generator(
         return {
             "seebeck_emf": seebeck_emf,
             "alpha_ab": alpha_ab,
-            "current": float('inf'),
-            "output_power": float('inf'),
+            "current": float("inf"),
+            "output_power": float("inf"),
             "error": "Invalid resistance values",
         }
 
     current = seebeck_emf / total_resistance
-    output_power = current ** 2 * load_resistance
+    output_power = current**2 * load_resistance
 
     # Peltier heat at hot junction (heat absorbed from source)
     peltier_coef = hot_junction_temp * alpha_ab
@@ -1385,8 +1449,12 @@ def analyze_thermoelectric_generator(
 
     # Thomson heat contributions
     avg_temp = (hot_junction_temp + cold_junction_temp) / 2
-    sigma_a = thomson_coefficient_from_seebeck(seebeck_coefficient_a, seebeck_temp_coef_a, avg_temp)
-    sigma_b = thomson_coefficient_from_seebeck(seebeck_coefficient_b, seebeck_temp_coef_b, avg_temp)
+    sigma_a = thomson_coefficient_from_seebeck(
+        seebeck_coefficient_a, seebeck_temp_coef_a, avg_temp
+    )
+    sigma_b = thomson_coefficient_from_seebeck(
+        seebeck_coefficient_b, seebeck_temp_coef_b, avg_temp
+    )
 
     # Approximate Thomson heat (assuming linear gradient)
     thomson_heat_a = sigma_a * current * delta_t
@@ -1405,7 +1473,11 @@ def analyze_thermoelectric_generator(
     # Figure of merit ZT (approximate)
     # ZT = (alpha^2 * sigma_electrical / kappa_thermal) * T
     # Simplified estimate assuming typical values
-    figure_of_merit = (alpha_ab ** 2 / internal_resistance) * avg_temp if internal_resistance > 0 else 0.0
+    figure_of_merit = (
+        (alpha_ab**2 / internal_resistance) * avg_temp
+        if internal_resistance > 0
+        else 0.0
+    )
 
     return {
         "seebeck_emf": seebeck_emf,
@@ -1429,11 +1501,21 @@ def analyze_thermoelectric_generator(
 # VERIFICATION AND VALIDATION FUNCTIONS
 # =============================================================================
 
+
 @maxwell_cite(
-    264, 265, 266, 267, 268, 269, 270, 271, 272,
-    part=2, chapter="Electromotive Force",
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271,
+    272,
+    part=2,
+    chapter="Electromotive Force",
     theory_class="maxwell_original",
-    description="Verify EMF theory calculations"
+    description="Verify EMF theory calculations",
 )
 def verify_emf_theory(
     tolerance: float = 1e-10,
@@ -1477,7 +1559,9 @@ def verify_emf_theory(
     standard_emf = 1.1e8  # 1.1 V
     emf_at_standard = nernst_equation(standard_emf, 298.15, 2, 1.0)
 
-    nernst_standard_verified = abs(emf_at_standard - standard_emf) / standard_emf < tolerance
+    nernst_standard_verified = (
+        abs(emf_at_standard - standard_emf) / standard_emf < tolerance
+    )
     results["nernst_standard_verified"] = nernst_standard_verified
     all_verified = all_verified and nernst_standard_verified
 
@@ -1497,7 +1581,9 @@ def verify_emf_theory(
     pi_from_relation = peltier_coefficient_from_seebeck(alpha, temp)
     pi_expected = temp * alpha
 
-    kelvin_first_verified = abs(pi_from_relation - pi_expected) / pi_expected < tolerance
+    kelvin_first_verified = (
+        abs(pi_from_relation - pi_expected) / pi_expected < tolerance
+    )
     results["kelvin_first_verified"] = kelvin_first_verified
     all_verified = all_verified and kelvin_first_verified
 
@@ -1518,7 +1604,9 @@ def verify_emf_theory(
     seebeck_emf = seebeck_effect(alpha_ab + 0, 0, 373.15, 273.15)
     seebeck_expected = alpha_ab * delta_t
 
-    seebeck_verified = abs(seebeck_emf - seebeck_expected) / seebeck_expected < tolerance
+    seebeck_verified = (
+        abs(seebeck_emf - seebeck_expected) / seebeck_expected < tolerance
+    )
     results["seebeck_verified"] = seebeck_verified
     all_verified = all_verified and seebeck_verified
 
@@ -1572,8 +1660,12 @@ if __name__ == "__main__":
     cell_resistances = [5e8, 5e8, 5e8]  # 0.5 ohm each
     series_result = volta_series_emf(cell_emfs, cell_resistances)
     print(f"3 Daniell cells in series:")
-    print(f"  Total EMF: {series_result['total_emf']:.2e} abV ({series_result['total_emf']/1e8:.2f} V)")
-    print(f"  Total internal resistance: {series_result['total_internal_resistance']:.2e} abohm")
+    print(
+        f"  Total EMF: {series_result['total_emf']:.2e} abV ({series_result['total_emf']/1e8:.2f} V)"
+    )
+    print(
+        f"  Total internal resistance: {series_result['total_internal_resistance']:.2e} abohm"
+    )
     print(f"  Short-circuit current: {series_result['short_circuit_current']:.2e} abA")
 
     print("\n--- Chemical EMF (Arts. 267-268) ---")
@@ -1581,7 +1673,9 @@ if __name__ == "__main__":
     # Delta_G = -212 kJ/mol = -2.12e12 erg/mol
     delta_g = -2.12e12
     emf_chemical = chemical_emf(delta_g, 2)
-    print(f"Daniell cell chemical EMF: {emf_chemical:.2e} abV ({emf_chemical/1e8:.2f} V)")
+    print(
+        f"Daniell cell chemical EMF: {emf_chemical:.2e} abV ({emf_chemical/1e8:.2f} V)"
+    )
 
     print("\n--- Nernst Equation (Art. 269) ---")
     # Daniell cell with concentration effects
@@ -1596,7 +1690,9 @@ if __name__ == "__main__":
     # Copper-constantan thermocouple
     # alpha_Cu = 6.5 abV/K, alpha_Const = -35 abV/K
     seebeck_emf = seebeck_effect(6.5, -35.0, 373.15, 273.15)
-    print(f"Cu-Constantan Seebeck EMF (100K): {seebeck_emf:.2e} abV ({seebeck_emf/1e8:.3f} mV)")
+    print(
+        f"Cu-Constantan Seebeck EMF (100K): {seebeck_emf:.2e} abV ({seebeck_emf/1e8:.3f} mV)"
+    )
 
     print("\n--- Peltier Effect (Art. 271) ---")
     # Peltier coefficient at 300K
@@ -1643,7 +1739,9 @@ if __name__ == "__main__":
         internal_resistance=1e8,  # 0.1 ohm
         source_type="lead_acid",
     )
-    print(f"Battery: E = {battery.emf/1e8:.1f} V, R_int = {battery.internal_resistance/1e8:.1f} ohm")
+    print(
+        f"Battery: E = {battery.emf/1e8:.1f} V, R_int = {battery.internal_resistance/1e8:.1f} ohm"
+    )
     print(f"  Open-circuit voltage: {battery.open_circuit_voltage()/1e8:.1f} V")
     print(f"  Short-circuit current: {battery.short_circuit_current():.2e} abA")
     print(f"  Maximum power: {battery.maximum_power()/1e7:.2f} W")

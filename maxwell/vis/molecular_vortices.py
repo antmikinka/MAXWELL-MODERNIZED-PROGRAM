@@ -12,8 +12,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -70,9 +70,7 @@ def calc_vortex_lattice(
     if vortex_centers is None:
         # 3x3 checkerboard lattice
         positions = [-1.0, 0.0, 1.0]
-        vortex_centers = [
-            (px, py) for px in positions for py in positions
-        ]
+        vortex_centers = [(px, py) for px in positions for py in positions]
 
     if vortex_signs is None:
         # Alternating checkerboard pattern
@@ -111,7 +109,12 @@ def calc_vortex_lattice(
         # Vorticity: omega = dv_y/dx - dv_x/dy
         # For point vortex: omega = Gamma * delta(r)
         # For regularized: smooth Gaussian-like peak
-        omega += sign * vortex_strength / (np.pi * core_radius**2) * np.exp(-r**2 / core_radius**2)
+        omega += (
+            sign
+            * vortex_strength
+            / (np.pi * core_radius**2)
+            * np.exp(-(r**2) / core_radius**2)
+        )
 
     v_magnitude = np.sqrt(v_x**2 + v_y**2)
 
@@ -249,7 +252,9 @@ def plot_molecular_vortices(
     omega = result["omega"]
     omega_max = np.max(np.abs(omega))
     cf = ax.contourf(
-        X, Y, omega,
+        X,
+        Y,
+        omega,
         levels=30,
         cmap="RdBu_r",
         vmin=-omega_max,
@@ -260,8 +265,13 @@ def plot_molecular_vortices(
     if show_streamlines:
         # Streamlines
         ax.streamplot(
-            X, Y, result["v_x"], result["v_y"],
-            color="gray", linewidth=0.5, density=1.5,
+            X,
+            Y,
+            result["v_x"],
+            result["v_y"],
+            color="gray",
+            linewidth=0.5,
+            density=1.5,
             arrowsize=0.8,
         )
     else:
@@ -271,18 +281,30 @@ def plot_molecular_vortices(
         v_max = np.max(v_mag)
         if v_max > 0:
             ax.quiver(
-                X[::skip, ::skip], Y[::skip, ::skip],
+                X[::skip, ::skip],
+                Y[::skip, ::skip],
                 result["v_x"][::skip, ::skip] / v_max,
                 result["v_y"][::skip, ::skip] / v_max,
-                color="black", alpha=0.5, scale=25, width=0.003,
+                color="black",
+                alpha=0.5,
+                scale=25,
+                width=0.003,
             )
 
     # Mark vortex centers
     for (cx, cy), sign in zip(result["vortex_centers"], result["vortex_signs"]):
         color = "red" if sign > 0 else "blue"
         marker = r"$\circlearrowleft$" if sign > 0 else r"$\circlearrowright$"
-        ax.text(cx, cy, marker, fontsize=20, color=color,
-               ha="center", va="center", fontweight="bold")
+        ax.text(
+            cx,
+            cy,
+            marker,
+            fontsize=20,
+            color=color,
+            ha="center",
+            va="center",
+            fontweight="bold",
+        )
 
     ax.set_xlabel("x (cm)")
     ax.set_ylabel("y (cm)")
@@ -347,6 +369,7 @@ def plot_vortex_3d_surface(
     # Color surface by vorticity sign
     try:
         from matplotlib import colormaps
+
         cmap_obj = colormaps.get_cmap("RdBu_r")
     except Exception:
         cmap_obj = plt.cm.get_cmap("RdBu_r")
@@ -354,7 +377,9 @@ def plot_vortex_3d_surface(
     colors = cmap_obj(0.5 + 0.5 * omega / omega_max)
 
     ax.plot_surface(
-        X, Y, omega,
+        X,
+        Y,
+        omega,
         facecolors=colors,
         alpha=0.85,
         linewidth=0,

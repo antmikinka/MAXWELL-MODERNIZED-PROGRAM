@@ -33,19 +33,21 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Optional, Tuple
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # PART III: MAGNETISM
 # =============================================================================
 
+
 @maxwell_cite(
     391,
-    part=3, chapter="Magnetic Induction",
+    part=3,
+    chapter="Magnetic Induction",
     theory_class="maxwell_original",
     description="Magnetic induction relation B = H + 4πI (Art. 391)",
 )
@@ -115,7 +117,9 @@ def magnetic_induction_relation(
     if H_field.shape != (3,):
         raise ValueError(f"H_field must be 3D vector, got shape {H_field.shape}")
     if magnetization.shape != (3,):
-        raise ValueError(f"Magnetization must be 3D vector, got shape {magnetization.shape}")
+        raise ValueError(
+            f"Magnetization must be 3D vector, got shape {magnetization.shape}"
+        )
 
     # B = H + 4πI (Maxwell's Art. 391)
     B_field = H_field + 4.0 * np.pi * magnetization
@@ -146,9 +150,11 @@ def magnetic_induction_relation(
 # PART IV: INDUCTION OF CURRENTS (Arts. 516, 523-525)
 # =============================================================================
 
+
 @maxwell_cite(
     516,
-    part=4, chapter="Induction of Currents",
+    part=4,
+    chapter="Induction of Currents",
     theory_class="maxwell_original",
     description="Law of induced current (Art. 516)",
 )
@@ -222,7 +228,7 @@ def induced_current_law(
     current_induced = emf_induced / resistance
 
     # Power dissipated: P = I²R
-    power_dissipated = current_induced ** 2 * resistance
+    power_dissipated = current_induced**2 * resistance
 
     # Lenz's law verification: current opposes flux change
     # If dΦ/dt > 0 (increasing flux), EMF < 0, so current < 0 (opposes)
@@ -241,8 +247,10 @@ def induced_current_law(
 
 
 @maxwell_cite(
-    523, 524,
-    part=4, chapter="Induction of Currents",
+    523,
+    524,
+    part=4,
+    chapter="Induction of Currents",
     theory_class="maxwell_original",
     description="Calculation of induced currents (Arts. 523-524)",
 )
@@ -356,7 +364,7 @@ def induced_current_calculation(
     charge_transferred = -total_flux_change / resistance
 
     # Average power dissipation: P = I²R
-    power_average = current_average ** 2 * resistance
+    power_average = current_average**2 * resistance
 
     return {
         "flux_initial": flux_initial,
@@ -377,7 +385,8 @@ def induced_current_calculation(
 
 @maxwell_cite(
     525,
-    part=4, chapter="Induction of Currents",
+    part=4,
+    chapter="Induction of Currents",
     theory_class="maxwell_original",
     description="Heating and magnetic effects of induced currents (Art. 525)",
 )
@@ -447,7 +456,7 @@ def induced_current_effects(
     resistance = float(resistance)
 
     # Joule heating: P = I²R
-    power_dissipated = current ** 2 * resistance
+    power_dissipated = current**2 * resistance
 
     result = {
         "power_dissipated": power_dissipated,
@@ -468,7 +477,9 @@ def induced_current_effects(
     # B = (2 * I) / (c * r) in Gaussian CGS
     if nearby_circuit_distance is not None:
         if nearby_circuit_distance <= 0:
-            raise ValueError(f"Distance must be positive, got {nearby_circuit_distance}")
+            raise ValueError(
+                f"Distance must be positive, got {nearby_circuit_distance}"
+            )
         # Biot-Savart law for infinite wire: B = 2I / (c * r)
         B_estimate = 2.0 * abs(current) / (CONST.C * nearby_circuit_distance)
         result["magnetic_field_estimate"] = B_estimate
@@ -481,9 +492,12 @@ def induced_current_effects(
 # PART IV: TOTAL CURRENT AND DISPLACEMENT (Arts. 532-535, 545, 552)
 # =============================================================================
 
+
 @maxwell_cite(
-    532, 533,
-    part=4, chapter="Total Current and Displacement",
+    532,
+    533,
+    part=4,
+    chapter="Total Current and Displacement",
     theory_class="maxwell_original",
     description="Total current = conduction + displacement (Arts. 532-533)",
 )
@@ -544,9 +558,13 @@ def total_current_definition(
     displacement_current = np.asarray(displacement_current, dtype=np.float64)
 
     if conduction_current.shape != (3,):
-        raise ValueError(f"Conduction current must be 3D vector, got {conduction_current.shape}")
+        raise ValueError(
+            f"Conduction current must be 3D vector, got {conduction_current.shape}"
+        )
     if displacement_current.shape != (3,):
-        raise ValueError(f"Displacement current must be 3D vector, got {displacement_current.shape}")
+        raise ValueError(
+            f"Displacement current must be 3D vector, got {displacement_current.shape}"
+        )
 
     # Total current: J_total = J_cond + J_disp
     total_current = conduction_current + displacement_current
@@ -577,8 +595,10 @@ def total_current_definition(
 
 
 @maxwell_cite(
-    534, 535,
-    part=4, chapter="Total Current and Displacement",
+    534,
+    535,
+    part=4,
+    chapter="Total Current and Displacement",
     theory_class="maxwell_original",
     description="Displacement current density dD/dt (Arts. 534-535)",
 )
@@ -675,7 +695,8 @@ def displacement_current(
 
 @maxwell_cite(
     545,
-    part=4, chapter="Total Current and Displacement",
+    part=4,
+    chapter="Total Current and Displacement",
     theory_class="maxwell_original",
     description="Complete current equation with displacement (Art. 545)",
 )
@@ -805,7 +826,8 @@ def maxwell_total_current(
 
 @maxwell_cite(
     552,
-    part=4, chapter="Total Current and Displacement",
+    part=4,
+    chapter="Total Current and Displacement",
     theory_class="maxwell_original",
     description="Generalized Ampere's law with displacement current (Art. 552)",
 )
@@ -940,9 +962,11 @@ def generalized_ampere_law(
 # PART IV: ELECTROMAGNETIC THEORY OF LIGHT (Art. 615)
 # =============================================================================
 
+
 @maxwell_cite(
     615,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Refractive index and dielectric constant relation (Art. 615)",
 )
@@ -1018,9 +1042,13 @@ def refractive_index_relation(
         >>> print(f"n = {result['refractive_index']}")  # n = 1.5
     """
     if dielectric_constant <= 0:
-        raise ValueError(f"Dielectric constant must be positive, got {dielectric_constant}")
+        raise ValueError(
+            f"Dielectric constant must be positive, got {dielectric_constant}"
+        )
     if relative_permeability <= 0:
-        raise ValueError(f"Relative permeability must be positive, got {relative_permeability}")
+        raise ValueError(
+            f"Relative permeability must be positive, got {relative_permeability}"
+        )
 
     # Refractive index: n = sqrt(K * μ_r)
     refractive_index = np.sqrt(dielectric_constant * relative_permeability)
@@ -1059,9 +1087,22 @@ def refractive_index_relation(
 # COMPREHENSIVE ANALYSIS FUNCTIONS
 # =============================================================================
 
+
 @maxwell_cite(
-    391, 516, 523, 524, 525, 532, 533, 534, 535, 545, 552, 615,
-    part=4, chapter="Induction and Electromagnetic Theory",
+    391,
+    516,
+    523,
+    524,
+    525,
+    532,
+    533,
+    534,
+    535,
+    545,
+    552,
+    615,
+    part=4,
+    chapter="Induction and Electromagnetic Theory",
     theory_class="maxwell_original",
     description="Complete analysis of remaining gap Articles",
 )
@@ -1094,9 +1135,7 @@ def analyze_remaining_gaps() -> dict[str, dict]:
 
     # 2. Induced current (Arts. 516, 523-525)
     results["induced_current_law"] = induced_current_law(
-        flux_change_rate=1000.0,
-        resistance=10.0,
-        num_turns=100
+        flux_change_rate=1000.0, resistance=10.0, num_turns=100
     )
 
     results["induced_current_calculation"] = induced_current_calculation(
@@ -1106,14 +1145,11 @@ def analyze_remaining_gaps() -> dict[str, dict]:
         loop_normal=np.array([0, 0, 1]),
         time_interval=0.1,
         resistance=100.0,
-        num_turns=100
+        num_turns=100,
     )
 
     results["induced_current_effects"] = induced_current_effects(
-        current=100.0,
-        resistance=0.01,
-        time_duration=1.0,
-        nearby_circuit_distance=1.0
+        current=100.0, resistance=0.01, time_duration=1.0, nearby_circuit_distance=1.0
     )
 
     # 3. Total current and displacement (Arts. 532-535, 545, 552)
@@ -1122,21 +1158,15 @@ def analyze_remaining_gaps() -> dict[str, dict]:
     results["total_current"] = total_current_definition(J_cond, J_disp)
 
     results["displacement_current"] = displacement_current(
-        E_field=np.array([1000, 0, 0]),
-        dE_dt=np.array([1e15, 0, 0]),
-        permittivity=1.0
+        E_field=np.array([1000, 0, 0]), dE_dt=np.array([1e15, 0, 0]), permittivity=1.0
     )
 
     results["maxwell_total_current"] = maxwell_total_current(
-        E_field=np.array([1, 0, 0]),
-        dE_dt=np.array([1e10, 0, 0]),
-        conductivity=1e17
+        E_field=np.array([1, 0, 0]), dE_dt=np.array([1e10, 0, 0]), conductivity=1e17
     )
 
     results["generalized_ampere"] = generalized_ampere_law(
-        H_field=np.zeros(3),
-        J_conduction=np.array([1e6, 0, 0]),
-        dE_dt=np.zeros(3)
+        H_field=np.zeros(3), J_conduction=np.array([1e6, 0, 0]), dE_dt=np.zeros(3)
     )
 
     # 4. Refractive index (Art. 615)

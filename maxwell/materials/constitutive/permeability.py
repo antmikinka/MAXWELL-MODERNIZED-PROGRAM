@@ -32,10 +32,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 # Alias for test compatibility
 VACUUM_PERMEABILITY = 1.0  # In CGS-EMU, mu_0 = 1 by definition
@@ -65,7 +66,8 @@ class Permeability:
 
     @maxwell_cite(
         614,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate magnetic induction B from H",
     )
@@ -86,7 +88,8 @@ class Permeability:
 
     @maxwell_cite(
         614,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate magnetic field H from B",
     )
@@ -111,7 +114,8 @@ class Permeability:
 
     @maxwell_cite(
         614,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate coefficient of magnetization k",
     )
@@ -141,7 +145,8 @@ class Permeability:
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate magnetic induction: B = μH",
 )
@@ -172,7 +177,8 @@ def calc_magnetic_induction_permeability(
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate permeability from coefficient k",
 )
@@ -198,7 +204,8 @@ def calc_permeability_from_k(k: float) -> float:
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate coefficient k from permeability",
 )
@@ -224,7 +231,8 @@ def calc_k_from_permeability(permeability: float) -> float:
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate magnetic energy density",
 )
@@ -260,7 +268,7 @@ def calc_magnetic_energy_density(
         B = float(B_field)
         if permeability is None:
             raise ValueError("permeability must be provided when B is scalar")
-        return B ** 2 / (8.0 * np.pi * permeability)
+        return B**2 / (8.0 * np.pi * permeability)
 
     # Otherwise use u = (1/8π) * B · H
     if H_field is None:
@@ -278,7 +286,8 @@ def calc_magnetic_energy_density(
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Classify material by permeability",
 )
@@ -312,7 +321,8 @@ def classify_material_by_permeability(permeability: float) -> str:
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate magnetic flux through surface",
 )
@@ -354,7 +364,8 @@ def calc_magnetic_flux(
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Verify permeability relations",
 )
@@ -391,7 +402,11 @@ def verify_permeability_relations(
     H_from_B = B / permeability
 
     # Verify H = B/μ
-    H_error = np.linalg.norm(H_field - H_from_B) / np.linalg.norm(H_field) if np.linalg.norm(H_field) > 0 else 0
+    H_error = (
+        np.linalg.norm(H_field - H_from_B) / np.linalg.norm(H_field)
+        if np.linalg.norm(H_field) > 0
+        else 0
+    )
 
     # Verify μ = 1 + 4πk
     k = calc_k_from_permeability(permeability)
@@ -413,7 +428,8 @@ def verify_permeability_relations(
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Complete permeability analysis",
 )
@@ -462,7 +478,8 @@ calc_B_from_H = calc_magnetic_induction_permeability
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate magnetic field H from B: H = B/μ",
 )
@@ -493,7 +510,8 @@ def calc_H_from_B(
 
 @maxwell_cite(
     614,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate relative permeability",
 )

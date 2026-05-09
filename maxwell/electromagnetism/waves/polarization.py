@@ -35,11 +35,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
 from typing import Optional, Tuple
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -73,11 +74,15 @@ class PolarizationState:
     E1: float = 1.0
     E2: float = 0.0
     delta: float = 0.0
-    propagation_direction: np.ndarray = field(default_factory=lambda: np.array([0.0, 0.0, 1.0]))
+    propagation_direction: np.ndarray = field(
+        default_factory=lambda: np.array([0.0, 0.0, 1.0])
+    )
 
     def __post_init__(self):
         """Validate and compute derived quantities."""
-        self.propagation_direction = np.asarray(self.propagation_direction, dtype=np.float64)
+        self.propagation_direction = np.asarray(
+            self.propagation_direction, dtype=np.float64
+        )
         norm = np.linalg.norm(self.propagation_direction)
         if norm > 0:
             self.propagation_direction = self.propagation_direction / norm
@@ -92,7 +97,7 @@ class PolarizationState:
     @property
     def total_intensity(self) -> float:
         """Total intensity S₀ = E₁² + E₂²."""
-        return self.E1 ** 2 + self.E2 ** 2
+        return self.E1**2 + self.E2**2
 
     @property
     def Jones_vector(self) -> np.ndarray:
@@ -102,8 +107,8 @@ class PolarizationState:
     @property
     def Stokes_parameters(self) -> np.ndarray:
         """Stokes parameters [S₀, S₁, S₂, S₃]."""
-        S0 = self.E1 ** 2 + self.E2 ** 2
-        S1 = self.E1 ** 2 - self.E2 ** 2
+        S0 = self.E1**2 + self.E2**2
+        S1 = self.E1**2 - self.E2**2
         S2 = 2 * self.E1 * self.E2 * np.cos(self.delta)
         S3 = 2 * self.E1 * self.E2 * np.sin(self.delta)
         return np.array([S0, S1, S2, S3])
@@ -118,7 +123,9 @@ class PolarizationState:
 
         if abs(np.sin(self.delta)) < 1e-10:
             return "linear"
-        elif abs(np.cos(self.delta)) < 1e-10 and abs(self.E1 - self.E2) < 0.01 * (self.E1 + self.E2):
+        elif abs(np.cos(self.delta)) < 1e-10 and abs(self.E1 - self.E2) < 0.01 * (
+            self.E1 + self.E2
+        ):
             return "circular" if self.E1 > 0 and self.E2 > 0 else "linear"
         elif abs(self.E1 - self.E2) < 1e-10 and abs(abs(np.sin(self.delta)) - 1) < 0.01:
             return "circular"
@@ -138,7 +145,8 @@ class PolarizationState:
     @classmethod
     @maxwell_cite(
         791,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create linear polarization state",
     )
@@ -188,13 +196,14 @@ class PolarizationState:
     @classmethod
     @maxwell_cite(
         792,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create circular polarization state",
     )
     def circular(
         cls,
-        handedness: str = 'right',
+        handedness: str = "right",
         amplitude: float = 1.0,
         propagation_direction: np.ndarray = None,
     ) -> PolarizationState:
@@ -228,7 +237,7 @@ class PolarizationState:
         if propagation_direction is None:
             propagation_direction = np.array([0.0, 0.0, 1.0])
 
-        delta = np.pi / 2 if handedness == 'right' else -np.pi / 2
+        delta = np.pi / 2 if handedness == "right" else -np.pi / 2
 
         return cls(
             E1=amplitude,
@@ -240,7 +249,8 @@ class PolarizationState:
     @classmethod
     @maxwell_cite(
         793,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create elliptical polarization state",
     )
@@ -275,11 +285,14 @@ class PolarizationState:
             >>> # Elliptical with axial ratio 2:1
             >>> p = PolarizationState.elliptical(2.0, 1.0, np.pi/2)
         """
-        return cls(E1=E1, E2=E2, delta=delta, propagation_direction=propagation_direction)
+        return cls(
+            E1=E1, E2=E2, delta=delta, propagation_direction=propagation_direction
+        )
 
     @maxwell_cite(
         794,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate ellipse parameters",
     )
@@ -310,14 +323,22 @@ class PolarizationState:
         if abs(self.E1) < 1e-10 and abs(self.E2) < 1e-10:
             psi = 0.0
         else:
-            tan_2psi = (2 * self.E1 * self.E2 * np.cos(self.delta)) / (self.E1 ** 2 - self.E2 ** 2)
-            psi = 0.5 * np.arctan2(tan_2psi * (self.E1 ** 2 - self.E2 ** 2), 2 * self.E1 * self.E2 * np.cos(self.delta))
+            tan_2psi = (2 * self.E1 * self.E2 * np.cos(self.delta)) / (
+                self.E1**2 - self.E2**2
+            )
+            psi = 0.5 * np.arctan2(
+                tan_2psi * (self.E1**2 - self.E2**2),
+                2 * self.E1 * self.E2 * np.cos(self.delta),
+            )
             # Alternative formula
-            psi = 0.5 * np.arctan2(2 * self.E1 * self.E2 * np.cos(self.delta),
-                                    self.E1 ** 2 - self.E2 ** 2)
+            psi = 0.5 * np.arctan2(
+                2 * self.E1 * self.E2 * np.cos(self.delta), self.E1**2 - self.E2**2
+            )
 
         # Ellipticity angle χ
-        sin_2chi = (2 * self.E1 * self.E2 * np.sin(self.delta)) / (self.E1 ** 2 + self.E2 ** 2)
+        sin_2chi = (2 * self.E1 * self.E2 * np.sin(self.delta)) / (
+            self.E1**2 + self.E2**2
+        )
         sin_2chi = np.clip(sin_2chi, -1, 1)  # Numerical safety
         chi = 0.5 * np.arcsin(sin_2chi)
 
@@ -326,11 +347,11 @@ class PolarizationState:
         if eps > 1e-10:
             axial_ratio = 1.0 / eps
         else:
-            axial_ratio = float('inf')  # Linear polarization
+            axial_ratio = float("inf")  # Linear polarization
 
         # Semi-major and semi-minor axes
-        I = self.E1 ** 2 + self.E2 ** 2
-        a = np.sqrt(I / (1 + eps ** 2)) if eps < 1 else np.sqrt(I * eps ** 2 / (1 + eps ** 2))
+        I = self.E1**2 + self.E2**2
+        a = np.sqrt(I / (1 + eps**2)) if eps < 1 else np.sqrt(I * eps**2 / (1 + eps**2))
         b = eps * a
 
         return {
@@ -347,7 +368,8 @@ class PolarizationState:
 
 @maxwell_cite(
     794,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate Stokes parameters from field amplitudes",
 )
@@ -390,14 +412,14 @@ def calc_Stokes_parameters(
         >>> S = calc_Stokes_parameters(1.0, 1.0, np.pi/2)
         >>> print(f"Degree of polarization: {S['degree_of_polarization']}")
     """
-    S0 = E1 ** 2 + E2 ** 2
-    S1 = E1 ** 2 - E2 ** 2
+    S0 = E1**2 + E2**2
+    S1 = E1**2 - E2**2
     S2 = 2 * E1 * E2 * np.cos(delta)
     S3 = 2 * E1 * E2 * np.sin(delta)
 
     # Degree of polarization (1 for fully polarized)
     if S0 > 0:
-        DOP = np.sqrt(S1 ** 2 + S2 ** 2 + S3 ** 2) / S0
+        DOP = np.sqrt(S1**2 + S2**2 + S3**2) / S0
     else:
         DOP = 0.0
 
@@ -432,8 +454,10 @@ def _stokes_to_type(s1: float, s2: float, s3: float) -> str:
 
 
 @maxwell_cite(
-    794, 795,
-    part=4, chapter="Electromagnetic Theory of Light",
+    794,
+    795,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Decompose polarization into orthogonal components",
 )
@@ -477,21 +501,24 @@ def decompose_polarization(
     """
     J = state.Jones_vector  # [E₁, E₂·exp(iδ)]
 
-    if basis_angle == 'circular':
+    if basis_angle == "circular":
         # Circular basis transformation
         # [E_R]   1     [1  -i] [E₁]
         # [E_L] = √2 ·  [1   i] [E₂]
         M = np.array([[1, -1j], [1, 1j]]) / np.sqrt(2)
-        basis_type = 'circular'
-        component_names = ['RHC', 'LHC']
+        basis_type = "circular"
+        component_names = ["RHC", "LHC"]
     else:
         # Linear basis rotation by angle θ
         # [E_H]   [cos θ   sin θ] [E₁]
         # [E_V] = [-sin θ  cos θ] [E₂]
         c, s = np.cos(basis_angle), np.sin(basis_angle)
         M = np.array([[c, s], [-s, c]])
-        basis_type = 'linear'
-        component_names = [f'H@{np.degrees(basis_angle):.0f}°', f'V@{np.degrees(basis_angle):.0f}°']
+        basis_type = "linear"
+        component_names = [
+            f"H@{np.degrees(basis_angle):.0f}°",
+            f"V@{np.degrees(basis_angle):.0f}°",
+        ]
 
     # Transform
     J_new = np.dot(M, J)
@@ -511,7 +538,8 @@ def decompose_polarization(
 
 @maxwell_cite(
     795,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Transform polarization through optical element",
 )
@@ -590,8 +618,13 @@ def transform_polarization(
 
 
 @maxwell_cite(
-    791, 792, 793, 794, 795,
-    part=4, chapter="Electromagnetic Theory of Light",
+    791,
+    792,
+    793,
+    794,
+    795,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Analyze complete polarization state",
 )
@@ -644,7 +677,7 @@ def analyze_polarization(
     result["HV_decomposition"] = decompose_polarization(state, 0.0)
 
     # Decomposition in circular basis
-    result["circular_decomposition"] = decompose_polarization(state, 'circular')
+    result["circular_decomposition"] = decompose_polarization(state, "circular")
 
     # Poincaré sphere coordinates
     if state.total_intensity > 0:
@@ -676,7 +709,8 @@ class PolarizationAnalyzer:
 
     @maxwell_cite(
         791,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get polarization type",
     )
@@ -685,8 +719,10 @@ class PolarizationAnalyzer:
         return self.state.polarization_type
 
     @maxwell_cite(
-        792, 793,
-        part=4, chapter="Electromagnetic Theory of Light",
+        792,
+        793,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get handedness",
     )
@@ -696,7 +732,8 @@ class PolarizationAnalyzer:
 
     @maxwell_cite(
         794,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get Stokes parameters",
     )
@@ -706,7 +743,8 @@ class PolarizationAnalyzer:
 
     @maxwell_cite(
         794,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get Jones vector",
     )
@@ -716,7 +754,8 @@ class PolarizationAnalyzer:
 
     @maxwell_cite(
         794,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get ellipse parameters",
     )
@@ -725,8 +764,10 @@ class PolarizationAnalyzer:
         return self.state.ellipse_parameters()
 
     @maxwell_cite(
-        794, 795,
-        part=4, chapter="Electromagnetic Theory of Light",
+        794,
+        795,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Decompose in basis",
     )
@@ -736,7 +777,8 @@ class PolarizationAnalyzer:
 
     @maxwell_cite(
         795,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Transform through element",
     )
@@ -745,8 +787,13 @@ class PolarizationAnalyzer:
         return transform_polarization(self.state, Jones_matrix)
 
     @maxwell_cite(
-        791, 792, 793, 794, 795,
-        part=4, chapter="Electromagnetic Theory of Light",
+        791,
+        792,
+        793,
+        794,
+        795,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Complete polarization analysis",
     )
@@ -758,7 +805,8 @@ class PolarizationAnalyzer:
 # Common Jones matrices for optical elements
 @maxwell_cite(
     795,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="standard_math",
     description="Jones matrix for linear polarizer",
 )
@@ -773,12 +821,13 @@ def Jones_linear_polarizer(angle: float = 0.0) -> np.ndarray:
         2×2 Jones matrix.
     """
     c, s = np.cos(angle), np.sin(angle)
-    return np.array([[c ** 2, c * s], [c * s, s ** 2]])
+    return np.array([[c**2, c * s], [c * s, s**2]])
 
 
 @maxwell_cite(
     795,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="standard_math",
     description="Jones matrix for wave plate",
 )

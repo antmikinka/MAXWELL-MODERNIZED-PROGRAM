@@ -20,10 +20,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -80,7 +81,8 @@ class MagnetizationVector:
     @classmethod
     @maxwell_cite(
         381,
-        part=3, chapter="Magnetic Moment",
+        part=3,
+        chapter="Magnetic Moment",
         theory_class="maxwell_original",
         description="Create magnetization from moment and volume",
     )
@@ -118,7 +120,8 @@ class MagnetizationVector:
     @classmethod
     @maxwell_cite(
         382,
-        part=3, chapter="Magnetic Moment",
+        part=3,
+        chapter="Magnetic Moment",
         theory_class="maxwell_original",
         description="Create magnetization from intensity and direction",
     )
@@ -158,7 +161,8 @@ class MagnetizationVector:
 
     @maxwell_cite(
         382,
-        part=3, chapter="Magnetic Moment",
+        part=3,
+        chapter="Magnetic Moment",
         theory_class="maxwell_original",
         description="Magnetization direction cosines",
     )
@@ -202,7 +206,8 @@ class MagneticPolarization:
     @classmethod
     @maxwell_cite(
         383,
-        part=3, chapter="Magnetic Polarization",
+        part=3,
+        chapter="Magnetic Polarization",
         theory_class="maxwell_original",
         description="Create magnetic polarization from magnetization",
     )
@@ -239,7 +244,8 @@ class MagneticPolarization:
 
     @maxwell_cite(
         383,
-        part=3, chapter="Magnetic Polarization",
+        part=3,
+        chapter="Magnetic Polarization",
         theory_class="maxwell_original",
         description="Pole density on magnetized surface",
     )
@@ -317,7 +323,8 @@ class MagneticParticle:
     @classmethod
     @maxwell_cite(
         384,
-        part=3, chapter="Magnetic Particles",
+        part=3,
+        chapter="Magnetic Particles",
         theory_class="maxwell_original",
         description="Create elementary magnetic particle",
     )
@@ -352,7 +359,8 @@ class MagneticParticle:
 
     @maxwell_cite(
         384,
-        part=3, chapter="Magnetic Particles",
+        part=3,
+        chapter="Magnetic Particles",
         theory_class="maxwell_original",
         description="Field from elementary magnetic particle",
     )
@@ -386,13 +394,14 @@ class MagneticParticle:
 
         # Dipole field formula
         m_dot_r = np.dot(m, r_hat)
-        H = (3 * m_dot_r * r_hat - m) / (r_mag ** 3)
+        H = (3 * m_dot_r * r_hat - m) / (r_mag**3)
 
         return H
 
     @maxwell_cite(
         384,
-        part=3, chapter="Magnetic Particles",
+        part=3,
+        chapter="Magnetic Particles",
         theory_class="maxwell_original",
         description="Potential from elementary magnetic particle",
     )
@@ -421,7 +430,7 @@ class MagneticParticle:
         if r_mag == 0:
             return 0.0
 
-        return float(np.dot(self.magnetic_moment, r_vec) / (r_mag ** 3))
+        return float(np.dot(self.magnetic_moment, r_vec) / (r_mag**3))
 
 
 @dataclass
@@ -459,7 +468,8 @@ class MagneticMoment:
     @classmethod
     @maxwell_cite(
         381,
-        part=3, chapter="Magnetic Moment",
+        part=3,
+        chapter="Magnetic Moment",
         theory_class="maxwell_original",
         description="Create magnetic moment from pole strength and length",
     )
@@ -501,7 +511,8 @@ class MagneticMoment:
 
     @maxwell_cite(
         389,
-        part=3, chapter="Magnetic Energy",
+        part=3,
+        chapter="Magnetic Energy",
         theory_class="maxwell_original",
         description="Torque on magnetic moment in field",
     )
@@ -525,7 +536,8 @@ class MagneticMoment:
 
     @maxwell_cite(
         389,
-        part=3, chapter="Magnetic Energy",
+        part=3,
+        chapter="Magnetic Energy",
         theory_class="maxwell_original",
         description="Potential energy of magnetic moment in field",
     )
@@ -566,7 +578,8 @@ class MagnetizationIntensity:
     @classmethod
     @maxwell_cite(
         382,
-        part=3, chapter="Magnetization Intensity",
+        part=3,
+        chapter="Magnetization Intensity",
         theory_class="maxwell_original",
         description="Create intensity from magnetization vector",
     )
@@ -588,7 +601,8 @@ class MagnetizationIntensity:
     @classmethod
     @maxwell_cite(
         382,
-        part=3, chapter="Magnetization Intensity",
+        part=3,
+        chapter="Magnetization Intensity",
         theory_class="maxwell_original",
         description="Create intensity from moment and volume",
     )
@@ -654,7 +668,8 @@ class MagnetizationComponents:
     @classmethod
     @maxwell_cite(
         382,
-        part=3, chapter="Magnetization Components",
+        part=3,
+        chapter="Magnetization Components",
         theory_class="maxwell_original",
         description="Create components from intensity and direction cosines",
     )
@@ -692,7 +707,8 @@ class MagnetizationComponents:
 
     @maxwell_cite(
         382,
-        part=3, chapter="Magnetization Components",
+        part=3,
+        chapter="Magnetization Components",
         theory_class="maxwell_original",
         description="Get direction cosines from components",
     )
@@ -708,8 +724,13 @@ class MagnetizationComponents:
 
 
 @maxwell_cite(
-    381, 382, 383, 384, 390,
-    part=3, chapter="Magnetic Moment and Magnetization",
+    381,
+    382,
+    383,
+    384,
+    390,
+    part=3,
+    chapter="Magnetic Moment and Magnetization",
     theory_class="maxwell_original",
     description="Calculate resultant moment and axis of magnetized body",
 )

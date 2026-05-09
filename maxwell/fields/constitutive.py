@@ -26,10 +26,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 class MaterialType(Enum):
@@ -56,7 +57,8 @@ class MaterialType(Enum):
     @classmethod
     @maxwell_cite(
         400,
-        part=3, chapter="Magnetic Constitutive Relation",
+        part=3,
+        chapter="Magnetic Constitutive Relation",
         theory_class="maxwell_original",
         description="Classify material by susceptibility",
     )
@@ -104,7 +106,7 @@ class MagneticConstitutiveRelation:
     """
 
     susceptibility: float = 0.0  # κ, dimensionless in CGS
-    permeability: float = 1.0    # μ, dimensionless in CGS
+    permeability: float = 1.0  # μ, dimensionless in CGS
     is_linear: bool = True
 
     def __post_init__(self):
@@ -120,7 +122,8 @@ class MagneticConstitutiveRelation:
     @classmethod
     @maxwell_cite(
         400,
-        part=3, chapter="Magnetic Constitutive Relation",
+        part=3,
+        chapter="Magnetic Constitutive Relation",
         theory_class="maxwell_original",
         description="Create constitutive relation from susceptibility",
     )
@@ -152,7 +155,8 @@ class MagneticConstitutiveRelation:
     @classmethod
     @maxwell_cite(
         400,
-        part=3, chapter="Magnetic Constitutive Relation",
+        part=3,
+        chapter="Magnetic Constitutive Relation",
         theory_class="maxwell_original",
         description="Create constitutive relation from permeability",
     )
@@ -178,7 +182,8 @@ class MagneticConstitutiveRelation:
     @classmethod
     @maxwell_cite(
         400,
-        part=3, chapter="Magnetic Constitutive Relation",
+        part=3,
+        chapter="Magnetic Constitutive Relation",
         theory_class="maxwell_original",
         description="Create constitutive relation for vacuum",
     )
@@ -199,7 +204,8 @@ class MagneticConstitutiveRelation:
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Calculate B from H and I",
 )
@@ -237,7 +243,8 @@ def calc_constitutive_relation(
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Calculate B from H for linear material",
 )
@@ -270,7 +277,8 @@ def calc_B_linear(
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Calculate magnetization from H",
 )
@@ -302,7 +310,8 @@ def calc_magnetization(
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Extract I from B and H",
 )
@@ -337,7 +346,8 @@ def extract_magnetization(
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Calculate susceptibility from measurements",
 )
@@ -379,7 +389,8 @@ def calc_susceptibility(
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Permeability conversion between CGS and SI",
 )
@@ -409,7 +420,8 @@ def permeability_cgs_to_si(mu_cgs: float) -> float:
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Permeability conversion between SI and CGS",
 )
@@ -432,7 +444,8 @@ def permeability_si_to_cgs(mu_si: float) -> float:
 
 @maxwell_cite(
     400,
-    part=3, chapter="Magnetic Constitutive Relation",
+    part=3,
+    chapter="Magnetic Constitutive Relation",
     theory_class="maxwell_original",
     description="Common material susceptibilities",
 )
@@ -459,14 +472,12 @@ def typical_susceptibilities() -> dict[str, float]:
         "silver": -2.6e-5,
         "bismuth": -1.66e-4,  # Strongest diamagnetic element
         "pyrolytic_carbon": -4.5e-4,  # Can levitate in strong field
-
         # Paramagnetic (κ > 0, small)
         "aluminum": 2.2e-5,
         "platinum": 2.9e-4,
         "tungsten": 6.8e-5,
         "oxygen_gas": 1.9e-6,
         "manganese": 3.7e-4,
-
         # Ferromagnetic (κ >> 0, nonlinear)
         "iron_pure": 5000,  # Approximate, varies with H
         "iron_electrical": 4000,

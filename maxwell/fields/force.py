@@ -23,11 +23,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.moment import MagnetizationVector
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -76,7 +77,8 @@ class MagneticForce:
     @classmethod
     @maxwell_cite(
         395,
-        part=3, chapter="Magnetic Force",
+        part=3,
+        chapter="Magnetic Force",
         theory_class="maxwell_original",
         description="Create H field from potential gradient",
     )
@@ -124,7 +126,8 @@ class MagneticForce:
     @classmethod
     @maxwell_cite(
         395,
-        part=3, chapter="Magnetic Force",
+        part=3,
+        chapter="Magnetic Force",
         theory_class="maxwell_original",
         description="Create H field from force on unit pole",
     )
@@ -164,7 +167,8 @@ class MagneticForce:
 
 @maxwell_cite(
     395,
-    part=3, chapter="Magnetic Force",
+    part=3,
+    chapter="Magnetic Force",
     theory_class="maxwell_original",
     description="Magnetic force from scalar potential",
 )
@@ -211,7 +215,8 @@ def magnetic_force_from_potential(
 
 @maxwell_cite(
     396,
-    part=3, chapter="Magnetic Force",
+    part=3,
+    chapter="Magnetic Force",
     theory_class="maxwell_original",
     description="H field measured in cylindrical cavity",
 )
@@ -254,7 +259,9 @@ def cylindric_cavity_force(
     external_field = np.asarray(external_field, dtype=np.float64)
     magnetization = np.asarray(magnetization, dtype=np.float64)
 
-    aspect_ratio = cavity_length / (2 * cavity_radius) if cavity_radius > 0 else float('inf')
+    aspect_ratio = (
+        cavity_length / (2 * cavity_radius) if cavity_radius > 0 else float("inf")
+    )
 
     # For long cylinder (L >> a), demagnetizing factor N ≈ 0
     # Demagnetizing field H_d = -N * I
@@ -264,7 +271,9 @@ def cylindric_cavity_force(
     else:
         # Approximate demagnetizing factor for finite cylinder
         # N ≈ 4π * (a/L)² for moderate aspect ratios
-        N_approx = 4 * np.pi * (cavity_radius / cavity_length) ** 2 if cavity_length > 0 else 0
+        N_approx = (
+            4 * np.pi * (cavity_radius / cavity_length) ** 2 if cavity_length > 0 else 0
+        )
         demag_field = -N_approx * magnetization
 
     return external_field + demag_field
@@ -272,7 +281,8 @@ def cylindric_cavity_force(
 
 @maxwell_cite(
     397,
-    part=3, chapter="Magnetic Force",
+    part=3,
+    chapter="Magnetic Force",
     theory_class="maxwell_original",
     description="H field in general magnetized matter",
 )
@@ -327,7 +337,7 @@ def general_magnet_force(
         r_hat = r_vec / r_mag
         m_dot_r = np.dot(m, r_hat)
 
-        dH = (3 * m_dot_r * r_hat - m) / (r_mag ** 3)
+        dH = (3 * m_dot_r * r_hat - m) / (r_mag**3)
         H_from_mag += dH
 
     return applied_field + H_from_mag
@@ -335,7 +345,8 @@ def general_magnet_force(
 
 @maxwell_cite(
     398,
-    part=3, chapter="Magnetic Force",
+    part=3,
+    chapter="Magnetic Force",
     theory_class="maxwell_original",
     description="H field in elongated cylinder/needle cavity limit",
 )
@@ -403,8 +414,11 @@ def elongated_cylinder_force(
 
 
 @maxwell_cite(
-    396, 397, 398,
-    part=3, chapter="Magnetic Force",
+    396,
+    397,
+    398,
+    part=3,
+    chapter="Magnetic Force",
     theory_class="maxwell_original",
     description="Compare H field in different cavity geometries",
 )
@@ -465,8 +479,19 @@ def compare_cavity_fields(
         N_perpendicular = (1 - t) * 0 + t * 2 * np.pi
 
     # Demagnetizing field
-    H_demag = -N_parallel * I_parallel / np.linalg.norm(I_parallel) ** 2 * I_parallel if np.linalg.norm(I_parallel) > 0 else np.zeros(3)
-    H_demag += -N_perpendicular * I_perpendicular / np.linalg.norm(I_perpendicular) ** 2 * I_perpendicular if np.linalg.norm(I_perpendicular) > 0 else np.zeros(3)
+    H_demag = (
+        -N_parallel * I_parallel / np.linalg.norm(I_parallel) ** 2 * I_parallel
+        if np.linalg.norm(I_parallel) > 0
+        else np.zeros(3)
+    )
+    H_demag += (
+        -N_perpendicular
+        * I_perpendicular
+        / np.linalg.norm(I_perpendicular) ** 2
+        * I_perpendicular
+        if np.linalg.norm(I_perpendicular) > 0
+        else np.zeros(3)
+    )
 
     H_cavity = applied_field + H_demag
 
@@ -475,13 +500,18 @@ def compare_cavity_fields(
         "H_demag": H_demag,
         "N_parallel": N_parallel,
         "N_perpendicular": N_perpendicular,
-        "cavity_type": "needle" if cavity_aspect_ratio >= 10 else ("disk" if cavity_aspect_ratio <= 0.1 else "intermediate"),
+        "cavity_type": (
+            "needle"
+            if cavity_aspect_ratio >= 10
+            else ("disk" if cavity_aspect_ratio <= 0.1 else "intermediate")
+        ),
     }
 
 
 @maxwell_cite(
     395,
-    part=3, chapter="Magnetic Force",
+    part=3,
+    chapter="Magnetic Force",
     theory_class="maxwell_original",
     description="Force on magnetic pole in H field",
 )

@@ -239,8 +239,11 @@ class FaradayInductionJAX:
 
 
 @maxwell_cite(
-    528, 529, 530,
-    part=4, chapter="Electromagnetic Induction",
+    528,
+    529,
+    530,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Magnetic flux over a batch of B-field configurations via vmap",
 )
@@ -265,8 +268,10 @@ def flux_over_batch(
 
 
 @maxwell_cite(
-    529, 531,
-    part=4, chapter="Electromagnetic Induction",
+    529,
+    531,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Induced EMF over a batch of flux change rates via vmap",
 )
@@ -290,8 +295,12 @@ def emf_over_batch(
 
 
 @maxwell_cite(
-    528, 529, 530, 531,
-    part=4, chapter="Electromagnetic Induction",
+    528,
+    529,
+    530,
+    531,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Complete Faraday induction analysis for a multi-turn coil (JAX)",
 )
@@ -400,7 +409,8 @@ def analyze_faraday_induction_jax(
 
 @maxwell_cite(
     529,
-    part=4, chapter="Electromagnetic Induction",
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Gradient of induced EMF w.r.t. flux_change_rate via jax.grad",
 )
@@ -429,8 +439,11 @@ def emf_wrt_flux_rate(
 
 
 @maxwell_cite(
-    528, 529, 530,
-    part=4, chapter="Electromagnetic Induction",
+    528,
+    529,
+    530,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Gradient of magnetic flux w.r.t. B-field vector via jax.grad",
 )

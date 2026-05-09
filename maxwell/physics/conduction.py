@@ -21,11 +21,14 @@ References:
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-import numpy as np
 from typing import Callable
-from maxwell.meta.citation import maxwell_cite
+
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -145,7 +148,8 @@ class ConductivityTensor:
 
 @maxwell_cite(
     230,
-    part=2, chapter="Conduction and Resistance",
+    part=2,
+    chapter="Conduction and Resistance",
     theory_class="maxwell_original",
     description="Conduction current density: J = σE = E/ρ",
 )
@@ -203,7 +207,8 @@ def calc_conduction_current(
 
 @maxwell_cite(
     277,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Generalized 3D resistance calculation",
 )
@@ -275,7 +280,8 @@ def calc_resistance_3d(
 
 @maxwell_cite(
     278,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Current through heterogeneous media",
 )
@@ -378,7 +384,8 @@ def heterogeneous_conduction(
 
 @maxwell_cite(
     279,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Specific resistance from measured values",
 )
@@ -420,7 +427,8 @@ def specific_resistance_from_measurement(
 
 @maxwell_cite(
     241,
-    part=2, chapter="Conduction and Resistance",
+    part=2,
+    chapter="Conduction and Resistance",
     theory_class="maxwell_original",
     description="Ohm's law in terms of current density",
 )
@@ -457,7 +465,8 @@ def ohm_law_microscopic(
 
 @maxwell_cite(
     276,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Joule heating from conduction current",
 )
@@ -501,7 +510,8 @@ def joule_heating(
 
 @maxwell_cite(
     274,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Create isotropic conductivity tensor from scalar",
 )
@@ -526,7 +536,8 @@ def isotropic_conductivity_tensor(conductivity: float) -> np.ndarray:
 
 @maxwell_cite(
     274,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Create orthotropic conductivity tensor from principal values",
 )
@@ -556,7 +567,8 @@ def orthotropic_conductivity_tensor(
 
 @maxwell_cite(
     230,
-    part=2, chapter="Conduction and Resistance",
+    part=2,
+    chapter="Conduction and Resistance",
     theory_class="maxwell_original",
     description="Drift velocity from current density",
 )
@@ -593,7 +605,8 @@ def drift_velocity(
 
 @maxwell_cite(
     278,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Effective conductivity of layered medium",
 )
@@ -634,7 +647,9 @@ def effective_conductivity_layered(
 
     if flow_direction == "parallel":
         # Parallel combination: σ_eff = sum(σ_i · L_i) / L
-        sigma_eff = sum(σ * L for σ, L in zip(conductivities, thicknesses)) / total_thickness
+        sigma_eff = (
+            sum(σ * L for σ, L in zip(conductivities, thicknesses)) / total_thickness
+        )
     elif flow_direction == "perpendicular":
         # Series combination: σ_eff = L / sum(L_i / σ_i)
         resistance_sum = sum(L / σ for σ, L in zip(conductivities, thicknesses))

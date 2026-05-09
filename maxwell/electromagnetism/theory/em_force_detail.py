@@ -31,11 +31,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
-from typing import Optional, Tuple, List
+from typing import List, Optional, Tuple
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -95,8 +96,10 @@ class CurrentElement:
 
 
 @maxwell_cite(
-    488, 489,
-    part=4, chapter="Ampere's Force Experiment",
+    488,
+    489,
+    part=4,
+    chapter="Ampere's Force Experiment",
     theory_class="maxwell_original",
     description="Calculate force in Ampere's force experiment",
 )
@@ -159,7 +162,7 @@ def ampere_force_experiment(
         }
 
     # Force per unit length for infinite wires
-    f_per_length = 2.0 * current1 * current2 / (CONST.C ** 2 * separation)
+    f_per_length = 2.0 * current1 * current2 / (CONST.C**2 * separation)
 
     # Infinite wire force
     F_infinite = f_per_length * wire_length
@@ -190,8 +193,11 @@ def ampere_force_experiment(
 
 
 @maxwell_cite(
-    493, 494, 495,
-    part=4, chapter="Current Element Interaction",
+    493,
+    494,
+    495,
+    part=4,
+    chapter="Current Element Interaction",
     theory_class="maxwell_original",
     description="Calculate Ampere force between current elements",
 )
@@ -247,15 +253,18 @@ def ampere_current_element(
     dl2_dot_r = np.dot(dl2, r_hat)
 
     # Ampere's formula
-    factor = (element1.current * element2.current / (r_mag ** 2))
-    bracket = 2.0 * (dl1_dot_r * dl2_dot_r / (r_mag ** 2)) - dl1_dot_dl2
+    factor = element1.current * element2.current / (r_mag**2)
+    bracket = 2.0 * (dl1_dot_r * dl2_dot_r / (r_mag**2)) - dl1_dot_dl2
 
     return factor * bracket * r_hat
 
 
 @maxwell_cite(
-    493, 494, 495,
-    part=4, chapter="Current Element Interaction",
+    493,
+    494,
+    495,
+    part=4,
+    chapter="Current Element Interaction",
     theory_class="maxwell_original",
     description="Calculate Grassmann form of force between elements",
 )
@@ -304,12 +313,15 @@ def grassmann_current_element(
     cross1 = np.cross(dl1, r_hat)
     cross2 = np.cross(dl2, cross1)
 
-    return (element1.current * element2.current / (r_mag ** 2)) * cross2
+    return (element1.current * element2.current / (r_mag**2)) * cross2
 
 
 @maxwell_cite(
-    498, 499, 500,
-    part=4, chapter="Integrated Force Between Circuits",
+    498,
+    499,
+    500,
+    part=4,
+    chapter="Integrated Force Between Circuits",
     theory_class="maxwell_original",
     description="Integrate Ampere force over closed circuits",
 )
@@ -376,8 +388,17 @@ def ampere_force_integration(
 
 
 @maxwell_cite(
-    501, 502, 503, 504, 505, 506, 507, 508, 509,
-    part=4, chapter="Ampere's Four Equilibrium Cases",
+    501,
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    508,
+    509,
+    part=4,
+    chapter="Ampere's Four Equilibrium Cases",
     theory_class="maxwell_original",
     description="Calculate force for Ampere's four equilibrium cases",
 )
@@ -424,13 +445,13 @@ def ampere_four_cases(
             current=current,
             position=np.zeros(3),
             direction=np.array([0, 0, 1]),
-            length=length
+            length=length,
         )
         elem2 = CurrentElement(
             current=current,
             position=np.array([0, 0, separation]),
             direction=np.array([0, 0, 1]),
-            length=length
+            length=length,
         )
 
         F_ampere = ampere_current_element(elem1, elem2)
@@ -446,7 +467,7 @@ def ampere_four_cases(
             "force_ampere": F_ampere,
             "force_magnitude": np.linalg.norm(F_ampere),
             "expected": "repulsive",
-            "analytical": (current ** 2 * length ** 2) / (separation ** 2),
+            "analytical": (current**2 * length**2) / (separation**2),
         }
 
     elif case_number == 2:
@@ -456,13 +477,13 @@ def ampere_four_cases(
             current=current,
             position=np.zeros(3),
             direction=np.array([1, 0, 0]),
-            length=length
+            length=length,
         )
         elem2 = CurrentElement(
             current=current,
             position=np.array([0, separation, 0]),
             direction=np.array([1, 0, 0]),
-            length=length
+            length=length,
         )
 
         F_ampere = ampere_current_element(elem1, elem2)
@@ -480,7 +501,7 @@ def ampere_four_cases(
             "force_grassmann": F_grassmann,
             "force_magnitude": np.linalg.norm(F_ampere),
             "expected": "attractive",
-            "analytical": -(current ** 2 * length ** 2) / (separation ** 2),
+            "analytical": -(current**2 * length**2) / (separation**2),
         }
 
     elif case_number == 3:
@@ -490,13 +511,13 @@ def ampere_four_cases(
             current=current,
             position=np.zeros(3),
             direction=np.array([1, 0, 0]),
-            length=length
+            length=length,
         )
         elem2 = CurrentElement(
             current=current,
             position=np.array([0, separation, 0]),
             direction=np.array([0, 0, 1]),
-            length=length
+            length=length,
         )
 
         F_ampere = ampere_current_element(elem1, elem2)
@@ -527,14 +548,15 @@ def ampere_four_cases(
 
         circuit = []
         for theta in angles:
-            pos = np.array([loop_radius * np.cos(theta),
-                           loop_radius * np.sin(theta), 0])
+            pos = np.array(
+                [loop_radius * np.cos(theta), loop_radius * np.sin(theta), 0]
+            )
             direction = np.array([-np.sin(theta), np.cos(theta), 0])
             elem = CurrentElement(
                 current=current,
                 position=pos,
                 direction=direction,
-                length=loop_radius * dtheta
+                length=loop_radius * dtheta,
             )
             circuit.append(elem)
 
@@ -543,7 +565,7 @@ def ampere_four_cases(
             current=current,
             position=np.array([0, 0, 0]),
             direction=np.array([0, 0, 1]),
-            length=length
+            length=length,
         )
 
         # Compute total force
@@ -569,8 +591,17 @@ def ampere_four_cases(
 
 
 @maxwell_cite(
-    501, 502, 503, 504, 505, 506, 507, 508, 509,
-    part=4, chapter="Ampere's Four Equilibrium Cases",
+    501,
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    508,
+    509,
+    part=4,
+    chapter="Ampere's Four Equilibrium Cases",
     theory_class="maxwell_original",
     description="Verify all four equilibrium cases",
 )
@@ -641,8 +672,26 @@ def verify_ampere_equilibrium(
 
 
 @maxwell_cite(
-    481, 488, 489, 493, 494, 495, 498, 499, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509,
-    part=4, chapter="Ampere's Force Investigations",
+    481,
+    488,
+    489,
+    493,
+    494,
+    495,
+    498,
+    499,
+    500,
+    501,
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    508,
+    509,
+    part=4,
+    chapter="Ampere's Force Investigations",
     theory_class="maxwell_original",
     description="Complete analysis of Ampere's force law",
 )
@@ -680,7 +729,7 @@ def analyze_ampere_force_law(
         wire_length=wire_length,
         separation=separation,
         current1=current,
-        current2=current
+        current2=current,
     )
     results["parallel_wire_experiment"] = wire_result
 
@@ -689,13 +738,13 @@ def analyze_ampere_force_law(
         current=current,
         position=np.zeros(3),
         direction=np.array([1, 0, 0]),
-        length=element_length
+        length=element_length,
     )
     elem2 = CurrentElement(
         current=current,
         position=np.array([0, separation, 0]),
         direction=np.array([1, 0, 0]),
-        length=element_length
+        length=element_length,
     )
 
     F_ampere = ampere_current_element(elem1, elem2)
@@ -718,14 +767,14 @@ def analyze_ampere_force_law(
     loop2 = []
     for theta in angles:
         # Loop 1 at z=0
-        pos1 = np.array([separation * np.cos(theta),
-                        separation * np.sin(theta), 0])
+        pos1 = np.array([separation * np.cos(theta), separation * np.sin(theta), 0])
         dir1 = np.array([-np.sin(theta), np.cos(theta), 0])
         loop1.append(CurrentElement(current, pos1, dir1, separation * dtheta))
 
         # Loop 2 at z=separation
-        pos2 = np.array([separation * np.cos(theta),
-                        separation * np.sin(theta), separation])
+        pos2 = np.array(
+            [separation * np.cos(theta), separation * np.sin(theta), separation]
+        )
         dir2 = np.array([-np.sin(theta), np.cos(theta), 0])
         loop2.append(CurrentElement(current, pos2, dir2, separation * dtheta))
 

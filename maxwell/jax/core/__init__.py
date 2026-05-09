@@ -33,19 +33,19 @@ from maxwell.jax.core.charge import (
 from maxwell.jax.core.magnet import (
     MagneticPoleJAX,
     MagnetJAX,
-    pole_force_jax,
     mutual_action_jax,
-    torque_on_magnet_jax,
     pole_force_gradient,
+    pole_force_jax,
+    torque_on_magnet_jax,
 )
 from maxwell.jax.core.vector_potential import (
-    VectorPotentialJAX,
-    curl_jax,
-    curl_autodiff_jax,
-    dipole_vector_potential_jax,
     B_from_dipole_autodiff_jax,
-    verify_vector_potential_curl_jax,
+    VectorPotentialJAX,
+    curl_autodiff_jax,
+    curl_jax,
     current_element_potential_jax,
+    dipole_vector_potential_jax,
+    verify_vector_potential_curl_jax,
 )
 
 __all__ = [

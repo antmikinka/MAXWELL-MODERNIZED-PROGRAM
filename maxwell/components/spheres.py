@@ -21,11 +21,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.magnet import Magnet
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -53,13 +54,21 @@ class MagneticSphere:
     center: np.ndarray = None  # center, cm, shape (3,)
 
     def __post_init__(self):
-        self.center = np.asarray(self.center, dtype=np.float64) if self.center is not None else np.zeros(3)
-        self.magnetization = np.asarray(self.magnetization, dtype=np.float64) if self.magnetization is not None else np.zeros(3)
+        self.center = (
+            np.asarray(self.center, dtype=np.float64)
+            if self.center is not None
+            else np.zeros(3)
+        )
+        self.magnetization = (
+            np.asarray(self.magnetization, dtype=np.float64)
+            if self.magnetization is not None
+            else np.zeros(3)
+        )
 
     @property
     def volume(self) -> float:
         """Volume of sphere: V = (4/3)πR³."""
-        return (4/3) * np.pi * self.radius**3
+        return (4 / 3) * np.pi * self.radius**3
 
     @property
     def total_magnetic_moment(self) -> np.ndarray:
@@ -68,7 +77,8 @@ class MagneticSphere:
 
     @maxwell_cite(
         431,
-        part=3, chapter="Magnetic Spheres",
+        part=3,
+        chapter="Magnetic Spheres",
         theory_class="maxwell_original",
         description="Calculate external field of magnetized sphere",
     )
@@ -108,7 +118,8 @@ class MagneticSphere:
 
     @maxwell_cite(
         432,
-        part=3, chapter="Magnetic Spheres",
+        part=3,
+        chapter="Magnetic Spheres",
         theory_class="maxwell_original",
         description="Calculate internal field of magnetized sphere",
     )
@@ -138,7 +149,8 @@ class MagneticSphere:
 
     @maxwell_cite(
         431,
-        part=3, chapter="Magnetic Spheres",
+        part=3,
+        chapter="Magnetic Spheres",
         theory_class="maxwell_original",
         description="Calculate scalar potential of magnetized sphere",
     )
@@ -177,7 +189,8 @@ class MagneticSphere:
     @classmethod
     @maxwell_cite(
         433,
-        part=3, chapter="Magnetic Spheres",
+        part=3,
+        chapter="Magnetic Spheres",
         theory_class="maxwell_original",
         description="Create sphere from total magnetic moment",
     )
@@ -206,7 +219,7 @@ class MagneticSphere:
         Reference:
             Part III, Art. 433: Sphere from moment.
         """
-        volume = (4/3) * np.pi * radius**3
+        volume = (4 / 3) * np.pi * radius**3
         magnetization = np.asarray(total_moment, dtype=np.float64) / volume
 
         return cls(
@@ -218,7 +231,8 @@ class MagneticSphere:
     @classmethod
     @maxwell_cite(
         434,
-        part=3, chapter="Magnetic Spheres",
+        part=3,
+        chapter="Magnetic Spheres",
         theory_class="maxwell_original",
         description="Create induced sphere in external field",
     )
@@ -269,7 +283,8 @@ class MagneticSphere:
 
 @maxwell_cite(
     431,
-    part=3, chapter="Magnetic Spheres",
+    part=3,
+    chapter="Magnetic Spheres",
     theory_class="maxwell_original",
     description="Calculate field of uniformly magnetized sphere",
 )
@@ -311,12 +326,17 @@ def sphere_field(
         center=center,
     )
 
-    return sphere.external_field(position) if np.linalg.norm(position - center) > radius else sphere.internal_field(position)
+    return (
+        sphere.external_field(position)
+        if np.linalg.norm(position - center) > radius
+        else sphere.internal_field(position)
+    )
 
 
 @maxwell_cite(
     432,
-    part=3, chapter="Magnetic Spheres",
+    part=3,
+    chapter="Magnetic Spheres",
     theory_class="maxwell_original",
     description="Calculate demagnetizing field of sphere",
 )
@@ -347,7 +367,8 @@ def sphere_demagnetizing_field(
 
 @maxwell_cite(
     433,
-    part=3, chapter="Magnetic Spheres",
+    part=3,
+    chapter="Magnetic Spheres",
     theory_class="maxwell_original",
     description="Calculate equivalent dipole moment of sphere",
 )
@@ -373,13 +394,14 @@ def sphere_equivalent_dipole(
     Reference:
         Part III, Art. 433: Equivalent dipole.
     """
-    volume = (4/3) * np.pi * radius**3
+    volume = (4 / 3) * np.pi * radius**3
     return np.asarray(magnetization, dtype=np.float64) * volume
 
 
 @maxwell_cite(
     434,
-    part=3, chapter="Magnetic Spheres",
+    part=3,
+    chapter="Magnetic Spheres",
     theory_class="maxwell_original",
     description="Calculate induced magnetization of sphere in field",
 )
@@ -442,13 +464,21 @@ class HollowMagneticSphere:
     center: np.ndarray = None
 
     def __post_init__(self):
-        self.center = np.asarray(self.center, dtype=np.float64) if self.center is not None else np.zeros(3)
-        self.magnetization = np.asarray(self.magnetization, dtype=np.float64) if self.magnetization is not None else np.zeros(3)
+        self.center = (
+            np.asarray(self.center, dtype=np.float64)
+            if self.center is not None
+            else np.zeros(3)
+        )
+        self.magnetization = (
+            np.asarray(self.magnetization, dtype=np.float64)
+            if self.magnetization is not None
+            else np.zeros(3)
+        )
 
     @property
     def shell_volume(self) -> float:
         """Volume of shell material: V = (4/3)π(b³ - a³)."""
-        return (4/3) * np.pi * (self.outer_radius**3 - self.inner_radius**3)
+        return (4 / 3) * np.pi * (self.outer_radius**3 - self.inner_radius**3)
 
     @property
     def total_magnetic_moment(self) -> np.ndarray:
@@ -457,7 +487,8 @@ class HollowMagneticSphere:
 
     @maxwell_cite(
         435,
-        part=3, chapter="Hollow Magnetic Spheres",
+        part=3,
+        chapter="Hollow Magnetic Spheres",
         theory_class="maxwell_original",
         description="Calculate field of hollow magnetized sphere",
     )
@@ -501,7 +532,8 @@ class HollowMagneticSphere:
 
     @maxwell_cite(
         436,
-        part=3, chapter="Hollow Magnetic Spheres",
+        part=3,
+        chapter="Hollow Magnetic Spheres",
         theory_class="maxwell_original",
         description="Calculate shielding factor of hollow sphere",
     )
@@ -530,21 +562,24 @@ class HollowMagneticSphere:
         """
         if susceptibility is None:
             # For permanent magnetization, return geometric factor
-            return float(self.outer_radius**3 / (self.outer_radius**3 - self.inner_radius**3))
+            return float(
+                self.outer_radius**3 / (self.outer_radius**3 - self.inner_radius**3)
+            )
 
         # Relative permeability
         mu_r = 1 + 4 * np.pi * susceptibility
 
         # Shielding factor
-        ratio = (self.inner_radius / self.outer_radius)**3
-        S = 1 + (2/9) * mu_r * (1 - ratio)
+        ratio = (self.inner_radius / self.outer_radius) ** 3
+        S = 1 + (2 / 9) * mu_r * (1 - ratio)
 
         return float(S)
 
     @classmethod
     @maxwell_cite(
         436,
-        part=3, chapter="Hollow Magnetic Spheres",
+        part=3,
+        chapter="Hollow Magnetic Spheres",
         theory_class="maxwell_original",
         description="Create hollow sphere for magnetic shielding",
     )
@@ -593,7 +628,7 @@ class HollowMagneticSphere:
                 f"with susceptibility {susceptibility}"
             )
 
-        outer_radius = inner_radius / (term ** (1/3))
+        outer_radius = inner_radius / (term ** (1 / 3))
 
         return cls(
             inner_radius=inner_radius,
@@ -604,8 +639,10 @@ class HollowMagneticSphere:
 
 
 @maxwell_cite(
-    435, 436,
-    part=3, chapter="Hollow Magnetic Spheres",
+    435,
+    436,
+    part=3,
+    chapter="Hollow Magnetic Spheres",
     theory_class="maxwell_original",
     description="Calculate field inside hollow sphere in external field",
 )
@@ -655,8 +692,8 @@ def hollow_sphere_in_field(
 
     # Calculate shielding factor
     mu_r = 1 + 4 * np.pi * susceptibility
-    ratio = (inner_radius / outer_radius)**3
-    S = 1 + (2/9) * mu_r * (1 - ratio)
+    ratio = (inner_radius / outer_radius) ** 3
+    S = 1 + (2 / 9) * mu_r * (1 - ratio)
 
     # Field in cavity is uniform and reduced
     H_ext = np.asarray(external_field, dtype=np.float64)
@@ -664,8 +701,14 @@ def hollow_sphere_in_field(
 
 
 @maxwell_cite(
-    431, 432, 433, 434, 435, 436,
-    part=3, chapter="Magnetic Spheres",
+    431,
+    432,
+    433,
+    434,
+    435,
+    436,
+    part=3,
+    chapter="Magnetic Spheres",
     theory_class="maxwell_original",
     description="Verify sphere magnetism calculations",
 )

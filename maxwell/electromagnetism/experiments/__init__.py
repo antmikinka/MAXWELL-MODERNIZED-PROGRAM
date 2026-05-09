@@ -7,29 +7,27 @@ References:
 """
 
 from maxwell.electromagnetism.experiments.ampere_balance import (
-    simulate_ampere_balance,
-    force_vs_separation,
-    force_vs_current,
-    verify_ampere_balance,
-    analyze_ampere_balance,
     BalanceReading,
+    analyze_ampere_balance,
+    force_vs_current,
+    force_vs_separation,
+    simulate_ampere_balance,
+    verify_ampere_balance,
 )
-
 from maxwell.electromagnetism.experiments.felici import (
-    simulate_linear_ramp,
+    FeliciResult,
+    InductionEvent,
+    analyze_felici_law,
     simulate_exponential_decay,
+    simulate_linear_ramp,
     simulate_mutual_induction,
     verify_felici_law,
-    analyze_felici_law,
-    InductionEvent,
-    FeliciResult,
 )
-
 from maxwell.electromagnetism.experiments.stress_verification import (
-    verify_point_charge_stress,
-    verify_parallel_wire_stress,
-    verify_magnetic_pressure,
     analyze_stress_verification,
+    verify_magnetic_pressure,
+    verify_parallel_wire_stress,
+    verify_point_charge_stress,
 )
 
 __all__ = [

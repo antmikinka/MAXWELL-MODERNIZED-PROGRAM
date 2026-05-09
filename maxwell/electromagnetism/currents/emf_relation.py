@@ -29,10 +29,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -61,7 +62,8 @@ class EMFCurrentRelation:
 
     @maxwell_cite(
         611,
-        part=4, chapter="EMF-Current Relation",
+        part=4,
+        chapter="EMF-Current Relation",
         theory_class="maxwell_original",
         description="Calculate EMF from current and dI/dt",
     )
@@ -82,7 +84,8 @@ class EMFCurrentRelation:
 
     @maxwell_cite(
         611,
-        part=4, chapter="EMF-Current Relation",
+        part=4,
+        chapter="EMF-Current Relation",
         theory_class="maxwell_original",
         description="Calculate current from EMF",
     )
@@ -101,13 +104,14 @@ class EMFCurrentRelation:
             Steady current (abamperes).
         """
         if self.resistance <= 0:
-            return float('inf')
+            return float("inf")
         return emf / self.resistance
 
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate EMF: EMF = R*I + L*dI/dt",
 )
@@ -141,7 +145,8 @@ def calc_emf_current_relation(
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate resistive voltage drop",
 )
@@ -169,7 +174,8 @@ def calc_resistive_drop(
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate inductive EMF",
 )
@@ -199,7 +205,8 @@ def calc_inductive_emf(
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate current in RL circuit",
 )
@@ -240,14 +247,17 @@ def calc_rl_circuit_current(
     I_final = emf / resistance
 
     if tau > 0:
-        return I_final * (1.0 - np.exp(-time / tau)) + initial_current * np.exp(-time / tau)
+        return I_final * (1.0 - np.exp(-time / tau)) + initial_current * np.exp(
+            -time / tau
+        )
     else:
         return I_final
 
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate line integral of E around circuit",
 )
@@ -291,7 +301,8 @@ def calc_line_integral_E(
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Verify EMF-current relation",
 )
@@ -321,7 +332,7 @@ def verify_emf_current_relation(
     """
     if test_times is None:
         tau = inductance / resistance if resistance > 0 else 1.0
-        test_times = [0.01*tau, 0.1*tau, 0.5*tau, tau, 2*tau, 5*tau]
+        test_times = [0.01 * tau, 0.1 * tau, 0.5 * tau, tau, 2 * tau, 5 * tau]
 
     verified_at_all_times = True
     results = []
@@ -337,24 +348,39 @@ def verify_emf_current_relation(
 
         # Check EMF = R*I + L*dI/dt
         emf_calculated = resistance * I + inductance * dI_dt
-        emf_error = abs(emf_calculated - emf) / abs(emf) if abs(emf) > 0 else abs(emf_calculated)
+        emf_error = (
+            abs(emf_calculated - emf) / abs(emf)
+            if abs(emf) > 0
+            else abs(emf_calculated)
+        )
 
         verified = emf_error < tolerance
         verified_at_all_times = verified_at_all_times and verified
 
-        results.append({
-            "time": t,
-            "current": I,
-            "dI_dt": dI_dt,
-            "emf_calculated": emf_calculated,
-            "emf_error": emf_error,
-            "verified": verified,
-        })
+        results.append(
+            {
+                "time": t,
+                "current": I,
+                "dI_dt": dI_dt,
+                "emf_calculated": emf_calculated,
+                "emf_error": emf_error,
+                "verified": verified,
+            }
+        )
 
     # Steady state check
-    I_steady = calc_rl_circuit_current(emf, resistance, inductance, 10.0 * (inductance / resistance if resistance > 0 else 1.0))
-    I_expected = emf / resistance if resistance > 0 else float('inf')
-    steady_error = abs(I_steady - I_expected) / I_expected if I_expected < float('inf') and I_expected > 0 else 0
+    I_steady = calc_rl_circuit_current(
+        emf,
+        resistance,
+        inductance,
+        10.0 * (inductance / resistance if resistance > 0 else 1.0),
+    )
+    I_expected = emf / resistance if resistance > 0 else float("inf")
+    steady_error = (
+        abs(I_steady - I_expected) / I_expected
+        if I_expected < float("inf") and I_expected > 0
+        else 0
+    )
 
     return {
         "resistance": resistance,
@@ -372,7 +398,8 @@ def verify_emf_current_relation(
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Complete EMF-current analysis",
 )
@@ -451,9 +478,11 @@ def analyze_emf_current(
 # ALIASES AND ADDITIONAL FUNCTIONS FOR TEST COMPATIBILITY
 # =============================================================================
 
+
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate current from EMF (Ohm's law)",
 )
@@ -474,13 +503,14 @@ def calc_current_from_emf(emf: float, resistance: float) -> float:
         Part IV, Art. 611: Ohm's law.
     """
     if resistance <= 0:
-        return float('inf')
+        return float("inf")
     return emf / resistance
 
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate EMF from current",
 )
@@ -505,7 +535,8 @@ def calc_emf_from_current(current: float, resistance: float) -> float:
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate power from EMF",
 )
@@ -530,7 +561,8 @@ def calc_power_from_emf(emf: float, current: float) -> float:
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate series resistance",
 )
@@ -554,7 +586,8 @@ def calc_series_resistance(resistances: list[float]) -> float:
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate parallel resistance",
 )
@@ -574,10 +607,10 @@ def calc_parallel_resistance(resistances: list[float]) -> float:
         Part IV, Art. 611: Parallel resistance.
     """
     if not resistances:
-        return float('inf')
+        return float("inf")
     inv_sum = sum(1.0 / r for r in resistances if r > 0)
     if inv_sum <= 0:
-        return float('inf')
+        return float("inf")
     return 1.0 / inv_sum
 
 
@@ -588,18 +621,20 @@ EMFRelation = EMFCurrentRelation
 # Add methods to EMFRelation class for test compatibility
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate current from EMF",
 )
 def _emf_current_from_emf(self, emf: float) -> float:
     """Calculate current from EMF: I = EMF / R."""
-    return emf / self.resistance if self.resistance > 0 else float('inf')
+    return emf / self.resistance if self.resistance > 0 else float("inf")
 
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate EMF from current",
 )
@@ -610,7 +645,8 @@ def _emf_emf_from_current(self, current: float) -> float:
 
 @maxwell_cite(
     611,
-    part=4, chapter="EMF-Current Relation",
+    part=4,
+    chapter="EMF-Current Relation",
     theory_class="maxwell_original",
     description="Calculate power",
 )

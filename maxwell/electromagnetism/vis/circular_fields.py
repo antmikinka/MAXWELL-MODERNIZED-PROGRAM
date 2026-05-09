@@ -33,11 +33,15 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-from maxwell.electromagnetism.components.circular_coils import calc_coil_off_axis, calc_coil_on_axis
+from maxwell.electromagnetism.components.circular_coils import (
+    calc_coil_off_axis,
+    calc_coil_on_axis,
+)
+from maxwell.meta.citation import maxwell_cite
 
 
 def _vector_potential_azimuthal(
@@ -53,18 +57,20 @@ def _vector_potential_azimuthal(
         return 0.0
 
     # k^2 parameter
-    alpha_sq = (a + rho) ** 2 + z ** 2
+    alpha_sq = (a + rho) ** 2 + z**2
     k_sq = 4.0 * a * rho / alpha_sq
     k_sq = min(max(k_sq, 0), 1 - 1e-15)
 
     # Elliptic integrals
-    K = (np.pi / 2) * (1 + k_sq / 4 + 9 * k_sq ** 2 / 64)
-    E = (np.pi / 2) * (1 - k_sq / 4 - 3 * k_sq ** 2 / 64)
+    K = (np.pi / 2) * (1 + k_sq / 4 + 9 * k_sq**2 / 64)
+    E = (np.pi / 2) * (1 - k_sq / 4 - 3 * k_sq**2 / 64)
 
     # A_phi formula
     prefactor = current / (CONST.C * np.pi)
-    A_phi = prefactor * np.sqrt(a / rho) * (
-        (2 - k_sq) * K / np.sqrt(alpha_sq) - 2 * E / np.sqrt(alpha_sq)
+    A_phi = (
+        prefactor
+        * np.sqrt(a / rho)
+        * ((2 - k_sq) * K / np.sqrt(alpha_sq) - 2 * E / np.sqrt(alpha_sq))
     )
 
     return A_phi
@@ -90,7 +96,8 @@ class FieldLineData:
 
 @maxwell_cite(
     702,
-    part=4, chapter="Circular Field Lines",
+    part=4,
+    chapter="Circular Field Lines",
     theory_class="maxwell_original",
     description="Calculate stream function for circular coil",
 )
@@ -124,7 +131,8 @@ def calc_stream_function(
 
 @maxwell_cite(
     702,
-    part=4, chapter="Circular Field Lines",
+    part=4,
+    chapter="Circular Field Lines",
     theory_class="maxwell_original",
     description="Trace magnetic field line",
 )
@@ -170,7 +178,7 @@ def trace_field_line(
         B_rho = np.sqrt(B[0] ** 2 + B[1] ** 2)
         B_z = B[2]
 
-        B_mag = np.sqrt(B_rho ** 2 + B_z ** 2)
+        B_mag = np.sqrt(B_rho**2 + B_z**2)
         if B_mag < 1e-15:
             break
 
@@ -185,7 +193,8 @@ def trace_field_line(
 
 @maxwell_cite(
     702,
-    part=4, chapter="Circular Field Lines",
+    part=4,
+    chapter="Circular Field Lines",
     theory_class="maxwell_original",
     description="Calculate magnetic flux through circular surface",
 )
@@ -230,7 +239,8 @@ def calc_flux_through_circle(
 
 @maxwell_cite(
     702,
-    part=4, chapter="Circular Field Lines",
+    part=4,
+    chapter="Circular Field Lines",
     theory_class="maxwell_original",
     description="Generate field line data for visualization",
 )
@@ -271,7 +281,9 @@ def generate_field_lines(
         psi = calc_stream_function(current, coil_radius, start_rho, start_z)
 
         # Trace field line
-        r, z = trace_field_line(current, coil_radius, start_rho, start_z, n_steps, step_size)
+        r, z = trace_field_line(
+            current, coil_radius, start_rho, start_z, n_steps, step_size
+        )
 
         psi_values.append(psi)
         rho_coords.append(r)
@@ -282,7 +294,8 @@ def generate_field_lines(
 
 @maxwell_cite(
     702,
-    part=4, chapter="Circular Field Lines",
+    part=4,
+    chapter="Circular Field Lines",
     theory_class="maxwell_original",
     description="Verify field line properties",
 )
@@ -308,7 +321,9 @@ def verify_field_lines(
         Dictionary with verification results.
     """
     # Trace a field line
-    rho_line, z_line = trace_field_line(current, coil_radius, coil_radius * 0.5, coil_radius * 0.1)
+    rho_line, z_line = trace_field_line(
+        current, coil_radius, coil_radius * 0.5, coil_radius * 0.1
+    )
 
     # Check stream function is constant along field line
     if len(rho_line) < 2:
@@ -339,7 +354,8 @@ def verify_field_lines(
 
 @maxwell_cite(
     702,
-    part=4, chapter="Circular Field Lines",
+    part=4,
+    chapter="Circular Field Lines",
     theory_class="maxwell_original",
     description="Complete circular field line analysis",
 )
@@ -370,7 +386,10 @@ def analyze_circular_fields(
 
     # Flux at various distances
     z_distances = [0, coil_radius / 2, coil_radius, 2 * coil_radius]
-    flux_values = [calc_flux_through_circle(current, coil_radius, coil_radius, z) for z in z_distances]
+    flux_values = [
+        calc_flux_through_circle(current, coil_radius, coil_radius, z)
+        for z in z_distances
+    ]
 
     # Stream function on a grid
     grid_rho = np.linspace(0.1 * coil_radius, 3 * coil_radius, 20)

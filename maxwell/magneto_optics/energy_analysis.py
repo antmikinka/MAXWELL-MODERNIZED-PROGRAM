@@ -128,16 +128,16 @@ def summarize_magneto_optic_results() -> dict[str, str]:
     """
     return {
         "result_1": "Light is an electromagnetic phenomenon -- "
-                    "the velocity ratio v = 1/sqrt(epsilon*mu) equals c/n",
+        "the velocity ratio v = 1/sqrt(epsilon*mu) equals c/n",
         "result_2": "Magnetic rotation of polarization proves the "
-                    "luminiferous disturbance is a vector, not a scalar",
+        "luminiferous disturbance is a vector, not a scalar",
         "result_3": "The rotation depends on a real rotational motion "
-                    "in the medium about the magnetic axis",
+        "in the medium about the magnetic axis",
         "result_4": "Right and left circularly polarized rays travel "
-                    "at different velocities in a magnetized medium",
+        "at different velocities in a magnetized medium",
         "result_5": "The difference in velocities is proportional to "
-                    "the magnetic field strength (Verdet's law)",
+        "the magnetic field strength (Verdet's law)",
         "result_6": "Natural optical rotation (quartz, turpentine) is "
-                    "distinct from magnetic rotation -- reciprocal vs "
-                    "non-reciprocal",
+        "distinct from magnetic rotation -- reciprocal vs "
+        "non-reciprocal",
     }

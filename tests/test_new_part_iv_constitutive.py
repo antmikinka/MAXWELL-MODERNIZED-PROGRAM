@@ -17,21 +17,23 @@ Tests verify:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
-from maxwell.meta.citation import get_citation, MaxwellCitation
-
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # MAGNETIZATION TESTS (Art. 605)
 # =============================================================================
 
+
 class TestMagnetization:
     """Test magnetic constitutive relation: B = H + 4*pi*I = mu*H."""
 
-    def test_magnetic_induction_formula(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_magnetic_induction_formula(
+        self, cgs_tolerance, assert_vectors_close
+    ) -> None:
         """Verify B = mu*H formula.
 
         For H = 100 oersted, mu = 1000 (iron):
@@ -47,13 +49,17 @@ class TestMagnetization:
 
         assert_vectors_close(B, expected, cgs_tolerance)
 
-    def test_magnetization_intensity_formula(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_magnetization_intensity_formula(
+        self, cgs_tolerance, assert_vectors_close
+    ) -> None:
         """Verify I = chi*H formula.
 
         For chi = 100, H = 50 oersted:
         I = 100 * 50 = 5000 emu/cm³
         """
-        from maxwell.materials.constitutive.magnetization import calc_magnetization_intensity
+        from maxwell.materials.constitutive.magnetization import (
+            calc_magnetization_intensity,
+        )
 
         H = np.array([50.0, 0.0, 0.0])
         chi = 100.0
@@ -63,7 +69,9 @@ class TestMagnetization:
 
         assert_vectors_close(I, expected, cgs_tolerance)
 
-    def test_permeability_from_susceptibility(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_permeability_from_susceptibility(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify mu = 1 + 4*pi*chi formula.
 
         For chi = 100:
@@ -77,9 +85,14 @@ class TestMagnetization:
 
         assert_cgs_close(mu, expected, cgs_tolerance)
 
-    def test_susceptibility_from_permeability(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_susceptibility_from_permeability(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify chi = (mu - 1)/(4*pi) inverse formula."""
-        from maxwell.materials.constitutive.magnetization import calc_susceptibility, calc_permeability
+        from maxwell.materials.constitutive.magnetization import (
+            calc_permeability,
+            calc_susceptibility,
+        )
 
         chi_original = 50.0
         mu = calc_permeability(chi_original)
@@ -129,8 +142,7 @@ class TestMagnetization:
         from maxwell.materials.constitutive.magnetization import verify_magnetization
 
         result = verify_magnetization(
-            H_field=np.array([100.0, 0.0, 0.0]),
-            susceptibility=0.01
+            H_field=np.array([100.0, 0.0, 0.0]), susceptibility=0.01
         )
 
         assert result["verified"] is True
@@ -159,7 +171,7 @@ class TestMagnetization:
         from maxwell.materials.constitutive.magnetization import (
             calc_magnetic_induction,
             calc_magnetization_intensity,
-            calc_permeability
+            calc_permeability,
         )
 
         H = np.array([100.0, 0.0, 0.0])
@@ -186,6 +198,7 @@ class TestMagnetization:
 # DISPLACEMENT TESTS (Art. 608)
 # =============================================================================
 
+
 class TestDisplacement:
     """Test electric displacement: D = (1/4pi)*K*E = epsilon*E."""
 
@@ -205,7 +218,9 @@ class TestDisplacement:
 
         assert_vectors_close(D, expected, cgs_tolerance)
 
-    def test_permittivity_from_dielectric_constant(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_permittivity_from_dielectric_constant(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify epsilon = K formula (CGS-Gaussian).
 
         For K = 80 (water):
@@ -219,9 +234,14 @@ class TestDisplacement:
 
         assert_cgs_close(epsilon, expected, cgs_tolerance)
 
-    def test_dielectric_constant_from_permittivity(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_dielectric_constant_from_permittivity(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify K = epsilon (CGS-Gaussian) inverse formula."""
-        from maxwell.materials.constitutive.displacement import calc_dielectric_constant, calc_permittivity
+        from maxwell.materials.constitutive.displacement import (
+            calc_dielectric_constant,
+            calc_permittivity,
+        )
 
         epsilon_original = 10.0
         K = calc_dielectric_constant(epsilon_original)
@@ -229,13 +249,17 @@ class TestDisplacement:
 
         assert_cgs_close(epsilonRecovered, epsilon_original, cgs_tolerance)
 
-    def test_displacement_current_formula(self, cgs_tolerance, assert_vectors_close, assert_cgs_close) -> None:
+    def test_displacement_current_formula(
+        self, cgs_tolerance, assert_vectors_close, assert_cgs_close
+    ) -> None:
         """Verify J_d = (1/4pi)*dD/dt formula.
 
         For dD/dt = 1e6 statcoulombs/cm²/s:
         J_d = 1e6/(4*pi) = 79577 abamperes/cm²
         """
-        from maxwell.materials.constitutive.displacement import calc_displacement_current
+        from maxwell.materials.constitutive.displacement import (
+            calc_displacement_current,
+        )
 
         dD_dt = np.array([1e6, 0.0, 0.0])
         J_d = calc_displacement_current(dD_dt)
@@ -297,6 +321,7 @@ class TestDisplacement:
 # CONDUCTIVITY TESTS (Art. 609)
 # =============================================================================
 
+
 class TestConductivity:
     """Test electrical conductivity: J = C*E (Ohm's law)."""
 
@@ -333,9 +358,13 @@ class TestConductivity:
 
         assert_cgs_close(R, expected, cgs_tolerance)
 
-    def test_conductivity_from_resistivity(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_conductivity_from_resistivity(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify C = 1/rho relationship."""
-        from maxwell.materials.constitutive.conductivity import calc_conductivity_from_resistivity
+        from maxwell.materials.constitutive.conductivity import (
+            calc_conductivity_from_resistivity,
+        )
 
         rho = 1.7e-6
         C = calc_conductivity_from_resistivity(rho)
@@ -371,7 +400,7 @@ class TestConductivity:
         R = 10.0
 
         P = calc_joule_heating(I, R)
-        expected = I ** 2 * R
+        expected = I**2 * R
 
         assert_cgs_close(P, expected, cgs_tolerance)
 
@@ -394,6 +423,7 @@ class TestConductivity:
 # =============================================================================
 # PERMEABILITY TESTS (Art. 614)
 # =============================================================================
+
 
 class TestPermeability:
     """Test permeability relation: B = mu*H."""
@@ -428,7 +458,9 @@ class TestPermeability:
 
     def test_relative_permeability(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify mu_r = mu/mu_0 formula."""
-        from maxwell.materials.constitutive.permeability import calc_relative_permeability
+        from maxwell.materials.constitutive.permeability import (
+            calc_relative_permeability,
+        )
 
         # For iron, mu ≈ 5000, mu_0 = 1 in CGS
         mu = 5000.0
@@ -459,19 +491,24 @@ class TestPermeability:
         For B = 1000 gauss, mu = 1:
         u = 1000²/(8*pi) = 39788 ergs/cm³
         """
-        from maxwell.materials.constitutive.permeability import calc_magnetic_energy_density
+        from maxwell.materials.constitutive.permeability import (
+            calc_magnetic_energy_density,
+        )
 
         B = 1000.0
         mu = 1.0
 
         u = calc_magnetic_energy_density(B, mu)
-        expected = B ** 2 / (8.0 * np.pi * mu)
+        expected = B**2 / (8.0 * np.pi * mu)
 
         assert_cgs_close(u, expected, cgs_tolerance)
 
     def test_permeability_roundtrip(self, cgs_tolerance, assert_vectors_close) -> None:
         """Verify B->H->B roundtrip."""
-        from maxwell.materials.constitutive.permeability import calc_B_from_H, calc_H_from_B
+        from maxwell.materials.constitutive.permeability import (
+            calc_B_from_H,
+            calc_H_from_B,
+        )
 
         H_original = np.array([100.0, 50.0, 25.0])
         mu = 500.0
@@ -493,6 +530,7 @@ class TestPermeability:
 # CGS UNIT COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestConstitutiveCGSUnits:
     """Test CGS unit compliance for constitutive relations."""
 
@@ -500,7 +538,7 @@ class TestConstitutiveCGSUnits:
         """Verify magnetization produces CGS units."""
         from maxwell.materials.constitutive.magnetization import (
             calc_magnetic_induction,
-            calc_magnetization_intensity
+            calc_magnetization_intensity,
         )
 
         H = np.array([100.0, 0.0, 0.0])  # oersted
@@ -536,13 +574,12 @@ class TestConstitutiveCGSUnits:
 # CITATION COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestConstitutiveCitationCompliance:
     """Test citation decorator compliance for constitutive modules."""
 
     def test_magnetization_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify magnetization functions have correct citations."""
         from maxwell.materials.constitutive.magnetization import (
@@ -556,15 +593,13 @@ class TestConstitutiveCitationCompliance:
         assert 605 in citation.articles
 
     def test_displacement_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify displacement functions have correct citations."""
         from maxwell.materials.constitutive.displacement import (
             calc_displacement,
-            calc_permittivity,
             calc_displacement_current,
+            calc_permittivity,
         )
 
         citation = require_citation(calc_displacement)
@@ -572,15 +607,13 @@ class TestConstitutiveCitationCompliance:
         assert 608 in citation.articles
 
     def test_conductivity_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify conductivity functions have correct citations."""
         from maxwell.materials.constitutive.conductivity import (
             calc_current_density,
-            calc_resistance,
             calc_joule_heating,
+            calc_resistance,
         )
 
         citation = require_citation(calc_current_density)
@@ -588,9 +621,7 @@ class TestConstitutiveCitationCompliance:
         assert 609 in citation.articles
 
     def test_permeability_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify permeability functions have correct citations."""
         from maxwell.materials.constitutive.permeability import (

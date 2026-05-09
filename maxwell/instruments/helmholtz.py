@@ -48,7 +48,7 @@ class HelmholtzCoil:
         Returns:
             Field H in oersted.
         """
-        factor = (8.0 / (5.0**1.5))
+        factor = 8.0 / (5.0**1.5)
         return factor * self.n_turns * self.current / self.radius
 
     @maxwell_cite(713, part=4, theory_class="standard_math")

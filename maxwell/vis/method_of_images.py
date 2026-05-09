@@ -13,9 +13,9 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.vis._base import create_meshgrid, format_axis_labels
 from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._base import create_meshgrid, format_axis_labels
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -121,8 +121,12 @@ def plot_method_of_images(
     require_matplotlib()
 
     X, Y = create_meshgrid(
-        x_range[0], x_range[1], y_range[0], y_range[1],
-        resolution, resolution,
+        x_range[0],
+        x_range[1],
+        y_range[0],
+        y_range[1],
+        resolution,
+        resolution,
     )
 
     V, Ex, Ey = calc_method_of_images(q, d, X, Y)
@@ -136,7 +140,9 @@ def plot_method_of_images(
     vmin, vmax = np.nanmin(V), np.nanmax(V)
     vmax_abs = max(abs(vmin), abs(vmax))
     cf = ax.contourf(
-        X, Y, V,
+        X,
+        Y,
+        V,
         levels=30,
         cmap="RdBu_r",
         vmin=-vmax_abs,
@@ -151,7 +157,10 @@ def plot_method_of_images(
     # Field lines (streamplot)
     magnitude = np.sqrt(Ex**2 + Ey**2)
     strm = ax.streamplot(
-        X, Y, Ex, Ey,
+        X,
+        Y,
+        Ex,
+        Ey,
         density=1.2,
         linewidth=magnitude / np.nanmax(magnitude) * 2,
         cmap="autumn",
@@ -160,23 +169,42 @@ def plot_method_of_images(
     )
 
     # Conducting plane (x=0)
-    ax.axvline(x=0, color="gray", linestyle="--", linewidth=2,
-               label="Conducting Plane (V=0)")
+    ax.axvline(
+        x=0, color="gray", linestyle="--", linewidth=2, label="Conducting Plane (V=0)"
+    )
 
     # Mark charge positions
     if show_image_charges:
         # Real charge
         ax.plot(d, 0, "o", color="red", markersize=14, zorder=5)
-        ax.text(d + 0.2, 0.2, f"+q", fontsize=12, fontweight="bold",
-                color="red", ha="left")
+        ax.text(
+            d + 0.2, 0.2, f"+q", fontsize=12, fontweight="bold", color="red", ha="left"
+        )
 
         # Image charge (dashed to indicate it's virtual)
-        ax.plot(-d, 0, "o", color="blue", markersize=14, zorder=5,
-                markerfacecolor="none", markeredgewidth=2)
-        ax.text(-d - 0.2, 0.2, f"-q (image)", fontsize=12, fontweight="bold",
-                color="blue", ha="right")
+        ax.plot(
+            -d,
+            0,
+            "o",
+            color="blue",
+            markersize=14,
+            zorder=5,
+            markerfacecolor="none",
+            markeredgewidth=2,
+        )
+        ax.text(
+            -d - 0.2,
+            0.2,
+            f"-q (image)",
+            fontsize=12,
+            fontweight="bold",
+            color="blue",
+            ha="right",
+        )
 
-    format_axis_labels(ax, title="Method of Images: Charge Above Conducting Plane (Art. 155)")
+    format_axis_labels(
+        ax, title="Method of Images: Charge Above Conducting Plane (Art. 155)"
+    )
     ax.legend(loc="upper right")
     fig.tight_layout()
     return fig, ax

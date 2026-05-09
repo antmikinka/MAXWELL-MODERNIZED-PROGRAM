@@ -25,7 +25,7 @@ from typing import Sequence
 
 import jax
 import jax.numpy as jnp
-from jax import vmap, grad, jit
+from jax import grad, jit, vmap
 
 from maxwell.jax._compat import jax_tree, safe_div, safe_norm
 from maxwell.meta.citation import maxwell_cite
@@ -73,7 +73,7 @@ class PointChargeJAX:
         point = jnp.asarray(point, dtype=jnp.float64)
         r_vec = point - self.position
         r_mag = safe_norm(r_vec[None, :], axis=-1)[0]
-        r_mag_sq = jnp.maximum(r_mag ** 2, 1e-30)
+        r_mag_sq = jnp.maximum(r_mag**2, 1e-30)
         E_mag = self.q / r_mag_sq
         r_hat = jnp.where(r_mag > 1e-30, r_vec / r_mag, jnp.zeros(3))
         return E_mag * r_hat
@@ -126,7 +126,7 @@ class PointChargeJAX:
         """JIT-compiled field calculation (static method for jax.scan use)."""
         r_vec = point - pos
         r_mag = safe_norm(r_vec[None, :], axis=-1)[0]
-        r_mag_sq = jnp.maximum(r_mag ** 2, 1e-30)
+        r_mag_sq = jnp.maximum(r_mag**2, 1e-30)
         E_mag = q / r_mag_sq
         r_hat = jnp.where(r_mag > 1e-30, r_vec / r_mag, jnp.zeros(3))
         return E_mag * r_hat
@@ -142,9 +142,12 @@ class PointChargeJAX:
 
 # ── Multi-charge systems ────────────────────────────────────────
 
+
 @maxwell_cite(
-    29, 30,
-    part=1, chapter="Electrification",
+    29,
+    30,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Total electric field from multiple point charges via superposition",
 )
@@ -174,8 +177,10 @@ def charge_system_field(
 
 
 @maxwell_cite(
-    29, 30,
-    part=1, chapter="Electrification",
+    29,
+    30,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Total electric potential from multiple point charges via superposition",
 )
@@ -200,9 +205,12 @@ def charge_system_potential(
 
 # ── Automatic differentiation demo ──────────────────────────────
 
+
 @maxwell_cite(
-    29, 30,
-    part=1, chapter="Electrification",
+    29,
+    30,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Gradient of E-field magnitude w.r.t. charge demonstrating auto-differentiation",
 )

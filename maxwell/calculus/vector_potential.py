@@ -24,10 +24,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -70,7 +71,8 @@ class VectorPotential:
     @classmethod
     @maxwell_cite(
         405,
-        part=3, chapter="Vector Potential",
+        part=3,
+        chapter="Vector Potential",
         theory_class="maxwell_original",
         description="Create A from current distribution",
     )
@@ -106,7 +108,9 @@ class VectorPotential:
 
         # Estimate volume element
         if len(integration_volume) > 1:
-            bounds = np.max(integration_volume, axis=0) - np.min(integration_volume, axis=0)
+            bounds = np.max(integration_volume, axis=0) - np.min(
+                integration_volume, axis=0
+            )
             dV = np.prod(bounds) / len(integration_volume)
         else:
             dV = 1.0
@@ -126,7 +130,8 @@ class VectorPotential:
     @classmethod
     @maxwell_cite(
         406,
-        part=3, chapter="Vector Potential",
+        part=3,
+        chapter="Vector Potential",
         theory_class="maxwell_original",
         description="Create A from magnetic dipole",
     )
@@ -166,14 +171,15 @@ class VectorPotential:
             return cls(value=np.zeros(3), position=field_point)
 
         # A = (m × r) / r³
-        A = np.cross(magnetic_moment, r_vec) / (r_mag ** 3)
+        A = np.cross(magnetic_moment, r_vec) / (r_mag**3)
 
         return cls(value=A, position=field_point)
 
 
 @maxwell_cite(
     405,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Calculate B from A via curl",
 )
@@ -239,7 +245,8 @@ def calc_B_from_vector_potential(
 
 @maxwell_cite(
     405,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Calculate vector potential from magnetization",
 )
@@ -293,7 +300,7 @@ def calc_vector_potential_from_magnetization(
         M = magnetization_func(r_prime)
 
         # dA = (M × r̂) / r² dV = (M × r) / r³ dV
-        dA = dV * np.cross(M, r_vec) / (r_mag ** 3)
+        dA = dV * np.cross(M, r_vec) / (r_mag**3)
         A += dA
 
     return A
@@ -301,7 +308,8 @@ def calc_vector_potential_from_magnetization(
 
 @maxwell_cite(
     406,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Relate scalar and vector potentials",
 )
@@ -369,7 +377,8 @@ def relate_scalar_vector_potential(
 
 @maxwell_cite(
     405,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Gauge transformation of vector potential",
 )
@@ -408,7 +417,8 @@ def gauge_transform(
 
 @maxwell_cite(
     405,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Coulomb gauge condition ∇·A = 0",
 )
@@ -464,11 +474,14 @@ def verify_coulomb_gauge(
 
 @maxwell_cite(
     406,
-    part=3, chapter="Vector Potential",
+    part=3,
+    chapter="Vector Potential",
     theory_class="maxwell_original",
     description="Vector potential for uniform B field",
 )
-def vector_potential_uniform_field(B_uniform: np.ndarray) -> Callable[[np.ndarray], np.ndarray]:
+def vector_potential_uniform_field(
+    B_uniform: np.ndarray,
+) -> Callable[[np.ndarray], np.ndarray]:
     """
     Return vector potential for uniform magnetic field.
 

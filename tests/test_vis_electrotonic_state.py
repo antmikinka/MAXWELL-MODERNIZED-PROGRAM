@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -16,13 +17,13 @@ pytestmark = pytest.mark.skipif(
 )
 
 from maxwell.vis.electrotonic_state import (
+    calc_B_from_electrotonic,
     calc_electrotonic_straight_wire,
     calc_electrotonic_transient,
-    calc_B_from_electrotonic,
-    plot_electrotonic_state_2d,
     plot_A_and_B_fields,
     plot_A_transient,
     plot_electrotonic_3d_surface,
+    plot_electrotonic_state_2d,
 )
 
 
@@ -55,8 +56,11 @@ class TestCalcElectrotonicStraightWire:
     def test_z_axis_wire_A_along_z(self):
         """For z-axis wire, A points along z (A_x = A_y = 0)."""
         result = calc_electrotonic_straight_wire(
-            np.array([1.0]), np.array([1.0]), np.array([0.0]),
-            current=1.0, wire_axis="z",
+            np.array([1.0]),
+            np.array([1.0]),
+            np.array([0.0]),
+            current=1.0,
+            wire_axis="z",
         )
         assert result["A_x"][0] == 0.0
         assert result["A_y"][0] == 0.0
@@ -65,7 +69,9 @@ class TestCalcElectrotonicStraightWire:
     def test_returns_all_keys(self):
         """Returns dictionary with all expected keys."""
         result = calc_electrotonic_straight_wire(
-            np.array([1.0]), np.array([1.0]), np.array([0.0]),
+            np.array([1.0]),
+            np.array([1.0]),
+            np.array([0.0]),
         )
         expected_keys = {"A_x", "A_y", "A_z", "A_magnitude", "r_cyl"}
         assert set(result.keys()) == expected_keys
@@ -73,7 +79,9 @@ class TestCalcElectrotonicStraightWire:
     def test_cylindrical_radius(self):
         """r_cyl = sqrt(x^2 + y^2) for z-axis wire."""
         result = calc_electrotonic_straight_wire(
-            np.array([3.0]), np.array([4.0]), np.array([0.0]),
+            np.array([3.0]),
+            np.array([4.0]),
+            np.array([0.0]),
         )
         assert np.isclose(result["r_cyl"][0], 5.0)
 
@@ -91,7 +99,9 @@ class TestCalcElectrotonicStraightWire:
         """Raises ValueError for unknown wire axis."""
         with pytest.raises(ValueError):
             calc_electrotonic_straight_wire(
-                np.array([0.0]), np.array([0.0]), np.array([0.0]),
+                np.array([0.0]),
+                np.array([0.0]),
+                np.array([0.0]),
                 wire_axis="w",
             )
 
@@ -106,14 +116,20 @@ class TestCalcElectrotonicTransient:
         """A(t) follows exponential transient."""
         # At t=0, current = 0; at t=inf, current = 1
         r0 = calc_electrotonic_transient(
-            np.array([1.0]), np.array([0.0]),
-            current_initial=0.0, current_final=1.0,
-            time_constant=1.0, time=0.0,
+            np.array([1.0]),
+            np.array([0.0]),
+            current_initial=0.0,
+            current_final=1.0,
+            time_constant=1.0,
+            time=0.0,
         )
         r_inf = calc_electrotonic_transient(
-            np.array([1.0]), np.array([0.0]),
-            current_initial=0.0, current_final=1.0,
-            time_constant=1.0, time=100.0,
+            np.array([1.0]),
+            np.array([0.0]),
+            current_initial=0.0,
+            current_final=1.0,
+            time_constant=1.0,
+            time=100.0,
         )
         I_0 = r0["I_t"] if np.isscalar(r0["I_t"]) else r0["I_t"][0]
         I_inf = r_inf["I_t"] if np.isscalar(r_inf["I_t"]) else r_inf["I_t"][0]
@@ -122,9 +138,12 @@ class TestCalcElectrotonicTransient:
     def test_initial_value(self):
         """At t=0, current equals initial."""
         result = calc_electrotonic_transient(
-            np.array([1.0]), np.array([0.0]),
-            current_initial=0.0, current_final=1.0,
-            time_constant=1.0, time=0.0,
+            np.array([1.0]),
+            np.array([0.0]),
+            current_initial=0.0,
+            current_final=1.0,
+            time_constant=1.0,
+            time=0.0,
         )
         I_0 = result["I_t"] if np.isscalar(result["I_t"]) else result["I_t"][0]
         assert np.isclose(I_0, 0.0)
@@ -132,9 +151,12 @@ class TestCalcElectrotonicTransient:
     def test_final_value(self):
         """At t >> tau, current approaches final."""
         result = calc_electrotonic_transient(
-            np.array([1.0]), np.array([0.0]),
-            current_initial=0.0, current_final=1.0,
-            time_constant=1.0, time=100.0,
+            np.array([1.0]),
+            np.array([0.0]),
+            current_initial=0.0,
+            current_final=1.0,
+            time_constant=1.0,
+            time=100.0,
         )
         I_f = result["I_t"] if np.isscalar(result["I_t"]) else result["I_t"][0]
         assert np.isclose(I_f, 1.0, rtol=1e-6)
@@ -142,7 +164,8 @@ class TestCalcElectrotonicTransient:
     def test_returns_all_keys(self):
         """Returns dictionary with all expected keys."""
         result = calc_electrotonic_transient(
-            np.array([1.0]), np.array([0.0]),
+            np.array([1.0]),
+            np.array([0.0]),
         )
         expected_keys = {"A_z", "A_magnitude", "time", "I_t"}
         assert set(result.keys()) == expected_keys
@@ -150,14 +173,20 @@ class TestCalcElectrotonicTransient:
     def test_time_constant_effect(self):
         """Larger time constant means slower approach to final."""
         r_fast = calc_electrotonic_transient(
-            np.array([1.0]), np.array([0.0]),
-            current_initial=0.0, current_final=1.0,
-            time_constant=0.1, time=1.0,
+            np.array([1.0]),
+            np.array([0.0]),
+            current_initial=0.0,
+            current_final=1.0,
+            time_constant=0.1,
+            time=1.0,
         )
         r_slow = calc_electrotonic_transient(
-            np.array([1.0]), np.array([0.0]),
-            current_initial=0.0, current_final=1.0,
-            time_constant=10.0, time=1.0,
+            np.array([1.0]),
+            np.array([0.0]),
+            current_initial=0.0,
+            current_final=1.0,
+            time_constant=10.0,
+            time=1.0,
         )
         I_fast = r_fast["I_t"] if np.isscalar(r_fast["I_t"]) else r_fast["I_t"][0]
         I_slow = r_slow["I_t"] if np.isscalar(r_slow["I_t"]) else r_slow["I_t"][0]
@@ -174,8 +203,9 @@ class TestCalcBFromElectrotonic:
     def test_returns_all_keys(self):
         """Returns dictionary with all expected keys."""
         A_func = lambda x, y, z: (
-            np.zeros_like(x), np.zeros_like(y),
-            -2.0 * np.log(np.sqrt(x**2 + y**2) + 1e-10)
+            np.zeros_like(x),
+            np.zeros_like(y),
+            -2.0 * np.log(np.sqrt(x**2 + y**2) + 1e-10),
         )
         x = np.array([[0.5, 1.0], [0.5, 1.0]])
         y = np.array([[0.5, 0.5], [1.0, 1.0]])
@@ -190,6 +220,7 @@ class TestCalcBFromElectrotonic:
         A_func = lambda x, y, z: calc_electrotonic_straight_wire(
             x, y, z, current=current, wire_axis="z"
         )
+
         # Use a function that returns tuple
         def A_tuple(x, y, z):
             r = calc_electrotonic_straight_wire(x, y, z, current=current)
@@ -204,6 +235,7 @@ class TestCalcBFromElectrotonic:
     def test_B_matches_biot_savart_order(self):
         """B magnitude is approximately 2*I/r (CGS-EMU) for z-axis wire."""
         current = 1.0
+
         def A_tuple(x, y, z):
             r = calc_electrotonic_straight_wire(x, y, z, current=current)
             return r["A_x"], r["A_y"], r["A_z"]
@@ -219,6 +251,7 @@ class TestCalcBFromElectrotonic:
 
     def test_no_nan_inf(self):
         """No NaN or Inf in B field output."""
+
         def A_tuple(x, y, z):
             r = calc_electrotonic_straight_wire(x, y, z)
             return r["A_x"], r["A_y"], r["A_z"]

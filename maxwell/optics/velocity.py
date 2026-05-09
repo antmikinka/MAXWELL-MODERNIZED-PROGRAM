@@ -32,10 +32,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -63,8 +64,10 @@ class WaveVelocity:
             raise ValueError(f"Permeability must be positive, got {self.permeability}")
 
     @maxwell_cite(
-        786, 787,
-        part=4, chapter="Electromagnetic Theory of Light",
+        786,
+        787,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate wave velocity in medium",
     )
@@ -86,7 +89,8 @@ class WaveVelocity:
 
     @maxwell_cite(
         786,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate refractive index",
     )
@@ -108,7 +112,8 @@ class WaveVelocity:
 
     @maxwell_cite(
         786,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate wavelength in medium",
     )
@@ -133,7 +138,8 @@ class WaveVelocity:
 
     @maxwell_cite(
         787,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate wave number",
     )
@@ -158,8 +164,10 @@ class WaveVelocity:
         return omega / self.velocity()
 
     @maxwell_cite(
-        786, 787,
-        part=4, chapter="Electromagnetic Theory of Light",
+        786,
+        787,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate E-B field amplitude ratio",
     )
@@ -183,8 +191,10 @@ class WaveVelocity:
 
 
 @maxwell_cite(
-    786, 787,
-    part=4, chapter="Electromagnetic Theory of Light",
+    786,
+    787,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate EM wave velocity: v = c/sqrt(ε_r * μ_r)",
 )
@@ -236,7 +246,8 @@ def calc_wave_velocity(
 
 @maxwell_cite(
     786,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate refractive index: n = sqrt(ε_r * μ_r)",
 )
@@ -285,7 +296,8 @@ def calc_refractive_index(
 
 @maxwell_cite(
     786,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate permittivity from refractive index",
 )
@@ -324,12 +336,13 @@ def calc_permittivity_from_refractive_index(
     if permeability <= 0:
         raise ValueError(f"Permeability must be positive, got {permeability}")
 
-    return (refractive_index ** 2) / permeability
+    return (refractive_index**2) / permeability
 
 
 @maxwell_cite(
     786,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wavelength in medium",
 )
@@ -376,7 +389,8 @@ def calc_wavelength_in_medium(
 
 @maxwell_cite(
     787,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wave number k = 2π/λ",
 )
@@ -418,8 +432,10 @@ def calc_wave_number(
 
 
 @maxwell_cite(
-    786, 787,
-    part=4, chapter="Electromagnetic Theory of Light",
+    786,
+    787,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate E-B field ratio |E|/|B| = v",
 )
@@ -460,8 +476,10 @@ def calc_E_B_ratio(
 
 
 @maxwell_cite(
-    786, 787,
-    part=4, chapter="Electromagnetic Theory of Light",
+    786,
+    787,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify Maxwell's velocity-light connection",
 )
@@ -504,7 +522,9 @@ def verify_maxwell_velocity(
 
     # Verify n = sqrt(ε_r * μ_r)
     n_check = np.sqrt(permittivity * permeability)
-    n_error = abs(n_check - refractive_idx) / refractive_idx if refractive_idx > 0 else 0
+    n_error = (
+        abs(n_check - refractive_idx) / refractive_idx if refractive_idx > 0 else 0
+    )
 
     # In vacuum, v should equal c
     vacuum_verified = True
@@ -522,17 +542,23 @@ def verify_maxwell_velocity(
         "ratio_error": ratio_error,
         "refractive_index_error": n_error,
         "vacuum_verified": vacuum_verified,
-        "maxwell_verified": bool(all([
-            v_error < tolerance,
-            ratio_error < tolerance,
-            n_error < tolerance,
-        ])),
+        "maxwell_verified": bool(
+            all(
+                [
+                    v_error < tolerance,
+                    ratio_error < tolerance,
+                    n_error < tolerance,
+                ]
+            )
+        ),
     }
 
 
 @maxwell_cite(
-    786, 787,
-    part=4, chapter="Electromagnetic Theory of Light",
+    786,
+    787,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete wave velocity analysis",
 )

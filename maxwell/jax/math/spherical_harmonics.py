@@ -39,8 +39,11 @@ __all__ = [
 
 
 @maxwell_cite(
-    128, 129, 130,
-    part=1, chapter="Spherical Harmonics",
+    128,
+    129,
+    130,
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="standard_math",
     description="Batched Legendre polynomial evaluation via Bonnet recurrence (JAX)",
 )
@@ -99,8 +102,10 @@ def _legendre_fori(n: int, x: jax.Array) -> jax.Array:
 
 
 @maxwell_cite(
-    134, 135,
-    part=1, chapter="Spherical Harmonics",
+    134,
+    135,
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="standard_math",
     description="Spherical-harmonic addition theorem (pure JAX)",
 )
@@ -139,10 +144,9 @@ def addition_theorem_jax(
     phi2 = jnp.asarray(phi2, dtype=jnp.float64)
 
     # Cosine of angle between directions
-    cos_gamma = (
-        jnp.cos(theta1) * jnp.cos(theta2)
-        + jnp.sin(theta1) * jnp.sin(theta2) * jnp.cos(phi1 - phi2)
-    )
+    cos_gamma = jnp.cos(theta1) * jnp.cos(theta2) + jnp.sin(theta1) * jnp.sin(
+        theta2
+    ) * jnp.cos(phi1 - phi2)
     cos_gamma = jnp.clip(cos_gamma, -1.0, 1.0)
 
     # Direct Legendre evaluation
@@ -150,11 +154,13 @@ def addition_theorem_jax(
 
     # Sum over m via spherical harmonics
     m_sum = jnp.sum(
-        jnp.stack([
-            sph_harm_y_jax(m, l, phi1, theta1)
-            * jnp.conj(sph_harm_y_jax(m, l, phi2, theta2))
-            for m in range(-l, l + 1)
-        ]),
+        jnp.stack(
+            [
+                sph_harm_y_jax(m, l, phi1, theta1)
+                * jnp.conj(sph_harm_y_jax(m, l, phi2, theta2))
+                for m in range(-l, l + 1)
+            ]
+        ),
         axis=0,
     )
 
@@ -296,10 +302,8 @@ class SphericalHarmonicExpansionJAX:
             for idx in range(2 * self.max_l + 1):
                 m_val = idx - self.max_l
                 if abs(m_val) <= l:
-                    result = (
-                        result
-                        + self.coefficients[l, idx]
-                        * sph_harm_y_jax(m_val, l, phi, theta)
+                    result = result + self.coefficients[l, idx] * sph_harm_y_jax(
+                        m_val, l, phi, theta
                     )
 
         if theta.shape == (1,):
@@ -346,10 +350,8 @@ class SphericalHarmonicExpansionJAX:
                 for idx in range(2 * self.max_l + 1):
                     m_val = idx - self.max_l
                     if abs(m_val) <= l:
-                        recon = (
-                            recon
-                            + self.coefficients[l, idx]
-                            * sph_harm_y_jax(m_val, l, phi_grid, theta_grid)
+                        recon = recon + self.coefficients[l, idx] * sph_harm_y_jax(
+                            m_val, l, phi_grid, theta_grid
                         )
             err = jnp.mean(jnp.abs(exact - recon.real))
             errors = errors.at[l_prime].set(err)

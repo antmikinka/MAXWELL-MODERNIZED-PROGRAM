@@ -28,10 +28,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -63,8 +64,10 @@ class SelfInductance:
             raise ValueError(f"Inductance must be non-negative, got {self.inductance}")
 
     @maxwell_cite(
-        546, 547,
-        part=4, chapter="Self-Induction",
+        546,
+        547,
+        part=4,
+        chapter="Self-Induction",
         theory_class="maxwell_original",
         description="Calculate self-induced EMF",
     )
@@ -87,8 +90,10 @@ class SelfInductance:
         return -self.inductance * dI_dt
 
     @maxwell_cite(
-        548, 549,
-        part=4, chapter="Self-Induction",
+        548,
+        549,
+        part=4,
+        chapter="Self-Induction",
         theory_class="maxwell_original",
         description="Calculate energy stored in inductor",
     )
@@ -106,11 +111,13 @@ class SelfInductance:
         Returns:
             Stored energy (ergs).
         """
-        return 0.5 * self.inductance * current ** 2
+        return 0.5 * self.inductance * current**2
 
     @maxwell_cite(
-        550, 551,
-        part=4, chapter="Self-Induction",
+        550,
+        551,
+        part=4,
+        chapter="Self-Induction",
         theory_class="maxwell_original",
         description="Calculate magnetic flux from current",
     )
@@ -132,8 +139,11 @@ class SelfInductance:
 
 
 @maxwell_cite(
-    546, 547, 548,
-    part=4, chapter="Self-Induction",
+    546,
+    547,
+    548,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Calculate self-inductance of solenoid",
 )
@@ -178,12 +188,14 @@ def calc_solenoid_inductance(
     l = length
 
     # L = 4*pi² * n² * r² * mu_r / l
-    return 4.0 * np.pi ** 2 * n ** 2 * r ** 2 * mu_r / l
+    return 4.0 * np.pi**2 * n**2 * r**2 * mu_r / l
 
 
 @maxwell_cite(
-    546, 547,
-    part=4, chapter="Self-Induction",
+    546,
+    547,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Calculate self-inductance of circular loop",
 )
@@ -225,8 +237,10 @@ def calc_loop_inductance(
 
 
 @maxwell_cite(
-    546, 547,
-    part=4, chapter="Self-Induction",
+    546,
+    547,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Calculate self-induced EMF: EMF = -L*dI/dt",
 )
@@ -258,8 +272,10 @@ def calc_self_induced_emf(
 
 
 @maxwell_cite(
-    548, 549,
-    part=4, chapter="Self-Induction",
+    548,
+    549,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Calculate energy stored in inductor: W = (1/2)*L*I²",
 )
@@ -284,7 +300,7 @@ def calc_inductor_energy(
     Reference:
         Part IV, Arts. 548-549: Inductor energy.
     """
-    return 0.5 * inductance * current ** 2
+    return 0.5 * inductance * current**2
 
 
 # Aliases for test compatibility
@@ -293,8 +309,10 @@ calc_magnetic_energy = calc_inductor_energy
 
 
 @maxwell_cite(
-    550, 551,
-    part=4, chapter="Self-Induction",
+    550,
+    551,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Calculate current rise in RL circuit",
 )
@@ -335,8 +353,10 @@ def calc_rl_current_rise(
 
 
 @maxwell_cite(
-    550, 551,
-    part=4, chapter="Self-Induction",
+    550,
+    551,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Calculate current decay in RL circuit",
 )
@@ -374,8 +394,10 @@ def calc_rl_current_decay(
 
 
 @maxwell_cite(
-    546, 551,
-    part=4, chapter="Self-Induction",
+    546,
+    551,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Verify self-induction energy relations",
 )
@@ -406,7 +428,7 @@ def verify_self_induction(
     """
     if test_times is None:
         tau = inductance / resistance
-        test_times = [0.1*tau, 0.5*tau, tau, 2*tau, 5*tau]
+        test_times = [0.1 * tau, 0.5 * tau, tau, 2 * tau, 5 * tau]
 
     I_final = voltage / resistance
     tau = inductance / resistance
@@ -421,7 +443,7 @@ def verify_self_induction(
         energies.append(W)
 
     # Verify final energy = (1/2)*L*I_final²
-    W_final_expected = 0.5 * inductance * I_final ** 2
+    W_final_expected = 0.5 * inductance * I_final**2
     W_final_actual = energies[-1] if currents[-1] > 0.99 * I_final else energies[-1]
 
     # Time constant verification
@@ -429,7 +451,11 @@ def verify_self_induction(
     expected_at_tau = I_final * (1.0 - np.exp(-1))
     tau_error = abs(I_at_tau - expected_at_tau) / I_final
 
-    energy_verified = abs(W_final_actual - W_final_expected) / W_final_expected < tolerance if W_final_expected > 0 else True
+    energy_verified = (
+        abs(W_final_actual - W_final_expected) / W_final_expected < tolerance
+        if W_final_expected > 0
+        else True
+    )
     tau_verified = tau_error < tolerance
 
     return {
@@ -451,8 +477,14 @@ def verify_self_induction(
 
 
 @maxwell_cite(
-    546, 547, 548, 549, 550, 551,
-    part=4, chapter="Self-Induction",
+    546,
+    547,
+    548,
+    549,
+    550,
+    551,
+    part=4,
+    chapter="Self-Induction",
     theory_class="maxwell_original",
     description="Complete self-induction analysis",
 )
@@ -503,7 +535,11 @@ def analyze_self_induction(
             # Decaying current
             I = initial_current * np.exp(-t / tau)
 
-        dI_dt = -I / tau if applied_voltage == 0 else (applied_voltage - I * resistance) / inductance
+        dI_dt = (
+            -I / tau
+            if applied_voltage == 0
+            else (applied_voltage - I * resistance) / inductance
+        )
 
         emf = calc_self_induced_emf(inductance, dI_dt)
         W = calc_inductor_energy(inductance, I)

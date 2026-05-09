@@ -32,22 +32,26 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable, Optional, Tuple
+
 import numpy as np
-from scipy import optimize, ndimage
+from scipy import ndimage, optimize
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # POINTS & LINES OF EQUILIBRIUM (Arts. 112-116)
 # =============================================================================
 
+
 @maxwell_cite(
-    112, 113, 114,
-    part=1, chapter="Points & Lines of Equilibrium",
+    112,
+    113,
+    114,
+    part=1,
+    chapter="Points & Lines of Equilibrium",
     theory_class="maxwell_original",
-    description="Find points where electric field vanishes (E = 0)"
+    description="Find points where electric field vanishes (E = 0)",
 )
 def equilibrium_points(
     potential_func: Callable[[np.ndarray], float],
@@ -137,8 +141,14 @@ def equilibrium_points(
                             if di == dj == dk == 0:
                                 continue
                             ni, nj, nk = i + di, j + dj, k + dk
-                            if 0 <= ni < grid_resolution and 0 <= nj < grid_resolution and 0 <= nk < grid_resolution:
-                                r_neighbor = np.array([x_range[ni], y_range[nj], z_range[nk]])
+                            if (
+                                0 <= ni < grid_resolution
+                                and 0 <= nj < grid_resolution
+                                and 0 <= nk < grid_resolution
+                            ):
+                                r_neighbor = np.array(
+                                    [x_range[ni], y_range[nj], z_range[nk]]
+                                )
                                 if electric_field_magnitude(r_neighbor) < E_mag:
                                     is_minimum = False
                                     break
@@ -156,8 +166,8 @@ def equilibrium_points(
         result = optimize.minimize(
             electric_field_magnitude,
             candidate,
-            method='Nelder-Mead',
-            options={'xatol': tolerance, 'fatol': tolerance}
+            method="Nelder-Mead",
+            options={"xatol": tolerance, "fatol": tolerance},
         )
 
         if result.success and result.fun < tolerance:
@@ -195,11 +205,11 @@ def equilibrium_points(
         neg_eig = np.sum(eigenvalues < -tolerance)
 
         if pos_eig == 3:
-            point_type = 'stable'  # Local minimum
+            point_type = "stable"  # Local minimum
         elif neg_eig == 3:
-            point_type = 'unstable'  # Local maximum
+            point_type = "unstable"  # Local maximum
         else:
-            point_type = 'saddle'  # Mixed (most common)
+            point_type = "saddle"  # Mixed (most common)
 
         point_types.append(point_type)
         field_magnitudes.append(electric_field_magnitude(point))
@@ -213,7 +223,9 @@ def equilibrium_points(
     }
 
 
-def _compute_hessian(func: Callable[[np.ndarray], float], x: np.ndarray, h: float = 1e-5) -> np.ndarray:
+def _compute_hessian(
+    func: Callable[[np.ndarray], float], x: np.ndarray, h: float = 1e-5
+) -> np.ndarray:
     """Compute numerical Hessian matrix of a scalar function."""
     n = len(x)
     hessian = np.zeros((n, n))
@@ -234,17 +246,21 @@ def _compute_hessian(func: Callable[[np.ndarray], float], x: np.ndarray, h: floa
             x_mm[i] -= h
             x_mm[j] -= h
 
-            hessian[i, j] = (func(x_pp) - func(x_pm) - func(x_mp) + func(x_mm)) / (4 * h * h)
+            hessian[i, j] = (func(x_pp) - func(x_pm) - func(x_mp) + func(x_mm)) / (
+                4 * h * h
+            )
             hessian[j, i] = hessian[i, j]
 
     return hessian
 
 
 @maxwell_cite(
-    115, 116,
-    part=1, chapter="Points & Lines of Equilibrium",
+    115,
+    116,
+    part=1,
+    chapter="Points & Lines of Equilibrium",
     theory_class="maxwell_original",
-    description="Find lines of equilibrium (continuous curves where E = 0)"
+    description="Find lines of equilibrium (continuous curves where E = 0)",
 )
 def equilibrium_lines(
     potential_func: Callable[[np.ndarray], float],
@@ -339,9 +355,13 @@ def equilibrium_lines(
         # Use the direction perpendicular to E
         if np.linalg.norm(E) > 1e-10:
             # Gram-Schmidt: remove component parallel to E
-            current_direction = current_direction - np.dot(current_direction, E) * E / np.dot(E, E)
+            current_direction = current_direction - np.dot(
+                current_direction, E
+            ) * E / np.dot(E, E)
             if np.linalg.norm(current_direction) > 1e-10:
-                current_direction = current_direction / np.linalg.norm(current_direction)
+                current_direction = current_direction / np.linalg.norm(
+                    current_direction
+                )
 
         points_forward.append(next_point.copy())
         directions_forward.append(current_direction.copy())
@@ -366,9 +386,13 @@ def equilibrium_lines(
             next_point += correction
 
         if np.linalg.norm(E) > 1e-10:
-            current_direction = current_direction - np.dot(current_direction, E) * E / np.dot(E, E)
+            current_direction = current_direction - np.dot(
+                current_direction, E
+            ) * E / np.dot(E, E)
             if np.linalg.norm(current_direction) > 1e-10:
-                current_direction = current_direction / np.linalg.norm(current_direction)
+                current_direction = current_direction / np.linalg.norm(
+                    current_direction
+                )
 
         points_backward.append(next_point.copy())
         current_point = next_point
@@ -385,8 +409,10 @@ def equilibrium_lines(
     field_magnitudes = [np.linalg.norm(electric_field(p)) for p in line_points]
 
     # Compute line length
-    line_length = sum(np.linalg.norm(line_points[i+1] - line_points[i])
-                      for i in range(len(line_points)-1))
+    line_length = sum(
+        np.linalg.norm(line_points[i + 1] - line_points[i])
+        for i in range(len(line_points) - 1)
+    )
 
     return {
         "line_points": line_points,
@@ -398,10 +424,13 @@ def equilibrium_lines(
 
 
 @maxwell_cite(
-    113, 114, 115,
-    part=1, chapter="Points & Lines of Equilibrium",
+    113,
+    114,
+    115,
+    part=1,
+    chapter="Points & Lines of Equilibrium",
     theory_class="maxwell_original",
-    description="Analyze stability and type of equilibrium points"
+    description="Analyze stability and type of equilibrium points",
 )
 def saddle_point_analysis(
     potential_func: Callable[[np.ndarray], float],
@@ -468,15 +497,15 @@ def saddle_point_analysis(
     neg_eig = np.sum(eigenvalues < -tol)
 
     if pos_eig == 3:
-        point_type = 'stable'
+        point_type = "stable"
     elif neg_eig == 3:
-        point_type = 'unstable'
+        point_type = "unstable"
     elif pos_eig == 2 and neg_eig == 1:
-        point_type = 'saddle_2up_1down'
+        point_type = "saddle_2up_1down"
     elif pos_eig == 1 and neg_eig == 2:
-        point_type = 'saddle_1up_2down'
+        point_type = "saddle_1up_2down"
     else:
-        point_type = 'saddle'
+        point_type = "saddle"
 
     # Principal curvatures (eigenvalues of Hessian)
     principal_curvatures = eigenvalues
@@ -498,11 +527,15 @@ def saddle_point_analysis(
 # EQUIPOTENTIAL SURFACES (Arts. 117-123)
 # =============================================================================
 
+
 @maxwell_cite(
-    117, 118, 119,
-    part=1, chapter="Equipotential Surfaces",
+    117,
+    118,
+    119,
+    part=1,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
-    description="Generate equipotential surface V(x,y,z) = constant"
+    description="Generate equipotential surface V(x,y,z) = constant",
 )
 def equipotential_surface(
     potential_func: Callable[[np.ndarray], float],
@@ -556,22 +589,26 @@ def equipotential_surface(
     x = np.linspace(bounds[0][0], bounds[0][1], resolution)
     y = np.linspace(bounds[1][0], bounds[1][1], resolution)
     z = np.linspace(bounds[2][0], bounds[2][1], resolution)
-    X, Y, Z = np.meshgrid(x, y, z, indexing='ij')
+    X, Y, Z = np.meshgrid(x, y, z, indexing="ij")
 
     # Evaluate potential on grid
     V_grid = np.zeros((resolution, resolution, resolution))
     for i in range(resolution):
         for j in range(resolution):
             for k in range(resolution):
-                V_grid[i, j, k] = potential_func(np.array([X[i,j,k], Y[i,j,k], Z[i,j,k]]))
+                V_grid[i, j, k] = potential_func(
+                    np.array([X[i, j, k], Y[i, j, k], Z[i, j, k]])
+                )
 
     # Extract isosurface using marching cubes
     if marching_cubes:
         try:
             from skimage import measure
+
             verts, faces, normals, values = measure.marching_cubes(
-                V_grid, level=potential_value,
-                spacing=(x[1]-x[0], y[1]-y[0], z[1]-z[0])
+                V_grid,
+                level=potential_value,
+                spacing=(x[1] - x[0], y[1] - y[0], z[1] - z[0]),
             )
             # Offset vertices to correct bounds
             verts[:, 0] += bounds[0][0]
@@ -627,10 +664,12 @@ def equipotential_surface(
 
 
 @maxwell_cite(
-    120, 121,
-    part=1, chapter="Equipotential Surfaces",
+    120,
+    121,
+    part=1,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
-    description="Compute curvature of equipotential surfaces"
+    description="Compute curvature of equipotential surfaces",
 )
 def surface_curvature(
     potential_func: Callable[[np.ndarray], float],
@@ -733,10 +772,12 @@ def surface_curvature(
     t2 = t2 / np.linalg.norm(t2)
 
     # 2x2 matrix of H_tangent in tangent basis
-    H_2d = np.array([
-        [t1 @ H_tangent @ t1, t1 @ H_tangent @ t2],
-        [t2 @ H_tangent @ t1, t2 @ H_tangent @ t2]
-    ])
+    H_2d = np.array(
+        [
+            [t1 @ H_tangent @ t1, t1 @ H_tangent @ t2],
+            [t2 @ H_tangent @ t1, t2 @ H_tangent @ t2],
+        ]
+    )
 
     # Eigenvalues give curvatures (with sign convention)
     eigvals = np.linalg.eigvalsh(H_2d)
@@ -766,7 +807,10 @@ def surface_curvature(
         E_plus[i] = -np.dot(grad_V_plus, normal)
         E_minus[i] = -np.dot(grad_V_minus, normal)
 
-    dE_dn = (np.linalg.norm(E + h * np.array([0, 0, 0])) - np.linalg.norm(E - h * np.array([0, 0, 0]))) / (2 * h)
+    dE_dn = (
+        np.linalg.norm(E + h * np.array([0, 0, 0]))
+        - np.linalg.norm(E - h * np.array([0, 0, 0]))
+    ) / (2 * h)
     # Simplified: directional derivative of |E| along normal
     r_plus = point + h * normal
     r_minus = point - h * normal
@@ -797,10 +841,12 @@ def surface_curvature(
 
 
 @maxwell_cite(
-    122, 123,
-    part=1, chapter="Equipotential Surfaces",
+    122,
+    123,
+    part=1,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
-    description="Trace field lines orthogonal to equipotentials"
+    description="Trace field lines orthogonal to equipotentials",
 )
 def field_line_tracing(
     potential_func: Callable[[np.ndarray], float],
@@ -896,7 +942,7 @@ def field_line_tracing(
         E4 = electric_field(current_point + step_size * k3)
         k4 = direction * E4 / np.linalg.norm(E4) if np.linalg.norm(E4) > 1e-10 else k3
 
-        next_point = current_point + (step_size / 6) * (k1 + 2*k2 + 2*k3 + k4)
+        next_point = current_point + (step_size / 6) * (k1 + 2 * k2 + 2 * k3 + k4)
 
         # Check if we've gone too far
         segment_length = np.linalg.norm(next_point - current_point)
@@ -922,10 +968,13 @@ def field_line_tracing(
 
 
 @maxwell_cite(
-    119, 120, 121,
-    part=1, chapter="Equipotential Surfaces",
+    119,
+    120,
+    121,
+    part=1,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
-    description="Surface charge density σ = -ε₀ * ∂V/∂n"
+    description="Surface charge density σ = -ε₀ * ∂V/∂n",
 )
 def surface_charge_density(
     potential_func: Callable[[np.ndarray], float],
@@ -1004,12 +1053,14 @@ def surface_charge_density(
     # ( assumes points are roughly uniformly distributed)
     if len(surface_points) > 0:
         # Approximate area per point (crude estimate)
-        avg_spacing = np.mean([
-            np.linalg.norm(surface_points[i] - surface_points[j])
-            for i in range(min(10, len(surface_points)))
-            for j in range(i+1, min(10, len(surface_points)))
-        ])
-        area_per_point = avg_spacing ** 2
+        avg_spacing = np.mean(
+            [
+                np.linalg.norm(surface_points[i] - surface_points[j])
+                for i in range(min(10, len(surface_points)))
+                for j in range(i + 1, min(10, len(surface_points)))
+            ]
+        )
+        area_per_point = avg_spacing**2
         total_charge = np.sum(sigma) * area_per_point
     else:
         total_charge = 0.0
@@ -1027,11 +1078,13 @@ def surface_charge_density(
 # SIMPLE CASES OF ELECTROSTATICS (Arts. 124-127)
 # =============================================================================
 
+
 @maxwell_cite(
     124,
-    part=1, chapter="Simple Cases of Electrostatics",
+    part=1,
+    chapter="Simple Cases of Electrostatics",
     theory_class="maxwell_original",
-    description="Potential and field of isolated charged sphere"
+    description="Potential and field of isolated charged sphere",
 )
 def isolated_sphere(
     total_charge: float,
@@ -1099,8 +1152,8 @@ def isolated_sphere(
             potentials[i] = total_charge / r
             if r > 1e-10:
                 r_hat = point / r
-                electric_fields[i] = (total_charge / r ** 2) * r_hat
-                field_magnitudes[i] = abs(total_charge) / r ** 2
+                electric_fields[i] = (total_charge / r**2) * r_hat
+                field_magnitudes[i] = abs(total_charge) / r**2
 
     surface_potential = total_charge / radius
     capacitance = radius  # Self-capacitance of isolated sphere in CGS-ESU
@@ -1117,10 +1170,12 @@ def isolated_sphere(
 
 
 @maxwell_cite(
-    124, 125,
-    part=1, chapter="Simple Cases of Electrostatics",
+    124,
+    125,
+    part=1,
+    chapter="Simple Cases of Electrostatics",
     theory_class="maxwell_original",
-    description="Uniform field between parallel plate capacitor"
+    description="Uniform field between parallel plate capacitor",
 )
 def parallel_plate_capacitor(
     plate_potential: float,
@@ -1177,7 +1232,7 @@ def parallel_plate_capacitor(
     surface_charge_density = electric_field_magnitude / (4 * np.pi)
 
     # Energy density
-    energy_density = electric_field_magnitude ** 2 / (8 * np.pi)
+    energy_density = electric_field_magnitude**2 / (8 * np.pi)
 
     result = {
         "electric_field": electric_field_magnitude,
@@ -1192,7 +1247,7 @@ def parallel_plate_capacitor(
         # Capacitance C = A / (4πd) in CGS-ESU
         capacitance = plate_area / (4 * np.pi * plate_separation)
         result["capacitance"] = capacitance
-        result["total_energy"] = 0.5 * capacitance * plate_potential ** 2
+        result["total_energy"] = 0.5 * capacitance * plate_potential**2
         result["plate_area"] = plate_area
 
     if evaluation_points is not None:
@@ -1219,9 +1274,10 @@ def parallel_plate_capacitor(
 
 @maxwell_cite(
     126,
-    part=1, chapter="Simple Cases of Electrostatics",
+    part=1,
+    chapter="Simple Cases of Electrostatics",
     theory_class="maxwell_original",
-    description="Potential between concentric spheres"
+    description="Potential between concentric spheres",
 )
 def concentric_spheres(
     inner_potential: float,
@@ -1296,8 +1352,8 @@ def concentric_spheres(
 
     # Electric field at boundaries
     # E(r) = B / r² (radially outward if B > 0)
-    E_inner = B / R1 ** 2
-    E_outer = B / R2 ** 2
+    E_inner = B / R1**2
+    E_outer = B / R2**2
 
     result = {
         "coefficient_A": A,
@@ -1336,8 +1392,8 @@ def concentric_spheres(
                 # Between spheres
                 potentials[i] = A + B / r
                 r_hat = point / r if r > 1e-10 else np.zeros(3)
-                fields[i] = (B / r ** 2) * r_hat
-                field_magnitudes[i] = abs(B) / r ** 2
+                fields[i] = (B / r**2) * r_hat
+                field_magnitudes[i] = abs(B) / r**2
 
         result["evaluation_potentials"] = potentials
         result["evaluation_fields"] = fields
@@ -1348,9 +1404,10 @@ def concentric_spheres(
 
 @maxwell_cite(
     127,
-    part=1, chapter="Simple Cases of Electrostatics",
+    part=1,
+    chapter="Simple Cases of Electrostatics",
     theory_class="maxwell_original",
-    description="Potential between coaxial cylinders"
+    description="Potential between coaxial cylinders",
 )
 def coaxial_cylinders(
     inner_potential: float,
@@ -1469,7 +1526,7 @@ def coaxial_cylinders(
                 potentials[i] = A * np.log(r) + B
                 # Field is radial in cylindrical coordinates
                 if r > 1e-10:
-                    r_hat = np.array([point[0]/r, point[1]/r, 0])
+                    r_hat = np.array([point[0] / r, point[1] / r, 0])
                     fields[i] = (-A / r) * r_hat
                     field_magnitudes[i] = abs(A) / r
 
@@ -1492,15 +1549,20 @@ if __name__ == "__main__":
 
     # Test equilibrium points
     print("\n--- Equilibrium Points (Arts. 112-114) ---")
+
     def V_two_charges(r):
         r1 = np.linalg.norm(r - np.array([-1, 0, 0]))
         r2 = np.linalg.norm(r - np.array([1, 0, 0]))
-        return 1/r1 + 1/r2
+        return 1 / r1 + 1 / r2
 
-    result = equilibrium_points(V_two_charges, bounds=((-3, 3), (-3, 3), (-3, 3)), grid_resolution=15)
+    result = equilibrium_points(
+        V_two_charges, bounds=((-3, 3), (-3, 3), (-3, 3)), grid_resolution=15
+    )
     print(f"  Found {len(result['equilibrium_points'])} equilibrium points")
-    if result['equilibrium_points']:
-        for i, (pt, ptype) in enumerate(zip(result['equilibrium_points'], result['point_types'])):
+    if result["equilibrium_points"]:
+        for i, (pt, ptype) in enumerate(
+            zip(result["equilibrium_points"], result["point_types"])
+        ):
             print(f"    Point {i}: {pt} - Type: {ptype}")
 
     # Test saddle point analysis
@@ -1512,12 +1574,17 @@ if __name__ == "__main__":
 
     # Test equipotential surface
     print("\n--- Equipotential Surfaces (Arts. 117-119) ---")
+
     def V_point_charge(r):
         return 1 / max(np.linalg.norm(r), 0.1)
 
-    result = equipotential_surface(V_point_charge, potential_value=1.0,
-                                    bounds=((-3, 3), (-3, 3), (-3, 3)), resolution=30)
-    if 'surface_area' in result:
+    result = equipotential_surface(
+        V_point_charge,
+        potential_value=1.0,
+        bounds=((-3, 3), (-3, 3), (-3, 3)),
+        resolution=30,
+    )
+    if "surface_area" in result:
         print(f"  V = 1.0 equipotential: area = {result['surface_area']:.2f}")
         print(f"  Volume enclosed: {result['volume_enclosed']:.2f}")
 
@@ -1529,14 +1596,17 @@ if __name__ == "__main__":
 
     # Test field line tracing
     print("\n--- Field Line Tracing (Arts. 122-123) ---")
-    result = field_line_tracing(V_point_charge, seed_point=np.array([2, 0, 0]),
-                                 max_length=10.0, step_size=0.1)
+    result = field_line_tracing(
+        V_point_charge, seed_point=np.array([2, 0, 0]), max_length=10.0, step_size=0.1
+    )
     print(f"  Field line: {result['num_points']} points traced")
     print(f"  Total length: {result['total_length']:.2f}")
 
     # Test surface charge density
     print("\n--- Surface Charge Density (Arts. 119-121) ---")
-    sphere_points = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1], [-1, 0, 0], [0, -1, 0], [0, 0, -1]])
+    sphere_points = np.array(
+        [[1, 0, 0], [0, 1, 0], [0, 0, 1], [-1, 0, 0], [0, -1, 0], [0, 0, -1]]
+    )
     sphere_normals = sphere_points.copy()
     result = surface_charge_density(V_point_charge, sphere_points, sphere_normals)
     print(f"  Surface charge density: {result['surface_charge_density']}")
@@ -1544,32 +1614,40 @@ if __name__ == "__main__":
 
     # Test isolated sphere
     print("\n--- Isolated Sphere (Art. 124) ---")
-    result = isolated_sphere(total_charge=100, radius=5.0,
-                              evaluation_points=np.array([[10, 0, 0], [5, 0, 0]]))
+    result = isolated_sphere(
+        total_charge=100,
+        radius=5.0,
+        evaluation_points=np.array([[10, 0, 0], [5, 0, 0]]),
+    )
     print(f"  V at r=10: {result['potentials'][0]:.2f}")
     print(f"  V at surface: {result['potentials'][1]:.2f}")
     print(f"  Capacitance: {result['capacitance']}")
 
     # Test parallel plate capacitor
     print("\n--- Parallel Plate Capacitor (Arts. 124-125) ---")
-    result = parallel_plate_capacitor(plate_potential=100, plate_separation=1.0,
-                                       plate_area=100.0)
+    result = parallel_plate_capacitor(
+        plate_potential=100, plate_separation=1.0, plate_area=100.0
+    )
     print(f"  E = {result['electric_field']:.2f} statV/cm")
-    print(f"  Surface charge density: {result['surface_charge_density']:.4f} statC/cm^2")
+    print(
+        f"  Surface charge density: {result['surface_charge_density']:.4f} statC/cm^2"
+    )
     print(f"  C = {result['capacitance']:.2f} statF")
 
     # Test concentric spheres
     print("\n--- Concentric Spheres (Art. 126) ---")
-    result = concentric_spheres(inner_potential=100, outer_potential=0,
-                                 inner_radius=1.0, outer_radius=5.0)
+    result = concentric_spheres(
+        inner_potential=100, outer_potential=0, inner_radius=1.0, outer_radius=5.0
+    )
     print(f"  Capacitance: {result['capacitance']:.2f} statF")
     print(f"  E at inner: {result['field_at_inner']:.2f}")
     print(f"  E at outer: {result['field_at_outer']:.2f}")
 
     # Test coaxial cylinders
     print("\n--- Coaxial Cylinders (Art. 127) ---")
-    result = coaxial_cylinders(inner_potential=100, outer_potential=0,
-                                inner_radius=0.1, outer_radius=1.0)
+    result = coaxial_cylinders(
+        inner_potential=100, outer_potential=0, inner_radius=0.1, outer_radius=1.0
+    )
     print(f"  C' = {result['capacitance_per_length']:.4f} statF/cm")
     print(f"  E at inner: {result['field_at_inner']:.2f}")
     print(f"  E at outer: {result['field_at_outer']:.2f}")

@@ -35,11 +35,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
 from typing import Optional, Tuple
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -68,7 +69,9 @@ class CurrentSheet:
     """
 
     surface_current: np.ndarray = field(default_factory=lambda: np.zeros(2))
-    surface_normal: np.ndarray = field(default_factory=lambda: np.array([0.0, 0.0, 1.0]))
+    surface_normal: np.ndarray = field(
+        default_factory=lambda: np.array([0.0, 0.0, 1.0])
+    )
     area: float = 0.0
     position: np.ndarray = field(default_factory=lambda: np.zeros(3))
 
@@ -89,11 +92,9 @@ class CurrentSheet:
         # Extend 2D surface current to 3D (in sheet plane)
         if len(self.surface_current) == 2:
             # For xy-plane, current has x and y components
-            self.current_3d = np.array([
-                float(self.surface_current[0]),
-                float(self.surface_current[1]),
-                0.0
-            ])
+            self.current_3d = np.array(
+                [float(self.surface_current[0]), float(self.surface_current[1]), 0.0]
+            )
         else:
             self.current_3d = np.asarray(self.surface_current, dtype=np.float64)
 
@@ -104,8 +105,10 @@ class CurrentSheet:
 
     @classmethod
     @maxwell_cite(
-        647, 648,
-        part=4, chapter="Current-Sheets",
+        647,
+        648,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create current-sheet from surface current density",
     )
@@ -174,7 +177,9 @@ class MagneticShell:
     """
 
     shell_strength: float = 0.0
-    surface_normal: np.ndarray = field(default_factory=lambda: np.array([0.0, 0.0, 1.0]))
+    surface_normal: np.ndarray = field(
+        default_factory=lambda: np.array([0.0, 0.0, 1.0])
+    )
     position: np.ndarray = field(default_factory=lambda: np.zeros(3))
 
     def __post_init__(self):
@@ -187,8 +192,10 @@ class MagneticShell:
 
     @classmethod
     @maxwell_cite(
-        648, 649,
-        part=4, chapter="Current-Sheets",
+        648,
+        649,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create magnetic shell equivalent to current-sheet",
     )
@@ -224,8 +231,10 @@ class MagneticShell:
 
     @classmethod
     @maxwell_cite(
-        648, 649,
-        part=4, chapter="Current-Sheets",
+        648,
+        649,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create magnetic shell from current per unit length",
     )
@@ -269,8 +278,10 @@ class MagneticShell:
 
 
 @maxwell_cite(
-    647, 650,
-    part=4, chapter="Current-Sheets",
+    647,
+    650,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate magnetic field discontinuity across current-sheet",
 )
@@ -332,8 +343,10 @@ def calc_sheet_field_discontinuity(
 
 
 @maxwell_cite(
-    648, 649,
-    part=4, chapter="Current-Sheets",
+    648,
+    649,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate magnetic scalar potential of magnetic shell",
 )
@@ -402,14 +415,14 @@ def calc_magnetic_shell_potential(
 
     # For a shell of unit area (simplified model)
     area = 1.0  # Could be made into a parameter
-    solid_angle = area * cos_theta / (r_mag ** 2)
+    solid_angle = area * cos_theta / (r_mag**2)
 
     # Magnetic scalar potential
     potential = shell.shell_strength * solid_angle / (4.0 * np.pi)
 
     # Magnetic field H = -∇Ω
     # For a dipole-like shell: H ≈ (shell_strength / r³) · [3(n·r̂)r̂ - n]
-    field_magnitude = shell.shell_strength / (r_mag ** 3)
+    field_magnitude = shell.shell_strength / (r_mag**3)
     field = field_magnitude * (3 * cos_theta * r_hat - shell.surface_normal)
 
     return {
@@ -422,8 +435,10 @@ def calc_magnetic_shell_potential(
 
 
 @maxwell_cite(
-    650, 651,
-    part=4, chapter="Current-Sheets",
+    650,
+    651,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate vector potential of current-sheet",
 )
@@ -491,12 +506,12 @@ def calc_sheet_vector_potential(
     # A = (m × r̂) / r²
     # For current in xy-plane, moment is in z-direction
     m_vec = moment_magnitude * sheet.surface_normal
-    A = np.cross(m_vec, r_hat) / (r_mag ** 2)
+    A = np.cross(m_vec, r_hat) / (r_mag**2)
 
     # Magnetic field from curl of A (dipole field)
     # B = (3(m·r̂)r̂ - m) / r³
     m_dot_r = np.dot(m_vec, r_hat)
-    B = (3 * m_dot_r * r_hat - m_vec) / (r_mag ** 3)
+    B = (3 * m_dot_r * r_hat - m_vec) / (r_mag**3)
 
     return {
         "vector_potential": A,
@@ -507,8 +522,10 @@ def calc_sheet_vector_potential(
 
 
 @maxwell_cite(
-    652, 653,
-    part=4, chapter="Current-Sheets",
+    652,
+    653,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate self-inductance of circular current-sheet",
 )
@@ -568,7 +585,7 @@ def calc_sheet_inductance(
         # Multi-turn sheet (solenoid-like)
         # Assume sheet length ≈ 2πa (one layer)
         length = 2.0 * np.pi * radius
-        L = 4.0 * np.pi * (num_turns ** 2) * (radius ** 2) / length
+        L = 4.0 * np.pi * (num_turns**2) * (radius**2) / length
 
     return {
         "inductance": L,
@@ -579,8 +596,11 @@ def calc_sheet_inductance(
 
 
 @maxwell_cite(
-    648, 649, 650,
-    part=4, chapter="Current-Sheets",
+    648,
+    649,
+    650,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Verify magnetic shell equivalence to current-sheet",
 )
@@ -652,8 +672,10 @@ def verify_shell_equivalence(
 
 
 @maxwell_cite(
-    654, 655,
-    part=4, chapter="Current-Sheets",
+    654,
+    655,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate interaction between two current-sheets",
 )
@@ -730,7 +752,7 @@ def calc_sheet_interaction(
     n2_dot_r = np.dot(n2, r_hat)
 
     # Mutual inductance formula
-    M = (m1 * m2 / (CONST.C * d ** 3)) * (n1_dot_n2 - 3 * n1_dot_r * n2_dot_r)
+    M = (m1 * m2 / (CONST.C * d**3)) * (n1_dot_n2 - 3 * n1_dot_r * n2_dot_r)
 
     # Interaction energy (for unit currents)
     I1 = sheet1.current_magnitude
@@ -764,12 +786,16 @@ class CurrentSheetCalculator:
         default_area: Default sheet area (cm²).
     """
 
-    default_normal: np.ndarray = field(default_factory=lambda: np.array([0.0, 0.0, 1.0]))
+    default_normal: np.ndarray = field(
+        default_factory=lambda: np.array([0.0, 0.0, 1.0])
+    )
     default_area: float = 1.0
 
     @maxwell_cite(
-        647, 648,
-        part=4, chapter="Current-Sheets",
+        647,
+        648,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create current-sheet with specified parameters",
     )
@@ -791,8 +817,10 @@ class CurrentSheetCalculator:
         )
 
     @maxwell_cite(
-        648, 649,
-        part=4, chapter="Current-Sheets",
+        648,
+        649,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create equivalent magnetic shell",
     )
@@ -801,8 +829,10 @@ class CurrentSheetCalculator:
         return MagneticShell.from_current_sheet(sheet)
 
     @maxwell_cite(
-        647, 650,
-        part=4, chapter="Current-Sheets",
+        647,
+        650,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate field discontinuity",
     )
@@ -811,8 +841,10 @@ class CurrentSheetCalculator:
         return calc_sheet_field_discontinuity(sheet)
 
     @maxwell_cite(
-        648, 649,
-        part=4, chapter="Current-Sheets",
+        648,
+        649,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate shell potential",
     )
@@ -825,8 +857,10 @@ class CurrentSheetCalculator:
         return calc_magnetic_shell_potential(shell, point)
 
     @maxwell_cite(
-        650, 651,
-        part=4, chapter="Current-Sheets",
+        650,
+        651,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate vector potential",
     )
@@ -839,8 +873,10 @@ class CurrentSheetCalculator:
         return calc_sheet_vector_potential(sheet, point)
 
     @maxwell_cite(
-        652, 653,
-        part=4, chapter="Current-Sheets",
+        652,
+        653,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate self-inductance",
     )
@@ -849,8 +885,11 @@ class CurrentSheetCalculator:
         return calc_sheet_inductance(radius, num_turns)
 
     @maxwell_cite(
-        648, 649, 650,
-        part=4, chapter="Current-Sheets",
+        648,
+        649,
+        650,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Verify shell equivalence",
     )
@@ -863,8 +902,10 @@ class CurrentSheetCalculator:
         return verify_shell_equivalence(sheet, point)
 
     @maxwell_cite(
-        654, 655,
-        part=4, chapter="Current-Sheets",
+        654,
+        655,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate sheet interaction",
     )

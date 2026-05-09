@@ -11,15 +11,24 @@ from __future__ import annotations
 
 from typing import Callable
 
-from maxwell.meta.citation import maxwell_cite
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.vis._base import create_meshgrid, format_axis_labels
-
 import numpy as np
+
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._base import create_meshgrid, format_axis_labels
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
-    52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
     part=1,
     chapter="On the Lines of Electric Force",
     description="Plot 2D electric field lines using streamplot for arbitrary charge configurations.",
@@ -84,7 +93,10 @@ def plot_field_lines_2d(
         fig = ax.figure
 
     strm = ax.streamplot(
-        X, Y, Ex, Ey,
+        X,
+        Y,
+        Ex,
+        Ey,
         density=density,
         linewidth=linewidth,
         cmap=cmap,
@@ -96,11 +108,19 @@ def plot_field_lines_2d(
     if charge_positions and charge_signs:
         for (cx, cy), sign in zip(charge_positions, charge_signs):
             color = "red" if sign > 0 else "blue"
-            ax.plot(cx, cy, "o", color=color, markersize=12,
-                    label="+" if sign > 0 else "-")
-            ax.text(cx + 0.3, cy, "+" if sign > 0 else "-",
-                    fontsize=14, fontweight="bold", color="white",
-                    ha="center", va="center")
+            ax.plot(
+                cx, cy, "o", color=color, markersize=12, label="+" if sign > 0 else "-"
+            )
+            ax.text(
+                cx + 0.3,
+                cy,
+                "+" if sign > 0 else "-",
+                fontsize=14,
+                fontweight="bold",
+                color="white",
+                ha="center",
+                va="center",
+            )
 
     fig.colorbar(strm.lines, ax=ax, label="|E| (statvolt/cm)")
     format_axis_labels(ax, title=title)
@@ -113,7 +133,16 @@ def plot_field_lines_2d(
 
 
 @maxwell_cite(
-    52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
     part=1,
     chapter="On the Lines of Electric Force",
     description="Plot field lines for an electric dipole (convenience wrapper).",

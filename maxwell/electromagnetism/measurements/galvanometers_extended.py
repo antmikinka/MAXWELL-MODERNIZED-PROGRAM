@@ -44,11 +44,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
-from typing import Optional, Tuple, List
+from typing import List, Optional, Tuple
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -97,11 +98,15 @@ class TangentGalvanometer:
         Returns:
             K (abamperes).
         """
-        return (CONST.C * self.coil_radius * self.earth_field) / (2.0 * np.pi * self.num_turns)
+        return (CONST.C * self.coil_radius * self.earth_field) / (
+            2.0 * np.pi * self.num_turns
+        )
 
     @maxwell_cite(
-        736, 737,
-        part=4, chapter="Tangent Galvanometer",
+        736,
+        737,
+        part=4,
+        chapter="Tangent Galvanometer",
         theory_class="maxwell_original",
         description="Calculate current from deflection",
     )
@@ -125,8 +130,10 @@ class TangentGalvanometer:
         return self.galvanometer_constant * np.tan(theta_rad)
 
     @maxwell_cite(
-        736, 737,
-        part=4, chapter="Tangent Galvanometer",
+        736,
+        737,
+        part=4,
+        chapter="Tangent Galvanometer",
         theory_class="maxwell_original",
         description="Calculate deflection from current",
     )
@@ -152,8 +159,11 @@ class TangentGalvanometer:
         return np.degrees(theta_rad)
 
     @maxwell_cite(
-        736, 737, 738,
-        part=4, chapter="Tangent Galvanometer",
+        736,
+        737,
+        738,
+        part=4,
+        chapter="Tangent Galvanometer",
         theory_class="maxwell_original",
         description="Calculate coil magnetic field",
     )
@@ -177,8 +187,11 @@ class TangentGalvanometer:
 
 
 @maxwell_cite(
-    736, 737, 738,
-    part=4, chapter="Tangent Galvanometer",
+    736,
+    737,
+    738,
+    part=4,
+    chapter="Tangent Galvanometer",
     theory_class="maxwell_original",
     description="Create and analyze tangent galvanometer",
 )
@@ -303,11 +316,14 @@ class SineGalvanometer:
         Returns:
             K (abamperes).
         """
-        return (CONST.C * self.coil_radius * self.earth_field) / (2.0 * np.pi * self.num_turns)
+        return (CONST.C * self.coil_radius * self.earth_field) / (
+            2.0 * np.pi * self.num_turns
+        )
 
     @maxwell_cite(
         739,
-        part=4, chapter="Sine Galvanometer",
+        part=4,
+        chapter="Sine Galvanometer",
         theory_class="maxwell_original",
         description="Calculate current from deflection",
     )
@@ -329,7 +345,8 @@ class SineGalvanometer:
 
     @maxwell_cite(
         739,
-        part=4, chapter="Sine Galvanometer",
+        part=4,
+        chapter="Sine Galvanometer",
         theory_class="maxwell_original",
         description="Calculate deflection from current",
     )
@@ -359,7 +376,8 @@ class SineGalvanometer:
 
 @maxwell_cite(
     739,
-    part=4, chapter="Sine Galvanometer",
+    part=4,
+    chapter="Sine Galvanometer",
     theory_class="maxwell_original",
     description="Create and analyze sine galvanometer",
 )
@@ -469,8 +487,9 @@ class HelmholtzGalvanometer:
         # General formula for arbitrary separation
         r = self.coil_radius
         d = self.coil_separation
-        return (r ** 3) * (1 / (r ** 2 + (d / 2) ** 2) ** (3/2) +
-                          1 / (r ** 2 + (d / 2) ** 2) ** (3/2))
+        return (r**3) * (
+            1 / (r**2 + (d / 2) ** 2) ** (3 / 2) + 1 / (r**2 + (d / 2) ** 2) ** (3 / 2)
+        )
 
     @property
     def galvanometer_constant(self) -> float:
@@ -482,12 +501,17 @@ class HelmholtzGalvanometer:
         Returns:
             K (abamperes).
         """
-        single_coil_K = (CONST.C * self.coil_radius * self.earth_field) / (2.0 * np.pi * self.num_turns_per_coil)
+        single_coil_K = (CONST.C * self.coil_radius * self.earth_field) / (
+            2.0 * np.pi * self.num_turns_per_coil
+        )
         return single_coil_K / self.helmholtz_factor
 
     @maxwell_cite(
-        741, 742, 743,
-        part=4, chapter="Helmholtz Galvanometer",
+        741,
+        742,
+        743,
+        part=4,
+        chapter="Helmholtz Galvanometer",
         theory_class="maxwell_original",
         description="Calculate field at center",
     )
@@ -504,12 +528,16 @@ class HelmholtzGalvanometer:
         Returns:
             Magnetic field B (gauss).
         """
-        return (8.0 * np.pi * self.num_turns_per_coil * current) / \
-               (5.0 * np.sqrt(5.0) * CONST.C * self.coil_radius)
+        return (8.0 * np.pi * self.num_turns_per_coil * current) / (
+            5.0 * np.sqrt(5.0) * CONST.C * self.coil_radius
+        )
 
     @maxwell_cite(
-        741, 742, 743,
-        part=4, chapter="Helmholtz Galvanometer",
+        741,
+        742,
+        743,
+        part=4,
+        chapter="Helmholtz Galvanometer",
         theory_class="maxwell_original",
         description="Calculate current from deflection",
     )
@@ -533,8 +561,11 @@ class HelmholtzGalvanometer:
 
 
 @maxwell_cite(
-    741, 742, 743,
-    part=4, chapter="Helmholtz Galvanometer",
+    741,
+    742,
+    743,
+    part=4,
+    chapter="Helmholtz Galvanometer",
     theory_class="maxwell_original",
     description="Create and analyze Helmholtz galvanometer",
 )
@@ -578,7 +609,9 @@ def helmholtz_galvanometer(
     Reference:
         Part IV, Arts. 741-743: Helmholtz galvanometer.
     """
-    galvo = HelmholtzGalvanometer(coil_radius, num_turns_per_coil, coil_separation, earth_field)
+    galvo = HelmholtzGalvanometer(
+        coil_radius, num_turns_per_coil, coil_separation, earth_field
+    )
 
     result = {
         "galvanometer_constant": galvo.galvanometer_constant,
@@ -592,7 +625,9 @@ def helmholtz_galvanometer(
 
     if current is not None:
         result["field_at_center"] = galvo.field_at_center(current)
-        result["calculated_deflection"] = np.degrees(np.arctan(current / galvo.galvanometer_constant))
+        result["calculated_deflection"] = np.degrees(
+            np.arctan(current / galvo.galvanometer_constant)
+        )
 
     if deflection_angle is not None:
         result["current"] = galvo.current_from_deflection(deflection_angle)
@@ -639,8 +674,11 @@ class Electrodynamometer:
     coil_area: float = 1.0  # cm^2
 
     @maxwell_cite(
-        747, 748, 749,
-        part=4, chapter="Electrodynamometer",
+        747,
+        748,
+        749,
+        part=4,
+        chapter="Electrodynamometer",
         theory_class="maxwell_original",
         description="Calculate torque on movable coil",
     )
@@ -664,8 +702,11 @@ class Electrodynamometer:
         return current1 * current2 * self.mutual_inductance_gradient * np.sin(angle_rad)
 
     @maxwell_cite(
-        747, 748, 749,
-        part=4, chapter="Electrodynamometer",
+        747,
+        748,
+        749,
+        part=4,
+        chapter="Electrodynamometer",
         theory_class="maxwell_original",
         description="Calculate equilibrium deflection",
     )
@@ -688,12 +729,16 @@ class Electrodynamometer:
             Deflection angle (radians).
         """
         # Small angle approximation
-        return (current1 * current2 * self.mutual_inductance_gradient) / self.spring_constant
+        return (
+            current1 * current2 * self.mutual_inductance_gradient
+        ) / self.spring_constant
 
 
 @maxwell_cite(
-    744, 746,
-    part=4, chapter="Wattmeter",
+    744,
+    746,
+    part=4,
+    chapter="Wattmeter",
     theory_class="maxwell_original",
     description="Calculate power using electrodynamometer wattmeter",
 )
@@ -750,7 +795,7 @@ def wattmeter(
     return {
         "power": power,
         "apparent_power": apparent_power,
-        "reactive_power": apparent_power * np.sqrt(1 - power_factor ** 2),
+        "reactive_power": apparent_power * np.sqrt(1 - power_factor**2),
         "power_factor": power_factor,
         "phase_angle": np.degrees(np.arccos(power_factor)),
         "deflection": deflection,
@@ -759,8 +804,11 @@ def wattmeter(
 
 
 @maxwell_cite(
-    747, 748, 749,
-    part=4, chapter="Electrodynamometer",
+    747,
+    748,
+    749,
+    part=4,
+    chapter="Electrodynamometer",
     theory_class="maxwell_original",
     description="Create and analyze electrodynamometer",
 )
@@ -827,8 +875,12 @@ def electrodynamometer(
 
 
 @maxwell_cite(
-    751, 752, 753, 754,
-    part=4, chapter="Current Weigher",
+    751,
+    752,
+    753,
+    754,
+    part=4,
+    chapter="Current Weigher",
     theory_class="maxwell_original",
     description="Calculate force in current weigher",
 )
@@ -901,13 +953,13 @@ def current_weigher(
     # Simplified geometric factor
     if d > 2 * r:
         # Far-field approximation
-        geom_factor = (r ** 4) / (d ** 4)
+        geom_factor = (r**4) / (d**4)
     else:
         # Near-field - use empirical correction
-        geom_factor = (r ** 2) / (d ** 2 + r ** 2)
+        geom_factor = (r**2) / (d**2 + r**2)
 
     # Force in CGS
-    force = (2.0 * np.pi * N1 * N2 * current ** 2 / (CONST.C ** 2)) * geom_factor
+    force = (2.0 * np.pi * N1 * N2 * current**2 / (CONST.C**2)) * geom_factor
 
     # Equivalent mass (F = m*g)
     g = 980.665  # cm/s^2
@@ -915,7 +967,7 @@ def current_weigher(
 
     # Mutual inductance gradient (dM/dx)
     # F = I^2 * (dM/dx), so dM/dx = F/I^2
-    dM_dx = force / (current ** 2) if current > 0 else 0
+    dM_dx = force / (current**2) if current > 0 else 0
 
     return {
         "force": force,
@@ -931,8 +983,11 @@ def current_weigher(
 
 
 @maxwell_cite(
-    755, 756, 757,
-    part=4, chapter="Joule Balance",
+    755,
+    756,
+    757,
+    part=4,
+    chapter="Joule Balance",
     theory_class="maxwell_original",
     description="Calculate energy in Joule balance",
 )
@@ -991,7 +1046,7 @@ def joule_balance(
     # But we'll compute in SI and convert final result
 
     # Power in watts (SI): P = I^2 * R
-    power_si = current ** 2 * resistance
+    power_si = current**2 * resistance
 
     # Energy in joules
     energy_joules = power_si * time
@@ -1019,8 +1074,27 @@ def joule_balance(
 
 
 @maxwell_cite(
-    736, 737, 738, 739, 741, 742, 743, 744, 746, 747, 748, 749, 751, 752, 753, 754, 755, 756, 757,
-    part=4, chapter="Electrical Measurements",
+    736,
+    737,
+    738,
+    739,
+    741,
+    742,
+    743,
+    744,
+    746,
+    747,
+    748,
+    749,
+    751,
+    752,
+    753,
+    754,
+    755,
+    756,
+    757,
+    part=4,
+    chapter="Electrical Measurements",
     theory_class="maxwell_original",
     description="Complete galvanometer and measurement analysis",
 )
@@ -1048,41 +1122,25 @@ def analyze_galvanometers() -> dict[str, dict]:
 
     # 1. Tangent galvanometer
     results["tangent_galvanometer"] = tangent_galvanometer(
-        coil_radius=15.0,
-        num_turns=10,
-        earth_field=0.25,
-        deflection_angle=45.0
+        coil_radius=15.0, num_turns=10, earth_field=0.25, deflection_angle=45.0
     )
 
     # 2. Sine galvanometer
     results["sine_galvanometer"] = sine_galvanometer(
-        coil_radius=15.0,
-        num_turns=10,
-        earth_field=0.25,
-        deflection_angle=45.0
+        coil_radius=15.0, num_turns=10, earth_field=0.25, deflection_angle=45.0
     )
 
     # 3. Helmholtz galvanometer
     results["helmholtz_galvanometer"] = helmholtz_galvanometer(
-        coil_radius=10.0,
-        num_turns_per_coil=50,
-        earth_field=0.25,
-        deflection_angle=45.0
+        coil_radius=10.0, num_turns_per_coil=50, earth_field=0.25, deflection_angle=45.0
     )
 
     # 4. Wattmeter
-    results["wattmeter"] = wattmeter(
-        voltage=120.0,
-        current=10.0,
-        power_factor=0.8
-    )
+    results["wattmeter"] = wattmeter(voltage=120.0, current=10.0, power_factor=0.8)
 
     # 5. Electrodynamometer
     results["electrodynamometer"] = electrodynamometer(
-        current1=1.0,
-        current2=0.5,
-        mutual_inductance_gradient=1e-6,
-        spring_constant=1.0
+        current1=1.0, current2=0.5, mutual_inductance_gradient=1e-6, spring_constant=1.0
     )
 
     # 6. Current weigher
@@ -1091,15 +1149,12 @@ def analyze_galvanometers() -> dict[str, dict]:
         coil_radius=10.0,
         num_turns_fixed=100,
         num_turns_movable=50,
-        coil_separation=15.0
+        coil_separation=15.0,
     )
 
     # 7. Joule balance
     results["joule_balance"] = joule_balance(
-        current=1.0,
-        resistance=1.0,
-        time=60.0,
-        heat_capacity=100.0  # erg/degree
+        current=1.0, resistance=1.0, time=60.0, heat_capacity=100.0  # erg/degree
     )
 
     return results

@@ -27,10 +27,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -56,8 +57,10 @@ class ElectrotonicState:
     scalar_potential_function: callable = None
 
     @maxwell_cite(
-        540, 541,
-        part=4, chapter="Electrotonic State",
+        540,
+        541,
+        part=4,
+        chapter="Electrotonic State",
         theory_class="maxwell_original",
         description="Calculate electrotonic state at position",
     )
@@ -79,8 +82,10 @@ class ElectrotonicState:
         return np.asarray(self.A_function(position, time), dtype=np.float64)
 
     @maxwell_cite(
-        540, 541,
-        part=4, chapter="Electrotonic State",
+        540,
+        541,
+        part=4,
+        chapter="Electrotonic State",
         theory_class="maxwell_original",
         description="Calculate magnetic field from electrotonic state curl",
     )
@@ -108,8 +113,10 @@ class ElectrotonicState:
         return _numerical_curl(A_wrapper, position, delta)
 
     @maxwell_cite(
-        540, 541,
-        part=4, chapter="Electrotonic State",
+        540,
+        541,
+        part=4,
+        chapter="Electrotonic State",
         theory_class="maxwell_original",
         description="Calculate electric field from electrotonic state",
     )
@@ -148,7 +155,9 @@ class ElectrotonicState:
 
         # -grad(phi) contribution
         if self.scalar_potential_function is not None:
-            grad_phi = _numerical_gradient(self.scalar_potential_function, position, delta)
+            grad_phi = _numerical_gradient(
+                self.scalar_potential_function, position, delta
+            )
         else:
             grad_phi = np.zeros(3)
 
@@ -156,11 +165,14 @@ class ElectrotonicState:
 
     @maxwell_cite(
         540,
-        part=4, chapter="Electrotonic State",
+        part=4,
+        chapter="Electrotonic State",
         theory_class="maxwell_original",
         description="Calculate electromagnetic momentum",
     )
-    def electromagnetic_momentum(self, position: np.ndarray, charge: float = 1.0) -> np.ndarray:
+    def electromagnetic_momentum(
+        self, position: np.ndarray, charge: float = 1.0
+    ) -> np.ndarray:
         """
         Calculate electromagnetic momentum per unit charge.
 
@@ -224,7 +236,9 @@ def _numerical_curl(F_func: callable, position: np.ndarray, delta: float) -> np.
     return curl
 
 
-def _numerical_gradient(f_func: callable, position: np.ndarray, delta: float) -> np.ndarray:
+def _numerical_gradient(
+    f_func: callable, position: np.ndarray, delta: float
+) -> np.ndarray:
     """Calculate numerical gradient of scalar field f."""
     grad = np.zeros(3)
 
@@ -240,8 +254,10 @@ def _numerical_gradient(f_func: callable, position: np.ndarray, delta: float) ->
 
 
 @maxwell_cite(
-    540, 541,
-    part=4, chapter="Electrotonic State",
+    540,
+    541,
+    part=4,
+    chapter="Electrotonic State",
     theory_class="maxwell_original",
     description="Calculate electrotonic state (vector potential) from current",
 )
@@ -266,7 +282,7 @@ def calc_electrotonic_state(
         Vector potential A (gauss*cm).
     """
     position = np.asarray(position, dtype=np.float64)
-    r_perp = np.sqrt(position[0]**2 + position[1]**2)
+    r_perp = np.sqrt(position[0] ** 2 + position[1] ** 2)
 
     if r_perp < 1e-15:
         return np.zeros(3)
@@ -279,8 +295,10 @@ def calc_electrotonic_state(
 
 
 @maxwell_cite(
-    540, 541,
-    part=4, chapter="Electrotonic State",
+    540,
+    541,
+    part=4,
+    chapter="Electrotonic State",
     theory_class="maxwell_original",
     description="Verify electrotonic state relations",
 )
@@ -310,7 +328,9 @@ def verify_electrotonic_state(
         return calc_electrotonic_uniform_field(B_test, r)
 
     curl_A = _numerical_curl(A_func, pos, 1e-6)
-    curl_verified = bool(np.linalg.norm(curl_A - B_test) / np.linalg.norm(B_test) < tolerance)
+    curl_verified = bool(
+        np.linalg.norm(curl_A - B_test) / np.linalg.norm(B_test) < tolerance
+    )
 
     return {
         "B_field": B_test,
@@ -323,8 +343,10 @@ def verify_electrotonic_state(
 
 
 @maxwell_cite(
-    540, 541,
-    part=4, chapter="Electrotonic State",
+    540,
+    541,
+    part=4,
+    chapter="Electrotonic State",
     theory_class="maxwell_original",
     description="Calculate electrotonic state for uniform B field",
 )
@@ -360,7 +382,9 @@ def calc_electrotonic_uniform_field(
         return 0.5 * np.cross(B_field, position)
     elif gauge == "landau":
         # Landau gauge for B along z
-        if np.abs(B_field[2]) > np.abs(B_field[0]) and np.abs(B_field[2]) > np.abs(B_field[1]):
+        if np.abs(B_field[2]) > np.abs(B_field[0]) and np.abs(B_field[2]) > np.abs(
+            B_field[1]
+        ):
             # B = (0, 0, Bz): A = (-By, 0, 0)
             return np.array([-B_field[2] * position[1], 0.0, 0.0])
         else:
@@ -371,8 +395,10 @@ def calc_electrotonic_uniform_field(
 
 
 @maxwell_cite(
-    540, 541,
-    part=4, chapter="Electrotonic State",
+    540,
+    541,
+    part=4,
+    chapter="Electrotonic State",
     theory_class="maxwell_original",
     description="Calculate electrotonic state for current loop",
 )
@@ -407,24 +433,26 @@ def calc_electrotonic_loop(
     r_perp = np.sqrt(position[0] ** 2 + position[1] ** 2)
 
     # Dipole approximation for large distances
-    R3 = (loop_radius ** 2 + z ** 2) ** 1.5
+    R3 = (loop_radius**2 + z**2) ** 1.5
     if R3 > 1e-15 and r_perp > 1e-15:
         # Magnetic moment
-        m = current * np.pi * loop_radius ** 2
+        m = current * np.pi * loop_radius**2
 
         # Vector potential for dipole: A = (m × r) / r³
         m_vec = np.array([0, 0, m])
-        r_mag = np.sqrt(r_perp ** 2 + z ** 2)
+        r_mag = np.sqrt(r_perp**2 + z**2)
 
         if r_mag > 1e-15:
-            return np.cross(m_vec, position) / (r_mag ** 3)
+            return np.cross(m_vec, position) / (r_mag**3)
 
     return np.zeros(3)
 
 
 @maxwell_cite(
-    540, 541,
-    part=4, chapter="Electrotonic State",
+    540,
+    541,
+    part=4,
+    chapter="Electrotonic State",
     theory_class="maxwell_original",
     description="Calculate magnetic flux from electrotonic state",
 )
@@ -467,8 +495,10 @@ def calc_flux_from_electrotonic(
 
 
 @maxwell_cite(
-    540, 541,
-    part=4, chapter="Electrotonic State",
+    540,
+    541,
+    part=4,
+    chapter="Electrotonic State",
     theory_class="maxwell_original",
     description="Verify electrotonic state relations",
 )
@@ -527,8 +557,10 @@ def verify_electrotonic_relations(
 
 
 @maxwell_cite(
-    540, 541,
-    part=4, chapter="Electrotonic State",
+    540,
+    541,
+    part=4,
+    chapter="Electrotonic State",
     theory_class="maxwell_original",
     description="Complete electrotonic state analysis",
 )

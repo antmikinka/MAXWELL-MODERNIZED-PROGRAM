@@ -6,9 +6,9 @@ import numpy as np
 import pytest
 
 from maxwell.verification.framework import (
+    VerificationReport,
     VerificationResult,
     VerificationSuite,
-    VerificationReport,
 )
 
 
@@ -45,8 +45,12 @@ class TestVerificationResult:
 
     def test_frozen(self):
         r = VerificationResult(
-            module_name="test", article_refs=(), test_name="t",
-            expected=1.0, actual=1.0, relative_error=0.0,
+            module_name="test",
+            article_refs=(),
+            test_name="t",
+            expected=1.0,
+            actual=1.0,
+            relative_error=0.0,
         )
         with pytest.raises(Exception):
             r.test_name = "modified"
@@ -66,8 +70,13 @@ class TestVerificationReport:
     def test_all_pass(self):
         results = [
             VerificationResult(
-                module_name="m", article_refs=(), test_name=f"t{i}",
-                expected=1.0, actual=1.0, relative_error=0.0, passed=True,
+                module_name="m",
+                article_refs=(),
+                test_name=f"t{i}",
+                expected=1.0,
+                actual=1.0,
+                relative_error=0.0,
+                passed=True,
             )
             for i in range(5)
         ]
@@ -80,12 +89,22 @@ class TestVerificationReport:
     def test_mixed_results(self):
         results = [
             VerificationResult(
-                module_name="m", article_refs=(), test_name="t1",
-                expected=1.0, actual=1.0, relative_error=0.0, passed=True,
+                module_name="m",
+                article_refs=(),
+                test_name="t1",
+                expected=1.0,
+                actual=1.0,
+                relative_error=0.0,
+                passed=True,
             ),
             VerificationResult(
-                module_name="m", article_refs=(), test_name="t2",
-                expected=1.0, actual=2.0, relative_error=1.0, passed=False,
+                module_name="m",
+                article_refs=(),
+                test_name="t2",
+                expected=1.0,
+                actual=2.0,
+                relative_error=1.0,
+                passed=False,
             ),
         ]
         report = VerificationReport(results=results)
@@ -98,8 +117,13 @@ class TestVerificationReport:
     def test_summary(self):
         results = [
             VerificationResult(
-                module_name="m", article_refs=(), test_name="t",
-                expected=1.0, actual=1.0, relative_error=0.0, passed=True,
+                module_name="m",
+                article_refs=(),
+                test_name="t",
+                expected=1.0,
+                actual=1.0,
+                relative_error=0.0,
+                passed=True,
             ),
         ]
         report = VerificationReport(results=results)
@@ -111,9 +135,13 @@ class TestVerificationReport:
     def test_report_html(self):
         results = [
             VerificationResult(
-                module_name="maxwell.test", article_refs=(1, 2),
-                test_name="test_html", expected=1.0, actual=1.0,
-                relative_error=0.0, passed=True,
+                module_name="maxwell.test",
+                article_refs=(1, 2),
+                test_name="test_html",
+                expected=1.0,
+                actual=1.0,
+                relative_error=0.0,
+                passed=True,
             ),
         ]
         report = VerificationReport(results=results)
@@ -132,9 +160,13 @@ class TestVerificationSuite:
         def check_fn():
             return [
                 VerificationResult(
-                    module_name="test.module", article_refs=(1,),
-                    test_name="check_1", expected=1.0, actual=1.0,
-                    relative_error=0.0, passed=True,
+                    module_name="test.module",
+                    article_refs=(1,),
+                    test_name="check_1",
+                    expected=1.0,
+                    actual=1.0,
+                    relative_error=0.0,
+                    passed=True,
                 ),
             ]
 
@@ -147,16 +179,30 @@ class TestVerificationSuite:
         suite = VerificationSuite()
 
         def fn_a():
-            return [VerificationResult(
-                module_name="module_a", article_refs=(), test_name="a1",
-                expected=1.0, actual=1.0, relative_error=0.0, passed=True,
-            )]
+            return [
+                VerificationResult(
+                    module_name="module_a",
+                    article_refs=(),
+                    test_name="a1",
+                    expected=1.0,
+                    actual=1.0,
+                    relative_error=0.0,
+                    passed=True,
+                )
+            ]
 
         def fn_b():
-            return [VerificationResult(
-                module_name="module_b", article_refs=(), test_name="b1",
-                expected=1.0, actual=2.0, relative_error=1.0, passed=False,
-            )]
+            return [
+                VerificationResult(
+                    module_name="module_b",
+                    article_refs=(),
+                    test_name="b1",
+                    expected=1.0,
+                    actual=2.0,
+                    relative_error=1.0,
+                    passed=False,
+                )
+            ]
 
         suite.register_module("module_a", fn_a)
         suite.register_module("module_b", fn_b)
@@ -169,10 +215,17 @@ class TestVerificationSuite:
         suite = VerificationSuite()
 
         def fn_a():
-            return [VerificationResult(
-                module_name="module_a", article_refs=(), test_name="a1",
-                expected=1.0, actual=1.0, relative_error=0.0, passed=True,
-            )]
+            return [
+                VerificationResult(
+                    module_name="module_a",
+                    article_refs=(),
+                    test_name="a1",
+                    expected=1.0,
+                    actual=1.0,
+                    relative_error=0.0,
+                    passed=True,
+                )
+            ]
 
         suite.register_module("module_a", fn_a)
         suite.register_module("module_b", fn_a)
@@ -200,11 +253,16 @@ class TestVerificationSuite:
         suite = VerificationSuite(relative_tolerance=1e-6)
 
         def fn_no_tol():
-            return [VerificationResult(
-                module_name="m", article_refs=(), test_name="t",
-                expected=1.0, actual=1.0 + 1e-7,
-                relative_error=1e-7,
-            )]
+            return [
+                VerificationResult(
+                    module_name="m",
+                    article_refs=(),
+                    test_name="t",
+                    expected=1.0,
+                    actual=1.0 + 1e-7,
+                    relative_error=1e-7,
+                )
+            ]
 
         suite.register_module("m", fn_no_tol)
         report = suite.run_all()

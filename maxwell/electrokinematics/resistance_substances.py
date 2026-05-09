@@ -44,17 +44,18 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, Optional, Union, List, Dict
-import numpy as np
 from functools import wraps
+from typing import Callable, Dict, List, Optional, Union
 
+import numpy as np
+
+from maxwell.config.constants import C_APPROX, CONST, C
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
-
 
 # =============================================================================
 # MATERIAL DATABASE
 # =============================================================================
+
 
 @dataclass
 class MaterialResistance:
@@ -104,219 +105,215 @@ MATERIAL_DATABASE: Dict[str, MaterialResistance] = {
         name="Silver",
         resistivity_20c=1.59e-8 * 1e9,  # 1.59e-8 ohm·cm → abohm·cm
         temperature_coefficient=0.0038,
-        material_type="metal"
+        material_type="metal",
     ),
     "copper": MaterialResistance(
         name="Copper",
         resistivity_20c=1.68e-8 * 1e9,
         temperature_coefficient=0.00393,
-        material_type="metal"
+        material_type="metal",
     ),
     "gold": MaterialResistance(
         name="Gold",
         resistivity_20c=2.44e-8 * 1e9,
         temperature_coefficient=0.0034,
-        material_type="metal"
+        material_type="metal",
     ),
     "aluminum": MaterialResistance(
         name="Aluminum",
         resistivity_20c=2.82e-8 * 1e9,
         temperature_coefficient=0.0039,
-        material_type="metal"
+        material_type="metal",
     ),
     "iron": MaterialResistance(
         name="Iron",
         resistivity_20c=9.71e-8 * 1e9,
         temperature_coefficient=0.0050,
-        material_type="metal"
+        material_type="metal",
     ),
     "nickel": MaterialResistance(
         name="Nickel",
         resistivity_20c=6.99e-8 * 1e9,
         temperature_coefficient=0.0060,
-        material_type="metal"
+        material_type="metal",
     ),
     "platinum": MaterialResistance(
         name="Platinum",
         resistivity_20c=10.6e-8 * 1e9,
         temperature_coefficient=0.00392,
-        material_type="metal"
+        material_type="metal",
     ),
     "tungsten": MaterialResistance(
         name="Tungsten",
         resistivity_20c=5.6e-8 * 1e9,
         temperature_coefficient=0.0045,
-        material_type="metal"
+        material_type="metal",
     ),
     "zinc": MaterialResistance(
         name="Zinc",
         resistivity_20c=5.9e-8 * 1e9,
         temperature_coefficient=0.0037,
-        material_type="metal"
+        material_type="metal",
     ),
     "tin": MaterialResistance(
         name="Tin",
         resistivity_20c=11.5e-8 * 1e9,
         temperature_coefficient=0.0042,
-        material_type="metal"
+        material_type="metal",
     ),
     "lead": MaterialResistance(
         name="Lead",
         resistivity_20c=22.0e-8 * 1e9,
         temperature_coefficient=0.0039,
-        material_type="metal"
+        material_type="metal",
     ),
     "mercury": MaterialResistance(
         name="Mercury",
         resistivity_20c=98.0e-8 * 1e9,
         temperature_coefficient=0.0009,
-        material_type="metal"
+        material_type="metal",
     ),
-
     # Alloys (Arts. 363-364)
     "brass": MaterialResistance(
         name="Brass (Cu-Zn)",
         resistivity_20c=6.0e-8 * 1e9,
         temperature_coefficient=0.0015,
-        material_type="alloy"
+        material_type="alloy",
     ),
     "bronze": MaterialResistance(
         name="Bronze (Cu-Sn)",
         resistivity_20c=10.0e-8 * 1e9,
         temperature_coefficient=0.0010,
-        material_type="alloy"
+        material_type="alloy",
     ),
     "constantan": MaterialResistance(
         name="Constantan (Cu-Ni)",
         resistivity_20c=49.0e-8 * 1e9,
         temperature_coefficient=0.00001,  # Very low TCR
-        material_type="alloy"
+        material_type="alloy",
     ),
     "manganin": MaterialResistance(
         name="Manganin (Cu-Mn-Ni)",
         resistivity_20c=48.0e-8 * 1e9,
         temperature_coefficient=0.00002,
-        material_type="alloy"
+        material_type="alloy",
     ),
     "nichrome": MaterialResistance(
         name="Nichrome (Ni-Cr)",
         resistivity_20c=110.0e-8 * 1e9,
         temperature_coefficient=0.0004,
-        material_type="alloy"
+        material_type="alloy",
     ),
     "steel": MaterialResistance(
         name="Steel (carbon)",
         resistivity_20c=15.0e-8 * 1e9,
         temperature_coefficient=0.003,
-        material_type="alloy"
+        material_type="alloy",
     ),
-
     # Electrolytes (Arts. 365-366)
     "seawater": MaterialResistance(
         name="Seawater",
         resistivity_20c=20.0,  # ~20 abohm·cm (0.2 ohm·m)
         temperature_coefficient=-0.02,  # Negative TCR
-        material_type="electrolyte"
+        material_type="electrolyte",
     ),
     "copper_sulfate": MaterialResistance(
         name="CuSO4 solution (saturated)",
         resistivity_20c=25.0,
         temperature_coefficient=-0.015,
-        material_type="electrolyte"
+        material_type="electrolyte",
     ),
     "sulfuric_acid": MaterialResistance(
         name="H2SO4 (30%)",
         resistivity_20c=1.5,
         temperature_coefficient=-0.012,
-        material_type="electrolyte"
+        material_type="electrolyte",
     ),
     "sodium_chloride": MaterialResistance(
         name="NaCl solution (1M)",
         resistivity_20c=7.5,
         temperature_coefficient=-0.02,
-        material_type="electrolyte"
+        material_type="electrolyte",
     ),
-
     # Dielectrics/Insulators (Arts. 367-368)
     "glass": MaterialResistance(
         name="Glass (Pyrex)",
         resistivity_20c=1e13,  # Very high resistivity
         temperature_coefficient=-0.05,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "mica": MaterialResistance(
         name="Mica",
         resistivity_20c=1e15,
         temperature_coefficient=-0.03,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "quartz": MaterialResistance(
         name="Quartz (fused)",
         resistivity_20c=1e17,
         temperature_coefficient=-0.02,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "rubber": MaterialResistance(
         name="Rubber",
         resistivity_20c=1e14,
         temperature_coefficient=-0.05,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "ebonite": MaterialResistance(
         name="Ebonite (hard rubber)",
         resistivity_20c=1e15,
         temperature_coefficient=-0.04,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "gutta_percha": MaterialResistance(
         name="Gutta-percha",
         resistivity_20c=1e14,
         temperature_coefficient=-0.03,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "paraffin": MaterialResistance(
         name="Paraffin wax",
         resistivity_20c=1e16,
         temperature_coefficient=-0.02,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "shellac": MaterialResistance(
         name="Shellac",
         resistivity_20c=1e14,
         temperature_coefficient=-0.04,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
     "air": MaterialResistance(
         name="Air (dry)",
         resistivity_20c=1e18,  # Extremely high
         temperature_coefficient=0.0,
-        material_type="dielectric"
+        material_type="dielectric",
     ),
-
     # Semiconductors (Arts. 369-370)
     "silicon": MaterialResistance(
         name="Silicon (intrinsic)",
         resistivity_20c=2.3e5,  # High resistivity for intrinsic Si
         temperature_coefficient=-0.07,  # Negative TCR
-        material_type="semiconductor"
+        material_type="semiconductor",
     ),
     "germanium": MaterialResistance(
         name="Germanium (intrinsic)",
         resistivity_20c=47.0,
         temperature_coefficient=-0.05,
-        material_type="semiconductor"
+        material_type="semiconductor",
     ),
     "carbon": MaterialResistance(
         name="Carbon (graphite)",
         resistivity_20c=1.38e-5 * 1e9,
         temperature_coefficient=-0.0005,  # Slightly negative
-        material_type="semiconductor"
+        material_type="semiconductor",
     ),
     "selenium": MaterialResistance(
         name="Selenium",
         resistivity_20c=1e5,
         temperature_coefficient=-0.03,
-        material_type="semiconductor"
+        material_type="semiconductor",
     ),
 }
 
@@ -342,11 +339,16 @@ def get_material_data(material_name: str) -> Optional[MaterialResistance]:
 # METAL RESISTANCE (Arts. 359-362)
 # =============================================================================
 
+
 @maxwell_cite(
-    359, 360, 361, 362,
-    part=2, chapter="Resistance of Substances",
+    359,
+    360,
+    361,
+    362,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate resistivity of pure metal at given temperature"
+    description="Calculate resistivity of pure metal at given temperature",
 )
 def metal_resistance(
     material: str,
@@ -414,13 +416,13 @@ def metal_resistance(
     # Linear temperature dependence
     delta_T = temperature - reference_temperature
     resistivity = rho_0 * (1 + alpha * delta_T)
-    conductivity = 1.0 / resistivity if resistivity > 0 else float('inf')
+    conductivity = 1.0 / resistivity if resistivity > 0 else float("inf")
 
     return {
         "resistivity": resistivity,
         "conductivity": conductivity,
         "resistivity_at_20c": rho_0,
-        "conductivity_at_20c": 1.0 / rho_0 if rho_0 > 0 else float('inf'),
+        "conductivity_at_20c": 1.0 / rho_0 if rho_0 > 0 else float("inf"),
         "temperature_coefficient": alpha,
         "temperature": temperature,
         "reference_temperature": reference_temperature,
@@ -431,10 +433,14 @@ def metal_resistance(
 
 
 @maxwell_cite(
-    359, 360, 361, 362,
-    part=2, chapter="Resistance of Substances",
+    359,
+    360,
+    361,
+    362,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate temperature coefficient dR/dT for metals"
+    description="Calculate temperature coefficient dR/dT for metals",
 )
 def temperature_coefficient(
     material: str,
@@ -493,7 +499,9 @@ def temperature_coefficient(
 
     # Temperature dependence of alpha
     delta_T = temperature - T_0
-    alpha = alpha_0 / (1 + alpha_0 * delta_T) if (1 + alpha_0 * delta_T) > 0 else alpha_0
+    alpha = (
+        alpha_0 / (1 + alpha_0 * delta_T) if (1 + alpha_0 * delta_T) > 0 else alpha_0
+    )
 
     # Absolute rate of change: d(rho)/dT = alpha * rho
     rho_at_T = rho_0 * (1 + alpha_0 * delta_T)
@@ -514,11 +522,14 @@ def temperature_coefficient(
 # ALLOY RESISTANCE (Arts. 363-364)
 # =============================================================================
 
+
 @maxwell_cite(
-    363, 364,
-    part=2, chapter="Resistance of Substances",
+    363,
+    364,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate resistivity of alloy at given temperature"
+    description="Calculate resistivity of alloy at given temperature",
 )
 def alloy_resistance(
     material: str,
@@ -586,7 +597,7 @@ def alloy_resistance(
     # Temperature dependence (linear approximation)
     delta_T = temperature - reference_temperature
     resistivity = rho_0 * (1 + alpha * delta_T)
-    conductivity = 1.0 / resistivity if resistivity > 0 else float('inf')
+    conductivity = 1.0 / resistivity if resistivity > 0 else float("inf")
 
     return {
         "resistivity": resistivity,
@@ -602,10 +613,12 @@ def alloy_resistance(
 
 
 @maxwell_cite(
-    363, 364,
-    part=2, chapter="Resistance of Substances",
+    363,
+    364,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Apply Matthiessen's rule for alloy resistivity"
+    description="Apply Matthiessen's rule for alloy resistivity",
 )
 def matthiessen_rule(
     base_metal_resistivity: float,
@@ -682,11 +695,14 @@ def matthiessen_rule(
 # ELECTROLYTE RESISTANCE (Arts. 365-366)
 # =============================================================================
 
+
 @maxwell_cite(
-    365, 366,
-    part=2, chapter="Resistance of Substances",
+    365,
+    366,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate resistivity of electrolyte solution"
+    description="Calculate resistivity of electrolyte solution",
 )
 def electrolyte_resistance(
     concentration: float,
@@ -768,7 +784,9 @@ def electrolyte_resistance(
 
     # Get parameters
     electrolyte_key = electrolyte_type.lower() if electrolyte_type else "generic"
-    Lambda_0 = molar_conductivities.get(electrolyte_key, molar_conductivities["generic"])
+    Lambda_0 = molar_conductivities.get(
+        electrolyte_key, molar_conductivities["generic"]
+    )
     alpha = temp_coeffs.get(electrolyte_key, 0.02)
 
     # Adjust concentration units (assume mol/L if > 0.1)
@@ -789,7 +807,7 @@ def electrolyte_resistance(
     kappa_T = kappa * (1 + alpha * delta_T)
 
     # Resistivity
-    resistivity = 1.0 / kappa_T if kappa_T > 0 else float('inf')
+    resistivity = 1.0 / kappa_T if kappa_T > 0 else float("inf")
 
     return {
         "resistivity": resistivity,
@@ -804,10 +822,12 @@ def electrolyte_resistance(
 
 
 @maxwell_cite(
-    365, 366,
-    part=2, chapter="Resistance of Substances",
+    365,
+    366,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate concentration dependence of electrolyte conductivity"
+    description="Calculate concentration dependence of electrolyte conductivity",
 )
 def electrolyte_conductivity_vs_concentration(
     concentrations: list[float],
@@ -850,8 +870,8 @@ def electrolyte_conductivity_vs_concentration(
 
     for c in concentrations:
         result = electrolyte_resistance(c, temperature, electrolyte_type)
-        conductivities.append(result['conductivity'])
-        resistivities.append(result['resistivity'])
+        conductivities.append(result["conductivity"])
+        resistivities.append(result["resistivity"])
 
     return {
         "concentrations": list(concentrations),
@@ -866,11 +886,14 @@ def electrolyte_conductivity_vs_concentration(
 # DIELECTRIC RESISTANCE (Arts. 367-368)
 # =============================================================================
 
+
 @maxwell_cite(
-    367, 368,
-    part=2, chapter="Resistance of Substances",
+    367,
+    368,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate resistivity of dielectric/insulating material"
+    description="Calculate resistivity of dielectric/insulating material",
 )
 def dielectric_resistance(
     material: str,
@@ -943,7 +966,7 @@ def dielectric_resistance(
     if humidity_factor < 1.0 and humidity_factor > 0:
         resistivity = resistivity * humidity_factor
 
-    conductivity = 1.0 / resistivity if resistivity > 0 else float('inf')
+    conductivity = 1.0 / resistivity if resistivity > 0 else float("inf")
 
     return {
         "resistivity": resistivity,
@@ -958,10 +981,12 @@ def dielectric_resistance(
 
 
 @maxwell_cite(
-    367, 368,
-    part=2, chapter="Resistance of Substances",
+    367,
+    368,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate surface resistivity of insulator"
+    description="Calculate surface resistivity of insulator",
 )
 def surface_resistivity(
     material: str,
@@ -1044,11 +1069,14 @@ def surface_resistivity(
 # SEMICONDUCTOR RESISTANCE (Arts. 369-370)
 # =============================================================================
 
+
 @maxwell_cite(
-    369, 370,
-    part=2, chapter="Resistance of Substances",
+    369,
+    370,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate resistivity of semiconductor material"
+    description="Calculate resistivity of semiconductor material",
 )
 def semiconductor_resistance(
     material: str,
@@ -1130,7 +1158,7 @@ def semiconductor_resistance(
     # Intrinsic semiconductor: rho ~ exp(E_g / 2kT)
     if doping_concentration is None:
         # Intrinsic behavior
-        resistivity = rho_0 * np.exp(characteristic_temp * (1/temperature - 1/T_0))
+        resistivity = rho_0 * np.exp(characteristic_temp * (1 / temperature - 1 / T_0))
         material_type = "intrinsic"
     else:
         # Extrinsic (doped) - simplified model
@@ -1143,10 +1171,10 @@ def semiconductor_resistance(
         resistivity = 1.0 / conductivity_extrinsic
         material_type = "extrinsic"
 
-    conductivity = 1.0 / resistivity if resistivity > 0 else float('inf')
+    conductivity = 1.0 / resistivity if resistivity > 0 else float("inf")
 
     # Temperature coefficient (negative!)
-    alpha = -characteristic_temp / (temperature ** 2)
+    alpha = -characteristic_temp / (temperature**2)
 
     return {
         "resistivity": resistivity,
@@ -1161,10 +1189,12 @@ def semiconductor_resistance(
 
 
 @maxwell_cite(
-    369, 370,
-    part=2, chapter="Resistance of Substances",
+    369,
+    370,
+    part=2,
+    chapter="Resistance of Substances",
     theory_class="maxwell_original",
-    description="Calculate photoconductivity effect in selenium"
+    description="Calculate photoconductivity effect in selenium",
 )
 def photoconductivity(
     material: str,
@@ -1237,7 +1267,7 @@ def photoconductivity(
     }
 
     peak = peak_wavelengths.get(material.lower(), 550)
-    wavelength_factor = np.exp(-((wavelength - peak) / 100) ** 2)
+    wavelength_factor = np.exp(-(((wavelength - peak) / 100) ** 2))
 
     # Photoconductivity
     effective_illumination = illumination * wavelength_factor
@@ -1261,6 +1291,7 @@ def photoconductivity(
 # RESISTANCE SUBSTANCES ANALYZER CLASS
 # =============================================================================
 
+
 @dataclass
 class ResistanceSubstancesAnalyzer:
     """
@@ -1279,30 +1310,38 @@ class ResistanceSubstancesAnalyzer:
     reference_temperature: float = 293.15
 
     @maxwell_cite(
-        359, 360, 361, 362,
-        part=2, chapter="Resistance of Substances",
+        359,
+        360,
+        361,
+        362,
+        part=2,
+        chapter="Resistance of Substances",
         theory_class="maxwell_original",
-        description="Analyze metal resistance at temperature"
+        description="Analyze metal resistance at temperature",
     )
     def analyze_metal(self, material: str, temperature: float) -> dict:
         """Analyze metal resistance."""
         return metal_resistance(material, temperature, self.reference_temperature)
 
     @maxwell_cite(
-        363, 364,
-        part=2, chapter="Resistance of Substances",
+        363,
+        364,
+        part=2,
+        chapter="Resistance of Substances",
         theory_class="maxwell_original",
-        description="Analyze alloy resistance"
+        description="Analyze alloy resistance",
     )
     def analyze_alloy(self, material: str, temperature: float) -> dict:
         """Analyze alloy resistance."""
         return alloy_resistance(material, temperature, self.reference_temperature)
 
     @maxwell_cite(
-        365, 366,
-        part=2, chapter="Resistance of Substances",
+        365,
+        366,
+        part=2,
+        chapter="Resistance of Substances",
         theory_class="maxwell_original",
-        description="Analyze electrolyte resistance"
+        description="Analyze electrolyte resistance",
     )
     def analyze_electrolyte(
         self,
@@ -1314,10 +1353,12 @@ class ResistanceSubstancesAnalyzer:
         return electrolyte_resistance(concentration, temperature, electrolyte_type)
 
     @maxwell_cite(
-        367, 368,
-        part=2, chapter="Resistance of Substances",
+        367,
+        368,
+        part=2,
+        chapter="Resistance of Substances",
         theory_class="maxwell_original",
-        description="Analyze dielectric resistance"
+        description="Analyze dielectric resistance",
     )
     def analyze_dielectric(
         self,
@@ -1329,10 +1370,12 @@ class ResistanceSubstancesAnalyzer:
         return dielectric_resistance(material, temperature, humidity_factor)
 
     @maxwell_cite(
-        369, 370,
-        part=2, chapter="Resistance of Substances",
+        369,
+        370,
+        part=2,
+        chapter="Resistance of Substances",
         theory_class="maxwell_original",
-        description="Analyze semiconductor resistance"
+        description="Analyze semiconductor resistance",
     )
     def analyze_semiconductor(
         self,
@@ -1344,10 +1387,14 @@ class ResistanceSubstancesAnalyzer:
         return semiconductor_resistance(material, temperature, doping_concentration)
 
     @maxwell_cite(
-        359, 360, 361, 362,
-        part=2, chapter="Resistance of Substances",
+        359,
+        360,
+        361,
+        362,
+        part=2,
+        chapter="Resistance of Substances",
         theory_class="maxwell_original",
-        description="Get material data from database"
+        description="Get material data from database",
     )
     def get_material(self, material_name: str) -> Optional[MaterialResistance]:
         """Get material data from database."""

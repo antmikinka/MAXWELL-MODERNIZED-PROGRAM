@@ -14,49 +14,46 @@ References:
 
 from maxwell.electromagnetism.induction.faraday import (
     FaradayInduction,
-    MagneticFlux,
     InducedEMF,
-    calc_magnetic_flux,
+    MagneticFlux,
+    analyze_faraday_induction,
+    calc_flux_through_loop,
     calc_induced_emf,
+    calc_magnetic_flux,
     calc_motional_emf,
     calc_self_induction,
-    calc_flux_through_loop,
-    verify_lenz_law,
-    analyze_faraday_induction,
     flux_change_for_emf,
     verify_faradays_law,
+    verify_lenz_law,
 )
-
-from maxwell.electromagnetism.induction.lenz import (
-    LenzLawCalculator,
-    calc_induced_emf,
-    calc_induced_current,
-    calc_motional_emf_lenz,
-    calc_rotating_coil_emf,
-    verify_lenz_law_direction,
-    analyze_lenz_law,
-)
-
-from maxwell.electromagnetism.induction.self import (
-    SelfInductance,
-    calc_solenoid_inductance,
-    calc_loop_inductance,
-    calc_self_induced_emf,
-    calc_inductor_energy,
-    calc_rl_current_rise,
-    calc_rl_current_decay,
-    verify_self_induction,
-    analyze_self_induction,
-)
-
 from maxwell.electromagnetism.induction.generalized import (
     GeneralizedEMF,
+    analyze_generalized_emf,
     calc_generalized_emf,
     calc_motional_emf_general,
     calc_rotating_loop_emf,
     calc_sliding_conductor_emf,
     verify_generalized_emf,
-    analyze_generalized_emf,
+)
+from maxwell.electromagnetism.induction.lenz import (
+    LenzLawCalculator,
+    analyze_lenz_law,
+    calc_induced_current,
+    calc_induced_emf,
+    calc_motional_emf_lenz,
+    calc_rotating_coil_emf,
+    verify_lenz_law_direction,
+)
+from maxwell.electromagnetism.induction.self import (
+    SelfInductance,
+    analyze_self_induction,
+    calc_inductor_energy,
+    calc_loop_inductance,
+    calc_rl_current_decay,
+    calc_rl_current_rise,
+    calc_self_induced_emf,
+    calc_solenoid_inductance,
+    verify_self_induction,
 )
 
 __all__ = [

@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -85,9 +86,11 @@ class TestCalcDielectricAbsorption:
         A = [0.8, 0.4, 0.05]
         t = np.array([1.0])
         I = calc_dielectric_absorption(t, tau=tau, A=A)
-        expected = (0.8 * np.exp(-1.0 / 0.5) +
-                    0.4 * np.exp(-1.0 / 2.0) +
-                    0.05 * np.exp(-1.0 / 50.0))
+        expected = (
+            0.8 * np.exp(-1.0 / 0.5)
+            + 0.4 * np.exp(-1.0 / 2.0)
+            + 0.05 * np.exp(-1.0 / 50.0)
+        )
         assert np.isclose(I[0], expected)
 
 

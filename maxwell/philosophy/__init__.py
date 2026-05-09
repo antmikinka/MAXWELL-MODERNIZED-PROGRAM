@@ -5,13 +5,13 @@ References:
 """
 
 from maxwell.philosophy.medium_check import (
-    calc_wave_properties,
-    calc_reflection_coefficient,
-    verify_maxwell_relation,
-    verify_wave_speed,
-    analyze_theory_completeness,
     MediumProperties,
     WaveProperties,
+    analyze_theory_completeness,
+    calc_reflection_coefficient,
+    calc_wave_properties,
+    verify_maxwell_relation,
+    verify_wave_speed,
 )
 
 __all__ = [

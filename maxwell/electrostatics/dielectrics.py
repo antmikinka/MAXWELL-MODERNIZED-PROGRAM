@@ -42,21 +42,25 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST, C
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # SPECIFIC INDUCTIVE CAPACITY (Arts. 157–159)
 # =============================================================================
 
+
 @maxwell_cite(
-    157, 158, 159,
-    part=1, chapter="Theory of Dielectrics",
+    157,
+    158,
+    159,
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Specific inductive capacity (dielectric constant)"
+    description="Specific inductive capacity (dielectric constant)",
 )
 def specific_inductive_capacity(
     material: str = None,
@@ -171,7 +175,7 @@ def specific_inductive_capacity(
         # Temperature correction (linear approximation)
         delta_T = temperature - 293.15  # Deviation from 20°C
         if "temp_coeff" in props:
-            relative_permittivity *= (1 + props["temp_coeff"] * delta_T)
+            relative_permittivity *= 1 + props["temp_coeff"] * delta_T
         result["temp_correction"] = delta_T * props.get("temp_coeff", 0)
 
     if relative_permittivity is None:
@@ -192,10 +196,13 @@ def specific_inductive_capacity(
 
 
 @maxwell_cite(
-    157, 158, 159,
-    part=1, chapter="Theory of Dielectrics",
+    157,
+    158,
+    159,
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Table of specific inductive capacities"
+    description="Table of specific inductive capacities",
 )
 def table_specific_inductive_capacities() -> dict[str, float]:
     """
@@ -249,11 +256,14 @@ def table_specific_inductive_capacities() -> dict[str, float]:
 # DIELECTRIC POLARIZATION (Arts. 160–161)
 # =============================================================================
 
+
 @maxwell_cite(
-    160, 161,
-    part=1, chapter="Theory of Dielectrics",
+    160,
+    161,
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Dielectric polarization P = χ_e * E"
+    description="Dielectric polarization P = χ_e * E",
 )
 def dielectric_polarization(
     electric_field: np.ndarray,
@@ -325,15 +335,20 @@ def dielectric_polarization(
         "polarization_magnitude": polarization_magnitude,
         "electric_field": electric_field,
         "susceptibility": susceptibility,
-        "relative_permittivity": susceptibility + 1 if susceptibility is not None else None,
+        "relative_permittivity": (
+            susceptibility + 1 if susceptibility is not None else None
+        ),
     }
 
 
 @maxwell_cite(
-    160, 161, 162,
-    part=1, chapter="Theory of Dielectrics",
+    160,
+    161,
+    162,
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Electric susceptibility χ_e"
+    description="Electric susceptibility χ_e",
 )
 def electric_susceptibility(
     relative_permittivity: float = None,
@@ -387,11 +402,13 @@ def electric_susceptibility(
 # BOUND CHARGE (Arts. 162–163)
 # =============================================================================
 
+
 @maxwell_cite(
     162,
-    part=1, chapter="Theory of Dielectrics",
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Bound charge density ρ_bound = -∇·P"
+    description="Bound charge density ρ_bound = -∇·P",
 )
 def bound_charge_density(
     polarization_field: callable,
@@ -470,9 +487,10 @@ def bound_charge_density(
 
 @maxwell_cite(
     162,
-    part=1, chapter="Theory of Dielectrics",
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Bound charge density for linear dielectric"
+    description="Bound charge density for linear dielectric",
 )
 def bound_charge_density_linear(
     electric_field_divergence: float,
@@ -523,9 +541,10 @@ def bound_charge_density_linear(
 
 @maxwell_cite(
     163,
-    part=1, chapter="Theory of Dielectrics",
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Surface bound charge σ_bound = P · n"
+    description="Surface bound charge σ_bound = P · n",
 )
 def surface_bound_charge(
     polarization: np.ndarray,
@@ -601,11 +620,13 @@ def surface_bound_charge(
 # DIELECTRIC DISPLACEMENT (Art. 164)
 # =============================================================================
 
+
 @maxwell_cite(
     164,
-    part=1, chapter="Theory of Dielectrics",
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Electric displacement D = ε_0*E + P"
+    description="Electric displacement D = ε_0*E + P",
 )
 def dielectric_displacement(
     electric_field: np.ndarray,
@@ -684,16 +705,20 @@ def dielectric_displacement(
         "displacement_magnitude": displacement_magnitude,
         "electric_field": electric_field,
         "polarization": polarization,
-        "relative_permittivity": 1 + np.linalg.norm(polarization) / np.linalg.norm(electric_field)
-        if np.linalg.norm(electric_field) > 0 else None,
+        "relative_permittivity": (
+            1 + np.linalg.norm(polarization) / np.linalg.norm(electric_field)
+            if np.linalg.norm(electric_field) > 0
+            else None
+        ),
     }
 
 
 @maxwell_cite(
     164,
-    part=1, chapter="Theory of Dielectrics",
+    part=1,
+    chapter="Theory of Dielectrics",
     theory_class="maxwell_original",
-    description="Gauss's law for D: ∇ · D = 4πρ_free"
+    description="Gauss's law for D: ∇ · D = 4πρ_free",
 )
 def gauss_law_dielectric(
     free_charge_density: float,
@@ -738,11 +763,14 @@ def gauss_law_dielectric(
 # ELECTRIFICATION BY FRICTION (Arts. 165–166)
 # =============================================================================
 
+
 @maxwell_cite(
-    165, 166,
-    part=1, chapter="Electrification",
+    165,
+    166,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
-    description="Electrification by friction (triboelectric effect)"
+    description="Electrification by friction (triboelectric effect)",
 )
 def electrification_by_friction(
     material_1: str,
@@ -867,11 +895,14 @@ def electrification_by_friction(
 # ELECTRIFICATION BY CONTACT (Arts. 167–168)
 # =============================================================================
 
+
 @maxwell_cite(
-    167, 168,
-    part=1, chapter="Electrification",
+    167,
+    168,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
-    description="Electrification by contact (contact potential)"
+    description="Electrification by contact (contact potential)",
 )
 def electrification_by_contact(
     material_1: str,
@@ -986,9 +1017,10 @@ def electrification_by_contact(
 
 @maxwell_cite(
     168,
-    part=1, chapter="Electrification",
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
-    description="Charge distribution on conductor after contact"
+    description="Charge distribution on conductor after contact",
 )
 def charge_distribution_conductor(
     total_charge: float,
@@ -1037,7 +1069,7 @@ def charge_distribution_conductor(
     if conductor_shape == "sphere":
         radius = dimensions.get("radius", 1.0)
         # Sphere: uniform charge distribution
-        surface_area = 4 * np.pi * radius ** 2
+        surface_area = 4 * np.pi * radius**2
         sigma = total_charge / surface_area
         capacitance = radius  # Self-capacitance of sphere in CGS-ESU
 
@@ -1090,7 +1122,7 @@ def charge_distribution_conductor(
 
         # Disk has charge concentrating at edges
         # Average on each face
-        face_area = np.pi * radius ** 2
+        face_area = np.pi * radius**2
         sigma_avg = total_charge / (2 * face_area)  # Both faces
 
         # Edge charge density (higher)
@@ -1140,11 +1172,14 @@ def charge_distribution_conductor(
 # ELECTRIFICATION BY INDUCTION (Arts. 169–170)
 # =============================================================================
 
+
 @maxwell_cite(
-    169, 170,
-    part=1, chapter="Electrification",
+    169,
+    170,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
-    description="Electrification by induction (charging by induction)"
+    description="Electrification by induction (charging by induction)",
 )
 def electrification_by_induction(
     inducing_charge: float,
@@ -1209,11 +1244,11 @@ def electrification_by_induction(
         raise ValueError("Inducing charge must be outside the conductor")
 
     # Electric field at conductor due to inducing charge
-    E_mag = inducing_charge / r_mag ** 2  # In CGS-ESU
+    E_mag = inducing_charge / r_mag**2  # In CGS-ESU
 
     # Induced dipole moment (for spherical conductor)
     # p = a³ * E_0 (where a is radius)
-    induced_dipole_magnitude = conductor_radius ** 3 * E_mag
+    induced_dipole_magnitude = conductor_radius**3 * E_mag
     induced_dipole = induced_dipole_magnitude * r_vec / r_mag
 
     # Induced surface charge distribution
@@ -1221,7 +1256,7 @@ def electrification_by_induction(
     sigma_0 = 3 * E_mag / (4 * np.pi)  # Maximum surface charge density
 
     # Charge on near side (hemisphere facing inducing charge)
-    near_side_charge = -conductor_radius ** 2 * E_mag * (inducing_charge > 0)
+    near_side_charge = -(conductor_radius**2) * E_mag * (inducing_charge > 0)
     if inducing_charge < 0:
         near_side_charge = abs(near_side_charge)
 
@@ -1252,10 +1287,12 @@ def electrification_by_induction(
 
 
 @maxwell_cite(
-    169, 170,
-    part=1, chapter="Electrification",
+    169,
+    170,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
-    description="Image charge method for induction"
+    description="Image charge method for induction",
 )
 def image_charge_induction(
     point_charge: float,
@@ -1318,7 +1355,7 @@ def image_charge_induction(
         raise ValueError("Point charge must be outside the sphere")
 
     # Image charge position: d' = a²/d
-    image_distance = sphere_radius ** 2 / r_mag
+    image_distance = sphere_radius**2 / r_mag
     image_position = sphere_center + (image_distance / r_mag) * r_vec
 
     # Image charge: q' = -q * (a/d) for grounded sphere
@@ -1330,7 +1367,7 @@ def image_charge_induction(
     # Force on point charge
     # Distance between charge and image
     d_image = r_mag - image_distance
-    force_magnitude = point_charge * image_charge / d_image ** 2
+    force_magnitude = point_charge * image_charge / d_image**2
 
     # Force direction (attractive if charges opposite)
     force = -force_magnitude * r_vec / r_mag
@@ -1354,6 +1391,7 @@ def image_charge_induction(
 # =============================================================================
 # DIELECTRIC MATERIAL CLASS
 # =============================================================================
+
 
 @dataclass
 class DielectricMaterial:
@@ -1434,8 +1472,7 @@ class DielectricMaterial:
         name_lower = name.lower()
         if name_lower not in materials:
             raise ValueError(
-                f"Material '{name}' not found. "
-                f"Available: {list(materials.keys())}"
+                f"Material '{name}' not found. " f"Available: {list(materials.keys())}"
             )
 
         props = materials[name_lower]
@@ -1448,10 +1485,12 @@ class DielectricMaterial:
         )
 
     @maxwell_cite(
-        160, 161,
-        part=1, chapter="Theory of Dielectrics",
+        160,
+        161,
+        part=1,
+        chapter="Theory of Dielectrics",
         theory_class="maxwell_original",
-        description="Calculate polarization for given field"
+        description="Calculate polarization for given field",
     )
     def polarization(self, electric_field: np.ndarray) -> np.ndarray:
         """
@@ -1469,9 +1508,10 @@ class DielectricMaterial:
 
     @maxwell_cite(
         164,
-        part=1, chapter="Theory of Dielectrics",
+        part=1,
+        chapter="Theory of Dielectrics",
         theory_class="maxwell_original",
-        description="Calculate displacement for given field"
+        description="Calculate displacement for given field",
     )
     def displacement(self, electric_field: np.ndarray) -> np.ndarray:
         """
@@ -1553,8 +1593,10 @@ if __name__ == "__main__":
 
     # Test bound charge density
     print("\n--- Bound Charge Density (Art. 162) ---")
+
     def P_uniform(r):
         return np.array([1.0, 0.0, 0.0])
+
     result = bound_charge_density(P_uniform, np.array([0.0, 0.0, 0.0]))
     print(f"  Uniform P: rho_bound = {result['bound_charge_density']:.2e} statC/cm^3")
 
@@ -1591,9 +1633,7 @@ if __name__ == "__main__":
     # Test charge distribution
     print("\n--- Charge Distribution on Conductor (Art. 168) ---")
     result = charge_distribution_conductor(
-        total_charge=100.0,
-        conductor_shape="sphere",
-        dimensions={"radius": 5.0}
+        total_charge=100.0, conductor_shape="sphere", dimensions={"radius": 5.0}
     )
     print(f"  Sphere (r=5cm, Q=100 statC):")
     print(f"    sigma = {result['surface_charge_density']:.4f} statC/cm^2")
@@ -1606,7 +1646,7 @@ if __name__ == "__main__":
         inducing_position=np.array([0.0, 0.0, 10.0]),
         conductor_position=np.array([0.0, 0.0, 0.0]),
         conductor_radius=1.0,
-        grounding=True
+        grounding=True,
     )
     print(f"  Induction with grounding:")
     print(f"    Q_induced = {result['net_induced_charge']:.2f} statC")
@@ -1618,7 +1658,7 @@ if __name__ == "__main__":
         point_charge=100.0,
         point_position=np.array([0.0, 0.0, 10.0]),
         sphere_center=np.array([0.0, 0.0, 0.0]),
-        sphere_radius=1.0
+        sphere_radius=1.0,
     )
     print(f"  Point charge near grounded sphere:")
     print(f"    q' = {result['image_charge']:.2f} statC")

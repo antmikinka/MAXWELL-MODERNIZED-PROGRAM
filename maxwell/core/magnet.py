@@ -21,10 +21,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -55,15 +56,15 @@ class MagneticPole:
             raise ValueError(f"Position must be 3D, got shape {self.position.shape}")
 
         # Ensure strength sign matches pole type
-        if self.pole_type == 'N' and self.strength < 0:
+        if self.pole_type == "N" and self.strength < 0:
             self.strength = abs(self.strength)
-        elif self.pole_type == 'S' and self.strength > 0:
+        elif self.pole_type == "S" and self.strength > 0:
             self.strength = -abs(self.strength)
 
     @property
     def signed_strength(self) -> float:
         """Return pole strength with sign: N=positive, S=negative."""
-        return self.strength if self.pole_type == 'N' else -abs(self.strength)
+        return self.strength if self.pole_type == "N" else -abs(self.strength)
 
 
 @dataclass
@@ -97,9 +98,9 @@ class Magnet:
     @property
     def magnetic_length(self) -> float:
         """Distance between poles (magnetic length)."""
-        return float(np.linalg.norm(
-            self.north_pole.position - self.south_pole.position
-        ))
+        return float(
+            np.linalg.norm(self.north_pole.position - self.south_pole.position)
+        )
 
     @property
     def magnetic_axis_vector(self) -> np.ndarray:
@@ -120,8 +121,10 @@ class Magnet:
 
     @classmethod
     @maxwell_cite(
-        372, 373,
-        part=3, chapter="Magnetic Poles",
+        372,
+        373,
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Create magnet from pole strength, positions",
     )
@@ -148,19 +151,20 @@ class Magnet:
         north = MagneticPole(
             strength=abs(pole_strength),
             position=np.asarray(north_position, dtype=np.float64),
-            pole_type='N'
+            pole_type="N",
         )
         south = MagneticPole(
             strength=-abs(pole_strength),
             position=np.asarray(south_position, dtype=np.float64),
-            pole_type='S'
+            pole_type="S",
         )
         return cls(north_pole=north, south_pole=south)
 
     @classmethod
     @maxwell_cite(
         373,
-        part=3, chapter="Magnetic Poles",
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Create magnet from center, axis, and moment",
     )
@@ -209,8 +213,10 @@ class Magnet:
         return cls.from_pole_data(pole_strength, north_pos, south_pos)
 
     @maxwell_cite(
-        371, 372,
-        part=3, chapter="Magnetic Poles",
+        371,
+        372,
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Force on magnet from external magnetic field",
     )
@@ -246,7 +252,8 @@ class Magnet:
 
     @maxwell_cite(
         373,
-        part=3, chapter="Magnetic Poles",
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Torque on magnet in uniform magnetic field",
     )
@@ -275,7 +282,8 @@ class Magnet:
 
     @maxwell_cite(
         375,
-        part=3, chapter="Magnetic Poles",
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Potential energy of magnet in external field",
     )
@@ -388,7 +396,8 @@ class MagneticQuantity:
     @staticmethod
     @maxwell_cite(
         371,
-        part=3, chapter="Magnetic Poles",
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Coulomb's law for magnetic poles",
     )
@@ -414,12 +423,13 @@ class MagneticQuantity:
         """
         if r <= 0:
             raise ValueError(f"Separation must be positive, got {r}")
-        return m1 * m2 / (r ** 2)
+        return m1 * m2 / (r**2)
 
     @staticmethod
     @maxwell_cite(
         374,
-        part=3, chapter="Magnetic Poles",
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Magnetic moment from pole strength and length",
     )
@@ -449,7 +459,8 @@ class MagneticQuantity:
     @staticmethod
     @maxwell_cite(
         376,
-        part=3, chapter="Magnetic Poles",
+        part=3,
+        chapter="Magnetic Poles",
         theory_class="maxwell_original",
         description="Field intensity from a magnetic pole",
     )
@@ -474,12 +485,17 @@ class MagneticQuantity:
         """
         if distance <= 0:
             raise ValueError("Distance must be positive")
-        return pole_strength / (distance ** 2)
+        return pole_strength / (distance**2)
 
 
 @maxwell_cite(
-    371, 372, 373, 375, 376,
-    part=3, chapter="Magnetic Poles",
+    371,
+    372,
+    373,
+    375,
+    376,
+    part=3,
+    chapter="Magnetic Poles",
     theory_class="maxwell_original",
     description="Verify magnetic force law through experimental data",
 )
@@ -522,7 +538,7 @@ def verify_force_law_evidence(
     m1, m2 = pole_strengths
 
     # Calculate theoretical forces
-    theoretical = [m1 * m2 / (r ** 2) for r in distances if r > 0]
+    theoretical = [m1 * m2 / (r**2) for r in distances if r > 0]
 
     if len(theoretical) != len(measured_forces):
         raise ValueError("Invalid distance values")
@@ -551,7 +567,8 @@ def verify_force_law_evidence(
 
 @maxwell_cite(
     392,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Earth's magnetic field response",
 )
@@ -618,8 +635,10 @@ def earth_response(
 
 
 @maxwell_cite(
-    374, 375,
-    part=3, chapter="Magnetic Poles",
+    374,
+    375,
+    part=3,
+    chapter="Magnetic Poles",
     theory_class="maxwell_original",
     description="Mutual action between two magnets",
 )
@@ -653,6 +672,7 @@ def mutual_action(
     Reference:
         Part III, Arts. 374-375: Mutual action of magnets.
     """
+
     # Calculate field from magnet1 at magnet2's poles
     def field_from_magnet1(point: np.ndarray) -> np.ndarray:
         """H field from magnet1 at a point."""
@@ -666,8 +686,8 @@ def mutual_action(
             return np.zeros(3)
 
         # H = m_N * r_hat_N / r_N^2 + m_S * r_hat_S / r_S^2
-        H_n = magnet1.north_pole.signed_strength * r_n / (r_n_mag ** 3)
-        H_s = magnet1.south_pole.signed_strength * r_s / (r_s_mag ** 3)
+        H_n = magnet1.north_pole.signed_strength * r_n / (r_n_mag**3)
+        H_s = magnet1.south_pole.signed_strength * r_s / (r_s_mag**3)
 
         return H_n + H_s
 
@@ -693,7 +713,8 @@ def mutual_action(
 
 @maxwell_cite(
     376,
-    part=3, chapter="Magnetic Poles",
+    part=3,
+    chapter="Magnetic Poles",
     theory_class="maxwell_original",
     description="Find center and axes of a magnet from pole positions",
 )

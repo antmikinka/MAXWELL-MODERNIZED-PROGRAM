@@ -129,7 +129,11 @@ class ThomsonSensitiveCoil:
         Returns:
             Current in abamperes.
         """
-        return theta * self.torsion_constant / (self.n_turns * self.area * self.field_strength)
+        return (
+            theta
+            * self.torsion_constant
+            / (self.n_turns * self.area * self.field_strength)
+        )
 
 
 @dataclass
@@ -159,7 +163,11 @@ class ThomsonCombinedInstrument:
         Returns:
             Dictionary with both current measurements.
         """
-        I_galv = self.horizontal_field / self.galvanometer_constant * np.tan(galvanometer_theta)
+        I_galv = (
+            self.horizontal_field
+            / self.galvanometer_constant
+            * np.tan(galvanometer_theta)
+        )
         I_coil = coil_theta / self.suspended_coil_sensitivity
         return {
             "from_galvanometer": I_galv,

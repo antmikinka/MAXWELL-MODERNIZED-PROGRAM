@@ -8,13 +8,16 @@ Provides fixtures for:
 """
 
 from __future__ import annotations
-import pytest
-import numpy as np
-from typing import Any, Callable
-from maxwell.meta.citation import get_citation, MaxwellCitation
 
+from typing import Any, Callable
+
+import numpy as np
+import pytest
+
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # ── CGS Unit Tolerances ────────────────────────────────────────────
+
 
 @pytest.fixture
 def cgs_tolerance() -> float:
@@ -75,6 +78,7 @@ def cgs_distance_range() -> list[float]:
 
 # ── Citation Validation Fixtures ──────────────────────────────────
 
+
 @pytest.fixture
 def require_citation() -> Callable[[Callable], MaxwellCitation]:
     """Fixture that validates a function has a @maxwell_cite decorator.
@@ -90,6 +94,7 @@ def require_citation() -> Callable[[Callable], MaxwellCitation]:
     Raises:
         AssertionError: If function lacks citation decorator.
     """
+
     def _validate(func: Callable) -> MaxwellCitation:
         citation = get_citation(func)
         assert citation is not None, (
@@ -97,6 +102,7 @@ def require_citation() -> Callable[[Callable], MaxwellCitation]:
             f"must have @maxwell_cite decorator"
         )
         return citation
+
     return _validate
 
 
@@ -120,23 +126,24 @@ def validate_citation_articles() -> Callable[[Callable, int, list[int]], None]:
     Raises:
         AssertionError: If citation doesn't match expected values.
     """
+
     def _validate(func: Callable, part: int, articles: list[int]) -> None:
         citation = get_citation(func)
         assert citation is not None, (
             f"Function {func.__module__}.{func.__qualname__} "
             f"must have @maxwell_cite decorator"
         )
-        assert citation.part == part, (
-            f"Expected Part {part}, got Part {citation.part}"
-        )
+        assert citation.part == part, f"Expected Part {part}, got Part {citation.part}"
         for art in articles:
-            assert art in citation.articles, (
-                f"Article {art} not found in citation: {citation.articles}"
-            )
+            assert (
+                art in citation.articles
+            ), f"Article {art} not found in citation: {citation.articles}"
+
     return _validate
 
 
 # ── Numerical Testing Utilities ───────────────────────────────────
+
 
 @pytest.fixture
 def assert_cgs_close() -> Callable[[float, float, float], None]:
@@ -150,11 +157,12 @@ def assert_cgs_close() -> Callable[[float, float, float], None]:
     Returns:
         Function that asserts two floats are close within tolerance.
     """
+
     def _assert_close(
         actual: float | np.ndarray,
         expected: float | np.ndarray,
         tolerance: float,
-        msg: str | None = None
+        msg: str | None = None,
     ) -> None:
         actual = np.asarray(actual)
         expected = np.asarray(expected)
@@ -167,6 +175,7 @@ def assert_cgs_close() -> Callable[[float, float, float], None]:
                 f"{msg or ''} Expected {expected}, got {actual} "
                 f"(relative error: {rel_err:.2e}, tolerance: {tolerance})"
             )
+
     return _assert_close
 
 
@@ -182,32 +191,31 @@ def assert_vectors_close() -> Callable[[np.ndarray, np.ndarray, float], None]:
     Returns:
         Function that asserts two vectors are close within tolerance.
     """
+
     def _assert_close(
-        actual: np.ndarray,
-        expected: np.ndarray,
-        tolerance: float
+        actual: np.ndarray, expected: np.ndarray, tolerance: float
     ) -> None:
         actual = np.asarray(actual)
         expected = np.asarray(expected)
-        assert actual.shape == expected.shape, (
-            f"Shape mismatch: {actual.shape} vs {expected.shape}"
-        )
+        assert (
+            actual.shape == expected.shape
+        ), f"Shape mismatch: {actual.shape} vs {expected.shape}"
         diff = np.linalg.norm(actual - expected)
         expected_mag = np.linalg.norm(expected)
         if expected_mag == 0:
-            assert diff < tolerance, (
-                f"Expected zero vector, got norm={diff}"
-            )
+            assert diff < tolerance, f"Expected zero vector, got norm={diff}"
         else:
             relative_error = diff / expected_mag
             assert relative_error < tolerance, (
                 f"Vector mismatch: expected {expected}, got {actual} "
                 f"(relative error: {relative_error:.2e})"
             )
+
     return _assert_close
 
 
 # ── Common Test Data ──────────────────────────────────────────────
+
 
 @pytest.fixture
 def sample_point_charge() -> Any:
@@ -217,6 +225,7 @@ def sample_point_charge() -> Any:
         PointCharge object with q=1 esu at origin.
     """
     from maxwell.core.charge import PointCharge
+
     return PointCharge(q=1.0, position=np.array([0.0, 0.0, 0.0]))
 
 

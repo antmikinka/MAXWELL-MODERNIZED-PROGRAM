@@ -20,16 +20,16 @@ Tests verify:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
-from maxwell.meta.citation import get_citation, MaxwellCitation
-
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # WAVE VELOCITY TESTS (Arts. 786-787)
 # =============================================================================
+
 
 class TestWaveVelocity:
     """Test electromagnetic wave velocity: v = c/sqrt(eps*mu)."""
@@ -93,7 +93,9 @@ class TestWaveVelocity:
         n = calc_refractive_index(1.0, 1.0)
         assert_cgs_close(n, 1.0, cgs_tolerance)
 
-    def test_permittivity_from_refractive_index(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_permittivity_from_refractive_index(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify eps = n² for non-magnetic materials.
 
         For n = 1.5 (glass):
@@ -102,7 +104,7 @@ class TestWaveVelocity:
         from maxwell.optics.velocity import calc_permittivity_from_refractive_index
 
         eps = calc_permittivity_from_refractive_index(1.5)
-        expected = 1.5 ** 2
+        expected = 1.5**2
 
         assert_cgs_close(eps, expected, cgs_tolerance)
 
@@ -201,6 +203,7 @@ class TestWaveVelocity:
 # OPTICAL CONSTANTS TESTS (Arts. 788-789)
 # =============================================================================
 
+
 class TestOpticalConstants:
     """Test optical constants: n² = K (Maxwell relation)."""
 
@@ -228,7 +231,7 @@ class TestOpticalConstants:
 
         n = 2.0
         K = calc_dielectric_from_refractive(n)
-        expected = n ** 2
+        expected = n**2
 
         assert_cgs_close(K, expected, cgs_tolerance)
 
@@ -262,6 +265,7 @@ class TestOpticalConstants:
 # METAL OPTICS TESTS (Arts. 798-800)
 # =============================================================================
 
+
 class TestMetalOptics:
     """Test metal optics: conductivity -> opacity."""
 
@@ -281,7 +285,9 @@ class TestMetalOptics:
 
         assert_cgs_close(delta, expected, cgs_tolerance)
 
-    def test_skin_depth_frequency_dependence(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_skin_depth_frequency_dependence(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify skin depth ∝ 1/sqrt(omega).
 
         Doubling frequency should reduce skin depth by sqrt(2).
@@ -300,7 +306,9 @@ class TestMetalOptics:
 
         assert_cgs_close(actual_ratio, expected_ratio, cgs_tolerance * 10)
 
-    def test_metal_absorption_coefficient(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_metal_absorption_coefficient(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify absorption coefficient: alpha = 1/delta."""
         from maxwell.optics.metals import calc_absorption_coefficient
 
@@ -329,17 +337,13 @@ class TestMetalOptics:
 
         # Good conductor: opaque
         is_transparent_conductor = check_transparency(
-            sigma=5.9e17,
-            omega=1e15,
-            epsilon=1.0
+            sigma=5.9e17, omega=1e15, epsilon=1.0
         )
         assert is_transparent_conductor is False
 
         # Dielectric: transparent
         is_transparent_dielectric = check_transparency(
-            sigma=1e-10,
-            omega=1e15,
-            epsilon=2.0
+            sigma=1e-10, omega=1e15, epsilon=2.0
         )
         assert is_transparent_dielectric is True
 
@@ -362,6 +366,7 @@ class TestMetalOptics:
 # =============================================================================
 # PLANE WAVE TESTS (Arts. 790-791)
 # =============================================================================
+
 
 class TestPlaneWaves:
     """Test plane electromagnetic waves: E ⊥ B ⊥ v."""
@@ -408,7 +413,9 @@ class TestPlaneWaves:
         expected = np.linalg.norm(E) / CONST.C
         assert_cgs_close(B_magnitude, expected, cgs_tolerance)
 
-    def test_poynting_vector_direction(self, cgs_tolerance, assert_vectors_close) -> None:
+    def test_poynting_vector_direction(
+        self, cgs_tolerance, assert_vectors_close
+    ) -> None:
         """Verify S = E × B points in propagation direction."""
         from maxwell.optics.plane_waves import calc_poynting_vector
 
@@ -427,22 +434,19 @@ class TestPlaneWaves:
         from maxwell.optics.plane_waves import verify_wave_equation
 
         result = verify_wave_equation(
-            omega=CONST.C,
-            k_magnitude=1.0,
-            permittivity=1.0,
-            permeability=1.0
+            omega=CONST.C, k_magnitude=1.0, permittivity=1.0, permeability=1.0
         )
 
         assert result["wave_equation_verified"] is True
 
-    def test_plane_wave_class(self, cgs_tolerance, assert_vectors_close, assert_cgs_close) -> None:
+    def test_plane_wave_class(
+        self, cgs_tolerance, assert_vectors_close, assert_cgs_close
+    ) -> None:
         """Verify PlaneWave class."""
         from maxwell.optics.plane_waves import PlaneWave
 
         pw = PlaneWave(
-            E_amplitude=100.0,
-            omega=CONST.C,
-            k_vector=np.array([0.0, 0.0, 1.0])
+            E_amplitude=100.0, omega=CONST.C, k_vector=np.array([0.0, 0.0, 1.0])
         )
 
         # Test E field at origin, t=0
@@ -461,6 +465,7 @@ class TestPlaneWaves:
 # RADIATION PRESSURE TESTS (Arts. 792-793)
 # =============================================================================
 
+
 class TestRadiationPressure:
     """Test radiation pressure: P = Energy/c."""
 
@@ -478,7 +483,9 @@ class TestRadiationPressure:
 
         assert_cgs_close(P, expected, cgs_tolerance)
 
-    def test_radiation_pressure_reflection(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_radiation_pressure_reflection(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify P = 2u for perfect reflection.
 
         For u = 1 erg/cm³:
@@ -492,7 +499,9 @@ class TestRadiationPressure:
 
         assert_cgs_close(P, expected, cgs_tolerance)
 
-    def test_radiation_pressure_from_intensity(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_radiation_pressure_from_intensity(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify P = I/c from intensity.
 
         For I = c erg/cm²/s:
@@ -542,6 +551,7 @@ class TestRadiationPressure:
 # =============================================================================
 # CRYSTAL OPTICS TESTS (Arts. 794-797)
 # =============================================================================
+
 
 class TestCrystalOptics:
     """Test crystal optics: double refraction, two wave velocities."""
@@ -594,7 +604,7 @@ class TestCrystalOptics:
         from maxwell.optics.crystals import calc_effective_index
 
         # Perpendicular to optic axis (theta = 90°), n_eff = n_e
-        n_eff = calc_effective_index(n_o=1.54, n_e=1.55, theta=np.pi/2)
+        n_eff = calc_effective_index(n_o=1.54, n_e=1.55, theta=np.pi / 2)
         expected = 1.55
 
         assert_cgs_close(n_eff, expected, cgs_tolerance)
@@ -610,13 +620,14 @@ class TestCrystalOptics:
         assert_cgs_close(delta_n, 0.01, cgs_tolerance)
 
         # Test effective index at 45°
-        n_eff = co.effective_index(np.pi/4)
+        n_eff = co.effective_index(np.pi / 4)
         assert co.n_o < n_eff < co.n_e
 
 
 # =============================================================================
 # FIELD DIFFUSION TESTS (Arts. 801-805)
 # =============================================================================
+
 
 class TestFieldDiffusion:
     """Test field diffusion into conductors."""
@@ -655,11 +666,7 @@ class TestFieldDiffusion:
         """Verify diffusion equation: dB/dt = (1/4pi*sigma)*nabla²B."""
         from maxwell.optics.diffusion import verify_diffusion_equation
 
-        result = verify_diffusion_equation(
-            sigma=1e17,
-            L=0.01,
-            t=1e-6
-        )
+        result = verify_diffusion_equation(sigma=1e17, L=0.01, t=1e-6)
 
         assert result["diffusion_verified"] is True
 
@@ -695,6 +702,7 @@ class TestFieldDiffusion:
 # CGS UNIT COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestOpticsCGSUnits:
     """Test CGS unit compliance for optics modules."""
 
@@ -727,18 +735,17 @@ class TestOpticsCGSUnits:
 # CITATION COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestOpticsCitationCompliance:
     """Test citation decorator compliance for optics modules."""
 
     def test_wave_velocity_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify wave velocity functions have correct citations."""
         from maxwell.optics.velocity import (
-            calc_wave_velocity,
             calc_refractive_index,
+            calc_wave_velocity,
         )
 
         citation = require_citation(calc_wave_velocity)
@@ -746,9 +753,7 @@ class TestOpticsCitationCompliance:
         assert any(a in citation.articles for a in [786, 787])
 
     def test_optical_constants_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify optical constants functions have correct citations."""
         from maxwell.optics.constants import calc_refractive_from_dielectric
@@ -758,9 +763,7 @@ class TestOpticsCitationCompliance:
         assert any(a in citation.articles for a in [788, 789])
 
     def test_metal_optics_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify metal optics functions have correct citations."""
         from maxwell.optics.metals import calc_skin_depth
@@ -770,9 +773,7 @@ class TestOpticsCitationCompliance:
         assert any(a in citation.articles for a in [798, 799, 800])
 
     def test_radiation_pressure_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify radiation pressure functions have correct citations."""
         from maxwell.optics.radiation_pressure import calc_radiation_pressure

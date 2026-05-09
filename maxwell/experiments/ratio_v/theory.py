@@ -33,12 +33,12 @@ def motivate_ratio_investigation() -> dict[str, str]:
     """
     return {
         "significance": "The ratio v between ESU and EMU units is "
-                        "found to be a velocity of the same order as "
-                        "the speed of light",
+        "found to be a velocity of the same order as "
+        "the speed of light",
         "implication": "This suggests that light itself may be an "
-                       "electromagnetic phenomenon",
+        "electromagnetic phenomenon",
         "method": "Compare the same physical quantity (charge, "
-                  "current, resistance) measured in both systems",
+        "current, resistance) measured in both systems",
         "expected_result": "v = c = 2.998 x 10^10 cm/s",
     }
 

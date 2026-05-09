@@ -13,8 +13,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -75,12 +75,16 @@ def calc_solid_angle_loop(
     # Exact formula involves elliptic integrals; we use the dipole approximation
     # for far field and the on-axis formula extended off-axis
     dist = np.sqrt(z_safe**2 + r_cyl**2 + loop_radius**2)
-    cos_alpha = z_safe / np.sqrt(z_safe**2 + np.maximum(r_cyl - loop_radius, 0.01)**2)
+    cos_alpha = z_safe / np.sqrt(z_safe**2 + np.maximum(r_cyl - loop_radius, 0.01) ** 2)
 
     # Simplified: use on-axis formula with off-axis generalization
     # omega = 2*pi * (1 - z/sqrt(z^2 + (r-a)^2 + epsilon))
     epsilon = 0.1 * loop_radius
-    omega = 2.0 * np.pi * (1.0 - z_safe / np.sqrt(z_safe**2 + (r_cyl - loop_radius)**2 + epsilon))
+    omega = (
+        2.0
+        * np.pi
+        * (1.0 - z_safe / np.sqrt(z_safe**2 + (r_cyl - loop_radius) ** 2 + epsilon))
+    )
 
     # Sign correction for below the loop
     omega = np.where(z < 0, -omega, omega)
@@ -140,7 +144,11 @@ def plot_helicoidal_potentials(
     # Solid angle in meridional plane
     z_safe = np.where(np.abs(Z) < 1e-10, np.sign(Z) * 1e-10, Z)
     epsilon = 0.1 * loop_radius
-    omega = 2.0 * np.pi * (1.0 - z_safe / np.sqrt(z_safe**2 + (Rho - loop_radius)**2 + epsilon))
+    omega = (
+        2.0
+        * np.pi
+        * (1.0 - z_safe / np.sqrt(z_safe**2 + (Rho - loop_radius) ** 2 + epsilon))
+    )
     omega = np.where(Z < 0, -omega, omega)
 
     Omega = current * omega
@@ -153,7 +161,9 @@ def plot_helicoidal_potentials(
     # Potential contour fill
     omega_max = np.max(np.abs(omega))
     cf = ax.contourf(
-        Rho, Z, omega,
+        Rho,
+        Z,
+        omega,
         levels=30,
         cmap="coolwarm",
         vmin=-omega_max,
@@ -163,7 +173,9 @@ def plot_helicoidal_potentials(
 
     # Equipotential contour lines
     contours = ax.contour(
-        Rho, Z, omega,
+        Rho,
+        Z,
+        omega,
         levels=15,
         colors="black",
         linewidths=0.5,
@@ -171,14 +183,18 @@ def plot_helicoidal_potentials(
     )
 
     # Draw the current loop
-    ax.plot([loop_radius, loop_radius], [0, 0], "ko", markersize=10,
-           label="Current loop (cross-section)")
+    ax.plot(
+        [loop_radius, loop_radius],
+        [0, 0],
+        "ko",
+        markersize=10,
+        label="Current loop (cross-section)",
+    )
     ax.plot([-loop_radius, -loop_radius], [0, 0], "ko", markersize=10)
 
     # Discontinuity line (disk bounded by loop)
     ax.axhline(y=0, color="gray", linestyle="--", linewidth=1, alpha=0.5)
-    ax.plot([0, loop_radius], [0, 0], "g-", linewidth=2,
-           label="Discontinuity surface")
+    ax.plot([0, loop_radius], [0, 0], "g-", linewidth=2, label="Discontinuity surface")
 
     ax.set_xlabel(r"Cylindrical radius $\rho$ (cm)")
     ax.set_ylabel("z (cm)")
@@ -241,6 +257,7 @@ def plot_loop_potential_3d(
 
     try:
         from matplotlib import colormaps
+
         cmap_obj = colormaps.get_cmap("coolwarm")
     except Exception:
         cmap_obj = plt.cm.get_cmap("coolwarm")
@@ -249,7 +266,9 @@ def plot_loop_potential_3d(
     colors = cmap_obj(0.5 + 0.5 * omega / omega_max)
 
     ax.plot_surface(
-        X, Y, Z + omega * 0.1,
+        X,
+        Y,
+        Z + omega * 0.1,
         facecolors=colors,
         alpha=0.8,
         linewidth=0,
@@ -325,7 +344,9 @@ def plot_loop_field_lines(
     psi = sin_theta**2 / np.maximum(r, 0.1)
 
     # Near-field enhancement near the loop
-    loop_enhancement = np.exp(-((Rho - loop_radius)**2 + Z**2) / (0.3 * loop_radius)**2)
+    loop_enhancement = np.exp(
+        -((Rho - loop_radius) ** 2 + Z**2) / (0.3 * loop_radius) ** 2
+    )
     psi = psi * (1.0 + 2.0 * loop_enhancement)
 
     if ax is None:
@@ -335,7 +356,9 @@ def plot_loop_field_lines(
 
     # Field lines (contours of stream function)
     ax.contour(
-        Rho, Z, psi,
+        Rho,
+        Z,
+        psi,
         levels=20,
         colors="steelblue",
         linewidths=1.0,
@@ -343,8 +366,9 @@ def plot_loop_field_lines(
     )
 
     # Current loop
-    ax.plot([loop_radius, loop_radius], [0, 0], "ro", markersize=12,
-           label="Current loop")
+    ax.plot(
+        [loop_radius, loop_radius], [0, 0], "ro", markersize=12, label="Current loop"
+    )
     ax.plot([-loop_radius, -loop_radius], [0, 0], "ro", markersize=12)
 
     # Axis of symmetry

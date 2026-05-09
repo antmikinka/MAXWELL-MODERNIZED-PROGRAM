@@ -39,11 +39,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
-from typing import Optional, Callable, Tuple
+from typing import Callable, Optional, Tuple
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -144,8 +145,10 @@ class ElectromagneticWave:
 
     @classmethod
     @maxwell_cite(
-        781, 782,
-        part=4, chapter="Electromagnetic Theory of Light",
+        781,
+        782,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create EM wave from frequency and amplitude",
     )
@@ -192,7 +195,9 @@ class ElectromagneticWave:
             polarization = np.array([1.0, 0.0, 0.0])
 
         propagation_direction = np.asarray(propagation_direction, dtype=np.float64)
-        propagation_direction = propagation_direction / np.linalg.norm(propagation_direction)
+        propagation_direction = propagation_direction / np.linalg.norm(
+            propagation_direction
+        )
 
         # Compute wavelength and wave vector
         v = CONST.C / np.sqrt(epsilon * mu)
@@ -213,7 +218,8 @@ class ElectromagneticWave:
 
 @maxwell_cite(
     781,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Derive wave equation from Maxwell's equations",
 )
@@ -292,8 +298,10 @@ def derive_wave_equation(
 
 
 @maxwell_cite(
-    783, 784,
-    part=4, chapter="Electromagnetic Theory of Light",
+    783,
+    784,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate 3D wave equation solution",
 )
@@ -378,7 +386,8 @@ def calc_wave_equation_3d(
 
 @maxwell_cite(
     785,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wave speed in medium",
 )
@@ -445,8 +454,13 @@ def calc_wave_speed(
 
 
 @maxwell_cite(
-    781, 782, 783, 784, 785,
-    part=4, chapter="Electromagnetic Theory of Light",
+    781,
+    782,
+    783,
+    784,
+    785,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify wave equation satisfies Maxwell's equations",
 )
@@ -568,18 +582,20 @@ def verify_wave_equation(
     faraday_ok = max_faraday < tolerance * E0_scale * k_mag
     ampere_ok = max_ampere < tolerance * B0_scale * k_mag
 
-    results['divergence_E'] = {'verified': div_E_ok, 'max_residual': max_div_E}
-    results['divergence_B'] = {'verified': div_B_ok, 'max_residual': max_div_B}
-    results['faraday'] = {'verified': faraday_ok, 'max_residual': max_faraday}
-    results['ampere_maxwell'] = {'verified': ampere_ok, 'max_residual': max_ampere}
-    results['all_verified'] = div_E_ok and div_B_ok and faraday_ok and ampere_ok
+    results["divergence_E"] = {"verified": div_E_ok, "max_residual": max_div_E}
+    results["divergence_B"] = {"verified": div_B_ok, "max_residual": max_div_B}
+    results["faraday"] = {"verified": faraday_ok, "max_residual": max_faraday}
+    results["ampere_maxwell"] = {"verified": ampere_ok, "max_residual": max_ampere}
+    results["all_verified"] = div_E_ok and div_B_ok and faraday_ok and ampere_ok
 
     return results
 
 
 @maxwell_cite(
-    781, 782,
-    part=4, chapter="Electromagnetic Theory of Light",
+    781,
+    782,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wave impedance of medium",
 )
@@ -674,7 +690,8 @@ class WaveEquationSolver:
 
     @maxwell_cite(
         781,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get wave equation parameters",
     )
@@ -683,8 +700,10 @@ class WaveEquationSolver:
         return derive_wave_equation(self.epsilon, self.mu, self.conductivity)
 
     @maxwell_cite(
-        783, 784,
-        part=4, chapter="Electromagnetic Theory of Light",
+        783,
+        784,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate plane wave field",
     )
@@ -710,17 +729,20 @@ class WaveEquationSolver:
 
     @maxwell_cite(
         785,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get wave speed in medium",
     )
     def wave_speed(self) -> float:
         """Calculate wave speed in this medium."""
-        return calc_wave_speed(self.epsilon, self.mu)['wave_speed']
+        return calc_wave_speed(self.epsilon, self.mu)["wave_speed"]
 
     @maxwell_cite(
-        781, 782,
-        part=4, chapter="Electromagnetic Theory of Light",
+        781,
+        782,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Get wave impedance",
     )

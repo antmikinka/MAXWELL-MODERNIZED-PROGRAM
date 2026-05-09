@@ -33,10 +33,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -77,7 +78,8 @@ class ElectricDisplacement:
 
     @maxwell_cite(
         608,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate electric displacement D from E",
     )
@@ -98,7 +100,8 @@ class ElectricDisplacement:
 
     @maxwell_cite(
         608,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate polarization P from E",
     )
@@ -119,7 +122,8 @@ class ElectricDisplacement:
 
     @maxwell_cite(
         608,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate E from D",
     )
@@ -141,7 +145,8 @@ class ElectricDisplacement:
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate electric displacement: D = εE",
 )
@@ -174,7 +179,8 @@ def calc_electric_displacement(
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate polarization: P = χE",
 )
@@ -205,7 +211,8 @@ def calc_polarization(
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate permittivity from susceptibility",
 )
@@ -231,7 +238,8 @@ def calc_permittivity_from_susceptibility(susceptibility: float) -> float:
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate dielectric constant (specific inductive capacity)",
 )
@@ -258,7 +266,8 @@ def calc_dielectric_constant(permittivity: float) -> float:
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate permittivity from dielectric constant",
 )
@@ -287,7 +296,8 @@ def calc_permittivity(dielectric_constant: float) -> float:
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate bound charge density from polarization",
 )
@@ -335,7 +345,8 @@ def calc_bound_charge_density(
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Verify displacement relations",
 )
@@ -372,7 +383,11 @@ def verify_displacement_relations(
     D_from_P = E_field + 4.0 * np.pi * P
 
     # Verify D = E + 4πP = εE
-    D_error = np.linalg.norm(D_from_eps - D_from_P) / np.linalg.norm(D_from_eps) if np.linalg.norm(D_from_eps) > 0 else 0
+    D_error = (
+        np.linalg.norm(D_from_eps - D_from_P) / np.linalg.norm(D_from_eps)
+        if np.linalg.norm(D_from_eps) > 0
+        else 0
+    )
 
     # Verify ε = 1 + 4πχ
     eps_check = calc_permittivity_from_susceptibility(susceptibility)
@@ -393,7 +408,8 @@ def verify_displacement_relations(
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Complete displacement analysis",
 )
@@ -445,7 +461,8 @@ def analyze_displacement(
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate displacement current density",
 )
@@ -478,7 +495,8 @@ calc_displacement = calc_electric_displacement
 
 @maxwell_cite(
     608,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate polarization from E and permittivity",
 )
@@ -509,4 +527,3 @@ def calc_polarization(E_field: np.ndarray, permittivity: float) -> np.ndarray:
 
 # Alias for ElectricDisplacement class (test expects "Displacement")
 Displacement = ElectricDisplacement
-

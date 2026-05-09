@@ -9,6 +9,7 @@ Category: C (standard_math) — Well-established physical constants.
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 
 
@@ -34,13 +35,13 @@ class UniversalConstants:
     MU0_EMU: float = 1.0
 
     #: Vacuum permittivity (EMU) = 1/c^2
-    EPS0_EMU: float = 1.0 / C ** 2
+    EPS0_EMU: float = 1.0 / C**2
 
     #: Vacuum permittivity (ESU, dimensionless in CGS-ESU)
     EPS0_ESU: float = 1.0
 
     #: Vacuum permeability (ESU) = c^2
-    MU0_ESU: float = C ** 2
+    MU0_ESU: float = C**2
 
     # ── Electron (CGS) ──────────────────────────────────────────
     #: Elementary charge (esu, statcoulombs)
@@ -60,7 +61,7 @@ class UniversalConstants:
     AMPERE_TO_STATAMPERE: float = 2.99792458e9
 
     #: 1 ohm = 10^9 / c^2 statohm ≈ 1.11e-12
-    OHM_TO_STATOHM: float = 1.0e9 / C ** 2
+    OHM_TO_STATOHM: float = 1.0e9 / C**2
 
     #: 1 Tesla = 10^4 Gauss
     TESLA_TO_GAUSS: float = 1.0e4

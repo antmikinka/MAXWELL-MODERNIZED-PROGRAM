@@ -21,10 +21,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -54,7 +55,8 @@ class WeberModel:
     @classmethod
     @maxwell_cite(
         443,
-        part=3, chapter="Magnetic Saturation",
+        part=3,
+        chapter="Magnetic Saturation",
         theory_class="maxwell_original",
         description="Create Weber model from parameters",
     )
@@ -151,17 +153,18 @@ class WeberModel:
 
         if np.abs(x) < 1e-4:
             # Small x: dL/dx ≈ 1/3
-            dL_dx = 1/3
+            dL_dx = 1 / 3
         else:
             csch_x = 1 / np.sinh(x)
-            dL_dx = 1 / (x ** 2) - csch_x ** 2
+            dL_dx = 1 / (x**2) - csch_x**2
 
         return self.saturation_magnetization * self.weber_constant * dL_dx
 
 
 @maxwell_cite(
     442,
-    part=3, chapter="Magnetic Saturation",
+    part=3,
+    chapter="Magnetic Saturation",
     theory_class="maxwell_original",
     description="Observe saturation from experimental data",
 )
@@ -226,8 +229,12 @@ def observe_saturation(
 
     # Check if saturation is approached (I levels off)
     if len(I_values) >= 4:
-        last_quarter = I_values[-len(I_values)//4:]
-        variation = np.std(last_quarter) / np.mean(last_quarter) if np.mean(last_quarter) > 0 else 1
+        last_quarter = I_values[-len(I_values) // 4 :]
+        variation = (
+            np.std(last_quarter) / np.mean(last_quarter)
+            if np.mean(last_quarter) > 0
+            else 1
+        )
         is_saturated = variation < 0.05  # Less than 5% variation
 
     return {
@@ -241,7 +248,8 @@ def observe_saturation(
 
 @maxwell_cite(
     443,
-    part=3, chapter="Magnetic Saturation",
+    part=3,
+    chapter="Magnetic Saturation",
     theory_class="maxwell_original",
     description="Fit Weber model to saturation data",
 )
@@ -302,8 +310,10 @@ def fit_weber_model(
 
 
 @maxwell_cite(
-    442, 443,
-    part=3, chapter="Magnetic Saturation",
+    442,
+    443,
+    part=3,
+    chapter="Magnetic Saturation",
     theory_class="maxwell_original",
     description="Calculate approach to saturation",
 )
@@ -351,7 +361,8 @@ def approach_to_saturation(
 
 @maxwell_cite(
     443,
-    part=3, chapter="Magnetic Saturation",
+    part=3,
+    chapter="Magnetic Saturation",
     theory_class="maxwell_original",
     description="Molecular alignment fraction at given field",
 )

@@ -31,10 +31,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -56,7 +57,8 @@ class SurfaceCharge:
 
     @maxwell_cite(
         613,
-        part=4, chapter="Surface Charge",
+        part=4,
+        chapter="Surface Charge",
         theory_class="maxwell_original",
         description="Calculate surface charge from D field discontinuity",
     )
@@ -92,7 +94,8 @@ class SurfaceCharge:
 
     @maxwell_cite(
         613,
-        part=4, chapter="Surface Charge",
+        part=4,
+        chapter="Surface Charge",
         theory_class="maxwell_original",
         description="Calculate surface charge on conductor",
     )
@@ -118,7 +121,8 @@ class SurfaceCharge:
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate surface charge: σ = ΔD·n/(4π)",
 )
@@ -158,7 +162,8 @@ def calc_surface_charge_density(
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate surface charge from E discontinuity",
 )
@@ -197,7 +202,8 @@ def calc_surface_charge_from_E(
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate surface charge on conductor: σ = E/(4π)",
 )
@@ -225,7 +231,8 @@ def calc_conductor_surface_charge(
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate total charge on surface",
 )
@@ -261,7 +268,8 @@ def calc_total_surface_charge(
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate E field near charged plane",
 )
@@ -298,7 +306,8 @@ def calc_field_near_charged_plane(
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate capacitance of parallel plates",
 )
@@ -328,14 +337,15 @@ def calc_parallel_plate_capacitance(
         Part IV, Art. 613: Parallel plate capacitance.
     """
     if plate_separation <= 0:
-        return float('inf')
+        return float("inf")
 
     return permittivity * plate_area / (4.0 * np.pi * plate_separation)
 
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Verify boundary conditions for surface charge",
 )
@@ -384,7 +394,8 @@ def verify_surface_charge_boundary(
 # Aliases for test compatibility
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate surface density from D_normal",
 )
@@ -408,7 +419,8 @@ def calc_surface_density(D_normal: float) -> float:
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate surface density from field",
 )
@@ -441,7 +453,8 @@ def calc_surface_density_from_field(
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate conducting surface density",
 )
@@ -465,7 +478,8 @@ def calc_conducting_surface_density(E_surface: float) -> float:
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Verify boundary condition",
 )
@@ -510,7 +524,8 @@ def verify_boundary_condition(
 # Add methods to SurfaceCharge class for test compatibility
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate surface density",
 )
@@ -521,7 +536,8 @@ def _surface_charge_density(self, D_normal: float) -> float:
 
 @maxwell_cite(
     613,
-    part=4, chapter="Surface Charge",
+    part=4,
+    chapter="Surface Charge",
     theory_class="maxwell_original",
     description="Calculate total charge",
 )
@@ -533,6 +549,8 @@ def _surface_charge_total(self, sigma: float, area: float) -> float:
 # Add methods to class
 SurfaceCharge.surface_density = _surface_charge_density
 SurfaceCharge.total_charge = _surface_charge_total
+
+
 def analyze_surface_charge(
     surface_charge_density: float,
     surface_area: float,
@@ -559,7 +577,7 @@ def analyze_surface_charge(
 
     # Force per unit area (pressure)
     # P = 2πσ² (in CGS)
-    pressure = 2.0 * np.pi * surface_charge_density ** 2
+    pressure = 2.0 * np.pi * surface_charge_density**2
     total_force = pressure * surface_area
 
     return {

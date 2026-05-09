@@ -15,10 +15,10 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.vis._base import create_meshgrid, format_axis_labels
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._base import create_meshgrid, format_axis_labels
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -94,7 +94,7 @@ def calc_solid_angle(
 
     # Using the complete elliptic integral formulation (simplified):
     # k^2 = 4*a*rho / ((rho + a)^2 + z^2)
-    k_sq = 4.0 * a * rho / ((rho + a)**2 + z_safe**2 + eps)
+    k_sq = 4.0 * a * rho / ((rho + a) ** 2 + z_safe**2 + eps)
     k_sq = np.clip(k_sq, 0.0, 1.0 - eps)
 
     # Approximation using the far-field dipole formula for off-axis points
@@ -106,7 +106,7 @@ def calc_solid_angle(
     # Omega = 2*pi - 2*pi * z / sqrt(z^2 + (rho + a)^2) for z > 0
     # This is the leading-order approximation that captures the essential physics
 
-    R = np.sqrt(z_safe**2 + (rho + a)**2)
+    R = np.sqrt(z_safe**2 + (rho + a) ** 2)
     omega_off = 2.0 * np.pi * (1.0 - np.abs(z_safe) / R) * np.sign(z_safe)
 
     # Blend: on-axis is exact, off-axis uses the geometric approximation
@@ -220,7 +220,9 @@ def plot_magnetic_shell(
 
     # Create surface plot
     surf = ax.plot_surface(
-        X, Y, Z,
+        X,
+        Y,
+        Z,
         facecolors=plt.cm.RdBu_r(0.5 + 0.5 * omega_norm / vmax_abs),
         alpha=0.6,
         linewidth=0,
@@ -254,7 +256,9 @@ def plot_magnetic_shell(
     ax.set_xlabel("x (cm)")
     ax.set_ylabel("y (cm)")
     ax.set_zlabel("z (cm)")
-    ax.set_title(f"Magnetic Shell: Current Loop Equivalence (Art. 409, I={current:.1f} abA)")
+    ax.set_title(
+        f"Magnetic Shell: Current Loop Equivalence (Art. 409, I={current:.1f} abA)"
+    )
     ax.legend(loc="upper right")
     ax.set_box_aspect([1, 1, 1])
 
@@ -307,13 +311,22 @@ def plot_shell_potential(
         loop_center = np.array([0.0, 0.0, 0.0])
 
     X, Z = create_meshgrid(
-        x_range[0], x_range[1], z_range[0], z_range[1],
-        resolution, resolution,
+        x_range[0],
+        x_range[1],
+        z_range[0],
+        z_range[1],
+        resolution,
+        resolution,
     )
     Y = np.zeros_like(X)
 
     V_m = calc_shell_potential(
-        X, Y, Z, current, loop_center, loop_radius,
+        X,
+        Y,
+        Z,
+        current,
+        loop_center,
+        loop_radius,
     )
 
     if ax is None:
@@ -326,7 +339,9 @@ def plot_shell_potential(
     vmax_abs = max(abs(vmin), abs(vmax))
 
     cf = ax.contourf(
-        X, Z, V_m,
+        X,
+        Z,
+        V_m,
         levels=40,
         cmap="RdBu_r",
         vmin=-vmax_abs,
@@ -341,18 +356,24 @@ def plot_shell_potential(
     # Mark the current loop position (two points in xz cross-section)
     cx = loop_center[0]
     cz = loop_center[2]
-    ax.plot(cx - loop_radius, cz, "ro", markersize=10, zorder=5, label="Loop cross-section")
+    ax.plot(
+        cx - loop_radius, cz, "ro", markersize=10, zorder=5, label="Loop cross-section"
+    )
     ax.plot(cx + loop_radius, cz, "ro", markersize=10, zorder=5)
 
     # Draw the loop plane (horizontal dashed line through center)
-    ax.axhline(y=cz, color="gray", linestyle="--", linewidth=1, alpha=0.5,
-               label="Loop plane")
+    ax.axhline(
+        y=cz, color="gray", linestyle="--", linewidth=1, alpha=0.5, label="Loop plane"
+    )
 
     # Draw the symmetry axis (vertical dashed line through center)
-    ax.axvline(x=cx, color="gray", linestyle=":", linewidth=1, alpha=0.5,
-               label="Symmetry axis")
+    ax.axvline(
+        x=cx, color="gray", linestyle=":", linewidth=1, alpha=0.5, label="Symmetry axis"
+    )
 
-    format_axis_labels(ax, title=f"Magnetic Shell Potential (Art. 409, I={current:.1f} abA)")
+    format_axis_labels(
+        ax, title=f"Magnetic Shell Potential (Art. 409, I={current:.1f} abA)"
+    )
     ax.set_ylabel("z (cm)")
     ax.legend(loc="upper right", fontsize=9)
     fig.tight_layout()

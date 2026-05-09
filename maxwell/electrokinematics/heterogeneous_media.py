@@ -36,23 +36,29 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, Optional, Union, List
-import numpy as np
 from functools import wraps
+from typing import Callable, List, Optional, Union
 
+import numpy as np
+
+from maxwell.config.constants import C_APPROX, CONST, C
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
-
 
 # =============================================================================
 # SERIES COMBINATIONS (Arts. 310-314)
 # =============================================================================
 
+
 @maxwell_cite(
-    310, 311, 312, 313, 314,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    310,
+    311,
+    312,
+    313,
+    314,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Calculate effective conductivity of layers in series"
+    description="Calculate effective conductivity of layers in series",
 )
 def effective_conductivity_series(
     layer_conductivities: list[float],
@@ -107,7 +113,9 @@ def effective_conductivity_series(
         >>> print(f"sigma_eff = {result['effective_conductivity']:.4f} S/cm")
     """
     if len(layer_conductivities) != len(layer_thicknesses):
-        raise ValueError("layer_conductivities and layer_thicknesses must have same length")
+        raise ValueError(
+            "layer_conductivities and layer_thicknesses must have same length"
+        )
 
     if len(layer_conductivities) == 0:
         raise ValueError("At least one layer required")
@@ -150,10 +158,15 @@ def effective_conductivity_series(
 
 
 @maxwell_cite(
-    310, 311, 312, 313, 314,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    310,
+    311,
+    312,
+    313,
+    314,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Calculate anisotropic effective conductivity of stratified medium"
+    description="Calculate anisotropic effective conductivity of stratified medium",
 )
 def stratified_conductor_effective(
     layer_conductivities: list[float],
@@ -208,7 +221,9 @@ def stratified_conductor_effective(
         >>> print(f"Anisotropy = {result['anisotropy_ratio']:.1f}x")
     """
     if len(layer_conductivities) != len(layer_thicknesses):
-        raise ValueError("layer_conductivities and layer_thicknesses must have same length")
+        raise ValueError(
+            "layer_conductivities and layer_thicknesses must have same length"
+        )
 
     n_layers = len(layer_conductivities)
     layer_conductivities = np.asarray(layer_conductivities, dtype=np.float64)
@@ -230,7 +245,11 @@ def stratified_conductor_effective(
     sigma_perpendicular = 1.0 / np.sum(volume_fractions / layer_conductivities)
 
     # Anisotropy ratio
-    anisotropy_ratio = sigma_parallel / sigma_perpendicular if sigma_perpendicular > 0 else float('inf')
+    anisotropy_ratio = (
+        sigma_parallel / sigma_perpendicular
+        if sigma_perpendicular > 0
+        else float("inf")
+    )
 
     # Isotropy check
     is_isotropic = np.allclose(layer_conductivities, layer_conductivities[0])
@@ -242,7 +261,9 @@ def stratified_conductor_effective(
         "volume_fractions": volume_fractions.tolist(),
         "n_layers": n_layers,
         "is_isotropic": is_isotropic,
-        "conductivity_tensor_principal": np.array([sigma_parallel, sigma_parallel, sigma_perpendicular]),
+        "conductivity_tensor_principal": np.array(
+            [sigma_parallel, sigma_parallel, sigma_perpendicular]
+        ),
     }
 
 
@@ -250,11 +271,16 @@ def stratified_conductor_effective(
 # PARALLEL COMBINATIONS (Arts. 315-318)
 # =============================================================================
 
+
 @maxwell_cite(
-    315, 316, 317, 318,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    315,
+    316,
+    317,
+    318,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Calculate effective conductivity of layers in parallel"
+    description="Calculate effective conductivity of layers in parallel",
 )
 def effective_conductivity_parallel(
     layer_conductivities: list[float],
@@ -343,10 +369,14 @@ def effective_conductivity_parallel(
 
 
 @maxwell_cite(
-    315, 316, 317, 318,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    315,
+    316,
+    317,
+    318,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Maxwell-Garnett effective medium theory for inclusions"
+    description="Maxwell-Garnett effective medium theory for inclusions",
 )
 def maxwell_garnett_conductivity(
     matrix_conductivity: float,
@@ -411,7 +441,9 @@ def maxwell_garnett_conductivity(
         >>> print(f"Enhancement = {result['enhancement_factor']:.2f}x")
     """
     if not 0 <= volume_fraction <= 1:
-        raise ValueError(f"Volume fraction must be between 0 and 1, got {volume_fraction}")
+        raise ValueError(
+            f"Volume fraction must be between 0 and 1, got {volume_fraction}"
+        )
 
     if matrix_conductivity <= 0:
         raise ValueError(f"matrix_conductivity must be positive")
@@ -419,12 +451,21 @@ def maxwell_garnett_conductivity(
         raise ValueError(f"inclusion_conductivity must be non-negative")
 
     # Conductivity ratio
-    cond_ratio = inclusion_conductivity / matrix_conductivity if matrix_conductivity > 0 else float('inf')
+    cond_ratio = (
+        inclusion_conductivity / matrix_conductivity
+        if matrix_conductivity > 0
+        else float("inf")
+    )
 
     if inclusion_shape == "sphere":
         # Maxwell-Garnett formula for spherical inclusions
-        numerator = 2 * (1 - volume_fraction) * matrix_conductivity + (1 + 2 * volume_fraction) * inclusion_conductivity
-        denominator = (2 + volume_fraction) * matrix_conductivity + (1 - volume_fraction) * inclusion_conductivity
+        numerator = (
+            2 * (1 - volume_fraction) * matrix_conductivity
+            + (1 + 2 * volume_fraction) * inclusion_conductivity
+        )
+        denominator = (2 + volume_fraction) * matrix_conductivity + (
+            1 - volume_fraction
+        ) * inclusion_conductivity
 
         if abs(denominator) > 1e-15:
             effective_conductivity = matrix_conductivity * numerator / denominator
@@ -433,11 +474,15 @@ def maxwell_garnett_conductivity(
 
     elif inclusion_shape == "needle":
         # Parallel (Voigt) model: rule of mixtures
-        effective_conductivity = (1 - volume_fraction) * matrix_conductivity + volume_fraction * inclusion_conductivity
+        effective_conductivity = (
+            1 - volume_fraction
+        ) * matrix_conductivity + volume_fraction * inclusion_conductivity
 
     elif inclusion_shape == "disk":
         # Perpendicular (Reuss) model: series combination
-        inv_sigma_eff = (1 - volume_fraction) / matrix_conductivity + volume_fraction / inclusion_conductivity
+        inv_sigma_eff = (
+            1 - volume_fraction
+        ) / matrix_conductivity + volume_fraction / inclusion_conductivity
         effective_conductivity = 1.0 / inv_sigma_eff if inv_sigma_eff > 0 else 0.0
 
     elif inclusion_shape == "random":
@@ -446,10 +491,15 @@ def maxwell_garnett_conductivity(
             # Solve the Bruggeman equation iteratively or analytically
             # Quadratic form: 2*sigma_eff² + B*sigma_eff + C = 0
             a = 2
-            b = matrix_conductivity + inclusion_conductivity - 3 * volume_fraction * (inclusion_conductivity - matrix_conductivity) - 2 * matrix_conductivity
+            b = (
+                matrix_conductivity
+                + inclusion_conductivity
+                - 3 * volume_fraction * (inclusion_conductivity - matrix_conductivity)
+                - 2 * matrix_conductivity
+            )
             c = -matrix_conductivity * inclusion_conductivity
 
-            discriminant = b ** 2 - 4 * a * c
+            discriminant = b**2 - 4 * a * c
             if discriminant >= 0:
                 sigma_eff1 = (-b + np.sqrt(discriminant)) / (2 * a)
                 sigma_eff2 = (-b - np.sqrt(discriminant)) / (2 * a)
@@ -461,10 +511,16 @@ def maxwell_garnett_conductivity(
             effective_conductivity = max(matrix_conductivity, inclusion_conductivity)
 
     else:
-        raise ValueError(f"Unknown inclusion_shape: {inclusion_shape}. "
-                        f"Options: sphere, needle, disk, random")
+        raise ValueError(
+            f"Unknown inclusion_shape: {inclusion_shape}. "
+            f"Options: sphere, needle, disk, random"
+        )
 
-    enhancement_factor = effective_conductivity / matrix_conductivity if matrix_conductivity > 0 else float('inf')
+    enhancement_factor = (
+        effective_conductivity / matrix_conductivity
+        if matrix_conductivity > 0
+        else float("inf")
+    )
 
     return {
         "effective_conductivity": effective_conductivity,
@@ -481,11 +537,15 @@ def maxwell_garnett_conductivity(
 # INTERFACE RESISTANCE (Arts. 319-321)
 # =============================================================================
 
+
 @maxwell_cite(
-    319, 320, 321,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    319,
+    320,
+    321,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Calculate interface (contact) resistance between materials"
+    description="Calculate interface (contact) resistance between materials",
 )
 def interface_resistance(
     material_1_conductivity: float,
@@ -555,13 +615,21 @@ def interface_resistance(
     # Constriction resistance (Maxwell's formula)
     # Characteristic length from area: a = sqrt(A/pi)
     a = np.sqrt(contact_area / np.pi)
-    constriction_resistance = (1/material_1_conductivity + 1/material_2_conductivity) / (4 * a)
+    constriction_resistance = (
+        1 / material_1_conductivity + 1 / material_2_conductivity
+    ) / (4 * a)
 
     # Interface layer resistance
     layer_resistance = 0.0
-    if interface_quality == "quantified" and interface_thickness is not None and interface_conductivity is not None:
+    if (
+        interface_quality == "quantified"
+        and interface_thickness is not None
+        and interface_conductivity is not None
+    ):
         if interface_conductivity > 0:
-            layer_resistance = interface_thickness / (interface_conductivity * contact_area)
+            layer_resistance = interface_thickness / (
+                interface_conductivity * contact_area
+            )
 
     elif interface_quality == "poor":
         # Estimate: add 10% of constriction resistance
@@ -584,10 +652,13 @@ def interface_resistance(
 
 
 @maxwell_cite(
-    319, 320, 321,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    319,
+    320,
+    321,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Calculate boundary layer effects on conduction"
+    description="Calculate boundary layer effects on conduction",
 )
 def boundary_layer_conduction(
     bulk_conductivity: float,
@@ -659,8 +730,12 @@ def boundary_layer_conduction(
 
     # Resistance fractions
     total_resistance_term = bulk_term + layer_term
-    bulk_fraction = bulk_term / total_resistance_term if total_resistance_term > 0 else 0
-    layer_fraction = layer_term / total_resistance_term if total_resistance_term > 0 else 0
+    bulk_fraction = (
+        bulk_term / total_resistance_term if total_resistance_term > 0 else 0
+    )
+    layer_fraction = (
+        layer_term / total_resistance_term if total_resistance_term > 0 else 0
+    )
 
     # Relative change
     relative_change = (effective_conductivity - bulk_conductivity) / bulk_conductivity
@@ -681,11 +756,15 @@ def boundary_layer_conduction(
 # STRATIFIED CONDUCTOR (Arts. 322-324)
 # =============================================================================
 
+
 @maxwell_cite(
-    322, 323, 324,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    322,
+    323,
+    324,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Analyze general stratified conductor with arbitrary layering"
+    description="Analyze general stratified conductor with arbitrary layering",
 )
 def stratified_conductor(
     layer_properties: list[dict],
@@ -747,11 +826,11 @@ def stratified_conductor(
     interface_resistances = []
 
     for layer in layer_properties:
-        if 'conductivity' not in layer or 'thickness' not in layer:
+        if "conductivity" not in layer or "thickness" not in layer:
             raise ValueError("Each layer must have 'conductivity' and 'thickness'")
-        conductivities.append(layer['conductivity'])
-        thicknesses.append(layer['thickness'])
-        interface_resistances.append(layer.get('interface_resistance', 0.0))
+        conductivities.append(layer["conductivity"])
+        thicknesses.append(layer["thickness"])
+        interface_resistances.append(layer.get("interface_resistance", 0.0))
 
     conductivities = np.asarray(conductivities, dtype=np.float64)
     thicknesses = np.asarray(thicknesses, dtype=np.float64)
@@ -795,7 +874,9 @@ def stratified_conductor(
             "perpendicular": sigma_perpendicular,
         }
     else:
-        raise ValueError(f"current_direction must be 'parallel', 'perpendicular', or 'tensor'")
+        raise ValueError(
+            f"current_direction must be 'parallel', 'perpendicular', or 'tensor'"
+        )
 
     return result
 
@@ -804,11 +885,16 @@ def stratified_conductor(
 # MIXED CONDUCTOR (Arts. 319-322)
 # =============================================================================
 
+
 @maxwell_cite(
-    319, 320, 321, 322,
-    part=2, chapter="Conduction in Heterogeneous Media",
+    319,
+    320,
+    321,
+    322,
+    part=2,
+    chapter="Conduction in Heterogeneous Media",
     theory_class="maxwell_original",
-    description="Model mixed conductor with multiple phases"
+    description="Model mixed conductor with multiple phases",
 )
 def mixed_conductor(
     phase_conductivities: list[float],
@@ -865,7 +951,9 @@ def mixed_conductor(
         >>> print(f"sigma_eff = {result['effective_conductivity']:.2f} S/cm")
     """
     if len(phase_conductivities) != len(phase_volume_fractions):
-        raise ValueError("phase_conductivities and phase_volume_fractions must have same length")
+        raise ValueError(
+            "phase_conductivities and phase_volume_fractions must have same length"
+        )
 
     n_phases = len(phase_conductivities)
     phase_conductivities = np.asarray(phase_conductivities, dtype=np.float64)
@@ -962,6 +1050,7 @@ def mixed_conductor(
 # HETEROGENEOUS MEDIA ANALYZER CLASS
 # =============================================================================
 
+
 @dataclass
 class HeterogeneousMediaAnalyzer:
     """
@@ -981,30 +1070,43 @@ class HeterogeneousMediaAnalyzer:
     temperature: float = 293.15
 
     @maxwell_cite(
-        310, 311, 312, 313, 314,
-        part=2, chapter="Conduction in Heterogeneous Media",
+        310,
+        311,
+        312,
+        313,
+        314,
+        part=2,
+        chapter="Conduction in Heterogeneous Media",
         theory_class="maxwell_original",
-        description="Analyze series layered structure"
+        description="Analyze series layered structure",
     )
     def analyze_series_layers(self, conductivities: list, thicknesses: list) -> dict:
         """Analyze layers in series (perpendicular current flow)."""
         return effective_conductivity_series(conductivities, thicknesses)
 
     @maxwell_cite(
-        315, 316, 317, 318,
-        part=2, chapter="Conduction in Heterogeneous Media",
+        315,
+        316,
+        317,
+        318,
+        part=2,
+        chapter="Conduction in Heterogeneous Media",
         theory_class="maxwell_original",
-        description="Analyze parallel layered structure"
+        description="Analyze parallel layered structure",
     )
     def analyze_parallel_layers(self, conductivities: list, areas: list) -> dict:
         """Analyze layers in parallel (parallel current flow)."""
         return effective_conductivity_parallel(conductivities, areas)
 
     @maxwell_cite(
-        315, 316, 317, 318,
-        part=2, chapter="Conduction in Heterogeneous Media",
+        315,
+        316,
+        317,
+        318,
+        part=2,
+        chapter="Conduction in Heterogeneous Media",
         theory_class="maxwell_original",
-        description="Analyze composite with inclusions"
+        description="Analyze composite with inclusions",
     )
     def analyze_composite(
         self,
@@ -1019,10 +1121,13 @@ class HeterogeneousMediaAnalyzer:
         )
 
     @maxwell_cite(
-        319, 320, 321,
-        part=2, chapter="Conduction in Heterogeneous Media",
+        319,
+        320,
+        321,
+        part=2,
+        chapter="Conduction in Heterogeneous Media",
         theory_class="maxwell_original",
-        description="Analyze interface between materials"
+        description="Analyze interface between materials",
     )
     def analyze_interface(
         self,
@@ -1035,10 +1140,14 @@ class HeterogeneousMediaAnalyzer:
         return interface_resistance(sigma_1, sigma_2, area, quality)
 
     @maxwell_cite(
-        319, 320, 321, 322,
-        part=2, chapter="Conduction in Heterogeneous Media",
+        319,
+        320,
+        321,
+        322,
+        part=2,
+        chapter="Conduction in Heterogeneous Media",
         theory_class="maxwell_original",
-        description="Analyze mixed conductor"
+        description="Analyze mixed conductor",
     )
     def analyze_mixture(
         self,
@@ -1096,9 +1205,9 @@ if __name__ == "__main__":
     # Test stratified conductor
     print("\n--- General Stratified Conductor (Arts. 322-324) ---")
     layers = [
-        {'conductivity': 1.0, 'thickness': 0.1},
-        {'conductivity': 0.1, 'thickness': 0.05},
-        {'conductivity': 10.0, 'thickness': 0.2},
+        {"conductivity": 1.0, "thickness": 0.1},
+        {"conductivity": 0.1, "thickness": 0.05},
+        {"conductivity": 10.0, "thickness": 0.2},
     ]
     result = stratified_conductor(layers, current_direction="tensor")
     print(f"  Three-layer structure:")
@@ -1110,7 +1219,9 @@ if __name__ == "__main__":
     result = mixed_conductor([1.0, 100.0], [0.7, 0.3], mixing_model="bruggeman")
     print(f"  Two-phase composite: sigma=[1, 100] S/cm, f=[0.7, 0.3]")
     print(f"    sigma_eff (Bruggeman) = {result['effective_conductivity']:.2f} S/cm")
-    print(f"    Wiener bounds: [{result['wiener_lower']:.2f}, {result['wiener_upper']:.2f}]")
+    print(
+        f"    Wiener bounds: [{result['wiener_lower']:.2f}, {result['wiener_upper']:.2f}]"
+    )
 
     print("\n" + "=" * 70)
     print("Module verification complete.")

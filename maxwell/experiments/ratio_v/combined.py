@@ -54,9 +54,13 @@ def method_maxwell_combined(
         "v_from_capacitance": v_from_capacitance,
         "mean_v": (v_from_resistance + v_from_capacitance) / 2,
         "disagreement_pct": abs(v_from_resistance - v_from_capacitance)
-                            / ((v_from_resistance + v_from_capacitance) / 2) * 100,
-        "deviation_from_c_pct": abs((v_from_resistance + v_from_capacitance) / 2 - C_CGS)
-                                / C_CGS * 100,
+        / ((v_from_resistance + v_from_capacitance) / 2)
+        * 100,
+        "deviation_from_c_pct": abs(
+            (v_from_resistance + v_from_capacitance) / 2 - C_CGS
+        )
+        / C_CGS
+        * 100,
     }
 
 

@@ -38,88 +38,88 @@ __all__ = [
 
 if HAS_MATPLOTLIB:
     from maxwell.vis._base import create_meshgrid, evaluate_on_grid
-    from maxwell.vis.field_lines import (
-        plot_field_lines_2d,
-        plot_dipole_field_lines,
-    )
-    from maxwell.vis.equipotential import (
-        plot_equipotentials_2d,
-        plot_dipole_equipotentials,
-    )
-    from maxwell.vis.stress import (
-        plot_stress_tensor_2d,
-        verify_stress_tensor_plot,
-    )
-    from maxwell.vis.method_of_images import (
-        calc_method_of_images,
-        plot_method_of_images,
-    )
-    from maxwell.vis.edge_singularities import (
-        calc_wedge_field,
-        calc_edge_singularity,
-        plot_edge_singularity,
-        plot_singularity_comparison,
-    )
     from maxwell.vis.dielectric_soakage import (
         calc_dielectric_absorption,
         plot_dielectric_soakage,
     )
-    from maxwell.vis.hysteresis_loops import (
-        calc_hysteresis_loop,
-        plot_hysteresis_loops,
-        plot_material_comparison,
+    from maxwell.vis.edge_singularities import (
+        calc_edge_singularity,
+        calc_wedge_field,
+        plot_edge_singularity,
+        plot_singularity_comparison,
+    )
+    from maxwell.vis.electrotonic_state import (
+        calc_B_from_electrotonic,
+        calc_electrotonic_straight_wire,
+        calc_electrotonic_transient,
+        plot_A_and_B_fields,
+        plot_A_transient,
+        plot_electrotonic_3d_surface,
+        plot_electrotonic_state_2d,
     )
     from maxwell.vis.em_wave_propagation import (
         calc_em_wave,
         plot_em_wave_propagation,
         plot_wave_snapshot_3d,
     )
-    from maxwell.vis.magnetic_shell import (
-        calc_solid_angle,
-        calc_shell_potential,
-        plot_magnetic_shell,
-        plot_shell_potential,
+    from maxwell.vis.equipotential import (
+        plot_dipole_equipotentials,
+        plot_equipotentials_2d,
     )
-    from maxwell.vis.spherical_harmonics import (
-        calc_gauss_harmonics,
-        calc_field_intensity,
-        plot_harmonic_globe,
-        plot_harmonic_modes,
-        plot_harmonic_contour,
+    from maxwell.vis.field_lines import (
+        plot_dipole_field_lines,
+        plot_field_lines_2d,
     )
     from maxwell.vis.flow_tubes import (
         calc_unit_tubes,
-        plot_unit_tubes_of_flow,
         plot_unit_tubes_3d,
-    )
-    from maxwell.vis.thermal_gradients import (
-        calc_joule_heat_distribution,
-        calc_thermal_gradients,
-        calc_peltier_junction,
-        plot_thermal_gradients,
-        plot_joule_heat_distribution,
-        plot_thermoelectric_effects,
-    )
-    from maxwell.vis.molecular_vortices import (
-        calc_vortex_lattice,
-        calc_magnetic_field_from_vortices,
-        plot_molecular_vortices,
-        plot_vortex_3d_surface,
+        plot_unit_tubes_of_flow,
     )
     from maxwell.vis.helicoidal_potentials import (
         calc_solid_angle_loop,
         plot_helicoidal_potentials,
-        plot_loop_potential_3d,
         plot_loop_field_lines,
+        plot_loop_potential_3d,
     )
-    from maxwell.vis.electrotonic_state import (
-        calc_electrotonic_straight_wire,
-        calc_electrotonic_transient,
-        calc_B_from_electrotonic,
-        plot_electrotonic_state_2d,
-        plot_A_and_B_fields,
-        plot_A_transient,
-        plot_electrotonic_3d_surface,
+    from maxwell.vis.hysteresis_loops import (
+        calc_hysteresis_loop,
+        plot_hysteresis_loops,
+        plot_material_comparison,
+    )
+    from maxwell.vis.magnetic_shell import (
+        calc_shell_potential,
+        calc_solid_angle,
+        plot_magnetic_shell,
+        plot_shell_potential,
+    )
+    from maxwell.vis.method_of_images import (
+        calc_method_of_images,
+        plot_method_of_images,
+    )
+    from maxwell.vis.molecular_vortices import (
+        calc_magnetic_field_from_vortices,
+        calc_vortex_lattice,
+        plot_molecular_vortices,
+        plot_vortex_3d_surface,
+    )
+    from maxwell.vis.spherical_harmonics import (
+        calc_field_intensity,
+        calc_gauss_harmonics,
+        plot_harmonic_contour,
+        plot_harmonic_globe,
+        plot_harmonic_modes,
+    )
+    from maxwell.vis.stress import (
+        plot_stress_tensor_2d,
+        verify_stress_tensor_plot,
+    )
+    from maxwell.vis.thermal_gradients import (
+        calc_joule_heat_distribution,
+        calc_peltier_junction,
+        calc_thermal_gradients,
+        plot_joule_heat_distribution,
+        plot_thermal_gradients,
+        plot_thermoelectric_effects,
     )
 
     __all__ += [

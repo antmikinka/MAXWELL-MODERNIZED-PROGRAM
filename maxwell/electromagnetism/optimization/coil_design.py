@@ -34,17 +34,18 @@ from __future__ import annotations
 import numpy as np
 from scipy.optimize import minimize_scalar
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.electromagnetism.components.circular_coils import (
     calc_coil_on_axis,
     calc_double_coil_field,
 )
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
     706,
-    part=4, chapter="Coil Design",
+    part=4,
+    chapter="Coil Design",
     theory_class="maxwell_original",
     description="Calculate coil field efficiency",
 )
@@ -80,7 +81,7 @@ def calc_coil_efficiency(
     B = calc_coil_on_axis(current, coil_radius, 0, n)
 
     # Wire cross-section area
-    A_wire = np.pi * wire_radius ** 2
+    A_wire = np.pi * wire_radius**2
 
     # Resistance proportional (in arbitrary units)
     R_proportional = wire_length / A_wire
@@ -100,7 +101,8 @@ def calc_coil_efficiency(
 
 @maxwell_cite(
     706,
-    part=4, chapter="Coil Design",
+    part=4,
+    chapter="Coil Design",
     theory_class="maxwell_original",
     description="Calculate optimal coil radius for given wire",
 )
@@ -124,6 +126,7 @@ def calc_optimal_coil_radius(
     Returns:
         Optimal coil radius (cm).
     """
+
     def negative_field(a):
         if a < wire_radius * 2:
             return 1e30
@@ -131,13 +134,18 @@ def calc_optimal_coil_radius(
         B = calc_coil_on_axis(1.0, a, target_position, n)
         return -B
 
-    result = minimize_scalar(negative_field, bounds=(wire_radius * 2, wire_length / (2 * np.pi)), method='bounded')
+    result = minimize_scalar(
+        negative_field,
+        bounds=(wire_radius * 2, wire_length / (2 * np.pi)),
+        method="bounded",
+    )
     return result.x
 
 
 @maxwell_cite(
     706,
-    part=4, chapter="Coil Design",
+    part=4,
+    chapter="Coil Design",
     theory_class="maxwell_original",
     description="Calculate optimal Helmholtz configuration",
 )
@@ -164,14 +172,26 @@ def calc_optimal_helmholtz(
         if a < wire_radius * 2:
             return 1e30
         n = max(int(wire_per_coil / (2 * np.pi * a)), 1)
-        B = calc_double_coil_field(1.0, a, np.array([0, 0, 0]), coil_separation=a, n_turns=n)
+        B = calc_double_coil_field(
+            1.0, a, np.array([0, 0, 0]), coil_separation=a, n_turns=n
+        )
         return -np.linalg.norm(B)
 
-    result = minimize_scalar(negative_helmholtz_field, bounds=(wire_radius * 2, wire_per_coil / (2 * np.pi)), method='bounded')
+    result = minimize_scalar(
+        negative_helmholtz_field,
+        bounds=(wire_radius * 2, wire_per_coil / (2 * np.pi)),
+        method="bounded",
+    )
 
     optimal_radius = result.x
     n = max(int(wire_per_coil / (2 * np.pi * optimal_radius)), 1)
-    B = calc_double_coil_field(1.0, optimal_radius, np.array([0, 0, 0]), coil_separation=optimal_radius, n_turns=n)
+    B = calc_double_coil_field(
+        1.0,
+        optimal_radius,
+        np.array([0, 0, 0]),
+        coil_separation=optimal_radius,
+        n_turns=n,
+    )
 
     return {
         "optimal_radius": optimal_radius,
@@ -184,7 +204,8 @@ def calc_optimal_helmholtz(
 
 @maxwell_cite(
     706,
-    part=4, chapter="Coil Design",
+    part=4,
+    chapter="Coil Design",
     theory_class="maxwell_original",
     description="Calculate coil uniformity figure of merit",
 )
@@ -215,8 +236,13 @@ def calc_uniformity_fom(
         evaluation_radius = 0.1 * coil_radius
 
     # Field at center
-    B_center = calc_double_coil_field(1.0, coil_radius, np.array([0, 0, 0]),
-                                       coil_separation=coil_separation, n_turns=n_turns)
+    B_center = calc_double_coil_field(
+        1.0,
+        coil_radius,
+        np.array([0, 0, 0]),
+        coil_separation=coil_separation,
+        n_turns=n_turns,
+    )
     B_center_mag = np.linalg.norm(B_center)
 
     # Field at various points within evaluation sphere
@@ -234,10 +260,17 @@ def calc_uniformity_fom(
         y = r * np.sin(theta) * np.sin(phi)
         z = r * np.cos(theta)
 
-        B = calc_double_coil_field(1.0, coil_radius, np.array([x, y, z]),
-                                    coil_separation=coil_separation, n_turns=n_turns)
+        B = calc_double_coil_field(
+            1.0,
+            coil_radius,
+            np.array([x, y, z]),
+            coil_separation=coil_separation,
+            n_turns=n_turns,
+        )
         B_mag = np.linalg.norm(B)
-        variation = abs(B_mag - B_center_mag) / B_center_mag if B_center_mag > 1e-15 else 0
+        variation = (
+            abs(B_mag - B_center_mag) / B_center_mag if B_center_mag > 1e-15 else 0
+        )
         max_variation = max(max_variation, variation)
 
     return {
@@ -252,7 +285,8 @@ def calc_uniformity_fom(
 
 @maxwell_cite(
     706,
-    part=4, chapter="Coil Design",
+    part=4,
+    chapter="Coil Design",
     theory_class="maxwell_original",
     description="Verify optimal coil design",
 )
@@ -293,10 +327,16 @@ def verify_coil_design(
     optimal_wins = B_opt >= B_small and B_opt >= B_large
 
     # Helmholtz uniformity vs other separations
-    helmholtz_fom = calc_uniformity_fom(a_opt, n_opt, coil_separation=a_opt, evaluation_radius=0.1 * a_opt)
-    tight_fom = calc_uniformity_fom(a_opt, n_opt, coil_separation=0.5 * a_opt, evaluation_radius=0.1 * a_opt)
+    helmholtz_fom = calc_uniformity_fom(
+        a_opt, n_opt, coil_separation=a_opt, evaluation_radius=0.1 * a_opt
+    )
+    tight_fom = calc_uniformity_fom(
+        a_opt, n_opt, coil_separation=0.5 * a_opt, evaluation_radius=0.1 * a_opt
+    )
 
-    helmholtz_more_uniform = helmholtz_fom["uniformity_score"] >= tight_fom["uniformity_score"]
+    helmholtz_more_uniform = (
+        helmholtz_fom["uniformity_score"] >= tight_fom["uniformity_score"]
+    )
 
     return {
         "optimal_radius": a_opt,
@@ -313,7 +353,8 @@ def verify_coil_design(
 
 @maxwell_cite(
     706,
-    part=4, chapter="Coil Design",
+    part=4,
+    chapter="Coil Design",
     theory_class="maxwell_original",
     description="Complete coil design analysis",
 )

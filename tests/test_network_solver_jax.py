@@ -8,24 +8,25 @@ import numpy as np
 import pytest
 
 from maxwell.jax.electromagnetism.network_solver import (
-    NetworkSolverJAX,
     KirchhoffJAX,
-    WheatstoneBridgeJAX,
+    NetworkSolverJAX,
     ReciprocityVerifierJAX,
+    WheatstoneBridgeJAX,
+    analyze_network_jax,
     kirchhoff_junction_rule_jax,
     kirchhoff_loop_rule_jax,
+    reciprocity_theorem_jax,
     solve_network_jax,
+    verify_network_solution_jax,
     wheatstone_bridge_balance_jax,
     wheatstone_bridge_sensitivity_jax,
-    reciprocity_theorem_jax,
-    verify_network_solution_jax,
-    analyze_network_jax,
 )
 
 TOL = 1e-10
 
 
 # -- TestNetworkSolverJAXPytree ----------------------------------------------------
+
 
 class TestNetworkSolverJAXPytree:
     """Flatten/unflatten, jit, vmap, grad."""
@@ -54,7 +55,9 @@ class TestNetworkSolverJAXPytree:
         G = jnp.array([[2.0, -1.0], [-1.0, 2.0]])
         I = jnp.array([1.0, 0.0])
         obj = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
-        doubled = jax.tree_util.tree_map(lambda x: x * 2 if hasattr(x, 'dtype') else x, obj)
+        doubled = jax.tree_util.tree_map(
+            lambda x: x * 2 if hasattr(x, "dtype") else x, obj
+        )
         assert jnp.allclose(doubled.conductance_matrix, G * 2)
         assert jnp.allclose(doubled.current_vector, I * 2)
 
@@ -72,6 +75,7 @@ class TestNetworkSolverJAXPytree:
 
 
 # -- TestNetworkSolverJAXSimpleNetwork ----------------------------------------------
+
 
 class TestNetworkSolverJAXSimpleNetwork:
     """Single R, series, parallel, triangle, bridge networks."""
@@ -101,7 +105,10 @@ class TestNetworkSolverJAXSimpleNetwork:
     def test_parallel_resistors(self):
         """Two parallel 1-ohm resistors between node 0 and node 1, 2A injected at node 1."""
         solver = NetworkSolverJAX.from_edges(
-            n_nodes=2, edges=[(0, 1, 1.0), (0, 1, 1.0)], current_sources=[(1, 2.0)], reference_node=0
+            n_nodes=2,
+            edges=[(0, 1, 1.0), (0, 1, 1.0)],
+            current_sources=[(1, 2.0)],
+            reference_node=0,
         )
         V = solver.node_potentials
         # Equivalent conductance = 2 S, V = I/G = 2/2 = 1V
@@ -138,20 +145,25 @@ class TestNetworkSolverJAXSimpleNetwork:
 
 # -- TestNetworkSolverJAXProperties -------------------------------------------------
 
+
 class TestNetworkSolverJAXProperties:
     """branch_currents, branch_power, total_power, verify_kirchhoff."""
 
     def test_branch_currents_shape(self):
         G = jnp.array([[2.0, -1.0], [-1.0, 2.0]])
         I = jnp.array([1.0, 0.0])
-        solver = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
+        solver = NetworkSolverJAX(
+            conductance_matrix=G, current_vector=I, reference_node=0
+        )
         bc = solver.branch_currents
         assert bc.shape == (2, 2)
 
     def test_branch_currents_skew_symmetric(self):
         G = jnp.array([[3.0, -1.0, -2.0], [-1.0, 3.0, -2.0], [-2.0, -2.0, 4.0]])
         I = jnp.array([1.0, 0.0, 0.0])
-        solver = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
+        solver = NetworkSolverJAX(
+            conductance_matrix=G, current_vector=I, reference_node=0
+        )
         bc = solver.branch_currents
         # I[i,j] = -I[j,i] for off-diagonal
         assert float(bc[1, 2]) == pytest.approx(-float(bc[2, 1]), abs=1e-8)
@@ -159,7 +171,9 @@ class TestNetworkSolverJAXProperties:
     def test_branch_power_non_negative(self):
         G = jnp.array([[2.0, -1.0], [-1.0, 2.0]])
         I = jnp.array([1.0, 0.0])
-        solver = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
+        solver = NetworkSolverJAX(
+            conductance_matrix=G, current_vector=I, reference_node=0
+        )
         bp = solver.branch_power
         assert jnp.all(bp >= 0)
 
@@ -189,6 +203,7 @@ class TestNetworkSolverJAXProperties:
 
 # -- TestNetworkSolverJAXEdgeCases --------------------------------------------------
 
+
 class TestNetworkSolverJAXEdgeCases:
     """Zero conductance entries, single source, large networks."""
 
@@ -196,7 +211,9 @@ class TestNetworkSolverJAXEdgeCases:
         """Reference node should have zeros in its row/col effect."""
         G = jnp.array([[0.0, 0.0, 0.0], [0.0, 1.0, -1.0], [0.0, -1.0, 1.0]])
         I = jnp.array([0.0, 1.0, -1.0])
-        solver = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
+        solver = NetworkSolverJAX(
+            conductance_matrix=G, current_vector=I, reference_node=0
+        )
         V = solver.node_potentials
         assert float(V[0]) == pytest.approx(0.0, abs=1e-8)
 
@@ -211,7 +228,9 @@ class TestNetworkSolverJAXEdgeCases:
     def test_effective_resistance_symmetric(self):
         G = jnp.array([[3.0, -1.0, -2.0], [-1.0, 3.0, -2.0], [-2.0, -2.0, 4.0]])
         I = jnp.zeros(3, dtype=jnp.float64)
-        solver = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
+        solver = NetworkSolverJAX(
+            conductance_matrix=G, current_vector=I, reference_node=0
+        )
         R_ab = solver.effective_resistance(1, 2)
         R_ba = solver.effective_resistance(2, 1)
         assert float(R_ab) == pytest.approx(float(R_ba), abs=1e-8)
@@ -229,6 +248,7 @@ class TestNetworkSolverJAXEdgeCases:
 
 # -- TestKirchhoffJAXPytree ---------------------------------------------------------
 
+
 class TestKirchhoffJAXPytree:
     """Flatten/unflatten, jit."""
 
@@ -236,7 +256,9 @@ class TestKirchhoffJAXPytree:
         V = jnp.array([0.0, 1.0, 2.0])
         G = jnp.array([[3.0, -1.0, -2.0], [-1.0, 3.0, -2.0], [-2.0, -2.0, 4.0]])
         I = jnp.array([1.0, 0.0, 0.0])
-        obj = KirchhoffJAX(node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0)
+        obj = KirchhoffJAX(
+            node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0
+        )
         leaves, treedef = jax.tree_util.tree_flatten(obj)
         assert len(leaves) == 3
         reconstructed = jax.tree_util.tree_unflatten(treedef, leaves)
@@ -246,7 +268,9 @@ class TestKirchhoffJAXPytree:
         V = jnp.array([0.0, 1.0, 2.0])
         G = jnp.array([[3.0, -1.0, -2.0], [-1.0, 3.0, -2.0], [-2.0, -2.0, 4.0]])
         I = jnp.array([1.0, 0.0, 0.0])
-        obj = KirchhoffJAX(node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0)
+        obj = KirchhoffJAX(
+            node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0
+        )
         jit_fn = jax.jit(lambda o: o.kcl_max_residual)
         result = jit_fn(obj)
         assert float(result) >= 0
@@ -255,12 +279,17 @@ class TestKirchhoffJAXPytree:
         V = jnp.array([0.0, 1.0, 2.0])
         G = jnp.array([[1.0, 0.0], [0.0, 1.0]])
         I = jnp.array([0.0, 0.0])
-        obj = KirchhoffJAX(node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0)
-        doubled = jax.tree_util.tree_map(lambda x: x * 2 if hasattr(x, 'dtype') else x, obj)
+        obj = KirchhoffJAX(
+            node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0
+        )
+        doubled = jax.tree_util.tree_map(
+            lambda x: x * 2 if hasattr(x, "dtype") else x, obj
+        )
         assert jnp.allclose(doubled.node_potentials, V * 2)
 
 
 # -- TestKirchhoffJAXVerification ---------------------------------------------------
+
 
 class TestKirchhoffJAXVerification:
     """KCL residuals, power balance, satisfied checks."""
@@ -273,8 +302,12 @@ class TestKirchhoffJAXVerification:
             reference_node=0,
         )
         V = solver.node_potentials
-        k = KirchhoffJAX(node_potentials=V, conductance_matrix=solver.conductance_matrix,
-                         current_vector=solver.current_vector, reference_node=0)
+        k = KirchhoffJAX(
+            node_potentials=V,
+            conductance_matrix=solver.conductance_matrix,
+            current_vector=solver.current_vector,
+            reference_node=0,
+        )
         assert k.kcl_satisfied
 
     def test_kcl_max_residual_small(self):
@@ -282,16 +315,24 @@ class TestKirchhoffJAXVerification:
             n_nodes=2, edges=[(0, 1, 1.0)], current_sources=[(1, 1.0)], reference_node=0
         )
         V = solver.node_potentials
-        k = KirchhoffJAX(node_potentials=V, conductance_matrix=solver.conductance_matrix,
-                         current_vector=solver.current_vector, reference_node=0)
+        k = KirchhoffJAX(
+            node_potentials=V,
+            conductance_matrix=solver.conductance_matrix,
+            current_vector=solver.current_vector,
+            reference_node=0,
+        )
         assert float(k.kcl_max_residual) < 1e-8
 
     def test_kcl_residuals_shape(self):
         G = jnp.array([[2.0, -1.0], [-1.0, 2.0]])
         I = jnp.array([1.0, 0.0])
-        solver = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
+        solver = NetworkSolverJAX(
+            conductance_matrix=G, current_vector=I, reference_node=0
+        )
         V = solver.node_potentials
-        k = KirchhoffJAX(node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0)
+        k = KirchhoffJAX(
+            node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0
+        )
         # N-1 non-reference nodes
         assert k.kcl_residuals.shape == (1,)
 
@@ -300,8 +341,12 @@ class TestKirchhoffJAXVerification:
             n_nodes=2, edges=[(0, 1, 0.5)], current_sources=[(1, 1.0)], reference_node=0
         )
         V = solver.node_potentials
-        k = KirchhoffJAX(node_potentials=V, conductance_matrix=solver.conductance_matrix,
-                         current_vector=solver.current_vector, reference_node=0)
+        k = KirchhoffJAX(
+            node_potentials=V,
+            conductance_matrix=solver.conductance_matrix,
+            current_vector=solver.current_vector,
+            reference_node=0,
+        )
         pb = k.power_balance
         assert float(jnp.abs(pb)) < 1e-6
 
@@ -309,13 +354,18 @@ class TestKirchhoffJAXVerification:
         """For a valid solution, non-reference KCL residuals should be ~0."""
         G = jnp.array([[3.0, -1.0, -2.0], [-1.0, 3.0, -2.0], [-2.0, -2.0, 4.0]])
         I = jnp.array([1.0, 0.5, -1.5])
-        solver = NetworkSolverJAX(conductance_matrix=G, current_vector=I, reference_node=0)
+        solver = NetworkSolverJAX(
+            conductance_matrix=G, current_vector=I, reference_node=0
+        )
         V = solver.node_potentials
-        k = KirchhoffJAX(node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0)
+        k = KirchhoffJAX(
+            node_potentials=V, conductance_matrix=G, current_vector=I, reference_node=0
+        )
         assert float(jnp.max(jnp.abs(k.kcl_residuals))) < 1e-8
 
 
 # -- TestWheatstoneBridgeJAXPytree --------------------------------------------------
+
 
 class TestWheatstoneBridgeJAXPytree:
     """Flatten/unflatten, jit, tree_map."""
@@ -341,6 +391,7 @@ class TestWheatstoneBridgeJAXPytree:
 
 
 # -- TestWheatstoneBridgeJAXBalance -------------------------------------------------
+
 
 class TestWheatstoneBridgeJAXBalance:
     """Balanced, unbalanced, balance_point."""
@@ -375,6 +426,7 @@ class TestWheatstoneBridgeJAXBalance:
 
 # -- TestWheatstoneBridgeJAXThevenin ------------------------------------------------
 
+
 class TestWheatstoneBridgeJAXThevenin:
     """Thevenin voltage, resistance, galvanometer current."""
 
@@ -404,6 +456,7 @@ class TestWheatstoneBridgeJAXThevenin:
 
 # -- TestWheatstoneBridgeJAXSensitivity ---------------------------------------------
 
+
 class TestWheatstoneBridgeJAXSensitivity:
     """Galvanometer current for small imbalance."""
 
@@ -427,16 +480,19 @@ class TestWheatstoneBridgeJAXSensitivity:
 
 # -- TestReciprocityVerifierJAX -----------------------------------------------------
 
+
 class TestReciprocityVerifierJAX:
     """Transfer resistance symmetry, verify method."""
 
     def test_transfer_resistance_symmetric(self):
-        G = jnp.array([
-            [3.0, -1.0, -1.0, -1.0],
-            [-1.0, 3.0, -1.0, -1.0],
-            [-1.0, -1.0, 3.0, -1.0],
-            [-1.0, -1.0, -1.0, 3.0],
-        ])
+        G = jnp.array(
+            [
+                [3.0, -1.0, -1.0, -1.0],
+                [-1.0, 3.0, -1.0, -1.0],
+                [-1.0, -1.0, 3.0, -1.0],
+                [-1.0, -1.0, -1.0, 3.0],
+            ]
+        )
         verifier = ReciprocityVerifierJAX(conductance_matrix=G, reference_node=0)
         R12 = verifier.transfer_resistance(1, 2)
         R21 = verifier.transfer_resistance(2, 1)
@@ -452,12 +508,14 @@ class TestReciprocityVerifierJAX:
 
     def test_verify_t_network(self):
         """T-network: 0-1: 1S, 1-2: 2S, 1-3: 3S."""
-        G = jnp.array([
-            [1.0, -1.0, 0.0, 0.0],
-            [-1.0, 6.0, -2.0, -3.0],
-            [0.0, -2.0, 2.0, 0.0],
-            [0.0, -3.0, 0.0, 3.0],
-        ])
+        G = jnp.array(
+            [
+                [1.0, -1.0, 0.0, 0.0],
+                [-1.0, 6.0, -2.0, -3.0],
+                [0.0, -2.0, 2.0, 0.0],
+                [0.0, -3.0, 0.0, 3.0],
+            ]
+        )
         verifier = ReciprocityVerifierJAX(conductance_matrix=G, reference_node=0)
         result = verifier.verify(1, 2, 1, 3)
         assert bool(result["is_reciprocal"])
@@ -477,6 +535,7 @@ class TestReciprocityVerifierJAX:
 
 
 # -- TestStandaloneNetworkFunctions -------------------------------------------------
+
 
 class TestStandaloneNetworkFunctions:
     """All 8 standalone functions."""
@@ -503,7 +562,9 @@ class TestStandaloneNetworkFunctions:
             n_nodes=2, edges=[(0, 1, 1.0)], current_sources=[(1, 1.0)], reference_node=0
         )
         V = solver.node_potentials
-        result = solve_network_jax(solver.conductance_matrix, solver.current_vector, reference_node=0)
+        result = solve_network_jax(
+            solver.conductance_matrix, solver.current_vector, reference_node=0
+        )
         assert "node_potentials" in result
         assert "branch_currents" in result
         assert "total_power" in result
@@ -522,11 +583,14 @@ class TestStandaloneNetworkFunctions:
 
     def test_reciprocity_theorem_jax(self):
         G = jnp.array([[2.0, -1.0], [-1.0, 2.0]])
-        result = reciprocity_theorem_jax(G, port1=(1, 0), port2=(0, 1), reference_node=0)
+        result = reciprocity_theorem_jax(
+            G, port1=(1, 0), port2=(0, 1), reference_node=0
+        )
         assert bool(result["is_reciprocal"])
 
 
 # -- TestJITNetworkSolver -----------------------------------------------------------
+
 
 class TestJITNetworkSolver:
     """JIT compilation for network solver functions."""
@@ -579,6 +643,7 @@ class TestJITNetworkSolver:
 
 # -- TestAutoDiffNetwork ------------------------------------------------------------
 
+
 class TestAutoDiffNetwork:
     """Gradients through network solver functions."""
 
@@ -603,7 +668,9 @@ class TestAutoDiffNetwork:
 
     def test_grad_through_galvanometer_current(self):
         def ig_of_R4(R4):
-            return WheatstoneBridgeJAX(100.0, 100.0, 100.0, R4).galvanometer_current(10.0, 10.0)
+            return WheatstoneBridgeJAX(100.0, 100.0, 100.0, R4).galvanometer_current(
+                10.0, 10.0
+            )
 
         grad_fn = jax.grad(ig_of_R4)
         g = grad_fn(101.0)
@@ -634,6 +701,7 @@ class TestAutoDiffNetwork:
 
 
 # -- TestVmapNetwork ----------------------------------------------------------------
+
 
 class TestVmapNetwork:
     """Vmap over network inputs."""
@@ -699,6 +767,7 @@ class TestVmapNetwork:
 
 # -- TestNumPyNetworkComparison -----------------------------------------------------
 
+
 class TestNumPyNetworkComparison:
     """JAX vs NumPy comparison."""
 
@@ -733,6 +802,7 @@ class TestNumPyNetworkComparison:
 
 # -- TestVerifyNetworkSolutionJAX ---------------------------------------------------
 
+
 class TestVerifyNetworkSolutionJAX:
     """verify_network_solution_jax function."""
 
@@ -750,14 +820,19 @@ class TestVerifyNetworkSolutionJAX:
 
     def test_power_conservation(self):
         solver = NetworkSolverJAX.from_edges(
-            n_nodes=2, edges=[(0, 1, 1.0)], current_sources=[(1, 1.0), (0, -1.0)], reference_node=0
+            n_nodes=2,
+            edges=[(0, 1, 1.0)],
+            current_sources=[(1, 1.0), (0, -1.0)],
+            reference_node=0,
         )
         V = solver.node_potentials
         result = verify_network_solution_jax(
             solver.conductance_matrix, V, solver.current_vector, reference_node=0
         )
         # Source power should equal dissipated power
-        assert float(result["power_source"]) == pytest.approx(float(result["power_dissipated"]), rel=1e-6)
+        assert float(result["power_source"]) == pytest.approx(
+            float(result["power_dissipated"]), rel=1e-6
+        )
 
     def test_all_keys_present(self):
         solver = NetworkSolverJAX.from_edges(
@@ -767,11 +842,17 @@ class TestVerifyNetworkSolutionJAX:
         result = verify_network_solution_jax(
             solver.conductance_matrix, V, solver.current_vector, reference_node=0
         )
-        expected_keys = {"max_residual", "kcl_satisfied", "power_source", "power_dissipated"}
+        expected_keys = {
+            "max_residual",
+            "kcl_satisfied",
+            "power_source",
+            "power_dissipated",
+        }
         assert set(result.keys()) == expected_keys
 
 
 # -- TestAnalyzeNetworkJAX ----------------------------------------------------------
+
 
 class TestAnalyzeNetworkJAX:
     """analyze_network_jax function."""

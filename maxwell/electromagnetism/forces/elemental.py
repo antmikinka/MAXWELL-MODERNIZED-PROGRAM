@@ -29,10 +29,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -92,8 +93,11 @@ class CurrentElement:
 
 
 @maxwell_cite(
-    510, 511, 512,
-    part=4, chapter="Elemental Forces",
+    510,
+    511,
+    512,
+    part=4,
+    chapter="Elemental Forces",
     theory_class="maxwell_original",
     description="Calculate Ampere's force between current elements",
 )
@@ -141,15 +145,17 @@ def calc_ampere_force(
     dl2_dot_r = np.dot(dl2, r_hat)
 
     # Ampere's formula
-    factor = (element1.current * element2.current / (r_mag ** 2))
-    bracket = 2.0 * (dl1_dot_r * dl2_dot_r / (r_mag ** 2)) - dl1_dot_dl2
+    factor = element1.current * element2.current / (r_mag**2)
+    bracket = 2.0 * (dl1_dot_r * dl2_dot_r / (r_mag**2)) - dl1_dot_dl2
 
     return factor * bracket * r_hat
 
 
 @maxwell_cite(
-    513, 514,
-    part=4, chapter="Elemental Forces",
+    513,
+    514,
+    part=4,
+    chapter="Elemental Forces",
     theory_class="maxwell_original",
     description="Calculate Grassmann form of force between elements",
 )
@@ -193,12 +199,13 @@ def calc_grassmann_force(
     cross1 = np.cross(dl1, r_hat)
     cross2 = np.cross(dl2, cross1)
 
-    return (element1.current * element2.current / (r_mag ** 2)) * cross2
+    return (element1.current * element2.current / (r_mag**2)) * cross2
 
 
 @maxwell_cite(
     515,
-    part=4, chapter="Elemental Forces",
+    part=4,
+    chapter="Elemental Forces",
     theory_class="maxwell_original",
     description="Calculate mutual potential energy of elements",
 )
@@ -238,8 +245,10 @@ def calc_element_mutual_energy(
 
 
 @maxwell_cite(
-    510, 511,
-    part=4, chapter="Elemental Forces",
+    510,
+    511,
+    part=4,
+    chapter="Elemental Forces",
     theory_class="maxwell_original",
     description="Verify equivalence of Ampere and Grassmann forms for closed loop",
 )
@@ -282,13 +291,19 @@ def verify_force_equivalence(
         # Loop 1
         pos1 = np.array([loop_radius * np.cos(theta), loop_radius * np.sin(theta), 0])
         dir1 = np.array([-np.sin(theta), np.cos(theta), 0])
-        elem1 = CurrentElement(current=current1, position=pos1, direction=dir1, length=loop_radius * dtheta)
+        elem1 = CurrentElement(
+            current=current1, position=pos1, direction=dir1, length=loop_radius * dtheta
+        )
         loop1_elements.append(elem1)
 
         # Loop 2
-        pos2 = np.array([loop_radius * np.cos(theta), loop_radius * np.sin(theta), separation])
+        pos2 = np.array(
+            [loop_radius * np.cos(theta), loop_radius * np.sin(theta), separation]
+        )
         dir2 = np.array([-np.sin(theta), np.cos(theta), 0])
-        elem2 = CurrentElement(current=current2, position=pos2, direction=dir2, length=loop_radius * dtheta)
+        elem2 = CurrentElement(
+            current=current2, position=pos2, direction=dir2, length=loop_radius * dtheta
+        )
         loop2_elements.append(elem2)
 
     # Sum forces using both methods
@@ -316,11 +331,15 @@ def verify_force_equivalence(
             dl2 = e2.length * e2.direction
             dl1_dot_dl2 = np.dot(dl1, dl2)
             # Closed-circuit corrected Ampere: -(dl1·dl2)*r_hat / r²
-            total_ampere_corrected += -(dl1_dot_dl2) * r_hat * e1.current * e2.current / (r_mag ** 2)
+            total_ampere_corrected += (
+                -(dl1_dot_dl2) * r_hat * e1.current * e2.current / (r_mag**2)
+            )
 
     # Compare using the corrected Ampere
     diff = np.linalg.norm(total_ampere_corrected - total_grassmann)
-    avg_mag = (np.linalg.norm(total_ampere_corrected) + np.linalg.norm(total_grassmann)) / 2
+    avg_mag = (
+        np.linalg.norm(total_ampere_corrected) + np.linalg.norm(total_grassmann)
+    ) / 2
     rel_error = diff / avg_mag if avg_mag > 1e-15 else 0
 
     return {
@@ -333,8 +352,10 @@ def verify_force_equivalence(
 
 
 @maxwell_cite(
-    510, 515,
-    part=4, chapter="Elemental Forces",
+    510,
+    515,
+    part=4,
+    chapter="Elemental Forces",
     theory_class="maxwell_original",
     description="Calculate force between parallel current elements",
 )
@@ -377,10 +398,10 @@ def calc_parallel_element_force(
 
     # For parallel elements
     cos_theta = np.cos(element_angle)
-    factor = current1 * current2 * length1 * length2 / (separation ** 2)
+    factor = current1 * current2 * length1 * length2 / (separation**2)
 
     # [2*cos²(theta) - 1] = cos(2*theta)
-    bracket = 2.0 * cos_theta ** 2 - 1.0
+    bracket = 2.0 * cos_theta**2 - 1.0
 
     # Force is along separation direction
     force_mag = factor * bracket
@@ -389,8 +410,14 @@ def calc_parallel_element_force(
 
 
 @maxwell_cite(
-    510, 511, 512, 513, 514, 515,
-    part=4, chapter="Elemental Forces",
+    510,
+    511,
+    512,
+    513,
+    514,
+    515,
+    part=4,
+    chapter="Elemental Forces",
     theory_class="maxwell_original",
     description="Complete elemental force analysis",
 )
@@ -430,13 +457,13 @@ def analyze_elemental_forces(
         current=current1,
         position=np.zeros(3),
         direction=element1_dir,
-        length=element_length
+        length=element_length,
     )
     elem2 = CurrentElement(
         current=current2,
         position=separation_vector,
         direction=element2_dir,
-        length=element_length
+        length=element_length,
     )
 
     F_ampere = calc_ampere_force(elem1, elem2)

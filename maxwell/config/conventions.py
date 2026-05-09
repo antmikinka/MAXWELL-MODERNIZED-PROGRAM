@@ -16,12 +16,13 @@ References:
 
 from __future__ import annotations
 
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 class PolarityConvention(Enum):
@@ -41,7 +42,7 @@ class PolarityConvention(Enum):
     """
 
     AUSTRAL = +1  # North pole, positive
-    BOREAL = -1   # South pole, negative
+    BOREAL = -1  # South pole, negative
 
     @property
     def sign(self) -> int:
@@ -56,7 +57,8 @@ class PolarityConvention(Enum):
     @classmethod
     @maxwell_cite(
         393,
-        part=3, chapter="Magnetic Conventions",
+        part=3,
+        chapter="Magnetic Conventions",
         theory_class="maxwell_original",
         description="Polarity convention: Austral positive, Boreal negative",
     )
@@ -74,9 +76,9 @@ class PolarityConvention(Enum):
             Part III, Art. 393: Polarity convention.
         """
         pole_type = pole_type.upper()
-        if pole_type in ('N', 'NORTH'):
+        if pole_type in ("N", "NORTH"):
             return cls.AUSTRAL
-        elif pole_type in ('S', 'SOUTH'):
+        elif pole_type in ("S", "SOUTH"):
             return cls.BOREAL
         else:
             raise ValueError(f"Unknown pole type: {pole_type}")
@@ -111,7 +113,8 @@ class ForceDirectionConvention(Enum):
     @classmethod
     @maxwell_cite(
         394,
-        part=3, chapter="Magnetic Conventions",
+        part=3,
+        chapter="Magnetic Conventions",
         theory_class="maxwell_original",
         description="Force direction convention: positive is S to N",
     )
@@ -150,8 +153,10 @@ class MagneticDirection:
 
     @classmethod
     @maxwell_cite(
-        393, 394,
-        part=3, chapter="Magnetic Conventions",
+        393,
+        394,
+        part=3,
+        chapter="Magnetic Conventions",
         theory_class="maxwell_original",
         description="Create magnetic direction from conventions",
     )
@@ -197,7 +202,8 @@ class MagneticDirection:
 
 @maxwell_cite(
     393,
-    part=3, chapter="Magnetic Conventions",
+    part=3,
+    chapter="Magnetic Conventions",
     theory_class="maxwell_original",
     description="Verify austral magnetism is positive",
 )
@@ -241,7 +247,8 @@ def verify_austral_positive(pole_strength: float, pole_type: str) -> dict[str, a
 
 @maxwell_cite(
     394,
-    part=3, chapter="Magnetic Conventions",
+    part=3,
+    chapter="Magnetic Conventions",
     theory_class="maxwell_original",
     description="Apply force direction convention to field calculation",
 )
@@ -283,8 +290,10 @@ def apply_force_direction(
 
 
 @maxwell_cite(
-    393, 394,
-    part=3, chapter="Magnetic Conventions",
+    393,
+    394,
+    part=3,
+    chapter="Magnetic Conventions",
     theory_class="maxwell_original",
     description="Complete convention summary for magnetic calculations",
 )
@@ -317,7 +326,8 @@ def magnetic_convention_summary() -> dict[str, str]:
 
 @maxwell_cite(
     393,
-    part=3, chapter="Magnetic Conventions",
+    part=3,
+    chapter="Magnetic Conventions",
     theory_class="maxwell_original",
     description="Convert between modern and Maxwell pole naming",
 )
@@ -345,7 +355,7 @@ def convert_pole_naming(modern_name: str) -> dict[str, str]:
     """
     modern_name = modern_name.upper()
 
-    if modern_name in ('N', 'NORTH', 'NORTH-SEEKING'):
+    if modern_name in ("N", "NORTH", "NORTH-SEEKING"):
         return {
             "modern": "North pole",
             "maxwell": "Austral magnetism",
@@ -353,7 +363,7 @@ def convert_pole_naming(modern_name: str) -> dict[str, str]:
             "sign": "+",
             "description": "North-seeking pole, positive magnetic charge",
         }
-    elif modern_name in ('S', 'SOUTH', 'SOUTH-SEEKING'):
+    elif modern_name in ("S", "SOUTH", "SOUTH-SEEKING"):
         return {
             "modern": "South pole",
             "maxwell": "Boreal magnetism",
@@ -367,7 +377,8 @@ def convert_pole_naming(modern_name: str) -> dict[str, str]:
 
 @maxwell_cite(
     394,
-    part=3, chapter="Magnetic Conventions",
+    part=3,
+    chapter="Magnetic Conventions",
     theory_class="maxwell_original",
     description="Right-hand rule for magnetic field direction",
 )

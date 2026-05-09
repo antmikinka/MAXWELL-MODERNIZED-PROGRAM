@@ -69,14 +69,16 @@ class DisplacementCurrentJAX:
     def __post_init__(self):
         zero3 = jnp.zeros(3, dtype=jnp.float64)
         object.__setattr__(
-            self, 'E_field',
+            self,
+            "E_field",
             jnp.asarray(
                 self.E_field if self.E_field is not None else zero3,
                 dtype=jnp.float64,
             ),
         )
         object.__setattr__(
-            self, 'dE_dt',
+            self,
+            "dE_dt",
             jnp.asarray(
                 self.dE_dt if self.dE_dt is not None else zero3,
                 dtype=jnp.float64,
@@ -130,14 +132,16 @@ class AmpereMaxwellLawJAX:
     def __post_init__(self):
         zero3 = jnp.zeros(3, dtype=jnp.float64)
         object.__setattr__(
-            self, 'J_conduction',
+            self,
+            "J_conduction",
             jnp.asarray(
                 self.J_conduction if self.J_conduction is not None else zero3,
                 dtype=jnp.float64,
             ),
         )
         object.__setattr__(
-            self, 'dE_dt',
+            self,
+            "dE_dt",
             jnp.asarray(
                 self.dE_dt if self.dE_dt is not None else zero3,
                 dtype=jnp.float64,
@@ -171,20 +175,20 @@ class AmpereMaxwellLawJAX:
         """Compute curl(H) with optional overrides."""
         J_c = J_conduction if J_conduction is not None else self.J_conduction
         dE = dE_dt if dE_dt is not None else self.dE_dt
-        J_d = (
-            jnp.asarray(self.permittivity, dtype=jnp.float64)
-            * dE
-            / (4.0 * jnp.pi)
-        )
+        J_d = jnp.asarray(self.permittivity, dtype=jnp.float64) * dE / (4.0 * jnp.pi)
         return 4.0 * jnp.pi * (J_c + J_d)
 
 
 # ── Standalone JAX functions ────────────────────────────────────
 
 
-@maxwell_cite(606, part=4, chapter="Ampere-Maxwell Law",
-              theory_class="maxwell_original",
-              description="Displacement current density in CGS-Gaussian units")
+@maxwell_cite(
+    606,
+    part=4,
+    chapter="Ampere-Maxwell Law",
+    theory_class="maxwell_original",
+    description="Displacement current density in CGS-Gaussian units",
+)
 def displacement_current_jax(
     dE_dt: jax.Array,
     permittivity: jax.Array = 1.0,
@@ -205,9 +209,14 @@ def displacement_current_jax(
     return (permittivity / (4.0 * jnp.pi)) * dE_dt
 
 
-@maxwell_cite(606, 607, part=4, chapter="Ampere-Maxwell Law",
-              theory_class="maxwell_original",
-              description="Total current density including displacement")
+@maxwell_cite(
+    606,
+    607,
+    part=4,
+    chapter="Ampere-Maxwell Law",
+    theory_class="maxwell_original",
+    description="Total current density including displacement",
+)
 def total_current_jax(
     J_conduction: jax.Array,
     dE_dt: jax.Array,
@@ -232,9 +241,13 @@ def total_current_jax(
     return J_conduction + J_disp
 
 
-@maxwell_cite(607, part=4, chapter="Ampere-Maxwell Law",
-              theory_class="maxwell_original",
-              description="Curl of H field from total current")
+@maxwell_cite(
+    607,
+    part=4,
+    chapter="Ampere-Maxwell Law",
+    theory_class="maxwell_original",
+    description="Curl of H field from total current",
+)
 def curl_H_jax(
     J_conduction: jax.Array,
     dE_dt: jax.Array,
@@ -256,9 +269,13 @@ def curl_H_jax(
     return 4.0 * jnp.pi * J_total
 
 
-@maxwell_cite(606, part=4, chapter="Ampere-Maxwell Law",
-              theory_class="maxwell_original",
-              description="Magnetic field from current element via Biot-Savart")
+@maxwell_cite(
+    606,
+    part=4,
+    chapter="Ampere-Maxwell Law",
+    theory_class="maxwell_original",
+    description="Magnetic field from current element via Biot-Savart",
+)
 def magnetic_field_from_current_jax(
     current_element: jax.Array,
     position: jax.Array,
@@ -281,14 +298,19 @@ def magnetic_field_from_current_jax(
     r_mag_safe = jnp.where(r_mag > 1e-30, r_mag, 1.0)
     r_hat = jnp.where(r_mag > 1e-30, position / r_mag_safe, jnp.zeros(3))
     cross = jnp.cross(current_element, r_hat)
-    dH_mag = jnp.where(r_mag > 1e-30, 1.0 / (r_mag_safe ** 2), 0.0)
+    dH_mag = jnp.where(r_mag > 1e-30, 1.0 / (r_mag_safe**2), 0.0)
     dH = (1.0 / (4.0 * jnp.pi)) * cross * dH_mag
     return dH
 
 
-@maxwell_cite(606, 607, part=4, chapter="Ampere-Maxwell Law",
-              theory_class="maxwell_original",
-              description="Capacitor paradox verification in CGS units")
+@maxwell_cite(
+    606,
+    607,
+    part=4,
+    chapter="Ampere-Maxwell Law",
+    theory_class="maxwell_original",
+    description="Capacitor paradox verification in CGS units",
+)
 def capacitor_paradox_jax(
     charging_current: jax.Array,
     plate_area: jax.Array,

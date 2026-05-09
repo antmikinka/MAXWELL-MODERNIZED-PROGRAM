@@ -6,37 +6,34 @@ and sensitivity optimization for electromagnetic measurement.
 
 from __future__ import annotations
 
-from maxwell.instruments.galvanometers import (
-    StandardGalvanometer,
-    TangentGalvanometer,
-    SineGalvanometer,
-    SingleCoilGalvanometer,
-    FourCoilGalvanometer,
-    ThreeCoilGalvanometer,
-    UniformWireGalvanometer,
-    calc_galvanometer_response,
-    calc_field_at_center,
-    design_standard_coil,
-    apply_gaugain_suspension,
-    design_sensitive_galvanometer,
-    calc_uniform_wire_sensitivity,
-)
-
-from maxwell.instruments.helmholtz import HelmholtzCoil
-
-from maxwell.instruments.suspended_coil import (
-    SuspendedCoil,
-    ThomsonSensitiveCoil,
-    ThomsonCombinedInstrument,
-    determine_magnetic_force,
-    calc_uniform_normal_force,
-)
-
 from maxwell.instruments.dynamometers import (
-    WeberDynamometer,
     JouleCurrentWeigher,
     TorsionDynamometer,
+    WeberDynamometer,
     calc_solenoid_suction,
+)
+from maxwell.instruments.galvanometers import (
+    FourCoilGalvanometer,
+    SineGalvanometer,
+    SingleCoilGalvanometer,
+    StandardGalvanometer,
+    TangentGalvanometer,
+    ThreeCoilGalvanometer,
+    UniformWireGalvanometer,
+    apply_gaugain_suspension,
+    calc_field_at_center,
+    calc_galvanometer_response,
+    calc_uniform_wire_sensitivity,
+    design_sensitive_galvanometer,
+    design_standard_coil,
+)
+from maxwell.instruments.helmholtz import HelmholtzCoil
+from maxwell.instruments.suspended_coil import (
+    SuspendedCoil,
+    ThomsonCombinedInstrument,
+    ThomsonSensitiveCoil,
+    calc_uniform_normal_force,
+    determine_magnetic_force,
 )
 
 __all__ = [

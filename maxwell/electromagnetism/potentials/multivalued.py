@@ -26,10 +26,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -61,8 +62,16 @@ class CyclicPotential:
 
     def __post_init__(self):
         """Validate parameters and set defaults."""
-        self.wire_position = np.asarray(self.wire_position, dtype=np.float64) if self.wire_position is not None else np.zeros(3)
-        self.wire_axis = np.asarray(self.wire_axis, dtype=np.float64) if self.wire_axis is not None else np.array([0.0, 0.0, 1.0])
+        self.wire_position = (
+            np.asarray(self.wire_position, dtype=np.float64)
+            if self.wire_position is not None
+            else np.zeros(3)
+        )
+        self.wire_axis = (
+            np.asarray(self.wire_axis, dtype=np.float64)
+            if self.wire_axis is not None
+            else np.array([0.0, 0.0, 1.0])
+        )
 
         # Normalize wire axis
         axis_norm = np.linalg.norm(self.wire_axis)
@@ -71,7 +80,8 @@ class CyclicPotential:
 
     @maxwell_cite(
         480,
-        part=4, chapter="Magnetic Potential",
+        part=4,
+        chapter="Magnetic Potential",
         theory_class="maxwell_original",
         description="Calculate cyclic potential at position",
     )
@@ -129,7 +139,8 @@ class CyclicPotential:
 
     @maxwell_cite(
         480,
-        part=4, chapter="Magnetic Potential",
+        part=4,
+        chapter="Magnetic Potential",
         theory_class="maxwell_original",
         description="Calculate potential change around closed loop",
     )
@@ -168,7 +179,8 @@ class CyclicPotential:
 
 @maxwell_cite(
     480,
-    part=4, chapter="Magnetic Potential",
+    part=4,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Calculate cyclic potential around straight wire: Omega = -2I*phi",
 )
@@ -215,7 +227,8 @@ def calc_cyclic_potential(
 
 @maxwell_cite(
     480,
-    part=4, chapter="Magnetic Potential",
+    part=4,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Calculate potential difference between two points",
 )
@@ -251,7 +264,8 @@ def calc_potential_difference(
 
 @maxwell_cite(
     480,
-    part=4, chapter="Magnetic Potential",
+    part=4,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Verify cyclic nature of magnetic potential",
 )
@@ -300,11 +314,13 @@ def verify_cyclic_potential(
     H_from_potential = -dOmega_dphi  # H = -grad(Omega), for r=1
     H_expected = 2.0 * current
 
-    field_error = abs(H_from_potential - H_expected) / H_expected if H_expected != 0 else 0
+    field_error = (
+        abs(H_from_potential - H_expected) / H_expected if H_expected != 0 else 0
+    )
 
     verified = (
-        abs(actual_change - expected_change) < tolerance * abs(expected_change) and
-        field_error < tolerance
+        abs(actual_change - expected_change) < tolerance * abs(expected_change)
+        and field_error < tolerance
     )
 
     return {
@@ -320,7 +336,8 @@ def verify_cyclic_potential(
 
 @maxwell_cite(
     480,
-    part=4, chapter="Magnetic Potential",
+    part=4,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Calculate work done moving magnetic pole around wire",
 )
@@ -367,7 +384,8 @@ def calc_work_on_magnetic_pole(
 
 @maxwell_cite(
     480,
-    part=4, chapter="Magnetic Potential",
+    part=4,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Determine branch number from position history",
 )
@@ -409,7 +427,8 @@ def determine_branch(
 
 @maxwell_cite(
     480,
-    part=4, chapter="Magnetic Potential",
+    part=4,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Complete cyclic potential analysis",
 )
@@ -444,8 +463,16 @@ def analyze_cyclic_potential(
     Reference:
         Part IV, Art. 480: Complete cyclic potential analysis.
     """
-    wire_position = np.asarray(wire_position, dtype=np.float64) if wire_position is not None else np.zeros(3)
-    wire_axis = np.asarray(wire_axis, dtype=np.float64) if wire_axis is not None else np.array([0.0, 0.0, 1.0])
+    wire_position = (
+        np.asarray(wire_position, dtype=np.float64)
+        if wire_position is not None
+        else np.zeros(3)
+    )
+    wire_axis = (
+        np.asarray(wire_axis, dtype=np.float64)
+        if wire_axis is not None
+        else np.array([0.0, 0.0, 1.0])
+    )
 
     result = {
         "current": current,
@@ -455,8 +482,12 @@ def analyze_cyclic_potential(
     }
 
     if positions is not None:
-        cp = CyclicPotential(current=current, wire_position=wire_position, wire_axis=wire_axis)
-        potentials = [cp.potential_at(np.asarray(p, dtype=np.float64)) for p in positions]
+        cp = CyclicPotential(
+            current=current, wire_position=wire_position, wire_axis=wire_axis
+        )
+        potentials = [
+            cp.potential_at(np.asarray(p, dtype=np.float64)) for p in positions
+        ]
         result["potentials"] = potentials
 
     return result

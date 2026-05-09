@@ -31,11 +31,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
 from typing import Optional
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -89,8 +90,17 @@ class ElectromagneticBoundary:
 
     @classmethod
     @maxwell_cite(
-        663, 664, 665, 666, 667, 668, 669, 670, 671,
-        part=4, chapter="Current-Sheets",
+        663,
+        664,
+        665,
+        666,
+        667,
+        668,
+        669,
+        670,
+        671,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create boundary with dielectric interface",
     )
@@ -136,8 +146,10 @@ class ElectromagneticBoundary:
 
     @classmethod
     @maxwell_cite(
-        670, 671,
-        part=4, chapter="Current-Sheets",
+        670,
+        671,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create boundary with conducting surface",
     )
@@ -182,8 +194,11 @@ class ElectromagneticBoundary:
 
 
 @maxwell_cite(
-    663, 664, 665,
-    part=4, chapter="Current-Sheets",
+    663,
+    664,
+    665,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate tangential E field continuity at boundary",
 )
@@ -271,8 +286,10 @@ def calc_tangential_E_discontinuity(
 
 
 @maxwell_cite(
-    666, 667,
-    part=4, chapter="Current-Sheets",
+    666,
+    667,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate normal B field continuity at boundary",
 )
@@ -350,8 +367,10 @@ def calc_normal_B_continuity(
 
 
 @maxwell_cite(
-    668, 669,
-    part=4, chapter="Current-Sheets",
+    668,
+    669,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate normal D field discontinuity at boundary",
 )
@@ -445,8 +464,10 @@ def calc_normal_D_discontinuity(
 
 
 @maxwell_cite(
-    670, 671,
-    part=4, chapter="Current-Sheets",
+    670,
+    671,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate tangential H field discontinuity at boundary",
 )
@@ -524,7 +545,9 @@ def calc_tangential_H_discontinuity(
         expected_jump = (4.0 * np.pi / CONST.C) * i_3d
 
         jump_tolerance = 1e-8 * max(np.linalg.norm(expected_jump), 1.0)
-        boundary_satisfied = np.linalg.norm(discontinuity - expected_jump) < jump_tolerance
+        boundary_satisfied = (
+            np.linalg.norm(discontinuity - expected_jump) < jump_tolerance
+        )
 
         # Inferred surface current
         # From n̂ × ΔH = (4π/c) · i, we get i = (c/4π) · (n̂ × ΔH)
@@ -543,13 +566,24 @@ def calc_tangential_H_discontinuity(
         "discontinuity_magnitude": np.linalg.norm(discontinuity),
         "expected_jump": expected_jump,
         "boundary_satisfied": boundary_satisfied,
-        "inferred_current": inferred_current[:2] if inferred_current is not None else None,
+        "inferred_current": (
+            inferred_current[:2] if inferred_current is not None else None
+        ),
     }
 
 
 @maxwell_cite(
-    663, 664, 665, 666, 667, 668, 669, 670, 671,
-    part=4, chapter="Current-Sheets",
+    663,
+    664,
+    665,
+    666,
+    667,
+    668,
+    669,
+    670,
+    671,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Verify all electromagnetic boundary conditions",
 )
@@ -613,34 +647,36 @@ def verify_boundary_conditions(
 
     # 1. Tangential E continuity
     E_result = calc_tangential_E_discontinuity(E1, E2, n)
-    results['tangential_E'] = E_result
-    all_satisfied = all_satisfied and E_result['continuous']
+    results["tangential_E"] = E_result
+    all_satisfied = all_satisfied and E_result["continuous"]
 
     # 2. Normal B continuity
     B_result = calc_normal_B_continuity(B1, B2, n)
-    results['normal_B'] = B_result
-    all_satisfied = all_satisfied and B_result['continuous']
+    results["normal_B"] = B_result
+    all_satisfied = all_satisfied and B_result["continuous"]
 
     # 3. Normal D discontinuity
     D_result = calc_normal_D_discontinuity(D1, D2, n, boundary.sigma_s)
-    results['normal_D'] = D_result
-    if D_result['gauss_satisfied'] is not None:
-        all_satisfied = all_satisfied and D_result['gauss_satisfied']
+    results["normal_D"] = D_result
+    if D_result["gauss_satisfied"] is not None:
+        all_satisfied = all_satisfied and D_result["gauss_satisfied"]
 
     # 4. Tangential H discontinuity
     H_result = calc_tangential_H_discontinuity(H1, H2, n, boundary.current_s)
-    results['tangential_H'] = H_result
-    all_satisfied = all_satisfied and H_result['boundary_satisfied']
+    results["tangential_H"] = H_result
+    all_satisfied = all_satisfied and H_result["boundary_satisfied"]
 
-    results['all_satisfied'] = all_satisfied
-    results['boundary'] = boundary
+    results["all_satisfied"] = all_satisfied
+    results["boundary"] = boundary
 
     return results
 
 
 @maxwell_cite(
-    672, 673,
-    part=4, chapter="Current-Sheets",
+    672,
+    673,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate boundary conditions for moving media",
 )
@@ -722,7 +758,8 @@ def calc_moving_boundary_conditions(
 
 @maxwell_cite(
     674,
-    part=4, chapter="Current-Sheets",
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate energy flux (Poynting vector) at boundary",
 )
@@ -819,8 +856,11 @@ class BoundaryConditionAnalyzer:
     boundary: ElectromagneticBoundary
 
     @maxwell_cite(
-        663, 664, 665,
-        part=4, chapter="Current-Sheets",
+        663,
+        664,
+        665,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Check tangential E continuity",
     )
@@ -829,8 +869,10 @@ class BoundaryConditionAnalyzer:
         return calc_tangential_E_discontinuity(E1, E2, self.boundary.normal)
 
     @maxwell_cite(
-        666, 667,
-        part=4, chapter="Current-Sheets",
+        666,
+        667,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Check normal B continuity",
     )
@@ -839,8 +881,10 @@ class BoundaryConditionAnalyzer:
         return calc_normal_B_continuity(B1, B2, self.boundary.normal)
 
     @maxwell_cite(
-        668, 669,
-        part=4, chapter="Current-Sheets",
+        668,
+        669,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Check normal D discontinuity",
     )
@@ -851,8 +895,10 @@ class BoundaryConditionAnalyzer:
         )
 
     @maxwell_cite(
-        670, 671,
-        part=4, chapter="Current-Sheets",
+        670,
+        671,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Check tangential H discontinuity",
     )
@@ -863,8 +909,17 @@ class BoundaryConditionAnalyzer:
         )
 
     @maxwell_cite(
-        663, 664, 665, 666, 667, 668, 669, 670, 671,
-        part=4, chapter="Current-Sheets",
+        663,
+        664,
+        665,
+        666,
+        667,
+        668,
+        669,
+        670,
+        671,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Verify all boundary conditions",
     )
@@ -876,13 +931,13 @@ class BoundaryConditionAnalyzer:
         B2: np.ndarray,
     ) -> dict:
         """Verify all electromagnetic boundary conditions."""
-        return verify_boundary_conditions(
-            self.boundary, E1, B1, E2, B2
-        )
+        return verify_boundary_conditions(self.boundary, E1, B1, E2, B2)
 
     @maxwell_cite(
-        672, 673,
-        part=4, chapter="Current-Sheets",
+        672,
+        673,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Analyze moving boundary",
     )
@@ -895,13 +950,12 @@ class BoundaryConditionAnalyzer:
         B2: np.ndarray,
     ) -> dict:
         """Analyze boundary conditions for moving interface."""
-        return calc_moving_boundary_conditions(
-            self.boundary, velocity, E1, B1, E2, B2
-        )
+        return calc_moving_boundary_conditions(self.boundary, velocity, E1, B1, E2, B2)
 
     @maxwell_cite(
         674,
-        part=4, chapter="Current-Sheets",
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate energy flux",
     )
