@@ -26,6 +26,7 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Callable
 
 import numpy as np
 
@@ -381,7 +382,7 @@ def compare_H_and_B_measurements(
     description="Magnetic flux through surface",
 )
 def magnetic_flux(
-    B_field_func: callable,
+    B_field_func: Callable,
     surface_points: np.ndarray,
     surface_normal: np.ndarray,
 ) -> float:
