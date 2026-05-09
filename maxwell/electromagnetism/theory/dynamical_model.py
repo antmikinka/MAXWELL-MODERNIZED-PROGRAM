@@ -29,10 +29,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -69,8 +70,10 @@ class DynamicalModel:
             raise ValueError(f"Permeability must be positive")
 
     @maxwell_cite(
-        568, 569,
-        part=4, chapter="Dynamical Theory",
+        568,
+        569,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate electromagnetic kinetic energy",
     )
@@ -97,8 +100,10 @@ class DynamicalModel:
         return (self.permeability / (8.0 * np.pi)) * H_squared * self.volume
 
     @maxwell_cite(
-        570, 571,
-        part=4, chapter="Dynamical Theory",
+        570,
+        571,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate electromagnetic potential energy",
     )
@@ -125,8 +130,10 @@ class DynamicalModel:
         return (self.permittivity / (8.0 * np.pi)) * E_squared * self.volume
 
     @maxwell_cite(
-        572, 573,
-        part=4, chapter="Dynamical Theory",
+        572,
+        573,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate total field energy",
     )
@@ -148,8 +155,10 @@ class DynamicalModel:
         return self.kinetic_energy(H_field) + self.potential_energy(E_field)
 
     @maxwell_cite(
-        574, 575,
-        part=4, chapter="Dynamical Theory",
+        574,
+        575,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate Lagrangian of field",
     )
@@ -171,12 +180,16 @@ class DynamicalModel:
         return self.kinetic_energy(H_field) - self.potential_energy(E_field)
 
     @maxwell_cite(
-        576, 577,
-        part=4, chapter="Dynamical Theory",
+        576,
+        577,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate energy density",
     )
-    def energy_density(self, E_field: np.ndarray, H_field: np.ndarray) -> dict[str, float]:
+    def energy_density(
+        self, E_field: np.ndarray, H_field: np.ndarray
+    ) -> dict[str, float]:
         """
         Calculate electromagnetic energy density.
 
@@ -209,8 +222,10 @@ class DynamicalModel:
         }
 
     @maxwell_cite(
-        568, 569,
-        part=4, chapter="Dynamical Theory",
+        568,
+        569,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate mechanical kinetic energy",
     )
@@ -227,11 +242,13 @@ class DynamicalModel:
         Returns:
             Kinetic energy (ergs).
         """
-        return 0.5 * mass * velocity ** 2
+        return 0.5 * mass * velocity**2
 
     @maxwell_cite(
-        568, 570,
-        part=4, chapter="Dynamical Theory",
+        568,
+        570,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate electrokinetic energy",
     )
@@ -248,16 +265,23 @@ class DynamicalModel:
         Returns:
             Electrokinetic energy (ergs).
         """
-        return 0.5 * inductance * current ** 2
+        return 0.5 * inductance * current**2
 
     @maxwell_cite(
-        573, 574,
-        part=4, chapter="Dynamical Theory",
+        573,
+        574,
+        part=4,
+        chapter="Dynamical Theory",
         theory_class="maxwell_original",
         description="Calculate generalized momentum",
     )
-    def generalized_momentum(self, mass: float = None, velocity: float = None,
-                             inductance: float = None, current: float = None) -> float:
+    def generalized_momentum(
+        self,
+        mass: float = None,
+        velocity: float = None,
+        inductance: float = None,
+        current: float = None,
+    ) -> float:
         """
         Calculate generalized momentum.
 
@@ -283,8 +307,11 @@ class DynamicalModel:
 
 
 @maxwell_cite(
-    568, 569, 570,
-    part=4, chapter="Dynamical Theory",
+    568,
+    569,
+    570,
+    part=4,
+    chapter="Dynamical Theory",
     theory_class="maxwell_original",
     description="Calculate electromagnetic energy density",
 )
@@ -324,13 +351,16 @@ def calc_energy_density(
     return {
         "electric": (permittivity / (8.0 * np.pi)) * E_squared,
         "magnetic": (permeability / (8.0 * np.pi)) * H_squared,
-        "total": (permittivity / (8.0 * np.pi)) * E_squared + (permeability / (8.0 * np.pi)) * H_squared,
+        "total": (permittivity / (8.0 * np.pi)) * E_squared
+        + (permeability / (8.0 * np.pi)) * H_squared,
     }
 
 
 @maxwell_cite(
-    572, 573,
-    part=4, chapter="Dynamical Theory",
+    572,
+    573,
+    part=4,
+    chapter="Dynamical Theory",
     theory_class="maxwell_original",
     description="Calculate Poynting vector (energy flux)",
 )
@@ -361,8 +391,10 @@ def calc_poynting_vector(
 
 
 @maxwell_cite(
-    574, 575,
-    part=4, chapter="Dynamical Theory",
+    574,
+    575,
+    part=4,
+    chapter="Dynamical Theory",
     theory_class="maxwell_original",
     description="Verify energy conservation (Poynting theorem)",
 )
@@ -399,11 +431,7 @@ def verify_poynting_theorem(
     volume = (x_max - x_min) * (y_max - y_min) * (z_max - z_min)
 
     # Sample field at center
-    center = np.array([
-        (x_min + x_max) / 2,
-        (y_min + y_max) / 2,
-        (z_min + z_max) / 2
-    ])
+    center = np.array([(x_min + x_max) / 2, (y_min + y_max) / 2, (z_min + z_max) / 2])
 
     E = np.asarray(E_field_func(center, time), dtype=np.float64)
     H = np.asarray(H_field_func(center, time), dtype=np.float64)
@@ -425,8 +453,10 @@ def verify_poynting_theorem(
 
 
 @maxwell_cite(
-    568, 577,
-    part=4, chapter="Dynamical Theory",
+    568,
+    577,
+    part=4,
+    chapter="Dynamical Theory",
     theory_class="maxwell_original",
     description="Calculate field momentum",
 )
@@ -458,14 +488,24 @@ def calc_field_momentum(
 
     # Momentum density = S / c²
     S = (CONST.C / (4.0 * np.pi)) * np.cross(E_field, H_field)
-    g = S / (CONST.C ** 2)
+    g = S / (CONST.C**2)
 
     return g * volume
 
 
 @maxwell_cite(
-    568, 569, 570, 571, 572, 573, 574, 575, 576, 577,
-    part=4, chapter="Dynamical Theory",
+    568,
+    569,
+    570,
+    571,
+    572,
+    573,
+    574,
+    575,
+    576,
+    577,
+    part=4,
+    chapter="Dynamical Theory",
     theory_class="maxwell_original",
     description="Complete dynamical model analysis",
 )
@@ -497,9 +537,7 @@ def analyze_dynamical_model(
         Dictionary with complete analysis results.
     """
     model = DynamicalModel(
-        volume=volume,
-        permittivity=permittivity,
-        permeability=permeability
+        volume=volume, permittivity=permittivity, permeability=permeability
     )
 
     E_field = np.asarray(E_field, dtype=np.float64)

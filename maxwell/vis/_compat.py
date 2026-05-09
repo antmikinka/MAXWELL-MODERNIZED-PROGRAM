@@ -19,14 +19,15 @@ from __future__ import annotations
 # Attempt to import matplotlib
 try:
     import matplotlib
+
     matplotlib.use("Agg")  # Non-interactive backend for headless/server use
-    import matplotlib.pyplot as plt
-    import matplotlib.colors as mcolors
     import matplotlib.cm as cm
+    import matplotlib.colors as mcolors
     import matplotlib.patches as mpatches
-    from matplotlib.figure import Figure
+    import matplotlib.pyplot as plt
     from matplotlib.axes import Axes
     from matplotlib.colorbar import Colorbar
+    from matplotlib.figure import Figure
 
     HAS_MATPLOTLIB = True
     _IMPORT_ERROR = None
@@ -57,6 +58,7 @@ def get_default_colormap(name: str = "viridis") -> object:
     if cm is None:
         return None
     import matplotlib
+
     return matplotlib.colormaps[name]
 
 

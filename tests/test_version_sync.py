@@ -17,9 +17,9 @@ import maxwell
 def test_maxwell_version_format():
     """__version__ should follow semver (MAJOR.MINOR.PATCH)."""
     version = maxwell.__version__
-    assert re.match(r"^\d+\.\d+\.\d+", version), (
-        f"Version '{version}' does not follow semver format"
-    )
+    assert re.match(
+        r"^\d+\.\d+\.\d+", version
+    ), f"Version '{version}' does not follow semver format"
 
 
 def test_version_matches_pyproject():

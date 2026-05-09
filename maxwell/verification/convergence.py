@@ -96,7 +96,11 @@ def measure_grid_convergence(
         errors.append({"n": n, "value": float(value), "relative_error": float(error)})
 
     # Compute convergence rate
-    if len(errors) >= 2 and errors[-1]["relative_error"] > 1e-15 and errors[-2]["relative_error"] > 1e-15:
+    if (
+        len(errors) >= 2
+        and errors[-1]["relative_error"] > 1e-15
+        and errors[-2]["relative_error"] > 1e-15
+    ):
         log_ratio = np.log(errors[-1]["relative_error"] / errors[-2]["relative_error"])
         n_ratio = np.log(grid_sequence[-1] / grid_sequence[-2])
         rate = float(log_ratio / n_ratio) if n_ratio != 0 else float("inf")
@@ -112,7 +116,9 @@ def measure_grid_convergence(
     }
 
 
-def verify_convergence_results(convergence_data: dict, max_error: float = 0.01) -> VerificationResult:
+def verify_convergence_results(
+    convergence_data: dict, max_error: float = 0.01
+) -> VerificationResult:
     """Wrap convergence test results into a VerificationResult.
 
     Args:
@@ -136,5 +142,5 @@ def verify_convergence_results(convergence_data: dict, max_error: float = 0.01) 
         tolerance=max_error,
         passed=passed,
         details=f"Rate: {convergence_data.get('convergence_rate', 'N/A'):.2f}, "
-                f"Final error: {final_error:.2e}",
+        f"Final error: {final_error:.2e}",
     )

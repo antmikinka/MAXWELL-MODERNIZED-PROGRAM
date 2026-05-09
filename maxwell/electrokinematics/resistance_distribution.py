@@ -38,23 +38,27 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, Optional, Union
-import numpy as np
 from functools import wraps
+from typing import Callable, Optional, Union
 
+import numpy as np
+
+from maxwell.config.constants import C_APPROX, CONST, C
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
-
 
 # =============================================================================
 # SPHERICAL GEOMETRY (Arts. 297-299)
 # =============================================================================
 
+
 @maxwell_cite(
-    297, 298, 299,
-    part=2, chapter="Distribution of Resistance",
+    297,
+    298,
+    299,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate resistance between concentric spheres"
+    description="Calculate resistance between concentric spheres",
 )
 def resistance_of_sphere(
     inner_radius: float,
@@ -134,10 +138,13 @@ def resistance_of_sphere(
 
 
 @maxwell_cite(
-    297, 298, 299,
-    part=2, chapter="Distribution of Resistance",
+    297,
+    298,
+    299,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate resistance of isolated sphere in infinite medium"
+    description="Calculate resistance of isolated sphere in infinite medium",
 )
 def resistance_of_isolated_sphere(
     sphere_radius: float,
@@ -184,11 +191,16 @@ def resistance_of_isolated_sphere(
 # CYLINDRICAL GEOMETRY (Arts. 300-303)
 # =============================================================================
 
+
 @maxwell_cite(
-    300, 301, 302, 303,
-    part=2, chapter="Distribution of Resistance",
+    300,
+    301,
+    302,
+    303,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate resistance along cylindrical conductor"
+    description="Calculate resistance along cylindrical conductor",
 )
 def resistance_of_cylinder(
     length: float,
@@ -258,7 +270,7 @@ def resistance_of_cylinder(
 
     if not hollow:
         # Solid cylinder: axial resistance
-        cross_section = np.pi * radius ** 2
+        cross_section = np.pi * radius**2
         resistance_axial = length / (conductivity * cross_section)
 
         result["resistance_axial"] = resistance_axial
@@ -271,11 +283,13 @@ def resistance_of_cylinder(
             raise ValueError(f"inner_radius must be between 0 and outer_radius")
 
         # Hollow cylinder: axial resistance
-        cross_section = np.pi * (radius ** 2 - inner_radius ** 2)
+        cross_section = np.pi * (radius**2 - inner_radius**2)
         resistance_axial = length / (conductivity * cross_section)
 
         # Radial resistance (from inner to outer surface)
-        resistance_radial = np.log(radius / inner_radius) / (2 * np.pi * conductivity * length)
+        resistance_radial = np.log(radius / inner_radius) / (
+            2 * np.pi * conductivity * length
+        )
 
         result["resistance_axial"] = resistance_axial
         result["resistance_radial"] = resistance_radial
@@ -286,10 +300,13 @@ def resistance_of_cylinder(
 
 
 @maxwell_cite(
-    300, 301, 302,
-    part=2, chapter="Distribution of Resistance",
+    300,
+    301,
+    302,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate resistance of flow tube"
+    description="Calculate resistance of flow tube",
 )
 def resistance_tube(
     inner_radius: float,
@@ -357,10 +374,12 @@ def resistance_tube(
 
     if flow_type == "radial":
         # Radial flow: R = ln(b/a) / (2*pi*sigma*L)
-        resistance = np.log(outer_radius / inner_radius) / (2 * np.pi * conductivity * length)
+        resistance = np.log(outer_radius / inner_radius) / (
+            2 * np.pi * conductivity * length
+        )
     elif flow_type == "axial":
         # Axial flow: R = L / (sigma * pi * (b² - a²))
-        cross_section = np.pi * (outer_radius ** 2 - inner_radius ** 2)
+        cross_section = np.pi * (outer_radius**2 - inner_radius**2)
         resistance = length / (conductivity * cross_section)
     else:
         raise ValueError(f"flow_type must be 'radial' or 'axial', got {flow_type}")
@@ -377,9 +396,10 @@ def resistance_tube(
 
 @maxwell_cite(
     303,
-    part=2, chapter="Distribution of Resistance",
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate current distribution in cylindrical conductor"
+    description="Calculate current distribution in cylindrical conductor",
 )
 def current_distribution_cylinder(
     total_current: float,
@@ -425,7 +445,7 @@ def current_distribution_cylinder(
     if cylinder_radius <= 0:
         raise ValueError(f"cylinder_radius must be positive")
 
-    cross_section = np.pi * cylinder_radius ** 2
+    cross_section = np.pi * cylinder_radius**2
     current_density_uniform = total_current / cross_section
 
     result = {
@@ -453,11 +473,15 @@ def current_distribution_cylinder(
 # SPHERICAL SHELL (Arts. 304-306)
 # =============================================================================
 
+
 @maxwell_cite(
-    304, 305, 306,
-    part=2, chapter="Distribution of Resistance",
+    304,
+    305,
+    306,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate resistance through spherical shell"
+    description="Calculate resistance through spherical shell",
 )
 def resistance_of_shell(
     inner_radius: float,
@@ -542,10 +566,13 @@ def resistance_of_shell(
 
 
 @maxwell_cite(
-    304, 305, 306,
-    part=2, chapter="Distribution of Resistance",
+    304,
+    305,
+    306,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate current distribution in spherical geometry"
+    description="Calculate current distribution in spherical geometry",
 )
 def current_distribution_sphere(
     total_current: float,
@@ -591,7 +618,7 @@ def current_distribution_sphere(
         raise ValueError(f"observation_radius must be positive")
 
     # Current density: J = I / (4 * pi * r²)
-    area = 4 * np.pi * observation_radius ** 2
+    area = 4 * np.pi * observation_radius**2
     current_density = total_current / area
 
     result = {
@@ -615,11 +642,15 @@ def current_distribution_sphere(
 # SPREADING RESISTANCE (Arts. 307-309)
 # =============================================================================
 
+
 @maxwell_cite(
-    307, 308, 309,
-    part=2, chapter="Distribution of Resistance",
+    307,
+    308,
+    309,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate spreading resistance from point electrode on plane"
+    description="Calculate spreading resistance from point electrode on plane",
 )
 def spreading_resistance_plane(
     contact_radius: float,
@@ -696,10 +727,13 @@ def spreading_resistance_plane(
 
 
 @maxwell_cite(
-    307, 308, 309,
-    part=2, chapter="Distribution of Resistance",
+    307,
+    308,
+    309,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate current distribution from point electrode on plane"
+    description="Calculate current distribution from point electrode on plane",
 )
 def current_distribution_plane(
     total_current: float,
@@ -766,7 +800,7 @@ def current_distribution_plane(
     # For simplicity, assume electrode is at z=0 and medium is z > 0
 
     # Current density magnitude: J = I / (2 * pi * r²)
-    J_mag = total_current / (2 * np.pi * r ** 2)
+    J_mag = total_current / (2 * np.pi * r**2)
 
     # Current density vector (radial)
     r_hat = r_vec / r
@@ -787,10 +821,13 @@ def current_distribution_plane(
 
 
 @maxwell_cite(
-    307, 308, 309,
-    part=2, chapter="Distribution of Resistance",
+    307,
+    308,
+    309,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate potential distribution from point electrode on plane"
+    description="Calculate potential distribution from point electrode on plane",
 )
 def potential_distribution_plane(
     total_current: float,
@@ -854,7 +891,7 @@ def potential_distribution_plane(
     potential = total_current / (2 * np.pi * conductivity * r)
 
     # Electric field: E = -grad(V) = I / (2 * pi * sigma * r²) * r_hat
-    E_mag = total_current / (2 * np.pi * conductivity * r ** 2)
+    E_mag = total_current / (2 * np.pi * conductivity * r**2)
     r_hat = r_vec / r
     E_vec = E_mag * r_hat
 
@@ -881,11 +918,16 @@ def potential_distribution_plane(
 # FLOW TUBE METHOD
 # =============================================================================
 
+
 @maxwell_cite(
-    300, 301, 302, 303,
-    part=2, chapter="Distribution of Resistance",
+    300,
+    301,
+    302,
+    303,
+    part=2,
+    chapter="Distribution of Resistance",
     theory_class="maxwell_original",
-    description="Calculate resistance using flow tube decomposition"
+    description="Calculate resistance using flow tube decomposition",
 )
 def resistance_by_flow_tubes(
     conductivity_func: Callable[[np.ndarray], float],
@@ -960,6 +1002,7 @@ def resistance_by_flow_tubes(
 # RESISTANCE DISTRIBUTION ANALYZER CLASS
 # =============================================================================
 
+
 @dataclass
 class ResistanceDistributionAnalyzer:
     """
@@ -979,20 +1022,27 @@ class ResistanceDistributionAnalyzer:
     default_geometry: str = "sphere"
 
     @maxwell_cite(
-        297, 298, 299,
-        part=2, chapter="Distribution of Resistance",
+        297,
+        298,
+        299,
+        part=2,
+        chapter="Distribution of Resistance",
         theory_class="maxwell_original",
-        description="Analyze spherical resistance configuration"
+        description="Analyze spherical resistance configuration",
     )
     def analyze_sphere(self, inner_radius: float, outer_radius: float) -> dict:
         """Analyze resistance between concentric spheres."""
         return resistance_of_sphere(inner_radius, outer_radius, self.conductivity)
 
     @maxwell_cite(
-        300, 301, 302, 303,
-        part=2, chapter="Distribution of Resistance",
+        300,
+        301,
+        302,
+        303,
+        part=2,
+        chapter="Distribution of Resistance",
         theory_class="maxwell_original",
-        description="Analyze cylindrical conductor"
+        description="Analyze cylindrical conductor",
     )
     def analyze_cylinder(
         self,
@@ -1007,10 +1057,13 @@ class ResistanceDistributionAnalyzer:
         )
 
     @maxwell_cite(
-        304, 305, 306,
-        part=2, chapter="Distribution of Resistance",
+        304,
+        305,
+        306,
+        part=2,
+        chapter="Distribution of Resistance",
         theory_class="maxwell_original",
-        description="Analyze spherical shell"
+        description="Analyze spherical shell",
     )
     def analyze_shell(
         self,
@@ -1024,10 +1077,13 @@ class ResistanceDistributionAnalyzer:
         )
 
     @maxwell_cite(
-        307, 308, 309,
-        part=2, chapter="Distribution of Resistance",
+        307,
+        308,
+        309,
+        part=2,
+        chapter="Distribution of Resistance",
         theory_class="maxwell_original",
-        description="Analyze spreading resistance"
+        description="Analyze spreading resistance",
     )
     def analyze_spreading(
         self,
@@ -1076,7 +1132,7 @@ if __name__ == "__main__":
 
     # Test spherical shell
     print("\n--- Spherical Shell (Arts. 304-306) ---")
-    result = resistance_of_shell(1.0, 10.0, 1.0, angular_extent=np.pi/2)
+    result = resistance_of_shell(1.0, 10.0, 1.0, angular_extent=np.pi / 2)
     print(f"  Hemispherical shell: a=1cm, b=10cm, sigma=1 S/cm")
     print(f"    R = {result['resistance']:.6f} abohm")
     print(f"    Solid angle = {result['solid_angle']:.2f} sr")

@@ -34,11 +34,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
 from typing import Callable
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -65,7 +66,8 @@ class NeumannPotential:
 
     @maxwell_cite(
         851,
-        part=4, chapter="Neumann's Theory",
+        part=4,
+        chapter="Neumann's Theory",
         theory_class="maxwell_original",
         description="Calculate vector potential from current loop",
     )
@@ -116,7 +118,8 @@ class NeumannPotential:
 
     @maxwell_cite(
         852,
-        part=4, chapter="Neumann's Theory",
+        part=4,
+        chapter="Neumann's Theory",
         theory_class="maxwell_original",
         description="Calculate magnetic flux through loop",
     )
@@ -178,7 +181,8 @@ class NeumannTheory:
 
     @maxwell_cite(
         853,
-        part=4, chapter="Neumann's Theory",
+        part=4,
+        chapter="Neumann's Theory",
         theory_class="maxwell_original",
         description="Calculate mutual inductance between loops",
     )
@@ -218,6 +222,7 @@ class NeumannTheory:
         """
         # Handle coaxial circular loops case
         if R1 is not None and R2 is not None and d is not None:
+
             def loop1_func(t):
                 return np.array([R1 * np.cos(t), R1 * np.sin(t), 0])
 
@@ -260,7 +265,8 @@ class NeumannTheory:
 
     @maxwell_cite(
         854,
-        part=4, chapter="Neumann's Theory",
+        part=4,
+        chapter="Neumann's Theory",
         theory_class="maxwell_original",
         description="Calculate self-inductance of loop",
     )
@@ -291,7 +297,7 @@ class NeumannTheory:
         """
         # Use approximate formula for circular loop
         # Get characteristic radius from loop
-        points = [loop(t) for t in np.linspace(0, 2*np.pi, n_segments)]
+        points = [loop(t) for t in np.linspace(0, 2 * np.pi, n_segments)]
         distances = [np.linalg.norm(p) for p in points]
         R = np.mean(distances)  # Average radius
 
@@ -305,7 +311,8 @@ class NeumannTheory:
 
     @maxwell_cite(
         855,
-        part=4, chapter="Neumann's Theory",
+        part=4,
+        chapter="Neumann's Theory",
         theory_class="maxwell_original",
         description="Calculate induced EMF from changing current",
     )
@@ -337,7 +344,8 @@ class NeumannTheory:
 
     @maxwell_cite(
         853,
-        part=4, chapter="Neumann's Theory",
+        part=4,
+        chapter="Neumann's Theory",
         theory_class="maxwell_original",
         description="Calculate mutual inductance between circular loops",
     )
@@ -365,6 +373,7 @@ class NeumannTheory:
         Reference:
             Part IV, Art. 853: Mutual inductance formula.
         """
+
         def loop1(t):
             return np.array([R1 * np.cos(t), R1 * np.sin(t), 0])
 
@@ -375,7 +384,8 @@ class NeumannTheory:
 
     @maxwell_cite(
         852,
-        part=4, chapter="Neumann's Theory",
+        part=4,
+        chapter="Neumann's Theory",
         theory_class="maxwell_original",
         description="Calculate potential energy of coupled circuits",
     )
@@ -408,7 +418,8 @@ class NeumannTheory:
 
 @maxwell_cite(
     853,
-    part=4, chapter="Neumann's Theory",
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Calculate mutual inductance by Neumann's formula",
 )
@@ -443,12 +454,15 @@ def calc_mutual_inductance_neumann(
         >>> M = calc_mutual_inductance_neumann(10, 10, 5)
         >>> print(f"M = {M:.2f} cm")
     """
+
     # Define coaxial circular loops
     def loop1(t):
         return np.array([loop1_radius * np.cos(t), loop1_radius * np.sin(t), 0])
 
     def loop2(t):
-        return np.array([loop2_radius * np.cos(t), loop2_radius * np.sin(t), separation])
+        return np.array(
+            [loop2_radius * np.cos(t), loop2_radius * np.sin(t), separation]
+        )
 
     nt = NeumannsTheory()
     return nt.mutual_inductance(loop1, loop2, n_segments)
@@ -456,7 +470,8 @@ def calc_mutual_inductance_neumann(
 
 @maxwell_cite(
     851,
-    part=4, chapter="Neumann's Theory",
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Calculate Neumann potential for current element",
 )
@@ -494,12 +509,20 @@ def calc_neumann_potential(
 
     # For a differential element, return I/r times unit vector
     # In practice, this needs to be integrated over the circuit
-    return current * r_vec / (r ** 2)
+    return current * r_vec / (r**2)
 
 
 @maxwell_cite(
-    851, 852, 853, 854, 855, 856, 857, 858,
-    part=4, chapter="Neumann's Theory",
+    851,
+    852,
+    853,
+    854,
+    855,
+    856,
+    857,
+    858,
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Verify Neumann's theory relations",
 )
@@ -532,12 +555,15 @@ def verify_neumanns_theory(
     Reference:
         Part IV, Arts. 851-858: Neumann's theory verification.
     """
+
     # Define loops
     def loop1(t):
         return np.array([loop1_radius * np.cos(t), loop1_radius * np.sin(t), 0])
 
     def loop2(t):
-        return np.array([loop2_radius * np.cos(t), loop2_radius * np.sin(t), separation])
+        return np.array(
+            [loop2_radius * np.cos(t), loop2_radius * np.sin(t), separation]
+        )
 
     nt = NeumannsTheory()
 
@@ -563,7 +589,7 @@ def verify_neumanns_theory(
     # Energy check: W = (1/2)L₁I₁² + (1/2)L₂I₂² + M*I₁*I₂
     I1 = current
     I2 = current
-    W = 0.5 * L1 * I1 ** 2 + 0.5 * L2 * I2 ** 2 + M_12 * I1 * I2
+    W = 0.5 * L1 * I1**2 + 0.5 * L2 * I2**2 + M_12 * I1 * I2
     energy_positive = W > 0
 
     return {
@@ -579,13 +605,23 @@ def verify_neumanns_theory(
         "coupling_valid": coupling_valid,
         "energy_ergs": W,
         "energy_positive": energy_positive,
-        "verified": bool(symmetry_error < tolerance and coupling_valid and energy_positive),
+        "verified": bool(
+            symmetry_error < tolerance and coupling_valid and energy_positive
+        ),
     }
 
 
 @maxwell_cite(
-    851, 852, 853, 854, 855, 856, 857, 858,
-    part=4, chapter="Neumann's Theory",
+    851,
+    852,
+    853,
+    854,
+    855,
+    856,
+    857,
+    858,
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Complete analysis of Neumann's theory",
 )
@@ -660,9 +696,11 @@ def analyze_neumanns_theory(
 # STANDALONE FUNCTIONS FOR DIRECT IMPORT (as expected by tests)
 # =============================================================================
 
+
 @maxwell_cite(
     853,
-    part=4, chapter="Neumann's Theory",
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Calculate mutual inductance between circular loops",
 )
@@ -697,7 +735,8 @@ def neumann_mutual_inductance(
 
 @maxwell_cite(
     854,
-    part=4, chapter="Neumann's Theory",
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Calculate self-inductance of circular loop",
 )
@@ -729,7 +768,8 @@ def circular_loop_inductance(
 
 @maxwell_cite(
     852,
-    part=4, chapter="Neumann's Theory",
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Calculate mutual potential energy",
 )

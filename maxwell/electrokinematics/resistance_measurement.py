@@ -26,19 +26,19 @@ References:
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from functools import wraps
 from typing import Callable
-import numpy as np
-import math
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST, C
 from maxwell.electrokinematics.network_solver import (
     wheatstone_bridge_balance,
     wheatstone_bridge_sensitivity,
 )
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # DECORATOR WRAPPER FOR MAXWELL CITATION WITH ARTICLE METADATA
@@ -51,6 +51,7 @@ maxwell_cite_resistance = maxwell_cite
 # =============================================================================
 # MEASUREMENT ERROR CLASS
 # =============================================================================
+
 
 @dataclass
 class MeasurementError:
@@ -101,10 +102,10 @@ class MeasurementError:
             Combined standard uncertainty (abΩ).
         """
         u_squared = (
-            self.systematic_uncertainty ** 2 +
-            self.random_uncertainty ** 2 +
-            self.calibration_uncertainty ** 2 +
-            self.resolution_uncertainty ** 2
+            self.systematic_uncertainty**2
+            + self.random_uncertainty**2
+            + self.calibration_uncertainty**2
+            + self.resolution_uncertainty**2
         )
         return math.sqrt(u_squared)
 
@@ -119,7 +120,7 @@ class MeasurementError:
             Relative uncertainty (dimensionless).
         """
         if abs(self.resistance_value) < 1e-15:
-            return float('inf')
+            return float("inf")
         return self.combined_standard_uncertainty / abs(self.resistance_value)
 
     @property
@@ -234,10 +235,13 @@ class MeasurementError:
 # SUBSTITUTION METHOD (Arts. 335-340)
 # =============================================================================
 
+
 @maxwell_cite(
-    335, 336, 337,
+    335,
+    336,
+    337,
     theory_class="maxwell_original",
-    description="Compare unknown resistance to standard using substitution method"
+    description="Compare unknown resistance to standard using substitution method",
 )
 def substitution_method(
     unknown_current: float,
@@ -306,7 +310,9 @@ def substitution_method(
     if standard_current <= 0:
         raise ValueError(f"standard_current must be positive, got {standard_current}")
     if standard_resistance <= 0:
-        raise ValueError(f"standard_resistance must be positive, got {standard_resistance}")
+        raise ValueError(
+            f"standard_resistance must be positive, got {standard_resistance}"
+        )
 
     # Current ratio: R_x = R_s * (I_s / I_x)
     current_ratio = standard_current / unknown_current
@@ -314,11 +320,15 @@ def substitution_method(
 
     # Estimate sensitivity: dI/dR ≈ -I/R (from Ohm's law)
     # For small changes: ΔR/R ≈ -ΔI/I
-    method_sensitivity = -unknown_current / unknown_resistance if unknown_resistance != 0 else 0
+    method_sensitivity = (
+        -unknown_current / unknown_resistance if unknown_resistance != 0 else 0
+    )
 
     # Estimate relative error from current measurement precision
     # Assuming ~1% current reading uncertainty
-    relative_error = math.sqrt((0.01) ** 2 + (0.01) ** 2)  # RSS of both current measurements
+    relative_error = math.sqrt(
+        (0.01) ** 2 + (0.01) ** 2
+    )  # RSS of both current measurements
 
     return {
         "unknown_resistance": unknown_resistance,
@@ -332,9 +342,11 @@ def substitution_method(
 
 
 @maxwell_cite(
-    338, 339, 340,
+    338,
+    339,
+    340,
     theory_class="maxwell_original",
-    description="Calculate resistance from voltage and current measurements"
+    description="Calculate resistance from voltage and current measurements",
 )
 def calculate_resistance_from_voltage(
     voltage: float,
@@ -395,7 +407,9 @@ def calculate_resistance_from_voltage(
     if voltage == 0:
         raise ValueError("Voltage cannot be zero")
     if voltage * current < 0:
-        raise ValueError("Voltage and current must have same sign for passive resistance")
+        raise ValueError(
+            "Voltage and current must have same sign for passive resistance"
+        )
 
     # Raw resistance from Ohm's law
     resistance_raw = voltage / current
@@ -409,8 +423,12 @@ def calculate_resistance_from_voltage(
         # R_measured = R_true + R_ammeter
         if ammeter_resistance is not None and ammeter_resistance > 0:
             resistance_corrected = resistance_raw - ammeter_resistance
-            correction_factor = resistance_corrected / resistance_raw if resistance_raw != 0 else 1.0
-            loading_error = ammeter_resistance / resistance_raw if resistance_raw != 0 else 0.0
+            correction_factor = (
+                resistance_corrected / resistance_raw if resistance_raw != 0 else 1.0
+            )
+            loading_error = (
+                ammeter_resistance / resistance_raw if resistance_raw != 0 else 0.0
+            )
         else:
             resistance_corrected = resistance_raw
 
@@ -427,10 +445,14 @@ def calculate_resistance_from_voltage(
                 if abs(inverse_r) > 1e-15:
                     resistance_corrected = 1.0 / inverse_r
                 else:
-                    resistance_corrected = resistance_raw  # Can't correct, R ≈ R_voltmeter
+                    resistance_corrected = (
+                        resistance_raw  # Can't correct, R ≈ R_voltmeter
+                    )
             else:
                 resistance_corrected = resistance_raw
-            correction_factor = resistance_corrected / resistance_raw if resistance_raw != 0 else 1.0
+            correction_factor = (
+                resistance_corrected / resistance_raw if resistance_raw != 0 else 1.0
+            )
             loading_error = 1.0 - correction_factor
         else:
             resistance_corrected = resistance_raw
@@ -456,10 +478,15 @@ def calculate_resistance_from_voltage(
 # DIFFERENTIAL GALVANOMETER METHOD (Arts. 341-345)
 # =============================================================================
 
+
 @maxwell_cite(
-    341, 342, 343, 344, 345,
+    341,
+    342,
+    343,
+    344,
+    345,
     theory_class="maxwell_original",
-    description="Measure resistance using differential galvanometer"
+    description="Measure resistance using differential galvanometer",
 )
 def differential_galvanometer_method(
     coil1_current: float,
@@ -597,10 +624,15 @@ def differential_galvanometer_method(
 # WHEATSTONE BRIDGE MEASUREMENT (Arts. 346-350)
 # =============================================================================
 
+
 @maxwell_cite(
-    346, 347, 348, 349, 350,
+    346,
+    347,
+    348,
+    349,
+    350,
     theory_class="maxwell_original",
-    description="Practical Wheatstone bridge measurement with error analysis"
+    description="Practical Wheatstone bridge measurement with error analysis",
 )
 def wheatstone_bridge_measurement(
     ratio_arm_p: float,
@@ -676,7 +708,9 @@ def wheatstone_bridge_measurement(
     if ratio_arm_q <= 0:
         raise ValueError(f"ratio_arm_q must be positive, got {ratio_arm_q}")
     if standard_resistance <= 0:
-        raise ValueError(f"standard_resistance must be positive, got {standard_resistance}")
+        raise ValueError(
+            f"standard_resistance must be positive, got {standard_resistance}"
+        )
 
     # Ratio setting
     ratio_setting = ratio_arm_p / ratio_arm_q
@@ -692,21 +726,33 @@ def wheatstone_bridge_measurement(
     u_standard = 0.001 * standard_resistance
 
     # Ratio arm uncertainty (assume 0.1% each)
-    u_ratio = math.sqrt(0.001 ** 2 + 0.001 ** 2) * ratio_setting
+    u_ratio = math.sqrt(0.001**2 + 0.001**2) * ratio_setting
 
     # Galvanometer resolution contribution
-    if galvanometer_deflection is not None and galvanometer_sensitivity is not None and battery_voltage is not None:
+    if (
+        galvanometer_deflection is not None
+        and galvanometer_sensitivity is not None
+        and battery_voltage is not None
+    ):
         # Smallest detectable change in R_x
         # ΔR_x ≈ (galvanometer_current * total_resistance^2) / V
         total_r = ratio_arm_p + ratio_arm_q + standard_resistance + unknown_resistance
         min_detectable_i = galvanometer_sensitivity  # Current for 1 division
-        u_galvanometer = abs(galvanometer_deflection) * min_detectable_i * total_r / battery_voltage if battery_voltage > 0 else 0
+        u_galvanometer = (
+            abs(galvanometer_deflection) * min_detectable_i * total_r / battery_voltage
+            if battery_voltage > 0
+            else 0
+        )
     else:
         # Default estimate: 0.1% of reading
         u_galvanometer = 0.001 * unknown_resistance
 
     # Combined uncertainty (RSS)
-    u_combined = math.sqrt(u_standard ** 2 * ratio_setting ** 2 + u_ratio ** 2 * standard_resistance ** 2 + u_galvanometer ** 2)
+    u_combined = math.sqrt(
+        u_standard**2 * ratio_setting**2
+        + u_ratio**2 * standard_resistance**2
+        + u_galvanometer**2
+    )
 
     # Balance tolerance
     balance_tolerance = u_combined
@@ -718,7 +764,11 @@ def wheatstone_bridge_measurement(
     optimal_ratio = 1.0
     if unknown_resistance > 0:
         # Best when ratio arms bracket the unknown
-        optimal_ratio = math.sqrt(standard_resistance / unknown_resistance) if unknown_resistance > 0 else 1.0
+        optimal_ratio = (
+            math.sqrt(standard_resistance / unknown_resistance)
+            if unknown_resistance > 0
+            else 1.0
+        )
 
     return {
         "unknown_resistance": unknown_resistance,
@@ -736,10 +786,13 @@ def wheatstone_bridge_measurement(
 # LOW RESISTANCE MEASUREMENT (Arts. 351-354)
 # =============================================================================
 
+
 @maxwell_cite(
-    351, 352, 353,
+    351,
+    352,
+    353,
     theory_class="maxwell_original",
-    description="Kelvin double bridge for low resistance measurement"
+    description="Kelvin double bridge for low resistance measurement",
 )
 def kelvin_double_bridge(
     outer_ratio_p: float,
@@ -817,11 +870,13 @@ def kelvin_double_bridge(
         0.001000 abΩ
     """
     # Validate inputs
-    for val, name in [(outer_ratio_p, "outer_ratio_p"),
-                      (outer_ratio_q, "outer_ratio_q"),
-                      (inner_ratio_p_prime, "inner_ratio_p_prime"),
-                      (inner_ratio_q_prime, "inner_ratio_q_prime"),
-                      (standard_resistance, "standard_resistance")]:
+    for val, name in [
+        (outer_ratio_p, "outer_ratio_p"),
+        (outer_ratio_q, "outer_ratio_q"),
+        (inner_ratio_p_prime, "inner_ratio_p_prime"),
+        (inner_ratio_q_prime, "inner_ratio_q_prime"),
+        (standard_resistance, "standard_resistance"),
+    ]:
         if val <= 0:
             raise ValueError(f"{name} must be positive, got {val}")
 
@@ -839,7 +894,12 @@ def kelvin_double_bridge(
     # Correction for link resistance (if ratios don't perfectly match)
     # ΔR_x = r_link * (P/Q - P'/Q') * Q' / (P' + Q')
     if link_resistance is not None and ratio_match_error > 1e-10:
-        correction = link_resistance * ratio_match_error * inner_ratio_q_prime / (inner_ratio_p_prime + inner_ratio_q_prime)
+        correction = (
+            link_resistance
+            * ratio_match_error
+            * inner_ratio_q_prime
+            / (inner_ratio_p_prime + inner_ratio_q_prime)
+        )
         link_error_correction = correction
     else:
         link_error_correction = 0.0
@@ -864,7 +924,7 @@ def kelvin_double_bridge(
 @maxwell_cite(
     354,
     theory_class="maxwell_original",
-    description="Four-terminal (Kelvin) resistance measurement"
+    description="Four-terminal (Kelvin) resistance measurement",
 )
 def four_terminal_measurement(
     voltage_sense: float,
@@ -958,14 +1018,16 @@ def four_terminal_measurement(
     rel_u_voltage = u_voltage / abs(voltage_sense) if voltage_sense != 0 else 0
     rel_u_current = u_current / abs(current_force) if current_force != 0 else 0
 
-    rel_uncertainty = math.sqrt(rel_u_voltage ** 2 + rel_u_current ** 2)
+    rel_uncertainty = math.sqrt(rel_u_voltage**2 + rel_u_current**2)
     measurement_uncertainty = resistance * rel_uncertainty
 
     # Add lead/contact uncertainties in quadrature
-    total_uncertainty = math.sqrt(measurement_uncertainty ** 2 + u_lead ** 2 + u_contact ** 2)
+    total_uncertainty = math.sqrt(measurement_uncertainty**2 + u_lead**2 + u_contact**2)
 
     # Relative uncertainty
-    relative_uncertainty = total_uncertainty / resistance if resistance > 0 else float('inf')
+    relative_uncertainty = (
+        total_uncertainty / resistance if resistance > 0 else float("inf")
+    )
 
     # Minimum detectable resistance (when V_sense = u_voltage)
     min_detectable = u_voltage / abs(current_force)
@@ -984,10 +1046,12 @@ def four_terminal_measurement(
 # HIGH RESISTANCE MEASUREMENT (Arts. 355-358)
 # =============================================================================
 
+
 @maxwell_cite(
-    355, 356,
+    355,
+    356,
     theory_class="maxwell_original",
-    description="High resistance measurement using leakage method"
+    description="High resistance measurement using leakage method",
 )
 def leakage_method(
     capacitor_capacitance: float,
@@ -1051,13 +1115,17 @@ def leakage_method(
     """
     # Validate inputs
     if capacitor_capacitance <= 0:
-        raise ValueError(f"capacitor_capacitance must be positive, got {capacitor_capacitance}")
+        raise ValueError(
+            f"capacitor_capacitance must be positive, got {capacitor_capacitance}"
+        )
     if initial_voltage <= 0:
         raise ValueError(f"initial_voltage must be positive, got {initial_voltage}")
     if final_voltage <= 0:
         raise ValueError(f"final_voltage must be positive, got {final_voltage}")
     if final_voltage >= initial_voltage:
-        raise ValueError(f"final_voltage ({final_voltage}) must be less than initial_voltage ({initial_voltage})")
+        raise ValueError(
+            f"final_voltage ({final_voltage}) must be less than initial_voltage ({initial_voltage})"
+        )
     if discharge_time <= 0:
         raise ValueError(f"discharge_time must be positive, got {discharge_time}")
 
@@ -1089,9 +1157,9 @@ def leakage_method(
 
     # Error propagation
     rel_uncertainty = math.sqrt(
-        (u_voltage_ratio / voltage_ratio) ** 2 +
-        (u_time / discharge_time) ** 2 +
-        (u_capacitance / capacitor_capacitance) ** 2
+        (u_voltage_ratio / voltage_ratio) ** 2
+        + (u_time / discharge_time) ** 2
+        + (u_capacitance / capacitor_capacitance) ** 2
     )
 
     uncertainty = insulation_resistance * rel_uncertainty
@@ -1111,9 +1179,10 @@ def leakage_method(
 
 
 @maxwell_cite(
-    357, 358,
+    357,
+    358,
     theory_class="maxwell_original",
-    description="Capacitor discharge method for very high resistance"
+    description="Capacitor discharge method for very high resistance",
 )
 def capacitor_discharge_method(
     capacitance: float,
@@ -1172,7 +1241,9 @@ def capacitor_discharge_method(
     """
     # Validate inputs
     if len(voltage_measurements) < 2:
-        raise ValueError(f"At least 2 voltage measurements required, got {len(voltage_measurements)}")
+        raise ValueError(
+            f"At least 2 voltage measurements required, got {len(voltage_measurements)}"
+        )
     if capacitance <= 0:
         raise ValueError(f"capacitance must be positive, got {capacitance}")
 
@@ -1195,11 +1266,11 @@ def capacitor_discharge_method(
     n = len(times)
     sum_t = np.sum(times)
     sum_ln_v = np.sum(ln_voltages)
-    sum_t_sq = np.sum(times ** 2)
+    sum_t_sq = np.sum(times**2)
     sum_t_ln_v = np.sum(times * ln_voltages)
 
     # Least squares fit
-    denom = n * sum_t_sq - sum_t ** 2
+    denom = n * sum_t_sq - sum_t**2
     if abs(denom) < 1e-15:
         raise ValueError("Time values too close together for reliable fit")
 
@@ -1228,7 +1299,7 @@ def capacitor_discharge_method(
 
     # Standard error of slope
     if n > 2:
-        se_slope = math.sqrt(ss_res / (n - 2)) / math.sqrt(sum_t_sq - sum_t ** 2 / n)
+        se_slope = math.sqrt(ss_res / (n - 2)) / math.sqrt(sum_t_sq - sum_t**2 / n)
         # Propagate to resistance uncertainty
         # R = -1 / (slope * C)
         # dR = |dR/dslope| * dslope = (1 / (slope^2 * C)) * dslope = R * (dslope / |slope|)
@@ -1266,6 +1337,7 @@ def capacitor_discharge_method(
 # =============================================================================
 # COMPREHENSIVE RESISTANCE MEASUREMENT ANALYZER
 # =============================================================================
+
 
 @dataclass
 class ResistanceMeasurementAnalyzer:
@@ -1382,9 +1454,7 @@ if __name__ == "__main__":
     # Test substitution method
     print("\n--- Substitution Method (Arts. 335-340) ---")
     result = substitution_method(
-        unknown_current=3.5,
-        standard_current=4.2,
-        standard_resistance=100.0
+        unknown_current=3.5, standard_current=4.2, standard_resistance=100.0
     )
     print(f"  Unknown resistance: {result['unknown_resistance']:.2f} abohm")
     print(f"  Current ratio: {result['ratio_currents']:.4f}")
@@ -1392,10 +1462,7 @@ if __name__ == "__main__":
     # Test V-I method
     print("\n--- Voltage-Current Method (Arts. 338-340) ---")
     result = calculate_resistance_from_voltage(
-        voltage=100.0,
-        current=2.0,
-        ammeter_resistance=0.5,
-        connection_type="standard"
+        voltage=100.0, current=2.0, ammeter_resistance=0.5, connection_type="standard"
     )
     print(f"  Raw resistance: {result['resistance_raw']:.2f} abohm")
     print(f"  Corrected resistance: {result['resistance_corrected']:.2f} abohm")
@@ -1407,7 +1474,7 @@ if __name__ == "__main__":
         coil2_current=2.0,
         known_resistance=100.0,
         coil1_turns=100,
-        coil2_turns=100
+        coil2_turns=100,
     )
     print(f"  Unknown resistance: {result['unknown_resistance']:.2f} abohm")
     print(f"  Balance error: {result['balance_error']:.6f}")
@@ -1415,9 +1482,7 @@ if __name__ == "__main__":
     # Test Wheatstone bridge
     print("\n--- Wheatstone Bridge (Arts. 346-350) ---")
     result = wheatstone_bridge_measurement(
-        ratio_arm_p=100.0,
-        ratio_arm_q=1000.0,
-        standard_resistance=1234.0
+        ratio_arm_p=100.0, ratio_arm_q=1000.0, standard_resistance=1234.0
     )
     print(f"  Unknown resistance: {result['unknown_resistance']:.2f} abohm")
     print(f"  Ratio setting: {result['ratio_setting']:.4f}")
@@ -1429,17 +1494,14 @@ if __name__ == "__main__":
         outer_ratio_q=1000.0,
         inner_ratio_p_prime=1000.0,
         inner_ratio_q_prime=1000.0,
-        standard_resistance=0.001
+        standard_resistance=0.001,
     )
     print(f"  Unknown resistance: {result['unknown_resistance']:.6f} abohm")
     print(f"  Measurement valid: {result['measurement_valid']}")
 
     # Test four-terminal measurement
     print("\n--- Four-Terminal Measurement (Art. 354) ---")
-    result = four_terminal_measurement(
-        voltage_sense=0.01,
-        current_force=10.0
-    )
+    result = four_terminal_measurement(voltage_sense=0.01, current_force=10.0)
     print(f"  Resistance: {result['resistance']:.6f} abohm")
     print(f"  Relative uncertainty: {result['relative_uncertainty']:.6f}")
 
@@ -1449,7 +1511,7 @@ if __name__ == "__main__":
         capacitor_capacitance=1e-6,
         initial_voltage=100.0,
         final_voltage=50.0,
-        discharge_time=100.0
+        discharge_time=100.0,
     )
     print(f"  Insulation resistance: {result['insulation_resistance']:.2e} abohm")
     print(f"  Time constant: {result['time_constant']:.2f} s")
@@ -1457,10 +1519,7 @@ if __name__ == "__main__":
     # Test capacitor discharge
     print("\n--- Capacitor Discharge Method (Arts. 357-358) ---")
     data = [(0, 100), (10, 82), (20, 67), (30, 55), (40, 45)]
-    result = capacitor_discharge_method(
-        capacitance=1e-6,
-        voltage_measurements=data
-    )
+    result = capacitor_discharge_method(capacitance=1e-6, voltage_measurements=data)
     print(f"  Resistance: {result['resistance']:.2e} abohm")
     print(f"  Fit quality (R2): {result['fit_quality']:.6f}")
 
@@ -1471,7 +1530,7 @@ if __name__ == "__main__":
         systematic_uncertainty=0.1,
         random_uncertainty=0.05,
         calibration_uncertainty=0.1,
-        method="wheatstone_bridge"
+        method="wheatstone_bridge",
     )
     print(f"  Combined uncertainty: {error.combined_standard_uncertainty:.4f} abohm")
     print(f"  Relative uncertainty: {error.relative_uncertainty:.6f}")

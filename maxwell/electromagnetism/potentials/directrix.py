@@ -27,10 +27,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -55,8 +56,11 @@ class DirectrixFunction:
     integration_volume: tuple = None
 
     @maxwell_cite(
-        517, 518, 519,
-        part=4, chapter="Directrix Function",
+        517,
+        518,
+        519,
+        part=4,
+        chapter="Directrix Function",
         theory_class="maxwell_original",
         description="Calculate vector potential from current distribution",
     )
@@ -106,8 +110,10 @@ class DirectrixFunction:
         return A
 
     @maxwell_cite(
-        517, 518,
-        part=4, chapter="Directrix Function",
+        517,
+        518,
+        part=4,
+        chapter="Directrix Function",
         theory_class="maxwell_original",
         description="Calculate magnetic field from vector potential curl",
     )
@@ -167,8 +173,11 @@ class DirectrixFunction:
 
 
 @maxwell_cite(
-    517, 518, 519,
-    part=4, chapter="Directrix Function",
+    517,
+    518,
+    519,
+    part=4,
+    chapter="Directrix Function",
     theory_class="maxwell_original",
     description="Calculate directrix (vector potential) of current element",
 )
@@ -205,14 +214,21 @@ def calc_directrix(
         return np.zeros(3)
 
     # Normalize direction
-    dir_norm = element_direction / np.linalg.norm(element_direction) if np.linalg.norm(element_direction) > 0 else element_direction
+    dir_norm = (
+        element_direction / np.linalg.norm(element_direction)
+        if np.linalg.norm(element_direction) > 0
+        else element_direction
+    )
 
     return current * dir_norm / r_mag
 
 
 @maxwell_cite(
-    517, 518, 519,
-    part=4, chapter="Directrix Function",
+    517,
+    518,
+    519,
+    part=4,
+    chapter="Directrix Function",
     theory_class="maxwell_original",
     description="Calculate vector potential of current element",
 )
@@ -250,8 +266,10 @@ def calc_vector_potential_element(
 
 
 @maxwell_cite(
-    517, 518,
-    part=4, chapter="Directrix Function",
+    517,
+    518,
+    part=4,
+    chapter="Directrix Function",
     theory_class="maxwell_original",
     description="Calculate magnetic field from vector potential",
 )
@@ -306,8 +324,11 @@ def calc_field_from_potential(
 
 
 @maxwell_cite(
-    517, 518, 519,
-    part=4, chapter="Directrix Function",
+    517,
+    518,
+    519,
+    part=4,
+    chapter="Directrix Function",
     theory_class="maxwell_original",
     description="Calculate directrix for straight wire",
 )
@@ -362,8 +383,11 @@ def calc_directrix_straight_wire(
 
 
 @maxwell_cite(
-    517, 518, 519,
-    part=4, chapter="Directrix Function",
+    517,
+    518,
+    519,
+    part=4,
+    chapter="Directrix Function",
     theory_class="maxwell_original",
     description="Verify vector potential relations",
 )
@@ -414,12 +438,18 @@ def verify_directrix_relations(
         fields_from_curl.append(H_curl)
 
         # Field from Biot-Savart (Oersted field for long wire)
-        r_perp = np.linalg.norm(pos - np.dot(pos, np.array([0, 0, 1])) * np.array([0, 0, 1]))
+        r_perp = np.linalg.norm(
+            pos - np.dot(pos, np.array([0, 0, 1])) * np.array([0, 0, 1])
+        )
         if r_perp > 0:
             H_bs = 2.0 * current / r_perp
             # Direction is tangential
             H_vec = np.array([-pos[1], pos[0], 0.0])
-            H_vec = H_vec / np.linalg.norm(H_vec) * H_bs if np.linalg.norm(H_vec) > 0 else np.zeros(3)
+            H_vec = (
+                H_vec / np.linalg.norm(H_vec) * H_bs
+                if np.linalg.norm(H_vec) > 0
+                else np.zeros(3)
+            )
         else:
             H_vec = np.zeros(3)
         fields_from_biot_savart.append(H_vec)
@@ -447,8 +477,11 @@ def verify_directrix_relations(
 
 
 @maxwell_cite(
-    517, 518, 519,
-    part=4, chapter="Directrix Function",
+    517,
+    518,
+    519,
+    part=4,
+    chapter="Directrix Function",
     theory_class="maxwell_original",
     description="Complete directrix function analysis",
 )

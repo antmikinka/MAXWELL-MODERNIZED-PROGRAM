@@ -29,23 +29,27 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
-import numpy as np
 from functools import wraps
+from typing import Callable
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST, C
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # CURRENT DENSITY AND OHM'S LAW 3D (Arts. 285-288)
 # =============================================================================
 
+
 @maxwell_cite(
-    285, 286, 287,
-    part=2, chapter="Conduction in Three Dimensions",
+    285,
+    286,
+    287,
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Generalized Ohm's law in 3D: J = sigma * E"
+    description="Generalized Ohm's law in 3D: J = sigma * E",
 )
 def ohms_law_3d(
     electric_field: np.ndarray,
@@ -108,11 +112,15 @@ def ohms_law_3d(
             raise ValueError("position required for callable conductivity")
         conductivity = conductivity(position)
 
-    sigma = conductivity if isinstance(conductivity, np.ndarray) else float(conductivity)
+    sigma = (
+        conductivity if isinstance(conductivity, np.ndarray) else float(conductivity)
+    )
 
     # Validate electric field shape
     if electric_field.shape[-1:] != (3,):
-        raise ValueError(f"electric_field must have shape (..., 3), got {electric_field.shape}")
+        raise ValueError(
+            f"electric_field must have shape (..., 3), got {electric_field.shape}"
+        )
 
     if isinstance(sigma, np.ndarray):
         # Tensor conductivity
@@ -121,20 +129,24 @@ def ohms_law_3d(
 
         # Check symmetry (for physical conductivity tensor)
         if not np.allclose(sigma, sigma.T, rtol=1e-10):
-            raise ValueError("Conductivity tensor must be symmetric (Onsager reciprocity)")
+            raise ValueError(
+                "Conductivity tensor must be symmetric (Onsager reciprocity)"
+            )
 
         # Check positive definiteness
         eigenvalues = np.linalg.eigvalsh(sigma)
         if np.any(eigenvalues < -1e-10):
-            raise ValueError(f"Conductivity tensor must be positive semi-definite, "
-                           f"got eigenvalues {eigenvalues}")
+            raise ValueError(
+                f"Conductivity tensor must be positive semi-definite, "
+                f"got eigenvalues {eigenvalues}"
+            )
 
         # J = sigma @ E (tensor contraction)
         if electric_field.shape == (3,):
             return sigma @ electric_field
         else:
             # Handle batched input
-            return np.einsum('ij,...j->...i', sigma, electric_field)
+            return np.einsum("ij,...j->...i", sigma, electric_field)
     else:
         # Scalar conductivity (isotropic)
         if sigma < 0:
@@ -144,9 +156,10 @@ def ohms_law_3d(
 
 @maxwell_cite(
     287,
-    part=2, chapter="Conduction in Three Dimensions",
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Calculate electric field from current density (inverse Ohm's law)"
+    description="Calculate electric field from current density (inverse Ohm's law)",
 )
 def electric_field_from_current_density(
     current_density: np.ndarray,
@@ -188,7 +201,9 @@ def electric_field_from_current_density(
     if isinstance(conductivity, np.ndarray):
         # Tensor conductivity: E = sigma^(-1) @ J
         if conductivity.shape != (3, 3):
-            raise ValueError(f"Conductivity tensor must be 3×3, got {conductivity.shape}")
+            raise ValueError(
+                f"Conductivity tensor must be 3×3, got {conductivity.shape}"
+            )
 
         try:
             resistivity = np.linalg.inv(conductivity)
@@ -208,11 +223,15 @@ def electric_field_from_current_density(
 # ANISOTROPIC CONDUCTIVITY (Arts. 288-290)
 # =============================================================================
 
+
 @maxwell_cite(
-    288, 289, 290,
-    part=2, chapter="Conduction in Three Dimensions",
+    288,
+    289,
+    290,
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Create anisotropic conductivity tensor from principal axes"
+    description="Create anisotropic conductivity tensor from principal axes",
 )
 def anisotropic_conductivity(
     principal_conductivities: np.ndarray,
@@ -270,8 +289,10 @@ def anisotropic_conductivity(
     principal_conductivities = np.asarray(principal_conductivities, dtype=np.float64)
 
     if principal_conductivities.shape != (3,):
-        raise ValueError(f"principal_conductivities must have shape (3,), "
-                        f"got {principal_conductivities.shape}")
+        raise ValueError(
+            f"principal_conductivities must have shape (3,), "
+            f"got {principal_conductivities.shape}"
+        )
 
     if np.any(principal_conductivities < 0):
         raise ValueError("Principal conductivities must be non-negative")
@@ -302,10 +323,12 @@ def anisotropic_conductivity(
 
 
 @maxwell_cite(
-    288, 289,
-    part=2, chapter="Conduction in Three Dimensions",
+    288,
+    289,
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Find principal conduction axes from conductivity tensor"
+    description="Find principal conduction axes from conductivity tensor",
 )
 def principal_conduction_axes(
     conductivity_tensor: np.ndarray,
@@ -354,7 +377,9 @@ def principal_conduction_axes(
     conductivity_tensor = np.asarray(conductivity_tensor, dtype=np.float64)
 
     if conductivity_tensor.shape != (3, 3):
-        raise ValueError(f"conductivity_tensor must be 3×3, got {conductivity_tensor.shape}")
+        raise ValueError(
+            f"conductivity_tensor must be 3×3, got {conductivity_tensor.shape}"
+        )
 
     # Check symmetry
     if not np.allclose(conductivity_tensor, conductivity_tensor.T, rtol=1e-10):
@@ -370,13 +395,14 @@ def principal_conduction_axes(
 
     # Check positive semi-definiteness
     if np.any(eigenvalues < -1e-10):
-        raise ValueError(f"Tensor must be positive semi-definite, "
-                        f"got eigenvalues {eigenvalues}")
+        raise ValueError(
+            f"Tensor must be positive semi-definite, " f"got eigenvalues {eigenvalues}"
+        )
 
     # Anisotropy ratio
     sigma_max = np.max(eigenvalues)
     sigma_min = np.min(eigenvalues)
-    anisotropy_ratio = sigma_max / sigma_min if sigma_min > 1e-15 else float('inf')
+    anisotropy_ratio = sigma_max / sigma_min if sigma_min > 1e-15 else float("inf")
 
     # Isotropy check
     isotropy_tolerance = 1e-6 * sigma_max
@@ -395,11 +421,14 @@ def principal_conduction_axes(
 # CONTINUITY EQUATION (Arts. 291-292)
 # =============================================================================
 
+
 @maxwell_cite(
-    291, 292,
-    part=2, chapter="Conduction in Three Dimensions",
+    291,
+    292,
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Continuity equation for charge conservation"
+    description="Continuity equation for charge conservation",
 )
 def continuity_equation(
     current_density_func: Callable[[np.ndarray], np.ndarray],
@@ -513,9 +542,10 @@ def continuity_equation(
 
 @maxwell_cite(
     291,
-    part=2, chapter="Conduction in Three Dimensions",
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Verify steady-state continuity (div(J) = 0)"
+    description="Verify steady-state continuity (div(J) = 0)",
 )
 def verify_steady_state_continuity(
     current_density_func: Callable[[np.ndarray], np.ndarray],
@@ -583,11 +613,13 @@ def verify_steady_state_continuity(
 # INTERFACE BOUNDARY CONDITIONS (Art. 296)
 # =============================================================================
 
+
 @maxwell_cite(
     296,
-    part=2, chapter="Conduction in Three Dimensions",
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Boundary conditions at interface between conductors"
+    description="Boundary conditions at interface between conductors",
 )
 def interface_boundary_conditions(
     J1: np.ndarray,
@@ -666,7 +698,9 @@ def interface_boundary_conditions(
 
     normal_mag = np.linalg.norm(interface_normal)
     if not np.isclose(normal_mag, 1.0, rtol=1e-10):
-        raise ValueError(f"interface_normal must be a unit vector, got |n| = {normal_mag}")
+        raise ValueError(
+            f"interface_normal must be a unit vector, got |n| = {normal_mag}"
+        )
 
     # Normal components: J_n = n · J
     J1_normal = np.dot(interface_normal, J1)
@@ -705,7 +739,9 @@ def interface_boundary_conditions(
 
     # Verification
     normal_satisfied = normal_error < 1e-6 * max(1.0, abs(J1_normal), abs(J2_normal))
-    tangential_satisfied = tangential_error < 1e-6 * max(1.0, np.linalg.norm(E1_tangential), np.linalg.norm(E2_tangential))
+    tangential_satisfied = tangential_error < 1e-6 * max(
+        1.0, np.linalg.norm(E1_tangential), np.linalg.norm(E2_tangential)
+    )
 
     return {
         "J1_normal": J1_normal,
@@ -727,11 +763,14 @@ def interface_boundary_conditions(
 # POINT SOURCE SOLUTIONS (Arts. 293-295)
 # =============================================================================
 
+
 @maxwell_cite(
-    293, 294,
-    part=2, chapter="Conduction in Three Dimensions",
+    293,
+    294,
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Potential from point current source in infinite medium"
+    description="Potential from point current source in infinite medium",
 )
 def point_source_potential(
     source_position: np.ndarray,
@@ -798,7 +837,9 @@ def point_source_potential(
     """
     source_position = np.asarray(source_position, dtype=np.float64)
     if source_position.shape != (3,):
-        raise ValueError(f"source_position must have shape (3,), got {source_position.shape}")
+        raise ValueError(
+            f"source_position must have shape (3,), got {source_position.shape}"
+        )
 
     if conductivity <= 0:
         raise ValueError(f"conductivity must be positive, got {conductivity}")
@@ -819,7 +860,7 @@ def point_source_potential(
             if dist < 1e-15:
                 raise ValueError("Cannot evaluate field at source position")
             r_hat = r_vec / dist
-            E_mag = current / (4 * np.pi * conductivity * dist ** 2)
+            E_mag = current / (4 * np.pi * conductivity * dist**2)
             return E_mag * r_hat
 
         def current_density_func(r):
@@ -838,7 +879,9 @@ def point_source_potential(
     # Evaluate at observation point
     observation_point = np.asarray(observation_point, dtype=np.float64)
     if observation_point.shape != (3,):
-        raise ValueError(f"observation_point must have shape (3,), got {observation_point.shape}")
+        raise ValueError(
+            f"observation_point must have shape (3,), got {observation_point.shape}"
+        )
 
     r_vec = observation_point - source_position
     dist = np.linalg.norm(r_vec)
@@ -852,11 +895,11 @@ def point_source_potential(
     potential = current / (4 * np.pi * conductivity * dist)
 
     # Electric field: E = I / (4*pi*sigma*r^2) * r_hat
-    E_mag = current / (4 * np.pi * conductivity * dist ** 2)
+    E_mag = current / (4 * np.pi * conductivity * dist**2)
     electric_field = E_mag * r_hat
 
     # Current density: J = sigma * E = I / (4*pi*r^2) * r_hat
-    J_mag = current / (4 * np.pi * dist ** 2)
+    J_mag = current / (4 * np.pi * dist**2)
     current_density = J_mag * r_hat
 
     return {
@@ -874,9 +917,10 @@ def point_source_potential(
 
 @maxwell_cite(
     294,
-    part=2, chapter="Conduction in Three Dimensions",
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Potential from source-sink pair (dipole)"
+    description="Potential from source-sink pair (dipole)",
 )
 def dipole_potential(
     source_position: np.ndarray,
@@ -935,7 +979,7 @@ def dipole_potential(
             r_sink = np.linalg.norm(r - sink_position)
             if r_source < 1e-15 or r_sink < 1e-15:
                 raise ValueError("Cannot evaluate at source or sink position")
-            return current / (4 * np.pi * conductivity) * (1/r_source - 1/r_sink)
+            return current / (4 * np.pi * conductivity) * (1 / r_source - 1 / r_sink)
 
         def field_func(r):
             r = np.asarray(r, dtype=np.float64)
@@ -948,7 +992,7 @@ def dipole_potential(
 
             # E = I/(4*pi*sigma) * (r_s/r_s^3 - r_k/r_k^3)
             factor = current / (4 * np.pi * conductivity)
-            E = factor * (r_s_vec / r_s ** 3 - r_k_vec / r_k ** 3)
+            E = factor * (r_s_vec / r_s**3 - r_k_vec / r_k**3)
             return E
 
         def current_density_func(r):
@@ -980,11 +1024,11 @@ def dipole_potential(
         raise ValueError("Cannot evaluate at source or sink position")
 
     # Potential by superposition
-    potential = current / (4 * np.pi * conductivity) * (1/r_s - 1/r_k)
+    potential = current / (4 * np.pi * conductivity) * (1 / r_s - 1 / r_k)
 
     # Electric field
     factor = current / (4 * np.pi * conductivity)
-    electric_field = factor * (r_s_vec / r_s ** 3 - r_k_vec / r_k ** 3)
+    electric_field = factor * (r_s_vec / r_s**3 - r_k_vec / r_k**3)
 
     # Current density
     current_density = conductivity * electric_field
@@ -1008,9 +1052,10 @@ def dipole_potential(
 
 @maxwell_cite(
     295,
-    part=2, chapter="Conduction in Three Dimensions",
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Calculate spreading resistance of point contact"
+    description="Calculate spreading resistance of point contact",
 )
 def spreading_resistance(
     contact_radius: float,
@@ -1079,18 +1124,24 @@ def spreading_resistance(
         return 1.0 / (4.0 * conductivity * contact_radius)
 
     else:
-        raise ValueError(f"Unknown geometry: {geometry}. Options: hemisphere, sphere, disk")
+        raise ValueError(
+            f"Unknown geometry: {geometry}. Options: hemisphere, sphere, disk"
+        )
 
 
 # =============================================================================
 # METHOD OF IMAGES FOR CONDUCTORS
 # =============================================================================
 
+
 @maxwell_cite(
-    293, 294, 296,
-    part=2, chapter="Conduction in Three Dimensions",
+    293,
+    294,
+    296,
+    part=2,
+    chapter="Conduction in Three Dimensions",
     theory_class="maxwell_original",
-    description="Method of images for point source near conducting boundary"
+    description="Method of images for point source near conducting boundary",
 )
 def method_of_images_conductor(
     source_position: np.ndarray,
@@ -1158,7 +1209,9 @@ def method_of_images_conductor(
     elif boundary_type == "conducting":
         image_current = -current  # Opposite sign
     else:
-        raise ValueError(f"boundary_type must be 'insulating' or 'conducting', got {boundary_type}")
+        raise ValueError(
+            f"boundary_type must be 'insulating' or 'conducting', got {boundary_type}"
+        )
 
     if observation_point is None:
         # Return functions
@@ -1168,8 +1221,9 @@ def method_of_images_conductor(
             r_image = np.linalg.norm(r - image_position)
             if r_real < 1e-15 or r_image < 1e-15:
                 raise ValueError("Cannot evaluate at source or image position")
-            return current / (4 * np.pi * conductivity * r_real) + \
-                   image_current / (4 * np.pi * conductivity * r_image)
+            return current / (4 * np.pi * conductivity * r_real) + image_current / (
+                4 * np.pi * conductivity * r_image
+            )
 
         def field_func(r):
             r = np.asarray(r, dtype=np.float64)
@@ -1179,7 +1233,7 @@ def method_of_images_conductor(
             r_i = np.linalg.norm(r_i_vec)
 
             factor = 1 / (4 * np.pi * conductivity)
-            E = factor * (current * r_r_vec / r_r ** 3 + image_current * r_i_vec / r_i ** 3)
+            E = factor * (current * r_r_vec / r_r**3 + image_current * r_i_vec / r_i**3)
             return E
 
         return {
@@ -1205,11 +1259,14 @@ def method_of_images_conductor(
         raise ValueError("Cannot evaluate at source or image position")
 
     # Superposition
-    potential = current / (4 * np.pi * conductivity * r_r) + \
-                image_current / (4 * np.pi * conductivity * r_i)
+    potential = current / (4 * np.pi * conductivity * r_r) + image_current / (
+        4 * np.pi * conductivity * r_i
+    )
 
     factor = 1 / (4 * np.pi * conductivity)
-    electric_field = factor * (current * r_r_vec / r_r ** 3 + image_current * r_i_vec / r_i ** 3)
+    electric_field = factor * (
+        current * r_r_vec / r_r**3 + image_current * r_i_vec / r_i**3
+    )
 
     current_density = conductivity * electric_field
 
@@ -1230,6 +1287,7 @@ def method_of_images_conductor(
 # 3D CONDUCTION ANALYZER CLASS
 # =============================================================================
 
+
 @dataclass
 class Conduction3DAnalyzer:
     """
@@ -1247,13 +1305,18 @@ class Conduction3DAnalyzer:
     """
 
     conductivity: float | np.ndarray
-    domain_bounds: tuple[tuple[float, float], tuple[float, float], tuple[float, float]] = None
+    domain_bounds: tuple[
+        tuple[float, float], tuple[float, float], tuple[float, float]
+    ] = None
 
     @maxwell_cite(
-        285, 286, 287,
-        part=2, chapter="Conduction in Three Dimensions",
+        285,
+        286,
+        287,
+        part=2,
+        chapter="Conduction in Three Dimensions",
         theory_class="maxwell_original",
-        description="Analyze current flow for given electric field"
+        description="Analyze current flow for given electric field",
     )
     def analyze_current_flow(
         self,
@@ -1285,10 +1348,12 @@ class Conduction3DAnalyzer:
         }
 
     @maxwell_cite(
-        288, 289,
-        part=2, chapter="Conduction in Three Dimensions",
+        288,
+        289,
+        part=2,
+        chapter="Conduction in Three Dimensions",
         theory_class="maxwell_original",
-        description="Analyze anisotropy of conductivity tensor"
+        description="Analyze anisotropy of conductivity tensor",
     )
     def analyze_anisotropy(self) -> dict[str, float | np.ndarray]:
         """
@@ -1308,10 +1373,12 @@ class Conduction3DAnalyzer:
         return result
 
     @maxwell_cite(
-        291, 292,
-        part=2, chapter="Conduction in Three Dimensions",
+        291,
+        292,
+        part=2,
+        chapter="Conduction in Three Dimensions",
         theory_class="maxwell_original",
-        description="Verify continuity for given current distribution"
+        description="Verify continuity for given current distribution",
     )
     def verify_continuity(
         self,
@@ -1376,7 +1443,7 @@ if __name__ == "__main__":
         source_position=np.array([0, 0, 0]),
         current=1.0,
         conductivity=1.0,
-        observation_point=np.array([1, 0, 0])
+        observation_point=np.array([1, 0, 0]),
     )
     print(f"  Point source at origin, I = 1 abA, sigma = 1 S/cm")
     print(f"  At r = (1, 0, 0):")
@@ -1390,7 +1457,7 @@ if __name__ == "__main__":
         sink_position=np.array([0, 0, 0.5]),
         current=1.0,
         conductivity=1.0,
-        observation_point=np.array([1, 0, 0])
+        observation_point=np.array([1, 0, 0]),
     )
     print(f"  Dipole along z-axis")
     print(f"  At r = (1, 0, 0): V = {dipole['potential']:.6f} abV")
@@ -1411,7 +1478,9 @@ if __name__ == "__main__":
     print(f"  Current crossing interface (sigma1=1, sigma2=2):")
     print(f"    J1_normal = {bc['J1_normal']:.3f}, J2_normal = {bc['J2_normal']:.3f}")
     print(f"    Normal BC satisfied: {bc['normal_bc_satisfied']}")
-    print(f"    Refraction angles: theta1 = {bc['refraction_angle1']:.1f} deg, theta2 = {bc['refraction_angle2']:.1f} deg")
+    print(
+        f"    Refraction angles: theta1 = {bc['refraction_angle1']:.1f} deg, theta2 = {bc['refraction_angle2']:.1f} deg"
+    )
 
     print("\n" + "=" * 70)
     print("Module verification complete.")

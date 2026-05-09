@@ -29,16 +29,34 @@ from __future__ import annotations
 __version__ = "1.0.0"
 __author__ = "Maxwell Modernization Project"
 
+# ── Constants and units ───────────────────────────────────────────────
+from maxwell.config.constants import CONST, C
+
 # ── Core primitives ───────────────────────────────────────────────────
 from maxwell.core.charge import PointCharge
 from maxwell.core.field import ElectricField
-from maxwell.core.potential import ElectricPotential
 from maxwell.core.magnet import Magnet
 from maxwell.core.moment import MagneticMoment
-
-# ── Constants and units ───────────────────────────────────────────────
-from maxwell.config.constants import CONST, C
+from maxwell.core.potential import ElectricPotential
 from maxwell.core.units import CGSUnitConverter, MagneticDimensions
+
+# ── Electrokinematics ─────────────────────────────────────────────────
+from maxwell.electrokinematics.network_solver import NetworkAnalyzer
+from maxwell.electromagnetism.energy.electrostatic import (
+    calc_electrostatic_energy_density,
+)
+
+# ── Electromagnetism — Energy ─────────────────────────────────────────
+from maxwell.electromagnetism.energy.magnetic import (
+    calc_magnetic_energy_density,
+    calc_total_magnetic_energy,
+)
+
+# ── Electromagnetism — Fields ─────────────────────────────────────────
+from maxwell.electromagnetism.fields.ampere_maxwell import (
+    AmpereMaxwellLaw,
+    DisplacementCurrent,
+)
 
 # ── Electromagnetism — Forces ────────────────────────────────────────
 from maxwell.electromagnetism.forces.lorentz import LorentzForce
@@ -49,65 +67,47 @@ from maxwell.electromagnetism.induction.faraday import FaradayInduction
 
 # ── Electromagnetism — Theory ─────────────────────────────────────────
 from maxwell.electromagnetism.theory.general_equations import (
-    MaxwellEquations,
     ElectromagneticField,
-)
-
-# ── Electromagnetism — Energy ─────────────────────────────────────────
-from maxwell.electromagnetism.energy.magnetic import (
-    calc_magnetic_energy_density,
-    calc_total_magnetic_energy,
-)
-from maxwell.electromagnetism.energy.electrostatic import (
-    calc_electrostatic_energy_density,
-)
-
-# ── Electromagnetism — Fields ─────────────────────────────────────────
-from maxwell.electromagnetism.fields.ampere_maxwell import (
-    AmpereMaxwellLaw,
-    DisplacementCurrent,
+    MaxwellEquations,
 )
 
 # ── Electrostatics ────────────────────────────────────────────────────
 from maxwell.electrostatics.dielectrics import DielectricMaterial
 
-# ── Electrokinematics ─────────────────────────────────────────────────
-from maxwell.electrokinematics.network_solver import NetworkAnalyzer
-
-# ── Magnetism ─────────────────────────────────────────────────────────
-from maxwell.magnetism.terrestrial_magnetism import GeomagneticElements
-
-# ── Optics ────────────────────────────────────────────────────────────
-from maxwell.optics.wave_equation import PlaneWave
-
-# ── Mathematics ───────────────────────────────────────────────────────
-from maxwell.math.spherical_harmonics import (
-    SphericalHarmonicExpansion,
-    LegendrePolynomial,
-)
-from maxwell.math.elliptic_integrals import EllipticIntegral
+# ── Engineering ───────────────────────────────────────────────────────
+from maxwell.engineering import MagneticCompass, ShipMagnetism
 
 # ── Instruments ───────────────────────────────────────────────────────
 from maxwell.instruments.galvanometers import TangentGalvanometer
 from maxwell.instruments.helmholtz import HelmholtzCoil
 
+# ── Magnetism ─────────────────────────────────────────────────────────
+from maxwell.magnetism.terrestrial_magnetism import GeomagneticElements
+
 # ── Materials ─────────────────────────────────────────────────────────
 from maxwell.materials.constitutive import (
-    Magnetization,
-    ElectricDisplacement,
     Conductivity,
+    ElectricDisplacement,
+    Magnetization,
     Permeability,
 )
 from maxwell.materials.hysteresis import HysteresisLoop
+from maxwell.math.elliptic_integrals import EllipticIntegral
 
-# ── Engineering ───────────────────────────────────────────────────────
-from maxwell.engineering import ShipMagnetism, MagneticCompass
+# ── Mathematics ───────────────────────────────────────────────────────
+from maxwell.math.spherical_harmonics import (
+    LegendrePolynomial,
+    SphericalHarmonicExpansion,
+)
+
+# ── Citation System ───────────────────────────────────────────────────
+from maxwell.meta.citation import get_all_citations, get_citation
 
 # ── Competing Theories ────────────────────────────────────────────────
 from maxwell.molecular.competing_theories import CompetingTheory
 
-# ── Citation System ───────────────────────────────────────────────────
-from maxwell.meta.citation import get_citation, get_all_citations
+# ── Optics ────────────────────────────────────────────────────────────
+from maxwell.optics.wave_equation import PlaneWave
 
 __all__ = [
     # Version

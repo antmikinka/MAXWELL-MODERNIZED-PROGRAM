@@ -25,10 +25,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -74,7 +75,8 @@ class MagneticMolecule:
 
     @maxwell_cite(
         430,
-        part=3, chapter="Molecular Theory",
+        part=3,
+        chapter="Molecular Theory",
         theory_class="maxwell_original",
         description="Calculate torque on molecule in field",
     )
@@ -102,7 +104,8 @@ class MagneticMolecule:
 
     @maxwell_cite(
         430,
-        part=3, chapter="Molecular Theory",
+        part=3,
+        chapter="Molecular Theory",
         theory_class="maxwell_original",
         description="Calculate potential energy of molecule in field",
     )
@@ -130,7 +133,8 @@ class MagneticMolecule:
 
     @maxwell_cite(
         430,
-        part=3, chapter="Molecular Theory",
+        part=3,
+        chapter="Molecular Theory",
         theory_class="maxwell_original",
         description="Rotate molecule toward field direction",
     )
@@ -198,7 +202,8 @@ class MolecularEnsemble:
 
     @maxwell_cite(
         430,
-        part=3, chapter="Molecular Theory",
+        part=3,
+        chapter="Molecular Theory",
         theory_class="maxwell_original",
         description="Calculate net magnetization of ensemble",
     )
@@ -228,7 +233,8 @@ class MolecularEnsemble:
 
     @maxwell_cite(
         430,
-        part=3, chapter="Molecular Theory",
+        part=3,
+        chapter="Molecular Theory",
         theory_class="maxwell_original",
         description="Calculate alignment order parameter",
     )
@@ -273,7 +279,8 @@ class MolecularEnsemble:
 
     @maxwell_cite(
         430,
-        part=3, chapter="Molecular Theory",
+        part=3,
+        chapter="Molecular Theory",
         theory_class="maxwell_original",
         description="Apply external field to all molecules",
     )
@@ -313,7 +320,8 @@ class MolecularEnsemble:
     @classmethod
     @maxwell_cite(
         430,
-        part=3, chapter="Molecular Theory",
+        part=3,
+        chapter="Molecular Theory",
         theory_class="maxwell_original",
         description="Create ensemble with random orientations",
     )
@@ -350,7 +358,7 @@ class MolecularEnsemble:
         molecules = []
         for i in range(n_molecules):
             # Random position in cube
-            pos = np.random.uniform(-0.5, 0.5, 3) * volume**(1/3)
+            pos = np.random.uniform(-0.5, 0.5, 3) * volume ** (1 / 3)
             molecule = MagneticMolecule(
                 magnetic_moment=moment_magnitude,
                 position=pos,
@@ -362,7 +370,8 @@ class MolecularEnsemble:
 
 @maxwell_cite(
     430,
-    part=3, chapter="Molecular Theory",
+    part=3,
+    chapter="Molecular Theory",
     theory_class="maxwell_original",
     description="Calculate molecular field from neighbors",
 )
@@ -420,7 +429,8 @@ def molecular_field(
 
 @maxwell_cite(
     430,
-    part=3, chapter="Molecular Theory",
+    part=3,
+    chapter="Molecular Theory",
     theory_class="maxwell_original",
     description="Calculate Curie temperature from molecular parameters",
 )
@@ -458,7 +468,7 @@ def curie_temperature(
     if exchange_constant > 0:
         # With exchange interaction (typical ferromagnet)
         z = 6  # Approximate coordination number
-        T_c = (2/3) * (z * exchange_constant / k_B)
+        T_c = (2 / 3) * (z * exchange_constant / k_B)
     else:
         # Pure dipole interaction (very weak)
         m = moment_magnitude
@@ -470,7 +480,8 @@ def curie_temperature(
 
 @maxwell_cite(
     430,
-    part=3, chapter="Molecular Theory",
+    part=3,
+    chapter="Molecular Theory",
     theory_class="maxwell_original",
     description="Simulate thermal randomization of molecular orientations",
 )
@@ -521,9 +532,9 @@ def thermal_randomization(
         cos_d = np.cos(delta_theta)
         sin_d = np.sin(delta_theta)
         new_orient = (
-            molecule.orientation * cos_d +
-            np.cross(axis, molecule.orientation) * sin_d +
-            axis * np.dot(axis, molecule.orientation) * (1 - cos_d)
+            molecule.orientation * cos_d
+            + np.cross(axis, molecule.orientation) * sin_d
+            + axis * np.dot(axis, molecule.orientation) * (1 - cos_d)
         )
         new_orient = new_orient / np.linalg.norm(new_orient)
 
@@ -546,7 +557,8 @@ def thermal_randomization(
 
 @maxwell_cite(
     430,
-    part=3, chapter="Molecular Theory",
+    part=3,
+    chapter="Molecular Theory",
     theory_class="maxwell_original",
     description="Verify molecular theory predictions",
 )

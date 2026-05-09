@@ -32,10 +32,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -63,11 +64,12 @@ class Conductivity:
             if self.conductivity > 0:
                 self.resistivity = 1.0 / self.conductivity
             else:
-                self.resistivity = float('inf')
+                self.resistivity = float("inf")
 
     @maxwell_cite(
         609,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate conduction current density J from E",
     )
@@ -88,7 +90,8 @@ class Conductivity:
 
     @maxwell_cite(
         609,
-        part=4, chapter="Constitutive Relations",
+        part=4,
+        chapter="Constitutive Relations",
         theory_class="maxwell_original",
         description="Calculate E from J",
     )
@@ -110,7 +113,8 @@ class Conductivity:
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate conduction current: J = σE",
 )
@@ -141,7 +145,8 @@ def calc_conduction_current(
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate current in wire from E field",
 )
@@ -174,7 +179,8 @@ def calc_wire_current(
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate resistance of conductor",
 )
@@ -208,7 +214,8 @@ def calc_resistance(
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate conductance from conductivity",
 )
@@ -242,7 +249,8 @@ def calc_conductance(
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate power dissipation in conductor",
 )
@@ -283,7 +291,8 @@ def calc_power_dissipation_conduction(
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate conductivity from resistivity",
 )
@@ -303,13 +312,14 @@ def calc_conductivity_from_resistivity(resistivity: float) -> float:
         Part IV, Art. 609: Conductivity-resistivity relation.
     """
     if resistivity <= 0:
-        return float('inf') if resistivity == 0 else 0.0
+        return float("inf") if resistivity == 0 else 0.0
     return 1.0 / resistivity
 
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Verify conduction relations",
 )
@@ -338,7 +348,7 @@ def verify_conduction_relations(
         E_field = np.array([1.0, 0.0, 0.0])
 
     E_field = np.asarray(E_field, dtype=np.float64)
-    resistivity = 1.0 / conductivity if conductivity > 0 else float('inf')
+    resistivity = 1.0 / conductivity if conductivity > 0 else float("inf")
 
     # Calculate J from E
     J = calc_conduction_current(E_field, conductivity)
@@ -347,11 +357,17 @@ def verify_conduction_relations(
     E_from_J = resistivity * J
 
     # Verify E = ρJ
-    E_error = np.linalg.norm(E_field - E_from_J) / np.linalg.norm(E_field) if np.linalg.norm(E_field) > 0 else 0
+    E_error = (
+        np.linalg.norm(E_field - E_from_J) / np.linalg.norm(E_field)
+        if np.linalg.norm(E_field) > 0
+        else 0
+    )
 
     # Verify σ = 1/ρ
     sigma_check = calc_conductivity_from_resistivity(resistivity)
-    sigma_error = abs(sigma_check - conductivity) / conductivity if conductivity > 0 else 0
+    sigma_error = (
+        abs(sigma_check - conductivity) / conductivity if conductivity > 0 else 0
+    )
 
     return {
         "E_field": E_field,
@@ -367,7 +383,8 @@ def verify_conduction_relations(
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Complete conduction analysis",
 )
@@ -396,7 +413,7 @@ def analyze_conduction(
         Dictionary with complete analysis results.
     """
     E_field = np.asarray(E_field, dtype=np.float64)
-    resistivity = 1.0 / conductivity if conductivity > 0 else float('inf')
+    resistivity = 1.0 / conductivity if conductivity > 0 else float("inf")
 
     J = calc_conduction_current(E_field, conductivity)
     I = np.linalg.norm(J) * cross_section_area
@@ -404,8 +421,10 @@ def analyze_conduction(
     V = np.linalg.norm(E_field) * conductor_length
 
     # Power
-    P_Joule = I ** 2 * R if R < float('inf') else 0
-    P_field = calc_power_dissipation_conduction(E_field, conductivity, conductor_length * cross_section_area)
+    P_Joule = I**2 * R if R < float("inf") else 0
+    P_field = calc_power_dissipation_conduction(
+        E_field, conductivity, conductor_length * cross_section_area
+    )
 
     return {
         "E_field": E_field,
@@ -429,7 +448,8 @@ calc_current_density = calc_conduction_current
 
 @maxwell_cite(
     609,
-    part=4, chapter="Constitutive Relations",
+    part=4,
+    chapter="Constitutive Relations",
     theory_class="maxwell_original",
     description="Calculate Joule heating power",
 )
@@ -451,4 +471,4 @@ def calc_joule_heating(current: float, resistance: float) -> float:
     Reference:
         Part IV, Art. 609: Joule heating.
     """
-    return current ** 2 * resistance
+    return current**2 * resistance

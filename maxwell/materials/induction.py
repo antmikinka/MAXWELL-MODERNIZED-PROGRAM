@@ -26,10 +26,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 class SubstanceInduction(Enum):
@@ -57,7 +58,8 @@ class SubstanceInduction(Enum):
     @classmethod
     @maxwell_cite(
         426,
-        part=3, chapter="Induced Magnetization",
+        part=3,
+        chapter="Induced Magnetization",
         theory_class="maxwell_original",
         description="Classify by susceptibility",
     )
@@ -117,7 +119,8 @@ class MagneticSusceptibility:
     @classmethod
     @maxwell_cite(
         426,
-        part=3, chapter="Induced Magnetization",
+        part=3,
+        chapter="Induced Magnetization",
         theory_class="maxwell_original",
         description="Create susceptibility from I and H",
     )
@@ -202,7 +205,8 @@ class InducedMagnetization:
     @classmethod
     @maxwell_cite(
         424,
-        part=3, chapter="Induced Magnetization",
+        part=3,
+        chapter="Induced Magnetization",
         theory_class="maxwell_original",
         description="Create induced magnetization from κ and H",
     )
@@ -232,7 +236,8 @@ class InducedMagnetization:
 
 @maxwell_cite(
     424,
-    part=3, chapter="Induced Magnetization",
+    part=3,
+    chapter="Induced Magnetization",
     theory_class="maxwell_original",
     description="Calculate induced magnetization I = κH",
 )
@@ -264,7 +269,8 @@ def calc_induced_magnetization(
 
 @maxwell_cite(
     425,
-    part=3, chapter="Induced Magnetization",
+    part=3,
+    chapter="Induced Magnetization",
     theory_class="maxwell_original",
     description="Calculate B field in magnetic material",
 )
@@ -296,7 +302,8 @@ def calc_B_in_material(
 
 @maxwell_cite(
     426,
-    part=3, chapter="Induced Magnetization",
+    part=3,
+    chapter="Induced Magnetization",
     theory_class="maxwell_original",
     description="Determine susceptibility from measurements",
 )
@@ -336,8 +343,11 @@ def determine_susceptibility(
 
 
 @maxwell_cite(
-    424, 425, 426,
-    part=3, chapter="Induced Magnetization",
+    424,
+    425,
+    426,
+    part=3,
+    chapter="Induced Magnetization",
     theory_class="maxwell_original",
     description="Force on paramagnetic/diamagnetic body in field gradient",
 )
@@ -386,7 +396,9 @@ def force_on_induced_magnet(
     for i in range(3):
         delta = np.zeros(3)
         delta[i] = h
-        grad_H2[i] = (H_squared(position + delta) - H_squared(position - delta)) / (2 * h)
+        grad_H2[i] = (H_squared(position + delta) - H_squared(position - delta)) / (
+            2 * h
+        )
 
     # F = (κ/2) V ∇(H²) in CGS approximation
     F = 0.5 * susceptibility * volume * grad_H2
@@ -396,7 +408,8 @@ def force_on_induced_magnet(
 
 @maxwell_cite(
     426,
-    part=3, chapter="Induced Magnetization",
+    part=3,
+    chapter="Induced Magnetization",
     theory_class="maxwell_original",
     description="Typical susceptibility values for common materials",
 )
@@ -424,7 +437,6 @@ def typical_susceptibility_values() -> dict[str, dict[str, float]]:
         "bismuth": {"kappa": -1.66e-4, "type": "diamagnetic"},
         "pyrolytic_carbon": {"kappa": -4.5e-4, "type": "diamagnetic"},
         "graphite": {"kappa": -8.0e-5, "type": "diamagnetic"},
-
         # Paramagnetic (κ > 0, small)
         "aluminum": {"kappa": 2.2e-5, "type": "paramagnetic"},
         "platinum": {"kappa": 2.9e-4, "type": "paramagnetic"},
@@ -432,9 +444,12 @@ def typical_susceptibility_values() -> dict[str, dict[str, float]]:
         "oxygen_gas": {"kappa": 1.9e-6, "type": "paramagnetic"},
         "manganese": {"kappa": 3.7e-4, "type": "paramagnetic"},
         "titanium": {"kappa": 1.8e-4, "type": "paramagnetic"},
-
         # Ferromagnetic (κ >> 0, nonlinear)
-        "iron_pure": {"kappa": 5000, "type": "ferromagnetic", "note": "approximate, varies with H"},
+        "iron_pure": {
+            "kappa": 5000,
+            "type": "ferromagnetic",
+            "note": "approximate, varies with H",
+        },
         "iron_electrical": {"kappa": 4000, "type": "ferromagnetic"},
         "steel": {"kappa": 1000, "type": "ferromagnetic"},
         "nickel": {"kappa": 600, "type": "ferromagnetic"},

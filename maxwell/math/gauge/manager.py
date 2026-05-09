@@ -35,13 +35,16 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
-def _numerical_gradient(f_func: callable, position: np.ndarray, delta: float) -> np.ndarray:
+def _numerical_gradient(
+    f_func: callable, position: np.ndarray, delta: float
+) -> np.ndarray:
     """Calculate numerical gradient of scalar field."""
     grad = np.zeros(3)
     for i in range(3):
@@ -53,7 +56,9 @@ def _numerical_gradient(f_func: callable, position: np.ndarray, delta: float) ->
     return grad
 
 
-def _numerical_divergence(F_func: callable, position: np.ndarray, delta: float) -> float:
+def _numerical_divergence(
+    F_func: callable, position: np.ndarray, delta: float
+) -> float:
     """Calculate numerical divergence of vector field."""
     div = 0.0
     for i in range(3):
@@ -85,8 +90,10 @@ class GaugeTransformation:
     delta: float = 1e-6
 
     @maxwell_cite(
-        616, 617,
-        part=4, chapter="Gauge Transformations",
+        616,
+        617,
+        part=4,
+        chapter="Gauge Transformations",
         theory_class="maxwell_original",
         description="Apply gauge transformation",
     )
@@ -143,8 +150,10 @@ class GaugeTransformation:
         return A_prime, phi_prime
 
     @maxwell_cite(
-        616, 617,
-        part=4, chapter="Gauge Transformations",
+        616,
+        617,
+        part=4,
+        chapter="Gauge Transformations",
         theory_class="maxwell_original",
         description="Verify fields unchanged by gauge transform",
     )
@@ -233,11 +242,15 @@ class GaugeTransformation:
             "E_original": E_orig,
             "E_transformed": E_prime,
             "E_error": E_rel_error,
-            "field_invariant": bool(B_rel_error < tolerance and E_rel_error < tolerance),
+            "field_invariant": bool(
+                B_rel_error < tolerance and E_rel_error < tolerance
+            ),
         }
 
 
-def _numerical_curl_simple(F_func: callable, position: np.ndarray, delta: float) -> np.ndarray:
+def _numerical_curl_simple(
+    F_func: callable, position: np.ndarray, delta: float
+) -> np.ndarray:
     """Simple numerical curl."""
     curl = np.zeros(3)
 
@@ -272,8 +285,10 @@ def _numerical_curl_simple(F_func: callable, position: np.ndarray, delta: float)
 
 
 @maxwell_cite(
-    616, 617,
-    part=4, chapter="Gauge Transformations",
+    616,
+    617,
+    part=4,
+    chapter="Gauge Transformations",
     theory_class="maxwell_original",
     description="Apply Coulomb gauge transformation",
 )
@@ -302,6 +317,7 @@ def apply_coulomb_gauge(
     Returns:
         Tuple of (A_coulomb, phi_coulomb) functions.
     """
+
     def A_coulomb(r, t=time):
         return np.asarray(A_function(r, t), dtype=np.float64)
 
@@ -312,8 +328,10 @@ def apply_coulomb_gauge(
 
 
 @maxwell_cite(
-    616, 617,
-    part=4, chapter="Gauge Transformations",
+    616,
+    617,
+    part=4,
+    chapter="Gauge Transformations",
     theory_class="maxwell_original",
     description="Apply Lorenz gauge transformation",
 )
@@ -347,6 +365,7 @@ def apply_lorenz_gauge(
     Returns:
         Tuple of (A_lorenz, phi_lorenz) functions.
     """
+
     def A_lorenz(r, t=time):
         return np.asarray(A_function(r, t), dtype=np.float64)
 
@@ -357,8 +376,10 @@ def apply_lorenz_gauge(
 
 
 @maxwell_cite(
-    616, 617,
-    part=4, chapter="Gauge Transformations",
+    616,
+    617,
+    part=4,
+    chapter="Gauge Transformations",
     theory_class="maxwell_original",
     description="Verify gauge condition",
 )
@@ -392,7 +413,8 @@ def verify_gauge_condition(
 
     div_A = _numerical_divergence(
         lambda r: np.asarray(A_function(r, time), dtype=np.float64),
-        position, 1e-6,
+        position,
+        1e-6,
     )
 
     if gauge == "coulomb":
@@ -422,8 +444,10 @@ def verify_gauge_condition(
 
 
 @maxwell_cite(
-    616, 617,
-    part=4, chapter="Gauge Transformations",
+    616,
+    617,
+    part=4,
+    chapter="Gauge Transformations",
     theory_class="maxwell_original",
     description="Transform potentials between gauges",
 )
@@ -479,8 +503,10 @@ def transform_potentials(
 
 
 @maxwell_cite(
-    616, 617,
-    part=4, chapter="Gauge Transformations",
+    616,
+    617,
+    part=4,
+    chapter="Gauge Transformations",
     theory_class="maxwell_original",
     description="Complete gauge transformation analysis",
 )
@@ -522,7 +548,8 @@ def analyze_gauge_transformations(
 
         div_A = _numerical_divergence(
             lambda r, t=time: np.asarray(A_function(r, t), dtype=np.float64),
-            pos, 1e-6,
+            pos,
+            1e-6,
         )
         div_A_values.append(div_A)
 

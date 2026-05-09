@@ -41,10 +41,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -75,14 +76,19 @@ class Circuit:
     def __post_init__(self):
         """Validate parameters."""
         if self.self_inductance < 0:
-            raise ValueError(f"Self-inductance must be non-negative, got {self.self_inductance}")
+            raise ValueError(
+                f"Self-inductance must be non-negative, got {self.self_inductance}"
+            )
         if self.resistance < 0:
             raise ValueError(f"Resistance must be non-negative, got {self.resistance}")
 
     @classmethod
     @maxwell_cite(
-        578, 579, 580,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        578,
+        579,
+        580,
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Create circuit from self-inductance and resistance",
     )
@@ -117,7 +123,8 @@ class Circuit:
 
     @maxwell_cite(
         578,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Calculate magnetic energy stored in circuit",
     )
@@ -141,11 +148,12 @@ class Circuit:
             >>> energy = circuit.energy()
             >>> print(f"T = {energy} erg")  # T = 125.0 erg
         """
-        return 0.5 * self.self_inductance * self.current ** 2
+        return 0.5 * self.self_inductance * self.current**2
 
     @maxwell_cite(
         579,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Calculate induced EMF from changing current",
     )
@@ -180,8 +188,10 @@ class Circuit:
         return -self.self_inductance * dI_dt
 
     @maxwell_cite(
-        578, 579,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        578,
+        579,
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Calculate circuit time constant τ = L/R",
     )
@@ -212,7 +222,7 @@ class Circuit:
             >>> print(f"τ = {tau} s")  # τ = 5.0 s
         """
         if self.resistance == 0:
-            return float('inf')  # Pure inductance, current never decays
+            return float("inf")  # Pure inductance, current never decays
         return self.self_inductance / self.resistance
 
 
@@ -261,8 +271,10 @@ class CoupledCircuits:
 
     @classmethod
     @maxwell_cite(
-        581, 582,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        581,
+        582,
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Create coupled circuits from two circuits and mutual inductance",
     )
@@ -331,8 +343,10 @@ class CoupledCircuits:
         return self.mutual_inductance / np.sqrt(L1 * L2)
 
     @maxwell_cite(
-        581, 582,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        581,
+        582,
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Calculate total energy of coupled circuits",
     )
@@ -368,11 +382,12 @@ class CoupledCircuits:
         M = self.mutual_inductance
 
         # T = (1/2) L₁ I₁² + (1/2) L₂ I₂² + M I₁ I₂
-        return 0.5 * L1 * I1 ** 2 + 0.5 * L2 * I2 ** 2 + M * I1 * I2
+        return 0.5 * L1 * I1**2 + 0.5 * L2 * I2**2 + M * I1 * I2
 
     @maxwell_cite(
         583,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Calculate EMF induced in circuit 1 by circuit 2",
     )
@@ -408,7 +423,8 @@ class CoupledCircuits:
 
     @maxwell_cite(
         583,
-        part=4, chapter="Circuit Dynamics and Mutual Induction",
+        part=4,
+        chapter="Circuit Dynamics and Mutual Induction",
         theory_class="maxwell_original",
         description="Calculate EMF induced in circuit 2 by circuit 1",
     )
@@ -444,7 +460,8 @@ class CoupledCircuits:
 
 @maxwell_cite(
     580,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Calculate self-inductance of a solenoid: L = 4πn²A/l",
 )
@@ -497,12 +514,15 @@ def calc_solenoid_inductance(
 
     # n = turns per unit length = N/l
     # L = 4π n² A l = 4π (N/l)² A l = 4π N² A / l
-    return 4.0 * np.pi * (turns ** 2) * area / length
+    return 4.0 * np.pi * (turns**2) * area / length
 
 
 @maxwell_cite(
-    578, 579, 580,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    578,
+    579,
+    580,
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Calculate self-inductance from geometry parameters",
 )
@@ -567,7 +587,7 @@ def calc_self_inductance(
         if a >= b:
             raise ValueError("Inner radius must be less than outer radius")
 
-        return 2.0 * np.pi * (n ** 2) * h * np.log(b / a)
+        return 2.0 * np.pi * (n**2) * h * np.log(b / a)
 
     elif geometry_type == "circular_loop":
         # Approximate formula for circular loop of wire
@@ -591,8 +611,10 @@ def calc_self_inductance(
 
 
 @maxwell_cite(
-    581, 582,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    581,
+    582,
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Calculate mutual inductance between two circuits",
 )
@@ -663,7 +685,7 @@ def calc_mutual_inductance(
         # Coupling decreases with separation (simplified model)
         # k ≈ l / sqrt(l² + d²) for coaxial solenoids
         if d > 0:
-            coupling = l / np.sqrt(l ** 2 + d ** 2)
+            coupling = l / np.sqrt(l**2 + d**2)
         else:
             coupling = 1.0
 
@@ -686,11 +708,11 @@ def calc_mutual_inductance(
         # Simplified formula for mutual inductance of coaxial loops
         # M ≈ (2π/c²) * (r1² r2²) / (r1² + r2² + d²)^(3/2)
         # In CGS, this becomes (simplified):
-        denom = (r1 ** 2 + r2 ** 2 + d ** 2) ** 1.5
+        denom = (r1**2 + r2**2 + d**2) ** 1.5
         if denom == 0:
-            return float('inf')  # Loops coincident
+            return float("inf")  # Loops coincident
 
-        return 2.0 * np.pi * (r1 ** 2) * (r2 ** 2) / denom
+        return 2.0 * np.pi * (r1**2) * (r2**2) / denom
 
     elif circuit1_type == "parallel_wires" and circuit2_type == "parallel_wires":
         # Two parallel wires (mutual inductance per unit length)
@@ -715,7 +737,8 @@ def calc_mutual_inductance(
 
 @maxwell_cite(
     584,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Calculate coupling coefficient: k = M/√(L₁L₂)",
 )
@@ -772,7 +795,8 @@ def calc_coupling_coefficient(
 
 @maxwell_cite(
     583,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Calculate EMF from mutual inductance: EMF = -M·dI/dt",
 )
@@ -820,7 +844,8 @@ def calc_emf_from_mutual_inductance(
 
 @maxwell_cite(
     584,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Calculate force between circuits: F = I₁I₂ ∂M/∂x",
 )
@@ -865,7 +890,8 @@ def calc_force_between_circuits(
 
 @maxwell_cite(
     584,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Calculate torque between circuits: τ = I₁I₂ ∂M/∂θ",
 )
@@ -909,8 +935,15 @@ def calc_torque_between_circuits(
 
 
 @maxwell_cite(
-    578, 579, 580, 581, 582, 583, 584,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    578,
+    579,
+    580,
+    581,
+    582,
+    583,
+    584,
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Complete analysis of circuit system with mutual inductances",
 )
@@ -983,7 +1016,7 @@ def analyze_circuit_system(
 
     # Calculate energies
     # Self energies: T_i = (1/2) L_i I_i²
-    self_energies = [0.5 * c.self_inductance * c.current ** 2 for c in circuits]
+    self_energies = [0.5 * c.self_inductance * c.current**2 for c in circuits]
 
     # Mutual energies: T_ij = M_ij I_i I_j
     mutual_energies = {}
@@ -1015,8 +1048,11 @@ def analyze_circuit_system(
 
 
 @maxwell_cite(
-    578, 581, 582,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    578,
+    581,
+    582,
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Verify energy conservation in coupled circuit system",
 )
@@ -1075,7 +1111,7 @@ def verify_energy_conservation(
         }
 
     # Method 1: Sum of contributions
-    self_energy_total = sum(0.5 * c.self_inductance * c.current ** 2 for c in circuits)
+    self_energy_total = sum(0.5 * c.self_inductance * c.current**2 for c in circuits)
 
     mutual_energy_total = 0.0
     for (i, j), M in mutual_inductances.items():
@@ -1101,7 +1137,7 @@ def verify_energy_conservation(
     if energy_sum != 0:
         relative_error = abs(energy_sum - energy_matrix) / abs(energy_sum)
     else:
-        relative_error = 0.0 if energy_matrix == 0 else float('inf')
+        relative_error = 0.0 if energy_matrix == 0 else float("inf")
 
     verified = relative_error <= tolerance
 
@@ -1117,8 +1153,15 @@ def verify_energy_conservation(
 
 
 @maxwell_cite(
-    578, 579, 580, 581, 582, 583, 584,
-    part=4, chapter="Circuit Dynamics and Mutual Induction",
+    578,
+    579,
+    580,
+    581,
+    582,
+    583,
+    584,
+    part=4,
+    chapter="Circuit Dynamics and Mutual Induction",
     theory_class="maxwell_original",
     description="Verify complete circuit dynamics theory",
 )
@@ -1151,7 +1194,7 @@ def verify_circuit_dynamics(
     # Test 1: Self-inductance energy
     L = 10.0
     I = 5.0
-    expected_energy = 0.5 * L * I ** 2
+    expected_energy = 0.5 * L * I**2
 
     circuit = Circuit(self_inductance=L, resistance=1.0, current=I)
     computed_energy = circuit.energy()
@@ -1159,7 +1202,8 @@ def verify_circuit_dynamics(
     results["self_inductance_energy"] = {
         "expected": expected_energy,
         "computed": computed_energy,
-        "verified": abs(expected_energy - computed_energy) <= tolerance * expected_energy,
+        "verified": abs(expected_energy - computed_energy)
+        <= tolerance * expected_energy,
     }
 
     # Test 2: Mutual inductance energy (two circuits)
@@ -1172,7 +1216,7 @@ def verify_circuit_dynamics(
     coupled = CoupledCircuits(c1, c2, mutual_inductance=M)
 
     # Scalar formula
-    expected_total = 0.5 * L1 * I1 ** 2 + 0.5 * L2 * I2 ** 2 + M * I1 * I2
+    expected_total = 0.5 * L1 * I1**2 + 0.5 * L2 * I2**2 + M * I1 * I2
     computed_total = coupled.total_energy()
 
     results["mutual_inductance_energy"] = {
@@ -1210,15 +1254,19 @@ def verify_circuit_dynamics(
     results["induced_emf"] = {
         "self_expected": expected_self_emf,
         "self_computed": computed_self_emf,
-        "self_verified": abs(expected_self_emf - computed_self_emf) <= tolerance * abs(expected_self_emf),
+        "self_verified": abs(expected_self_emf - computed_self_emf)
+        <= tolerance * abs(expected_self_emf),
         "mutual_expected": expected_mutual_emf,
         "mutual_computed_1": computed_mutual_emf_1,
         "mutual_computed_2": computed_mutual_emf_2,
-        "mutual_symmetric": abs(computed_mutual_emf_1 - computed_mutual_emf_2) <= tolerance,
+        "mutual_symmetric": abs(computed_mutual_emf_1 - computed_mutual_emf_2)
+        <= tolerance,
         "verified": (
-            abs(expected_self_emf - computed_self_emf) <= tolerance * abs(expected_self_emf) and
-            abs(expected_mutual_emf - computed_mutual_emf_1) <= tolerance * abs(expected_mutual_emf) and
-            abs(computed_mutual_emf_1 - computed_mutual_emf_2) <= tolerance
+            abs(expected_self_emf - computed_self_emf)
+            <= tolerance * abs(expected_self_emf)
+            and abs(expected_mutual_emf - computed_mutual_emf_1)
+            <= tolerance * abs(expected_mutual_emf)
+            and abs(computed_mutual_emf_1 - computed_mutual_emf_2) <= tolerance
         ),
     }
 

@@ -34,10 +34,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -77,7 +78,8 @@ class MolecularCurrent:
 
     @maxwell_cite(
         832,
-        part=4, chapter="Molecular Currents",
+        part=4,
+        chapter="Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate magnetic moment of molecular current",
     )
@@ -101,7 +103,8 @@ class MolecularCurrent:
 
     @maxwell_cite(
         833,
-        part=4, chapter="Molecular Currents",
+        part=4,
+        chapter="Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate magnetic field at distance",
     )
@@ -138,13 +141,14 @@ class MolecularCurrent:
 
         # Dipole field: B = (3(m·r̂)r̂ - m) / r³
         m_dot_r = np.dot(m_vec, r_hat)
-        B = (3.0 * m_dot_r * r_hat - m_vec) / (r ** 3)
+        B = (3.0 * m_dot_r * r_hat - m_vec) / (r**3)
 
         return B
 
     @maxwell_cite(
         834,
-        part=4, chapter="Molecular Currents",
+        part=4,
+        chapter="Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate vector potential",
     )
@@ -177,7 +181,7 @@ class MolecularCurrent:
         m_vec = self.magnetic_moment() * self.normal
 
         # Vector potential: A = (m × r̂) / r²
-        A = np.cross(m_vec, r_hat) / (r ** 2)
+        A = np.cross(m_vec, r_hat) / (r**2)
 
         return A
 
@@ -200,7 +204,8 @@ class AmperesTheory:
 
     @maxwell_cite(
         835,
-        part=4, chapter="Molecular Currents",
+        part=4,
+        chapter="Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate magnetization from aligned currents",
     )
@@ -230,7 +235,8 @@ class AmperesTheory:
 
     @maxwell_cite(
         836,
-        part=4, chapter="Molecular Currents",
+        part=4,
+        chapter="Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate magnetic susceptibility",
     )
@@ -264,13 +270,14 @@ class AmperesTheory:
             return 0.0
 
         # Curie constant (simplified)
-        C = (self.number_density * molecular_moment ** 2) / (3.0 * 1.38e-16)
+        C = (self.number_density * molecular_moment**2) / (3.0 * 1.38e-16)
 
         return C / temperature
 
     @maxwell_cite(
         837,
-        part=4, chapter="Molecular Currents",
+        part=4,
+        chapter="Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate bound current density",
     )
@@ -298,7 +305,8 @@ class AmperesTheory:
 
 @maxwell_cite(
     832,
-    part=4, chapter="Molecular Currents",
+    part=4,
+    chapter="Molecular Currents",
     theory_class="maxwell_original",
     description="Calculate molecular magnetic moment",
 )
@@ -327,7 +335,8 @@ def calc_molecular_moment(current: float, area: float) -> float:
 
 @maxwell_cite(
     833,
-    part=4, chapter="Molecular Currents",
+    part=4,
+    chapter="Molecular Currents",
     theory_class="maxwell_original",
     description="Calculate molecular field at distance",
 )
@@ -358,7 +367,7 @@ def calc_molecular_field(
     if distance <= 0:
         return (0.0, 0.0)
 
-    r_cubed = distance ** 3
+    r_cubed = distance**3
 
     B_radial = (2.0 * molecular_moment / r_cubed) * np.cos(angle)
     B_tangential = -(molecular_moment / r_cubed) * np.sin(angle)
@@ -367,8 +376,17 @@ def calc_molecular_field(
 
 
 @maxwell_cite(
-    832, 833, 834, 835, 836, 837, 838, 839, 840,
-    part=4, chapter="Molecular Currents",
+    832,
+    833,
+    834,
+    835,
+    836,
+    837,
+    838,
+    839,
+    840,
+    part=4,
+    chapter="Molecular Currents",
     theory_class="maxwell_original",
     description="Verify Ampere's theory relations",
 )
@@ -413,8 +431,10 @@ def verify_amperes_theory(
     # Verify dipole field relation
     # For dipole field: B_r = (2m/r³)*cos(θ), B_θ = -(m/r³)*sin(θ)
     # Magnitude: |B| = (m/r³) * sqrt(4cos²(θ) + sin²(θ))
-    B_expected = (m / (distance ** 3)) * np.sqrt(4 * np.cos(angle)**2 + np.sin(angle)**2)
-    B_magnitude = np.sqrt(B_r ** 2 + B_θ ** 2)
+    B_expected = (m / (distance**3)) * np.sqrt(
+        4 * np.cos(angle) ** 2 + np.sin(angle) ** 2
+    )
+    B_magnitude = np.sqrt(B_r**2 + B_θ**2)
     field_error = abs(B_magnitude - B_expected) / B_expected if B_expected > 0 else 0
 
     # Verify magnetization
@@ -436,13 +456,24 @@ def verify_amperes_theory(
         "field_error": field_error,
         "magnetization": M,
         "magnetization_error": M_error,
-        "verified": bool(m_error < tolerance and field_error < tolerance and M_error < tolerance),
+        "verified": bool(
+            m_error < tolerance and field_error < tolerance and M_error < tolerance
+        ),
     }
 
 
 @maxwell_cite(
-    832, 833, 834, 835, 836, 837, 838, 839, 840,
-    part=4, chapter="Molecular Currents",
+    832,
+    833,
+    834,
+    835,
+    836,
+    837,
+    838,
+    839,
+    840,
+    part=4,
+    chapter="Molecular Currents",
     theory_class="maxwell_original",
     description="Complete analysis of Ampere's theory",
 )
@@ -479,16 +510,13 @@ def analyze_amperes_theory(
     """
     m = calc_molecular_moment(current, area)
 
-    at = AmperesTheory(
-        number_density=number_density,
-        alignment_factor=alignment_factor
-    )
+    at = AmperesTheory(number_density=number_density, alignment_factor=alignment_factor)
 
     M = at.magnetization(m)
     chi = at.susceptibility(m, temperature, applied_field)
 
     # Field at characteristic distance
-    char_distance = (number_density ** (-1/3))  # Average inter-atomic distance
+    char_distance = number_density ** (-1 / 3)  # Average inter-atomic distance
     B_r, B_θ = calc_molecular_field(m, char_distance, 0)
 
     return {

@@ -22,12 +22,15 @@ References:
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Callable
+
 import numpy as np
-from maxwell.meta.citation import maxwell_cite
+
 from maxwell.core.charge import PointCharge
 from maxwell.core.field import ElectricField, electric_flux
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -55,7 +58,8 @@ class SurfaceIntegral:
 
     @maxwell_cite(
         75,
-        part=1, chapter="Mathematical Definitions",
+        part=1,
+        chapter="Mathematical Definitions",
         theory_class="maxwell_original",
         description="Surface integral of electric induction",
     )
@@ -80,7 +84,8 @@ class SurfaceIntegral:
 
 @maxwell_cite(
     75,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Surface integral of electric induction through arbitrary surface",
 )
@@ -145,7 +150,8 @@ def surface_integral_induction(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Gauss's law — induction through closed surface",
 )
@@ -185,7 +191,8 @@ def gauss_law(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Gauss's law for spherical surface — point charge at center",
 )
@@ -216,10 +223,10 @@ def gauss_sphere(
     R = sphere_radius
 
     # Field magnitude at surface
-    E_mag = q / (R ** 2)
+    E_mag = q / (R**2)
 
     # Surface area
-    area = 4.0 * np.pi * (R ** 2)
+    area = 4.0 * np.pi * (R**2)
 
     # Flux = E * A (field is normal to surface everywhere)
     flux = E_mag * area
@@ -239,7 +246,8 @@ def gauss_sphere(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Gauss's law — charge outside surface contributes zero flux",
 )
@@ -278,7 +286,8 @@ def gauss_external_charge(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Gauss's law for cylindrical symmetry — line charge",
 )
@@ -335,7 +344,8 @@ def gauss_cylinder(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Gauss's law for planar symmetry — infinite charged plane",
 )
@@ -389,7 +399,8 @@ def gauss_plane(
 
 @maxwell_cite(
     82,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Lines of electric induction — Faraday's concept",
 )
@@ -420,6 +431,7 @@ def trace_induction_lines(
     Reference:
         Part I, Art. 82: Lines of electric induction.
     """
+
     def field_at(point: np.ndarray) -> np.ndarray:
         """Calculate E at a point from all source charges."""
         E = np.zeros(3)
@@ -428,7 +440,7 @@ def trace_induction_lines(
             r_mag = np.linalg.norm(r_vec)
             if r_mag > 1e-10:
                 r_hat = r_vec / r_mag
-                E += charge.q * r_hat / (r_mag ** 2)
+                E += charge.q * r_hat / (r_mag**2)
         return E
 
     lines = []
@@ -462,7 +474,8 @@ def trace_induction_lines(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Differential form of Gauss's law — divergence theorem",
 )
@@ -533,7 +546,8 @@ def divergence_theorem(
 
 @maxwell_cite(
     75,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Surface integral through sphere — explicit calculation",
 )
@@ -589,10 +603,14 @@ def surface_integral_sphere(
             point = center + np.array([x, y, z])
 
             # Area element vector (points radially outward)
-            dA_mag = (R ** 2) * sin_theta * dtheta * dphi
-            r_hat = np.array([np.sin(theta) * np.cos(phi),
-                              np.sin(theta) * np.sin(phi),
-                              np.cos(theta)])
+            dA_mag = (R**2) * sin_theta * dtheta * dphi
+            r_hat = np.array(
+                [
+                    np.sin(theta) * np.cos(phi),
+                    np.sin(theta) * np.sin(phi),
+                    np.cos(theta),
+                ]
+            )
             dA = dA_mag * r_hat
 
             # Flux through this element
@@ -604,7 +622,8 @@ def surface_integral_sphere(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Verify Gauss's law numerically",
 )
@@ -651,13 +670,12 @@ def verify_gauss_law_numerical(
             r_mag = np.linalg.norm(r_vec)
             if r_mag > 1e-10:
                 r_hat = r_vec / r_mag
-                E += charge.q * r_hat / (r_mag ** 2)
+                E += charge.q * r_hat / (r_mag**2)
         return E
 
     # Numerical surface integral
     numerical_flux = surface_integral_sphere(
-        field_at, sphere_center, sphere_radius,
-        n_theta=100, n_phi=100
+        field_at, sphere_center, sphere_radius, n_theta=100, n_phi=100
     )
 
     difference = abs(analytical_flux - numerical_flux)
@@ -676,7 +694,8 @@ def verify_gauss_law_numerical(
 
 @maxwell_cite(
     76,
-    part=1, chapter="Mathematical Definitions",
+    part=1,
+    chapter="Mathematical Definitions",
     theory_class="maxwell_original",
     description="Inverse-square law from Gauss's law",
 )

@@ -12,9 +12,9 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -262,8 +262,13 @@ def plot_thermal_gradients(
     X, Y = np.meshgrid(x, y)
 
     result = calc_thermal_gradients(
-        X, Y, sigma=sigma, k_thermal=k_thermal,
-        E0=E0, T_boundary=T_boundary, geometry=geometry,
+        X,
+        Y,
+        sigma=sigma,
+        k_thermal=k_thermal,
+        E0=E0,
+        T_boundary=T_boundary,
+        geometry=geometry,
     )
 
     T = result["T"]
@@ -276,7 +281,9 @@ def plot_thermal_gradients(
 
     # Temperature contour fill
     cf = ax.contourf(
-        X, Y, T,
+        X,
+        Y,
+        T,
         levels=30,
         cmap="hot",
         vmin=T_boundary,
@@ -286,7 +293,9 @@ def plot_thermal_gradients(
 
     # Temperature contour lines
     contours = ax.contour(
-        X, Y, T,
+        X,
+        Y,
+        T,
         levels=10,
         colors="white",
         linewidths=0.5,
@@ -305,24 +314,43 @@ def plot_thermal_gradients(
             q_x_norm = q_x / q_mag_max
             q_y_norm = q_y / q_mag_max
             ax.quiver(
-                X[::skip, ::skip], Y[::skip, ::skip],
-                q_x_norm[::skip, ::skip], q_y_norm[::skip, ::skip],
-                color="cyan", alpha=0.6, scale=20, width=0.003,
+                X[::skip, ::skip],
+                Y[::skip, ::skip],
+                q_x_norm[::skip, ::skip],
+                q_y_norm[::skip, ::skip],
+                color="cyan",
+                alpha=0.6,
+                scale=20,
+                width=0.003,
                 label="Heat flux direction",
             )
 
     # Mark hot spot
     hot_idx = np.unravel_index(np.argmax(T), T.shape)
-    ax.plot(X[hot_idx], Y[hot_idx], "w*", markersize=15, label=f"Hot spot: {T[hot_idx]:.1f} K")
+    ax.plot(
+        X[hot_idx],
+        Y[hot_idx],
+        "w*",
+        markersize=15,
+        label=f"Hot spot: {T[hot_idx]:.1f} K",
+    )
 
     # Geometry outline
     if geometry == "rectangular":
-        rect = plt.Rectangle((-1.5, -0.75), 3.0, 1.5, fill=False,
-                            edgecolor="white", linewidth=2, linestyle="--")
+        rect = plt.Rectangle(
+            (-1.5, -0.75),
+            3.0,
+            1.5,
+            fill=False,
+            edgecolor="white",
+            linewidth=2,
+            linestyle="--",
+        )
         ax.add_patch(rect)
     elif geometry == "circular":
-        circle = plt.Circle((0, 0), 1.0, fill=False,
-                          edgecolor="white", linewidth=2, linestyle="--")
+        circle = plt.Circle(
+            (0, 0), 1.0, fill=False, edgecolor="white", linewidth=2, linestyle="--"
+        )
         ax.add_patch(circle)
 
     ax.set_xlabel("x (cm)")
@@ -391,8 +419,8 @@ def plot_joule_heat_distribution(
         # Model: current crowding at a constriction point
         r = np.sqrt(X**2 + Y**2)
         # Base field plus constriction enhancement
-        E_x = E0 * (1.0 + 3.0 * np.exp(-r**2 / 0.5))
-        E_y = E0 * 0.5 * (X / (r + 0.1)) * np.exp(-r**2 / 0.5)
+        E_x = E0 * (1.0 + 3.0 * np.exp(-(r**2) / 0.5))
+        E_y = E0 * 0.5 * (X / (r + 0.1)) * np.exp(-(r**2) / 0.5)
     else:
         raise ValueError("geometry must be 'uniform' or 'nonuniform'")
 
@@ -405,7 +433,9 @@ def plot_joule_heat_distribution(
 
     vmax = np.max(p)
     cf = ax.contourf(
-        X, Y, p,
+        X,
+        Y,
+        p,
         levels=30,
         cmap="YlOrRd",
         vmin=0,
@@ -420,16 +450,14 @@ def plot_joule_heat_distribution(
     if geometry == "nonuniform":
         # Draw conductor shape with constriction
         x_edge = np.linspace(-2.0, 2.0, 100)
-        y_top = 0.5 + 0.3 * np.exp(-x_edge**2 / 0.5)
+        y_top = 0.5 + 0.3 * np.exp(-(x_edge**2) / 0.5)
         y_bottom = -y_top
         ax.plot(x_edge, y_top, "k-", linewidth=2, label="Conductor boundary")
         ax.plot(x_edge, y_bottom, "k-", linewidth=2)
 
     ax.set_xlabel("x (cm)")
     ax.set_ylabel("y (cm)")
-    ax.set_title(
-        f"Joule Heat Distribution (Art. 242, {geometry.capitalize()})"
-    )
+    ax.set_title(f"Joule Heat Distribution (Art. 242, {geometry.capitalize()})")
     ax.set_aspect("equal")
 
     fig.tight_layout()
@@ -503,8 +531,13 @@ def plot_thermoelectric_effects(
     for idx, (mat_A, mat_B) in enumerate(material_pairs):
         result = calc_peltier_junction(dT, mat_A, mat_B)
         color = pair_colors[idx % len(pair_colors)]
-        ax1.plot(dT, result["EMF"], color=color, linewidth=2,
-                label=f"{mat_A.title()}-{mat_B.title()}")
+        ax1.plot(
+            dT,
+            result["EMF"],
+            color=color,
+            linewidth=2,
+            label=f"{mat_A.title()}-{mat_B.title()}",
+        )
 
     ax1.set_xlabel("Temperature Difference dT (K)")
     ax1.set_ylabel("Thermoelectric EMF (statvolts)")
@@ -525,15 +558,22 @@ def plot_thermoelectric_effects(
     bars = ax2.barh(pair_names, pi_values, color=colors_bar, alpha=0.7)
 
     for bar, val in zip(bars, pi_values):
-        ax2.text(val, bar.get_y() + bar.get_height() / 2,
-                f"{val:.2e}", va="center", ha="left" if val > 0 else "right",
-                fontsize=8)
+        ax2.text(
+            val,
+            bar.get_y() + bar.get_height() / 2,
+            f"{val:.2e}",
+            va="center",
+            ha="left" if val > 0 else "right",
+            fontsize=8,
+        )
 
     ax2.set_xlabel("Peltier Coefficient Pi_AB (erg/esu)")
     ax2.set_title("Peltier Coefficients at 300 K (Art. 249)")
     ax2.axvline(x=0, color="k", linestyle="-", linewidth=0.5)
     ax2.grid(True, alpha=0.3, axis="x")
 
-    fig.suptitle("Thermoelectric Effects (Arts. 242, 249)", fontsize=14, fontweight="bold")
+    fig.suptitle(
+        "Thermoelectric Effects (Arts. 242, 249)", fontsize=14, fontweight="bold"
+    )
     fig.tight_layout()
     return fig, [ax1, ax2]

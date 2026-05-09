@@ -11,11 +11,11 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.meta.citation import maxwell_cite
 from maxwell.materials.hysteresis import (
     generate_theoretical_hysteresis_loop,
 )
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -146,8 +146,14 @@ def plot_hysteresis_loops(
     H_common = np.linspace(H_min, H_max_val, 200)
     upper_interp = np.interp(H_common, H_asc, upper)
     lower_interp = np.interp(H_common, H_desc, lower)
-    ax.fill_between(H_common, lower_interp, upper_interp, alpha=0.2,
-                     color="gray", label="Energy loss area")
+    ax.fill_between(
+        H_common,
+        lower_interp,
+        upper_interp,
+        alpha=0.2,
+        color="gray",
+        label="Energy loss area",
+    )
 
     idx_B_zero_asc = np.argmin(np.abs(B_asc))
     H_c_est = H_asc[idx_B_zero_asc]
@@ -156,17 +162,27 @@ def plot_hysteresis_loops(
 
     if show_coercivity:
         ax.plot(H_c_est, 0, "ro", markersize=10, zorder=5)
-        ax.annotate("H_c = {:.1f} G".format(H_c_est),
-                     xy=(H_c_est, 0), xytext=(H_c_est, -B_max_val * 0.15),
-                     ha="center", fontsize=10, color="red",
-                     arrowprops=dict(arrowstyle="->", color="red"))
+        ax.annotate(
+            "H_c = {:.1f} G".format(H_c_est),
+            xy=(H_c_est, 0),
+            xytext=(H_c_est, -B_max_val * 0.15),
+            ha="center",
+            fontsize=10,
+            color="red",
+            arrowprops=dict(arrowstyle="->", color="red"),
+        )
 
     if show_retentivity:
         ax.plot(0, B_r_est, "go", markersize=10, zorder=5)
-        ax.annotate("B_r = {:.1f}".format(B_r_est),
-                     xy=(0, B_r_est), xytext=(H_max_val * 0.15, B_r_est),
-                     va="center", fontsize=10, color="green",
-                     arrowprops=dict(arrowstyle="->", color="green"))
+        ax.annotate(
+            "B_r = {:.1f}".format(B_r_est),
+            xy=(0, B_r_est),
+            xytext=(H_max_val * 0.15, B_r_est),
+            va="center",
+            fontsize=10,
+            color="green",
+            arrowprops=dict(arrowstyle="->", color="green"),
+        )
 
     ax.axhline(y=0, color="black", linewidth=0.5, alpha=0.5)
     ax.axvline(x=0, color="black", linewidth=0.5, alpha=0.5)
@@ -217,9 +233,24 @@ def plot_material_comparison(
         fig = ax.figure
 
     materials = {
-        "Electrical Steel (soft)": {"H_max": 100, "mu_r": 4000, "alpha": 0.005, "color": "#377eb8"},
-        "Iron Pure (soft)": {"H_max": 50, "mu_r": 5000, "alpha": 0.002, "color": "#4daf4a"},
-        "Alnico 5 (hard)": {"H_max": 1000, "mu_r": 20, "alpha": 0.6, "color": "#e41a1c"},
+        "Electrical Steel (soft)": {
+            "H_max": 100,
+            "mu_r": 4000,
+            "alpha": 0.005,
+            "color": "#377eb8",
+        },
+        "Iron Pure (soft)": {
+            "H_max": 50,
+            "mu_r": 5000,
+            "alpha": 0.002,
+            "color": "#4daf4a",
+        },
+        "Alnico 5 (hard)": {
+            "H_max": 1000,
+            "mu_r": 20,
+            "alpha": 0.6,
+            "color": "#e41a1c",
+        },
     }
 
     for name, params in materials.items():
@@ -235,8 +266,7 @@ def plot_material_comparison(
         B_norm = B / np.max(np.abs(B)) if np.max(np.abs(B)) > 0 else B
         H_norm = H / params["H_max"] if params["H_max"] > 0 else H
 
-        ax.plot(H_norm, B_norm, "-", color=params["color"], linewidth=2,
-                label=name)
+        ax.plot(H_norm, B_norm, "-", color=params["color"], linewidth=2, label=name)
 
     ax.axhline(y=0, color="black", linewidth=0.5, alpha=0.5)
     ax.axvline(x=0, color="black", linewidth=0.5, alpha=0.5)

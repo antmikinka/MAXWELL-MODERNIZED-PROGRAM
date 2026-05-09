@@ -13,9 +13,9 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.vis._base import create_meshgrid, format_axis_labels
 from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._base import create_meshgrid, format_axis_labels
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -130,8 +130,12 @@ def plot_edge_singularity(
     require_matplotlib()
 
     X, Y = create_meshgrid(
-        x_range[0], x_range[1], y_range[0], y_range[1],
-        resolution, resolution,
+        x_range[0],
+        x_range[1],
+        y_range[0],
+        y_range[1],
+        resolution,
+        resolution,
     )
 
     E = calc_edge_singularity(X, Y, alpha)
@@ -205,7 +209,11 @@ def plot_singularity_comparison(
         fig = ax.figure
 
     angles = [np.pi / 4, np.pi / 2, 3 * np.pi / 4]
-    labels = [r"$\alpha = \pi/4$ (sharp)", r"$\alpha = \pi/2$ (90 deg)", r"$\alpha = 3\pi/4$ (obtuse)"]
+    labels = [
+        r"$\alpha = \pi/4$ (sharp)",
+        r"$\alpha = \pi/2$ (90 deg)",
+        r"$\alpha = 3\pi/4$ (obtuse)",
+    ]
     colors = ["red", "green", "blue"]
 
     r_vals = np.linspace(x_range[0], x_range[1], resolution)

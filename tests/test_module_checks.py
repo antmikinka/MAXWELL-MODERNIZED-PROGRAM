@@ -6,14 +6,14 @@ import numpy as np
 import pytest
 
 from maxwell.verification.module_checks import (
-    verify_spherical_harmonics,
-    verify_electrostatics,
-    verify_magnetism,
     verify_electromagnetism,
-    verify_vector_calculus,
+    verify_electrostatics,
     verify_elliptic_integrals,
-    verify_units_and_dimensions,
+    verify_magnetism,
     verify_optics_and_waves,
+    verify_spherical_harmonics,
+    verify_units_and_dimensions,
+    verify_vector_calculus,
 )
 
 
@@ -245,8 +245,13 @@ class TestVerifyOpticsAndWaves:
 
     def test_plane_wave_wavelength(self):
         results = verify_optics_and_waves()
-        lam = [r for r in results if "lambda" in r.test_name.lower() or "wavelength" in r.test_name.lower()]
+        lam = [
+            r
+            for r in results
+            if "lambda" in r.test_name.lower() or "wavelength" in r.test_name.lower()
+        ]
         assert len(lam) == 1
         assert lam[0].passed
         from maxwell.config.constants import C
+
         assert lam[0].expected == pytest.approx(C / 1e14, rel=1e-6)

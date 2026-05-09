@@ -21,15 +21,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable, Dict, List, Tuple
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST, UniversalConstants
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # EARTH'S MAGNETIC FIELD (Arts. 465-468)
 # =============================================================================
+
 
 @dataclass
 class GeomagneticElements:
@@ -63,7 +64,7 @@ class GeomagneticElements:
     @property
     def H(self) -> float:
         """Horizontal intensity H = sqrt(X^2 + Y^2)."""
-        return float(np.sqrt(self.X ** 2 + self.Y ** 2))
+        return float(np.sqrt(self.X**2 + self.Y**2))
 
     @property
     def D(self) -> float:
@@ -93,7 +94,7 @@ class GeomagneticElements:
     @property
     def F(self) -> float:
         """Total intensity F = sqrt(H^2 + Z^2) = sqrt(X^2 + Y^2 + Z^2)."""
-        return float(np.sqrt(self.X ** 2 + self.Y ** 2 + self.Z ** 2))
+        return float(np.sqrt(self.X**2 + self.Y**2 + self.Z**2))
 
     @property
     def field_vector(self) -> np.ndarray:
@@ -103,7 +104,8 @@ class GeomagneticElements:
     @classmethod
     @maxwell_cite(
         467,
-        part=3, chapter="Terrestrial Magnetism",
+        part=3,
+        chapter="Terrestrial Magnetism",
         theory_class="maxwell_original",
         description="Create from horizontal intensity, declination, inclination",
     )
@@ -141,7 +143,8 @@ class GeomagneticElements:
     @classmethod
     @maxwell_cite(
         467,
-        part=3, chapter="Terrestrial Magnetism",
+        part=3,
+        chapter="Terrestrial Magnetism",
         theory_class="maxwell_original",
         description="Create from total intensity, declination, dip",
     )
@@ -179,8 +182,10 @@ class GeomagneticElements:
 
     @classmethod
     @maxwell_cite(
-        465, 466,
-        part=3, chapter="Terrestrial Magnetism",
+        465,
+        466,
+        part=3,
+        chapter="Terrestrial Magnetism",
         theory_class="maxwell_original",
         description="Create from direct component measurements",
     )
@@ -207,7 +212,8 @@ class GeomagneticElements:
 
     @maxwell_cite(
         467,
-        part=3, chapter="Terrestrial Magnetism",
+        part=3,
+        chapter="Terrestrial Magnetism",
         theory_class="maxwell_original",
         description="Convert all elements to dictionary",
     )
@@ -225,19 +231,21 @@ class GeomagneticElements:
             Part III, Art. 467: Seven magnetic elements.
         """
         return {
-            'X': self.X,
-            'Y': self.Y,
-            'Z': self.Z,
-            'H': self.H,
-            'D': self.D,
-            'I': self.I,
-            'F': self.F,
+            "X": self.X,
+            "Y": self.Y,
+            "Z": self.Z,
+            "H": self.H,
+            "D": self.D,
+            "I": self.I,
+            "F": self.F,
         }
 
 
 @maxwell_cite(
-    465, 466,
-    part=3, chapter="Terrestrial Magnetism",
+    465,
+    466,
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Compute Earth's field components at a location",
 )
@@ -299,17 +307,16 @@ def earth_field_components(
     m = dipole_moment
 
     # Angular distance from dipole pole (spherical law of cosines)
-    cos_theta_prime = (
-        np.sin(lat) * np.sin(dipole_lat) +
-        np.cos(lat) * np.cos(dipole_lat) * np.cos(lon - dipole_lon)
-    )
+    cos_theta_prime = np.sin(lat) * np.sin(dipole_lat) + np.cos(lat) * np.cos(
+        dipole_lat
+    ) * np.cos(lon - dipole_lon)
     cos_theta_prime = np.clip(cos_theta_prime, -1.0, 1.0)
     theta_prime = np.arccos(cos_theta_prime)
     sin_theta_prime = np.sin(theta_prime)
 
     # Dipole field components in local spherical coordinates
     # B_r (radial, positive outward) and B_theta (southward)
-    factor = m / (R_EARTH ** 3)
+    factor = m / (R_EARTH**3)
 
     B_r = -2 * factor * cos_theta_prime  # Negative = downward
     B_theta = -factor * sin_theta_prime  # Negative = northward
@@ -326,12 +333,15 @@ def earth_field_components(
 
     # Azimuth from location to dipole pole
     sin_azimuth = (
-        np.cos(dipole_lat) * np.sin(dipole_lon - lon) /
-        np.sin(theta_prime) if sin_theta_prime > 1e-10 else 0.0
+        np.cos(dipole_lat) * np.sin(dipole_lon - lon) / np.sin(theta_prime)
+        if sin_theta_prime > 1e-10
+        else 0.0
     )
     cos_azimuth = (
-        (np.sin(dipole_lat) - np.sin(lat) * cos_theta_prime) /
-        (np.cos(lat) * sin_theta_prime) if sin_theta_prime > 1e-10 and abs(np.cos(lat)) > 1e-10 else 1.0
+        (np.sin(dipole_lat) - np.sin(lat) * cos_theta_prime)
+        / (np.cos(lat) * sin_theta_prime)
+        if sin_theta_prime > 1e-10 and abs(np.cos(lat)) > 1e-10
+        else 1.0
     )
     cos_azimuth = np.clip(cos_azimuth, -1.0, 1.0)
 
@@ -343,28 +353,33 @@ def earth_field_components(
     H = float(np.sqrt(X**2 + Y**2))
     F = float(np.sqrt(H**2 + Z**2))
     D = float(np.arctan2(Y, X)) if H > 1e-15 else 0.0
-    I = float(np.arctan2(Z, H)) if H > 1e-15 else np.pi/2 * np.sign(Z)
+    I = float(np.arctan2(Z, H)) if H > 1e-15 else np.pi / 2 * np.sign(Z)
 
     return {
-        'X': float(X),
-        'Y': float(Y),
-        'Z': float(Z),
-        'H': H,
-        'F': F,
-        'D': D,
-        'I': I,
+        "X": float(X),
+        "Y": float(Y),
+        "Z": float(Z),
+        "H": H,
+        "F": F,
+        "D": D,
+        "I": I,
     }
 
 
 @maxwell_cite(
     467,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Calculate all seven magnetic elements and their relations",
 )
 def magnetic_elements(
-    X: float = None, Y: float = None, Z: float = None,
-    H: float = None, D: float = None, I: float = None,
+    X: float = None,
+    Y: float = None,
+    Z: float = None,
+    H: float = None,
+    D: float = None,
+    I: float = None,
     F: float = None,
 ) -> Dict[str, float]:
     """
@@ -401,6 +416,7 @@ def magnetic_elements(
         the complete set. Angles are assumed to be in radians unless
         the value exceeds 2*pi (then degrees are assumed).
     """
+
     # Helper to convert degrees to radians if needed
     def to_radians(angle, name):
         if angle is None:
@@ -410,49 +426,49 @@ def magnetic_elements(
         return angle
 
     # Convert angles
-    D_rad = to_radians(D, 'D') if D is not None else None
-    I_rad = to_radians(I, 'I') if I is not None else None
+    D_rad = to_radians(D, "D") if D is not None else None
+    I_rad = to_radians(I, "I") if I is not None else None
 
     # Strategy: first get X, Y, Z, then compute derived elements
     result = {}
 
     # Case 1: Given X, Y, Z directly
     if X is not None and Y is not None and Z is not None:
-        result['X'] = X
-        result['Y'] = Y
-        result['Z'] = Z
+        result["X"] = X
+        result["Y"] = Y
+        result["Z"] = Z
 
     # Case 2: Given H, D, I
     elif H is not None and D_rad is not None and I_rad is not None:
-        result['H'] = H
-        result['X'] = H * np.cos(D_rad)
-        result['Y'] = H * np.sin(D_rad)
-        result['Z'] = H * np.tan(I_rad)
+        result["H"] = H
+        result["X"] = H * np.cos(D_rad)
+        result["Y"] = H * np.sin(D_rad)
+        result["Z"] = H * np.tan(I_rad)
 
     # Case 3: Given F, D, I
     elif F is not None and D_rad is not None and I_rad is not None:
         H_calc = F * np.cos(I_rad)
-        result['F'] = F
-        result['H'] = H_calc
-        result['X'] = H_calc * np.cos(D_rad)
-        result['Y'] = H_calc * np.sin(D_rad)
-        result['Z'] = F * np.sin(I_rad)
+        result["F"] = F
+        result["H"] = H_calc
+        result["X"] = H_calc * np.cos(D_rad)
+        result["Y"] = H_calc * np.sin(D_rad)
+        result["Z"] = F * np.sin(I_rad)
 
     # Case 4: Given H, D, Z
     elif H is not None and D_rad is not None and Z is not None:
-        result['H'] = H
-        result['X'] = H * np.cos(D_rad)
-        result['Y'] = H * np.sin(D_rad)
-        result['Z'] = Z
+        result["H"] = H
+        result["X"] = H * np.cos(D_rad)
+        result["Y"] = H * np.sin(D_rad)
+        result["Z"] = Z
 
     # Case 5: Given F, I, D
     elif F is not None and I_rad is not None and D_rad is not None:
         H_calc = F * np.cos(I_rad)
-        result['F'] = F
-        result['H'] = H_calc
-        result['X'] = H_calc * np.cos(D_rad)
-        result['Y'] = H_calc * np.sin(D_rad)
-        result['Z'] = F * np.sin(I_rad)
+        result["F"] = F
+        result["H"] = H_calc
+        result["X"] = H_calc * np.cos(D_rad)
+        result["Y"] = H_calc * np.sin(D_rad)
+        result["Z"] = F * np.sin(I_rad)
 
     else:
         raise ValueError(
@@ -461,30 +477,35 @@ def magnetic_elements(
         )
 
     # Compute derived elements
-    X_val = result.get('X', 0)
-    Y_val = result.get('Y', 0)
-    Z_val = result.get('Z', 0)
+    X_val = result.get("X", 0)
+    Y_val = result.get("Y", 0)
+    Z_val = result.get("Z", 0)
 
-    if 'H' not in result:
-        result['H'] = float(np.sqrt(X_val**2 + Y_val**2))
-    if 'F' not in result:
-        result['F'] = float(np.sqrt(X_val**2 + Y_val**2 + Z_val**2))
-    if 'D' not in result:
-        result['D'] = float(np.arctan2(Y_val, X_val))
-    if 'I' not in result:
-        H_val = result['H']
-        result['I'] = float(np.arctan2(Z_val, H_val)) if H_val > 1e-15 else np.pi/2 * np.sign(Z_val)
+    if "H" not in result:
+        result["H"] = float(np.sqrt(X_val**2 + Y_val**2))
+    if "F" not in result:
+        result["F"] = float(np.sqrt(X_val**2 + Y_val**2 + Z_val**2))
+    if "D" not in result:
+        result["D"] = float(np.arctan2(Y_val, X_val))
+    if "I" not in result:
+        H_val = result["H"]
+        result["I"] = (
+            float(np.arctan2(Z_val, H_val))
+            if H_val > 1e-15
+            else np.pi / 2 * np.sign(Z_val)
+        )
 
     # Ensure D and I are in radians
-    result['D'] = float(result['D'])
-    result['I'] = float(result['I'])
+    result["D"] = float(result["D"])
+    result["I"] = float(result["I"])
 
     return result
 
 
 @maxwell_cite(
     468,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Magnetic observatory measurement protocol",
 )
@@ -543,18 +564,18 @@ def magnetic_observatory_protocol(
     try:
         computed = magnetic_elements(**measurements)
     except ValueError as e:
-        computed = {'error': str(e)}
+        computed = {"error": str(e)}
 
     return {
-        'station_info': {
-            'name': station_name,
-            'latitude': latitude,
-            'longitude': longitude,
-            'elevation_cm': elevation,
+        "station_info": {
+            "name": station_name,
+            "latitude": latitude,
+            "longitude": longitude,
+            "elevation_cm": elevation,
         },
-        'measured_elements': measurements,
-        'computed_elements': computed,
-        'timestamp': datetime.utcnow().isoformat(),
+        "measured_elements": measurements,
+        "computed_elements": computed,
+        "timestamp": datetime.utcnow().isoformat(),
     }
 
 
@@ -562,9 +583,12 @@ def magnetic_observatory_protocol(
 # MAGNETIC SURVEYS (Arts. 469-471)
 # =============================================================================
 
+
 @maxwell_cite(
-    469, 470,
-    part=3, chapter="Terrestrial Magnetism",
+    469,
+    470,
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Regional magnetic survey method",
 )
@@ -614,79 +638,82 @@ def magnetic_survey_method(
 
     for station in survey_stations:
         # Extract location
-        lat = station.get('latitude', 0)
-        lon = station.get('longitude', 0)
-        name = station.get('name', 'Unknown')
+        lat = station.get("latitude", 0)
+        lon = station.get("longitude", 0)
+        name = station.get("name", "Unknown")
 
         # Extract measurements
-        meas_keys = ['H', 'D', 'I', 'X', 'Y', 'Z', 'F']
+        meas_keys = ["H", "D", "I", "X", "Y", "Z", "F"]
         measurements = {k: v for k, v in station.items() if k in meas_keys}
 
         # Compute all elements
         try:
             elements = magnetic_elements(**measurements)
-            all_H.append(elements['H'])
-            all_D.append(elements['D'])
-            all_I.append(elements['I'])
-            all_F.append(elements['F'])
+            all_H.append(elements["H"])
+            all_D.append(elements["D"])
+            all_I.append(elements["I"])
+            all_F.append(elements["F"])
         except ValueError:
-            elements = {'error': 'Insufficient measurements'}
+            elements = {"error": "Insufficient measurements"}
 
-        processed_stations.append({
-            'name': name,
-            'latitude': lat,
-            'longitude': lon,
-            'elements': elements,
-        })
+        processed_stations.append(
+            {
+                "name": name,
+                "latitude": lat,
+                "longitude": lon,
+                "elements": elements,
+            }
+        )
 
     # Compute statistics
     stats = {}
     if all_H:
-        stats['H'] = {
-            'mean': float(np.mean(all_H)),
-            'min': float(np.min(all_H)),
-            'max': float(np.max(all_H)),
+        stats["H"] = {
+            "mean": float(np.mean(all_H)),
+            "min": float(np.min(all_H)),
+            "max": float(np.max(all_H)),
         }
     if all_D:
-        stats['D'] = {
-            'mean': float(np.mean(all_D)),
-            'min': float(np.min(all_D)),
-            'max': float(np.max(all_D)),
+        stats["D"] = {
+            "mean": float(np.mean(all_D)),
+            "min": float(np.min(all_D)),
+            "max": float(np.max(all_D)),
         }
     if all_I:
-        stats['I'] = {
-            'mean': float(np.mean(all_I)),
-            'min': float(np.min(all_I)),
-            'max': float(np.max(all_I)),
+        stats["I"] = {
+            "mean": float(np.mean(all_I)),
+            "min": float(np.min(all_I)),
+            "max": float(np.max(all_I)),
         }
     if all_F:
-        stats['F'] = {
-            'mean': float(np.mean(all_F)),
-            'min': float(np.min(all_F)),
-            'max': float(np.max(all_F)),
+        stats["F"] = {
+            "mean": float(np.mean(all_F)),
+            "min": float(np.min(all_F)),
+            "max": float(np.max(all_F)),
         }
 
     # Geographic bounds
-    lats = [s['latitude'] for s in processed_stations]
-    lons = [s['longitude'] for s in processed_stations]
+    lats = [s["latitude"] for s in processed_stations]
+    lons = [s["longitude"] for s in processed_stations]
 
     return {
-        'survey_name': survey_name,
-        'num_stations': len(processed_stations),
-        'stations': processed_stations,
-        'statistics': stats,
-        'bounds': {
-            'lat_min': float(min(lats)),
-            'lat_max': float(max(lats)),
-            'lon_min': float(min(lons)),
-            'lon_max': float(max(lons)),
+        "survey_name": survey_name,
+        "num_stations": len(processed_stations),
+        "stations": processed_stations,
+        "statistics": stats,
+        "bounds": {
+            "lat_min": float(min(lats)),
+            "lat_max": float(max(lats)),
+            "lon_min": float(min(lons)),
+            "lon_max": float(max(lons)),
         },
     }
 
 
 @maxwell_cite(
     471,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Lines of equal total force (isodynamic lines)",
 )
@@ -724,21 +751,21 @@ def isodynamic_lines(
         This function computes the contour levels and groups stations.
         Actual line drawing requires interpolation and plotting.
     """
-    if 'stations' not in survey_data:
+    if "stations" not in survey_data:
         raise ValueError("Invalid survey data: missing 'stations'")
 
     # Extract F values
     F_values = []
     valid_stations = []
 
-    for station in survey_data['stations']:
-        elements = station.get('elements', {})
-        if 'F' in elements and elements.get('error') is None:
-            F_values.append(elements['F'])
+    for station in survey_data["stations"]:
+        elements = station.get("elements", {})
+        if "F" in elements and elements.get("error") is None:
+            F_values.append(elements["F"])
             valid_stations.append(station)
 
     if not F_values:
-        return {'error': 'No valid F measurements found'}
+        return {"error": "No valid F measurements found"}
 
     F_min = min(F_values)
     F_max = max(F_values)
@@ -754,24 +781,27 @@ def isodynamic_lines(
     for station, F in zip(valid_stations, F_values):
         # Find nearest contour level
         nearest = min(contour_levels, key=lambda x: abs(x - F))
-        stations_by_contour[nearest].append({
-            'name': station['name'],
-            'latitude': station['latitude'],
-            'longitude': station['longitude'],
-            'F': F,
-        })
+        stations_by_contour[nearest].append(
+            {
+                "name": station["name"],
+                "latitude": station["latitude"],
+                "longitude": station["longitude"],
+                "F": F,
+            }
+        )
 
     return {
-        'contour_levels': contour_levels,
-        'stations_by_contour': stations_by_contour,
-        'intensity_range': {'min': F_min, 'max': F_max},
-        'num_valid_stations': len(valid_stations),
+        "contour_levels": contour_levels,
+        "stations_by_contour": stations_by_contour,
+        "intensity_range": {"min": F_min, "max": F_max},
+        "num_valid_stations": len(valid_stations),
     }
 
 
 @maxwell_cite(
     471,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Lines of equal inclination (isoclinal lines)",
 )
@@ -804,21 +834,21 @@ def isoclinal_lines(
     Reference:
         Part III, Art. 471: Isoclinic lines.
     """
-    if 'stations' not in survey_data:
+    if "stations" not in survey_data:
         raise ValueError("Invalid survey data: missing 'stations'")
 
     # Extract I values
     I_values = []
     valid_stations = []
 
-    for station in survey_data['stations']:
-        elements = station.get('elements', {})
-        if 'I' in elements and elements.get('error') is None:
-            I_values.append(elements['I'])
+    for station in survey_data["stations"]:
+        elements = station.get("elements", {})
+        if "I" in elements and elements.get("error") is None:
+            I_values.append(elements["I"])
             valid_stations.append(station)
 
     if not I_values:
-        return {'error': 'No valid I measurements found'}
+        return {"error": "No valid I measurements found"}
 
     I_min = min(I_values)
     I_max = max(I_values)
@@ -833,31 +863,34 @@ def isoclinal_lines(
 
     for station, I in zip(valid_stations, I_values):
         nearest = min(contour_levels, key=lambda x: abs(x - I))
-        stations_by_contour[nearest].append({
-            'name': station['name'],
-            'latitude': station['latitude'],
-            'longitude': station['longitude'],
-            'I': I,
-            'I_degrees': float(np.degrees(I)),
-        })
+        stations_by_contour[nearest].append(
+            {
+                "name": station["name"],
+                "latitude": station["latitude"],
+                "longitude": station["longitude"],
+                "I": I,
+                "I_degrees": float(np.degrees(I)),
+            }
+        )
 
     return {
-        'contour_levels': contour_levels,
-        'contour_levels_degrees': [float(np.degrees(c)) for c in contour_levels],
-        'stations_by_contour': stations_by_contour,
-        'inclination_range': {
-            'min': I_min,
-            'max': I_max,
-            'min_degrees': float(np.degrees(I_min)),
-            'max_degrees': float(np.degrees(I_max)),
+        "contour_levels": contour_levels,
+        "contour_levels_degrees": [float(np.degrees(c)) for c in contour_levels],
+        "stations_by_contour": stations_by_contour,
+        "inclination_range": {
+            "min": I_min,
+            "max": I_max,
+            "min_degrees": float(np.degrees(I_min)),
+            "max_degrees": float(np.degrees(I_max)),
         },
-        'num_valid_stations': len(valid_stations),
+        "num_valid_stations": len(valid_stations),
     }
 
 
 @maxwell_cite(
     471,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Lines of equal declination (isogonal lines)",
 )
@@ -891,21 +924,21 @@ def isogonal_lines(
     Reference:
         Part III, Art. 471: Isogonic lines.
     """
-    if 'stations' not in survey_data:
+    if "stations" not in survey_data:
         raise ValueError("Invalid survey data: missing 'stations'")
 
     # Extract D values
     D_values = []
     valid_stations = []
 
-    for station in survey_data['stations']:
-        elements = station.get('elements', {})
-        if 'D' in elements and elements.get('error') is None:
-            D_values.append(elements['D'])
+    for station in survey_data["stations"]:
+        elements = station.get("elements", {})
+        if "D" in elements and elements.get("error") is None:
+            D_values.append(elements["D"])
             valid_stations.append(station)
 
     if not D_values:
-        return {'error': 'No valid D measurements found'}
+        return {"error": "No valid D measurements found"}
 
     D_min = min(D_values)
     D_max = max(D_values)
@@ -920,31 +953,35 @@ def isogonal_lines(
 
     for station, D in zip(valid_stations, D_values):
         nearest = min(contour_levels, key=lambda x: abs(x - D))
-        stations_by_contour[nearest].append({
-            'name': station['name'],
-            'latitude': station['latitude'],
-            'longitude': station['longitude'],
-            'D': D,
-            'D_degrees': float(np.degrees(D)),
-        })
+        stations_by_contour[nearest].append(
+            {
+                "name": station["name"],
+                "latitude": station["latitude"],
+                "longitude": station["longitude"],
+                "D": D,
+                "D_degrees": float(np.degrees(D)),
+            }
+        )
 
     return {
-        'contour_levels': contour_levels,
-        'contour_levels_degrees': [float(np.degrees(c)) for c in contour_levels],
-        'stations_by_contour': stations_by_contour,
-        'declination_range': {
-            'min': D_min,
-            'max': D_max,
-            'min_degrees': float(np.degrees(D_min)),
-            'max_degrees': float(np.degrees(D_max)),
+        "contour_levels": contour_levels,
+        "contour_levels_degrees": [float(np.degrees(c)) for c in contour_levels],
+        "stations_by_contour": stations_by_contour,
+        "declination_range": {
+            "min": D_min,
+            "max": D_max,
+            "min_degrees": float(np.degrees(D_min)),
+            "max_degrees": float(np.degrees(D_max)),
         },
-        'num_valid_stations': len(valid_stations),
+        "num_valid_stations": len(valid_stations),
     }
 
 
 @maxwell_cite(
-    469, 470,
-    part=3, chapter="Terrestrial Magnetism",
+    469,
+    470,
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Gauss spherical harmonic analysis of Earth's field",
 )
@@ -995,24 +1032,24 @@ def gauss_spherical_analysis(
     coefficients = []
     for n in range(1, max_degree + 1):
         for m in range(n + 1):
-            coefficients.append(f'g_{n}^{m}')
+            coefficients.append(f"g_{n}^{m}")
             if m > 0:  # h_n^0 is conventionally zero
-                coefficients.append(f'h_{n}^{m}')
+                coefficients.append(f"h_{n}^{m}")
 
     # Associated Legendre function degrees
     legendre_degrees = list(range(1, max_degree + 1))
 
     return {
-        'method': 'Gauss spherical harmonic expansion',
-        'potential_form': 'V = R * sum((R/r)^(n+1) * [g_n^m * cos(m*phi) + h_n^m * sin(m*phi)] * P_n^m(cos(theta)))',
-        'max_degree': max_degree,
-        'num_coefficients': len(coefficients),
-        'coefficient_names': coefficients,
-        'legendre_degrees': legendre_degrees,
-        'field_components_from_potential': {
-            'X': '-dV/dtheta (northward)',
-            'Y': '-(1/sin(theta)) * dV/dphi (eastward)',
-            'Z': '-dV/dr (downward)',
+        "method": "Gauss spherical harmonic expansion",
+        "potential_form": "V = R * sum((R/r)^(n+1) * [g_n^m * cos(m*phi) + h_n^m * sin(m*phi)] * P_n^m(cos(theta)))",
+        "max_degree": max_degree,
+        "num_coefficients": len(coefficients),
+        "coefficient_names": coefficients,
+        "legendre_degrees": legendre_degrees,
+        "field_components_from_potential": {
+            "X": "-dV/dtheta (northward)",
+            "Y": "-(1/sin(theta)) * dV/dphi (eastward)",
+            "Z": "-dV/dr (downward)",
         },
     }
 
@@ -1021,16 +1058,18 @@ def gauss_spherical_analysis(
 # DIURNAL VARIATION (Arts. 472-473)
 # =============================================================================
 
+
 @maxwell_cite(
     472,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Diurnal (daily) variation of Earth's magnetic field",
 )
 def diurnal_variation(
     hour: float,
     latitude: float,
-    season: str = 'equinox',
+    season: str = "equinox",
     elements: List[str] = None,
 ) -> Dict[str, float]:
     """
@@ -1071,7 +1110,7 @@ def diurnal_variation(
         Typical values: delta_D ~ 0.1-0.5 degrees, delta_H ~ 10-50 nT.
     """
     if elements is None:
-        elements = ['D', 'H']
+        elements = ["D", "H"]
 
     # Convert to radians
     lat_rad = np.radians(latitude)
@@ -1079,9 +1118,9 @@ def diurnal_variation(
 
     # Season factor
     season_factors = {
-        'equinox': 1.0,
-        'summer': 1.3,
-        'winter': 0.7,
+        "equinox": 1.0,
+        "summer": 1.3,
+        "winter": 0.7,
     }
     season_factor = season_factors.get(season, 1.0)
 
@@ -1090,7 +1129,7 @@ def diurnal_variation(
 
     # Diurnal variation model (simplified harmonic)
     # Primary 24-hour period
-    daily = np.sin(hour_angle - np.pi/4)  # Peak around 1 PM
+    daily = np.sin(hour_angle - np.pi / 4)  # Peak around 1 PM
     # Secondary 12-hour period
     semi_daily = 0.3 * np.sin(2 * hour_angle)
 
@@ -1099,46 +1138,47 @@ def diurnal_variation(
     result = {}
 
     # Declination variation (typical amplitude ~0.1-0.5 degrees)
-    if 'D' in elements:
+    if "D" in elements:
         delta_D = 0.003 * season_factor * lat_factor * combined  # radians
-        result['delta_D'] = float(delta_D)
-        result['delta_D_degrees'] = float(np.degrees(delta_D))
+        result["delta_D"] = float(delta_D)
+        result["delta_D_degrees"] = float(np.degrees(delta_D))
 
     # Horizontal intensity variation (typical amplitude ~10-50 nT = 1-5e-7 gauss)
-    if 'H' in elements:
+    if "H" in elements:
         delta_H = 2e-6 * season_factor * lat_factor * combined  # gauss
-        result['delta_H'] = float(delta_H)
-        result['delta_H_nT'] = float(delta_H * 1e5)  # nanoTesla
+        result["delta_H"] = float(delta_H)
+        result["delta_H_nT"] = float(delta_H * 1e5)  # nanoTesla
 
     # Inclination variation (smaller than D)
-    if 'I' in elements:
+    if "I" in elements:
         delta_I = 0.001 * season_factor * lat_factor * combined  # radians
-        result['delta_I'] = float(delta_I)
-        result['delta_I_degrees'] = float(np.degrees(delta_I))
+        result["delta_I"] = float(delta_I)
+        result["delta_I_degrees"] = float(np.degrees(delta_I))
 
     # Vertical component variation
-    if 'Z' in elements:
+    if "Z" in elements:
         delta_Z = 1e-6 * season_factor * lat_factor * combined  # gauss
-        result['delta_Z'] = float(delta_Z)
-        result['delta_Z_nT'] = float(delta_Z * 1e5)
+        result["delta_Z"] = float(delta_Z)
+        result["delta_Z_nT"] = float(delta_Z * 1e5)
 
-    result['hour'] = hour
-    result['latitude'] = latitude
-    result['season'] = season
+    result["hour"] = hour
+    result["latitude"] = latitude
+    result["season"] = season
 
     return result
 
 
 @maxwell_cite(
     473,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Magnetic storm effects on Earth's field",
 )
 def magnetic_storm(
-    storm_intensity: str = 'moderate',
+    storm_intensity: str = "moderate",
     latitude: float = 50.0,
-    storm_phase: str = 'main',
+    storm_phase: str = "main",
 ) -> Dict[str, float]:
     """
     Calculate magnetic storm perturbations of Earth's field.
@@ -1177,49 +1217,49 @@ def magnetic_storm(
     """
     # Storm intensity factors
     intensity_factors = {
-        'weak': 1.0,
-        'moderate': 3.0,
-        'strong': 10.0,
-        'severe': 30.0,
+        "weak": 1.0,
+        "moderate": 3.0,
+        "strong": 10.0,
+        "severe": 30.0,
     }
     factor = intensity_factors.get(storm_intensity, 1.0)
 
     # Phase factors
     phase_effects = {
-        'commencement': {'H': 1, 'sign': 1},   # H increases
-        'main': {'H': 3, 'sign': -1},          # H decreases strongly
-        'recovery': {'H': 1, 'sign': 0.5},     # Partial recovery
+        "commencement": {"H": 1, "sign": 1},  # H increases
+        "main": {"H": 3, "sign": -1},  # H decreases strongly
+        "recovery": {"H": 1, "sign": 0.5},  # Partial recovery
     }
-    phase = phase_effects.get(storm_phase, phase_effects['main'])
+    phase = phase_effects.get(storm_phase, phase_effects["main"])
 
     # Latitude enhancement (storms stronger at high latitudes)
     lat_rad = np.radians(latitude)
     lat_factor = 1 + 2 * abs(np.sin(lat_rad))
 
     # Storm-time disturbance index Dst (negative during main phase)
-    base_Dst = -50 * factor * phase['sign']  # nT
+    base_Dst = -50 * factor * phase["sign"]  # nT
     Dst = base_Dst * lat_factor
 
     # Horizontal intensity change (related to Dst)
-    delta_H = Dst * 1e-5 * phase['H']  # Convert nT to gauss
+    delta_H = Dst * 1e-5 * phase["H"]  # Convert nT to gauss
 
     # Declination disturbance (larger at high latitudes)
-    delta_D = 0.01 * factor * lat_factor * phase['sign']  # radians
+    delta_D = 0.01 * factor * lat_factor * phase["sign"]  # radians
 
     # Vertical component disturbance
     delta_Z = 0.5 * delta_H * np.sign(lat_rad)  # Smaller than H change
 
     return {
-        'delta_H': float(delta_H),
-        'delta_H_nT': float(delta_H * 1e5),
-        'delta_D': float(delta_D),
-        'delta_D_degrees': float(np.degrees(delta_D)),
-        'delta_Z': float(delta_Z),
-        'delta_Z_nT': float(delta_Z * 1e5),
-        'Dst_index_nT': float(Dst),
-        'storm_intensity': storm_intensity,
-        'storm_phase': storm_phase,
-        'latitude': latitude,
+        "delta_H": float(delta_H),
+        "delta_H_nT": float(delta_H * 1e5),
+        "delta_D": float(delta_D),
+        "delta_D_degrees": float(np.degrees(delta_D)),
+        "delta_Z": float(delta_Z),
+        "delta_Z_nT": float(delta_Z * 1e5),
+        "Dst_index_nT": float(Dst),
+        "storm_intensity": storm_intensity,
+        "storm_phase": storm_phase,
+        "latitude": latitude,
     }
 
 
@@ -1227,9 +1267,11 @@ def magnetic_storm(
 # MAGNETIC POTENTIAL (Art. 474)
 # =============================================================================
 
+
 @maxwell_cite(
     474,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Earth's magnetic scalar potential",
 )
@@ -1295,9 +1337,9 @@ def earth_magnetic_potential(
     # g_1_0 ~ -0.3 Gauss, g_1_1 ~ 0.02, h_1_1 ~ -0.06
     if gauss_coeffs is None:
         gauss_coeffs = {
-            'g_1_0': -0.30,
-            'g_1_1': 0.02,
-            'h_1_1': -0.06,
+            "g_1_0": -0.30,
+            "g_1_1": 0.02,
+            "h_1_1": -0.06,
         }
 
     # Compute potential using spherical harmonics
@@ -1316,20 +1358,20 @@ def earth_magnetic_potential(
                 return -sqrt(1 - x**2)
         elif n == 2:
             if m == 0:
-                return 0.5 * (3*x**2 - 1)
+                return 0.5 * (3 * x**2 - 1)
             elif m == 1:
-                return -3*x*sqrt(1 - x**2)
+                return -3 * x * sqrt(1 - x**2)
             elif m == 2:
-                return 3*(1 - x**2)
+                return 3 * (1 - x**2)
         elif n == 3:
             if m == 0:
-                return 0.5 * (5*x**3 - 3*x)
+                return 0.5 * (5 * x**3 - 3 * x)
             elif m == 1:
-                return -1.5 * (5*x**2 - 1)*sqrt(1 - x**2)
+                return -1.5 * (5 * x**2 - 1) * sqrt(1 - x**2)
             elif m == 2:
-                return 15*x*(1 - x**2)
+                return 15 * x * (1 - x**2)
             elif m == 3:
-                return -15*(1 - x**2)**1.5
+                return -15 * (1 - x**2) ** 1.5
 
         # General recurrence for higher degrees
         x_val = x
@@ -1338,19 +1380,19 @@ def earth_magnetic_potential(
 
         P_mm = 1.0
         for i in range(1, m + 1):
-            P_mm *= -sqrt(1 - x_val**2) * (2*i - 1)
+            P_mm *= -sqrt(1 - x_val**2) * (2 * i - 1)
 
         if n == m:
             return P_mm
 
-        P_m1m = x_val * (2*m + 1) * P_mm
+        P_m1m = x_val * (2 * m + 1) * P_mm
 
         if n == m + 1:
             return P_m1m
 
         P = P_m1m
         for k in range(m + 2, n + 1):
-            P_new = ((2*k - 1) * x_val * P - (k + m - 1) * P_m1m) / (k - m)
+            P_new = ((2 * k - 1) * x_val * P - (k + m - 1) * P_m1m) / (k - m)
             P_m1m = P
             P = P_new
 
@@ -1365,8 +1407,8 @@ def earth_magnetic_potential(
 
         for m in range(n + 1):
             # Get coefficient
-            g_nm = gauss_coeffs.get(f'g_{n}_{m}', 0)
-            h_nm = gauss_coeffs.get(f'h_{n}_{m}', 0)
+            g_nm = gauss_coeffs.get(f"g_{n}_{m}", 0)
+            h_nm = gauss_coeffs.get(f"h_{n}_{m}", 0)
 
             if g_nm == 0 and h_nm == 0:
                 continue
@@ -1397,12 +1439,14 @@ def earth_magnetic_potential(
         for n in range(1, min(max_degree + 1, 6)):
             r_fact = (R / rad) ** (n + 1)
             for m in range(n + 1):
-                g_nm = gauss_coeffs.get(f'g_{n}_{m}', 0)
-                h_nm = gauss_coeffs.get(f'h_{n}_{m}', 0)
+                g_nm = gauss_coeffs.get(f"g_{n}_{m}", 0)
+                h_nm = gauss_coeffs.get(f"h_{n}_{m}", 0)
                 if g_nm == 0 and h_nm == 0:
                     continue
                 P_nm = P(n, m, ct)
-                V_local += R * r_fact * (g_nm * np.cos(m * ph) + h_nm * np.sin(m * ph)) * P_nm
+                V_local += (
+                    R * r_fact * (g_nm * np.cos(m * ph) + h_nm * np.sin(m * ph)) * P_nm
+                )
         return V_local
 
     V_plus = compute_V(theta_plus, phi, r)
@@ -1426,25 +1470,26 @@ def earth_magnetic_potential(
     H_down = -(V_r_plus - V_r_minus) / (2 * dr)
 
     return {
-        'V': float(V),
-        'H_north': float(H_north),
-        'H_east': float(H_east),
-        'H_down': float(H_down),
-        'latitude': latitude,
-        'longitude': longitude,
-        'radius_cm': r,
+        "V": float(V),
+        "H_north": float(H_north),
+        "H_east": float(H_east),
+        "H_down": float(H_down),
+        "latitude": latitude,
+        "longitude": longitude,
+        "radius_cm": r,
     }
 
 
 @maxwell_cite(
     474,
-    part=3, chapter="Terrestrial Magnetism",
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Gauss coefficients for geomagnetic field",
 )
 def gauss_coefficients(
     epoch: float = 1873.0,
-    model: str = 'dipole',
+    model: str = "dipole",
 ) -> Dict[str, float]:
     """
     Provide Gauss coefficients for Earth's magnetic field.
@@ -1479,38 +1524,38 @@ def gauss_coefficients(
 
     dipole_coeffs = {
         # Axial dipole (tilted ~11.5 degrees from rotation axis)
-        'g_1_0': -0.290,  # Main axial dipole
-        'g_1_1': 0.015,   # Equatorial dipole component
-        'h_1_1': -0.055,  # Equatorial dipole component
+        "g_1_0": -0.290,  # Main axial dipole
+        "g_1_1": 0.015,  # Equatorial dipole component
+        "h_1_1": -0.055,  # Equatorial dipole component
     }
 
     quadrupole_coeffs = {
-        'g_2_0': -0.025,
-        'g_2_1': 0.012,
-        'g_2_2': 0.018,
-        'h_2_1': -0.008,
-        'h_2_2': 0.005,
+        "g_2_0": -0.025,
+        "g_2_1": 0.012,
+        "g_2_2": 0.018,
+        "h_2_1": -0.008,
+        "h_2_2": 0.005,
     }
 
     octupole_coeffs = {
-        'g_3_0': 0.010,
-        'g_3_1': -0.005,
-        'g_3_2': 0.003,
-        'g_3_3': 0.002,
-        'h_3_1': 0.004,
-        'h_3_2': -0.002,
-        'h_3_3': 0.001,
+        "g_3_0": 0.010,
+        "g_3_1": -0.005,
+        "g_3_2": 0.003,
+        "g_3_3": 0.002,
+        "h_3_1": 0.004,
+        "h_3_2": -0.002,
+        "h_3_3": 0.001,
     }
 
     coeffs = {}
 
-    if model in ['dipole', 'quadrupole', 'octupole']:
+    if model in ["dipole", "quadrupole", "octupole"]:
         coeffs.update(dipole_coeffs)
 
-    if model in ['quadrupole', 'octupole']:
+    if model in ["quadrupole", "octupole"]:
         coeffs.update(quadrupole_coeffs)
 
-    if model == 'octupole':
+    if model == "octupole":
         coeffs.update(octupole_coeffs)
 
     # Secular variation (simplified linear drift)
@@ -1518,20 +1563,20 @@ def gauss_coefficients(
     if years_from_1873 != 0:
         # Typical secular variation rates (gauss/year)
         sv_rates = {
-            'g_1_0': -0.00005,
-            'g_1_1': 0.00002,
-            'h_1_1': -0.00008,
+            "g_1_0": -0.00005,
+            "g_1_1": 0.00002,
+            "h_1_1": -0.00008,
         }
         for key in coeffs:
             if key in sv_rates:
                 coeffs[key] += sv_rates[key] * years_from_1873
 
     return {
-        'epoch': epoch,
-        'model': model,
-        'coefficients': coeffs,
-        'units': 'gauss',
-        'note': 'Approximate values for educational use. Use IGRF for research.',
+        "epoch": epoch,
+        "model": model,
+        "coefficients": coeffs,
+        "units": "gauss",
+        "note": "Approximate values for educational use. Use IGRF for research.",
     }
 
 
@@ -1539,9 +1584,20 @@ def gauss_coefficients(
 # UTILITY FUNCTIONS
 # =============================================================================
 
+
 @maxwell_cite(
-    465, 466, 467, 468, 469, 470, 471, 472, 473, 474,
-    part=3, chapter="Terrestrial Magnetism",
+    465,
+    466,
+    467,
+    468,
+    469,
+    470,
+    471,
+    472,
+    473,
+    474,
+    part=3,
+    chapter="Terrestrial Magnetism",
     theory_class="maxwell_original",
     description="Complete terrestrial magnetism analysis pipeline",
 )
@@ -1582,34 +1638,35 @@ def terrestrial_analysis(
     field = earth_field_components(latitude, longitude)
 
     # 2. Seven magnetic elements
-    elements = magnetic_elements(
-        X=field['X'], Y=field['Y'], Z=field['Z']
-    )
+    elements = magnetic_elements(X=field["X"], Y=field["Y"], Z=field["Z"])
 
     # 3. Observatory data
     observatory = magnetic_observatory_protocol(
         station_name=f"Station_{latitude}_{longitude}",
         latitude=latitude,
         longitude=longitude,
-        measurements={'H': elements['H'], 'D': elements['D'], 'I': elements['I']},
+        measurements={"H": elements["H"], "D": elements["D"], "I": elements["I"]},
     )
 
     # 4. Gauss spherical analysis setup
     gauss_analysis = gauss_spherical_analysis(
-        survey_data={'stations': [{'latitude': latitude, 'longitude': longitude,
-                                   'elements': elements}]},
+        survey_data={
+            "stations": [
+                {"latitude": latitude, "longitude": longitude, "elements": elements}
+            ]
+        },
         max_degree=5,
     )
 
     result = {
-        'location': {
-            'latitude': latitude,
-            'longitude': longitude,
+        "location": {
+            "latitude": latitude,
+            "longitude": longitude,
         },
-        'field_components': field,
-        'magnetic_elements': elements,
-        'observatory': observatory,
-        'gauss_analysis': gauss_analysis,
+        "field_components": field,
+        "magnetic_elements": elements,
+        "observatory": observatory,
+        "gauss_analysis": gauss_analysis,
     }
 
     # 5. Diurnal variation
@@ -1618,19 +1675,19 @@ def terrestrial_analysis(
         diurnal = diurnal_variation(
             hour=hour,
             latitude=latitude,
-            season='equinox',
+            season="equinox",
         )
-        result['diurnal_variation'] = diurnal
+        result["diurnal_variation"] = diurnal
 
     # 6. Magnetic potential
     if include_potential:
-        coeffs = gauss_coefficients(epoch=1873.0, model='dipole')
+        coeffs = gauss_coefficients(epoch=1873.0, model="dipole")
         potential = earth_magnetic_potential(
             latitude=latitude,
             longitude=longitude,
-            gauss_coeffs=coeffs['coefficients'],
+            gauss_coeffs=coeffs["coefficients"],
         )
-        result['magnetic_potential'] = potential
-        result['gauss_coefficients'] = coeffs
+        result["magnetic_potential"] = potential
+        result["gauss_coefficients"] = coeffs
 
     return result

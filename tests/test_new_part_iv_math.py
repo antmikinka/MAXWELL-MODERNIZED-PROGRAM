@@ -15,16 +15,16 @@ Tests verify:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
-from maxwell.meta.citation import get_citation, MaxwellCitation
-
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # SPHERICAL HARMONICS TESTS (Arts. 675-695)
 # =============================================================================
+
 
 class TestLegendrePolynomial:
     """Test Legendre polynomial functions."""
@@ -139,7 +139,9 @@ class TestLegendrePolynomial:
 
         assert abs(integral) < cgs_tolerance * 10
 
-    def test_legendre_orthogonality_same_degree(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_legendre_orthogonality_same_degree(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify orthogonality: integral P_l * P_l = 2/(2l+1).
 
         Art. 678: Self-orthogonality gives 2/(2l+1).
@@ -177,7 +179,7 @@ class TestSphericalHarmonic:
 
         sh = SphericalHarmonic(l=0, m=0)
 
-        Y = sh.evaluate(theta=np.pi/2, phi=0)
+        Y = sh.evaluate(theta=np.pi / 2, phi=0)
         expected = 1.0 / np.sqrt(4 * np.pi)
 
         assert_cgs_close(abs(Y), expected, cgs_tolerance)
@@ -198,12 +200,14 @@ class TestSphericalHarmonic:
         expected_pole = np.sqrt(3.0 / (4 * np.pi))
 
         # At theta = pi/2 (cos = 0)
-        Y_equator = sh.evaluate(theta=np.pi/2, phi=0)
+        Y_equator = sh.evaluate(theta=np.pi / 2, phi=0)
 
         assert_cgs_close(abs(Y_pole), expected_pole, cgs_tolerance * 10)
         assert_cgs_close(abs(Y_equator), 0.0, cgs_tolerance * 10)
 
-    def test_spherical_harmonic_intensity(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_spherical_harmonic_intensity(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify intensity |Y_l^m|^2 is real and positive.
 
         Art. 687: Intensity calculation.
@@ -212,7 +216,7 @@ class TestSphericalHarmonic:
 
         sh = SphericalHarmonic(l=2, m=1)
 
-        intensity = sh.intensity(theta=np.pi/3, phi=np.pi/4)
+        intensity = sh.intensity(theta=np.pi / 3, phi=np.pi / 4)
 
         assert intensity > 0
         assert isinstance(intensity, float)
@@ -247,7 +251,7 @@ class TestSphericalHarmonic:
         sh = SphericalHarmonic(l=1, m=1)
 
         # At theta = pi/2, cos(theta) = 0
-        P = sh.associated_legendre(theta=np.pi/2)
+        P = sh.associated_legendre(theta=np.pi / 2)
 
         # P_1^1(0) should be non-zero
         assert abs(P) > 0
@@ -275,7 +279,7 @@ class TestSphericalHarmonic:
 
         sh = SphericalHarmonic(l=1, m=1)
 
-        Y_real = sh.evaluate_real(theta=np.pi/2, phi=0)
+        Y_real = sh.evaluate_real(theta=np.pi / 2, phi=0)
 
         # Should be a real float
         assert isinstance(Y_real, float)
@@ -298,9 +302,9 @@ class TestMultipoleExpansion:
         # At r = 10 cm, theta = pi/2, phi = 0
         Phi = calc_multipole_expansion(
             observation_r=10.0,
-            observation_theta=np.pi/2,
+            observation_theta=np.pi / 2,
             observation_phi=0.0,
-            multipole_moments=moments
+            multipole_moments=moments,
         )
 
         # Should scale as 1/r
@@ -321,14 +325,14 @@ class TestMultipoleExpansion:
             observation_r=10.0,
             observation_theta=0.0,
             observation_phi=0.0,
-            multipole_moments=moments
+            multipole_moments=moments,
         )
 
         Phi_far = calc_multipole_expansion(
             observation_r=20.0,
             observation_theta=0.0,
             observation_phi=0.0,
-            multipole_moments=moments
+            multipole_moments=moments,
         )
 
         # Ratio should be ~4 (1/r^2 scaling)
@@ -338,9 +342,7 @@ class TestMultipoleExpansion:
         # Allow some tolerance due to numerical factors
         assert abs(ratio - expected_ratio) < expected_ratio * 0.1
 
-    def test_multipole_mixed_moments(
-        self, cgs_tolerance, assert_cgs_close
-    ) -> None:
+    def test_multipole_mixed_moments(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify multipole expansion with multiple moments.
 
         Art. 692: Combined monopole + dipole + quadrupole.
@@ -348,16 +350,16 @@ class TestMultipoleExpansion:
         from maxwell.math.spherical_harmonics import calc_multipole_expansion
 
         moments = {
-            0: 1.0,   # Monopole
-            1: 0.1,   # Dipole
+            0: 1.0,  # Monopole
+            1: 0.1,  # Dipole
             2: 0.01,  # Quadrupole
         }
 
         Phi = calc_multipole_expansion(
             observation_r=100.0,  # Far field
-            observation_theta=np.pi/4,
-            observation_phi=np.pi/3,
-            multipole_moments=moments
+            observation_theta=np.pi / 4,
+            observation_phi=np.pi / 3,
+            multipole_moments=moments,
         )
 
         # Should be dominated by monopole at large r
@@ -390,7 +392,7 @@ class TestSphericalHarmonicFunctions:
         """Verify calc_spherical_harmonic function."""
         from maxwell.math.spherical_harmonics import calc_spherical_harmonic
 
-        Y = calc_spherical_harmonic(l=1, m=0, theta=np.pi/2, phi=0)
+        Y = calc_spherical_harmonic(l=1, m=0, theta=np.pi / 2, phi=0)
 
         # Should be complex
         assert isinstance(Y, complex)
@@ -424,6 +426,7 @@ class TestSphericalHarmonicFunctions:
 # ELLIPTIC INTEGRALS TESTS (Arts. 696-705)
 # =============================================================================
 
+
 class TestEllipticIntegralFirstKind:
     """Test elliptic integral of the first kind K(k)."""
 
@@ -435,16 +438,19 @@ class TestEllipticIntegralFirstKind:
         from maxwell.math.elliptic_integrals import EllipticIntegral
 
         ei = EllipticIntegral(modulus=0.0)
-        K = ei.first_kind(np.pi/2)
+        K = ei.first_kind(np.pi / 2)
 
-        assert_cgs_close(K, np.pi/2, cgs_tolerance)
+        assert_cgs_close(K, np.pi / 2, cgs_tolerance)
 
     def test_complete_elliptic_k_basic(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify K(k) for k=0.5.
 
         Art. 696: K(0.5) ~ 1.68575
         """
-        from maxwell.math.elliptic_integrals import EllipticIntegral, calc_complete_elliptic_integral_first_kind
+        from maxwell.math.elliptic_integrals import (
+            EllipticIntegral,
+            calc_complete_elliptic_integral_first_kind,
+        )
 
         K = calc_complete_elliptic_integral_first_kind(0.5)
 
@@ -461,8 +467,8 @@ class TestEllipticIntegralFirstKind:
         ei = EllipticIntegral(modulus=0.5)
 
         # At phi = pi/2, should equal complete integral
-        F_complete = ei.first_kind(np.pi/2)
-        K_complete = ei.first_kind(np.pi/2)
+        F_complete = ei.first_kind(np.pi / 2)
+        K_complete = ei.first_kind(np.pi / 2)
 
         assert_cgs_close(F_complete, K_complete, cgs_tolerance)
 
@@ -474,7 +480,7 @@ class TestEllipticIntegralFirstKind:
         from maxwell.math.elliptic_integrals import EllipticIntegral
 
         ei = EllipticIntegral(modulus=0.999)
-        K = ei.first_kind(np.pi/2)
+        K = ei.first_kind(np.pi / 2)
 
         # K should be large (> 3 for k=0.999)
         assert K > 3.0
@@ -491,16 +497,18 @@ class TestEllipticIntegralSecondKind:
         from maxwell.math.elliptic_integrals import EllipticIntegral
 
         ei = EllipticIntegral(modulus=0.0)
-        E = ei.second_kind(np.pi/2)
+        E = ei.second_kind(np.pi / 2)
 
-        assert_cgs_close(E, np.pi/2, cgs_tolerance)
+        assert_cgs_close(E, np.pi / 2, cgs_tolerance)
 
     def test_complete_elliptic_e_basic(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify E(k) for k=0.5.
 
         Art. 697: E(0.5) ~ 1.46746
         """
-        from maxwell.math.elliptic_integrals import calc_complete_elliptic_integral_second_kind
+        from maxwell.math.elliptic_integrals import (
+            calc_complete_elliptic_integral_second_kind,
+        )
 
         E = calc_complete_elliptic_integral_second_kind(0.5)
 
@@ -515,8 +523,8 @@ class TestEllipticIntegralSecondKind:
         from maxwell.math.elliptic_integrals import EllipticIntegral
 
         ei = EllipticIntegral(modulus=0.5)
-        K = ei.first_kind(np.pi/2)
-        E = ei.second_kind(np.pi/2)
+        K = ei.first_kind(np.pi / 2)
+        E = ei.second_kind(np.pi / 2)
 
         assert E < K
 
@@ -528,7 +536,7 @@ class TestEllipticIntegralSecondKind:
         from maxwell.math.elliptic_integrals import EllipticIntegral
 
         ei = EllipticIntegral(modulus=1.0)
-        E = ei.second_kind(np.pi/2)
+        E = ei.second_kind(np.pi / 2)
 
         assert_cgs_close(E, 1.0, cgs_tolerance * 100)
 
@@ -536,9 +544,7 @@ class TestEllipticIntegralSecondKind:
 class TestEllipticIntegralThirdKind:
     """Test elliptic integral of the third kind."""
 
-    def test_elliptic_third_kind_basic(
-        self, cgs_tolerance, assert_cgs_close
-    ) -> None:
+    def test_elliptic_third_kind_basic(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify third kind elliptic integral.
 
         Art. 698: Pi(n; phi, k) = integral_0^phi dθ / (1 + n sin^2 θ) sqrt(1 - k^2 sin^2 θ)
@@ -548,8 +554,8 @@ class TestEllipticIntegralThirdKind:
         ei = EllipticIntegral(modulus=0.5)
 
         # With n=0, should reduce to first kind
-        Pi_zero = ei.third_kind(amplitude=np.pi/2, characteristic=0.0)
-        K = ei.first_kind(np.pi/2)
+        Pi_zero = ei.third_kind(amplitude=np.pi / 2, characteristic=0.0)
+        K = ei.first_kind(np.pi / 2)
 
         # Should be close (n=0 reduces to first kind)
         assert_cgs_close(Pi_zero, K, cgs_tolerance * 10)
@@ -655,7 +661,9 @@ class TestEllipticFunctions:
         self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify calc_complete_elliptic_integral_first_kind."""
-        from maxwell.math.elliptic_integrals import calc_complete_elliptic_integral_first_kind
+        from maxwell.math.elliptic_integrals import (
+            calc_complete_elliptic_integral_first_kind,
+        )
 
         K = calc_complete_elliptic_integral_first_kind(0.5)
 
@@ -665,7 +673,9 @@ class TestEllipticFunctions:
         self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify calc_complete_elliptic_integral_second_kind."""
-        from maxwell.math.elliptic_integrals import calc_complete_elliptic_integral_second_kind
+        from maxwell.math.elliptic_integrals import (
+            calc_complete_elliptic_integral_second_kind,
+        )
 
         E = calc_complete_elliptic_integral_second_kind(0.5)
 
@@ -674,11 +684,11 @@ class TestEllipticFunctions:
     def test_calc_elliptic_first_kind(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify calc_elliptic_integral_first_kind (incomplete)."""
         from maxwell.math.elliptic_integrals import (
-            calc_elliptic_integral_first_kind,
             calc_complete_elliptic_integral_first_kind,
+            calc_elliptic_integral_first_kind,
         )
 
-        F = calc_elliptic_integral_first_kind(modulus=0.5, amplitude=np.pi/2)
+        F = calc_elliptic_integral_first_kind(modulus=0.5, amplitude=np.pi / 2)
         K = calc_complete_elliptic_integral_first_kind(0.5)
 
         assert_cgs_close(F, K, cgs_tolerance)
@@ -686,11 +696,11 @@ class TestEllipticFunctions:
     def test_calc_elliptic_second_kind(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify calc_elliptic_integral_second_kind (incomplete)."""
         from maxwell.math.elliptic_integrals import (
-            calc_elliptic_integral_second_kind,
             calc_complete_elliptic_integral_second_kind,
+            calc_elliptic_integral_second_kind,
         )
 
-        E = calc_elliptic_integral_second_kind(modulus=0.5, amplitude=np.pi/2)
+        E = calc_elliptic_integral_second_kind(modulus=0.5, amplitude=np.pi / 2)
         E_complete = calc_complete_elliptic_integral_second_kind(0.5)
 
         assert_cgs_close(E, E_complete, cgs_tolerance)
@@ -700,7 +710,7 @@ class TestEllipticFunctions:
         from maxwell.math.elliptic_integrals import calc_elliptic_integral_third_kind
 
         Pi = calc_elliptic_integral_third_kind(
-            modulus=0.5, amplitude=np.pi/2, characteristic=0.1
+            modulus=0.5, amplitude=np.pi / 2, characteristic=0.1
         )
 
         assert np.isfinite(Pi)
@@ -732,6 +742,7 @@ class TestEllipticFunctions:
 # MATHEMATICAL PROPERTY TESTS
 # =============================================================================
 
+
 class TestLegendreRecurrence:
     """Test Legendre polynomial recurrence relations."""
 
@@ -748,8 +759,8 @@ class TestLegendreRecurrence:
         l = 2
 
         P_l = LegendrePolynomial(degree=l).evaluate(x)
-        P_l_plus_1 = LegendrePolynomial(degree=l+1).evaluate(x)
-        P_l_minus_1 = LegendrePolynomial(degree=l-1).evaluate(x)
+        P_l_plus_1 = LegendrePolynomial(degree=l + 1).evaluate(x)
+        P_l_minus_1 = LegendrePolynomial(degree=l - 1).evaluate(x)
 
         # Recurrence: (l+1)P_{l+1} = (2l+1)xP_l - lP_{l-1}
         lhs = (l + 1) * P_l_plus_1
@@ -788,6 +799,7 @@ class TestSphericalHarmonicOrthogonality:
 # CGS UNIT COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestMathCGSUnits:
     """Test CGS unit compliance for mathematical modules."""
 
@@ -806,7 +818,7 @@ class TestMathCGSUnits:
         from maxwell.math.spherical_harmonics import SphericalHarmonic
 
         sh = SphericalHarmonic(l=1, m=0)
-        result = sh.evaluate(np.pi/2, 0)
+        result = sh.evaluate(np.pi / 2, 0)
 
         assert isinstance(result, complex)
         # Spherical harmonics are pure numbers
@@ -816,8 +828,8 @@ class TestMathCGSUnits:
         from maxwell.math.elliptic_integrals import EllipticIntegral
 
         ei = EllipticIntegral(modulus=0.5)
-        K = ei.first_kind(np.pi/2)
-        E = ei.second_kind(np.pi/2)
+        K = ei.first_kind(np.pi / 2)
+        E = ei.second_kind(np.pi / 2)
 
         assert isinstance(K, float)
         assert isinstance(E, float)
@@ -827,6 +839,7 @@ class TestMathCGSUnits:
 # =============================================================================
 # CITATION COMPLIANCE TESTS
 # =============================================================================
+
 
 class TestMathCitationCompliance:
     """Test citation decorator compliance for mathematical modules."""
@@ -873,11 +886,15 @@ class TestMathCitationCompliance:
         """Verify calc_* functions have correct citations."""
         from maxwell.math.spherical_harmonics import (
             calc_legendre_polynomial,
-            calc_spherical_harmonic,
             calc_multipole_expansion,
+            calc_spherical_harmonic,
         )
 
-        for func in [calc_legendre_polynomial, calc_spherical_harmonic, calc_multipole_expansion]:
+        for func in [
+            calc_legendre_polynomial,
+            calc_spherical_harmonic,
+            calc_multipole_expansion,
+        ]:
             citation = require_citation(func)
             assert citation.part == 4
             assert citation.articles is not None

@@ -49,15 +49,19 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional, Union
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
-    553, 554, 555,
-    part=4, chapter="Equations of Connected Systems",
+    553,
+    554,
+    555,
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Calculate Lagrange's equations for electromagnetic systems",
 )
@@ -205,8 +209,10 @@ def lagrange_equations_em(
 
 
 @maxwell_cite(
-    556, 557,
-    part=4, chapter="Equations of Connected Systems",
+    556,
+    557,
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Calculate electrokinetic energy T = ½ L I²",
 )
@@ -268,7 +274,8 @@ def kinetic_energy_electromagnetic(
 
 @maxwell_cite(
     558,
-    part=4, chapter="Equations of Connected Systems",
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Define generalized coordinates for electromechanical systems",
 )
@@ -361,8 +368,10 @@ def generalized_coordinates(
 
 
 @maxwell_cite(
-    559, 560,
-    part=4, chapter="Equations of Connected Systems",
+    559,
+    560,
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Calculate electromagnetic equations of motion",
 )
@@ -438,13 +447,17 @@ def em_equation_motion(
     # Calculate motional EMF if gradients provided
     motional_emf = np.zeros(n)
     if mutual_inductance_gradient is not None and mechanical_velocity is not None:
-        mutual_inductance_gradient = np.asarray(mutual_inductance_gradient, dtype=np.float64)
+        mutual_inductance_gradient = np.asarray(
+            mutual_inductance_gradient, dtype=np.float64
+        )
         mechanical_velocity = np.asarray(mechanical_velocity, dtype=np.float64)
 
         # Motional EMF = Σⱼ (∂Lᵢⱼ/∂x · v) Iⱼ
         for i in range(n):
             for j in range(n):
-                motional_emf[i] += mutual_inductance_gradient[i, j] * np.dot(mechanical_velocity, currents[j])
+                motional_emf[i] += mutual_inductance_gradient[i, j] * np.dot(
+                    mechanical_velocity, currents[j]
+                )
 
     # Resistive drop: IR
     resistive_drop = resistances * currents
@@ -487,7 +500,8 @@ def em_equation_motion(
 
 @maxwell_cite(
     561,
-    part=4, chapter="Equations of Connected Systems",
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Calculate electromagnetic inertia (self-inductance as inertia)",
 )
@@ -554,7 +568,7 @@ def electromagnetic_inertia(
         if inductance.ndim == 2:
             energy = 0.5 * np.dot(current, np.dot(inductance, current))
         else:
-            energy = 0.5 * inductance * current ** 2
+            energy = 0.5 * inductance * current**2
 
         result["electrokinetic_energy"] = energy
 
@@ -569,8 +583,10 @@ def electromagnetic_inertia(
 
 
 @maxwell_cite(
-    562, 563,
-    part=4, chapter="Equations of Connected Systems",
+    562,
+    563,
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Calculate force between circuits from energy derivative",
 )
@@ -632,7 +648,9 @@ def mutual_inductance_force(
     mutual_energy = mutual_inductance * I1 * I2
 
     # Force direction
-    force_direction = "attractive" if force > 0 else ("repulsive" if force < 0 else "neutral")
+    force_direction = (
+        "attractive" if force > 0 else ("repulsive" if force < 0 else "neutral")
+    )
 
     # Work done to move from reference (assuming constant currents)
     # W = ∫ F dx = I₁ I₂ ∫ (dM/dx) dx = I₁ I₂ ΔM
@@ -653,8 +671,10 @@ def mutual_inductance_force(
 
 
 @maxwell_cite(
-    564, 565,
-    part=4, chapter="Equations of Connected Systems",
+    564,
+    565,
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Calculate Weber's electrodynamics force between moving charges",
 )
@@ -738,14 +758,14 @@ def weber_electrodynamics(
     radial_acceleration = np.dot(a_rel, r_hat)
 
     # Coulomb force (static)
-    coulomb_force = (q1 * q2 / separation ** 2) * r_hat
+    coulomb_force = (q1 * q2 / separation**2) * r_hat
 
     # Weber corrections
     # Velocity term: -(1/2c²)(dr/dt)²
     velocity_correction_factor = -0.5 * (radial_velocity / CONST.C) ** 2
 
     # Acceleration term: (1/c²)r(d²r/dt²)
-    acceleration_correction_factor = (separation / CONST.C ** 2) * radial_acceleration
+    acceleration_correction_factor = (separation / CONST.C**2) * radial_acceleration
 
     # Total Weber force
     weber_factor = 1.0 + velocity_correction_factor + acceleration_correction_factor
@@ -765,8 +785,10 @@ def weber_electrodynamics(
 
 
 @maxwell_cite(
-    566, 567,
-    part=4, chapter="Equations of Connected Systems",
+    566,
+    567,
+    part=4,
+    chapter="Equations of Connected Systems",
     theory_class="maxwell_original",
     description="Calculate Neumann's potential for moving circuits",
 )
@@ -870,7 +892,9 @@ def neumann_potential(
                     # Motional term: I · (dL/dt) ≈ I · (∂L/∂x) · v
                     # Simplified model
                     relative_velocity = velocities[j] - velocities[i]
-                    motional_emf[i] -= currents[j] * np.linalg.norm(relative_velocity) * 0.01
+                    motional_emf[i] -= (
+                        currents[j] * np.linalg.norm(relative_velocity) * 0.01
+                    )
 
     return {
         "neumann_potential": neumann_potential,
@@ -923,7 +947,9 @@ class ConnectedSystem:
         self.resistances = np.asarray(self.resistances, dtype=np.float64)
 
         # Check symmetry of inductance matrix
-        if not np.allclose(self.inductance_matrix, self.inductance_matrix.T, rtol=1e-10):
+        if not np.allclose(
+            self.inductance_matrix, self.inductance_matrix.T, rtol=1e-10
+        ):
             raise ValueError("Inductance matrix must be symmetric")
 
         self.num_circuits = self.inductance_matrix.shape[0]
@@ -931,8 +957,10 @@ class ConnectedSystem:
 
     @classmethod
     @maxwell_cite(
-        553, 558,
-        part=4, chapter="Equations of Connected Systems",
+        553,
+        558,
+        part=4,
+        chapter="Equations of Connected Systems",
         theory_class="maxwell_original",
         description="Create connected system from circuit and mechanical parameters",
     )
@@ -990,8 +1018,10 @@ class ConnectedSystem:
         )
 
     @maxwell_cite(
-        556, 557,
-        part=4, chapter="Equations of Connected Systems",
+        556,
+        557,
+        part=4,
+        chapter="Equations of Connected Systems",
         theory_class="maxwell_original",
         description="Calculate Lagrangian of connected system",
     )
@@ -1046,8 +1076,10 @@ class ConnectedSystem:
         return T_electrical + T_mechanical - U_potential
 
     @maxwell_cite(
-        559, 560,
-        part=4, chapter="Equations of Connected Systems",
+        559,
+        560,
+        part=4,
+        chapter="Equations of Connected Systems",
         theory_class="maxwell_original",
         description="Calculate equations of motion for connected system",
     )
@@ -1108,7 +1140,9 @@ class ConnectedSystem:
             for k in range(self.num_mechanical):
                 for i in range(self.num_circuits):
                     for j in range(self.num_circuits):
-                        electromagnetic_force[k] += currents[i] * self.coupling_matrix[k, i, j] * currents[j]
+                        electromagnetic_force[k] += (
+                            currents[i] * self.coupling_matrix[k, i, j] * currents[j]
+                        )
 
         # Power calculations
         power_dissipated = np.dot(self.resistances * currents, currents)
@@ -1127,14 +1161,17 @@ class ConnectedSystem:
         if mechanical_forces is not None:
             mechanical_forces = np.asarray(mechanical_forces, dtype=np.float64)
             if len(self.masses) > 0:
-                mechanical_acceleration = (mechanical_forces + electromagnetic_force) / self.masses
+                mechanical_acceleration = (
+                    mechanical_forces + electromagnetic_force
+                ) / self.masses
                 result["mechanical_acceleration"] = mechanical_acceleration
 
         return result
 
     @maxwell_cite(
         561,
-        part=4, chapter="Equations of Connected Systems",
+        part=4,
+        chapter="Equations of Connected Systems",
         theory_class="maxwell_original",
         description="Calculate electrokinetic momentum (generalized momentum)",
     )
@@ -1161,8 +1198,10 @@ class ConnectedSystem:
         return np.dot(self.inductance_matrix, currents)
 
     @maxwell_cite(
-        562, 563,
-        part=4, chapter="Equations of Connected Systems",
+        562,
+        563,
+        part=4,
+        chapter="Equations of Connected Systems",
         theory_class="maxwell_original",
         description="Calculate force from energy gradient",
     )
@@ -1197,14 +1236,31 @@ class ConnectedSystem:
         for k in range(num_mech):
             for i in range(len(currents)):
                 for j in range(len(currents)):
-                    force[k] += 0.5 * currents[i] * position_derivative[k, i, j] * currents[j]
+                    force[k] += (
+                        0.5 * currents[i] * position_derivative[k, i, j] * currents[j]
+                    )
 
         # Factor of 2 because the matrix is symmetric
         return 2.0 * force
 
     @maxwell_cite(
-        553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567,
-        part=4, chapter="Equations of Connected Systems",
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        part=4,
+        chapter="Equations of Connected Systems",
         theory_class="maxwell_original",
         description="Complete analysis of connected system dynamics",
     )

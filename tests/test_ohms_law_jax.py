@@ -8,30 +8,31 @@ import numpy as np
 import pytest
 
 from maxwell.jax.electromagnetism.ohms_law import (
-    OhmsLawJAX,
-    ResistanceJAX,
     ConductivityJAX,
+    OhmsLawJAX,
     PowerDissipationJAX,
-    calc_voltage_jax,
-    calc_current_jax,
-    calc_resistance_jax,
-    calc_conductance_jax,
-    calc_resistivity_jax,
-    calc_conductivity_jax,
-    series_resistance_jax,
-    parallel_resistance_jax,
-    temperature_corrected_resistance_jax,
-    calc_power_from_IV_jax,
-    calc_power_from_I2R_jax,
-    calc_power_from_V2R_jax,
-    verify_ohms_law_jax,
+    ResistanceJAX,
     analyze_ohms_law_jax,
+    calc_conductance_jax,
+    calc_conductivity_jax,
+    calc_current_jax,
+    calc_power_from_I2R_jax,
+    calc_power_from_IV_jax,
+    calc_power_from_V2R_jax,
+    calc_resistance_jax,
+    calc_resistivity_jax,
+    calc_voltage_jax,
+    parallel_resistance_jax,
+    series_resistance_jax,
+    temperature_corrected_resistance_jax,
+    verify_ohms_law_jax,
 )
 
 TOL = 1e-10
 
 
 # -- TestOhmsLawJAXPytree ----------------------------------------------------------
+
 
 class TestOhmsLawJAXPytree:
     """Flatten/unflatten, jit, vmap, grad."""
@@ -53,7 +54,11 @@ class TestOhmsLawJAXPytree:
     def test_vmap_over_voltage(self):
         obj = OhmsLawJAX(voltage=0.0, current=1.0, resistance=1.0)
         voltages = jnp.array([1.0, 2.0, 3.0])
-        results = jax.vmap(lambda v: OhmsLawJAX(voltage=v, current=1.0, resistance=1.0).computed_current)(voltages)
+        results = jax.vmap(
+            lambda v: OhmsLawJAX(
+                voltage=v, current=1.0, resistance=1.0
+            ).computed_current
+        )(voltages)
         assert results.shape == (3,)
         assert float(results[0]) == pytest.approx(1.0)
         assert float(results[1]) == pytest.approx(2.0)
@@ -62,12 +67,14 @@ class TestOhmsLawJAXPytree:
     def test_grad_through_voltage(self):
         def compute_v(I, R):
             return OhmsLawJAX._voltage_jit(I, R)
+
         grad_fn = jax.grad(compute_v)
         g_I = grad_fn(2.0, 5.0)
         assert float(g_I) == pytest.approx(5.0, abs=1e-6)
 
 
 # -- TestOhmsLawJAXProperties ------------------------------------------------------
+
 
 class TestOhmsLawJAXProperties:
     """All 5 properties correct values."""
@@ -108,6 +115,7 @@ class TestOhmsLawJAXProperties:
 
 # -- TestOhmsLawJAXMethods ---------------------------------------------------------
 
+
 class TestOhmsLawJAXMethods:
     """voltage_from, current_from, resistance_from."""
 
@@ -139,6 +147,7 @@ class TestOhmsLawJAXMethods:
 
 # -- TestOhmsLawJAXEdgeCases -------------------------------------------------------
 
+
 class TestOhmsLawJAXEdgeCases:
     """Zero R, zero I, zero V."""
 
@@ -160,6 +169,7 @@ class TestOhmsLawJAXEdgeCases:
 
 
 # -- TestResistanceJAXPytree -------------------------------------------------------
+
 
 class TestResistanceJAXPytree:
     """Flatten/unflatten, jit."""
@@ -187,6 +197,7 @@ class TestResistanceJAXPytree:
 
 # -- TestResistanceJAXSeries -------------------------------------------------------
 
+
 class TestResistanceJAXSeries:
     """Single, dual, multi resistances."""
 
@@ -211,6 +222,7 @@ class TestResistanceJAXSeries:
 
 # -- TestResistanceJAXParallel -----------------------------------------------------
 
+
 class TestResistanceJAXParallel:
     """Single, dual, identical resistances."""
 
@@ -220,7 +232,9 @@ class TestResistanceJAXParallel:
 
     def test_dual_identical(self):
         obj = ResistanceJAX()
-        assert float(obj.parallel_combine(jnp.array([10.0, 10.0]))) == pytest.approx(5.0)
+        assert float(obj.parallel_combine(jnp.array([10.0, 10.0]))) == pytest.approx(
+            5.0
+        )
 
     def test_dual_different(self):
         obj = ResistanceJAX()
@@ -236,6 +250,7 @@ class TestResistanceJAXParallel:
 
 
 # -- TestResistanceJAXTemperature --------------------------------------------------
+
 
 class TestResistanceJAXTemperature:
     """Copper, batch, zero alpha."""
@@ -269,6 +284,7 @@ class TestResistanceJAXTemperature:
 
 # -- TestConductivityJAXPytree -----------------------------------------------------
 
+
 class TestConductivityJAXPytree:
     """Flatten/unflatten."""
 
@@ -292,6 +308,7 @@ class TestConductivityJAXPytree:
 
 
 # -- TestConductivityJAXConversions ------------------------------------------------
+
 
 class TestConductivityJAXConversions:
     """sigma->rho, J=sigma*E, E=J/sigma."""
@@ -326,6 +343,7 @@ class TestConductivityJAXConversions:
 
 # -- TestPowerDissipationJAXPytree -------------------------------------------------
 
+
 class TestPowerDissipationJAXPytree:
     """Flatten/unflatten."""
 
@@ -349,6 +367,7 @@ class TestPowerDissipationJAXPytree:
 
 
 # -- TestPowerDissipationJAXFormulas -----------------------------------------------
+
 
 class TestPowerDissipationJAXFormulas:
     """I^2R, V^2/R, VI, cross-consistency."""
@@ -381,6 +400,7 @@ class TestPowerDissipationJAXFormulas:
 
 # -- TestStandaloneFunctions -------------------------------------------------------
 
+
 class TestStandaloneFunctions:
     """All 14 standalone functions."""
 
@@ -403,13 +423,19 @@ class TestStandaloneFunctions:
         assert float(calc_conductivity_jax(2.0)) == pytest.approx(0.5)
 
     def test_series_resistance(self):
-        assert float(series_resistance_jax(jnp.array([1.0, 2.0, 3.0]))) == pytest.approx(6.0)
+        assert float(
+            series_resistance_jax(jnp.array([1.0, 2.0, 3.0]))
+        ) == pytest.approx(6.0)
 
     def test_parallel_resistance(self):
-        assert float(parallel_resistance_jax(jnp.array([2.0, 2.0]))) == pytest.approx(1.0)
+        assert float(parallel_resistance_jax(jnp.array([2.0, 2.0]))) == pytest.approx(
+            1.0
+        )
 
     def test_temperature_corrected_resistance(self):
-        assert float(temperature_corrected_resistance_jax(100.0, 0.004, 70.0)) == pytest.approx(120.0)
+        assert float(
+            temperature_corrected_resistance_jax(100.0, 0.004, 70.0)
+        ) == pytest.approx(120.0)
 
     def test_calc_power_from_IV(self):
         assert float(calc_power_from_IV_jax(10.0, 2.0)) == pytest.approx(20.0)
@@ -432,6 +458,7 @@ class TestStandaloneFunctions:
 
 # -- TestJITOhmsLaw ----------------------------------------------------------------
 
+
 class TestJITOhmsLaw:
     """JIT compilation for all classes."""
 
@@ -440,6 +467,7 @@ class TestJITOhmsLaw:
         def compute(v, i, r):
             obj = OhmsLawJAX(voltage=v, current=i, resistance=r)
             return obj.computed_voltage
+
         result = compute(10.0, 2.0, 5.0)
         assert float(result) == pytest.approx(10.0)
 
@@ -469,6 +497,7 @@ class TestJITOhmsLaw:
 
 
 # -- TestAutoDiffOhmsLaw -----------------------------------------------------------
+
 
 class TestAutoDiffOhmsLaw:
     """Gradients: dV/dI=R, dV/dR=I, dP/dI=2IR, etc."""
@@ -504,6 +533,7 @@ class TestAutoDiffOhmsLaw:
 
 # -- TestVmapOhmsLaw ---------------------------------------------------------------
 
+
 class TestVmapOhmsLaw:
     """Vmap over arrays of inputs."""
 
@@ -530,7 +560,9 @@ class TestVmapOhmsLaw:
 
     def test_vmap_temperature(self):
         temps = jnp.array([0.0, 20.0, 40.0, 60.0])
-        results = jax.vmap(lambda t: ResistanceJAX._temp_correct_jit(100.0, 0.004, t, 20.0))(temps)
+        results = jax.vmap(
+            lambda t: ResistanceJAX._temp_correct_jit(100.0, 0.004, t, 20.0)
+        )(temps)
         assert float(results[0]) == pytest.approx(92.0)
         assert float(results[1]) == pytest.approx(100.0)
         assert float(results[2]) == pytest.approx(108.0)
@@ -544,6 +576,7 @@ class TestVmapOhmsLaw:
 
 
 # -- TestNumPyOhmsLaw --------------------------------------------------------------
+
 
 class TestNumPyOhmsLaw:
     """JAX vs NumPy comparison."""
@@ -571,6 +604,7 @@ class TestNumPyOhmsLaw:
 
 # -- TestVerifyOhmsLaw -------------------------------------------------------------
 
+
 class TestVerifyOhmsLaw:
     """verify_ohms_law_jax."""
 
@@ -594,11 +628,20 @@ class TestVerifyOhmsLaw:
 
     def test_verify_all_keys_present(self):
         result = verify_ohms_law_jax()
-        expected_keys = {"V_from_IR", "I_from_VR", "R_from_VI", "power_IV", "power_I2R", "power_V2R", "verified"}
+        expected_keys = {
+            "V_from_IR",
+            "I_from_VR",
+            "R_from_VI",
+            "power_IV",
+            "power_I2R",
+            "power_V2R",
+            "verified",
+        }
         assert set(result.keys()) == expected_keys
 
 
 # -- TestAnalyzeOhmsLaw ------------------------------------------------------------
+
 
 class TestAnalyzeOhmsLaw:
     """analyze_ohms_law_jax."""

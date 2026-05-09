@@ -9,25 +9,26 @@ import pytest
 
 from maxwell.jax.electromagnetism.conduction_3d import (
     Conduction3DJAX,
-    SpreadingResistanceJAX,
     EffectiveConductivityJAX,
-    ohms_law_3d_jax,
-    electric_field_from_current_density_jax,
-    conduction_power_density_jax,
-    spherical_spreading_resistance_jax,
-    hemispherical_spreading_resistance_jax,
-    circular_contact_resistance_jax,
-    maxwell_garnett_conductivity_jax,
-    effective_conductivity_series_jax,
-    effective_conductivity_parallel_jax,
-    verify_conduction_3d_jax,
+    SpreadingResistanceJAX,
     analyze_conduction_jax,
+    circular_contact_resistance_jax,
+    conduction_power_density_jax,
+    effective_conductivity_parallel_jax,
+    effective_conductivity_series_jax,
+    electric_field_from_current_density_jax,
+    hemispherical_spreading_resistance_jax,
+    maxwell_garnett_conductivity_jax,
+    ohms_law_3d_jax,
+    spherical_spreading_resistance_jax,
+    verify_conduction_3d_jax,
 )
 
 TOL = 1e-10
 
 
 # -- TestConduction3DJAXPytree ----------------------------------------------------
+
 
 class TestConduction3DJAXPytree:
     """Flatten/unflatten, jit, vmap."""
@@ -55,6 +56,7 @@ class TestConduction3DJAXPytree:
 
 
 # -- TestConduction3DJAXScalar ----------------------------------------------------
+
 
 class TestConduction3DJAXScalar:
     """Scalar (isotropic) conductivity operations."""
@@ -95,6 +97,7 @@ class TestConduction3DJAXScalar:
 
 # -- TestConduction3DJAXTensor ----------------------------------------------------
 
+
 class TestConduction3DJAXTensor:
     """Tensor (anisotropic) conductivity operations."""
 
@@ -129,10 +132,14 @@ class TestConduction3DJAXTensor:
         rho = jnp.array([[0.5, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
         obj = Conduction3DJAX.from_resistivity(rho)
         # sigma = rho^-1 = diag(2, 1, 0.5)
-        assert jnp.allclose(obj.conductivity, jnp.array([[2.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.5]]))
+        assert jnp.allclose(
+            obj.conductivity,
+            jnp.array([[2.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.5]]),
+        )
 
 
 # -- TestConduction3DJAXEdgeCases -------------------------------------------------
+
 
 class TestConduction3DJAXEdgeCases:
     """Zero conductivity, unit E, roundtrip."""
@@ -167,6 +174,7 @@ class TestConduction3DJAXEdgeCases:
 
 # -- TestSpreadingResistanceJAXPytree ---------------------------------------------
 
+
 class TestSpreadingResistanceJAXPytree:
     """Flatten/unflatten, jit."""
 
@@ -191,6 +199,7 @@ class TestSpreadingResistanceJAXPytree:
 
 
 # -- TestSpreadingResistanceJAXSpherical ------------------------------------------
+
 
 class TestSpreadingResistanceJAXSpherical:
     """Spherical spreading resistance values."""
@@ -221,6 +230,7 @@ class TestSpreadingResistanceJAXSpherical:
 
 # -- TestSpreadingResistanceJAXHemispherical --------------------------------------
 
+
 class TestSpreadingResistanceJAXHemispherical:
     """Hemispherical spreading resistance values."""
 
@@ -249,6 +259,7 @@ class TestSpreadingResistanceJAXHemispherical:
 
 
 # -- TestSpreadingResistanceJAXCircular -------------------------------------------
+
 
 class TestSpreadingResistanceJAXCircular:
     """Circular contact resistance."""
@@ -282,6 +293,7 @@ class TestSpreadingResistanceJAXCircular:
 
 # -- TestEffectiveConductivityJAXPytree -------------------------------------------
 
+
 class TestEffectiveConductivityJAXPytree:
     """Flatten/unflatten, jit."""
 
@@ -297,13 +309,17 @@ class TestEffectiveConductivityJAXPytree:
         assert float(reconstructed.volume_fraction) == pytest.approx(0.3)
 
     def test_jit_compatible(self):
-        obj = EffectiveConductivityJAX(sigma_matrix=1.0, sigma_inclusion=0.5, volume_fraction=0.3)
+        obj = EffectiveConductivityJAX(
+            sigma_matrix=1.0, sigma_inclusion=0.5, volume_fraction=0.3
+        )
         jit_fn = jax.jit(lambda o: o.parallel_mix())
         result = jit_fn(obj)
         assert float(result) == pytest.approx(0.85)
 
     def test_tree_map(self):
-        obj = EffectiveConductivityJAX(sigma_matrix=1.0, sigma_inclusion=2.0, volume_fraction=0.5)
+        obj = EffectiveConductivityJAX(
+            sigma_matrix=1.0, sigma_inclusion=2.0, volume_fraction=0.5
+        )
         doubled = jax.tree_util.tree_map(lambda x: x * 2, obj)
         assert float(doubled.sigma_matrix) == pytest.approx(2.0)
         assert float(doubled.sigma_inclusion) == pytest.approx(4.0)
@@ -311,6 +327,7 @@ class TestEffectiveConductivityJAXPytree:
 
 
 # -- TestEffectiveConductivityJAXMixing -------------------------------------------
+
 
 class TestEffectiveConductivityJAXMixing:
     """Series and parallel mixing models."""
@@ -348,6 +365,7 @@ class TestEffectiveConductivityJAXMixing:
 
 # -- TestEffectiveConductivityJAXMaxwellGarnett -----------------------------------
 
+
 class TestEffectiveConductivityJAXMaxwellGarnett:
     """Maxwell-Garnett formula behavior."""
 
@@ -373,6 +391,7 @@ class TestEffectiveConductivityJAXMaxwellGarnett:
 
 
 # -- TestStandaloneConductionFunctions --------------------------------------------
+
 
 class TestStandaloneConductionFunctions:
     """All standalone function correctness."""
@@ -413,7 +432,11 @@ class TestStandaloneConductionFunctions:
     def test_maxwell_garnett_standalone(self):
         result = maxwell_garnett_conductivity_jax(1.0, 2.0, 0.5)
         # sigma_eff = 1 * (2+2-2*0.5*(-1)) / (2+2+0.5*(-1)) = 1 * (4+1) / (4-0.5) = 5/3.5
-        expected = 1.0 * (2.0 + 2.0 - 2.0 * 0.5 * (1.0 - 2.0)) / (2.0 + 2.0 + 0.5 * (1.0 - 2.0))
+        expected = (
+            1.0
+            * (2.0 + 2.0 - 2.0 * 0.5 * (1.0 - 2.0))
+            / (2.0 + 2.0 + 0.5 * (1.0 - 2.0))
+        )
         assert float(result) == pytest.approx(expected)
 
     def test_effective_series_standalone(self):
@@ -424,6 +447,7 @@ class TestStandaloneConductionFunctions:
 
 # -- TestJITConduction3D ----------------------------------------------------------
 
+
 class TestJITConduction3D:
     """JIT compilation for all classes."""
 
@@ -432,18 +456,34 @@ class TestJITConduction3D:
         def compute(sigma_val, E):
             obj = Conduction3DJAX(conductivity=sigma_val)
             return obj.current_density(E)
+
         result = compute(3.0, jnp.array([1.0, 0.0, 0.0]))
         assert jnp.allclose(result, jnp.array([3.0, 0.0, 0.0]))
 
     def test_jit_spreading_resistance(self):
         obj = SpreadingResistanceJAX(conductivity=1.0)
-        jit_fn = jax.jit(lambda o: (o.spherical_surface(0.1), o.hemispherical_surface(0.1), o.circular_contact(0.1)))
+        jit_fn = jax.jit(
+            lambda o: (
+                o.spherical_surface(0.1),
+                o.hemispherical_surface(0.1),
+                o.circular_contact(0.1),
+            )
+        )
         results = jit_fn(obj)
         assert all(float(r) > 0 for r in results)
 
     def test_jit_effective_conductivity(self):
-        obj = EffectiveConductivityJAX(sigma_matrix=1.0, sigma_inclusion=2.0, volume_fraction=0.3)
-        jit_fn = jax.jit(lambda o: (o.series_mix(), o.parallel_mix(), o.maxwell_garnett(), o.brickell()))
+        obj = EffectiveConductivityJAX(
+            sigma_matrix=1.0, sigma_inclusion=2.0, volume_fraction=0.3
+        )
+        jit_fn = jax.jit(
+            lambda o: (
+                o.series_mix(),
+                o.parallel_mix(),
+                o.maxwell_garnett(),
+                o.brickell(),
+            )
+        )
         results = jit_fn(obj)
         assert all(float(r) > 0 for r in results)
 
@@ -455,22 +495,32 @@ class TestJITConduction3D:
             J = ohms_law_3d_jax(E, sigma)
             E_recovered = electric_field_from_current_density_jax(J, sigma)
             return E_recovered
-        E_recovered = compute_J_and_E_roundtrip(jnp.array([1.0, 0.0, 0.0]), jnp.array(2.0))
+
+        E_recovered = compute_J_and_E_roundtrip(
+            jnp.array([1.0, 0.0, 0.0]), jnp.array(2.0)
+        )
         assert jnp.allclose(E_recovered, jnp.array([1.0, 0.0, 0.0]))
 
 
 # -- TestAutoDiffConduction -------------------------------------------------------
 
+
 class TestAutoDiffConduction:
     """Gradients through conduction functions."""
 
     def test_grad_current_density_wrt_E(self):
-        grad_fn = jax.grad(lambda Ex: ohms_law_3d_jax(jnp.array([Ex, 0.0, 0.0]), jnp.array(2.0))[0])
+        grad_fn = jax.grad(
+            lambda Ex: ohms_law_3d_jax(jnp.array([Ex, 0.0, 0.0]), jnp.array(2.0))[0]
+        )
         g = grad_fn(1.0)
         assert float(g) == pytest.approx(2.0, abs=1e-6)
 
     def test_grad_power_density_wrt_E(self):
-        grad_fn = jax.grad(lambda Ex: conduction_power_density_jax(jnp.array([Ex, 0.0, 0.0]), jnp.array(2.0)))
+        grad_fn = jax.grad(
+            lambda Ex: conduction_power_density_jax(
+                jnp.array([Ex, 0.0, 0.0]), jnp.array(2.0)
+            )
+        )
         g = grad_fn(1.0)
         # P = 2*Ex^2, dP/dEx = 4*Ex = 4
         assert float(g) == pytest.approx(4.0, abs=1e-6)
@@ -479,7 +529,7 @@ class TestAutoDiffConduction:
         grad_fn = jax.grad(lambda s: spherical_spreading_resistance_jax(s, 0.1))
         g = grad_fn(1.0)
         # R = 1/(4*pi*sigma*r), dR/dsigma = -1/(4*pi*sigma^2*r)
-        expected = -1.0 / (4.0 * np.pi * 1.0 ** 2 * 0.1)
+        expected = -1.0 / (4.0 * np.pi * 1.0**2 * 0.1)
         assert float(g) == pytest.approx(expected, abs=1e-6)
 
     def test_grad_maxwell_garnett_wrt_vol_frac(self):
@@ -489,6 +539,7 @@ class TestAutoDiffConduction:
 
 
 # -- TestVmapConduction -----------------------------------------------------------
+
 
 class TestVmapConduction:
     """Vectorization over arrays of inputs."""
@@ -501,7 +552,9 @@ class TestVmapConduction:
 
     def test_vmap_power_density(self):
         E_batch = jnp.array([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]])
-        Ps = jax.vmap(lambda E: conduction_power_density_jax(E, jnp.array(1.0)))(E_batch)
+        Ps = jax.vmap(lambda E: conduction_power_density_jax(E, jnp.array(1.0)))(
+            E_batch
+        )
         expected = jnp.array([1.0, 4.0, 9.0])
         assert jnp.allclose(Ps, expected)
 
@@ -513,13 +566,16 @@ class TestVmapConduction:
 
     def test_vmap_effective_conductivity(self):
         fracs = jnp.array([0.1, 0.3, 0.5, 0.7, 0.9])
-        results = jax.vmap(lambda f: effective_conductivity_parallel_jax(1.0, 10.0, f))(fracs)
+        results = jax.vmap(lambda f: effective_conductivity_parallel_jax(1.0, 10.0, f))(
+            fracs
+        )
         assert results.shape == (5,)
         # Monotonically increasing with f
         assert jnp.all(jnp.diff(results) > 0)
 
 
 # -- TestNumPyConductionComparison ------------------------------------------------
+
 
 class TestNumPyConductionComparison:
     """JAX vs NumPy comparison."""
@@ -546,6 +602,7 @@ class TestNumPyConductionComparison:
 
 # -- TestVerifyConduction3D -------------------------------------------------------
 
+
 class TestVerifyConduction3D:
     """verify_conduction_3d_jax behavior."""
 
@@ -567,12 +624,22 @@ class TestVerifyConduction3D:
 
     def test_verify_keys_present(self):
         result = verify_conduction_3d_jax()
-        expected_keys = {"J", "E_recovered", "E_error", "P_direct", "P_from_JE",
-                        "P_error", "E_roundtrip_ok", "P_consistent", "verified"}
+        expected_keys = {
+            "J",
+            "E_recovered",
+            "E_error",
+            "P_direct",
+            "P_from_JE",
+            "P_error",
+            "E_roundtrip_ok",
+            "P_consistent",
+            "verified",
+        }
         assert set(result.keys()) == expected_keys
 
 
 # -- TestAnalyzeConduction --------------------------------------------------------
+
 
 class TestAnalyzeConduction:
     """analyze_conduction_jax behavior."""

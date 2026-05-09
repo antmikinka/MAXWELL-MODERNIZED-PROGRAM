@@ -15,20 +15,19 @@ from __future__ import annotations
 from maxwell.solvers.induction_solvers import (
     InductionProblem,
     InductionSolution,
-    solve_induction_iterative,
     compute_demagnetizing_field,
     demagnetizing_factors,
     solve_ellipsoid_induction,
+    solve_induction_iterative,
     solve_induction_with_boundary,
     verify_induction_solver,
 )
-
 from maxwell.solvers.shape_solvers import (
     CylindricalMagnet,
     RectangularMagnet,
     compare_shape_demagnetizing_factors,
-    shape_magnetostatic_energy,
     optimize_shape_for_field,
+    shape_magnetostatic_energy,
     verify_shape_solvers,
 )
 

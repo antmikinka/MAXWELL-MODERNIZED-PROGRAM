@@ -36,7 +36,7 @@ def _default_potential(q: jax.Array) -> jax.Array:
 
 def _default_kinetic(q: jax.Array, q_dot: jax.Array) -> jax.Array:
     """Default kinetic energy: T = 0.5 * sum(q_dot^2)."""
-    return 0.5 * jnp.sum(q_dot ** 2)
+    return 0.5 * jnp.sum(q_dot**2)
 
 
 @jax_tree
@@ -135,6 +135,7 @@ class GeneralizedSystem:
         Returns:
             Force on q2 due to q1, shape (3,).
         """
+
         def potential(r_vec):
             r_mag = jnp.linalg.norm(r_vec)
             return q1 * q2 / jnp.maximum(r_mag, 1e-30)
@@ -158,5 +159,5 @@ class GeneralizedSystem:
             Force vector, shape (3,).
         """
         r_mag = jnp.linalg.norm(r)
-        r_mag_cubed = jnp.maximum(r_mag ** 3, 1e-30)
+        r_mag_cubed = jnp.maximum(r_mag**3, 1e-30)
         return q1 * q2 * r / r_mag_cubed

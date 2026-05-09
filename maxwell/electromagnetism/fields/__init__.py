@@ -10,48 +10,45 @@ References:
 """
 
 from maxwell.electromagnetism.fields.ampere_maxwell import (
+    AmpereMaxwellCalculator,
     AmpereMaxwellLaw,
     DisplacementCurrent,
-    AmpereMaxwellCalculator,
+    analyze_ampere_maxwell,
     calc_ampere_law,
-    calc_displacement_current,
     calc_ampere_maxwell,
+    calc_displacement_current,
     calc_magnetic_field_from_current,
     calc_total_current_density,
     verify_displacement_current_necessity,
-    analyze_ampere_maxwell,
 )
-
-from maxwell.electromagnetism.fields.electrotonic import (
-    ElectrotonicState,
-    calc_electrotonic_uniform_field,
-    calc_electrotonic_loop,
-    calc_flux_from_electrotonic,
-    verify_electrotonic_relations,
-    analyze_electrotonic_state,
-)
-
-from maxwell.electromagnetism.fields.vector_momentum import (
-    VectorPotential,
-    calc_vector_potential_from_current,
-    calc_vector_potential_wire,
-    calc_vector_potential_dipole,
-    calc_momentum_density,
-    calc_total_momentum,
-    verify_momentum_relations,
-    verify_momentum_conservation,
-    analyze_vector_potential,
-)
-
 from maxwell.electromagnetism.fields.curl_relation import (
     CurlRelations,
-    verify_curl_relation,
-    verify_curl_gradient_identity,
-    verify_divergence_free_B,
+    analyze_curl_relations,
     calc_curl,
     calc_divergence,
+    verify_curl_gradient_identity,
+    verify_curl_relation,
+    verify_divergence_free_B,
     verify_gauge_invariance,
-    analyze_curl_relations,
+)
+from maxwell.electromagnetism.fields.electrotonic import (
+    ElectrotonicState,
+    analyze_electrotonic_state,
+    calc_electrotonic_loop,
+    calc_electrotonic_uniform_field,
+    calc_flux_from_electrotonic,
+    verify_electrotonic_relations,
+)
+from maxwell.electromagnetism.fields.vector_momentum import (
+    VectorPotential,
+    analyze_vector_potential,
+    calc_momentum_density,
+    calc_total_momentum,
+    calc_vector_potential_dipole,
+    calc_vector_potential_from_current,
+    calc_vector_potential_wire,
+    verify_momentum_conservation,
+    verify_momentum_relations,
 )
 
 __all__ = [

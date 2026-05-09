@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -38,7 +39,7 @@ class TestCalcHysteresisLoop:
         result = calc_hysteresis_loop(H_max=1000, mu_r=1000, alpha=0.001, n_points=300)
         H = result["H_values"]
         B = result["B_values"]
-        idx = np.argmin(np.abs(B[:len(B)//2]))
+        idx = np.argmin(np.abs(B[: len(B) // 2]))
         H_c = abs(H[idx])
         assert H_c > 0
 
@@ -47,7 +48,7 @@ class TestCalcHysteresisLoop:
         result = calc_hysteresis_loop(H_max=1000, mu_r=1000, alpha=0.001, n_points=300)
         B = result["B_values"]
         H = result["H_values"]
-        idx = np.argmin(np.abs(H[:len(H)//2]))
+        idx = np.argmin(np.abs(H[: len(H) // 2]))
         B_r = abs(B[idx])
         assert B_r > 0
 
@@ -68,7 +69,14 @@ class TestCalcHysteresisLoop:
     def test_calc_hysteresis_loop_keys(self):
         """Returns dict with expected keys."""
         result = calc_hysteresis_loop(H_max=500, mu_r=500, alpha=0.01, n_points=100)
-        for key in ["H_values", "B_values", "H_branch1", "B_branch1", "H_branch2", "B_branch2"]:
+        for key in [
+            "H_values",
+            "B_values",
+            "H_branch1",
+            "B_branch1",
+            "H_branch2",
+            "B_branch2",
+        ]:
             assert key in result
             assert isinstance(result[key], np.ndarray)
 
@@ -79,12 +87,12 @@ class TestCalcHysteresisLoop:
 
         B_soft = soft["B_values"]
         H_soft = soft["H_values"]
-        idx_soft = np.argmin(np.abs(B_soft[:len(B_soft)//2]))
+        idx_soft = np.argmin(np.abs(B_soft[: len(B_soft) // 2]))
         H_c_soft = abs(H_soft[idx_soft])
 
         B_hard = hard["B_values"]
         H_hard = hard["H_values"]
-        idx_hard = np.argmin(np.abs(B_hard[:len(B_hard)//2]))
+        idx_hard = np.argmin(np.abs(B_hard[: len(B_hard) // 2]))
         H_c_hard = abs(H_hard[idx_hard])
 
         assert H_c_hard > H_c_soft

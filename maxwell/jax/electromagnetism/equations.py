@@ -31,9 +31,9 @@ import jax
 import jax.numpy as jnp
 from jax import jit
 
+from maxwell.config.constants import C
 from maxwell.jax._compat import jax_tree
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import C
 
 __all__ = [
     "ElectromagneticFieldJAX",
@@ -69,11 +69,13 @@ def _central_diff(values: jax.Array, dx: float) -> jax.Array:
     left = values[1] - values[0]
     right = values[-1] - values[-2]
 
-    return jnp.concatenate([
-        jnp.array([left / dx], dtype=jnp.float64),
-        interior,
-        jnp.array([right / dx], dtype=jnp.float64),
-    ])
+    return jnp.concatenate(
+        [
+            jnp.array([left / dx], dtype=jnp.float64),
+            interior,
+            jnp.array([right / dx], dtype=jnp.float64),
+        ]
+    )
 
 
 def numerical_divergence_1d(
@@ -129,8 +131,8 @@ def numerical_curl_1d(
     n = field.shape[1]
     curl = jnp.zeros_like(field)
     # Only y and z components get non-zero curl when varying along x
-    curl = curl.at[1].set(_central_diff(field[2], dx))   # (curl F)_y = dFz/dx
-    curl = curl.at[2].set(-_central_diff(field[1], dx))   # (curl F)_z = -dFy/dx
+    curl = curl.at[1].set(_central_diff(field[2], dx))  # (curl F)_y = dFz/dx
+    curl = curl.at[2].set(-_central_diff(field[1], dx))  # (curl F)_z = -dFy/dx
     return curl
 
 
@@ -173,11 +175,31 @@ class ElectromagneticFieldJAX:
 
     def __post_init__(self):
         zero3 = jnp.zeros(3, dtype=jnp.float64)
-        object.__setattr__(self, 'E', jnp.asarray(self.E if self.E is not None else zero3, dtype=jnp.float64))
-        object.__setattr__(self, 'B', jnp.asarray(self.B if self.B is not None else zero3, dtype=jnp.float64))
-        object.__setattr__(self, 'H', jnp.asarray(self.H if self.H is not None else zero3, dtype=jnp.float64))
-        object.__setattr__(self, 'D', jnp.asarray(self.D if self.D is not None else zero3, dtype=jnp.float64))
-        object.__setattr__(self, 'J', jnp.asarray(self.J if self.J is not None else zero3, dtype=jnp.float64))
+        object.__setattr__(
+            self,
+            "E",
+            jnp.asarray(self.E if self.E is not None else zero3, dtype=jnp.float64),
+        )
+        object.__setattr__(
+            self,
+            "B",
+            jnp.asarray(self.B if self.B is not None else zero3, dtype=jnp.float64),
+        )
+        object.__setattr__(
+            self,
+            "H",
+            jnp.asarray(self.H if self.H is not None else zero3, dtype=jnp.float64),
+        )
+        object.__setattr__(
+            self,
+            "D",
+            jnp.asarray(self.D if self.D is not None else zero3, dtype=jnp.float64),
+        )
+        object.__setattr__(
+            self,
+            "J",
+            jnp.asarray(self.J if self.J is not None else zero3, dtype=jnp.float64),
+        )
 
 
 # ── MaxwellEquationsJAX ─────────────────────────────────────────
@@ -271,11 +293,7 @@ class MaxwellEquationsJAX:
             div_val = numerical_divergence_1d(D, dx)
 
         expected = 4.0 * jnp.pi * rho if rho is not None else None
-        residual = (
-            jnp.abs(div_val - expected)
-            if expected is not None
-            else None
-        )
+        residual = jnp.abs(div_val - expected) if expected is not None else None
 
         return {
             "divergence": div_val,
@@ -312,7 +330,9 @@ class MaxwellEquationsJAX:
         else:
             div_val = numerical_divergence_1d(B, dx)
 
-        max_abs_div = jnp.max(jnp.abs(div_val)) if div_val.ndim > 0 else jnp.abs(div_val)
+        max_abs_div = (
+            jnp.max(jnp.abs(div_val)) if div_val.ndim > 0 else jnp.abs(div_val)
+        )
 
         return {
             "divergence": div_val,
@@ -421,8 +441,12 @@ class MaxwellEquationsJAX:
 
 
 @maxwell_cite(
-    594, 598, 600, 603,
-    part=4, chapter="General Equations of the Electromagnetic Field",
+    594,
+    598,
+    600,
+    603,
+    part=4,
+    chapter="General Equations of the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Numerical verification of all Maxwell equations (JAX)",
 )
@@ -455,11 +479,14 @@ def verify_maxwell_equations_jax(
     dx = float(x[1] - x[0])
 
     # ── Test 1: Gauss electric, uniform D ─────────────────────
-    D_uniform = jnp.stack([
-        jnp.full(50, 1000.0),
-        jnp.zeros(50),
-        jnp.zeros(50),
-    ], axis=0)
+    D_uniform = jnp.stack(
+        [
+            jnp.full(50, 1000.0),
+            jnp.zeros(50),
+            jnp.zeros(50),
+        ],
+        axis=0,
+    )
     r1 = meq.gauss_law_electric(D_uniform, dx=dx)
     div1 = r1["divergence"]
     max_div1 = float(jnp.max(jnp.abs(div1))) if div1.ndim > 0 else float(jnp.abs(div1))
@@ -472,15 +499,22 @@ def verify_maxwell_equations_jax(
     #    div D = alpha, so rho = alpha / (4*pi)
     alpha = 500.0
     D0 = 1000.0
-    D_radial = jnp.stack([
-        D0 + alpha * x,
-        jnp.zeros(50),
-        jnp.zeros(50),
-    ], axis=0)
+    D_radial = jnp.stack(
+        [
+            D0 + alpha * x,
+            jnp.zeros(50),
+            jnp.zeros(50),
+        ],
+        axis=0,
+    )
     rho_expected = alpha / (4.0 * jnp.pi)
     r2 = meq.gauss_law_electric(D_radial, dx=dx, rho=float(rho_expected))
     res2 = r2["residual"]
-    max_res2 = float(jnp.max(jnp.abs(res2))) if res2 is not None and res2.ndim > 0 else float(res2 or 0.0)
+    max_res2 = (
+        float(jnp.max(jnp.abs(res2)))
+        if res2 is not None and res2.ndim > 0
+        else float(res2 or 0.0)
+    )
     results["gauss_electric_nonuniform"] = {
         "passed": max_res2 < atol * 1e3,
         "max_residual": max_res2,
@@ -488,11 +522,14 @@ def verify_maxwell_equations_jax(
     }
 
     # ── Test 3: Gauss magnetic, uniform B ─────────────────────
-    B_uniform = jnp.stack([
-        jnp.full(50, 500.0),
-        jnp.zeros(50),
-        jnp.zeros(50),
-    ], axis=0)
+    B_uniform = jnp.stack(
+        [
+            jnp.full(50, 500.0),
+            jnp.zeros(50),
+            jnp.zeros(50),
+        ],
+        axis=0,
+    )
     r3 = meq.gauss_law_magnetic(B_uniform, dx=dx)
     results["gauss_magnetic_uniform"] = {
         "passed": r3["max_abs_div"] < atol,

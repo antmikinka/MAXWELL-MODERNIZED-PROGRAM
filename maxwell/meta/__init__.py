@@ -9,7 +9,7 @@ Exports:
     get_all_citations: Retrieve all citations in the codebase.
 """
 
-from maxwell.meta.citation import maxwell_cite, get_citation, get_all_citations
+from maxwell.meta.citation import get_all_citations, get_citation, maxwell_cite
 
 __all__ = [
     "maxwell_cite",

@@ -26,12 +26,13 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.moment import MagnetizationVector
 from maxwell.fields.force import MagneticForce
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -80,7 +81,8 @@ class MagneticInduction:
     @classmethod
     @maxwell_cite(
         399,
-        part=3, chapter="Magnetic Induction",
+        part=3,
+        chapter="Magnetic Induction",
         theory_class="maxwell_original",
         description="Create B from H and I",
     )
@@ -120,7 +122,8 @@ class MagneticInduction:
     @classmethod
     @maxwell_cite(
         399,
-        part=3, chapter="Magnetic Induction",
+        part=3,
+        chapter="Magnetic Induction",
         theory_class="maxwell_original",
         description="Create B from magnetic flux density",
     )
@@ -171,7 +174,8 @@ class MagneticInduction:
 
 @maxwell_cite(
     399,
-    part=3, chapter="Magnetic Induction",
+    part=3,
+    chapter="Magnetic Induction",
     theory_class="maxwell_original",
     description="Calculate B from H and I",
 )
@@ -208,7 +212,8 @@ def calc_magnetic_induction(
 
 @maxwell_cite(
     399,
-    part=3, chapter="Magnetic Induction",
+    part=3,
+    chapter="Magnetic Induction",
     theory_class="maxwell_original",
     description="B field measured via thin disk cavity",
 )
@@ -283,7 +288,12 @@ def thin_disk_induction(
 
     # H inside disk cavity
     # H_disk = H_applied - N * I_normal (demagnetizing field)
-    H_disk = external_field - N_along_normal * I_normal / np.linalg.norm(I_normal) ** 2 * I_normal if np.linalg.norm(I_normal) > 0 else external_field.copy()
+    H_disk = (
+        external_field
+        - N_along_normal * I_normal / np.linalg.norm(I_normal) ** 2 * I_normal
+        if np.linalg.norm(I_normal) > 0
+        else external_field.copy()
+    )
 
     # B inside disk cavity
     # B_disk = H_disk + 4πI
@@ -302,7 +312,8 @@ def thin_disk_induction(
 
 @maxwell_cite(
     399,
-    part=3, chapter="Magnetic Induction",
+    part=3,
+    chapter="Magnetic Induction",
     theory_class="maxwell_original",
     description="Compare H and B cavity measurements",
 )
@@ -364,7 +375,8 @@ def compare_H_and_B_measurements(
 
 @maxwell_cite(
     399,
-    part=3, chapter="Magnetic Induction",
+    part=3,
+    chapter="Magnetic Induction",
     theory_class="maxwell_original",
     description="Magnetic flux through surface",
 )

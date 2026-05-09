@@ -44,9 +44,13 @@ jobs:
         run: |
           python -c "
           from maxwell.core.units import verify_speed_of_light_relationship
-          ratio = verify_speed_of_light_relationship()
+          result = verify_speed_of_light_relationship()
+          assert result['verified'], f'ESU/EMU ratio not verified: {result}'
+          assert result['max_deviation'] == 0.0, f'Max deviation {result[\"max_deviation\"]}'
+          ratio = result['c_from_charge'] / result['c_accepted']
           assert abs(ratio - 1.0) < 1e-10, f'ESU/EMU ratio/c = {ratio}, expected 1.0'
           print(f'Speed of light from EM units: PASS (ratio/c = {ratio:.15f})')
+          print(f'  Max deviation: {result[\"max_deviation\"]}')
           "
 
       # ── 3. Vector calculus identities ─────────────────────────────────

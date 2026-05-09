@@ -34,11 +34,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # Standard optical constants for common materials (at visible wavelengths)
 # Refractive indices at λ ≈ 589 nm (sodium D line)
@@ -46,23 +46,19 @@ OPTICAL_CONSTANTS = {
     # Vacuum and gases
     "vacuum": {"n": 1.0, "eps_r": 1.0, "mu_r": 1.0},
     "air": {"n": 1.000293, "eps_r": 1.000586, "mu_r": 1.0},
-
     # Liquids
     "water": {"n": 1.333, "eps_r": 1.777, "mu_r": 1.0},
     "ethanol": {"n": 1.361, "eps_r": 1.852, "mu_r": 1.0},
     "benzene": {"n": 1.501, "eps_r": 2.253, "mu_r": 1.0},
     "carbon_disulfide": {"n": 1.628, "eps_r": 2.650, "mu_r": 1.0},
-
     # Solids (optical glasses)
     "crown_glass": {"n": 1.52, "eps_r": 2.31, "mu_r": 1.0},
     "flint_glass": {"n": 1.66, "eps_r": 2.76, "mu_r": 1.0},
     "fused_silica": {"n": 1.458, "eps_r": 2.13, "mu_r": 1.0},
-
     # Crystals
     "quartz": {"n": 1.544, "eps_r": 2.38, "mu_r": 1.0},
     "calcite": {"n_o": 1.658, "n_e": 1.486, "eps_r": 2.75, "mu_r": 1.0},
     "diamond": {"n": 2.417, "eps_r": 5.84, "mu_r": 1.0},
-
     # Semiconductors
     "silicon": {"n": 3.48, "eps_r": 12.1, "mu_r": 1.0},
     "germanium": {"n": 4.0, "eps_r": 16.0, "mu_r": 1.0},
@@ -70,18 +66,19 @@ OPTICAL_CONSTANTS = {
 
 # Wavelength ranges for optical spectrum (in cm, CGS)
 WAVELENGTH_RANGES = {
-    "ultraviolet": (1e-7, 4e-7),      # 100-400 nm
-    "visible": (4e-7, 7e-7),          # 400-700 nm
-    "infrared": (7e-7, 1e-3),         # 700 nm - 1 mm
-    "near_ir": (7e-7, 2.5e-4),        # 700 nm - 2.5 μm
-    "mid_ir": (2.5e-4, 2.5e-3),       # 2.5-25 μm
-    "far_ir": (2.5e-3, 1e-3),         # 25 μm - 1 mm
+    "ultraviolet": (1e-7, 4e-7),  # 100-400 nm
+    "visible": (4e-7, 7e-7),  # 400-700 nm
+    "infrared": (7e-7, 1e-3),  # 700 nm - 1 mm
+    "near_ir": (7e-7, 2.5e-4),  # 700 nm - 2.5 μm
+    "mid_ir": (2.5e-4, 2.5e-3),  # 2.5-25 μm
+    "far_ir": (2.5e-3, 1e-3),  # 25 μm - 1 mm
 }
 
 
 @maxwell_cite(
     788,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate refractive index from dielectric constant",
 )
@@ -115,7 +112,8 @@ def calc_refractive_from_dielectric(K: float) -> float:
 
 @maxwell_cite(
     788,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate dielectric constant from refractive index",
 )
@@ -142,12 +140,13 @@ def calc_dielectric_from_refractive(n: float) -> float:
     """
     if n <= 0:
         raise ValueError(f"Refractive index must be positive, got {n}")
-    return n ** 2
+    return n**2
 
 
 @maxwell_cite(
     789,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate dispersion (wavelength-dependent n)",
 )
@@ -209,7 +208,10 @@ class OpticalConstants:
 
     def __post_init__(self):
         """Initialize from material name or validate parameters."""
-        if self.material_name is not None and self.material_name.lower() in OPTICAL_CONSTANTS:
+        if (
+            self.material_name is not None
+            and self.material_name.lower() in OPTICAL_CONSTANTS
+        ):
             constants = OPTICAL_CONSTANTS[self.material_name.lower()]
             if self.refractive_index is None:
                 self.refractive_index = constants.get("n", 1.0)
@@ -219,15 +221,25 @@ class OpticalConstants:
                 self.permeability = constants.get("mu_r", 1.0)
 
         # Calculate missing values from n = sqrt(ε_r * μ_r)
-        if self.refractive_index is None and self.permittivity is not None and self.permeability is not None:
+        if (
+            self.refractive_index is None
+            and self.permittivity is not None
+            and self.permeability is not None
+        ):
             self.refractive_index = np.sqrt(self.permittivity * self.permeability)
 
-        if self.permittivity is None and self.refractive_index is not None and self.permeability is not None:
-            self.permittivity = (self.refractive_index ** 2) / self.permeability
+        if (
+            self.permittivity is None
+            and self.refractive_index is not None
+            and self.permeability is not None
+        ):
+            self.permittivity = (self.refractive_index**2) / self.permeability
 
         # Validate
         if self.refractive_index is not None and self.refractive_index <= 0:
-            raise ValueError(f"Refractive index must be positive, got {self.refractive_index}")
+            raise ValueError(
+                f"Refractive index must be positive, got {self.refractive_index}"
+            )
         if self.permittivity is not None and self.permittivity <= 0:
             raise ValueError(f"Permittivity must be positive, got {self.permittivity}")
         if self.permeability is not None and self.permeability <= 0:
@@ -243,7 +255,8 @@ class OpticalConstants:
 
     @maxwell_cite(
         788,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate wave velocity in material",
     )
@@ -263,7 +276,8 @@ class OpticalConstants:
 
     @maxwell_cite(
         789,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate optical path length",
     )
@@ -292,7 +306,8 @@ class OpticalConstants:
 
     @maxwell_cite(
         790,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate wavelength in material",
     )
@@ -317,7 +332,8 @@ class OpticalConstants:
 
     @maxwell_cite(
         788,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate specific inductive capacity",
     )
@@ -339,7 +355,8 @@ class OpticalConstants:
 
     @maxwell_cite(
         788,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate refractive index from dielectric constant",
     )
@@ -362,7 +379,8 @@ class OpticalConstants:
 
     @maxwell_cite(
         788,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate dielectric constant from refractive index",
     )
@@ -386,7 +404,8 @@ class OpticalConstants:
 
 @maxwell_cite(
     788,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Get optical constants for material",
 )
@@ -421,9 +440,7 @@ def get_optical_constants(material_name: str) -> dict[str, float]:
     material_key = material_name.lower()
     if material_key not in OPTICAL_CONSTANTS:
         available = list(OPTICAL_CONSTANTS.keys())
-        raise KeyError(
-            f"Material '{material_name}' not found. Available: {available}"
-        )
+        raise KeyError(f"Material '{material_name}' not found. Available: {available}")
 
     constants = OPTICAL_CONSTANTS[material_key].copy()
     constants["v"] = CONST.C / constants["n"]
@@ -432,8 +449,10 @@ def get_optical_constants(material_name: str) -> dict[str, float]:
 
 
 @maxwell_cite(
-    788, 789,
-    part=4, chapter="Electromagnetic Theory of Light",
+    788,
+    789,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate refractive index from electromagnetic properties",
 )
@@ -479,7 +498,8 @@ def calc_refractive_index_from_EM(
 
 @maxwell_cite(
     790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate frequency from wavelength",
 )
@@ -517,7 +537,8 @@ def calc_frequency_from_wavelength(
 
 @maxwell_cite(
     790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wavelength from frequency",
 )
@@ -561,7 +582,8 @@ def calc_wavelength_from_frequency(
 
 @maxwell_cite(
     789,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate optical path difference",
 )
@@ -602,8 +624,11 @@ def calc_optical_path_difference(
 
 
 @maxwell_cite(
-    788, 789, 790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    788,
+    789,
+    790,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Classify spectral region from wavelength",
 )
@@ -654,8 +679,11 @@ def classify_spectral_region(wavelength: float) -> str:
 
 
 @maxwell_cite(
-    788, 789, 790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    788,
+    789,
+    790,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify optical constant relations",
 )
@@ -687,15 +715,19 @@ def verify_optical_constants(
         Part IV, Arts. 788-790: Optical constant verification.
     """
     if permittivity is None:
-        permittivity = refractive_index ** 2
+        permittivity = refractive_index**2
 
     # Calculate expected values
     n_expected = np.sqrt(permittivity * permeability)
     v = CONST.C / refractive_index
-    eps_from_n = (refractive_index ** 2) / permeability
+    eps_from_n = (refractive_index**2) / permeability
 
     # Calculate errors
-    n_error = abs(n_expected - refractive_index) / refractive_index if refractive_index > 0 else 0
+    n_error = (
+        abs(n_expected - refractive_index) / refractive_index
+        if refractive_index > 0
+        else 0
+    )
     eps_error = abs(eps_from_n - permittivity) / permittivity if permittivity > 0 else 0
 
     # Velocity verification
@@ -712,17 +744,22 @@ def verify_optical_constants(
         "n_error": n_error,
         "eps_error": eps_error,
         "v_error": v_error,
-        "verified": all([
-            n_error < tolerance,
-            eps_error < tolerance,
-            v_error < tolerance,
-        ]),
+        "verified": all(
+            [
+                n_error < tolerance,
+                eps_error < tolerance,
+                v_error < tolerance,
+            ]
+        ),
     }
 
 
 @maxwell_cite(
-    788, 789, 790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    788,
+    789,
+    790,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete optical constants analysis",
 )
@@ -765,7 +802,7 @@ def analyze_optical_constants(
         mu_r = constants["mu_r"]
     else:
         n = refractive_index if refractive_index is not None else 1.0
-        eps_r = n ** 2
+        eps_r = n**2
         mu_r = 1.0
 
     # Calculate properties

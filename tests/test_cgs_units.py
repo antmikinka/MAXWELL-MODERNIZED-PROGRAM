@@ -16,16 +16,17 @@ Tests verify:
 """
 
 from __future__ import annotations
-import pytest
+
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
 from maxwell.electromagnetism.sources.oersted import (
     OerstedField,
-    calc_oersted_field,
+    calc_circular_field_direction,
     calc_field_from_element,
     calc_force_on_pole,
-    calc_circular_field_direction,
+    calc_oersted_field,
     verify_inverse_distance_law,
 )
 
@@ -58,11 +59,7 @@ class TestCGSUnitsBasics:
 class TestOerstedFieldCGS:
     """Test Oersted field calculations use CGS units correctly."""
 
-    def test_calc_oersted_field_units(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_calc_oersted_field_units(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify H = 2I/r produces correct CGS units.
 
         For an infinite wire:
@@ -71,7 +68,7 @@ class TestOerstedFieldCGS:
         - H = 2I/r = 2 oersted
         """
         current_abamp = 1.0  # 1 abampere
-        distance_cm = 1.0    # 1 cm
+        distance_cm = 1.0  # 1 cm
 
         H = calc_oersted_field(current_abamp, distance_cm)
 
@@ -80,10 +77,7 @@ class TestOerstedFieldCGS:
         assert_cgs_close(H, expected, cgs_tolerance)
 
     def test_calc_oersted_field_inverse_distance(
-        self,
-        cgs_distance_range,
-        assert_cgs_close,
-        cgs_tolerance
+        self, cgs_distance_range, assert_cgs_close, cgs_tolerance
     ) -> None:
         """Verify H ∝ 1/r inverse distance relationship.
 
@@ -103,9 +97,7 @@ class TestOerstedFieldCGS:
             assert_cgs_close(product, expected, cgs_tolerance)
 
     def test_calc_oersted_field_current_scaling(
-        self,
-        assert_cgs_close,
-        cgs_tolerance
+        self, assert_cgs_close, cgs_tolerance
     ) -> None:
         """Verify H ∝ I linear current relationship.
 
@@ -120,16 +112,12 @@ class TestOerstedFieldCGS:
             expected = 2.0 * current / distance_cm
             assert_cgs_close(H, expected, cgs_tolerance)
 
-    def test_calc_oersted_field_zero_distance_raises(
-        self
-    ) -> None:
+    def test_calc_oersted_field_zero_distance_raises(self) -> None:
         """Verify division by zero is prevented."""
         with pytest.raises(ValueError, match="Distance must be positive"):
             calc_oersted_field(1.0, 0.0)
 
-    def test_calc_oersted_field_negative_distance_raises(
-        self
-    ) -> None:
+    def test_calc_oersted_field_negative_distance_raises(self) -> None:
         """Verify negative distance is prevented."""
         with pytest.raises(ValueError, match="Distance must be positive"):
             calc_oersted_field(1.0, -1.0)
@@ -139,9 +127,7 @@ class TestFieldFromElementCGS:
     """Test field from current element calculations."""
 
     def test_calc_field_from_element_basic(
-        self,
-        assert_cgs_close,
-        cgs_tolerance
+        self, assert_cgs_close, cgs_tolerance
     ) -> None:
         """Verify field calculation from a current element.
 
@@ -153,20 +139,15 @@ class TestFieldFromElementCGS:
         angle_rad = np.pi / 2  # 90 degrees, sin = 1
 
         dB = calc_field_from_element(
-            current_abamp,
-            element_length_cm,
-            distance_cm,
-            angle_rad
+            current_abamp, element_length_cm, distance_cm, angle_rad
         )
 
         # dB = I * dl * sin(theta) / r^2 = 1 * 0.1 * 1 / 1 = 0.1
-        expected = current_abamp * element_length_cm / (distance_cm ** 2)
+        expected = current_abamp * element_length_cm / (distance_cm**2)
         assert_cgs_close(dB, expected, cgs_tolerance)
 
     def test_calc_field_from_element_angle_dependence(
-        self,
-        assert_cgs_close,
-        cgs_tolerance
+        self, assert_cgs_close, cgs_tolerance
     ) -> None:
         """Verify sin(theta) angular dependence."""
         current_abamp = 1.0
@@ -183,18 +164,14 @@ class TestFieldFromElementCGS:
         dB_max = calc_field_from_element(
             current_abamp, element_length_cm, distance_cm, np.pi / 2
         )
-        expected_max = current_abamp * element_length_cm / (distance_cm ** 2)
+        expected_max = current_abamp * element_length_cm / (distance_cm**2)
         assert_cgs_close(dB_max, expected_max, cgs_tolerance)
 
 
 class TestForceOnPoleCGS:
     """Test force on magnetic pole calculations."""
 
-    def test_calc_force_on_pole_basic(
-        self,
-        assert_cgs_close,
-        cgs_tolerance
-    ) -> None:
+    def test_calc_force_on_pole_basic(self, assert_cgs_close, cgs_tolerance) -> None:
         """Verify force on magnetic pole near current-carrying wire.
 
         F = m * H  (force on pole of strength m in field H)
@@ -224,9 +201,7 @@ class TestCircularFieldDirection:
     """Test right-hand rule for field direction."""
 
     def test_calc_circular_field_direction_basic(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
+        self, assert_vectors_close, cgs_tolerance
     ) -> None:
         """Verify field direction follows right-hand rule.
 
@@ -243,9 +218,7 @@ class TestCircularFieldDirection:
         assert_vectors_close(direction, expected, cgs_tolerance)
 
     def test_calc_circular_field_direction_tangential(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
+        self, assert_vectors_close, cgs_tolerance
     ) -> None:
         """Verify field is always tangential (perpendicular to radius)."""
         current_abamp = 1.0
@@ -261,14 +234,12 @@ class TestCircularFieldDirection:
             # Direction should be perpendicular to position (dot product = 0)
             # For circular field around z-axis, check tangential property
             dot = np.dot(direction[:2], pos[:2])  # Only x,y components
-            assert abs(dot) < cgs_tolerance, (
-                f"Field direction not tangential at {pos}: dot={dot}"
-            )
+            assert (
+                abs(dot) < cgs_tolerance
+            ), f"Field direction not tangential at {pos}: dot={dot}"
 
     def test_calc_circular_field_direction_normalized(
-        self,
-        assert_cgs_close,
-        cgs_tolerance
+        self, assert_cgs_close, cgs_tolerance
     ) -> None:
         """Verify direction vector is normalized (unit vector)."""
         current_abamp = 1.0
@@ -283,9 +254,7 @@ class TestCircularFieldDirection:
 class TestInverseDistanceLaw:
     """Test verification of inverse-distance law."""
 
-    def test_verify_inverse_distance_law_passes(
-        self
-    ) -> None:
+    def test_verify_inverse_distance_law_passes(self) -> None:
         """Verify the inverse-distance law verification passes for ideal data."""
         result = verify_inverse_distance_law()
 
@@ -294,9 +263,7 @@ class TestInverseDistanceLaw:
         assert result["deviation_max"] == 0.0
 
     def test_verify_inverse_distance_law_data(
-        self,
-        assert_cgs_close,
-        cgs_tolerance
+        self, assert_cgs_close, cgs_tolerance
     ) -> None:
         """Verify computed H*r product is constant."""
         result = verify_inverse_distance_law()
@@ -309,19 +276,15 @@ class TestInverseDistanceLaw:
             std_val = np.std(H_r_values)
             if mean_val > 0:
                 relative_std = std_val / mean_val
-                assert relative_std < cgs_tolerance, (
-                    f"H*r not constant: relative std = {relative_std}"
-                )
+                assert (
+                    relative_std < cgs_tolerance
+                ), f"H*r not constant: relative std = {relative_std}"
 
 
 class TestOerstedFieldClass:
     """Test OerstedField class CGS compliance."""
 
-    def test_oersted_field_magnitude(
-        self,
-        assert_cgs_close,
-        cgs_tolerance
-    ) -> None:
+    def test_oersted_field_magnitude(self, assert_cgs_close, cgs_tolerance) -> None:
         """Verify OerstedField magnitude calculation."""
         current_abamp = 1.0
         distance_cm = 2.0
@@ -341,20 +304,14 @@ class TestOerstedFieldClass:
         assert hasattr(field, "magnitude")
         # Units are CGS by convention
 
-    def test_oersted_field_direction(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
-    ) -> None:
+    def test_oersted_field_direction(self, assert_vectors_close, cgs_tolerance) -> None:
         """Verify OerstedField direction calculation."""
         current_abamp = 1.0
         distance_cm = 1.0
         position = np.array([1.0, 0.0, 0.0])
 
         field = OerstedField(
-            current=current_abamp,
-            distance=distance_cm,
-            position=position
+            current=current_abamp, distance=distance_cm, position=position
         )
 
         direction = field.direction_at(position)

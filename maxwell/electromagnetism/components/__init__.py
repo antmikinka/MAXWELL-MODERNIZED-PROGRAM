@@ -8,33 +8,31 @@ References:
 
 from maxwell.electromagnetism.components.circular_coils import (
     CircularCoil,
-    calc_coil_on_axis,
-    calc_coil_off_axis,
-    calc_double_coil_field,
+    analyze_circular_coil,
     calc_coaxial_coil_pair,
+    calc_coil_off_axis,
+    calc_coil_on_axis,
+    calc_double_coil_field,
     verify_coil_field,
     verify_helmholtz_uniformity,
-    analyze_circular_coil,
 )
-
-from maxwell.electromagnetism.components.solenoids import (
-    Solenoid,
-    calc_solenoid_field,
-    calc_infinite_solenoid_field,
-    calc_helmholtz_center,
-    calc_helmholtz_uniformity,
-    verify_solenoid_field,
-    analyze_solenoid,
-)
-
 from maxwell.electromagnetism.components.cylinders import (
     CylindricalConductor,
+    analyze_cylindrical_conductor,
+    calc_cylinder_vector_potential,
     calc_cylindrical_field,
     calc_hollow_cylinder_field,
     calc_wire_self_inductance,
-    calc_cylinder_vector_potential,
     verify_cylindrical_field,
-    analyze_cylindrical_conductor,
+)
+from maxwell.electromagnetism.components.solenoids import (
+    Solenoid,
+    analyze_solenoid,
+    calc_helmholtz_center,
+    calc_helmholtz_uniformity,
+    calc_infinite_solenoid_field,
+    calc_solenoid_field,
+    verify_solenoid_field,
 )
 
 __all__ = [

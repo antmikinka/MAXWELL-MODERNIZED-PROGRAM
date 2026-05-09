@@ -14,7 +14,7 @@ import jax
 import jax.numpy as jnp
 
 from maxwell.config.conventions import maxwell_cite
-from maxwell.jax._compat import jax_tree, safe_div, safe_sqrt, safe_log
+from maxwell.jax._compat import jax_tree, safe_div, safe_log, safe_sqrt
 
 __all__ = [
     "FaradayLawsJAX",
@@ -55,6 +55,7 @@ R_GAS_CGS_JAX = jnp.array(8.314462618e7, dtype=jnp.float64)
 
 
 # -- Data classes -------------------------------------------------------------------
+
 
 @jax_tree
 @dataclass
@@ -217,15 +218,12 @@ class IonTransportJAX:
     def electrolyte_conductivity(self, concentrations: jax.Array) -> jax.Array:
         """Electrolyte conductivity: sigma = F * sum(c * |z| * u)."""
         return self._electrolyte_conductivity_jit(
-            concentrations, self.ion_charges, self.ion_mobilities,
-            FARADAY_CONSTANT_JAX
+            concentrations, self.ion_charges, self.ion_mobilities, FARADAY_CONSTANT_JAX
         )
 
     def transference_numbers(self) -> Dict[str, jax.Array]:
         """Transference numbers: t_i = |z_i|*u_i / sum(|z_j|*u_j)."""
-        return self._transference_numbers_jit(
-            self.ion_charges, self.ion_mobilities
-        )
+        return self._transference_numbers_jit(self.ion_charges, self.ion_mobilities)
 
     def limiting_current_density(
         self,
@@ -236,8 +234,11 @@ class IonTransportJAX:
     ) -> jax.Array:
         """Limiting current density: i_L = |n|*F*D*c/delta."""
         return self._limiting_current_density_jit(
-            concentrations, diffusion_coeffs, layer_thickness,
-            charge_numbers, FARADAY_CONSTANT_JAX
+            concentrations,
+            diffusion_coeffs,
+            layer_thickness,
+            charge_numbers,
+            FARADAY_CONSTANT_JAX,
         )
 
     @staticmethod
@@ -264,7 +265,9 @@ class IonTransportJAX:
         charges = jnp.asarray(charges, dtype=jnp.float64)
         mobilities = jnp.asarray(mobilities, dtype=jnp.float64)
         faraday_constant = jnp.asarray(faraday_constant, dtype=jnp.float64)
-        return faraday_constant * jnp.sum(concentrations * jnp.abs(charges) * mobilities)
+        return faraday_constant * jnp.sum(
+            concentrations * jnp.abs(charges) * mobilities
+        )
 
     @staticmethod
     @jax.jit
@@ -333,9 +336,12 @@ class PolarizationJAX:
     def activation_overpotential(self, current_density: jax.Array) -> jax.Array:
         """Activation overpotential: eta = (RT/F) * asinh(j/(2*j0))."""
         return self._activation_overpotential_jit(
-            current_density, self.exchange_current_density,
-            self.transfer_coefficient, self.temperature,
-            R_GAS_CGS_JAX, FARADAY_CONSTANT_JAX
+            current_density,
+            self.exchange_current_density,
+            self.transfer_coefficient,
+            self.temperature,
+            R_GAS_CGS_JAX,
+            FARADAY_CONSTANT_JAX,
         )
 
     def concentration_overpotential(
@@ -349,9 +355,15 @@ class PolarizationJAX:
     ) -> jax.Array:
         """Concentration overpotential from mass transport limitation."""
         return self._concentration_overpotential_jit(
-            bulk_conc, surface_conc, diffusion_coeff, diffusion_thickness,
-            current_density, charge_number, self.temperature,
-            R_GAS_CGS_JAX, FARADAY_CONSTANT_JAX
+            bulk_conc,
+            surface_conc,
+            diffusion_coeff,
+            diffusion_thickness,
+            current_density,
+            charge_number,
+            self.temperature,
+            R_GAS_CGS_JAX,
+            FARADAY_CONSTANT_JAX,
         )
 
     def decomposition_voltage(
@@ -362,8 +374,7 @@ class PolarizationJAX:
     ) -> jax.Array:
         """Decomposition voltage: E_decomp = E_rev + eta_a + |eta_c| + IR."""
         return self._decomposition_voltage_jit(
-            self.reversible_emf, anode_overpotential,
-            cathode_overpotential, ohmic_drop
+            self.reversible_emf, anode_overpotential, cathode_overpotential, ohmic_drop
         )
 
     def total_polarization_emf(self, current_density: jax.Array) -> jax.Array:
@@ -382,7 +393,9 @@ class PolarizationJAX:
         faraday_constant: jax.Array,
     ) -> jax.Array:
         current_density = jnp.asarray(current_density, dtype=jnp.float64)
-        exchange_current_density = jnp.asarray(exchange_current_density, dtype=jnp.float64)
+        exchange_current_density = jnp.asarray(
+            exchange_current_density, dtype=jnp.float64
+        )
         transfer_coefficient = jnp.asarray(transfer_coefficient, dtype=jnp.float64)
         temperature = jnp.asarray(temperature, dtype=jnp.float64)
         r_gas = jnp.asarray(r_gas, dtype=jnp.float64)
@@ -421,8 +434,7 @@ class PolarizationJAX:
 
         # Limiting current: i_L = |n|*F*D*c_bulk/delta
         i_limiting = safe_div(
-            abs_z * faraday_constant * diffusion_coeff * bulk_conc,
-            diffusion_thickness
+            abs_z * faraday_constant * diffusion_coeff * bulk_conc, diffusion_thickness
         )
 
         # Use limiting current form when valid
@@ -433,7 +445,9 @@ class PolarizationJAX:
         log_term_direct = safe_log(safe_div(surface_conc, bulk_conc))
 
         # Choose based on whether we're below limiting current
-        use_limiting = (i_limiting > 0) & (current_density < i_limiting) & (bulk_conc > 0)
+        use_limiting = (
+            (i_limiting > 0) & (current_density < i_limiting) & (bulk_conc > 0)
+        )
         log_term = jnp.where(use_limiting, log_term_limiting, log_term_direct)
 
         return safe_div(thermal_voltage * log_term, abs_z)
@@ -450,7 +464,12 @@ class PolarizationJAX:
         anode_overpotential = jnp.asarray(anode_overpotential, dtype=jnp.float64)
         cathode_overpotential = jnp.asarray(cathode_overpotential, dtype=jnp.float64)
         ohmic_drop = jnp.asarray(ohmic_drop, dtype=jnp.float64)
-        return reversible_emf + anode_overpotential + jnp.abs(cathode_overpotential) + ohmic_drop
+        return (
+            reversible_emf
+            + anode_overpotential
+            + jnp.abs(cathode_overpotential)
+            + ohmic_drop
+        )
 
 
 @jax_tree
@@ -490,46 +509,57 @@ class ElectrolysisCellJAX:
     def cell_resistance(self) -> jax.Array:
         """Cell resistance: R = d / (sigma * A)."""
         return self._cell_resistance_jit(
-            self.electrode_spacing, self.electrolyte_conductivity,
-            self.electrode_area
+            self.electrode_spacing, self.electrolyte_conductivity, self.electrode_area
         )
 
-    def mass_deposited(
-        self, current: jax.Array, time: jax.Array
-    ) -> jax.Array:
+    def mass_deposited(self, current: jax.Array, time: jax.Array) -> jax.Array:
         """Mass deposited: m = I*t*M/(n*F)."""
         return self._mass_deposited_jit(
-            current, time, self.molar_mass, self.valence,
-            FARADAY_CONSTANT_JAX
+            current, time, self.molar_mass, self.valence, FARADAY_CONSTANT_JAX
         )
 
     def required_voltage(self, current: jax.Array) -> jax.Array:
         """Required voltage: E_rev + IR + overpotential."""
         return self._required_voltage_jit(
-            current, self.reversible_emf, self.electrode_spacing,
-            self.electrolyte_conductivity, self.electrode_area,
-            R_GAS_CGS_JAX, FARADAY_CONSTANT_JAX, self.temperature
+            current,
+            self.reversible_emf,
+            self.electrode_spacing,
+            self.electrolyte_conductivity,
+            self.electrode_area,
+            R_GAS_CGS_JAX,
+            FARADAY_CONSTANT_JAX,
+            self.temperature,
         )
 
     def energy_per_gram(self, current: jax.Array) -> jax.Array:
         """Energy to deposit 1 gram: E = voltage * charge_per_gram."""
         return self._energy_per_gram_jit(
-            current, self.reversible_emf, self.electrode_spacing,
-            self.electrolyte_conductivity, self.electrode_area,
-            self.molar_mass, self.valence,
-            R_GAS_CGS_JAX, FARADAY_CONSTANT_JAX, self.temperature
+            current,
+            self.reversible_emf,
+            self.electrode_spacing,
+            self.electrolyte_conductivity,
+            self.electrode_area,
+            self.molar_mass,
+            self.valence,
+            R_GAS_CGS_JAX,
+            FARADAY_CONSTANT_JAX,
+            self.temperature,
         )
 
-    def analyze(
-        self, current: jax.Array, time: jax.Array
-    ) -> Dict[str, Any]:
+    def analyze(self, current: jax.Array, time: jax.Array) -> Dict[str, Any]:
         """Comprehensive analysis of electrolysis cell operation."""
         return self._analyze_jit(
-            current, time,
-            self.electrode_area, self.electrode_spacing,
-            self.electrolyte_conductivity, self.molar_mass,
-            self.valence, self.reversible_emf, self.temperature,
-            R_GAS_CGS_JAX, FARADAY_CONSTANT_JAX
+            current,
+            time,
+            self.electrode_area,
+            self.electrode_spacing,
+            self.electrolyte_conductivity,
+            self.molar_mass,
+            self.valence,
+            self.reversible_emf,
+            self.temperature,
+            R_GAS_CGS_JAX,
+            FARADAY_CONSTANT_JAX,
         )
 
     @staticmethod
@@ -706,8 +736,14 @@ class ElectrolysisCellJAX:
 
 # -- Standalone functions -------------------------------------------------------------
 
-@maxwell_cite(249, 250, part=2, chapter="Electrolysis",
-              description="Faraday's first law: mass = I * t * Z")
+
+@maxwell_cite(
+    249,
+    250,
+    part=2,
+    chapter="Electrolysis",
+    description="Faraday's first law: mass = I * t * Z",
+)
 def faraday_first_law_jax(
     current: jax.Array,
     time: jax.Array,
@@ -731,8 +767,13 @@ def faraday_first_law_jax(
     return current * time * Z
 
 
-@maxwell_cite(251, 252, part=2, chapter="Electrolysis",
-              description="Faraday's second law with molar mass and valence")
+@maxwell_cite(
+    251,
+    252,
+    part=2,
+    chapter="Electrolysis",
+    description="Faraday's second law with molar mass and valence",
+)
 def faraday_second_law_jax(
     current: jax.Array,
     time: jax.Array,
@@ -759,8 +800,12 @@ def faraday_second_law_jax(
     return safe_div(current * time * molar_mass, valence * FARADAY_CONSTANT_JAX)
 
 
-@maxwell_cite(251, part=2, chapter="Electrolysis",
-              description="Electrochemical equivalent: Z = M/(n*F)")
+@maxwell_cite(
+    251,
+    part=2,
+    chapter="Electrolysis",
+    description="Electrochemical equivalent: Z = M/(n*F)",
+)
 def electrochemical_equivalent_jax(
     molar_mass: jax.Array,
     valence: jax.Array,
@@ -781,8 +826,13 @@ def electrochemical_equivalent_jax(
     return safe_div(molar_mass, valence * FARADAY_CONSTANT_JAX)
 
 
-@maxwell_cite(253, 254, part=2, chapter="Electrolysis",
-              description="Polarization EMF including activation overpotential")
+@maxwell_cite(
+    253,
+    254,
+    part=2,
+    chapter="Electrolysis",
+    description="Polarization EMF including activation overpotential",
+)
 def polarization_emf_jax(
     reversible_potential: jax.Array,
     current_density: jax.Array,
@@ -816,8 +866,13 @@ def polarization_emf_jax(
     return reversible_potential + eta_act
 
 
-@maxwell_cite(255, 256, part=2, chapter="Electrolysis",
-              description="Decomposition voltage for electrolysis")
+@maxwell_cite(
+    255,
+    256,
+    part=2,
+    chapter="Electrolysis",
+    description="Decomposition voltage for electrolysis",
+)
 def decomposition_voltage_jax(
     reversible_emf: jax.Array,
     anode_overpotential: jax.Array,
@@ -841,11 +896,22 @@ def decomposition_voltage_jax(
     anode_overpotential = jnp.asarray(anode_overpotential, dtype=jnp.float64)
     cathode_overpotential = jnp.asarray(cathode_overpotential, dtype=jnp.float64)
     ohmic_drop = jnp.asarray(ohmic_drop, dtype=jnp.float64)
-    return reversible_emf + anode_overpotential + jnp.abs(cathode_overpotential) + ohmic_drop
+    return (
+        reversible_emf
+        + anode_overpotential
+        + jnp.abs(cathode_overpotential)
+        + ohmic_drop
+    )
 
 
-@maxwell_cite(257, 258, 259, part=2, chapter="Electrolysis",
-              description="Ion migration velocity in electric field")
+@maxwell_cite(
+    257,
+    258,
+    259,
+    part=2,
+    chapter="Electrolysis",
+    description="Ion migration velocity in electric field",
+)
 def ion_migration_velocity_jax(
     ion_mobility: jax.Array,
     electric_field: jax.Array,
@@ -869,8 +935,13 @@ def ion_migration_velocity_jax(
     return ion_mobility * charge_number * electric_field
 
 
-@maxwell_cite(260, 261, part=2, chapter="Electrolysis",
-              description="Electrolyte conductivity from ion properties")
+@maxwell_cite(
+    260,
+    261,
+    part=2,
+    chapter="Electrolysis",
+    description="Electrolyte conductivity from ion properties",
+)
 def electrolyte_conductivity_jax(
     concentrations: jax.Array,
     charge_numbers: jax.Array,
@@ -891,11 +962,18 @@ def electrolyte_conductivity_jax(
     concentrations = jnp.asarray(concentrations, dtype=jnp.float64)
     charge_numbers = jnp.asarray(charge_numbers, dtype=jnp.float64)
     mobilities = jnp.asarray(mobilities, dtype=jnp.float64)
-    return FARADAY_CONSTANT_JAX * jnp.sum(concentrations * jnp.abs(charge_numbers) * mobilities)
+    return FARADAY_CONSTANT_JAX * jnp.sum(
+        concentrations * jnp.abs(charge_numbers) * mobilities
+    )
 
 
-@maxwell_cite(262, 263, part=2, chapter="Electrolysis",
-              description="Kohlrausch's law of independent migration")
+@maxwell_cite(
+    262,
+    263,
+    part=2,
+    chapter="Electrolysis",
+    description="Kohlrausch's law of independent migration",
+)
 def kohlrausch_law_jax(
     limiting_molar_conductivity: jax.Array,
     concentration: jax.Array,
@@ -913,15 +991,23 @@ def kohlrausch_law_jax(
     Returns:
         Molar conductivity in abmho*cm^2/mol.
     """
-    limiting_molar_conductivity = jnp.asarray(limiting_molar_conductivity, dtype=jnp.float64)
+    limiting_molar_conductivity = jnp.asarray(
+        limiting_molar_conductivity, dtype=jnp.float64
+    )
     concentration = jnp.asarray(concentration, dtype=jnp.float64)
     kohlrausch_coeff = jnp.asarray(kohlrausch_coeff, dtype=jnp.float64)
     sqrt_c = safe_sqrt(concentration)
     return limiting_molar_conductivity - kohlrausch_coeff * sqrt_c
 
 
-@maxwell_cite(260, 261, 262, part=2, chapter="Electrolysis",
-              description="Concentration polarization overpotential")
+@maxwell_cite(
+    260,
+    261,
+    262,
+    part=2,
+    chapter="Electrolysis",
+    description="Concentration polarization overpotential",
+)
 def concentration_polarization_jax(
     bulk_conc: jax.Array,
     surface_conc: jax.Array,
@@ -960,8 +1046,7 @@ def concentration_polarization_jax(
 
     # Limiting current density
     i_limiting = safe_div(
-        abs_z * FARADAY_CONSTANT_JAX * diffusion_coeff * bulk_conc,
-        diffusion_thickness
+        abs_z * FARADAY_CONSTANT_JAX * diffusion_coeff * bulk_conc, diffusion_thickness
     )
 
     # Two forms of log term
@@ -976,8 +1061,15 @@ def concentration_polarization_jax(
     return safe_div(thermal_voltage * log_term, abs_z)
 
 
-@maxwell_cite(255, 256, 257, 258, part=2, chapter="Electrolysis",
-              description="Back EMF in a voltaic battery")
+@maxwell_cite(
+    255,
+    256,
+    257,
+    258,
+    part=2,
+    chapter="Electrolysis",
+    description="Back EMF in a voltaic battery",
+)
 def battery_back_emf_jax(
     reversible_emf: jax.Array,
     internal_resistance: jax.Array,
@@ -1004,8 +1096,14 @@ def battery_back_emf_jax(
     return reversible_emf - current * internal_resistance - polarization_coeff * current
 
 
-@maxwell_cite(257, 258, 259, part=2, chapter="Electrolysis",
-              description="Transference numbers from ionic conductivities")
+@maxwell_cite(
+    257,
+    258,
+    259,
+    part=2,
+    chapter="Electrolysis",
+    description="Transference numbers from ionic conductivities",
+)
 def transference_number_jax(
     lambda_cation: jax.Array,
     lambda_anion: jax.Array,
@@ -1030,9 +1128,26 @@ def transference_number_jax(
     return {"t_cation": t_cation, "t_anion": t_anion, "Lambda_0": Lambda_0}
 
 
-@maxwell_cite(249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263,
-              part=2, chapter="Electrolysis",
-              description="Verify electrolysis relations")
+@maxwell_cite(
+    249,
+    250,
+    251,
+    252,
+    253,
+    254,
+    255,
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    part=2,
+    chapter="Electrolysis",
+    description="Verify electrolysis relations",
+)
 def verify_electrolysis_jax(
     tol: float = 1e-10,
 ) -> Dict[str, Any]:

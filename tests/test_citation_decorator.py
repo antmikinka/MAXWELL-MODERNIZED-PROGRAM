@@ -12,11 +12,13 @@ Tests verify:
 """
 
 from __future__ import annotations
-import pytest
+
 import inspect
 from typing import Any
 
-from maxwell.meta.citation import get_citation, get_all_citations, MaxwellCitation
+import pytest
+
+from maxwell.meta.citation import MaxwellCitation, get_all_citations, get_citation
 
 
 class TestCitationDecorator:
@@ -39,18 +41,18 @@ class TestCitationDecorator:
 
         for qualname, citation in all_citations.items():
             for article in citation.articles:
-                assert article > 0, (
-                    f"Article number must be positive in {qualname}: {article}"
-                )
+                assert (
+                    article > 0
+                ), f"Article number must be positive in {qualname}: {article}"
 
     def test_citation_part_in_valid_range(self) -> None:
         """Verify all citation part numbers are in range 1-6."""
         all_citations = get_all_citations()
 
         for qualname, citation in all_citations.items():
-            assert 1 <= citation.part <= 6, (
-                f"Part number must be 1-6 in {qualname}: {citation.part}"
-            )
+            assert (
+                1 <= citation.part <= 6
+            ), f"Part number must be 1-6 in {qualname}: {citation.part}"
 
     def test_citation_theory_class_valid(self) -> None:
         """Verify all theory classes are valid."""
@@ -58,9 +60,9 @@ class TestCitationDecorator:
         all_citations = get_all_citations()
 
         for qualname, citation in all_citations.items():
-            assert citation.theory_class in valid_classes, (
-                f"Invalid theory_class in {qualname}: {citation.theory_class}"
-            )
+            assert (
+                citation.theory_class in valid_classes
+            ), f"Invalid theory_class in {qualname}: {citation.theory_class}"
 
 
 class TestOerstedModuleCitations:
@@ -71,12 +73,11 @@ class TestOerstedModuleCitations:
         """Import the Oersted module before each test."""
         # Import to register citations
         from maxwell.electromagnetism.sources import oersted
+
         self.module = oersted
 
     def test_calc_oersted_field_has_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify calc_oersted_field has correct citation."""
         func = self.module.calc_oersted_field
@@ -84,9 +85,7 @@ class TestOerstedModuleCitations:
         validate_citation_articles(func, part=4, articles=[475, 476])
 
     def test_calc_field_from_element_has_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify calc_field_from_element has correct citation."""
         func = self.module.calc_field_from_element
@@ -94,9 +93,7 @@ class TestOerstedModuleCitations:
         validate_citation_articles(func, part=4, articles=[477, 478])
 
     def test_calc_force_on_pole_has_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify calc_force_on_pole has correct citation."""
         func = self.module.calc_force_on_pole
@@ -104,9 +101,7 @@ class TestOerstedModuleCitations:
         validate_citation_articles(func, part=4, articles=[479])
 
     def test_calc_circular_field_direction_has_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify calc_circular_field_direction has correct citation."""
         func = self.module.calc_circular_field_direction
@@ -114,19 +109,14 @@ class TestOerstedModuleCitations:
         validate_citation_articles(func, part=4, articles=[475, 476])
 
     def test_verify_inverse_distance_law_has_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify verify_inverse_distance_law has correct citation."""
         func = self.module.verify_inverse_distance_law
         citation = require_citation(func)
         validate_citation_articles(func, part=4, articles=[475, 476, 477, 478])
 
-    def test_oersted_field_class_has_citation(
-        self,
-        require_citation
-    ) -> None:
+    def test_oersted_field_class_has_citation(self, require_citation) -> None:
         """Verify OerstedField class methods have citations."""
         from maxwell.electromagnetism.sources.oersted import OerstedField
 
@@ -137,14 +127,12 @@ class TestOerstedModuleCitations:
                 if callable(method):
                     citation = get_citation(method)
                     # Class methods should have citations
-                    assert citation is not None, (
-                        f"OerstedField.{method_name} must have @maxwell_cite decorator"
-                    )
+                    assert (
+                        citation is not None
+                    ), f"OerstedField.{method_name} must have @maxwell_cite decorator"
 
     def test_calc_field_from_finite_wire_has_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify calc_field_from_finite_wire has correct citation."""
         func = self.module.calc_field_from_finite_wire
@@ -152,9 +140,7 @@ class TestOerstedModuleCitations:
         validate_citation_articles(func, part=4, articles=[477, 478])
 
     def test_calc_dipole_interaction_has_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify calc_dipole_interaction has correct citation."""
         func = self.module.calc_dipole_interaction
@@ -180,14 +166,12 @@ class TestTraceabilityCoverage:
             if get_citation(obj) is None:
                 uncited.append(f"oersted.{name}")
 
-        assert len(uncited) == 0, (
-            f"Uncited public functions: {uncited}"
-        )
+        assert len(uncited) == 0, f"Uncited public functions: {uncited}"
 
     def test_verify_traceability_function(self) -> None:
         """Test the verify_traceability utility function."""
-        from maxwell.meta.citation import verify_traceability
         from maxwell.electromagnetism.sources import oersted
+        from maxwell.meta.citation import verify_traceability
 
         result = verify_traceability([oersted])
 

@@ -47,22 +47,26 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Optional, List, Tuple, Union
+from typing import Callable, List, Optional, Tuple, Union
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # POINT CHARGE ABOVE GROUNDED PLANE (Arts. 171-173)
 # =============================================================================
 
+
 @maxwell_cite(
-    171, 172, 173,
-    part=1, chapter="Electric Images",
+    171,
+    172,
+    173,
+    part=1,
+    chapter="Electric Images",
     theory_class="maxwell_original",
-    description="Point charge above grounded conducting plane"
+    description="Point charge above grounded conducting plane",
 )
 def image_point_charge_plane(
     point_charge: float,
@@ -147,7 +151,7 @@ def image_point_charge_plane(
 
     # Force on point charge (attractive toward plane)
     # F = q * q' / r^2 in CGS-ESU
-    force_magnitude = point_charge * image_charge / separation ** 2
+    force_magnitude = point_charge * image_charge / separation**2
 
     # Force direction: toward image (attractive)
     force_direction = (image_position - point_position) / separation
@@ -171,7 +175,7 @@ def image_point_charge_plane(
         r2_mag = np.linalg.norm(r2_vec)
 
         # E = q * r_hat / r^2
-        E = point_charge * r1_vec / r1_mag ** 3 + image_charge * r2_vec / r2_mag ** 3
+        E = point_charge * r1_vec / r1_mag**3 + image_charge * r2_vec / r2_mag**3
         return E
 
     # Induced surface charge density
@@ -193,7 +197,11 @@ def image_point_charge_plane(
 
         # Surface charge density
         # sigma = -q * h / (2*pi * (rho^2 + h^2)^(3/2))
-        sigma = -point_charge * signed_distance / (2 * np.pi * (rho ** 2 + signed_distance ** 2) ** 1.5)
+        sigma = (
+            -point_charge
+            * signed_distance
+            / (2 * np.pi * (rho**2 + signed_distance**2) ** 1.5)
+        )
         return sigma
 
     # Total induced charge (should equal image charge)
@@ -220,11 +228,15 @@ def image_point_charge_plane(
 # POINT CHARGE NEAR CONDUCTING SPHERE (Arts. 174-176)
 # =============================================================================
 
+
 @maxwell_cite(
-    174, 175, 176,
-    part=1, chapter="Electric Images",
+    174,
+    175,
+    176,
+    part=1,
+    chapter="Electric Images",
     theory_class="maxwell_original",
-    description="Point charge near conducting sphere (grounded or insulated)"
+    description="Point charge near conducting sphere (grounded or insulated)",
 )
 def image_point_charge_sphere(
     point_charge: float,
@@ -303,7 +315,7 @@ def image_point_charge_sphere(
     n_hat = r_vec / r_mag
 
     # Image charge position: d' = a^2 / d
-    image_distance = sphere_radius ** 2 / r_mag
+    image_distance = sphere_radius**2 / r_mag
     image_position = sphere_center + image_distance * n_hat
 
     # Image charge: q' = -q * (a / d)
@@ -325,12 +337,12 @@ def image_point_charge_sphere(
     d_image = r_mag - image_distance
 
     # Force from image charge
-    force_from_image = point_charge * image_charge / d_image ** 2
+    force_from_image = point_charge * image_charge / d_image**2
 
     # Force from central charge (if any)
     force_from_center = 0.0
     if central_charge != 0:
-        force_from_center = point_charge * central_charge / r_mag ** 2
+        force_from_center = point_charge * central_charge / r_mag**2
 
     # Total force (radial direction)
     force_magnitude = force_from_image + force_from_center
@@ -362,9 +374,9 @@ def image_point_charge_sphere(
         r2_mag = np.linalg.norm(r2_vec)
         r3_mag = np.linalg.norm(r3_vec)
 
-        E = point_charge * r1_vec / r1_mag ** 3 + image_charge * r2_vec / r2_mag ** 3
+        E = point_charge * r1_vec / r1_mag**3 + image_charge * r2_vec / r2_mag**3
         if central_charge != 0 and r3_mag > 0:
-            E += central_charge * r3_vec / r3_mag ** 3
+            E += central_charge * r3_vec / r3_mag**3
         return E
 
     # Induced surface charge density at angle theta from line to charge
@@ -380,13 +392,17 @@ def image_point_charge_sphere(
         """
         # Distance from point charge to surface point
         cos_theta = np.cos(theta)
-        R = np.sqrt(r_mag ** 2 + sphere_radius ** 2 - 2 * r_mag * sphere_radius * cos_theta)
+        R = np.sqrt(r_mag**2 + sphere_radius**2 - 2 * r_mag * sphere_radius * cos_theta)
 
         # Surface charge density (from Maxwell's formula)
         # sigma = -q * (a^2 - d^2) / (4*pi*a*R^3) + Q_center/(4*pi*a^2)
-        sigma = -point_charge * (r_mag ** 2 - sphere_radius ** 2) / (4 * np.pi * sphere_radius * R ** 3)
+        sigma = (
+            -point_charge
+            * (r_mag**2 - sphere_radius**2)
+            / (4 * np.pi * sphere_radius * R**3)
+        )
         if central_charge != 0:
-            sigma += central_charge / (4 * np.pi * sphere_radius ** 2)
+            sigma += central_charge / (4 * np.pi * sphere_radius**2)
         return sigma
 
     return {
@@ -401,7 +417,11 @@ def image_point_charge_sphere(
         "sphere_center": sphere_center,
         "sphere_radius": sphere_radius,
         "sphere_potential": sphere_potential,
-        "sphere_charge": sphere_charge if sphere_charge is not None else (image_charge + central_charge),
+        "sphere_charge": (
+            sphere_charge
+            if sphere_charge is not None
+            else (image_charge + central_charge)
+        ),
         "distance_from_center": r_mag,
         "potential_at_point": potential_at_point,
         "field_at_point": field_at_point,
@@ -413,11 +433,14 @@ def image_point_charge_sphere(
 # LINE CHARGE NEAR CONDUCTING CYLINDER (Arts. 177-178)
 # =============================================================================
 
+
 @maxwell_cite(
-    177, 178,
-    part=1, chapter="Electric Images",
+    177,
+    178,
+    part=1,
+    chapter="Electric Images",
     theory_class="maxwell_original",
-    description="Line charge near conducting cylinder"
+    description="Line charge near conducting cylinder",
 )
 def image_line_charge_cylinder(
     line_charge_density: float,
@@ -506,7 +529,7 @@ def image_line_charge_cylinder(
         raise ValueError("Line charge cannot be on the cylinder axis")
 
     # Image position: d' = a^2 / d
-    image_distance = cylinder_radius ** 2 / d_mag
+    image_distance = cylinder_radius**2 / d_mag
     image_position = cylinder_axis_point + image_distance * n_hat
 
     # Image charge density: lambda' = -lambda
@@ -529,14 +552,18 @@ def image_line_charge_cylinder(
 
         # Project onto cross-section plane
         r_vec_p = r - cylinder_axis_point
-        r_parallel_p = np.dot(r_vec_p, cylinder_axis_direction) * cylinder_axis_direction
+        r_parallel_p = (
+            np.dot(r_vec_p, cylinder_axis_direction) * cylinder_axis_direction
+        )
         r_perp_p = r_vec_p - r_parallel_p
 
         r1 = np.linalg.norm(r_perp_p - r_perp)  # Distance to source line
         r2 = np.linalg.norm(r_perp_p - image_distance * n_hat)  # Distance to image
 
         # Potential (up to additive constant)
-        V = -2 * line_charge_density * np.log(r1) - 2 * image_charge_density * np.log(r2)
+        V = -2 * line_charge_density * np.log(r1) - 2 * image_charge_density * np.log(
+            r2
+        )
 
         # Add constant to make V = 0 at cylinder surface
         # At r = a: V should equal cylinder_potential
@@ -552,7 +579,9 @@ def image_line_charge_cylinder(
 
         # Project onto cross-section plane
         r_vec_p = r - cylinder_axis_point
-        r_parallel_p = np.dot(r_vec_p, cylinder_axis_direction) * cylinder_axis_direction
+        r_parallel_p = (
+            np.dot(r_vec_p, cylinder_axis_direction) * cylinder_axis_direction
+        )
         r_perp_p = r_vec_p - r_parallel_p
 
         r1_vec = r_perp_p - r_perp
@@ -562,8 +591,8 @@ def image_line_charge_cylinder(
         r2_mag = np.linalg.norm(r2_vec)
 
         # E = 2*lambda*r_hat/r (in CGS-ESU for line charge)
-        E_perp = 2 * line_charge_density * r1_vec / r1_mag ** 2
-        E_perp += 2 * image_charge_density * r2_vec / r2_mag ** 2
+        E_perp = 2 * line_charge_density * r1_vec / r1_mag**2
+        E_perp += 2 * image_charge_density * r2_vec / r2_mag**2
 
         # Field is perpendicular to cylinder axis
         return E_perp
@@ -582,12 +611,16 @@ def image_line_charge_cylinder(
         cos_theta = np.cos(theta)
 
         # Distance from line charge to surface point
-        R_sq = d_mag ** 2 + cylinder_radius ** 2 - 2 * d_mag * cylinder_radius * cos_theta
+        R_sq = d_mag**2 + cylinder_radius**2 - 2 * d_mag * cylinder_radius * cos_theta
         R = np.sqrt(R_sq)
 
         # Surface charge density
         # sigma = -lambda * (d^2 - a^2) / (2*pi*a*R^2)
-        sigma = -line_charge_density * (d_mag ** 2 - cylinder_radius ** 2) / (2 * np.pi * cylinder_radius * R_sq)
+        sigma = (
+            -line_charge_density
+            * (d_mag**2 - cylinder_radius**2)
+            / (2 * np.pi * cylinder_radius * R_sq)
+        )
         return sigma
 
     return {
@@ -612,11 +645,14 @@ def image_line_charge_cylinder(
 # ELECTRICAL INVERSION METHOD (Arts. 179-180)
 # =============================================================================
 
+
 @maxwell_cite(
-    179, 180,
-    part=1, chapter="Electric Images",
+    179,
+    180,
+    part=1,
+    chapter="Electric Images",
     theory_class="maxwell_original",
-    description="Electrical inversion (Kelvin transformation)"
+    description="Electrical inversion (Kelvin transformation)",
 )
 def inversion_method(
     charge_distribution: Union[float, Callable[[np.ndarray], float]],
@@ -691,7 +727,7 @@ def inversion_method(
             return np.array([np.inf, np.inf, np.inf])  # Center maps to infinity
 
         # r' = O + k^2 * (r - O) / |r - O|^2
-        factor = inversion_radius ** 2 / r_mag ** 2
+        factor = inversion_radius**2 / r_mag**2
         return inversion_center + factor * r_vec
 
     # Jacobian of inversion (for charge density transformation)
@@ -769,10 +805,12 @@ def inversion_method(
 
 
 @maxwell_cite(
-    179, 180,
-    part=1, chapter="Electric Images",
+    179,
+    180,
+    part=1,
+    chapter="Electric Images",
     theory_class="maxwell_original",
-    description="Invert a sphere to a plane (and vice versa)"
+    description="Invert a sphere to a plane (and vice versa)",
 )
 def invert_sphere_to_plane(
     sphere_center: np.ndarray,
@@ -824,7 +862,7 @@ def invert_sphere_to_plane(
 
     # Distance from inversion center to plane
     # d = k^2 / (2a)
-    plane_distance = inversion_radius ** 2 / (2 * sphere_radius)
+    plane_distance = inversion_radius**2 / (2 * sphere_radius)
 
     # Plane equation: n . r = d (where d is from inversion center)
     # Point on plane
@@ -846,11 +884,13 @@ def invert_sphere_to_plane(
 # IMAGE SYSTEM ANALYSIS (Art. 181)
 # =============================================================================
 
+
 @maxwell_cite(
     181,
-    part=1, chapter="Electric Images",
+    part=1,
+    chapter="Electric Images",
     theory_class="maxwell_original",
-    description="Complete analysis of image charge systems"
+    description="Complete analysis of image charge systems",
 )
 def image_system_analysis(
     image_configs: List[dict],
@@ -911,30 +951,42 @@ def image_system_analysis(
                 all_charges.append((config["image_charge"], config["image_position"]))
             if "central_charge" in config and config.get("central_charge", 0) != 0:
                 if "sphere_center" in config:
-                    all_charges.append((config["central_charge"], config["sphere_center"]))
+                    all_charges.append(
+                        (config["central_charge"], config["sphere_center"])
+                    )
 
             # Store conductor info
             if "sphere_radius" in config:
-                conductor_data.append({
-                    "type": "sphere",
-                    "center": config.get("sphere_center"),
-                    "radius": config["sphere_radius"],
-                    "charge": config.get("sphere_charge", config.get("image_charge", 0)),
-                })
+                conductor_data.append(
+                    {
+                        "type": "sphere",
+                        "center": config.get("sphere_center"),
+                        "radius": config["sphere_radius"],
+                        "charge": config.get(
+                            "sphere_charge", config.get("image_charge", 0)
+                        ),
+                    }
+                )
             elif "plane_normal" in config:
-                conductor_data.append({
-                    "type": "plane",
-                    "normal": config["plane_normal"],
-                    "height": config.get("plane_height", 0),
-                    "charge": config.get("total_induced_charge", 0),
-                })
+                conductor_data.append(
+                    {
+                        "type": "plane",
+                        "normal": config["plane_normal"],
+                        "height": config.get("plane_height", 0),
+                        "charge": config.get("total_induced_charge", 0),
+                    }
+                )
 
         if "image_charge_density" in config:
             # Line charge image system
             if "line_charge_density" in config and "line_position" in config:
-                all_charges.append(("line", config["line_charge_density"], config["line_position"]))
+                all_charges.append(
+                    ("line", config["line_charge_density"], config["line_position"])
+                )
             if "image_charge_density" in config and "image_position" in config:
-                all_charges.append(("line", config["image_charge_density"], config["image_position"]))
+                all_charges.append(
+                    ("line", config["image_charge_density"], config["image_position"])
+                )
 
     # Compute total potential at evaluation points
     total_potential = None
@@ -955,7 +1007,7 @@ def image_system_analysis(
                     r_mag = np.linalg.norm(r_vec)
                     if r_mag > 0:
                         total_potential[i] -= 2 * lambda_val * np.log(r_mag)
-                        total_field[i] += 2 * lambda_val * r_vec / r_mag ** 2
+                        total_field[i] += 2 * lambda_val * r_vec / r_mag**2
                 else:
                     # Point charge contribution
                     q, r_q = charge_data
@@ -963,7 +1015,7 @@ def image_system_analysis(
                     r_mag = np.linalg.norm(r_vec)
                     if r_mag > 0:
                         total_potential[i] += q / r_mag
-                        total_field[i] += q * r_vec / r_mag ** 3
+                        total_field[i] += q * r_vec / r_mag**3
 
     # Compute total electrostatic energy
     # W = (1/2) * sum_{i!=j} q_i * q_j / r_ij
@@ -1001,7 +1053,7 @@ def image_system_analysis(
             r_vec = r_i - r_j
             r_mag = np.linalg.norm(r_vec)
             if r_mag > 0:
-                force += q_i * q_j * r_vec / r_mag ** 3
+                force += q_i * q_j * r_vec / r_mag**3
 
         forces.append(force)
 
@@ -1021,11 +1073,15 @@ def image_system_analysis(
 # UTILITY: Force between charge and conductor
 # =============================================================================
 
+
 @maxwell_cite(
-    173, 175, 178,
-    part=1, chapter="Electric Images",
+    173,
+    175,
+    178,
+    part=1,
+    chapter="Electric Images",
     theory_class="maxwell_original",
-    description="Force between charge and conducting surface"
+    description="Force between charge and conducting surface",
 )
 def force_charge_conductor(
     charge: float,
@@ -1058,7 +1114,7 @@ def force_charge_conductor(
     """
     if conductor_type == "plane":
         # F = q^2 / (4*d^2) for infinite plane
-        force_magnitude = charge ** 2 / (4 * distance ** 2)
+        force_magnitude = charge**2 / (4 * distance**2)
         formula = f"F = q^2 / (4*d^2) = {charge}^2 / (4*{distance}^2)"
 
     elif conductor_type == "sphere":
@@ -1068,7 +1124,9 @@ def force_charge_conductor(
         # For grounded sphere: F = q^2 * a / (d^2 * (d^2 - a^2))
         # where d is distance from center, a is radius
         d_center = distance + conductor_size  # distance from center
-        force_magnitude = (charge ** 2 * conductor_size) / (d_center ** 2 * (d_center ** 2 - conductor_size ** 2))
+        force_magnitude = (charge**2 * conductor_size) / (
+            d_center**2 * (d_center**2 - conductor_size**2)
+        )
         formula = f"F = q^2*a/(d^2*(d^2-a^2))"
 
     elif conductor_type == "cylinder":
@@ -1077,7 +1135,9 @@ def force_charge_conductor(
 
         # For cylinder: F/L = lambda^2 * a / (d * (d^2 - a^2)) per unit length
         d_center = distance + conductor_size
-        force_per_length = (charge ** 2 * conductor_size) / (d_center * (d_center ** 2 - conductor_size ** 2))
+        force_per_length = (charge**2 * conductor_size) / (
+            d_center * (d_center**2 - conductor_size**2)
+        )
         force_magnitude = force_per_length  # Force per unit length
         formula = f"F/L = lambda^2*a/(d*(d^2-a^2))"
 
@@ -1108,8 +1168,7 @@ if __name__ == "__main__":
     # Test 1: Point charge above grounded plane
     print("\n--- Point Charge Above Grounded Plane (Arts. 171-173) ---")
     result = image_point_charge_plane(
-        point_charge=100,
-        point_position=np.array([0, 0, 10])
+        point_charge=100, point_position=np.array([0, 0, 10])
     )
     print(f"  Charge: q = {result['point_charge']} statC")
     print(f"  Position: r = {result['point_position']} cm")
@@ -1124,14 +1183,16 @@ if __name__ == "__main__":
         point_charge=100,
         point_position=np.array([0, 0, 10]),
         sphere_center=np.array([0, 0, 0]),
-        sphere_radius=1.0
+        sphere_radius=1.0,
     )
     print(f"  Charge: q = {result['point_charge']} statC")
     print(f"  Distance from center: d = {result['distance_from_center']} cm")
     print(f"  Sphere radius: a = {result['sphere_radius']} cm")
     print(f"  Image charge: q' = {result['image_charge']:.2f} statC")
     print(f"  Image position: d' = {np.linalg.norm(result['image_position'])} cm")
-    print(f"  Force: F = {result['force_magnitude']:.4e} dynes ({result['force_direction']})")
+    print(
+        f"  Force: F = {result['force_magnitude']:.4e} dynes ({result['force_direction']})"
+    )
 
     # Test 3: Line charge near conducting cylinder
     print("\n--- Line Charge Near Conducting Cylinder (Arts. 177-178) ---")
@@ -1140,12 +1201,16 @@ if __name__ == "__main__":
         line_position=np.array([5, 0, 0]),
         cylinder_axis_point=np.array([0, 0, 0]),
         cylinder_axis_direction=np.array([0, 0, 1]),
-        cylinder_radius=1.0
+        cylinder_radius=1.0,
     )
     print(f"  Line charge density: lambda = {result['line_charge_density']} statC/cm")
     print(f"  Distance from axis: d = {result['distance_from_axis']} cm")
-    print(f"  Image charge density: lambda' = {result['image_charge_density']} statC/cm")
-    print(f"  Force per length: F/L = {result['force_per_length_magnitude']:.4e} dynes/cm")
+    print(
+        f"  Image charge density: lambda' = {result['image_charge_density']} statC/cm"
+    )
+    print(
+        f"  Force per length: F/L = {result['force_per_length_magnitude']:.4e} dynes/cm"
+    )
 
     # Test 4: Kelvin inversion
     print("\n--- Kelvin Inversion (Arts. 179-180) ---")
@@ -1154,7 +1219,7 @@ if __name__ == "__main__":
         inversion_center=np.array([0, 0, 0]),
         inversion_radius=1.0,
         is_point_charge=True,
-        charge_position=np.array([2, 0, 0])
+        charge_position=np.array([2, 0, 0]),
     )
     print(f"  Original charge: q = {result['original_charge']} statC")
     print(f"  Original position: r = {result['original_position']} cm")
@@ -1167,9 +1232,11 @@ if __name__ == "__main__":
         sphere_center=np.array([0, 0, 0]),
         sphere_radius=1.0,
         inversion_center=np.array([1, 0, 0]),
-        inversion_radius=1.0
+        inversion_radius=1.0,
     )
-    print(f"  Sphere: center={result['sphere_center']}, radius={result['sphere_radius']}")
+    print(
+        f"  Sphere: center={result['sphere_center']}, radius={result['sphere_radius']}"
+    )
     print(f"  Inversion center: {result['inversion_center']}")
     print(f"  Plane normal: {result['plane_normal']}")
     print(f"  Plane distance: d = {result['plane_distance']} cm")
@@ -1179,10 +1246,14 @@ if __name__ == "__main__":
     result = force_charge_conductor(charge=100, distance=1, conductor_type="plane")
     print(f"  Plane: F = {result['force_magnitude']:.4e} dynes")
 
-    result = force_charge_conductor(charge=100, distance=1, conductor_type="sphere", conductor_size=1)
+    result = force_charge_conductor(
+        charge=100, distance=1, conductor_type="sphere", conductor_size=1
+    )
     print(f"  Sphere: F = {result['force_magnitude']:.4e} dynes")
 
-    result = force_charge_conductor(charge=1.0, distance=1, conductor_type="cylinder", conductor_size=1)
+    result = force_charge_conductor(
+        charge=1.0, distance=1, conductor_type="cylinder", conductor_size=1
+    )
     print(f"  Cylinder: F/L = {result['force_magnitude']:.4e} dynes/cm")
 
     # Test 7: Complete image system

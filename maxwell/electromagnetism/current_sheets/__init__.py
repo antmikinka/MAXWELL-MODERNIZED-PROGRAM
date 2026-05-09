@@ -14,38 +14,36 @@ Category: A (maxwell_original) — Maxwell's theory of current-sheets.
 
 from __future__ import annotations
 
-from maxwell.electromagnetism.current_sheets.sheet_theory import (
-    CurrentSheet,
-    MagneticShell,
-    calc_sheet_field_discontinuity,
-    calc_magnetic_shell_potential,
-    calc_sheet_vector_potential,
-    calc_sheet_inductance,
-    verify_shell_equivalence,
-    calc_sheet_interaction,
-    CurrentSheetCalculator,
-)
-
-from maxwell.electromagnetism.current_sheets.surface_currents import (
-    SurfaceCurrentDensity,
-    calc_surface_current,
-    calc_field_from_surface_current,
-    calc_sheet_boundary_condition,
-    analyze_surface_current_distribution,
-    calc_surface_impedance,
-    SurfaceCurrentAnalyzer,
-)
-
 from maxwell.electromagnetism.current_sheets.boundary_conditions import (
+    BoundaryConditionAnalyzer,
     ElectromagneticBoundary,
-    calc_tangential_E_discontinuity,
+    calc_boundary_energy_flux,
+    calc_moving_boundary_conditions,
     calc_normal_B_continuity,
     calc_normal_D_discontinuity,
+    calc_tangential_E_discontinuity,
     calc_tangential_H_discontinuity,
     verify_boundary_conditions,
-    calc_moving_boundary_conditions,
-    calc_boundary_energy_flux,
-    BoundaryConditionAnalyzer,
+)
+from maxwell.electromagnetism.current_sheets.sheet_theory import (
+    CurrentSheet,
+    CurrentSheetCalculator,
+    MagneticShell,
+    calc_magnetic_shell_potential,
+    calc_sheet_field_discontinuity,
+    calc_sheet_inductance,
+    calc_sheet_interaction,
+    calc_sheet_vector_potential,
+    verify_shell_equivalence,
+)
+from maxwell.electromagnetism.current_sheets.surface_currents import (
+    SurfaceCurrentAnalyzer,
+    SurfaceCurrentDensity,
+    analyze_surface_current_distribution,
+    calc_field_from_surface_current,
+    calc_sheet_boundary_condition,
+    calc_surface_current,
+    calc_surface_impedance,
 )
 
 __all__ = [

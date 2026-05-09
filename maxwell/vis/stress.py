@@ -11,15 +11,19 @@ from __future__ import annotations
 
 from typing import Callable
 
-from maxwell.meta.citation import maxwell_cite
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.vis._base import create_meshgrid, format_axis_labels
-
 import numpy as np
+
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._base import create_meshgrid, format_axis_labels
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
-    616, 617, 618, 619, 620,
+    616,
+    617,
+    618,
+    619,
+    620,
     part=4,
     chapter="Electromagnetic Stress in the Dielectric",
     description="Plot Maxwell stress tensor as principal stress ellipses on a 2D field.",
@@ -107,8 +111,18 @@ def plot_stress_tensor_2d(
     dx = quiver_scale * eigen_s * np.cos(angle_s)
     dy = quiver_scale * eigen_s * np.sin(angle_s)
 
-    ax.quiver(X_s, Y_s, dx, dy, angles="xy", scale_units="xy",
-              scale=1.0, color="black", alpha=0.7, width=0.003)
+    ax.quiver(
+        X_s,
+        Y_s,
+        dx,
+        dy,
+        angles="xy",
+        scale_units="xy",
+        scale=1.0,
+        color="black",
+        alpha=0.7,
+        width=0.003,
+    )
 
     format_axis_labels(ax, title=title)
     fig.tight_layout()
@@ -116,7 +130,11 @@ def plot_stress_tensor_2d(
 
 
 @maxwell_cite(
-    616, 617, 618, 619, 620,
+    616,
+    617,
+    618,
+    619,
+    620,
     part=4,
     chapter="Electromagnetic Stress in the Dielectric",
     description="Verify stress tensor properties: symmetry, trace, and eigenvalue reality.",
@@ -147,8 +165,7 @@ def verify_stress_tensor_plot(
     B2 = np.dot(B, B)
 
     # Build 3x3 stress tensor
-    T = (np.outer(E, E) + np.outer(B, B) -
-         0.5 * np.eye(3) * (E2 + B2)) / (4.0 * np.pi)
+    T = (np.outer(E, E) + np.outer(B, B) - 0.5 * np.eye(3) * (E2 + B2)) / (4.0 * np.pi)
 
     # Symmetry check
     is_symmetric = np.allclose(T, T.T, atol=1e-10)

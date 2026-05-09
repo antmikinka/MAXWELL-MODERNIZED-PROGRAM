@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -16,11 +17,11 @@ pytestmark = pytest.mark.skipif(
 )
 
 from maxwell.vis.spherical_harmonics import (
-    calc_gauss_harmonics,
     calc_field_intensity,
+    calc_gauss_harmonics,
+    plot_harmonic_contour,
     plot_harmonic_globe,
     plot_harmonic_modes,
-    plot_harmonic_contour,
 )
 
 

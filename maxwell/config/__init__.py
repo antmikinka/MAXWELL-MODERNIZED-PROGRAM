@@ -3,22 +3,21 @@
 from __future__ import annotations
 
 from maxwell.config.constants import (
-    UniversalConstants,
+    C_APPROX,
     CONST,
     C,
-    C_APPROX,
+    UniversalConstants,
     cgs_unit_of,
 )
-
 from maxwell.config.conventions import (
-    PolarityConvention,
     ForceDirectionConvention,
     MagneticDirection,
-    verify_austral_positive,
+    PolarityConvention,
     apply_force_direction,
-    magnetic_convention_summary,
     convert_pole_naming,
+    magnetic_convention_summary,
     right_hand_rule_direction,
+    verify_austral_positive,
 )
 
 __all__ = [

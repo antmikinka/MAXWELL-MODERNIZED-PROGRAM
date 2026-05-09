@@ -39,10 +39,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -79,7 +80,8 @@ class TelegraphLine:
 
     @maxwell_cite(
         730,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate signal propagation velocity",
     )
@@ -103,7 +105,8 @@ class TelegraphLine:
 
     @maxwell_cite(
         731,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate characteristic impedance",
     )
@@ -124,12 +127,13 @@ class TelegraphLine:
             Part IV, Art. 731: Characteristic impedance.
         """
         if self.C <= 0:
-            return float('inf')
+            return float("inf")
         return np.sqrt(self.L / self.C)
 
     @maxwell_cite(
         732,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate attenuation constant",
     )
@@ -167,7 +171,8 @@ class TelegraphLine:
 
     @maxwell_cite(
         733,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate phase constant",
     )
@@ -201,7 +206,8 @@ class TelegraphLine:
 
     @maxwell_cite(
         734,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate signal delay per unit length",
     )
@@ -220,16 +226,19 @@ class TelegraphLine:
             Part IV, Art. 734: Signal delay.
         """
         if self.L <= 0 or self.C <= 0:
-            return float('inf')
+            return float("inf")
         return np.sqrt(self.L * self.C)
 
     @maxwell_cite(
         735,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate voltage at distance x",
     )
-    def voltage_at_distance(self, V0: float, x: float, angular_frequency: float) -> complex:
+    def voltage_at_distance(
+        self, V0: float, x: float, angular_frequency: float
+    ) -> complex:
         """
         Calculate voltage at distance x along the line.
 
@@ -275,7 +284,8 @@ class SignalTransmission:
 
     @maxwell_cite(
         740,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate signal rise time",
     )
@@ -298,11 +308,12 @@ class SignalTransmission:
         """
         if line_length <= 0:
             return 0.0
-        return 2.2 * self.line.R * self.line.C * line_length ** 2
+        return 2.2 * self.line.R * self.line.C * line_length**2
 
     @maxwell_cite(
         745,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate bandwidth limitation",
     )
@@ -325,12 +336,13 @@ class SignalTransmission:
         """
         t_r = self.rise_time(line_length)
         if t_r <= 0:
-            return float('inf')
+            return float("inf")
         return 0.35 / t_r
 
     @maxwell_cite(
         750,
-        part=4, chapter="Signal Transmission",
+        part=4,
+        chapter="Signal Transmission",
         theory_class="maxwell_original",
         description="Calculate maximum signaling rate",
     )
@@ -355,13 +367,14 @@ class SignalTransmission:
         """
         t_r = self.rise_time(line_length)
         if t_r <= 0:
-            return float('inf')
+            return float("inf")
         return 1.0 / (2.0 * t_r)
 
 
 @maxwell_cite(
     730,
-    part=4, chapter="Signal Transmission",
+    part=4,
+    chapter="Signal Transmission",
     theory_class="maxwell_original",
     description="Calculate signal velocity: v = 1/sqrt(LC)",
 )
@@ -394,7 +407,8 @@ def calc_signal_velocity(L: float, C: float) -> float:
 
 @maxwell_cite(
     731,
-    part=4, chapter="Signal Transmission",
+    part=4,
+    chapter="Signal Transmission",
     theory_class="maxwell_original",
     description="Calculate characteristic impedance: Z₀ = sqrt(L/C)",
 )
@@ -417,13 +431,15 @@ def calc_characteristic_impedance(L: float, C: float) -> float:
         Part IV, Art. 731: Characteristic impedance.
     """
     if C <= 0:
-        return float('inf')
+        return float("inf")
     return np.sqrt(L / C)
 
 
 @maxwell_cite(
-    732, 733,
-    part=4, chapter="Signal Transmission",
+    732,
+    733,
+    part=4,
+    chapter="Signal Transmission",
     theory_class="maxwell_original",
     description="Calculate propagation constant",
 )
@@ -466,7 +482,8 @@ def calc_propagation_constant(
 
 @maxwell_cite(
     734,
-    part=4, chapter="Signal Transmission",
+    part=4,
+    chapter="Signal Transmission",
     theory_class="maxwell_original",
     description="Calculate signal delay",
 )
@@ -495,8 +512,14 @@ def calc_signal_delay(L: float, C: float, length: float) -> float:
 
 
 @maxwell_cite(
-    730, 731, 732, 733, 734, 735,
-    part=4, chapter="Signal Transmission",
+    730,
+    731,
+    732,
+    733,
+    734,
+    735,
+    part=4,
+    chapter="Signal Transmission",
     theory_class="maxwell_original",
     description="Verify telegraph line relations",
 )
@@ -544,8 +567,12 @@ def verify_telegraph_line(
     v_error = abs(v - v_expected) / v_expected if v_expected > 0 else 0
 
     # Verify Z₀ = sqrt(L/C)
-    Z0_expected = np.sqrt(L / C) if C > 0 else float('inf')
-    Z0_error = abs(Z0 - Z0_expected) / Z0_expected if Z0_expected < float('inf') and Z0_expected > 0 else 0
+    Z0_expected = np.sqrt(L / C) if C > 0 else float("inf")
+    Z0_error = (
+        abs(Z0 - Z0_expected) / Z0_expected
+        if Z0_expected < float("inf") and Z0_expected > 0
+        else 0
+    )
 
     # Verify γ = α + iβ
     alpha = line.attenuation_constant(omega)
@@ -567,13 +594,21 @@ def verify_telegraph_line(
         "v_error": v_error,
         "Z0_error": Z0_error,
         "gamma_error": gamma_error,
-        "verified": v_error < tolerance and Z0_error < tolerance and gamma_error < tolerance,
+        "verified": v_error < tolerance
+        and Z0_error < tolerance
+        and gamma_error < tolerance,
     }
 
 
 @maxwell_cite(
-    730, 731, 732, 733, 734, 735,
-    part=4, chapter="Signal Transmission",
+    730,
+    731,
+    732,
+    733,
+    734,
+    735,
+    part=4,
+    chapter="Signal Transmission",
     theory_class="maxwell_original",
     description="Complete telegraph line analysis",
 )

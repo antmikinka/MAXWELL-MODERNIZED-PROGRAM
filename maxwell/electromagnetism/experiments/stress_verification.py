@@ -37,13 +37,13 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-from maxwell.electromagnetism.physics.stress import calc_stress_tensor
 from maxwell.electromagnetism.components.circular_coils import (
     calc_coil_off_axis,
     calc_coil_on_axis,
 )
+from maxwell.electromagnetism.physics.stress import calc_stress_tensor
+from maxwell.meta.citation import maxwell_cite
 
 
 def _lorentz_force_on_segment(
@@ -82,8 +82,10 @@ def _numerical_surface_integral(
 
 
 @maxwell_cite(
-    645, 646,
-    part=4, chapter="Stress Verification",
+    645,
+    646,
+    part=4,
+    chapter="Stress Verification",
     theory_class="maxwell_original",
     description="Verify stress tensor for point charge",
 )
@@ -111,12 +113,13 @@ def verify_point_charge_stress(
     Returns:
         Dictionary with verification results.
     """
+
     # For isolated charge: net force should be zero
     def E_field(pos: np.ndarray) -> np.ndarray:
         r = np.linalg.norm(pos)
         if r < 1e-15:
             return np.zeros(3)
-        return charge * pos / r ** 3
+        return charge * pos / r**3
 
     def stress_at(pos: np.ndarray) -> np.ndarray:
         E = E_field(pos)
@@ -137,7 +140,7 @@ def verify_point_charge_stress(
         points.append(pt)
         normals.append(pt / sphere_radius)  # outward normal
 
-    surface_area = 4 * np.pi * sphere_radius ** 2
+    surface_area = 4 * np.pi * sphere_radius**2
     net_force = _numerical_surface_integral(stress_at, points, normals, surface_area)
 
     force_magnitude = np.linalg.norm(net_force)
@@ -155,8 +158,10 @@ def verify_point_charge_stress(
 
 
 @maxwell_cite(
-    645, 646,
-    part=4, chapter="Stress Verification",
+    645,
+    646,
+    part=4,
+    chapter="Stress Verification",
     theory_class="maxwell_original",
     description="Verify stress tensor for parallel wires",
 )
@@ -185,7 +190,7 @@ def verify_parallel_wire_stress(
         Dictionary with verification results.
     """
     # Direct force calculation
-    F_direct = 2.0 * current1 * current2 * wire_length / (CONST.C ** 2 * separation)
+    F_direct = 2.0 * current1 * current2 * wire_length / (CONST.C**2 * separation)
 
     # Stress tensor approach:
     # For two parallel wires along z-axis at x=0 and x=separation
@@ -205,7 +210,7 @@ def verify_parallel_wire_stress(
     # Force per unit area in x direction
     # T_xx = (1/4pi)[Ex^2 + Bx^2 - (1/2)(E^2 + B^2)]
     #      = -(1/8pi) * B^2  (pressure)
-    B2 = B_from_1 ** 2
+    B2 = B_from_1**2
     pressure = B2 / (8 * np.pi)  # dyne/cm^2
 
     # Approximate effective area
@@ -234,8 +239,10 @@ def verify_parallel_wire_stress(
 
 
 @maxwell_cite(
-    645, 646,
-    part=4, chapter="Stress Verification",
+    645,
+    646,
+    part=4,
+    chapter="Stress Verification",
     theory_class="maxwell_original",
     description="Verify magnetic pressure on conductor surface",
 )
@@ -265,7 +272,7 @@ def verify_magnetic_pressure(
     B_surface = 2.0 * current / (CONST.C * wire_radius)
 
     # Magnetic pressure
-    p_magnetic = B_surface ** 2 / (8 * np.pi)
+    p_magnetic = B_surface**2 / (8 * np.pi)
 
     # Total inward force per unit length
     # F/L = p * circumference = p * 2*pi*a
@@ -274,7 +281,7 @@ def verify_magnetic_pressure(
     # Alternative: from energy density
     # Energy density u = B^2/(8*pi) = p
     # Force per length = 2*pi*a * u
-    energy_density = B_surface ** 2 / (8 * np.pi)
+    energy_density = B_surface**2 / (8 * np.pi)
     force_per_length_energy = energy_density * 2 * np.pi * wire_radius
 
     # Should be identical
@@ -282,7 +289,7 @@ def verify_magnetic_pressure(
 
     # Verify the pressure points inward (compressive)
     # T_rr at surface = -B^2/(8pi) for field in phi direction
-    T_rr = -B_surface ** 2 / (8 * np.pi)
+    T_rr = -(B_surface**2) / (8 * np.pi)
     is_compressive = T_rr < 0
 
     return {
@@ -299,8 +306,10 @@ def verify_magnetic_pressure(
 
 
 @maxwell_cite(
-    645, 646,
-    part=4, chapter="Stress Verification",
+    645,
+    646,
+    part=4,
+    chapter="Stress Verification",
     theory_class="maxwell_original",
     description="Complete stress tensor verification",
 )
@@ -349,6 +358,10 @@ def analyze_stress_verification(
         "magnetic_pressure": pressure,
         "tension_along_field": tension_along_field,
         "pressure_perpendicular": pressure_perp,
-        "tension_to_pressure_ratio": abs(tension_along_field / pressure_perp) if abs(pressure_perp) > 1e-15 else 0,
+        "tension_to_pressure_ratio": (
+            abs(tension_along_field / pressure_perp)
+            if abs(pressure_perp) > 1e-15
+            else 0
+        ),
         "all_verified": bool(point_charge["verified"] and pressure["verified"]),
     }

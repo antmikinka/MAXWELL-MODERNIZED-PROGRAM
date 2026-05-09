@@ -25,7 +25,7 @@ from typing import Sequence
 
 import jax
 import jax.numpy as jnp
-from jax import vmap, grad, jit
+from jax import grad, jit, vmap
 
 from maxwell.jax._compat import jax_tree, safe_div, safe_norm
 from maxwell.meta.citation import maxwell_cite
@@ -76,7 +76,7 @@ class MagneticPoleJAX:
         point = jnp.asarray(point, dtype=jnp.float64)
         r_vec = point - self.position
         r_mag = safe_norm(r_vec[None, :], axis=-1)[0]
-        r_mag_sq = jnp.maximum(r_mag ** 2, 1e-30)
+        r_mag_sq = jnp.maximum(r_mag**2, 1e-30)
         H_mag = self.strength / r_mag_sq
         r_hat = jnp.where(r_mag > 1e-30, r_vec / r_mag, jnp.zeros(3))
         return H_mag * r_hat
@@ -98,13 +98,11 @@ class MagneticPoleJAX:
 
     @staticmethod
     @jit
-    def _field_at_jit(
-        strength: float, pos: jax.Array, point: jax.Array
-    ) -> jax.Array:
+    def _field_at_jit(strength: float, pos: jax.Array, point: jax.Array) -> jax.Array:
         """JIT-compiled field calculation (static method for jax.scan use)."""
         r_vec = point - pos
         r_mag = safe_norm(r_vec[None, :], axis=-1)[0]
-        r_mag_sq = jnp.maximum(r_mag ** 2, 1e-30)
+        r_mag_sq = jnp.maximum(r_mag**2, 1e-30)
         H_mag = strength / r_mag_sq
         r_hat = jnp.where(r_mag > 1e-30, r_vec / r_mag, jnp.zeros(3))
         return H_mag * r_hat
@@ -153,9 +151,9 @@ class MagnetJAX:
         Returns:
             Scalar magnetic length (cm).
         """
-        return safe_norm(
-            (self.north_position - self.south_position)[None, :], axis=-1
-        )[0]
+        return safe_norm((self.north_position - self.south_position)[None, :], axis=-1)[
+            0
+        ]
 
     @property
     def magnetic_axis(self) -> jax.Array:
@@ -190,7 +188,7 @@ class MagnetJAX:
         # North pole contribution (positive strength)
         r_n = point - self.north_position
         r_n_mag = safe_norm(r_n[None, :], axis=-1)[0]
-        r_n_mag_sq = jnp.maximum(r_n_mag ** 2, 1e-30)
+        r_n_mag_sq = jnp.maximum(r_n_mag**2, 1e-30)
         H_n = self.pole_strength * jnp.where(
             r_n_mag > 1e-30, r_n / (r_n_mag_sq * r_n_mag), jnp.zeros(3)
         )
@@ -198,7 +196,7 @@ class MagnetJAX:
         # South pole contribution (negative strength)
         r_s = point - self.south_position
         r_s_mag = safe_norm(r_s[None, :], axis=-1)[0]
-        r_s_mag_sq = jnp.maximum(r_s_mag ** 2, 1e-30)
+        r_s_mag_sq = jnp.maximum(r_s_mag**2, 1e-30)
         H_s = -self.pole_strength * jnp.where(
             r_s_mag > 1e-30, r_s / (r_s_mag_sq * r_s_mag), jnp.zeros(3)
         )
@@ -218,9 +216,7 @@ class MagnetJAX:
 
     # ── Force, torque, energy ───────────────────────────────────
 
-    def force_in_field(
-        self, H_north: jax.Array, H_south: jax.Array
-    ) -> jax.Array:
+    def force_in_field(self, H_north: jax.Array, H_south: jax.Array) -> jax.Array:
         """Resultant force on magnet in external field.
 
         Art. 371-372: Each pole experiences a force proportional to
@@ -283,7 +279,7 @@ class MagnetJAX:
         # North pole
         r_n = point - north_pos
         r_n_mag = safe_norm(r_n[None, :], axis=-1)[0]
-        r_n_mag_sq = jnp.maximum(r_n_mag ** 2, 1e-30)
+        r_n_mag_sq = jnp.maximum(r_n_mag**2, 1e-30)
         H_n = pole_strength * jnp.where(
             r_n_mag > 1e-30, r_n / (r_n_mag_sq * r_n_mag), jnp.zeros(3)
         )
@@ -291,7 +287,7 @@ class MagnetJAX:
         # South pole
         r_s = point - south_pos
         r_s_mag = safe_norm(r_s[None, :], axis=-1)[0]
-        r_s_mag_sq = jnp.maximum(r_s_mag ** 2, 1e-30)
+        r_s_mag_sq = jnp.maximum(r_s_mag**2, 1e-30)
         H_s = -pole_strength * jnp.where(
             r_s_mag > 1e-30, r_s / (r_s_mag_sq * r_s_mag), jnp.zeros(3)
         )
@@ -333,9 +329,7 @@ class MagnetJAX:
     theory_class="maxwell_original",
     description="Coulomb's law for magnetic poles (JAX-compatible)",
 )
-def pole_force_jax(
-    m1: float, m2: float, r: jax.Array
-) -> jax.Array:
+def pole_force_jax(m1: float, m2: float, r: jax.Array) -> jax.Array:
     """Force between two magnetic poles (Coulomb's law for magnetism).
 
     Art. 376: The force between magnetic poles varies inversely as
@@ -352,7 +346,7 @@ def pole_force_jax(
         Force magnitude (dyne). Positive = repulsive, negative = attractive.
     """
     r = jnp.asarray(r, dtype=jnp.float64)
-    r_sq = r ** 2
+    r_sq = r**2
     return safe_div(m1 * m2, r_sq, safe_default=0.0)
 
 
@@ -403,7 +397,7 @@ def mutual_action_jax(
         # North pole contribution
         r_n = point - m1_north
         r_n_mag = safe_norm(r_n[None, :], axis=-1)[0]
-        r_n_mag_sq = jnp.maximum(r_n_mag ** 2, 1e-30)
+        r_n_mag_sq = jnp.maximum(r_n_mag**2, 1e-30)
         H_n = m1_strength * jnp.where(
             r_n_mag > 1e-30, r_n / (r_n_mag_sq * r_n_mag), jnp.zeros(3)
         )
@@ -411,7 +405,7 @@ def mutual_action_jax(
         # South pole contribution
         r_s = point - m1_south
         r_s_mag = safe_norm(r_s[None, :], axis=-1)[0]
-        r_s_mag_sq = jnp.maximum(r_s_mag ** 2, 1e-30)
+        r_s_mag_sq = jnp.maximum(r_s_mag**2, 1e-30)
         H_s = -m1_strength * jnp.where(
             r_s_mag > 1e-30, r_s / (r_s_mag_sq * r_s_mag), jnp.zeros(3)
         )
@@ -446,9 +440,7 @@ def mutual_action_jax(
     theory_class="maxwell_original",
     description="Torque on magnet in uniform magnetic field (JAX-compatible)",
 )
-def torque_on_magnet_jax(
-    magnetic_moment: jax.Array, H_field: jax.Array
-) -> jax.Array:
+def torque_on_magnet_jax(magnetic_moment: jax.Array, H_field: jax.Array) -> jax.Array:
     """Calculate torque on a magnet in a uniform magnetic field.
 
     Art. 373: tau = m x H (cross product of moment and field)
@@ -467,9 +459,12 @@ def torque_on_magnet_jax(
 
 # ── Automatic differentiation demo ──────────────────────────────
 
+
 @maxwell_cite(
-    371, 376,
-    part=3, chapter="Magnetic Poles",
+    371,
+    376,
+    part=3,
+    chapter="Magnetic Poles",
     theory_class="maxwell_original",
     description="Gradient of pole force w.r.t. pole strength demonstrating auto-diff",
 )

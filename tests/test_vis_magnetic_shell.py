@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import matplotlib
 import numpy as np
 import pytest
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as mplt
 
@@ -16,8 +17,8 @@ pytestmark = pytest.mark.skipif(
 )
 
 from maxwell.vis.magnetic_shell import (
-    calc_solid_angle,
     calc_shell_potential,
+    calc_solid_angle,
     plot_magnetic_shell,
     plot_shell_potential,
 )
@@ -32,7 +33,9 @@ class TestCalcSolidAngle:
         omega = calc_solid_angle(np.zeros(3), np.zeros(3), z, loop_radius=1.0)
         # On axis: Omega = 2*pi * (1 - z/sqrt(z^2 + a^2)) * sign(z)
         for i, zi in enumerate(z):
-            expected = 2.0 * np.pi * (1.0 - abs(zi) / np.sqrt(zi**2 + 1.0)) * np.sign(zi)
+            expected = (
+                2.0 * np.pi * (1.0 - abs(zi) / np.sqrt(zi**2 + 1.0)) * np.sign(zi)
+            )
             assert np.isclose(omega[i], expected, rtol=1e-6)
 
     def test_far_field_decay(self):
@@ -49,8 +52,12 @@ class TestCalcSolidAngle:
 
     def test_shifted_loop_center(self):
         """Solid angle works with shifted loop center."""
-        omega_centered = calc_solid_angle(1.0, 0.0, 1.0, loop_center=[0, 0, 0], loop_radius=1.0)
-        omega_shifted = calc_solid_angle(0.0, 0.0, 1.0, loop_center=[-1, 0, 0], loop_radius=1.0)
+        omega_centered = calc_solid_angle(
+            1.0, 0.0, 1.0, loop_center=[0, 0, 0], loop_radius=1.0
+        )
+        omega_shifted = calc_solid_angle(
+            0.0, 0.0, 1.0, loop_center=[-1, 0, 0], loop_radius=1.0
+        )
         assert np.isclose(omega_centered, omega_shifted, rtol=1e-6)
 
     def test_radius_effect(self):

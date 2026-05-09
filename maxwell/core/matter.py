@@ -20,11 +20,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.magnet import Magnet, MagneticPole
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -74,7 +75,8 @@ class MolecularMagnet:
     @classmethod
     @maxwell_cite(
         377,
-        part=3, chapter="Magnetic Matter",
+        part=3,
+        chapter="Magnetic Matter",
         theory_class="maxwell_original",
         description="Create molecular magnet from moment and position",
     )
@@ -104,7 +106,8 @@ class MolecularMagnet:
     @classmethod
     @maxwell_cite(
         377,
-        part=3, chapter="Magnetic Matter",
+        part=3,
+        chapter="Magnetic Matter",
         theory_class="maxwell_original",
         description="Create molecular magnet with specified orientation",
     )
@@ -148,7 +151,8 @@ class MolecularMagnet:
 
     @maxwell_cite(
         377,
-        part=3, chapter="Magnetic Matter",
+        part=3,
+        chapter="Magnetic Matter",
         theory_class="maxwell_original",
         description="Molecular magnet energy in external field",
     )
@@ -174,7 +178,8 @@ class MolecularMagnet:
 
     @maxwell_cite(
         377,
-        part=3, chapter="Magnetic Matter",
+        part=3,
+        chapter="Magnetic Matter",
         theory_class="maxwell_original",
         description="Torque on molecular magnet",
     )
@@ -223,7 +228,8 @@ class MagneticMatterTheory:
     @classmethod
     @maxwell_cite(
         378,
-        part=3, chapter="Magnetic Matter",
+        part=3,
+        chapter="Magnetic Matter",
         theory_class="maxwell_original",
         description="Create magnetic matter from molecular ensemble",
     )
@@ -280,7 +286,8 @@ class MagneticMatterTheory:
 
     @maxwell_cite(
         378,
-        part=3, chapter="Magnetic Matter",
+        part=3,
+        chapter="Magnetic Matter",
         theory_class="maxwell_original",
         description="Calculate magnetization from molecular ensemble",
     )
@@ -301,7 +308,8 @@ class MagneticMatterTheory:
 
     @maxwell_cite(
         378,
-        part=3, chapter="Magnetic Matter",
+        part=3,
+        chapter="Magnetic Matter",
         theory_class="maxwell_original",
         description="Alignment fraction in external field",
     )
@@ -350,11 +358,14 @@ class MagneticMatterTheory:
 
 @maxwell_cite(
     379,
-    part=3, chapter="Magnetic Matter",
+    part=3,
+    chapter="Magnetic Matter",
     theory_class="maxwell_original",
     description="Proof that north and south magnetic quantities are equal",
 )
-def verify_equal_opposite(magnets: list[Magnet], tolerance: float = 1e-10) -> dict[str, float]:
+def verify_equal_opposite(
+    magnets: list[Magnet], tolerance: float = 1e-10
+) -> dict[str, float]:
     """
     Verify that total north and south magnetic quantities are equal.
 
@@ -410,7 +421,8 @@ def verify_equal_opposite(magnets: list[Magnet], tolerance: float = 1e-10) -> di
 
 @maxwell_cite(
     380,
-    part=3, chapter="Magnetic Matter",
+    part=3,
+    chapter="Magnetic Matter",
     theory_class="maxwell_original",
     description="Breaking a magnet produces complete smaller magnets",
 )
@@ -483,7 +495,8 @@ def break_magnet(
 
 @maxwell_cite(
     380,
-    part=3, chapter="Magnetic Matter",
+    part=3,
+    chapter="Magnetic Matter",
     theory_class="maxwell_original",
     description="Verify broken magnet fragments are complete magnets",
 )
@@ -541,8 +554,12 @@ def verify_fragments_complete(
 
 
 @maxwell_cite(
-    377, 378, 379, 380,
-    part=3, chapter="Magnetic Matter",
+    377,
+    378,
+    379,
+    380,
+    part=3,
+    chapter="Magnetic Matter",
     theory_class="maxwell_original",
     description="Molecular theory explanation of magnetization",
 )

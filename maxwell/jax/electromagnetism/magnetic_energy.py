@@ -102,7 +102,9 @@ class MagneticEnergyJAX:
             Energy density u (erg/cm^3), scalar.
         """
         H_mag_sq = jnp.dot(self.H_field, self.H_field)
-        return (jnp.asarray(self.permeability, dtype=jnp.float64) / (8.0 * jnp.pi)) * H_mag_sq
+        return (
+            jnp.asarray(self.permeability, dtype=jnp.float64) / (8.0 * jnp.pi)
+        ) * H_mag_sq
 
     # -- Methods --
 
@@ -133,7 +135,9 @@ class MagneticEnergyJAX:
         """
         H_field = jnp.asarray(H_field, dtype=jnp.float64)
         H_mag_sq = jnp.dot(H_field, H_field)
-        return (jnp.asarray(self.permeability, dtype=jnp.float64) / (8.0 * jnp.pi)) * H_mag_sq
+        return (
+            jnp.asarray(self.permeability, dtype=jnp.float64) / (8.0 * jnp.pi)
+        ) * H_mag_sq
 
     # -- Class methods --
 
@@ -229,7 +233,7 @@ class InductorEnergyJAX:
         """
         I = jnp.asarray(current, dtype=jnp.float64)
         L = jnp.asarray(self.inductance, dtype=jnp.float64)
-        return 0.5 * L * I ** 2
+        return 0.5 * L * I**2
 
     def from_flux(self, flux: jax.Array) -> jax.Array:
         """Energy from flux and inductance: U = Phi^2 / (2*L).
@@ -244,7 +248,7 @@ class InductorEnergyJAX:
         """
         Phi = jnp.asarray(flux, dtype=jnp.float64)
         L = jnp.asarray(self.inductance, dtype=jnp.float64)
-        return safe_div(Phi ** 2, 2.0 * L, safe_default=0.0)
+        return safe_div(Phi**2, 2.0 * L, safe_default=0.0)
 
     def from_flux_current(self, flux: jax.Array, current: jax.Array) -> jax.Array:
         """Energy from flux and current: U = (1/2) * Phi * I.
@@ -270,7 +274,7 @@ class InductorEnergyJAX:
         """JIT-compiled (1/2)*L*I^2."""
         L = jnp.asarray(inductance, dtype=jnp.float64)
         I = jnp.asarray(current, dtype=jnp.float64)
-        return 0.5 * L * I ** 2
+        return 0.5 * L * I**2
 
     @staticmethod
     @jit
@@ -278,7 +282,7 @@ class InductorEnergyJAX:
         """JIT-compiled Phi^2/(2*L)."""
         Phi = jnp.asarray(flux, dtype=jnp.float64)
         L = jnp.asarray(inductance, dtype=jnp.float64)
-        return safe_div(Phi ** 2, 2.0 * L, safe_default=0.0)
+        return safe_div(Phi**2, 2.0 * L, safe_default=0.0)
 
     @staticmethod
     @jit
@@ -294,7 +298,8 @@ class InductorEnergyJAX:
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate magnetic energy density: u = (1/8*pi) * mu * H^2 (JAX)",
 )
@@ -323,7 +328,8 @@ def calc_magnetic_energy_density_jax(
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy density from B and H dot product: u = (1/8*pi) * B.H (JAX)",
 )
@@ -354,7 +360,8 @@ def calc_energy_density_from_BH_dot_jax(
 
 @maxwell_cite(
     633,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate inductor energy: U = (1/2)*L*I^2 or Phi^2/(2*L) (JAX)",
 )
@@ -390,16 +397,17 @@ def calc_inductor_energy_jax(
     # U = (1/2) * L * I^2
     if current is not None:
         I = jnp.asarray(current, dtype=jnp.float64)
-        return 0.5 * L * I ** 2
+        return 0.5 * L * I**2
 
     # U = Phi^2 / (2*L)
     Phi = jnp.asarray(flux, dtype=jnp.float64)
-    return safe_div(Phi ** 2, 2.0 * L, safe_default=0.0)
+    return safe_div(Phi**2, 2.0 * L, safe_default=0.0)
 
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate total magnetic energy: U = u * V (JAX)",
 )
@@ -429,7 +437,8 @@ def calc_total_magnetic_energy_jax(
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Verify magnetic energy density formula -- isotropy check (JAX)",
 )
@@ -469,7 +478,7 @@ def verify_magnetic_energy_density_jax(
     u_y = calc_magnetic_energy_density_jax(H_y, permeability)
     u_z = calc_magnetic_energy_density_jax(H_z, permeability)
 
-    expected = (mu / (8.0 * jnp.pi)) * H_mag ** 2
+    expected = (mu / (8.0 * jnp.pi)) * H_mag**2
 
     tol = 1e-10
     all_match = (
@@ -489,8 +498,10 @@ def verify_magnetic_energy_density_jax(
 
 
 @maxwell_cite(
-    632, 633,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    632,
+    633,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Complete magnetic energy analysis (JAX)",
 )
@@ -560,6 +571,8 @@ def analyze_magnetic_energy_jax(
         result["inductor_energy"] = ind_energy
         if volume is not None:
             field_energy = energy_density * jnp.asarray(volume, dtype=jnp.float64)
-            result["energy_ratio"] = safe_div(field_energy, ind_energy, safe_default=0.0)
+            result["energy_ratio"] = safe_div(
+                field_energy, ind_energy, safe_default=0.0
+            )
 
     return result

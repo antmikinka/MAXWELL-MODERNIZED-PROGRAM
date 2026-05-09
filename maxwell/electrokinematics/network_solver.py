@@ -27,23 +27,26 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
-import numpy as np
 from functools import wraps
+from typing import Callable
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST, C
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # KIRCHHOFF'S LAWS (Arts. 273-275)
 # =============================================================================
 
+
 @maxwell_cite(
-    273, 274,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    273,
+    274,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Kirchhoff's junction rule (current conservation at nodes)"
+    description="Kirchhoff's junction rule (current conservation at nodes)",
 )
 def kirchhoff_junction_rule(
     currents: np.ndarray,
@@ -97,9 +100,10 @@ def kirchhoff_junction_rule(
 
 @maxwell_cite(
     275,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Kirchhoff's loop rule (voltage conservation around closed loops)"
+    description="Kirchhoff's loop rule (voltage conservation around closed loops)",
 )
 def kirchhoff_loop_rule(
     voltage_drops: np.ndarray,
@@ -161,11 +165,15 @@ def kirchhoff_loop_rule(
 # CONDUCTANCE MATRIX (Arts. 276-280)
 # =============================================================================
 
+
 @maxwell_cite(
-    276, 277, 278,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    276,
+    277,
+    278,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Build node admittance (conductance) matrix for resistor network"
+    description="Build node admittance (conductance) matrix for resistor network",
 )
 def build_conductance_matrix(
     n_nodes: int,
@@ -257,10 +265,12 @@ def build_conductance_matrix(
 
 
 @maxwell_cite(
-    279, 280,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    279,
+    280,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Solve linear resistor network using conductance matrix"
+    description="Solve linear resistor network using conductance matrix",
 )
 def solve_network(
     n_nodes: int,
@@ -334,7 +344,9 @@ def solve_network(
         elif orig_idx > reference_node:
             return orig_idx - 1
         else:
-            raise ValueError(f"Cannot inject current at reference node {reference_node}")
+            raise ValueError(
+                f"Cannot inject current at reference node {reference_node}"
+            )
 
     for node, current in current_sources:
         if node == reference_node:
@@ -358,8 +370,7 @@ def solve_network(
         V_reduced = np.linalg.solve(G, I_inj)
     except np.linalg.LinAlgError as e:
         raise ValueError(
-            "Network may be disconnected or singular. "
-            f"Linear solver failed: {e}"
+            "Network may be disconnected or singular. " f"Linear solver failed: {e}"
         )
 
     # Reconstruct full potential vector (including reference at 0)
@@ -391,11 +402,14 @@ def solve_network(
 # WHEATSTONE BRIDGE (Arts. 281-284)
 # =============================================================================
 
+
 @maxwell_cite(
-    281, 282,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    281,
+    282,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Calculate Wheatstone bridge balance condition"
+    description="Calculate Wheatstone bridge balance condition",
 )
 def wheatstone_bridge_balance(
     R1: float,
@@ -485,10 +499,12 @@ def wheatstone_bridge_balance(
 
 
 @maxwell_cite(
-    283, 284,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    283,
+    284,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Analyze Wheatstone bridge sensitivity and optimal configuration"
+    description="Analyze Wheatstone bridge sensitivity and optimal configuration",
 )
 def wheatstone_bridge_sensitivity(
     R1: float,
@@ -633,11 +649,14 @@ def wheatstone_bridge_sensitivity(
 # RECIPROCITY THEOREM (Arts. 277-278)
 # =============================================================================
 
+
 @maxwell_cite(
-    277, 278,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    277,
+    278,
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Verify reciprocity theorem for linear networks"
+    description="Verify reciprocity theorem for linear networks",
 )
 def reciprocity_theorem(
     n_nodes: int,
@@ -718,10 +737,13 @@ def reciprocity_theorem(
         n_nodes=n_nodes,
         conductances=conductances,
         current_sources=[(port1_nodes[0], 1.0), (port1_nodes[1], -1.0)],
-        reference_node=reference_for_test
+        reference_node=reference_for_test,
     )
 
-    V_port2_case1 = result1["node_potentials"][port2_nodes[0]] - result1["node_potentials"][port2_nodes[1]]
+    V_port2_case1 = (
+        result1["node_potentials"][port2_nodes[0]]
+        - result1["node_potentials"][port2_nodes[1]]
+    )
     R_transfer_1_to_2 = V_port2_case1 / 1.0  # I = 1 A
 
     # Apply 1 A at port 2, measure V at port 1
@@ -729,10 +751,13 @@ def reciprocity_theorem(
         n_nodes=n_nodes,
         conductances=conductances,
         current_sources=[(port2_nodes[0], 1.0), (port2_nodes[1], -1.0)],
-        reference_node=reference_for_test
+        reference_node=reference_for_test,
     )
 
-    V_port1_case2 = result2["node_potentials"][port1_nodes[0]] - result2["node_potentials"][port1_nodes[1]]
+    V_port1_case2 = (
+        result2["node_potentials"][port1_nodes[0]]
+        - result2["node_potentials"][port1_nodes[1]]
+    )
     R_transfer_2_to_1 = V_port1_case2 / 1.0
 
     # Test 2: Transfer conductance (voltage application, short-circuit current)
@@ -741,7 +766,9 @@ def reciprocity_theorem(
 
     # For reciprocity, we verify R_transfer_1_to_2 ≈ R_transfer_2_to_1
     if abs(R_transfer_1_to_2) > 1e-10:
-        rel_error_R = abs(R_transfer_1_to_2 - R_transfer_2_to_1) / abs(R_transfer_1_to_2)
+        rel_error_R = abs(R_transfer_1_to_2 - R_transfer_2_to_1) / abs(
+            R_transfer_1_to_2
+        )
     else:
         rel_error_R = abs(R_transfer_1_to_2 - R_transfer_2_to_1)
 
@@ -750,8 +777,12 @@ def reciprocity_theorem(
     return {
         "transfer_resistance_1_to_2": R_transfer_1_to_2,
         "transfer_resistance_2_to_1": R_transfer_2_to_1,
-        "transfer_conductance_1_to_2": 1.0 / R_transfer_1_to_2 if abs(R_transfer_1_to_2) > 1e-10 else float('inf'),
-        "transfer_conductance_2_to_1": 1.0 / R_transfer_2_to_1 if abs(R_transfer_2_to_1) > 1e-10 else float('inf'),
+        "transfer_conductance_1_to_2": (
+            1.0 / R_transfer_1_to_2 if abs(R_transfer_1_to_2) > 1e-10 else float("inf")
+        ),
+        "transfer_conductance_2_to_1": (
+            1.0 / R_transfer_2_to_1 if abs(R_transfer_2_to_1) > 1e-10 else float("inf")
+        ),
         "reciprocity_verified": reciprocity_verified_R,
         "relative_error": rel_error_R,
     }
@@ -761,11 +792,13 @@ def reciprocity_theorem(
 # CONJUGATE FUNCTIONS 2D (Art. 280)
 # =============================================================================
 
+
 @maxwell_cite(
     280,
-    part=2, chapter="Theory of Linear Systems of Conductors",
+    part=2,
+    chapter="Theory of Linear Systems of Conductors",
     theory_class="maxwell_original",
-    description="Compute conjugate functions for 2D conduction problems"
+    description="Compute conjugate functions for 2D conduction problems",
 )
 def conjugate_functions_2d(
     potential_func: Callable[[float, float], float],
@@ -853,17 +886,17 @@ def conjugate_functions_2d(
 
     # First, integrate along x at y = y_min
     for j in range(1, n_points):
-        psi_grid[0, j] = psi_grid[0, j-1] - Ey_grid[0, j-1] * dx
+        psi_grid[0, j] = psi_grid[0, j - 1] - Ey_grid[0, j - 1] * dx
 
     # Then integrate along y
     for i in range(1, n_points):
         for j in range(n_points):
             if j == 0:
-                psi_grid[i, j] = psi_grid[i-1, j] + Ex_grid[i-1, j] * dy
+                psi_grid[i, j] = psi_grid[i - 1, j] + Ex_grid[i - 1, j] * dy
             else:
                 # Average the two paths for better accuracy
-                psi_x = psi_grid[i, j-1] - Ey_grid[i, j-1] * dx
-                psi_y = psi_grid[i-1, j] + Ex_grid[i-1, j] * dy
+                psi_x = psi_grid[i, j - 1] - Ey_grid[i, j - 1] * dx
+                psi_y = psi_grid[i - 1, j] + Ex_grid[i - 1, j] * dy
                 psi_grid[i, j] = 0.5 * (psi_x + psi_y)
 
     # Center stream function (arbitrary constant)
@@ -882,6 +915,7 @@ def conjugate_functions_2d(
 # =============================================================================
 # NETWORK ANALYSIS UTILITIES
 # =============================================================================
+
 
 @dataclass
 class NetworkAnalyzer:
@@ -919,10 +953,13 @@ class NetworkAnalyzer:
                 raise ValueError(f"Conductance must be positive: {g}")
 
     @maxwell_cite(
-        273, 274, 275,
-        part=2, chapter="Theory of Linear Systems of Conductors",
+        273,
+        274,
+        275,
+        part=2,
+        chapter="Theory of Linear Systems of Conductors",
         theory_class="maxwell_original",
-        description="Verify Kirchhoff's laws for computed solution"
+        description="Verify Kirchhoff's laws for computed solution",
     )
     def verify_kirchhoff_laws(
         self,
@@ -984,9 +1021,10 @@ class NetworkAnalyzer:
 
     @maxwell_cite(
         279,
-        part=2, chapter="Theory of Linear Systems of Conductors",
+        part=2,
+        chapter="Theory of Linear Systems of Conductors",
         theory_class="maxwell_original",
-        description="Calculate total power dissipation in network"
+        description="Calculate total power dissipation in network",
     )
     def power_dissipation(
         self,
@@ -1019,8 +1057,8 @@ class NetworkAnalyzer:
 
         for i, j, g in self.conductances:
             I_ij = I_branch.get((i, j), 0)
-            R_ij = 1.0 / g if g > 0 else float('inf')
-            P_ij = I_ij ** 2 * R_ij
+            R_ij = 1.0 / g if g > 0 else float("inf")
+            P_ij = I_ij**2 * R_ij
             branch_power[(i, j)] = P_ij
             total_power += P_ij
 
@@ -1034,10 +1072,12 @@ class NetworkAnalyzer:
         }
 
     @maxwell_cite(
-        279, 280,
-        part=2, chapter="Theory of Linear Systems of Conductors",
+        279,
+        280,
+        part=2,
+        chapter="Theory of Linear Systems of Conductors",
         theory_class="maxwell_original",
-        description="Solve network with given current sources"
+        description="Solve network with given current sources",
     )
     def solve(
         self,
@@ -1094,7 +1134,7 @@ if __name__ == "__main__":
     G = build_conductance_matrix(
         n_nodes=4,
         conductances=[(0, 1, 1.0), (1, 2, 2.0), (1, 3, 3.0), (2, 3, 4.0)],
-        reference_node=0
+        reference_node=0,
     )
     print(f"  G matrix shape: {G.shape}")
     print(f"  G = \n{G}")
@@ -1105,7 +1145,7 @@ if __name__ == "__main__":
         n_nodes=4,
         conductances=[(0, 1, 1.0), (1, 2, 2.0), (1, 3, 3.0)],
         current_sources=[(1, 1.0)],
-        reference_node=0
+        reference_node=0,
     )
     print(f"  Node potentials: {result['node_potentials']}")
     print(f"  Branch currents: {result['branch_currents']}")
@@ -1120,9 +1160,12 @@ if __name__ == "__main__":
 
     # Test sensitivity
     sensitivity = wheatstone_bridge_sensitivity(
-        R1=100, R2=100, R3=100, R4=100.1,
+        R1=100,
+        R2=100,
+        R3=100,
+        R4=100.1,
         battery_voltage=1e8,
-        galvanometer_resistance=10
+        galvanometer_resistance=10,
     )
     print(f"  Sensitivity analysis:")
     print(f"    Balance point: R4 = {sensitivity['balance_point']}")
@@ -1134,10 +1177,14 @@ if __name__ == "__main__":
         n_nodes=4,
         conductances=[(0, 1, 1.0), (1, 2, 2.0), (1, 3, 3.0)],
         port1_nodes=(0, 2),
-        port2_nodes=(0, 3)
+        port2_nodes=(0, 3),
     )
-    print(f"  Transfer resistance 1->2: {reciprocity['transfer_resistance_1_to_2']:.6f}")
-    print(f"  Transfer resistance 2->1: {reciprocity['transfer_resistance_2_to_1']:.6f}")
+    print(
+        f"  Transfer resistance 1->2: {reciprocity['transfer_resistance_1_to_2']:.6f}"
+    )
+    print(
+        f"  Transfer resistance 2->1: {reciprocity['transfer_resistance_2_to_1']:.6f}"
+    )
     print(f"  Reciprocity verified: {reciprocity['reciprocity_verified']}")
 
     print("\n" + "=" * 70)

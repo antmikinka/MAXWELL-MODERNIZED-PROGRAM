@@ -7,112 +7,104 @@ and the general field equations.
 
 from __future__ import annotations
 
-from maxwell.electromagnetism.sources.oersted import (
-    OerstedField,
-    calc_oersted_field,
-    calc_field_from_element,
-    calc_force_on_pole,
-    calc_circular_field_direction,
-    verify_inverse_distance_law,
+from maxwell.electromagnetism.energy.electrokinetic import (
+    ElectrokineticEnergy,
+    calc_coupled_circuits_energy,
+    calc_coupling_coefficient,
+    calc_electrokinetic_energy,
+    calc_mutual_inductance_energy,
+    calc_single_circuit_energy,
+    calc_two_circuit_energy,
+    verify_coupled_circuits_energy,
 )
-
+from maxwell.electromagnetism.energy.electrostatic import (
+    ElectrostaticEnergy,
+    analyze_electrostatic_energy,
+    calc_capacitor_energy,
+    calc_electrostatic_energy_density,
+    calc_energy_in_dielectric,
+    calc_total_electrostatic_energy,
+    verify_electrostatic_energy_density,
+)
+from maxwell.electromagnetism.energy.magnetic import (
+    MagneticEnergy,
+    analyze_magnetic_energy,
+    calc_inductor_energy,
+    calc_magnetic_energy_density,
+    calc_magnetic_energy_density_from_B,
+    calc_total_magnetic_energy,
+    verify_magnetic_energy_density,
+)
+from maxwell.electromagnetism.fields.ampere_maxwell import (
+    AmpereMaxwellCalculator,
+    AmpereMaxwellLaw,
+    DisplacementCurrent,
+    calc_ampere_law,
+    calc_ampere_maxwell,
+    calc_displacement_current,
+    calc_total_current_density,
+    verify_displacement_current_necessity,
+)
+from maxwell.electromagnetism.forces.lorentz import (
+    LorentzForce,
+    LorentzForceCalculator,
+    calc_force_between_parallel_currents,
+    calc_force_density,
+    calc_force_on_moving_charge,
+    calc_force_on_wire,
+    calc_torque_on_current_loop,
+    verify_parallel_current_attraction,
+)
+from maxwell.electromagnetism.forces.stress_tensor import (
+    MaxwellStressTensor,
+    analyze_stress_tensor,
+    calc_electric_stress_tensor,
+    calc_electromagnetic_pressure,
+    calc_force_on_surface,
+    calc_magnetic_stress_tensor,
+    calc_maxwell_stress_tensor,
+    calc_surface_force,
+    verify_stress_tensor_properties,
+)
 from maxwell.electromagnetism.induction.faraday import (
-    MagneticFlux,
-    InducedEMF,
     FaradayInduction,
-    calc_magnetic_flux,
+    InducedEMF,
+    MagneticFlux,
     calc_induced_emf,
+    calc_magnetic_flux,
     calc_motional_emf,
     calc_self_induction,
     verify_lenz_law,
 )
-
-from maxwell.electromagnetism.forces.lorentz import (
-    LorentzForce,
-    LorentzForceCalculator,
-    calc_force_on_wire,
-    calc_force_on_moving_charge,
-    calc_force_between_parallel_currents,
-    calc_torque_on_current_loop,
-    calc_force_density,
-    verify_parallel_current_attraction,
+from maxwell.electromagnetism.sources.oersted import (
+    OerstedField,
+    calc_circular_field_direction,
+    calc_field_from_element,
+    calc_force_on_pole,
+    calc_oersted_field,
+    verify_inverse_distance_law,
 )
-
-from maxwell.electromagnetism.forces.stress_tensor import (
-    MaxwellStressTensor,
-    calc_maxwell_stress_tensor,
-    calc_electric_stress_tensor,
-    calc_magnetic_stress_tensor,
-    calc_electromagnetic_pressure,
-    calc_surface_force,
-    calc_force_on_surface,
-    verify_stress_tensor_properties,
-    analyze_stress_tensor,
-)
-
-from maxwell.electromagnetism.fields.ampere_maxwell import (
-    DisplacementCurrent,
-    AmpereMaxwellLaw,
-    AmpereMaxwellCalculator,
-    calc_ampere_law,
-    calc_displacement_current,
-    calc_ampere_maxwell,
-    calc_total_current_density,
-    verify_displacement_current_necessity,
-)
-
 from maxwell.electromagnetism.theory.general_equations import (
-    # Data classes
     ElectromagneticField,
-    MaxwellEquations,
     GeneralEquationsCalculator,
-    # Core equation functions
-    calc_faradays_law,
-    calc_general_emf,
-    calc_ponderomotive_force,
-    calc_magnetic_induction,
-    calc_ampere_maxwell as calc_ampere_maxwell_general,
-    calc_electric_displacement,
-    calc_conduction_current,
-    calc_gauss_law_electric,
-    calc_gauss_law_magnetic,
-    # Vector calculus utilities
-    numerical_divergence,
-    numerical_curl,
-    # Verification and analysis
-    verify_maxwell_equations,
+    MaxwellEquations,
     analyze_complete_field,
 )
-
-from maxwell.electromagnetism.energy.electrostatic import (
-    ElectrostaticEnergy,
-    calc_electrostatic_energy_density,
-    calc_total_electrostatic_energy,
-    calc_capacitor_energy,
-    calc_energy_in_dielectric,
-    verify_electrostatic_energy_density,
-    analyze_electrostatic_energy,
+from maxwell.electromagnetism.theory.general_equations import (
+    calc_ampere_maxwell as calc_ampere_maxwell_general,  # Data classes; Core equation functions; Vector calculus utilities; Verification and analysis
 )
-
-from maxwell.electromagnetism.energy.magnetic import (
-    MagneticEnergy,
-    calc_magnetic_energy_density,
-    calc_magnetic_energy_density_from_B,
-    calc_total_magnetic_energy,
-    calc_inductor_energy,
-    verify_magnetic_energy_density,
-    analyze_magnetic_energy,
-)
-
-from maxwell.electromagnetism.energy.electrokinetic import (
-    ElectrokineticEnergy,
-    calc_electrokinetic_energy,
-    calc_single_circuit_energy,
-    calc_coupled_circuits_energy,
-    calc_mutual_inductance_energy,
-    calc_two_circuit_energy,
-    calc_coupling_coefficient,
-    verify_coupled_circuits_energy,
+from maxwell.electromagnetism.theory.general_equations import (
+    calc_conduction_current,
+    calc_electric_displacement,
+    calc_faradays_law,
+    calc_gauss_law_electric,
+    calc_gauss_law_magnetic,
+    calc_general_emf,
+    calc_magnetic_induction,
+    calc_ponderomotive_force,
+    numerical_curl,
+    numerical_divergence,
+    verify_maxwell_equations,
 )
 
 __all__ = [

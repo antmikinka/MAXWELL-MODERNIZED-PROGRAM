@@ -26,10 +26,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -112,8 +113,10 @@ class ParallelConductorForce:
 
 
 @maxwell_cite(
-    496, 497,
-    part=4, chapter="Forces Between Conductors",
+    496,
+    497,
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Calculate force between parallel currents: F = 2*I1*I2*L/r",
 )
@@ -170,7 +173,8 @@ def calc_force_parallel_wires(
 
 @maxwell_cite(
     496,
-    part=4, chapter="Forces Between Conductors",
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Calculate force per unit length: F/L = 2*I1*I2/r",
 )
@@ -205,7 +209,8 @@ def calc_force_per_unit_length(
 
 @maxwell_cite(
     497,
-    part=4, chapter="Forces Between Conductors",
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Calculate force between inclined conductors",
 )
@@ -249,8 +254,10 @@ def calc_force_inclined_wires(
 
 
 @maxwell_cite(
-    496, 497,
-    part=4, chapter="Forces Between Conductors",
+    496,
+    497,
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Calculate force between current elements",
 )
@@ -303,12 +310,13 @@ def calc_force_between_elements(
     cross1 = np.cross(dl1, r_hat)
     cross2 = np.cross(dl2, cross1)
 
-    return (I1 * I2 / (r_mag ** 2)) * cross2
+    return (I1 * I2 / (r_mag**2)) * cross2
 
 
 @maxwell_cite(
     496,
-    part=4, chapter="Forces Between Conductors",
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Calculate equilibrium current for force balance",
 )
@@ -343,8 +351,10 @@ def calc_equilibrium_current(
 
 
 @maxwell_cite(
-    496, 497,
-    part=4, chapter="Forces Between Conductors",
+    496,
+    497,
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Verify force law for parallel currents",
 )
@@ -385,7 +395,11 @@ def verify_parallel_force_law(
         F_r_products.append(F * r)  # Should be constant = 2*I1*I2
 
     expected_constant = 2.0 * current1 * current2
-    deviations = [abs(Fr - expected_constant) / abs(expected_constant) for Fr in F_r_products if expected_constant != 0]
+    deviations = [
+        abs(Fr - expected_constant) / abs(expected_constant)
+        for Fr in F_r_products
+        if expected_constant != 0
+    ]
     max_deviation = max(deviations) if deviations else 0
 
     # Test current reversal (should change sign)
@@ -396,8 +410,8 @@ def verify_parallel_force_law(
     magnitude_match = abs(abs(F_same) - abs(F_opposite)) < tolerance
 
     # Test current scaling (should be proportional)
-    F_scaled = calc_force_parallel_wires(2*current1, current2, 1.0, 1.0)
-    scaling_verified = abs(F_scaled - 2*F_same) < tolerance * abs(F_same)
+    F_scaled = calc_force_parallel_wires(2 * current1, current2, 1.0, 1.0)
+    scaling_verified = abs(F_scaled - 2 * F_same) < tolerance * abs(F_same)
 
     inverse_r_verified = max_deviation < tolerance
 
@@ -414,13 +428,22 @@ def verify_parallel_force_law(
         "magnitude_match": magnitude_match,
         "scaling_verified": scaling_verified,
         "inverse_r_verified": inverse_r_verified,
-        "verified": all([sign_change_verified, magnitude_match, scaling_verified, inverse_r_verified]),
+        "verified": all(
+            [
+                sign_change_verified,
+                magnitude_match,
+                scaling_verified,
+                inverse_r_verified,
+            ]
+        ),
     }
 
 
 @maxwell_cite(
-    496, 497,
-    part=4, chapter="Forces Between Conductors",
+    496,
+    497,
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Calculate work done by electromagnetic force",
 )
@@ -457,8 +480,10 @@ def calc_work_parallel_wires(
 
 
 @maxwell_cite(
-    496, 497,
-    part=4, chapter="Forces Between Conductors",
+    496,
+    497,
+    part=4,
+    chapter="Forces Between Conductors",
     theory_class="maxwell_original",
     description="Complete analysis of parallel conductor forces",
 )
@@ -495,8 +520,7 @@ def analyze_parallel_conductor_forces(
         Part IV, Arts. 496-497: Complete force analysis.
     """
     force_obj = ParallelConductorForce(
-        current1=current1, current2=current2,
-        separation=separation, length=length
+        current1=current1, current2=current2, separation=separation, length=length
     )
 
     result = {
@@ -509,10 +533,14 @@ def analyze_parallel_conductor_forces(
 
     # Acceleration if masses provided
     if wire1_mass_per_length is not None and wire1_mass_per_length > 0:
-        result["wire1_acceleration"] = force_obj.force_per_unit_length / wire1_mass_per_length
+        result["wire1_acceleration"] = (
+            force_obj.force_per_unit_length / wire1_mass_per_length
+        )
 
     if wire2_mass_per_length is not None and wire2_mass_per_length > 0:
-        result["wire2_acceleration"] = force_obj.force_per_unit_length / wire2_mass_per_length
+        result["wire2_acceleration"] = (
+            force_obj.force_per_unit_length / wire2_mass_per_length
+        )
 
     # Equilibrium check (forces balanced)
     result["equilibrium"] = abs(force_obj.total_force) < 1e-15

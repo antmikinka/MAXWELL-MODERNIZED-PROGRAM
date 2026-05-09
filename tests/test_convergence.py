@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 
 from maxwell.verification.convergence import (
-    measure_spherical_harmonic_convergence,
     measure_grid_convergence,
+    measure_spherical_harmonic_convergence,
     verify_convergence_results,
 )
 
@@ -21,8 +21,14 @@ class TestSphericalHarmonicConvergence:
 
     def test_has_required_keys(self):
         data = measure_spherical_harmonic_convergence()
-        for key in ("function", "test_point", "expected", "convergence_data",
-                     "convergence_rate", "final_error"):
+        for key in (
+            "function",
+            "test_point",
+            "expected",
+            "convergence_data",
+            "convergence_rate",
+            "final_error",
+        ):
             assert key in data
 
     def test_function_label(self):
@@ -71,8 +77,13 @@ class TestGridConvergence:
             return 1.0 - 1.0 / n
 
         data = measure_grid_convergence(field_func, reference_value=1.0, name="test")
-        for key in ("name", "reference_value", "convergence_data",
-                     "convergence_rate", "final_error"):
+        for key in (
+            "name",
+            "reference_value",
+            "convergence_data",
+            "convergence_rate",
+            "final_error",
+        ):
             assert key in data
 
     def test_convergence_data_length(self):

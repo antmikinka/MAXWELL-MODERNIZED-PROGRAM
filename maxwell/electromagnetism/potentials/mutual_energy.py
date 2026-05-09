@@ -27,10 +27,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -71,8 +72,10 @@ class MutualEnergy:
         return -self.current1 * self.current2 * self.mutual_inductance
 
     @maxwell_cite(
-        520, 521,
-        part=4, chapter="Mutual Energy",
+        520,
+        521,
+        part=4,
+        chapter="Mutual Energy",
         theory_class="maxwell_original",
         description="Calculate force from energy gradient",
     )
@@ -94,7 +97,8 @@ class MutualEnergy:
 
     @maxwell_cite(
         520,
-        part=4, chapter="Mutual Energy",
+        part=4,
+        chapter="Mutual Energy",
         theory_class="maxwell_original",
         description="Calculate torque from energy derivative",
     )
@@ -116,8 +120,10 @@ class MutualEnergy:
 
 
 @maxwell_cite(
-    520, 521,
-    part=4, chapter="Mutual Energy",
+    520,
+    521,
+    part=4,
+    chapter="Mutual Energy",
     theory_class="maxwell_original",
     description="Calculate mutual inductance using Neumann formula",
 )
@@ -196,8 +202,10 @@ def _get_segments(vertices: list[np.ndarray], n_points: int) -> list:
 
 
 @maxwell_cite(
-    520, 521,
-    part=4, chapter="Mutual Energy",
+    520,
+    521,
+    part=4,
+    chapter="Mutual Energy",
     theory_class="maxwell_original",
     description="Calculate mutual energy of two circuits",
 )
@@ -229,7 +237,8 @@ def calc_mutual_energy(
 
 @maxwell_cite(
     520,
-    part=4, chapter="Mutual Energy",
+    part=4,
+    chapter="Mutual Energy",
     theory_class="maxwell_original",
     description="Calculate force between circuits",
 )
@@ -257,8 +266,10 @@ def calc_force_between_circuits(
 
 
 @maxwell_cite(
-    520, 521,
-    part=4, chapter="Mutual Energy",
+    520,
+    521,
+    part=4,
+    chapter="Mutual Energy",
     theory_class="maxwell_original",
     description="Calculate mutual inductance of coaxial circular loops",
 )
@@ -299,7 +310,7 @@ def calc_mutual_inductance_coaxial_loops(
     z = axial_separation if axial_separation is not None else separation
 
     # k² parameter
-    k_squared = 4.0 * a * b / ((a + b) ** 2 + z ** 2)
+    k_squared = 4.0 * a * b / ((a + b) ** 2 + z**2)
 
     if k_squared > 1.0:
         k_squared = 1.0
@@ -310,16 +321,16 @@ def calc_mutual_inductance_coaxial_loops(
 
     # For small k, use dipole approximation
     if k < 0.1:
-        R3 = (a ** 2 + z ** 2) ** 1.5
+        R3 = (a**2 + z**2) ** 1.5
         if R3 > 1e-15:
-            return 2.0 * np.pi ** 2 * a ** 2 * b ** 2 / R3
+            return 2.0 * np.pi**2 * a**2 * b**2 / R3
         return 0.0
 
     # Elliptic integral approximation
     # K(k) ≈ pi/2 * (1 + k²/4 + 9k⁴/64 + ...)
     # E(k) ≈ pi/2 * (1 - k²/4 - 3k⁴/64 - ...)
-    K = (np.pi / 2) * (1.0 + k_squared / 4.0 + 9.0 * k_squared ** 2 / 64.0)
-    E = (np.pi / 2) * (1.0 - k_squared / 4.0 - 3.0 * k_squared ** 2 / 64.0)
+    K = (np.pi / 2) * (1.0 + k_squared / 4.0 + 9.0 * k_squared**2 / 64.0)
+    E = (np.pi / 2) * (1.0 - k_squared / 4.0 - 3.0 * k_squared**2 / 64.0)
 
     if k < 1e-10:
         return 0.0
@@ -331,8 +342,10 @@ def calc_mutual_inductance_coaxial_loops(
 
 
 @maxwell_cite(
-    520, 521,
-    part=4, chapter="Mutual Energy",
+    520,
+    521,
+    part=4,
+    chapter="Mutual Energy",
     theory_class="maxwell_original",
     description="Verify mutual energy relations",
 )
@@ -385,10 +398,18 @@ def verify_mutual_energy_relations(
         forces_numerical.append(F_num)
 
         # Analytical estimate (dipole approximation)
-        R3 = (radius1 ** 2 + z ** 2) ** 1.5
+        R3 = (radius1**2 + z**2) ** 1.5
         if R3 > 1e-15:
-            M_approx = 2.0 * np.pi ** 2 * radius1 ** 2 * radius2 ** 2 / R3
-            dM_dz_approx = -3.0 * 2.0 * np.pi ** 2 * radius1 ** 2 * radius2 ** 2 * z / (radius1 ** 2 + z ** 2) ** 2.5
+            M_approx = 2.0 * np.pi**2 * radius1**2 * radius2**2 / R3
+            dM_dz_approx = (
+                -3.0
+                * 2.0
+                * np.pi**2
+                * radius1**2
+                * radius2**2
+                * z
+                / (radius1**2 + z**2) ** 2.5
+            )
             F_ana = current1 * current2 * dM_dz_approx
         else:
             F_ana = 0.0
@@ -398,7 +419,9 @@ def verify_mutual_energy_relations(
     attraction_verified = all(f < 0 for f in forces_numerical if abs(f) > 1e-15)
 
     # Check energy decreases with decreasing separation
-    energy_verified = all(energies[i] < energies[i+1] for i in range(len(energies)-1))
+    energy_verified = all(
+        energies[i] < energies[i + 1] for i in range(len(energies) - 1)
+    )
 
     return {
         "currents": (current1, current2),
@@ -413,8 +436,10 @@ def verify_mutual_energy_relations(
 
 
 @maxwell_cite(
-    520, 521,
-    part=4, chapter="Mutual Energy",
+    520,
+    521,
+    part=4,
+    chapter="Mutual Energy",
     theory_class="maxwell_original",
     description="Complete mutual energy analysis",
 )
@@ -490,7 +515,12 @@ def _estimate_self_inductance(vertices: list[np.ndarray]) -> float:
     if perimeter > 0:
         effective_radius = perimeter / (2 * np.pi)
         if effective_radius > 0.1:
-            return 4.0 * np.pi * effective_radius * (np.log(8 * effective_radius / 0.1) - 1.75)
+            return (
+                4.0
+                * np.pi
+                * effective_radius
+                * (np.log(8 * effective_radius / 0.1) - 1.75)
+            )
     return perimeter * 0.5
 
 

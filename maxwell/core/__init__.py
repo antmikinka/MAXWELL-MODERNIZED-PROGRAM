@@ -20,66 +20,60 @@ from maxwell.core.charge import (
     faraday_isolation_proof,
     verify_charge_conservation,
 )
-
-from maxwell.core.units import (
-    CGSUnitConverter,
-    MagneticDimensions,
-    CONVERTER,
-)
-
 from maxwell.core.field import (
     ElectricField,
     EquipotentialSurface,
     LineOfForce,
-    electric_tension,
     electric_flux,
-    gauss_law_closed_surface,
+    electric_tension,
     field_from_potential,
+    gauss_law_closed_surface,
     line_integral,
 )
-
-from maxwell.core.potential import (
-    ElectricPotential,
-    laplace_equation,
-    poisson_equation,
-    solve_poisson,
-    solve_laplace,
-    boundary_condition_potential,
-    boundary_condition_normal_derivative,
-    boundary_condition_tangential,
-    system_energy,
-    potential_difference,
-    electromotive_force_potential,
-)
-
 from maxwell.core.magnet import (
-    MagneticPole,
     Magnet,
     MagneticAxis,
+    MagneticPole,
     MagneticQuantity,
+    center_and_axes,
     earth_response,
     mutual_action,
-    center_and_axes,
     verify_force_law_evidence,
 )
-
 from maxwell.core.matter import (
-    MolecularMagnet,
     MagneticMatterTheory,
-    verify_equal_opposite,
+    MolecularMagnet,
     break_magnet,
-    verify_fragments_complete,
     molecular_magnetization_model,
+    verify_equal_opposite,
+    verify_fragments_complete,
 )
-
 from maxwell.core.moment import (
-    MagnetizationVector,
-    MagneticPolarization,
-    MagneticParticle,
     MagneticMoment,
-    MagnetizationIntensity,
+    MagneticParticle,
+    MagneticPolarization,
     MagnetizationComponents,
+    MagnetizationIntensity,
+    MagnetizationVector,
     resultant_moment_and_axis,
+)
+from maxwell.core.potential import (
+    ElectricPotential,
+    boundary_condition_normal_derivative,
+    boundary_condition_potential,
+    boundary_condition_tangential,
+    electromotive_force_potential,
+    laplace_equation,
+    poisson_equation,
+    potential_difference,
+    solve_laplace,
+    solve_poisson,
+    system_energy,
+)
+from maxwell.core.units import (
+    CONVERTER,
+    CGSUnitConverter,
+    MagneticDimensions,
 )
 
 __all__ = [

@@ -15,12 +15,12 @@ from typing import Optional, Tuple
 import numpy as np
 from scipy.special import lpmv
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.meta.citation import maxwell_cite
 from maxwell.math.spherical_harmonics import (
-    calc_spherical_harmonic,
     calc_legendre_polynomial,
+    calc_spherical_harmonic,
 )
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -198,11 +198,11 @@ def plot_harmonic_globe(
 
     if coeffs is None:
         coeffs = {
-            (1, 0): (1.0, 0.0),    # Axial dipole
-            (1, 1): (0.1, 0.05),    # Tilted dipole
-            (2, 0): (0.1, 0.0),     # Quadrupole
-            (2, 1): (0.05, 0.02),   # Quadrupole tilt
-            (2, 2): (0.03, 0.01),   # Sectorial quadrupole
+            (1, 0): (1.0, 0.0),  # Axial dipole
+            (1, 1): (0.1, 0.05),  # Tilted dipole
+            (2, 0): (0.1, 0.0),  # Quadrupole
+            (2, 1): (0.05, 0.02),  # Quadrupole tilt
+            (2, 2): (0.03, 0.01),  # Sectorial quadrupole
         }
 
     # Create sphere surface
@@ -233,6 +233,7 @@ def plot_harmonic_globe(
     # Get colormap for surface coloring
     try:
         from matplotlib import colormaps
+
         cmap_obj = colormaps.get_cmap(cmap)
     except Exception:
         cmap_obj = plt.cm.get_cmap(cmap)
@@ -241,7 +242,9 @@ def plot_harmonic_globe(
 
     # Plot sphere surface with potential coloring
     ax.plot_surface(
-        X, Y, Z,
+        X,
+        Y,
+        Z,
         facecolors=colors,
         alpha=0.85,
         linewidth=0,
@@ -280,9 +283,15 @@ def plot_harmonic_globe(
     coeff_text = "Gauss coefficients:\n"
     for (nn, mm), (g, h) in sorted(coeffs.items()):
         coeff_text += f"  g_{nn}^{mm}={g:.3f}, h_{nn}^{mm}={h:.3f}\n"
-    ax.text2D(0.02, 0.02, coeff_text, transform=ax.transAxes,
-              fontsize=8, verticalalignment="bottom",
-              bbox=dict(boxstyle="round", facecolor="white", alpha=0.7))
+    ax.text2D(
+        0.02,
+        0.02,
+        coeff_text,
+        transform=ax.transAxes,
+        fontsize=8,
+        verticalalignment="bottom",
+        bbox=dict(boxstyle="round", facecolor="white", alpha=0.7),
+    )
 
     fig.tight_layout()
     return fig, ax
@@ -331,7 +340,8 @@ def plot_harmonic_modes(
 
     if fig is None:
         fig, axes = plt.subplots(
-            n_rows, n_cols,
+            n_rows,
+            n_cols,
             figsize=(4 * (max_n + 1), 4 * (max_n + 1)),
             subplot_kw={"projection": "3d"},
         )
@@ -357,6 +367,7 @@ def plot_harmonic_modes(
 
     try:
         from matplotlib import colormaps
+
         cmap_obj = colormaps.get_cmap(cmap)
     except Exception:
         cmap_obj = plt.cm.get_cmap(cmap)
@@ -391,7 +402,9 @@ def plot_harmonic_modes(
             colors = cmap_obj(0.5 + 0.5 * norm_Y)
 
             ax.plot_surface(
-                X, Y, Z,
+                X,
+                Y,
+                Z,
                 facecolors=colors,
                 alpha=0.8,
                 linewidth=0,
@@ -412,8 +425,11 @@ def plot_harmonic_modes(
             ax.set_axis_off()
             ax.set_box_aspect([1, 1, 1])
 
-    fig.suptitle(f"Spherical Harmonic Modes Y_l^m on Sphere (Art. 467, max_l={max_n})",
-                 fontsize=14, y=1.0)
+    fig.suptitle(
+        f"Spherical Harmonic Modes Y_l^m on Sphere (Art. 467, max_l={max_n})",
+        fontsize=14,
+        y=1.0,
+    )
     fig.tight_layout()
     return fig, axes
 
@@ -481,7 +497,9 @@ def plot_harmonic_contour(
     vmax_abs = np.nanmax(np.abs(V))
 
     cf = ax.contourf(
-        lon, lat, V,
+        lon,
+        lat,
+        V,
         levels=40,
         cmap="RdBu_r",
         vmin=-vmax_abs,

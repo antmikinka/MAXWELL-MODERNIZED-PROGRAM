@@ -32,59 +32,59 @@ Convergence:
 
 from __future__ import annotations
 
-# Framework
-from maxwell.verification.framework import (
-    VerificationResult,
-    VerificationSuite,
-    VerificationReport,
-)
-
-# Module checks
-from maxwell.verification.module_checks import (
-    verify_spherical_harmonics,
-    verify_electrostatics,
-    verify_magnetism,
-    verify_electromagnetism,
-    verify_vector_calculus,
-    verify_elliptic_integrals,
-    verify_units_and_dimensions,
-    verify_optics_and_waves,
+# Convergence
+from maxwell.verification.convergence import (
+    measure_grid_convergence,
+    measure_spherical_harmonic_convergence,
 )
 
 # Cross-validation
 from maxwell.verification.cross_validation import (
-    validate_stress_energy_consistency,
+    validate_cgs_si_roundtrip,
     validate_faraday_self_consistency,
     validate_maxwell_equations_consistency,
-    validate_cgs_si_roundtrip,
-)
-
-# Convergence
-from maxwell.verification.convergence import (
-    measure_spherical_harmonic_convergence,
-    measure_grid_convergence,
-)
-
-# SymPy symbolic verification
-from maxwell.verification.sympy_verify import (
-    verify_div_curl,
-    verify_grad_curl,
-    verify_wave_equation_1d,
-    verify_laplace_spherical,
-    verify_coulomb_law_symbolic,
-    verify_biot_savart,
-    verify_faraday_symbolic,
-    verify_continuity_equation,
-    verify_maxwell_correction,
-    verify_stokes_theorem,
-    verify_lorentz_force,
-    verify_stress_tensor_properties,
-    verify_ampere_law,
+    validate_stress_energy_consistency,
 )
 
 # Legacy exports (kept for backward compatibility)
 from maxwell.verification.equation_extractor import EquationExtractor
 from maxwell.verification.equation_registry import EquationRegistry
+
+# Framework
+from maxwell.verification.framework import (
+    VerificationReport,
+    VerificationResult,
+    VerificationSuite,
+)
+
+# Module checks
+from maxwell.verification.module_checks import (
+    verify_electromagnetism,
+    verify_electrostatics,
+    verify_elliptic_integrals,
+    verify_magnetism,
+    verify_optics_and_waves,
+    verify_spherical_harmonics,
+    verify_units_and_dimensions,
+    verify_vector_calculus,
+)
+
+# SymPy symbolic verification
+from maxwell.verification.sympy_verify import (
+    verify_ampere_law,
+    verify_biot_savart,
+    verify_continuity_equation,
+    verify_coulomb_law_symbolic,
+    verify_div_curl,
+    verify_faraday_symbolic,
+    verify_grad_curl,
+    verify_laplace_spherical,
+    verify_lorentz_force,
+    verify_maxwell_correction,
+    verify_stokes_theorem,
+    verify_stress_tensor_properties,
+    verify_wave_equation_1d,
+)
 from maxwell.verification.verifier import EquationVerifier
 
 __all__ = [

@@ -35,10 +35,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -84,7 +85,8 @@ class Quaternion:
 
     @maxwell_cite(
         522,
-        part=4, chapter="Quaternion Algebra",
+        part=4,
+        chapter="Quaternion Algebra",
         theory_class="maxwell_original",
         description="Calculate quaternion conjugate",
     )
@@ -103,7 +105,8 @@ class Quaternion:
 
     @maxwell_cite(
         522,
-        part=4, chapter="Quaternion Algebra",
+        part=4,
+        chapter="Quaternion Algebra",
         theory_class="maxwell_original",
         description="Calculate quaternion norm",
     )
@@ -118,11 +121,12 @@ class Quaternion:
         Returns:
             Norm (dimensionless).
         """
-        return np.sqrt(self.w ** 2 + self.x ** 2 + self.y ** 2 + self.z ** 2)
+        return np.sqrt(self.w**2 + self.x**2 + self.y**2 + self.z**2)
 
     @maxwell_cite(
         522,
-        part=4, chapter="Quaternion Algebra",
+        part=4,
+        chapter="Quaternion Algebra",
         theory_class="maxwell_original",
         description="Calculate quaternion product",
     )
@@ -175,13 +179,20 @@ class Quaternion:
 
 @maxwell_cite(
     522,
-    part=4, chapter="Quaternion Algebra",
+    part=4,
+    chapter="Quaternion Algebra",
     theory_class="maxwell_original",
     description="Calculate quaternion product",
 )
 def calc_quaternion_product(
-    q1_w: float, q1_x: float, q1_y: float, q1_z: float,
-    q2_w: float, q2_x: float, q2_y: float, q2_z: float,
+    q1_w: float,
+    q1_x: float,
+    q1_y: float,
+    q1_z: float,
+    q2_w: float,
+    q2_x: float,
+    q2_y: float,
+    q2_z: float,
 ) -> tuple[float, float, float, float]:
     """
     Calculate Hamilton product of two quaternions.
@@ -206,7 +217,8 @@ def calc_quaternion_product(
 
 @maxwell_cite(
     522,
-    part=4, chapter="Quaternion Algebra",
+    part=4,
+    chapter="Quaternion Algebra",
     theory_class="maxwell_original",
     description="Calculate quaternion norm",
 )
@@ -222,12 +234,13 @@ def calc_quaternion_norm(w: float, x: float, y: float, z: float) -> float:
     Returns:
         Norm (dimensionless).
     """
-    return np.sqrt(w ** 2 + x ** 2 + y ** 2 + z ** 2)
+    return np.sqrt(w**2 + x**2 + y**2 + z**2)
 
 
 @maxwell_cite(
     522,
-    part=4, chapter="Quaternion Algebra",
+    part=4,
+    chapter="Quaternion Algebra",
     theory_class="maxwell_original",
     description="Rotate vector using quaternion",
 )
@@ -278,7 +291,8 @@ def rotate_vector(
 
 @maxwell_cite(
     522,
-    part=4, chapter="Quaternion Algebra",
+    part=4,
+    chapter="Quaternion Algebra",
     theory_class="maxwell_original",
     description="Create quaternion from electromagnetic potentials",
 )
@@ -313,7 +327,8 @@ def quaternion_from_potentials(
 
 @maxwell_cite(
     522,
-    part=4, chapter="Quaternion Algebra",
+    part=4,
+    chapter="Quaternion Algebra",
     theory_class="maxwell_original",
     description="Create quaternion from electromagnetic fields",
 )
@@ -352,7 +367,8 @@ def quaternion_from_fields(
 
 @maxwell_cite(
     522,
-    part=4, chapter="Quaternion Algebra",
+    part=4,
+    chapter="Quaternion Algebra",
     theory_class="maxwell_original",
     description="Verify quaternion algebra properties",
 )
@@ -388,13 +404,19 @@ def verify_quaternion_properties(
     # Norm multiplication
     norm_product = (q1 * q2).norm()
     product_norms = q1.norm() * q2.norm()
-    norm_error = abs(norm_product - product_norms) / product_norms if product_norms > 1e-15 else abs(norm_product)
+    norm_error = (
+        abs(norm_product - product_norms) / product_norms
+        if product_norms > 1e-15
+        else abs(norm_product)
+    )
 
     # Associativity
     q3 = Quaternion(9, 10, 11, 12)
     left = (q1 * q2) * q3
     right = q1 * (q2 * q3)
-    assoc_error = abs(left.w - right.w) + np.linalg.norm(left.to_vector() - right.to_vector())
+    assoc_error = abs(left.w - right.w) + np.linalg.norm(
+        left.to_vector() - right.to_vector()
+    )
 
     # Conjugate norm
     q1_conj = q1.conjugate()
@@ -419,7 +441,9 @@ def verify_quaternion_properties(
         "norm_multiplication_verified": bool(norm_error < tolerance),
         "associativity_verified": bool(assoc_error < tolerance),
         "conjugate_norm_verified": bool(conj_norm_error < tolerance),
-        "rotation_verified": bool(rotation_error < tolerance and rotation_accuracy < tolerance),
+        "rotation_verified": bool(
+            rotation_error < tolerance and rotation_accuracy < tolerance
+        ),
         "all_verified": bool(
             noncommutative
             and norm_error < tolerance
@@ -432,7 +456,8 @@ def verify_quaternion_properties(
 
 @maxwell_cite(
     522,
-    part=4, chapter="Quaternion Algebra",
+    part=4,
+    chapter="Quaternion Algebra",
     theory_class="maxwell_original",
     description="Complete quaternion analysis",
 )

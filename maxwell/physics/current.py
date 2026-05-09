@@ -21,11 +21,14 @@ References:
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-import numpy as np
 from typing import Callable
-from maxwell.meta.citation import maxwell_cite
+
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -60,7 +63,9 @@ class ElectricCurrent:
         if self.direction.shape != (3,):
             raise ValueError(f"Direction must be 3D, got shape {self.direction.shape}")
         if self.cross_section <= 0:
-            raise ValueError(f"Cross-section must be positive, got {self.cross_section}")
+            raise ValueError(
+                f"Cross-section must be positive, got {self.cross_section}"
+            )
 
         # Compute current density if not provided
         if self.current_density is None:
@@ -96,7 +101,8 @@ class ElectricCurrent:
 
 @maxwell_cite(
     150,
-    part=2, chapter="The Electric Current",
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Current density: J = I / A",
 )
@@ -147,7 +153,8 @@ def calc_current_density(
 
 @maxwell_cite(
     177,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Continuity equation: ∇·J = -∂ρ/∂t",
 )
@@ -197,9 +204,9 @@ def continuity_equation(
     point = np.asarray(point, dtype=np.float64)
 
     # Compute divergence of J using central differences
-    def divergence(J_func: Callable[[np.ndarray], np.ndarray],
-                   p: np.ndarray,
-                   h: float) -> float:
+    def divergence(
+        J_func: Callable[[np.ndarray], np.ndarray], p: np.ndarray, h: float
+    ) -> float:
         """Numerical divergence using central differences."""
         div = 0.0
         for i in range(3):
@@ -242,7 +249,8 @@ def continuity_equation(
 
 @maxwell_cite(
     150,
-    part=2, chapter="The Electric Current",
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Total current as surface integral of current density",
 )
@@ -320,7 +328,8 @@ def calc_total_current(
 
 @maxwell_cite(
     64,
-    part=2, chapter="Electric Currents",
+    part=2,
+    chapter="Electric Currents",
     theory_class="maxwell_original",
     description="Current as a vector quantity with direction",
 )
@@ -354,7 +363,8 @@ def current_vector(
 
 @maxwell_cite(
     150,
-    part=2, chapter="The Electric Current",
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Current through surface at arbitrary angle",
 )
@@ -388,7 +398,8 @@ def current_through_tilted_surface(
 
 @maxwell_cite(
     177,
-    part=2, chapter="Mathematical Theory of Distribution",
+    part=2,
+    chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Steady current condition: ∇·J = 0",
 )
@@ -477,7 +488,8 @@ def verify_steady_current(
 
 @maxwell_cite(
     152,
-    part=2, chapter="The Electric Current",
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Current density from multiple parallel conductors",
 )
@@ -516,7 +528,8 @@ def current_density_parallel(
 
 @maxwell_cite(
     150,
-    part=2, chapter="The Electric Current",
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Verify current conservation in a junction",
 )

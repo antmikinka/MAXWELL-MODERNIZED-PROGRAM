@@ -11,15 +11,18 @@ from __future__ import annotations
 
 from typing import Callable
 
-from maxwell.meta.citation import maxwell_cite
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.vis._base import create_meshgrid, format_axis_labels
-
 import numpy as np
+
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._base import create_meshgrid, format_axis_labels
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
-    16, 17, 18, 19,
+    16,
+    17,
+    18,
+    19,
     part=1,
     chapter="On Equipotential Surfaces and Lines of Force",
     description="Plot 2D equipotential contours for arbitrary potential functions.",
@@ -92,8 +95,9 @@ def plot_equipotentials_2d(
     if charge_positions and charge_signs:
         for (cx, cy), sign in zip(charge_positions, charge_signs):
             color = "red" if sign > 0 else "blue"
-            ax.plot(cx, cy, "o", color=color, markersize=10,
-                    label="+" if sign > 0 else "-")
+            ax.plot(
+                cx, cy, "o", color=color, markersize=10, label="+" if sign > 0 else "-"
+            )
 
     format_axis_labels(ax, title=title)
 
@@ -105,7 +109,10 @@ def plot_equipotentials_2d(
 
 
 @maxwell_cite(
-    16, 17, 18, 19,
+    16,
+    17,
+    18,
+    19,
     part=1,
     chapter="On Equipotential Surfaces and Lines of Force",
     description="Plot equipotential lines for an electric dipole (convenience wrapper).",

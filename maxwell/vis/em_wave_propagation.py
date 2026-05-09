@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -77,7 +77,9 @@ def calc_em_wave(
         E_x = E0 * np.cos(phase)
         E_y = E0 * 0.5 * np.sin(phase)
     else:
-        raise ValueError("polarization must be linear, circular_right, circular_left, or elliptical")
+        raise ValueError(
+            "polarization must be linear, circular_right, circular_left, or elliptical"
+        )
 
     E_z = np.zeros_like(x)
 
@@ -154,10 +156,13 @@ def plot_em_wave_propagation(
     ax1.grid(True, alpha=0.3)
 
     wavelength = 2 * np.pi / k if k > 0 else 1.0
-    ax1.annotate("lambda = {:.2f} cm".format(wavelength),
-                 xy=(x_range[0] + wavelength, E0 * 0.5),
-                 fontsize=9, color="gray",
-                 arrowprops=dict(arrowstyle="<->", color="gray"))
+    ax1.annotate(
+        "lambda = {:.2f} cm".format(wavelength),
+        xy=(x_range[0] + wavelength, E0 * 0.5),
+        fontsize=9,
+        color="gray",
+        arrowprops=dict(arrowstyle="<->", color="gray"),
+    )
 
     ax2.plot(x, fields["B_y"], "b-", linewidth=1.5, label="B_y")
     if np.max(np.abs(fields["B_x"])) > 1e-15:
@@ -168,8 +173,13 @@ def plot_em_wave_propagation(
     ax2.legend(loc="best", fontsize=9)
     ax2.grid(True, alpha=0.3)
 
-    fig.suptitle("Electromagnetic Wave Propagation: {} Polarization (Art. 791)".format(
-        polarization.replace("_", " ").title()), fontsize=12, fontweight="bold")
+    fig.suptitle(
+        "Electromagnetic Wave Propagation: {} Polarization (Art. 791)".format(
+            polarization.replace("_", " ").title()
+        ),
+        fontsize=12,
+        fontweight="bold",
+    )
     fig.tight_layout()
     return fig, [ax1, ax2]
 
@@ -226,19 +236,51 @@ def plot_wave_snapshot_3d(
     scale_e = 0.2
     scale_b = 0.2 * CONST.C
 
-    ax.quiver(z, zeros, zeros, zeros, E_x * scale_e, zeros,
-              color="red", alpha=0.7, arrow_length_ratio=0.03,
-              label="E field")
-    ax.quiver(z, zeros, zeros, zeros, zeros, B_y * scale_b,
-              color="blue", alpha=0.7, arrow_length_ratio=0.03,
-              label="B field")
+    ax.quiver(
+        z,
+        zeros,
+        zeros,
+        zeros,
+        E_x * scale_e,
+        zeros,
+        color="red",
+        alpha=0.7,
+        arrow_length_ratio=0.03,
+        label="E field",
+    )
+    ax.quiver(
+        z,
+        zeros,
+        zeros,
+        zeros,
+        zeros,
+        B_y * scale_b,
+        color="blue",
+        alpha=0.7,
+        arrow_length_ratio=0.03,
+        label="B field",
+    )
 
     ax.plot(z, E_x * scale_e, zeros, "r-", linewidth=1.5, alpha=0.5)
     ax.plot(z, zeros, B_y * scale_b, "b-", linewidth=1.5, alpha=0.5)
 
     ax.plot([0, 2.5 * wavelength], [0, 0], [0, 0], "k-", linewidth=1, alpha=0.3)
-    ax.plot([0, 0], [-E0 * scale_e * 1.2, E0 * scale_e * 1.2], [0, 0], "r-", linewidth=0.8, alpha=0.3)
-    ax.plot([0, 0], [0, 0], [-E0 * scale_e * 1.2, E0 * scale_e * 1.2], "b-", linewidth=0.8, alpha=0.3)
+    ax.plot(
+        [0, 0],
+        [-E0 * scale_e * 1.2, E0 * scale_e * 1.2],
+        [0, 0],
+        "r-",
+        linewidth=0.8,
+        alpha=0.3,
+    )
+    ax.plot(
+        [0, 0],
+        [0, 0],
+        [-E0 * scale_e * 1.2, E0 * scale_e * 1.2],
+        "b-",
+        linewidth=0.8,
+        alpha=0.3,
+    )
 
     ax.set_xlabel("Propagation (z)")
     ax.set_ylabel("E field (x)")

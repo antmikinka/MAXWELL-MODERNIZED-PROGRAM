@@ -13,8 +13,8 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-from maxwell.vis._compat import require_matplotlib, plt, Figure, Axes
 from maxwell.meta.citation import maxwell_cite
+from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 
 @maxwell_cite(
@@ -26,7 +26,14 @@ from maxwell.meta.citation import maxwell_cite
 def calc_unit_tubes(
     charge_positions: np.ndarray,
     charge_magnitudes: np.ndarray,
-    grid_range: Tuple[float, float, float, float, float, float] = (-3.0, 3.0, -3.0, 3.0, -3.0, 3.0),
+    grid_range: Tuple[float, float, float, float, float, float] = (
+        -3.0,
+        3.0,
+        -3.0,
+        3.0,
+        -3.0,
+        3.0,
+    ),
     resolution: int = 20,
 ) -> dict:
     """Calculate 3D current density field for unit tubes of flow visualization.
@@ -186,7 +193,9 @@ def plot_unit_tubes_of_flow(
     vmax_abs = np.nanmax(magnitude)
     if vmax_abs > 0:
         cf = ax.contourf(
-            X, Y, magnitude,
+            X,
+            Y,
+            magnitude,
             levels=30,
             cmap="plasma",
             vmin=0,
@@ -197,7 +206,10 @@ def plot_unit_tubes_of_flow(
 
     if plot_mode == "streamplot":
         strm = ax.streamplot(
-            X, Y, Ex, Ey,
+            X,
+            Y,
+            Ex,
+            Ey,
             density=density,
             linewidth=magnitude / (np.nanmax(magnitude) + eps) * 2,
             cmap="autumn",
@@ -207,15 +219,19 @@ def plot_unit_tubes_of_flow(
     elif plot_mode == "quiver":
         skip = max(1, int(resolution / (resolution * density / 10)))
         ax.quiver(
-            X[::skip, ::skip], Y[::skip, ::skip],
-            Ex[::skip, ::skip], Ey[::skip, ::skip],
+            X[::skip, ::skip],
+            Y[::skip, ::skip],
+            Ex[::skip, ::skip],
+            Ey[::skip, ::skip],
             magnitude[::skip, ::skip],
             cmap="autumn",
             scale=50,
             width=0.003,
         )
     else:
-        raise ValueError(f"Unknown plot_mode: {plot_mode}. Use 'streamplot' or 'quiver'.")
+        raise ValueError(
+            f"Unknown plot_mode: {plot_mode}. Use 'streamplot' or 'quiver'."
+        )
 
     # Equipotential-like contours
     ax.contour(X, Y, magnitude, levels=8, colors="white", linewidths=0.3, alpha=0.3)
@@ -230,21 +246,31 @@ def plot_unit_tubes_of_flow(
                 color = "red" if q > 0 else "blue"
                 marker = "o" if q > 0 else "o"
                 ax.plot(
-                    charge_positions[i, 0], charge_positions[i, 1],
-                    marker, color=color, markersize=14, zorder=5,
+                    charge_positions[i, 0],
+                    charge_positions[i, 1],
+                    marker,
+                    color=color,
+                    markersize=14,
+                    zorder=5,
                     markerfacecolor=color if q > 0 else "none",
                     markeredgewidth=2,
                 )
                 label = f"+q" if q > 0 else f"-q"
                 ax.text(
-                    charge_positions[i, 0] + 0.2, charge_positions[i, 1] + 0.2,
-                    label, fontsize=12, fontweight="bold",
-                    color=color, ha="left",
+                    charge_positions[i, 0] + 0.2,
+                    charge_positions[i, 1] + 0.2,
+                    label,
+                    fontsize=12,
+                    fontweight="bold",
+                    color=color,
+                    ha="left",
                 )
 
     ax.set_xlabel("x (cm)")
     ax.set_ylabel("y (cm)")
-    ax.set_title(f"Unit Tubes of Flow: Current Density Field (Art. 290), z={slice_z:.1f} cm")
+    ax.set_title(
+        f"Unit Tubes of Flow: Current Density Field (Art. 290), z={slice_z:.1f} cm"
+    )
     ax.set_aspect("equal")
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
@@ -260,7 +286,14 @@ def plot_unit_tubes_of_flow(
 def plot_unit_tubes_3d(
     charge_positions: Optional[np.ndarray] = None,
     charge_magnitudes: Optional[np.ndarray] = None,
-    grid_range: Tuple[float, float, float, float, float, float] = (-3.0, 3.0, -3.0, 3.0, -3.0, 3.0),
+    grid_range: Tuple[float, float, float, float, float, float] = (
+        -3.0,
+        3.0,
+        -3.0,
+        3.0,
+        -3.0,
+        3.0,
+    ),
     resolution: int = 8,
     cmap: str = "autumn",
     skip: int = 1,
@@ -320,8 +353,12 @@ def plot_unit_tubes_3d(
     J_mag_s = J_mag[::s, ::s, ::s].ravel()
 
     ax.quiver(
-        X_s, Y_s, Z_s,
-        Jx_s, Jy_s, Jz_s,
+        X_s,
+        Y_s,
+        Z_s,
+        Jx_s,
+        Jy_s,
+        Jz_s,
         array=J_mag_s,
         cmap=cmap,
         length=0.5,

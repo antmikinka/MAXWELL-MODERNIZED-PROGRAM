@@ -6,10 +6,10 @@ import numpy as np
 import pytest
 
 from maxwell.verification.cross_validation import (
-    validate_stress_energy_consistency,
+    validate_cgs_si_roundtrip,
     validate_faraday_self_consistency,
     validate_maxwell_equations_consistency,
-    validate_cgs_si_roundtrip,
+    validate_stress_energy_consistency,
 )
 
 
@@ -115,7 +115,9 @@ class TestValidateCgsSiRoundtrip:
 
     def test_tesla_gauss_roundtrip(self):
         results = validate_cgs_si_roundtrip()
-        b_test = [r for r in results if "Gauss" in r.test_name and "Tesla" in r.test_name]
+        b_test = [
+            r for r in results if "Gauss" in r.test_name and "Tesla" in r.test_name
+        ]
         assert len(b_test) == 1
         assert b_test[0].passed
 

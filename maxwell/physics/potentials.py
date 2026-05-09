@@ -18,12 +18,13 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.magnet import Magnet, MagneticPole
 from maxwell.core.moment import MagneticMoment, MagneticParticle
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -57,7 +58,8 @@ class MagneticPotential:
 
 @maxwell_cite(
     385,
-    part=3, chapter="Magnetic Potential",
+    part=3,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Potential from infinitesimal magnetic element",
 )
@@ -105,12 +107,13 @@ def calc_element_potential(
         return 0.0  # Singularity at the element itself
 
     # Ω = (m · r) / r³
-    return float(np.dot(magnetic_moment, r_vec) / (r_mag ** 3))
+    return float(np.dot(magnetic_moment, r_vec) / (r_mag**3))
 
 
 @maxwell_cite(
     385,
-    part=3, chapter="Magnetic Potential",
+    part=3,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Field from infinitesimal magnetic element via potential",
 )
@@ -163,7 +166,8 @@ def calc_element_field(
 
 @maxwell_cite(
     386,
-    part=3, chapter="Magnetic Potential",
+    part=3,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Potential of finite magnet via volume integration",
 )
@@ -239,7 +243,7 @@ def calc_finite_potential(
             return 0.0
 
         m = magnet.magnetic_moment
-        return float(np.dot(m, r_vec) / (r_mag ** 3))
+        return float(np.dot(m, r_vec) / (r_mag**3))
 
     else:
         raise ValueError(f"Unknown method '{method}'. Use 'dipole' or 'poles'.")
@@ -247,7 +251,8 @@ def calc_finite_potential(
 
 @maxwell_cite(
     386,
-    part=3, chapter="Magnetic Potential",
+    part=3,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Field of finite magnet via potential gradient",
 )
@@ -290,7 +295,7 @@ def calc_finite_field(
 
             if r_mag > 0:
                 # H = m * r̂ / r² = m * r / r³
-                H += pole.signed_strength * r_vec / (r_mag ** 3)
+                H += pole.signed_strength * r_vec / (r_mag**3)
 
         return H
 
@@ -308,7 +313,7 @@ def calc_finite_field(
 
         # H = (3(m·r̂)r̂ - m) / r³
         m_dot_r = np.dot(m, r_hat)
-        H = (3 * m_dot_r * r_hat - m) / (r_mag ** 3)
+        H = (3 * m_dot_r * r_hat - m) / (r_mag**3)
 
         return H
 
@@ -318,7 +323,8 @@ def calc_finite_field(
 
 @maxwell_cite(
     386,
-    part=3, chapter="Magnetic Potential",
+    part=3,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Alternative proof of finite magnet potential via integration",
 )
@@ -383,14 +389,16 @@ def finite_potential_by_integration(
         r_mag = np.linalg.norm(r_vec)
 
         if r_mag > 0:
-            omega += float(np.dot(moment_per_element, r_vec) / (r_mag ** 3))
+            omega += float(np.dot(moment_per_element, r_vec) / (r_mag**3))
 
     return omega
 
 
 @maxwell_cite(
-    385, 386,
-    part=3, chapter="Magnetic Potential",
+    385,
+    386,
+    part=3,
+    chapter="Magnetic Potential",
     theory_class="maxwell_original",
     description="Compare two formulations of finite magnet potential",
 )

@@ -36,10 +36,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -84,7 +85,9 @@ class ElectrokineticEnergy:
             raise ValueError(f"Current must be non-negative, got {self.current}")
 
         if self.inductance_matrix is not None:
-            self.inductance_matrix = np.asarray(self.inductance_matrix, dtype=np.float64)
+            self.inductance_matrix = np.asarray(
+                self.inductance_matrix, dtype=np.float64
+            )
             # Check symmetry
             if not np.allclose(self.inductance_matrix, self.inductance_matrix.T):
                 raise ValueError("Inductance matrix must be symmetric")
@@ -107,18 +110,23 @@ class ElectrokineticEnergy:
         """
         if self.inductance is not None and self.current is not None:
             # Single circuit: T = (1/2) L I²
-            return 0.5 * self.inductance * self.current ** 2
+            return 0.5 * self.inductance * self.current**2
 
         if self.inductance_matrix is not None and self.currents is not None:
             # Coupled circuits: T = (1/2) Σ L_ij I_i I_j
-            return 0.5 * np.dot(self.currents, np.dot(self.inductance_matrix, self.currents))
+            return 0.5 * np.dot(
+                self.currents, np.dot(self.inductance_matrix, self.currents)
+            )
 
-        raise ValueError("Either (inductance, current) or (inductance_matrix, currents) must be provided")
+        raise ValueError(
+            "Either (inductance, current) or (inductance_matrix, currents) must be provided"
+        )
 
     @classmethod
     @maxwell_cite(
         635,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Create electrokinetic energy for single circuit",
     )
@@ -149,8 +157,10 @@ class ElectrokineticEnergy:
 
     @classmethod
     @maxwell_cite(
-        636, 637,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        636,
+        637,
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Create electrokinetic energy for coupled circuits",
     )
@@ -184,7 +194,8 @@ class ElectrokineticEnergy:
 
     @maxwell_cite(
         634,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate energy from A and J fields",
     )
@@ -227,7 +238,8 @@ class ElectrokineticEnergy:
 
 @maxwell_cite(
     634,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate electrokinetic energy: T = (1/2) ∫ A·J dV",
 )
@@ -286,7 +298,8 @@ def calc_electrokinetic_energy(
 
 @maxwell_cite(
     635,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate single circuit energy: T = (1/2) L I²",
 )
@@ -331,12 +344,14 @@ def calc_single_circuit_energy(
     if current < 0:
         raise ValueError(f"Current must be non-negative, got {current}")
 
-    return 0.5 * inductance * current ** 2
+    return 0.5 * inductance * current**2
 
 
 @maxwell_cite(
-    636, 637,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    636,
+    637,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate coupled circuits energy: T = (1/2) Σ L_ij I_i I_j",
 )
@@ -396,7 +411,8 @@ def calc_coupled_circuits_energy(
 
 @maxwell_cite(
     638,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate mutual inductance energy: T = M I₁ I₂",
 )
@@ -446,8 +462,10 @@ def calc_mutual_inductance_energy(
 
 
 @maxwell_cite(
-    636, 637,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    636,
+    637,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate two-circuit energy with self and mutual inductance",
 )
@@ -499,12 +517,13 @@ def calc_two_circuit_energy(
         raise ValueError(f"L2 must be positive, got {L2}")
 
     # T = (1/2) L₁ I₁² + (1/2) L₂ I₂² + M I₁ I₂
-    return 0.5 * L1 * I1 ** 2 + 0.5 * L2 * I2 ** 2 + M * I1 * I2
+    return 0.5 * L1 * I1**2 + 0.5 * L2 * I2**2 + M * I1 * I2
 
 
 @maxwell_cite(
     634,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy density integrated over 3D current distribution",
 )
@@ -572,7 +591,8 @@ def integrate_electrokinetic_energy(
 
 @maxwell_cite(
     638,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate coupling coefficient: k = M/√(L₁L₂)",
 )
@@ -632,8 +652,12 @@ def calc_coupling_coefficient(
 
 
 @maxwell_cite(
-    635, 636, 637, 638,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    635,
+    636,
+    637,
+    638,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Complete electrokinetic energy analysis",
 )
@@ -679,39 +703,47 @@ def analyze_electrokinetic_energy(
         total_energy = calc_two_circuit_energy(L1, L2, M, I1, I2)
 
         # Self-energy contributions
-        self_energy_1 = 0.5 * L1 * I1 ** 2
-        self_energy_2 = 0.5 * L2 * I2 ** 2
+        self_energy_1 = 0.5 * L1 * I1**2
+        self_energy_2 = 0.5 * L2 * I2**2
         mutual_energy = M * I1 * I2
 
         # Coupling coefficient
         k = calc_coupling_coefficient(M, L1, L2)
 
-        result.update({
-            "total_energy": total_energy,
-            "self_energy_1": self_energy_1,
-            "self_energy_2": self_energy_2,
-            "mutual_energy": mutual_energy,
-            "coupling_coefficient": k,
-            "mutual_fraction": mutual_energy / total_energy if total_energy > 0 else 0,
-        })
+        result.update(
+            {
+                "total_energy": total_energy,
+                "self_energy_1": self_energy_1,
+                "self_energy_2": self_energy_2,
+                "mutual_energy": mutual_energy,
+                "coupling_coefficient": k,
+                "mutual_fraction": (
+                    mutual_energy / total_energy if total_energy > 0 else 0
+                ),
+            }
+        )
 
     # Multi-circuit analysis
     if inductance_matrix is not None and currents is not None:
         total_energy = calc_coupled_circuits_energy(inductance_matrix, currents)
 
-        result.update({
-            "total_energy": total_energy,
-            "inductance_matrix": inductance_matrix,
-            "currents": currents,
-            "num_circuits": len(currents),
-        })
+        result.update(
+            {
+                "total_energy": total_energy,
+                "inductance_matrix": inductance_matrix,
+                "currents": currents,
+                "num_circuits": len(currents),
+            }
+        )
 
     return result
 
 
 @maxwell_cite(
-    636, 637,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    636,
+    637,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Verify coupled circuits energy formula",
 )
@@ -765,8 +797,8 @@ def verify_coupled_circuits_energy(
     energy_matrix = calc_coupled_circuits_energy(L_matrix, I_array)
 
     # Component energies
-    self_energy_1 = 0.5 * L1 * I1 ** 2
-    self_energy_2 = 0.5 * L2 * I2 ** 2
+    self_energy_1 = 0.5 * L1 * I1**2
+    self_energy_2 = 0.5 * L2 * I2**2
     mutual_energy = M * I1 * I2
 
     # Verify both methods agree

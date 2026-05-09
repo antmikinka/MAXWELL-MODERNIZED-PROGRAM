@@ -19,15 +19,15 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
-from maxwell.jax._compat import jax_tree, safe_div, safe_sqrt, safe_norm
+from maxwell.jax._compat import jax_tree, safe_div, safe_norm, safe_sqrt
 from maxwell.jax._elliptic import (
-    ellipk_jax,
     ellipe_jax,
+    ellipk_jax,
     verify_elliptic_integrals,
 )
 from maxwell.jax._scipy_special import (
-    lpmv_jax,
     legendre_jax,
+    lpmv_jax,
     sph_harm_y_jax,
 )
 from maxwell.jax.core.charge import (
@@ -138,11 +138,13 @@ class TestPointChargeJAX:
 
     def test_batched_field(self):
         """Batched field evaluation."""
-        points = jnp.array([
-            [1.0, 0.0, 0.0],
-            [2.0, 0.0, 0.0],
-            [5.0, 0.0, 0.0],
-        ])
+        points = jnp.array(
+            [
+                [1.0, 0.0, 0.0],
+                [2.0, 0.0, 0.0],
+                [5.0, 0.0, 0.0],
+            ]
+        )
         E = self.charge.field_at_batched(points)
         assert E.shape == (3, 3)
         # E magnitude = 1/r^2: 1.0, 0.25, 0.04
@@ -152,11 +154,13 @@ class TestPointChargeJAX:
 
     def test_batched_potential(self):
         """Batched potential evaluation."""
-        points = jnp.array([
-            [1.0, 0.0, 0.0],
-            [2.0, 0.0, 0.0],
-            [5.0, 0.0, 0.0],
-        ])
+        points = jnp.array(
+            [
+                [1.0, 0.0, 0.0],
+                [2.0, 0.0, 0.0],
+                [5.0, 0.0, 0.0],
+            ]
+        )
         V = self.charge.potential_at_batched(points)
         assert V.shape == (3,)
         expected = jnp.array([1.0, 0.5, 0.2])
@@ -304,7 +308,7 @@ class TestJAXSpecialFunctions:
         """P_2(x) = (3x^2 - 1)/2."""
         x = jnp.array([0.5, 0.0, -0.5, 1.0])
         result = legendre_jax(2, x)
-        expected = (3 * x ** 2 - 1) / 2.0
+        expected = (3 * x**2 - 1) / 2.0
         assert jnp.allclose(result, expected, atol=1e-10)
 
     def test_lpmv_P00(self):
@@ -317,7 +321,7 @@ class TestJAXSpecialFunctions:
         """P_1^1(x) = -sqrt(1-x^2)."""
         x = jnp.array([0.0, 0.5, 1.0])
         result = lpmv_jax(1, 1, x)
-        expected = -jnp.sqrt(1.0 - x ** 2)
+        expected = -jnp.sqrt(1.0 - x**2)
         assert jnp.allclose(result, expected, atol=1e-10)
 
     def test_sph_harm_y_normalization(self):
@@ -387,8 +391,8 @@ try:
         FaradayInductionJAX,
         analyze_faraday_induction_jax,
         emf_wrt_flux_rate,
-        flux_wrt_bfield,
         flux_over_batch,
+        flux_wrt_bfield,
     )
 
     HAS_INDUCTION = True
@@ -420,14 +424,14 @@ try:
     from maxwell.jax.electromagnetism.forces import (
         LorentzForceJAX,
         MaxwellStressTensorJAX,
-        force_on_wire_jax,
-        force_on_charge_jax,
-        torque_on_loop_jax,
+        electromagnetic_pressure_jax,
         force_density_jax,
+        force_on_charge_jax,
+        force_on_wire_jax,
         parallel_current_force_jax,
         stress_tensor_jax,
-        electromagnetic_pressure_jax,
         surface_force_jax,
+        torque_on_loop_jax,
     )
 
     HAS_FORCES = True
@@ -436,13 +440,13 @@ except ImportError:
 
 try:
     from maxwell.jax.electromagnetism.ampere_maxwell import (
-        DisplacementCurrentJAX,
         AmpereMaxwellLawJAX,
-        displacement_current_jax,
-        total_current_jax,
-        curl_H_jax,
-        magnetic_field_from_current_jax,
+        DisplacementCurrentJAX,
         capacitor_paradox_jax,
+        curl_H_jax,
+        displacement_current_jax,
+        magnetic_field_from_current_jax,
+        total_current_jax,
     )
 
     HAS_AMPERE = True
@@ -453,7 +457,9 @@ except ImportError:
 # ── Faraday Induction JAX ─────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_INDUCTION, reason="maxwell.jax.electromagnetism.induction not installed")
+@pytest.mark.skipif(
+    not HAS_INDUCTION, reason="maxwell.jax.electromagnetism.induction not installed"
+)
 class TestFaradayInductionJAX:
     """Test FaradayInductionJAX against Faraday's law (Art. 528-531, 542)."""
 
@@ -613,11 +619,13 @@ class TestFaradayInductionJAX:
 
     def test_vmap_over_b_fields(self):
         """vmap over a batch of B-fields returns per-field flux values."""
-        B_fields = jnp.array([
-            [0.0, 0.0, 100.0],
-            [0.0, 0.0, 500.0],
-            [0.0, 0.0, 1000.0],
-        ])
+        B_fields = jnp.array(
+            [
+                [0.0, 0.0, 100.0],
+                [0.0, 0.0, 500.0],
+                [0.0, 0.0, 1000.0],
+            ]
+        )
         normal = jnp.array([0.0, 0.0, 1.0])
         fluxes = flux_over_batch(self.coil, B_fields, area=10.0, normal=normal)
         assert fluxes.shape == (3,)
@@ -628,7 +636,9 @@ class TestFaradayInductionJAX:
 # ── Maxwell Equations JAX ─────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_EQUATIONS, reason="maxwell.jax.electromagnetism.equations not installed")
+@pytest.mark.skipif(
+    not HAS_EQUATIONS, reason="maxwell.jax.electromagnetism.equations not installed"
+)
 class TestMaxwellEquationsJAX:
     """Test MaxwellEquationsJAX against CGS Gaussian equations (Art. 594-603)."""
 
@@ -639,14 +649,21 @@ class TestMaxwellEquationsJAX:
         """Uniform D field has zero divergence."""
         x = jnp.linspace(-1.0, 1.0, 50)
         dx = float(x[1] - x[0])
-        D = jnp.stack([
-            jnp.full(50, 1000.0),
-            jnp.zeros(50),
-            jnp.zeros(50),
-        ], axis=0)
+        D = jnp.stack(
+            [
+                jnp.full(50, 1000.0),
+                jnp.zeros(50),
+                jnp.zeros(50),
+            ],
+            axis=0,
+        )
         result = self.meq.gauss_law_electric(D, dx=dx)
         div_val = result["divergence"]
-        max_div = float(jnp.max(jnp.abs(div_val))) if div_val.ndim > 0 else float(jnp.abs(div_val))
+        max_div = (
+            float(jnp.max(jnp.abs(div_val)))
+            if div_val.ndim > 0
+            else float(jnp.abs(div_val))
+        )
         assert max_div < 1e-6
 
     def test_gauss_law_electric_with_rho(self):
@@ -655,11 +672,14 @@ class TestMaxwellEquationsJAX:
         dx = float(x[1] - x[0])
         alpha = 500.0
         D0 = 1000.0
-        D = jnp.stack([
-            D0 + alpha * x,
-            jnp.zeros(50),
-            jnp.zeros(50),
-        ], axis=0)
+        D = jnp.stack(
+            [
+                D0 + alpha * x,
+                jnp.zeros(50),
+                jnp.zeros(50),
+            ],
+            axis=0,
+        )
         rho_expected = alpha / (4.0 * jnp.pi)
         result = self.meq.gauss_law_electric(D, dx=dx, rho=float(rho_expected))
         assert result["expected"] is not None
@@ -669,21 +689,27 @@ class TestMaxwellEquationsJAX:
 
     def test_gauss_law_magnetic_uniform(self):
         """Uniform B field has zero divergence (no monopoles)."""
-        B = jnp.stack([
-            jnp.full(50, 500.0),
-            jnp.zeros(50),
-            jnp.zeros(50),
-        ], axis=0)
+        B = jnp.stack(
+            [
+                jnp.full(50, 500.0),
+                jnp.zeros(50),
+                jnp.zeros(50),
+            ],
+            axis=0,
+        )
         result = self.meq.gauss_law_magnetic(B, dx=0.04)
         assert result["max_abs_div"] < 1e-6
 
     def test_gauss_law_magnetic_zero_divergence(self):
         """div B = 0 explicitly for constant B field."""
-        B = jnp.stack([
-            jnp.ones(50) * 100.0,
-            jnp.ones(50) * 200.0,
-            jnp.ones(50) * 300.0,
-        ], axis=0)
+        B = jnp.stack(
+            [
+                jnp.ones(50) * 100.0,
+                jnp.ones(50) * 200.0,
+                jnp.ones(50) * 300.0,
+            ],
+            axis=0,
+        )
         result = self.meq.gauss_law_magnetic(B, dx=0.04)
         assert result["max_abs_div"] < 1e-10
 
@@ -727,11 +753,14 @@ class TestMaxwellEquationsJAX:
 
     def test_verify_no_monopoles(self):
         """verify_no_monopoles passes for a uniform B field."""
-        B = jnp.stack([
-            jnp.full(50, 500.0),
-            jnp.zeros(50),
-            jnp.zeros(50),
-        ], axis=0)
+        B = jnp.stack(
+            [
+                jnp.full(50, 500.0),
+                jnp.zeros(50),
+                jnp.zeros(50),
+            ],
+            axis=0,
+        )
         result = self.meq.verify_no_monopoles(B, dx=0.04, atol=1e-6)
         assert bool(result["passed"]) is True
         assert result["max_abs_div"] < 1e-6
@@ -763,7 +792,9 @@ class TestMaxwellEquationsJAX:
 # ── Spherical Harmonics JAX ───────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_SPH_HARM, reason="maxwell.jax.math.spherical_harmonics not installed")
+@pytest.mark.skipif(
+    not HAS_SPH_HARM, reason="maxwell.jax.math.spherical_harmonics not installed"
+)
 class TestSphericalHarmonicsJAX:
     """Test spherical harmonics and Legendre polynomials (Art. 128-146)."""
 
@@ -783,21 +814,21 @@ class TestSphericalHarmonicsJAX:
         """P_2(x) = (3x^2 - 1) / 2."""
         x = jnp.array([0.5, 0.0, -0.5, 1.0, -1.0])
         result = legendre_batched(2, x)
-        expected = (3.0 * x ** 2 - 1.0) / 2.0
+        expected = (3.0 * x**2 - 1.0) / 2.0
         assert jnp.allclose(result, expected, atol=1e-10)
 
     def test_legendre_p3(self):
         """P_3(x) = (5x^3 - 3x) / 2."""
         x = jnp.array([0.3, 0.7, -0.2, 1.0])
         result = legendre_batched(3, x)
-        expected = (5.0 * x ** 3 - 3.0 * x) / 2.0
+        expected = (5.0 * x**3 - 3.0 * x) / 2.0
         assert jnp.allclose(result, expected, atol=1e-10)
 
     def test_legendre_p4(self):
         """P_4(x) = (35x^4 - 30x^2 + 3) / 8."""
         x = jnp.array([0.25, 0.5, 0.75, 1.0])
         result = legendre_batched(4, x)
-        expected = (35.0 * x ** 4 - 30.0 * x ** 2 + 3.0) / 8.0
+        expected = (35.0 * x**4 - 30.0 * x**2 + 3.0) / 8.0
         assert jnp.allclose(result, expected, atol=1e-10)
 
     def test_addition_theorem_agreement(self):
@@ -828,8 +859,9 @@ class TestSphericalHarmonicsJAX:
         phi2 = jnp.array(1.7)
         P_add, P_direct = addition_theorem_jax(1, theta1, phi1, theta2, phi2)
         # cos(gamma) = cos(t1)*cos(t2) + sin(t1)*sin(t2)*cos(p1-p2)
-        cos_gamma = (jnp.cos(theta1) * jnp.cos(theta2)
-                     + jnp.sin(theta1) * jnp.sin(theta2) * jnp.cos(phi1 - phi2))
+        cos_gamma = jnp.cos(theta1) * jnp.cos(theta2) + jnp.sin(theta1) * jnp.sin(
+            theta2
+        ) * jnp.cos(phi1 - phi2)
         expected = cos_gamma  # P_1 = x
         assert abs(float(P_direct) - float(expected)) < 1e-8
         assert abs(float(P_add) - float(expected)) < 1e-6
@@ -865,9 +897,7 @@ class TestSphericalHarmonicsJAX:
         expansion = SphericalHarmonicExpansionJAX(max_l=8)
         theta_grid = jnp.linspace(0.01, jnp.pi - 0.01, 200)
         expansion.compute_coefficients(lambda th: jnp.cos(th), theta_grid)
-        errors = expansion.convergence_analysis(
-            lambda th: jnp.cos(th), theta_grid
-        )
+        errors = expansion.convergence_analysis(lambda th: jnp.cos(th), theta_grid)
         assert errors.shape == (9,)  # l_max + 1 = 9
         # Errors should generally decrease
         assert errors[-1] < errors[0]
@@ -898,7 +928,9 @@ class TestSphericalHarmonicsJAX:
 # ── Lorentz Force JAX ───────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_FORCES, reason="maxwell.jax.electromagnetism.forces not installed")
+@pytest.mark.skipif(
+    not HAS_FORCES, reason="maxwell.jax.electromagnetism.forces not installed"
+)
 class TestLorentzForceJAX:
     """Test LorentzForceJAX against Maxwell's theory (Arts. 490-492)."""
 
@@ -976,7 +1008,10 @@ class TestLorentzForceJAX:
     def test_parallel_current_force(self):
         """F = 2 * I1 * I2 * L / r for parallel wires."""
         F = parallel_current_force_jax(
-            I1=1.0, I2=1.0, separation=1.0, wire_length=10.0,
+            I1=1.0,
+            I2=1.0,
+            separation=1.0,
+            wire_length=10.0,
         )
         expected = 2.0 * 1.0 * 1.0 * 10.0 / 1.0  # = 20
         assert abs(F - expected) < 1e-10
@@ -984,7 +1019,10 @@ class TestLorentzForceJAX:
     def test_parallel_current_opposite_direction(self):
         """Opposite currents give repulsive (negative) force."""
         F = parallel_current_force_jax(
-            I1=1.0, I2=-1.0, separation=1.0, wire_length=10.0,
+            I1=1.0,
+            I2=-1.0,
+            separation=1.0,
+            wire_length=10.0,
         )
         assert F < 0  # Repulsive
 
@@ -1015,11 +1053,13 @@ class TestLorentzForceJAX:
         def single_force(velocity):
             return force_on_charge_jax(1.0, velocity, jnp.array([0.0, 0.0, 100.0]))
 
-        velocities = jnp.array([
-            [1e6, 0.0, 0.0],
-            [0.0, 1e6, 0.0],
-            [0.0, 0.0, 1e6],
-        ])
+        velocities = jnp.array(
+            [
+                [1e6, 0.0, 0.0],
+                [0.0, 1e6, 0.0],
+                [0.0, 0.0, 1e6],
+            ]
+        )
         forces = jax.vmap(single_force)(velocities)
         assert forces.shape == (3, 3)
         # Third velocity is parallel to B, so force should be zero
@@ -1027,6 +1067,7 @@ class TestLorentzForceJAX:
 
     def test_grad_force_wrt_current(self):
         """dF/dI = L x B."""
+
         def force_mag(current):
             return force_on_wire_jax(
                 current, jnp.array([1.0, 0.0, 0.0]), jnp.array([0.0, 0.0, 100.0])
@@ -1040,7 +1081,9 @@ class TestLorentzForceJAX:
 # ── Maxwell Stress Tensor JAX ─────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_FORCES, reason="maxwell.jax.electromagnetism.forces not installed")
+@pytest.mark.skipif(
+    not HAS_FORCES, reason="maxwell.jax.electromagnetism.forces not installed"
+)
 class TestMaxwellStressTensorJAX:
     """Test MaxwellStressTensorJAX (Arts. 641-646)."""
 
@@ -1186,7 +1229,9 @@ class TestMaxwellStressTensorJAX:
 # ── Ampere-Maxwell JAX ──────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed")
+@pytest.mark.skipif(
+    not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed"
+)
 class TestDisplacementCurrentJAX:
     """Test DisplacementCurrentJAX (Arts. 606-607)."""
 
@@ -1244,7 +1289,9 @@ class TestDisplacementCurrentJAX:
         assert jnp.allclose(J, expected, atol=1e-6)
 
 
-@pytest.mark.skipif(not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed")
+@pytest.mark.skipif(
+    not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed"
+)
 class TestAmpereMaxwellLawJAX:
     """Test AmpereMaxwellLawJAX (Arts. 606-607)."""
 
@@ -1315,7 +1362,9 @@ class TestAmpereMaxwellLawJAX:
         assert curl.shape == (3,)
 
 
-@pytest.mark.skipif(not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed")
+@pytest.mark.skipif(
+    not HAS_AMPERE, reason="maxwell.jax.electromagnetism.ampere_maxwell not installed"
+)
 class TestAmpereStandaloneJAX:
     """Test standalone Ampere-Maxwell JAX functions."""
 
@@ -1393,11 +1442,13 @@ class TestAmpereStandaloneJAX:
 
     def test_vmap_over_dE_dt(self):
         """vmap over multiple dE/dt values."""
-        dE_dt_batch = jnp.array([
-            [1e10, 0.0, 0.0],
-            [0.0, 2e10, 0.0],
-            [0.0, 0.0, 3e10],
-        ])
+        dE_dt_batch = jnp.array(
+            [
+                [1e10, 0.0, 0.0],
+                [0.0, 2e10, 0.0],
+                [0.0, 0.0, 3e10],
+            ]
+        )
         J_d_batch = jax.vmap(displacement_current_jax)(dE_dt_batch)
         assert J_d_batch.shape == (3, 3)
 
@@ -1423,7 +1474,9 @@ except ImportError:
 # ── Electric Field JAX ──────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_EFIELD, reason="maxwell.jax.electromagnetism.field not installed")
+@pytest.mark.skipif(
+    not HAS_EFIELD, reason="maxwell.jax.electromagnetism.field not installed"
+)
 class TestElectricFieldJAX:
     """Test ElectricFieldJAX against Maxwell's theory (Arts. 44-49, 68-76)."""
 
@@ -1578,7 +1631,9 @@ class TestElectricFieldJAX:
         assert abs(g - 1.0) < 1e-15
 
 
-@pytest.mark.skipif(not HAS_EFIELD, reason="maxwell.jax.electromagnetism.field not installed")
+@pytest.mark.skipif(
+    not HAS_EFIELD, reason="maxwell.jax.electromagnetism.field not installed"
+)
 class TestElectricFieldStandaloneJAX:
     """Test standalone electric field functions."""
 
@@ -1636,6 +1691,7 @@ class TestElectricFieldStandaloneJAX:
 
     def test_field_from_potential_jax(self):
         """E = -grad(V) for V = q/r."""
+
         def V(point):
             r = jnp.linalg.norm(point)
             return 1.0 / r
@@ -1648,8 +1704,9 @@ class TestElectricFieldStandaloneJAX:
 
     def test_field_from_potential_jax_quadratic(self):
         """E = -grad(V) for V = x^2 + y^2 + z^2."""
+
         def V(point):
-            return jnp.sum(point ** 2)
+            return jnp.sum(point**2)
 
         point = jnp.array([1.0, 2.0, 3.0])
         E = field_from_potential_jax(V, point)
@@ -1659,6 +1716,7 @@ class TestElectricFieldStandaloneJAX:
 
     def test_electromotive_force_jax_uniform(self):
         """EMF line integral for uniform field."""
+
         def E_func(pos):
             return jnp.array([10.0, 0.0, 0.0])
 
@@ -1670,6 +1728,7 @@ class TestElectricFieldStandaloneJAX:
 
     def test_electromotive_force_jax_zero(self):
         """EMF = 0 for perpendicular path."""
+
         def E_func(pos):
             return jnp.array([0.0, 0.0, 100.0])
 
@@ -1711,7 +1770,7 @@ class TestElectricFieldStandaloneJAX:
             point = jnp.array([px, py, pz])
 
             def V(p):
-                return jnp.sum(p ** 2)
+                return jnp.sum(p**2)
 
             return field_from_potential_jax(V, point)
 
@@ -1738,6 +1797,7 @@ class TestElectricFieldStandaloneJAX:
         def jit_emf(start, end):
             def E_func(pos):
                 return jnp.array([5.0, 0.0, 0.0])
+
             return electromotive_force_jax(E_func, start, end, num_steps=50)
 
         emf = jit_emf(jnp.zeros(3), jnp.array([10.0, 0.0, 0.0]))
@@ -1750,10 +1810,10 @@ try:
     from maxwell.jax.core.magnet import (
         MagneticPoleJAX,
         MagnetJAX,
-        pole_force_jax,
         mutual_action_jax,
-        torque_on_magnet_jax,
         pole_force_gradient,
+        pole_force_jax,
+        torque_on_magnet_jax,
     )
 
     HAS_MAGNET = True
@@ -1769,9 +1829,7 @@ class TestMagneticPoleJAX:
     """Test MagneticPoleJAX against NumPy reference (Art. 371)."""
 
     def setup_method(self):
-        self.pole = MagneticPoleJAX(
-            strength=100.0, position=jnp.array([0.0, 0.0, 0.0])
-        )
+        self.pole = MagneticPoleJAX(strength=100.0, position=jnp.array([0.0, 0.0, 0.0]))
 
     def test_field_at_single_point(self):
         """H = m/r^2 at 5 cm: H = 100/25 = 4 gauss."""
@@ -1812,11 +1870,13 @@ class TestMagneticPoleJAX:
 
     def test_batched_field(self):
         """Batched field evaluation."""
-        points = jnp.array([
-            [1.0, 0.0, 0.0],
-            [2.0, 0.0, 0.0],
-            [5.0, 0.0, 0.0],
-        ])
+        points = jnp.array(
+            [
+                [1.0, 0.0, 0.0],
+                [2.0, 0.0, 0.0],
+                [5.0, 0.0, 0.0],
+            ]
+        )
         H = self.pole.field_at_batched(points)
         assert H.shape == (3, 3)
         expected_magnitudes = jnp.array([100.0, 25.0, 4.0])
@@ -1828,7 +1888,7 @@ class TestMagneticPoleJAX:
         point = jnp.array([3.0, 4.0, 0.0])
         H = self.pole.field_at(point)
         r = jnp.linalg.norm(point)  # 5
-        expected_mag = 100.0 / (r ** 2)  # 4.0
+        expected_mag = 100.0 / (r**2)  # 4.0
         assert abs(jnp.linalg.norm(H) - expected_mag) < 1e-10
         # Direction should be along r_hat
         r_hat = point / r
@@ -1846,11 +1906,9 @@ class TestMagneticPoleJAX:
         # NumPy field: H = m * r / r^3
         r_vec = point - np_pole.position
         r_mag = np.linalg.norm(r_vec)
-        H_np = np_pole.signed_strength * r_vec / (r_mag ** 3)
+        H_np = np_pole.signed_strength * r_vec / (r_mag**3)
 
-        jax_pole = MagneticPoleJAX(
-            strength=100.0, position=jnp.array([0.0, 0.0, 0.0])
-        )
+        jax_pole = MagneticPoleJAX(strength=100.0, position=jnp.array([0.0, 0.0, 0.0]))
         H_jax = jax_pole.field_at(jnp.array(point))
 
         assert jnp.allclose(H_jax, H_np, atol=1e-8)
@@ -1984,11 +2042,13 @@ class TestMagnetJAX:
 
     def test_batched_field(self):
         """Batched field evaluation."""
-        points = jnp.array([
-            [0.0, 0.0, 3.0],
-            [0.0, 0.0, 5.0],
-            [0.0, 0.0, 10.0],
-        ])
+        points = jnp.array(
+            [
+                [0.0, 0.0, 3.0],
+                [0.0, 0.0, 5.0],
+                [0.0, 0.0, 10.0],
+            ]
+        )
         H = self.magnet.field_at_batched(points)
         assert H.shape == (3, 3)
 
@@ -2172,9 +2232,7 @@ class TestMagnetPytreeRegistration:
 
     def test_pole_pytree_flatten(self):
         """MagneticPoleJAX can be flattened and unflattened."""
-        pole = MagneticPoleJAX(
-            strength=100.0, position=jnp.array([0.0, 0.0, 0.0])
-        )
+        pole = MagneticPoleJAX(strength=100.0, position=jnp.array([0.0, 0.0, 0.0]))
         leaves, treedef = jax.tree_util.tree_flatten(pole)
         assert len(leaves) == 2  # strength and position
         restored = jax.tree_util.tree_unflatten(treedef, leaves)
@@ -2215,15 +2273,19 @@ class TestMagnetPytreeRegistration:
 
         def single_field(n_pos):
             m = MagnetJAX(
-                pole_strength=50.0, north_position=n_pos, south_position=jnp.array([0.0, 0.0, -1.0])
+                pole_strength=50.0,
+                north_position=n_pos,
+                south_position=jnp.array([0.0, 0.0, -1.0]),
             )
             return m.field_at(jnp.array([0.0, 0.0, 3.0]))
 
-        n_positions = jnp.array([
-            [0.0, 0.0, 1.0],
-            [0.0, 0.0, 2.0],
-            [0.0, 0.0, 3.0],
-        ])
+        n_positions = jnp.array(
+            [
+                [0.0, 0.0, 1.0],
+                [0.0, 0.0, 2.0],
+                [0.0, 0.0, 3.0],
+            ]
+        )
         result = jax.vmap(single_field)(n_positions)
         assert result.shape == (3, 3)
 
@@ -2401,15 +2463,17 @@ class TestMagnetStandaloneJAX:
 
     def test_grad_pole_force_wrt_distance(self):
         """dF/dr = -2*m1*m2/r^3."""
+
         def F(r):
             return pole_force_jax(10.0, 10.0, r)
 
         g = jax.grad(F)(5.0)
-        expected = -2.0 * 10.0 * 10.0 / (5.0 ** 3)  # -200/125 = -1.6
+        expected = -2.0 * 10.0 * 10.0 / (5.0**3)  # -200/125 = -1.6
         assert abs(g - expected) < 1e-10
 
     def test_grad_torque_wrt_moment(self):
         """d|tau|/dm for torque."""
+
         def torque_mag(mx):
             moment = jnp.array([mx, 0.0, 0.0])
             H = jnp.array([0.0, 100.0, 0.0])
@@ -2454,39 +2518,38 @@ class TestMagnetStandaloneJAX:
             r_s = point - np_magnet.south_pole.position
             r_n_mag = np.linalg.norm(r_n)
             r_s_mag = np.linalg.norm(r_s)
-            H_np = (
-                np_magnet.north_pole.signed_strength * r_n / (r_n_mag ** 3)
-                + np_magnet.south_pole.signed_strength * r_s / (r_s_mag ** 3)
-            )
+            H_np = np_magnet.north_pole.signed_strength * r_n / (
+                r_n_mag**3
+            ) + np_magnet.south_pole.signed_strength * r_s / (r_s_mag**3)
 
             H_jax = jax_magnet.field_at(jnp.array(point))
-            assert jnp.allclose(H_jax, H_np, atol=1e-8), (
-                f"Field mismatch at {point}: JAX={H_jax}, NumPy={H_np}"
-            )
+            assert jnp.allclose(
+                H_jax, H_np, atol=1e-8
+            ), f"Field mismatch at {point}: JAX={H_jax}, NumPy={H_np}"
 
 
 # ── Imports for ElectrostaticEnergyJAX ────────────────────────────────────
 
 try:
     from maxwell.jax.electromagnetism.energy import (
-        ElectrostaticEnergyJAX,
         CapacitorEnergyJAX,
+        ElectrostaticEnergyJAX,
+        analyze_electrostatic_energy_jax,
+        calc_capacitor_energy_jax,
         calc_electrostatic_energy_density_jax,
         calc_energy_density_from_ED_dot_jax,
-        calc_capacitor_energy_jax,
         calc_total_electrostatic_energy_jax,
         verify_electrostatic_energy_density_jax,
-        analyze_electrostatic_energy_jax,
     )
     from maxwell.jax.electromagnetism.magnetic_energy import (
-        MagneticEnergyJAX,
         InductorEnergyJAX,
-        calc_magnetic_energy_density_jax,
+        MagneticEnergyJAX,
+        analyze_magnetic_energy_jax,
         calc_energy_density_from_BH_dot_jax,
         calc_inductor_energy_jax,
+        calc_magnetic_energy_density_jax,
         calc_total_magnetic_energy_jax,
         verify_magnetic_energy_density_jax,
-        analyze_magnetic_energy_jax,
     )
 
     HAS_ENERGY = True
@@ -2508,6 +2571,7 @@ try:
         calc_two_circuit_energy_jax,
         verify_coupled_circuits_energy_jax,
     )
+
     HAS_ELECTROKINETIC = True
 except ImportError:
     HAS_ELECTROKINETIC = False
@@ -2516,7 +2580,9 @@ except ImportError:
 # ── ElectrostaticEnergyJAX ────────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestElectrostaticEnergyJAX:
     """Test ElectrostaticEnergyJAX against NumPy reference (Arts. 630-631)."""
 
@@ -2545,7 +2611,7 @@ class TestElectrostaticEnergyJAX:
     def test_energy_density_vacuum(self):
         """u = (1/8*pi) * E^2 for E=1000 statV/cm."""
         u = self.energy.energy_density
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_dielectric(self):
@@ -2555,7 +2621,7 @@ class TestElectrostaticEnergyJAX:
             permittivity=2.5,
         )
         u = energy.energy_density
-        expected = 2.5 * 500.0 ** 2 / (8.0 * jnp.pi)
+        expected = 2.5 * 500.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_zero_field(self):
@@ -2573,7 +2639,9 @@ class TestElectrostaticEnergyJAX:
         e_y = ElectrostaticEnergyJAX(E_field=jnp.array([0.0, E_mag, 0.0]))
         e_z = ElectrostaticEnergyJAX(E_field=jnp.array([0.0, 0.0, E_mag]))
         e_diag = ElectrostaticEnergyJAX(
-            E_field=jnp.array([E_mag / jnp.sqrt(3), E_mag / jnp.sqrt(3), E_mag / jnp.sqrt(3)])
+            E_field=jnp.array(
+                [E_mag / jnp.sqrt(3), E_mag / jnp.sqrt(3), E_mag / jnp.sqrt(3)]
+            )
         )
         # Diagonal: E^2 = E_mag^2 * (1/3 + 1/3 + 1/3) = E_mag^2
         assert abs(e_x.energy_density - e_diag.energy_density) < 1e-6
@@ -2597,7 +2665,7 @@ class TestElectrostaticEnergyJAX:
         """energy_density_at uses custom E field."""
         E_override = jnp.array([500.0, 0.0, 0.0])
         u = self.energy.energy_density_at(E_override)
-        expected = 500.0 ** 2 / (8.0 * jnp.pi)
+        expected = 500.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_from_E_and_D_linear(self):
@@ -2629,7 +2697,9 @@ class TestElectrostaticEnergyJAX:
 # ── CapacitorEnergyJAX ────────────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestCapacitorEnergyJAX:
     """Test CapacitorEnergyJAX (Art. 631)."""
 
@@ -2639,7 +2709,7 @@ class TestCapacitorEnergyJAX:
     def test_from_voltage_basic(self):
         """U = (1/2) * C * V^2 for C=10, V=100: U = 50000."""
         U = self.cap.from_voltage(100.0)
-        expected = 0.5 * 10.0 * 100.0 ** 2  # = 50000
+        expected = 0.5 * 10.0 * 100.0**2  # = 50000
         assert abs(U - expected) < 1e-10
 
     def test_from_voltage_zero(self):
@@ -2650,7 +2720,7 @@ class TestCapacitorEnergyJAX:
     def test_from_charge_basic(self):
         """U = Q^2/(2*C) for Q=1000, C=10: U = 50000."""
         U = self.cap.from_charge(1000.0)
-        expected = 1000.0 ** 2 / (2.0 * 10.0)  # = 50000
+        expected = 1000.0**2 / (2.0 * 10.0)  # = 50000
         assert abs(U - expected) < 1e-10
 
     def test_from_charge_zero(self):
@@ -2705,7 +2775,9 @@ class TestCapacitorEnergyJAX:
 # ── Standalone Energy Functions ───────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestStandaloneEnergyFunctions:
     """Test standalone electrostatic energy JAX functions."""
 
@@ -2713,14 +2785,14 @@ class TestStandaloneEnergyFunctions:
         """u = (1/8*pi) * E^2 for vacuum."""
         E = jnp.array([1000.0, 0.0, 0.0])
         u = calc_electrostatic_energy_density_jax(E)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_dielectric(self):
         """u = (1/8*pi) * eps * E^2 for eps=2.5."""
         E = jnp.array([500.0, 0.0, 0.0])
         u = calc_electrostatic_energy_density_jax(E, permittivity=2.5)
-        expected = 2.5 * 500.0 ** 2 / (8.0 * jnp.pi)
+        expected = 2.5 * 500.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_zero_field(self):
@@ -2765,13 +2837,13 @@ class TestStandaloneEnergyFunctions:
     def test_capacitor_energy_CV2(self):
         """U = (1/2)*C*V^2."""
         U = calc_capacitor_energy_jax(capacitance=10.0, voltage=100.0)
-        expected = 0.5 * 10.0 * 100.0 ** 2
+        expected = 0.5 * 10.0 * 100.0**2
         assert abs(U - expected) < 1e-10
 
     def test_capacitor_energy_Q2C(self):
         """U = Q^2/(2*C)."""
         U = calc_capacitor_energy_jax(capacitance=10.0, charge=1000.0)
-        expected = 1000.0 ** 2 / (2.0 * 10.0)
+        expected = 1000.0**2 / (2.0 * 10.0)
         assert abs(U - expected) < 1e-10
 
     def test_capacitor_energy_no_params(self):
@@ -2783,7 +2855,7 @@ class TestStandaloneEnergyFunctions:
         """U = u * V for uniform field."""
         E = jnp.array([1000.0, 0.0, 0.0])
         U = calc_total_electrostatic_energy_jax(E, volume=1.0)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi) * 1.0
+        expected = 1000.0**2 / (8.0 * jnp.pi) * 1.0
         assert abs(U - expected) < 1e-6
 
     def test_total_energy_various_volumes(self):
@@ -2797,7 +2869,9 @@ class TestStandaloneEnergyFunctions:
 # ── Energy: Verification and Analysis ─────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestEnergyVerification:
     """Test verification and analysis functions."""
 
@@ -2813,8 +2887,10 @@ class TestEnergyVerification:
         """Verification matches expected (1/8*pi)*eps*E^2."""
         E_mag = 1000.0
         eps = 1.0
-        result = verify_electrostatic_energy_density_jax(E_magnitude=E_mag, permittivity=eps)
-        expected = eps * E_mag ** 2 / (8.0 * jnp.pi)
+        result = verify_electrostatic_energy_density_jax(
+            E_magnitude=E_mag, permittivity=eps
+        )
+        expected = eps * E_mag**2 / (8.0 * jnp.pi)
         assert abs(result["expected"] - expected) < 1e-10
 
     def test_verify_dielectric(self):
@@ -2829,8 +2905,12 @@ class TestEnergyVerification:
         E = jnp.array([1000.0, 0.0, 0.0])
         result = analyze_electrostatic_energy_jax(E)
         expected_keys = {
-            "E_field", "E_magnitude", "E_direction",
-            "D_field", "permittivity", "energy_density",
+            "E_field",
+            "E_magnitude",
+            "E_direction",
+            "D_field",
+            "permittivity",
+            "energy_density",
         }
         assert expected_keys.issubset(set(result.keys()))
 
@@ -2854,12 +2934,15 @@ class TestEnergyVerification:
 # ── Energy: Auto-Diff ─────────────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestEnergyAutoDiff:
     """Test JAX auto-differentiation on energy formulas."""
 
     def test_grad_density_wrt_E(self):
         """dU/dE_x = (eps/(4*pi)) * E_x for energy density."""
+
         def density(Ex):
             E = jnp.array([Ex, 0.0, 0.0])
             return calc_electrostatic_energy_density_jax(E)
@@ -2870,17 +2953,19 @@ class TestEnergyAutoDiff:
 
     def test_grad_density_wrt_permittivity(self):
         """dU/d(eps) = E^2/(8*pi)."""
+
         def density_eps(eps):
             return calc_electrostatic_energy_density_jax(
                 jnp.array([1000.0, 0.0, 0.0]), permittivity=eps
             )
 
         g = jax.grad(density_eps)(1.0)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(g - expected) < 1e-6
 
     def test_grad_capacitor_energy_wrt_V(self):
         """dU/dV = C*V for U = (1/2)*C*V^2."""
+
         def energy_V(V):
             return calc_capacitor_energy_jax(capacitance=10.0, voltage=V)
 
@@ -2890,22 +2975,24 @@ class TestEnergyAutoDiff:
 
     def test_grad_capacitor_energy_wrt_C(self):
         """dU/dC = (1/2)*V^2."""
+
         def energy_C(C):
             return calc_capacitor_energy_jax(capacitance=C, voltage=100.0)
 
         g = jax.grad(energy_C)(10.0)
-        expected = 0.5 * 100.0 ** 2  # = 5000
+        expected = 0.5 * 100.0**2  # = 5000
         assert abs(g - expected) < 1e-10
 
     def test_grad_total_energy_wrt_volume(self):
         """dU/dV = u (energy density)."""
+
         def total_energy_V(vol):
             return calc_total_electrostatic_energy_jax(
                 jnp.array([1000.0, 0.0, 0.0]), vol
             )
 
         g = jax.grad(total_energy_V)(1.0)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(g - expected) < 1e-6
 
     def test_grad_ED_dot_wrt_E(self):
@@ -2924,7 +3011,9 @@ class TestEnergyAutoDiff:
 # ── Energy: JIT ───────────────────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestEnergyJIT:
     """Test JIT compilation compatibility."""
 
@@ -2956,7 +3045,7 @@ class TestEnergyJIT:
             return calc_capacitor_energy_jax(C, voltage=V)
 
         U = jit_cap(10.0, 100.0)
-        expected = 0.5 * 10.0 * 100.0 ** 2
+        expected = 0.5 * 10.0 * 100.0**2
         assert abs(U - expected) < 1e-10
 
     def test_jit_electrostatic_energy_class(self):
@@ -2968,7 +3057,7 @@ class TestEnergyJIT:
             return e.energy_density
 
         u = jit_class_density(jnp.array([500.0, 0.0, 0.0]), 2.0)
-        expected = 2.0 * 500.0 ** 2 / (8.0 * jnp.pi)
+        expected = 2.0 * 500.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_jit_capacitor_class(self):
@@ -2980,24 +3069,28 @@ class TestEnergyJIT:
             return cap.from_voltage(V)
 
         U = jit_cap_class(10.0, 100.0)
-        expected = 0.5 * 10.0 * 100.0 ** 2
+        expected = 0.5 * 10.0 * 100.0**2
         assert abs(U - expected) < 1e-10
 
 
 # ── Energy: vmap ──────────────────────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestEnergyVmap:
     """Test batched evaluation via vmap."""
 
     def test_vmap_energy_density(self):
         """vmap over batch of E fields."""
-        E_batch = jnp.array([
-            [100.0, 0.0, 0.0],
-            [200.0, 0.0, 0.0],
-            [500.0, 0.0, 0.0],
-        ])
+        E_batch = jnp.array(
+            [
+                [100.0, 0.0, 0.0],
+                [200.0, 0.0, 0.0],
+                [500.0, 0.0, 0.0],
+            ]
+        )
         densities = jax.vmap(calc_electrostatic_energy_density_jax)(E_batch)
         assert densities.shape == (3,)
         # Densities should be monotonically increasing (E^2 relationship)
@@ -3005,30 +3098,40 @@ class TestEnergyVmap:
 
     def test_vmap_energy_density_dielectric(self):
         """vmap with fixed permittivity over batch of E fields."""
-        E_batch = jnp.array([
-            [100.0, 0.0, 0.0],
-            [200.0, 0.0, 0.0],
-        ])
-        densities = jax.vmap(lambda E: calc_electrostatic_energy_density_jax(E, 2.5))(E_batch)
+        E_batch = jnp.array(
+            [
+                [100.0, 0.0, 0.0],
+                [200.0, 0.0, 0.0],
+            ]
+        )
+        densities = jax.vmap(lambda E: calc_electrostatic_energy_density_jax(E, 2.5))(
+            E_batch
+        )
         assert densities.shape == (2,)
 
     def test_vmap_capacitor_energy(self):
         """vmap over batch of voltages."""
         voltages = jnp.array([10.0, 50.0, 100.0, 200.0])
-        energies = jax.vmap(lambda V: calc_capacitor_energy_jax(10.0, voltage=V))(voltages)
+        energies = jax.vmap(lambda V: calc_capacitor_energy_jax(10.0, voltage=V))(
+            voltages
+        )
         assert energies.shape == (4,)
         # U = 0.5*10*V^2: 500, 12500, 50000, 200000
-        expected = 0.5 * 10.0 * voltages ** 2
+        expected = 0.5 * 10.0 * voltages**2
         assert jnp.allclose(energies, expected, atol=1e-10)
 
     def test_vmap_total_energy(self):
         """vmap over batch of E fields for total energy."""
-        E_batch = jnp.array([
-            [100.0, 0.0, 0.0],
-            [200.0, 0.0, 0.0],
-            [300.0, 0.0, 0.0],
-        ])
-        energies = jax.vmap(lambda E: calc_total_electrostatic_energy_jax(E, volume=1.0))(E_batch)
+        E_batch = jnp.array(
+            [
+                [100.0, 0.0, 0.0],
+                [200.0, 0.0, 0.0],
+                [300.0, 0.0, 0.0],
+            ]
+        )
+        energies = jax.vmap(
+            lambda E: calc_total_electrostatic_energy_jax(E, volume=1.0)
+        )(E_batch)
         assert energies.shape == (3,)
         assert energies[0] < energies[1] < energies[2]
 
@@ -3036,7 +3139,9 @@ class TestEnergyVmap:
 # ── Energy: NumPy Cross-Validation ────────────────────────────────────────
 
 
-@pytest.mark.skipif(not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed")
+@pytest.mark.skipif(
+    not HAS_ENERGY, reason="maxwell.jax.electromagnetism.energy not installed"
+)
 class TestEnergyNumpyCrossValidation:
     """Test JAX results against NumPy reference implementation."""
 
@@ -3113,7 +3218,10 @@ class TestEnergyNumpyCrossValidation:
 # -- MagneticEnergyJAX --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestMagneticEnergyJAX:
     """Test MagneticEnergyJAX against NumPy reference (Arts. 632-633)."""
 
@@ -3142,7 +3250,7 @@ class TestMagneticEnergyJAX:
     def test_energy_density_vacuum(self):
         """u = (1/8*pi) * H^2 for H=1000 oersted."""
         u = self.energy.energy_density
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_magnetic_material(self):
@@ -3152,7 +3260,7 @@ class TestMagneticEnergyJAX:
             permeability=5000.0,
         )
         u = energy.energy_density
-        expected = 5000.0 * 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 5000.0 * 1000.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_zero_field(self):
@@ -3170,7 +3278,9 @@ class TestMagneticEnergyJAX:
         h_y = MagneticEnergyJAX(H_field=jnp.array([0.0, H_mag, 0.0]))
         h_z = MagneticEnergyJAX(H_field=jnp.array([0.0, 0.0, H_mag]))
         h_diag = MagneticEnergyJAX(
-            H_field=jnp.array([H_mag / jnp.sqrt(3), H_mag / jnp.sqrt(3), H_mag / jnp.sqrt(3)])
+            H_field=jnp.array(
+                [H_mag / jnp.sqrt(3), H_mag / jnp.sqrt(3), H_mag / jnp.sqrt(3)]
+            )
         )
         assert abs(h_x.energy_density - h_diag.energy_density) < 1e-6
         assert abs(h_x.energy_density - h_y.energy_density) < 1e-6
@@ -3193,7 +3303,7 @@ class TestMagneticEnergyJAX:
         """energy_density_at uses custom H field."""
         H_override = jnp.array([500.0, 0.0, 0.0])
         u = self.energy.energy_density_at(H_override)
-        expected = 500.0 ** 2 / (8.0 * jnp.pi)
+        expected = 500.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_from_B_and_H_linear(self):
@@ -3225,7 +3335,10 @@ class TestMagneticEnergyJAX:
 # -- InductorEnergyJAX --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestInductorEnergyJAX:
     """Test InductorEnergyJAX (Art. 633)."""
 
@@ -3235,7 +3348,7 @@ class TestInductorEnergyJAX:
     def test_from_current_basic(self):
         """U = (1/2) * L * I^2 for L=10, I=5: U = 125."""
         U = self.ind.from_current(5.0)
-        expected = 0.5 * 10.0 * 5.0 ** 2  # = 125
+        expected = 0.5 * 10.0 * 5.0**2  # = 125
         assert abs(U - expected) < 1e-10
 
     def test_from_current_zero(self):
@@ -3246,7 +3359,7 @@ class TestInductorEnergyJAX:
     def test_from_flux_basic(self):
         """U = Phi^2/(2*L) for Phi=50, L=10: U = 125."""
         U = self.ind.from_flux(50.0)
-        expected = 50.0 ** 2 / (2.0 * 10.0)  # = 125
+        expected = 50.0**2 / (2.0 * 10.0)  # = 125
         assert abs(U - expected) < 1e-10
 
     def test_from_flux_zero(self):
@@ -3301,7 +3414,10 @@ class TestInductorEnergyJAX:
 # -- Magnetic: Standalone Functions --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestMagneticStandaloneFunctions:
     """Test standalone magnetic energy JAX functions."""
 
@@ -3309,14 +3425,14 @@ class TestMagneticStandaloneFunctions:
         """u = (1/8*pi) * H^2 for vacuum."""
         H = jnp.array([1000.0, 0.0, 0.0])
         u = calc_magnetic_energy_density_jax(H)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_magnetic_material(self):
         """u = (1/8*pi) * mu * H^2 for mu=5000."""
         H = jnp.array([1000.0, 0.0, 0.0])
         u = calc_magnetic_energy_density_jax(H, permeability=5000.0)
-        expected = 5000.0 * 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 5000.0 * 1000.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_energy_density_zero_field(self):
@@ -3361,13 +3477,13 @@ class TestMagneticStandaloneFunctions:
     def test_inductor_energy_LI2(self):
         """U = (1/2)*L*I^2."""
         U = calc_inductor_energy_jax(inductance=10.0, current=5.0)
-        expected = 0.5 * 10.0 * 5.0 ** 2
+        expected = 0.5 * 10.0 * 5.0**2
         assert abs(U - expected) < 1e-10
 
     def test_inductor_energy_Phi2L(self):
         """U = Phi^2/(2*L)."""
         U = calc_inductor_energy_jax(inductance=10.0, flux=50.0)
-        expected = 50.0 ** 2 / (2.0 * 10.0)
+        expected = 50.0**2 / (2.0 * 10.0)
         assert abs(U - expected) < 1e-10
 
     def test_inductor_energy_no_params(self):
@@ -3379,7 +3495,7 @@ class TestMagneticStandaloneFunctions:
         """U = u * V for uniform field."""
         H = jnp.array([1000.0, 0.0, 0.0])
         U = calc_total_magnetic_energy_jax(H, volume=1.0)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi) * 1.0
+        expected = 1000.0**2 / (8.0 * jnp.pi) * 1.0
         assert abs(U - expected) < 1e-6
 
     def test_total_magnetic_energy_various_volumes(self):
@@ -3393,7 +3509,10 @@ class TestMagneticStandaloneFunctions:
 # -- Magnetic: Verification and Analysis --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestMagneticVerification:
     """Test verification and analysis functions for magnetic energy."""
 
@@ -3410,7 +3529,7 @@ class TestMagneticVerification:
         H_mag = 1000.0
         mu = 1.0
         result = verify_magnetic_energy_density_jax(H_magnitude=H_mag, permeability=mu)
-        expected = mu * H_mag ** 2 / (8.0 * jnp.pi)
+        expected = mu * H_mag**2 / (8.0 * jnp.pi)
         assert abs(result["expected"] - expected) < 1e-10
 
     def test_verify_magnetic_material(self):
@@ -3425,8 +3544,12 @@ class TestMagneticVerification:
         H = jnp.array([1000.0, 0.0, 0.0])
         result = analyze_magnetic_energy_jax(H)
         expected_keys = {
-            "H_field", "H_magnitude", "H_direction",
-            "B_field", "permeability", "energy_density",
+            "H_field",
+            "H_magnitude",
+            "H_direction",
+            "B_field",
+            "permeability",
+            "energy_density",
         }
         assert expected_keys.issubset(set(result.keys()))
 
@@ -3450,12 +3573,16 @@ class TestMagneticVerification:
 # -- Magnetic: Auto-Diff --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestMagneticAutoDiff:
     """Test JAX auto-differentiation on magnetic energy formulas."""
 
     def test_grad_density_wrt_H(self):
         """dU/dH_x = (mu/(4*pi)) * H_x for energy density."""
+
         def density(Hx):
             H = jnp.array([Hx, 0.0, 0.0])
             return calc_magnetic_energy_density_jax(H)
@@ -3466,17 +3593,19 @@ class TestMagneticAutoDiff:
 
     def test_grad_density_wrt_permeability(self):
         """dU/d(mu) = H^2/(8*pi)."""
+
         def density_mu(mu):
             return calc_magnetic_energy_density_jax(
                 jnp.array([1000.0, 0.0, 0.0]), permeability=mu
             )
 
         g = jax.grad(density_mu)(1.0)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(g - expected) < 1e-6
 
     def test_grad_inductor_energy_wrt_I(self):
         """dU/dI = L*I for U = (1/2)*L*I^2."""
+
         def energy_I(I):
             return calc_inductor_energy_jax(inductance=10.0, current=I)
 
@@ -3486,15 +3615,17 @@ class TestMagneticAutoDiff:
 
     def test_grad_inductor_energy_wrt_L(self):
         """dU/dL = (1/2)*I^2."""
+
         def energy_L(L):
             return calc_inductor_energy_jax(inductance=L, current=5.0)
 
         g = jax.grad(energy_L)(10.0)
-        expected = 0.5 * 5.0 ** 2  # = 12.5
+        expected = 0.5 * 5.0**2  # = 12.5
         assert abs(g - expected) < 1e-10
 
     def test_grad_inductor_energy_wrt_flux(self):
         """dU/dPhi = Phi/L for U = Phi^2/(2*L)."""
+
         def energy_phi(Phi):
             return calc_inductor_energy_jax(inductance=10.0, flux=Phi)
 
@@ -3504,13 +3635,12 @@ class TestMagneticAutoDiff:
 
     def test_grad_total_energy_wrt_volume(self):
         """dU/dV = u (energy density)."""
+
         def total_energy_V(vol):
-            return calc_total_magnetic_energy_jax(
-                jnp.array([1000.0, 0.0, 0.0]), vol
-            )
+            return calc_total_magnetic_energy_jax(jnp.array([1000.0, 0.0, 0.0]), vol)
 
         g = jax.grad(total_energy_V)(1.0)
-        expected = 1000.0 ** 2 / (8.0 * jnp.pi)
+        expected = 1000.0**2 / (8.0 * jnp.pi)
         assert abs(g - expected) < 1e-6
 
     def test_grad_BH_dot_wrt_H(self):
@@ -3529,7 +3659,10 @@ class TestMagneticAutoDiff:
 # -- Magnetic: JIT --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestMagneticJIT:
     """Test JIT compilation compatibility for magnetic energy."""
 
@@ -3561,7 +3694,7 @@ class TestMagneticJIT:
             return calc_inductor_energy_jax(L, current=I)
 
         U = jit_ind(10.0, 5.0)
-        expected = 0.5 * 10.0 * 5.0 ** 2
+        expected = 0.5 * 10.0 * 5.0**2
         assert abs(U - expected) < 1e-10
 
     def test_jit_magnetic_energy_class(self):
@@ -3573,7 +3706,7 @@ class TestMagneticJIT:
             return e.energy_density
 
         u = jit_class_density(jnp.array([500.0, 0.0, 0.0]), 5000.0)
-        expected = 5000.0 * 500.0 ** 2 / (8.0 * jnp.pi)
+        expected = 5000.0 * 500.0**2 / (8.0 * jnp.pi)
         assert abs(u - expected) < 1e-6
 
     def test_jit_inductor_class(self):
@@ -3585,24 +3718,29 @@ class TestMagneticJIT:
             return ind.from_current(I)
 
         U = jit_ind_class(10.0, 5.0)
-        expected = 0.5 * 10.0 * 5.0 ** 2
+        expected = 0.5 * 10.0 * 5.0**2
         assert abs(U - expected) < 1e-10
 
 
 # -- Magnetic: vmap --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestMagneticVmap:
     """Test batched evaluation via vmap for magnetic energy."""
 
     def test_vmap_energy_density(self):
         """vmap over batch of H fields."""
-        H_batch = jnp.array([
-            [100.0, 0.0, 0.0],
-            [200.0, 0.0, 0.0],
-            [500.0, 0.0, 0.0],
-        ])
+        H_batch = jnp.array(
+            [
+                [100.0, 0.0, 0.0],
+                [200.0, 0.0, 0.0],
+                [500.0, 0.0, 0.0],
+            ]
+        )
         densities = jax.vmap(calc_magnetic_energy_density_jax)(H_batch)
         assert densities.shape == (3,)
         # Densities should be monotonically increasing (H^2 relationship)
@@ -3610,30 +3748,40 @@ class TestMagneticVmap:
 
     def test_vmap_energy_density_magnetic_material(self):
         """vmap with fixed permeability over batch of H fields."""
-        H_batch = jnp.array([
-            [100.0, 0.0, 0.0],
-            [200.0, 0.0, 0.0],
-        ])
-        densities = jax.vmap(lambda H: calc_magnetic_energy_density_jax(H, 5000.0))(H_batch)
+        H_batch = jnp.array(
+            [
+                [100.0, 0.0, 0.0],
+                [200.0, 0.0, 0.0],
+            ]
+        )
+        densities = jax.vmap(lambda H: calc_magnetic_energy_density_jax(H, 5000.0))(
+            H_batch
+        )
         assert densities.shape == (2,)
 
     def test_vmap_inductor_energy(self):
         """vmap over batch of currents."""
         currents = jnp.array([1.0, 5.0, 10.0, 20.0])
-        energies = jax.vmap(lambda I: calc_inductor_energy_jax(10.0, current=I))(currents)
+        energies = jax.vmap(lambda I: calc_inductor_energy_jax(10.0, current=I))(
+            currents
+        )
         assert energies.shape == (4,)
         # U = 0.5*10*I^2: 5, 125, 500, 2000
-        expected = 0.5 * 10.0 * currents ** 2
+        expected = 0.5 * 10.0 * currents**2
         assert jnp.allclose(energies, expected, atol=1e-10)
 
     def test_vmap_total_energy(self):
         """vmap over batch of H fields for total energy."""
-        H_batch = jnp.array([
-            [100.0, 0.0, 0.0],
-            [200.0, 0.0, 0.0],
-            [300.0, 0.0, 0.0],
-        ])
-        energies = jax.vmap(lambda H: calc_total_magnetic_energy_jax(H, volume=1.0))(H_batch)
+        H_batch = jnp.array(
+            [
+                [100.0, 0.0, 0.0],
+                [200.0, 0.0, 0.0],
+                [300.0, 0.0, 0.0],
+            ]
+        )
+        energies = jax.vmap(lambda H: calc_total_magnetic_energy_jax(H, volume=1.0))(
+            H_batch
+        )
         assert energies.shape == (3,)
         assert energies[0] < energies[1] < energies[2]
 
@@ -3641,7 +3789,10 @@ class TestMagneticVmap:
 # -- Magnetic: NumPy Cross-Validation --
 
 
-@pytest.mark.skipif(not HAS_MAGNETIC_ENERGY, reason="maxwell.jax.electromagnetism.magnetic_energy not installed")
+@pytest.mark.skipif(
+    not HAS_MAGNETIC_ENERGY,
+    reason="maxwell.jax.electromagnetism.magnetic_energy not installed",
+)
 class TestMagneticNumpyCrossValidation:
     """Test JAX magnetic energy results against NumPy reference implementation."""
 
@@ -3708,13 +3859,13 @@ class TestMagneticNumpyCrossValidation:
 
 
 from maxwell.jax.core.vector_potential import (
-    VectorPotentialJAX,
-    curl_jax,
-    curl_autodiff_jax,
-    dipole_vector_potential_jax,
     B_from_dipole_autodiff_jax,
-    verify_vector_potential_curl_jax,
+    VectorPotentialJAX,
+    curl_autodiff_jax,
+    curl_jax,
     current_element_potential_jax,
+    dipole_vector_potential_jax,
+    verify_vector_potential_curl_jax,
 )
 
 
@@ -3828,11 +3979,13 @@ class TestVectorPotentialJAXPytree:
             vp = VectorPotentialJAX(A_field=A_field, position=jnp.zeros(3))
             return vp.magnitude
 
-        fields = jnp.array([
-            [1.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
-            [0.0, 0.0, 3.0],
-        ])
+        fields = jnp.array(
+            [
+                [1.0, 0.0, 0.0],
+                [0.0, 2.0, 0.0],
+                [0.0, 0.0, 3.0],
+            ]
+        )
         result = jax.vmap(magnitude_from_field)(fields)
         assert result.shape == (3,)
         assert jnp.allclose(result, jnp.array([1.0, 2.0, 3.0]), atol=1e-10)
@@ -3904,7 +4057,7 @@ class TestBDipoleAutodiffJAX:
         obs = jnp.array([0.0, 0.0, 5.0])
         B = B_from_dipole_autodiff_jax(m, obs)
         # Analytical: B = 2*m/r^3 along z for points on axis
-        expected_z = 2.0 / (5.0 ** 3)
+        expected_z = 2.0 / (5.0**3)
         assert jnp.allclose(B, jnp.array([0.0, 0.0, expected_z]), atol=1e-6)
 
     def test_B_from_dipole_equatorial(self):
@@ -3913,7 +4066,7 @@ class TestBDipoleAutodiffJAX:
         obs = jnp.array([5.0, 0.0, 0.0])
         B = B_from_dipole_autodiff_jax(m, obs)
         # Analytical: B = -m/r^3 in z for equatorial points
-        expected_z = -1.0 / (5.0 ** 3)
+        expected_z = -1.0 / (5.0**3)
         assert jnp.allclose(B, jnp.array([0.0, 0.0, expected_z]), atol=1e-6)
 
     def test_B_from_dipole_at_origin_zero(self):
@@ -4014,11 +4167,13 @@ class TestCurlJAX:
 
         def A_field(pos):
             # Use transcendental functions so truncation error is visible
-            return jnp.array([
-                jnp.sin(pos[1]),
-                jnp.cos(pos[0] * pos[2]),
-                jnp.exp(pos[0] + pos[1]),
-            ])
+            return jnp.array(
+                [
+                    jnp.sin(pos[1]),
+                    jnp.cos(pos[0] * pos[2]),
+                    jnp.exp(pos[0] + pos[1]),
+                ]
+            )
 
         point = jnp.array([1.0, 2.0, 3.0])
         exact = curl_autodiff_jax(A_field, point)
@@ -4179,11 +4334,13 @@ class TestVectorPotentialVmap:
     def test_vmap_dipole_potential_over_points(self):
         """vmap dipole_vector_potential_jax over multiple observation points."""
         m = jnp.array([0.0, 0.0, 1.0])
-        points = jnp.array([
-            [1.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
-            [0.0, 0.0, 3.0],
-        ])
+        points = jnp.array(
+            [
+                [1.0, 0.0, 0.0],
+                [0.0, 2.0, 0.0],
+                [0.0, 0.0, 3.0],
+            ]
+        )
         A_batch = jax.vmap(lambda p: dipole_vector_potential_jax(m, p))(points)
         assert A_batch.shape == (3, 3)
         # Third point (on axis) should give A = 0
@@ -4192,11 +4349,13 @@ class TestVectorPotentialVmap:
     def test_vmap_B_from_dipole_over_points(self):
         """vmap B_from_dipole_autodiff_jax over multiple observation points."""
         m = jnp.array([0.0, 0.0, 1.0])
-        points = jnp.array([
-            [0.0, 0.0, 5.0],
-            [5.0, 0.0, 0.0],
-            [0.0, 5.0, 0.0],
-        ])
+        points = jnp.array(
+            [
+                [0.0, 0.0, 5.0],
+                [5.0, 0.0, 0.0],
+                [0.0, 5.0, 0.0],
+            ]
+        )
         B_batch = jax.vmap(lambda p: B_from_dipole_autodiff_jax(m, p))(points)
         assert B_batch.shape == (3, 3)
 
@@ -4204,11 +4363,13 @@ class TestVectorPotentialVmap:
         """vmap current_element_potential_jax over observation points."""
         Idl = jnp.array([1.0, 0.0, 0.0])
         src = jnp.zeros(3)
-        points = jnp.array([
-            [1.0, 0.0, 0.0],
-            [2.0, 0.0, 0.0],
-            [5.0, 0.0, 0.0],
-        ])
+        points = jnp.array(
+            [
+                [1.0, 0.0, 0.0],
+                [2.0, 0.0, 0.0],
+                [5.0, 0.0, 0.0],
+            ]
+        )
         A_batch = jax.vmap(lambda p: current_element_potential_jax(Idl, src, p))(points)
         assert A_batch.shape == (3, 3)
         # 1/r scaling: [1, 0.5, 0.2]
@@ -4217,11 +4378,13 @@ class TestVectorPotentialVmap:
     def test_vmap_verify_curl(self):
         """vmap verify_vector_potential_curl_jax over multiple points."""
         m = jnp.array([0.0, 0.0, 1.0])
-        points = jnp.array([
-            [3.0, 0.0, 0.0],
-            [0.0, 3.0, 0.0],
-            [0.0, 0.0, 3.0],
-        ])
+        points = jnp.array(
+            [
+                [3.0, 0.0, 0.0],
+                [0.0, 3.0, 0.0],
+                [0.0, 0.0, 3.0],
+            ]
+        )
 
         def check_one(p):
             result = verify_vector_potential_curl_jax(m, p)
@@ -4277,7 +4440,7 @@ class TestVectorPotentialJAXBField:
         vp = VectorPotentialJAX(A_field=A_at_obs, position=obs)
         B = vp.compute_B_field_autodiff(dipole_A)
 
-        expected_z = 2.0 / (5.0 ** 3)
+        expected_z = 2.0 / (5.0**3)
         assert jnp.allclose(B, jnp.array([0.0, 0.0, expected_z]), atol=1e-6)
 
 
@@ -4296,7 +4459,9 @@ class TestVectorPotentialNumpyCrossValidation:
         obs = np.array([5.0, 0.0, 0.0])
 
         np_vp = NumPyVP.from_dipole(m, dipole_pos, obs)
-        jax_A = dipole_vector_potential_jax(jnp.array(m), jnp.array(obs), jnp.array(dipole_pos))
+        jax_A = dipole_vector_potential_jax(
+            jnp.array(m), jnp.array(obs), jnp.array(dipole_pos)
+        )
 
         assert jnp.allclose(jax_A, jnp.array(np_vp.value), atol=1e-10)
 
@@ -4332,9 +4497,9 @@ class TestVectorPotentialNumpyCrossValidation:
 
     def test_B_from_curl_matches_numerical_reference(self):
         """JAX auto-diff B matches NumPy numerical curl result."""
+        from maxwell.calculus.vector_potential import VectorPotential as NumPyVP
         from maxwell.calculus.vector_potential import (
             calc_B_from_vector_potential,
-            VectorPotential as NumPyVP,
         )
 
         m = np.array([0.0, 0.0, 1.0])
@@ -4353,7 +4518,10 @@ class TestVectorPotentialNumpyCrossValidation:
 # -- ElectrokineticEnergyJAX --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestElectrokineticEnergyJAX:
     """Test ElectrokineticEnergyJAX against NumPy reference (Arts. 634-638)."""
 
@@ -4365,7 +4533,7 @@ class TestElectrokineticEnergyJAX:
     def test_single_circuit_energy(self):
         """T = (1/2) * L * I^2 for L=10, I=5."""
         T = self.energy.energy
-        expected = 0.5 * 10.0 * 5.0 ** 2  # = 125.0
+        expected = 0.5 * 10.0 * 5.0**2  # = 125.0
         assert abs(float(T) - expected) < 1e-10
 
     def test_single_circuit_zero_current(self):
@@ -4376,7 +4544,7 @@ class TestElectrokineticEnergyJAX:
     def test_from_single_circuit(self):
         """from_single_circuit creates correct instance."""
         energy = ElectrokineticEnergyJAX.from_single_circuit(20.0, 3.0)
-        expected = 0.5 * 20.0 * 3.0 ** 2  # = 90.0
+        expected = 0.5 * 20.0 * 3.0**2  # = 90.0
         assert abs(float(energy.energy) - expected) < 1e-10
 
     def test_from_coupled_circuits(self):
@@ -4436,7 +4604,10 @@ class TestElectrokineticEnergyJAX:
 # -- CoupledCircuitEnergyJAX --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestCoupledCircuitEnergyJAX:
     """Test CoupledCircuitEnergyJAX (Arts. 636-637)."""
 
@@ -4495,7 +4666,10 @@ class TestCoupledCircuitEnergyJAX:
 # -- ElectrokineticStandaloneFunctions --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestElectrokineticStandaloneFunctions:
     """Test standalone electrokinetic energy functions."""
 
@@ -4538,7 +4712,9 @@ class TestElectrokineticStandaloneFunctions:
         """Scalar and matrix approaches agree."""
         result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
         assert bool(result["verified"])
-        assert abs(float(result["scalar_total"]) - float(result["matrix_total"])) < 1e-10
+        assert (
+            abs(float(result["scalar_total"]) - float(result["matrix_total"])) < 1e-10
+        )
 
     def test_analyze_electrokinetic_energy_jax_single(self):
         """Analysis with single circuit."""
@@ -4548,7 +4724,9 @@ class TestElectrokineticStandaloneFunctions:
 
     def test_analyze_electrokinetic_energy_jax_two_circuit(self):
         """Analysis with two coupled circuits."""
-        result = analyze_electrokinetic_energy_jax(L1=10.0, L2=5.0, M=2.0, I1=3.0, I2=4.0)
+        result = analyze_electrokinetic_energy_jax(
+            L1=10.0, L2=5.0, M=2.0, I1=3.0, I2=4.0
+        )
         assert "two_circuit_energy" in result
         assert abs(float(result["two_circuit_energy"]) - 109.0) < 1e-10
         assert "coupling_coefficient" in result
@@ -4565,20 +4743,27 @@ class TestElectrokineticStandaloneFunctions:
 # -- ElectrokineticVerification --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestElectrokineticVerification:
     """Verify electrokinetic energy formula consistency."""
 
     def test_scalar_matrix_equivalence(self):
         """Scalar and matrix formulations give same result."""
         result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
-        assert abs(float(result["scalar_total"]) - float(result["matrix_total"])) < 1e-10
+        assert (
+            abs(float(result["scalar_total"]) - float(result["matrix_total"])) < 1e-10
+        )
         assert bool(result["verified"])
 
     def test_component_sum_equals_total(self):
         """Self + mutual = total energy."""
         result = verify_coupled_circuits_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
-        assert abs(float(result["component_sum"]) - float(result["scalar_total"])) < 1e-10
+        assert (
+            abs(float(result["component_sum"]) - float(result["scalar_total"])) < 1e-10
+        )
 
     def test_verification_with_different_parameters(self):
         """Verification works with different inductance values."""
@@ -4606,44 +4791,57 @@ class TestElectrokineticVerification:
 # -- ElectrokineticAutoDiff --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestElectrokineticAutoDiff:
     """Test JAX auto-differentiation on electrokinetic energy formulas."""
 
     def test_grad_single_circuit_wrt_current(self):
         """d/dI (1/2*L*I^2) = L*I."""
+
         def energy_I(I):
             return calc_single_circuit_energy_jax(10.0, I)
+
         g = jax.grad(energy_I)(5.0)
         assert abs(g - 10.0 * 5.0) < 1e-10
 
     def test_grad_single_circuit_wrt_inductance(self):
         """d/dL (1/2*L*I^2) = (1/2)*I^2."""
+
         def energy_L(L):
             return calc_single_circuit_energy_jax(L, 5.0)
+
         g = jax.grad(energy_L)(10.0)
         assert abs(g - 0.5 * 25.0) < 1e-10
 
     def test_grad_two_circuit_wrt_I1(self):
         """d/dI1 T = L1*I1 + M*I2."""
+
         def energy_I1(I1):
             return calc_two_circuit_energy_jax(10.0, 5.0, 2.0, I1, 4.0)
+
         g = jax.grad(energy_I1)(3.0)
         expected = 10.0 * 3.0 + 2.0 * 4.0
         assert abs(g - expected) < 1e-10
 
     def test_grad_two_circuit_wrt_M(self):
         """d/dM T = I1*I2."""
+
         def energy_M(M):
             return calc_two_circuit_energy_jax(10.0, 5.0, M, 3.0, 4.0)
+
         g = jax.grad(energy_M)(2.0)
         assert abs(g - 3.0 * 4.0) < 1e-10
 
     def test_grad_coupled_wrt_currents(self):
         """d/dI (1/2 * I^T L I) = L . I."""
         L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
+
         def energy_I(I):
             return calc_coupled_circuits_energy_jax(L, I)
+
         I = jnp.array([3.0, 4.0])
         g = jax.grad(energy_I)(I)
         expected = jnp.dot(L, I)
@@ -4652,16 +4850,20 @@ class TestElectrokineticAutoDiff:
     def test_grad_fields_energy_wrt_A(self):
         """d/dA (1/2 * A.J * V) = (1/2) * J * V."""
         J = jnp.array([1.0, 0.0, 0.0])
+
         def energy_A(Ax):
             A = jnp.array([Ax, 0.0, 0.0])
             return calc_electrokinetic_energy_jax(A, J, 1.0)
+
         g = jax.grad(energy_A)(100.0)
         assert abs(g - 0.5 * 1.0 * 1.0) < 1e-10
 
     def test_grad_coupling_coefficient_wrt_M(self):
         """d/dM k = 1/sqrt(L1*L2)."""
+
         def k_M(M):
             return calc_coupling_coefficient_jax(M, 10.0, 5.0)
+
         g = jax.grad(k_M)(2.0)
         expected = 1.0 / jnp.sqrt(10.0 * 5.0)
         assert abs(g - expected) < 1e-10
@@ -4670,31 +4872,40 @@ class TestElectrokineticAutoDiff:
 # -- ElectrokineticJIT --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestElectrokineticJIT:
     """Test JIT compilation compatibility."""
 
     def test_jit_single_circuit(self):
         """Single circuit energy works under JIT."""
+
         @jax.jit
         def jit_fn(L, I):
             return calc_single_circuit_energy_jax(L, I)
+
         T = jit_fn(10.0, 5.0)
         assert abs(float(T) - 125.0) < 1e-10
 
     def test_jit_two_circuit(self):
         """Two circuit energy works under JIT."""
+
         @jax.jit
         def jit_fn(L1, L2, M, I1, I2):
             return calc_two_circuit_energy_jax(L1, L2, M, I1, I2)
+
         T = jit_fn(10.0, 5.0, 2.0, 3.0, 4.0)
         assert abs(float(T) - 109.0) < 1e-10
 
     def test_jit_coupled_circuits(self):
         """Coupled circuits energy works under JIT."""
+
         @jax.jit
         def jit_fn(L, I):
             return calc_coupled_circuits_energy_jax(L, I)
+
         L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
         I = jnp.array([3.0, 4.0])
         T = jit_fn(L, I)
@@ -4702,9 +4913,11 @@ class TestElectrokineticJIT:
 
     def test_jit_fields_energy(self):
         """Fields energy works under JIT."""
+
         @jax.jit
         def jit_fn(A, J, V):
             return calc_electrokinetic_energy_jax(A, J, V)
+
         A = jnp.array([100.0, 0.0, 0.0])
         J = jnp.array([1.0, 0.0, 0.0])
         T = jit_fn(A, J, 1.0)
@@ -4712,34 +4925,42 @@ class TestElectrokineticJIT:
 
     def test_jit_coupling_coefficient(self):
         """Coupling coefficient works under JIT."""
+
         @jax.jit
         def jit_fn(M, L1, L2):
             return calc_coupling_coefficient_jax(M, L1, L2)
+
         k = jit_fn(2.0, 10.0, 5.0)
         expected = 2.0 / jnp.sqrt(50.0)
         assert abs(float(k) - expected) < 1e-10
 
     def test_jit_static_method_single(self):
         """Static method _single_energy_jit works under JIT."""
+
         @jax.jit
         def jit_fn(L, I):
             return ElectrokineticEnergyJAX._single_energy_jit(L, I)
+
         T = jit_fn(10.0, 5.0)
         assert abs(float(T) - 125.0) < 1e-10
 
     def test_jit_static_method_two_circuit(self):
         """Static method _two_circuit_energy_jit works under JIT."""
+
         @jax.jit
         def jit_fn(L1, L2, M, I1, I2):
             return ElectrokineticEnergyJAX._two_circuit_energy_jit(L1, L2, M, I1, I2)
+
         T = jit_fn(10.0, 5.0, 2.0, 3.0, 4.0)
         assert abs(float(T) - 109.0) < 1e-10
 
     def test_jit_static_method_coupled(self):
         """Static method _coupled_energy_jit works under JIT."""
+
         @jax.jit
         def jit_fn(L, I):
             return ElectrokineticEnergyJAX._coupled_energy_jit(L, I)
+
         L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
         I = jnp.array([3.0, 4.0])
         T = jit_fn(L, I)
@@ -4747,10 +4968,12 @@ class TestElectrokineticJIT:
 
     def test_jit_verify(self):
         """Verify function works under JIT."""
+
         @jax.jit
         def jit_fn(L1, L2, M, I1, I2):
             r = verify_coupled_circuits_energy_jax(L1, L2, M, I1, I2)
             return r["scalar_total"]
+
         T = jit_fn(10.0, 5.0, 2.0, 3.0, 4.0)
         assert abs(float(T) - 109.0) < 1e-10
 
@@ -4758,7 +4981,10 @@ class TestElectrokineticJIT:
 # -- ElectrokineticVmap --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestElectrokineticVmap:
     """Test batched evaluation via vmap."""
 
@@ -4772,8 +4998,10 @@ class TestElectrokineticVmap:
 
     def test_vmap_two_circuit_energy_currents(self):
         """vmap over batch of I1 values."""
+
         def energy_fn(I1):
             return calc_two_circuit_energy_jax(10.0, 5.0, 2.0, I1, 4.0)
+
         results = jax.vmap(energy_fn)(jnp.array([1.0, 2.0, 3.0]))
         assert results.shape == (3,)
 
@@ -4785,8 +5013,10 @@ class TestElectrokineticVmap:
 
     def test_vmap_mutual_inductance_energy(self):
         """vmap over batch of I1 values."""
+
         def energy_fn(I1):
             return calc_mutual_inductance_energy_jax(2.0, I1, 4.0)
+
         results = jax.vmap(energy_fn)(jnp.array([1.0, 2.0, 3.0]))
         assert results.shape == (3,)
         expected = 2.0 * jnp.array([1.0, 2.0, 3.0]) * 4.0
@@ -4794,11 +5024,13 @@ class TestElectrokineticVmap:
 
     def test_vmap_fields_energy(self):
         """vmap over batch of A vectors."""
-        A_batch = jnp.array([
-            [100.0, 0.0, 0.0],
-            [200.0, 0.0, 0.0],
-            [300.0, 0.0, 0.0],
-        ])
+        A_batch = jnp.array(
+            [
+                [100.0, 0.0, 0.0],
+                [200.0, 0.0, 0.0],
+                [300.0, 0.0, 0.0],
+            ]
+        )
         J = jnp.array([1.0, 0.0, 0.0])
         results = jax.vmap(lambda A: calc_electrokinetic_energy_jax(A, J, 1.0))(A_batch)
         assert results.shape == (3,)
@@ -4807,11 +5039,13 @@ class TestElectrokineticVmap:
     def test_vmap_coupled_circuits(self):
         """vmap over batch of current vectors."""
         L = jnp.array([[10.0, 2.0], [2.0, 5.0]])
-        I_batch = jnp.array([
-            [1.0, 2.0],
-            [3.0, 4.0],
-            [5.0, 6.0],
-        ])
+        I_batch = jnp.array(
+            [
+                [1.0, 2.0],
+                [3.0, 4.0],
+                [5.0, 6.0],
+            ]
+        )
         results = jax.vmap(lambda I: calc_coupled_circuits_energy_jax(L, I))(I_batch)
         assert results.shape == (3,)
 
@@ -4819,7 +5053,10 @@ class TestElectrokineticVmap:
 # -- ElectrokineticNumpyCrossValidation --
 
 
-@pytest.mark.skipif(not HAS_ELECTROKINETIC, reason="maxwell.jax.electromagnetism.electrokinetic not installed")
+@pytest.mark.skipif(
+    not HAS_ELECTROKINETIC,
+    reason="maxwell.jax.electromagnetism.electrokinetic not installed",
+)
 class TestElectrokineticNumpyCrossValidation:
     """Test JAX results against NumPy reference implementation."""
 
@@ -4828,6 +5065,7 @@ class TestElectrokineticNumpyCrossValidation:
         from maxwell.electromagnetism.energy.electrokinetic import (
             calc_single_circuit_energy,
         )
+
         T_np = calc_single_circuit_energy(10.0, 5.0)
         T_jax = calc_single_circuit_energy_jax(10.0, 5.0)
         assert abs(float(T_jax) - T_np) < 1e-10
@@ -4837,6 +5075,7 @@ class TestElectrokineticNumpyCrossValidation:
         from maxwell.electromagnetism.energy.electrokinetic import (
             calc_coupled_circuits_energy,
         )
+
         L_np = np.array([[10.0, 2.0], [2.0, 5.0]])
         I_np = np.array([3.0, 4.0])
         L_jax = jnp.array([[10.0, 2.0], [2.0, 5.0]])
@@ -4850,6 +5089,7 @@ class TestElectrokineticNumpyCrossValidation:
         from maxwell.electromagnetism.energy.electrokinetic import (
             calc_mutual_inductance_energy,
         )
+
         T_np = calc_mutual_inductance_energy(2.0, 3.0, 4.0)
         T_jax = calc_mutual_inductance_energy_jax(2.0, 3.0, 4.0)
         assert abs(float(T_jax) - T_np) < 1e-10
@@ -4859,6 +5099,7 @@ class TestElectrokineticNumpyCrossValidation:
         from maxwell.electromagnetism.energy.electrokinetic import (
             calc_two_circuit_energy,
         )
+
         T_np = calc_two_circuit_energy(10.0, 5.0, 2.0, 3.0, 4.0)
         T_jax = calc_two_circuit_energy_jax(10.0, 5.0, 2.0, 3.0, 4.0)
         assert abs(float(T_jax) - T_np) < 1e-10
@@ -4868,6 +5109,7 @@ class TestElectrokineticNumpyCrossValidation:
         from maxwell.electromagnetism.energy.electrokinetic import (
             calc_coupling_coefficient,
         )
+
         k_np = calc_coupling_coefficient(2.0, 10.0, 5.0)
         k_jax = calc_coupling_coefficient_jax(2.0, 10.0, 5.0)
         assert abs(float(k_jax) - k_np) < 1e-10
@@ -4875,6 +5117,7 @@ class TestElectrokineticNumpyCrossValidation:
     def test_class_single_matches_numpy(self):
         """ElectrokineticEnergyJAX single energy matches NumPy."""
         from maxwell.electromagnetism.energy.electrokinetic import ElectrokineticEnergy
+
         np_energy = ElectrokineticEnergy.from_single_circuit(10.0, 5.0)
         jax_energy = ElectrokineticEnergyJAX.from_single_circuit(10.0, 5.0)
         assert abs(float(jax_energy.energy) - np_energy.energy) < 1e-10
@@ -4882,6 +5125,7 @@ class TestElectrokineticNumpyCrossValidation:
     def test_class_coupled_matches_numpy(self):
         """ElectrokineticEnergyJAX coupled energy matches NumPy."""
         from maxwell.electromagnetism.energy.electrokinetic import ElectrokineticEnergy
+
         L_np = np.array([[10.0, 2.0], [2.0, 5.0]])
         I_np = np.array([3.0, 4.0])
         np_energy = ElectrokineticEnergy.from_coupled_circuits(L_np, I_np)

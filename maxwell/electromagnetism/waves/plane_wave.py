@@ -34,11 +34,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
 from typing import Optional, Tuple
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -135,8 +136,10 @@ class PlaneWave:
 
     @classmethod
     @maxwell_cite(
-        786, 787,
-        part=4, chapter="Electromagnetic Theory of Light",
+        786,
+        787,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create linearly polarized plane wave",
     )
@@ -174,10 +177,14 @@ class PlaneWave:
             ... )
         """
         propagation_direction = np.asarray(propagation_direction, dtype=np.float64)
-        propagation_direction = propagation_direction / np.linalg.norm(propagation_direction)
+        propagation_direction = propagation_direction / np.linalg.norm(
+            propagation_direction
+        )
 
         polarization_direction = np.asarray(polarization_direction, dtype=np.float64)
-        polarization_direction = polarization_direction / np.linalg.norm(polarization_direction)
+        polarization_direction = polarization_direction / np.linalg.norm(
+            polarization_direction
+        )
 
         # Verify perpendicularity
         if abs(np.dot(propagation_direction, polarization_direction)) > 1e-10:
@@ -199,8 +206,10 @@ class PlaneWave:
 
     @classmethod
     @maxwell_cite(
-        788, 789,
-        part=4, chapter="Electromagnetic Theory of Light",
+        788,
+        789,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create circularly polarized plane wave",
     )
@@ -209,7 +218,7 @@ class PlaneWave:
         angular_frequency: float,
         E0_magnitude: float,
         propagation_direction: np.ndarray,
-        handedness: str = 'right',
+        handedness: str = "right",
     ) -> PlaneWave:
         """
         Create a circularly polarized plane wave.
@@ -247,7 +256,9 @@ class PlaneWave:
             ... )
         """
         propagation_direction = np.asarray(propagation_direction, dtype=np.float64)
-        propagation_direction = propagation_direction / np.linalg.norm(propagation_direction)
+        propagation_direction = propagation_direction / np.linalg.norm(
+            propagation_direction
+        )
 
         # Find orthogonal basis vectors
         # Choose arbitrary vector not parallel to k
@@ -262,7 +273,7 @@ class PlaneWave:
 
         # Circular polarization: E₀ = E₀/√2 (ê₁ ± i ê₂)
         # For right-hand: + sign (using physics convention)
-        sign = 1.0 if handedness == 'right' else -1.0
+        sign = 1.0 if handedness == "right" else -1.0
 
         E0_real = (E0_magnitude / np.sqrt(2.0)) * ê1
         E0_imag = sign * (E0_magnitude / np.sqrt(2.0)) * ê2
@@ -280,7 +291,8 @@ class PlaneWave:
 
     @maxwell_cite(
         786,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate E and B fields at position and time",
     )
@@ -321,7 +333,11 @@ class PlaneWave:
         position = np.asarray(position, dtype=np.float64)
 
         # Phase
-        phase = np.dot(self.wave_vector, position - self.position_ref) - self.angular_frequency * time + self.phase_offset
+        phase = (
+            np.dot(self.wave_vector, position - self.position_ref)
+            - self.angular_frequency * time
+            + self.phase_offset
+        )
 
         cos_phase = np.cos(phase)
         sin_phase = np.sin(phase)
@@ -355,7 +371,8 @@ class PlaneWave:
 
 @maxwell_cite(
     787,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify transverse nature of plane wave",
 )
@@ -432,7 +449,8 @@ def verify_transversality(
 
 @maxwell_cite(
     788,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate E-B field relationship",
 )
@@ -495,7 +513,7 @@ def calc_EB_relationship(
     if B_mag > 0:
         amplitude_ratio = E_mag / (CONST.C * B_mag)
     else:
-        amplitude_ratio = 1.0 if E_mag == 0 else float('inf')
+        amplitude_ratio = 1.0 if E_mag == 0 else float("inf")
 
     # Phase check (E and B should have same sign)
     in_phase = np.dot(E, B) >= -1e-10  # Allow for numerical error
@@ -514,8 +532,10 @@ def calc_EB_relationship(
 
 
 @maxwell_cite(
-    789, 790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    789,
+    790,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate Poynting vector for plane wave",
 )
@@ -619,7 +639,8 @@ class PlaneWaveAnalyzer:
 
     @maxwell_cite(
         786,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate fields at point",
     )
@@ -629,7 +650,8 @@ class PlaneWaveAnalyzer:
 
     @maxwell_cite(
         787,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Verify transversality",
     )
@@ -639,7 +661,8 @@ class PlaneWaveAnalyzer:
 
     @maxwell_cite(
         788,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Verify E-B relationship",
     )
@@ -648,8 +671,10 @@ class PlaneWaveAnalyzer:
         return calc_EB_relationship(self.wave, position, time)
 
     @maxwell_cite(
-        789, 790,
-        part=4, chapter="Electromagnetic Theory of Light",
+        789,
+        790,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate energy flux",
     )
@@ -658,8 +683,13 @@ class PlaneWaveAnalyzer:
         return calc_poynting_vector(self.wave, position, time)
 
     @maxwell_cite(
-        786, 787, 788, 789, 790,
-        part=4, chapter="Electromagnetic Theory of Light",
+        786,
+        787,
+        788,
+        789,
+        790,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Complete plane wave analysis",
     )

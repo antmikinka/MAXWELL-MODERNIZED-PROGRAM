@@ -37,15 +37,19 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
-    691, 692, 693,
-    part=4, chapter="Geometric Mean Distance",
+    691,
+    692,
+    693,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Calculate GMD between two points",
 )
@@ -90,8 +94,10 @@ def calc_gmd_points(
 
 
 @maxwell_cite(
-    691, 692,
-    part=4, chapter="Geometric Mean Distance",
+    691,
+    692,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Calculate self GMD of circular cross-section",
 )
@@ -118,8 +124,10 @@ def calc_self_gmd_circle(
 
 
 @maxwell_cite(
-    691, 692,
-    part=4, chapter="Geometric Mean Distance",
+    691,
+    692,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Calculate GMD of rectangular cross-section",
 )
@@ -148,8 +156,11 @@ def calc_self_gmd_rectangle(
 
 
 @maxwell_cite(
-    691, 692, 693,
-    part=4, chapter="Geometric Mean Distance",
+    691,
+    692,
+    693,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Calculate GMD between two parallel wires",
 )
@@ -192,14 +203,16 @@ def calc_gmd_parallel_wires(
     # Correction for finite cross-section
     a1 = wire1_radius
     a2 = wire2_radius
-    correction = 1.0 - (a1 ** 2 + a2 ** 2) / (4.0 * d ** 2)
+    correction = 1.0 - (a1**2 + a2**2) / (4.0 * d**2)
 
     return d * max(correction, 0.0)
 
 
 @maxwell_cite(
-    692, 693,
-    part=4, chapter="Geometric Mean Distance",
+    692,
+    693,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Calculate GMD between two circular coils",
 )
@@ -232,7 +245,9 @@ def calc_gmd_coaxial_circles(
 
     for theta in angles:
         p1 = np.array([radius1 * np.cos(theta), radius1 * np.sin(theta), 0])
-        p2 = np.array([radius2 * np.cos(theta), radius2 * np.sin(theta), axial_separation])
+        p2 = np.array(
+            [radius2 * np.cos(theta), radius2 * np.sin(theta), axial_separation]
+        )
         points1.append(p1)
         points2.append(p2)
 
@@ -240,8 +255,11 @@ def calc_gmd_coaxial_circles(
 
 
 @maxwell_cite(
-    691, 692, 693,
-    part=4, chapter="Geometric Mean Distance",
+    691,
+    692,
+    693,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Calculate inductance correction from GMD",
 )
@@ -297,7 +315,8 @@ class GMDCalculator:
 
     @maxwell_cite(
         691,
-        part=4, chapter="Geometric Mean Distance",
+        part=4,
+        chapter="Geometric Mean Distance",
         theory_class="maxwell_original",
         description="Get self GMD",
     )
@@ -306,12 +325,16 @@ class GMDCalculator:
         return calc_self_gmd_circle(self.wire_radius)
 
     @maxwell_cite(
-        691, 692,
-        part=4, chapter="Geometric Mean Distance",
+        691,
+        692,
+        part=4,
+        chapter="Geometric Mean Distance",
         theory_class="maxwell_original",
         description="Get GMD to another wire",
     )
-    def gmd_to(self, other_center: np.ndarray, my_center: np.ndarray, other_radius: float) -> float:
+    def gmd_to(
+        self, other_center: np.ndarray, my_center: np.ndarray, other_radius: float
+    ) -> float:
         """GMD between this wire and another."""
         return calc_gmd_parallel_wires(
             my_center, other_center, self.wire_radius, other_radius
@@ -319,8 +342,11 @@ class GMDCalculator:
 
 
 @maxwell_cite(
-    691, 692, 693,
-    part=4, chapter="Geometric Mean Distance",
+    691,
+    692,
+    693,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Verify GMD relations",
 )
@@ -382,8 +408,11 @@ def verify_gmd_relations(
 
 
 @maxwell_cite(
-    691, 692, 693,
-    part=4, chapter="Geometric Mean Distance",
+    691,
+    692,
+    693,
+    part=4,
+    chapter="Geometric Mean Distance",
     theory_class="maxwell_original",
     description="Complete GMD analysis",
 )
@@ -423,7 +452,9 @@ def analyze_gmd(
         gmd_values.append(gmd)
 
     # Inductance correction
-    L_filament = 4.0 * np.pi * coil_radius * (np.log(8 * coil_radius / wire_radius) - 2.0)
+    L_filament = (
+        4.0 * np.pi * coil_radius * (np.log(8 * coil_radius / wire_radius) - 2.0)
+    )
     L_corrected = calc_inductance_from_gmd(L_filament, wire_radius, coil_radius)
 
     return {

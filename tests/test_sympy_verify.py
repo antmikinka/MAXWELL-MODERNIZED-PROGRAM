@@ -22,24 +22,24 @@ from maxwell.meta.citation import get_citation
 from maxwell.verification.framework import VerificationResult
 from maxwell.verification.sympy_verify import (
     _HAS_SYMPY,
-    verify_div_curl,
-    verify_grad_curl,
-    verify_wave_equation_1d,
-    verify_laplace_spherical,
-    verify_coulomb_law_symbolic,
+    ALL_SYMBOLIC_VERIFIERS,
+    verify_ampere_law,
     verify_biot_savart,
-    verify_faraday_symbolic,
     verify_continuity_equation,
+    verify_coulomb_law_symbolic,
+    verify_div_curl,
+    verify_faraday_symbolic,
+    verify_grad_curl,
+    verify_laplace_spherical,
+    verify_lorentz_force,
     verify_maxwell_correction,
     verify_stokes_theorem,
-    verify_lorentz_force,
     verify_stress_tensor_properties,
-    verify_ampere_law,
-    ALL_SYMBOLIC_VERIFIERS,
+    verify_wave_equation_1d,
 )
 
-
 # ── Shared test helpers ──────────────────────────────────────────
+
 
 def _assert_result_type(r: VerificationResult) -> None:
     """Validate that a VerificationResult has correct types and fields."""
@@ -56,6 +56,7 @@ def _assert_result_type(r: VerificationResult) -> None:
 
 
 # ── Individual function tests ────────────────────────────────────
+
 
 class TestVerifyDivCurl:
     """Test div(curl(F)) = 0 verification."""
@@ -269,6 +270,7 @@ class TestVerifyStokesTheorem:
 
 # ── Global tests ─────────────────────────────────────────────────
 
+
 class TestAllVerifiersHaveCitations:
     """Every verification function must have a @maxwell_cite decorator."""
 
@@ -281,9 +283,7 @@ class TestAllVerifiersHaveCitations:
     def test_all_have_article_refs_in_result(self):
         for fn in ALL_SYMBOLIC_VERIFIERS:
             r = fn()
-            assert len(r.article_refs) > 0, (
-                f"{fn.__name__} returned empty article_refs"
-            )
+            assert len(r.article_refs) > 0, f"{fn.__name__} returned empty article_refs"
 
 
 class TestAllVerifiersPass:
@@ -292,16 +292,14 @@ class TestAllVerifiersPass:
     def test_all_pass(self):
         for fn in ALL_SYMBOLIC_VERIFIERS:
             r = fn()
-            assert r.passed is True, (
-                f"{fn.__name__} failed: {r.details}"
-            )
+            assert r.passed is True, f"{fn.__name__} failed: {r.details}"
 
     def test_all_zero_relative_error(self):
         for fn in ALL_SYMBOLIC_VERIFIERS:
             r = fn()
-            assert r.relative_error == 0.0, (
-                f"{fn.__name__} has relative_error={r.relative_error}"
-            )
+            assert (
+                r.relative_error == 0.0
+            ), f"{fn.__name__} has relative_error={r.relative_error}"
 
 
 class TestHasSympyFlag:
@@ -316,20 +314,21 @@ class TestModuleExports:
 
     def test_import_from_verification_package(self):
         from maxwell.verification import (
-            verify_div_curl,
-            verify_grad_curl,
-            verify_wave_equation_1d,
-            verify_laplace_spherical,
-            verify_coulomb_law_symbolic,
+            verify_ampere_law,
             verify_biot_savart,
-            verify_faraday_symbolic,
             verify_continuity_equation,
+            verify_coulomb_law_symbolic,
+            verify_div_curl,
+            verify_faraday_symbolic,
+            verify_grad_curl,
+            verify_laplace_spherical,
+            verify_lorentz_force,
             verify_maxwell_correction,
             verify_stokes_theorem,
-            verify_lorentz_force,
             verify_stress_tensor_properties,
-            verify_ampere_law,
+            verify_wave_equation_1d,
         )
+
         # All imports succeed (no assertion needed beyond no ImportError)
 
 

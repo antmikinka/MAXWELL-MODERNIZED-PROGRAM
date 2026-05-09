@@ -19,17 +19,26 @@ from maxwell.verification.framework import VerificationResult
 try:
     import sympy
     from sympy import (
-        simplify,
-        trigsimp,
+        I,
+        cos,
+        diff,
+        exp,
         expand_trig,
-        sin, cos, diff, symbols, pi, sqrt, exp, I,
+        pi,
+        simplify,
+        sin,
+        sqrt,
+        symbols,
+        trigsimp,
     )
+
     _HAS_SYMPY = True
 except ImportError:
     _HAS_SYMPY = False
 
 
 # ── Internal helper ──────────────────────────────────────────────
+
 
 def _is_symbolic_zero(expr, symbols_list=None) -> bool:
     """Check if a SymPy expression simplifies to zero.
@@ -54,6 +63,7 @@ def _is_symbolic_zero(expr, symbols_list=None) -> bool:
     if not symbols_list:
         return expr == 0
     import random
+
     _seed = random.Random(42)
     for _ in range(5):
         pt = {s: _seed.uniform(0.5, 3.0) for s in symbols_list}
@@ -65,8 +75,10 @@ def _is_symbolic_zero(expr, symbols_list=None) -> bool:
             return False
     return True
 
-def _disabled_result(test_name: str, module_name: str,
-                     article_refs: tuple[int, ...]) -> VerificationResult:
+
+def _disabled_result(
+    test_name: str, module_name: str, article_refs: tuple[int, ...]
+) -> VerificationResult:
     """Return a non-passing result when SymPy is unavailable."""
     return VerificationResult(
         module_name=module_name,
@@ -83,8 +95,11 @@ def _disabled_result(test_name: str, module_name: str,
 
 # ── 1. div(curl(F)) = 0 ────────────────────────────────────────
 
+
 @maxwell_cite(
-    15, part=1, chapter="Definitions",
+    15,
+    part=1,
+    chapter="Definitions",
     theory_class="standard_math",
     description="divergence of the curl of any vector field vanishes",
 )
@@ -141,8 +156,11 @@ def verify_div_curl() -> VerificationResult:
 
 # ── 2. curl(grad(phi)) = 0 ─────────────────────────────────────
 
+
 @maxwell_cite(
-    15, part=1, chapter="Definitions",
+    15,
+    part=1,
+    chapter="Definitions",
     theory_class="standard_math",
     description="curl of the gradient of any scalar field vanishes",
 )
@@ -197,8 +215,11 @@ def verify_grad_curl() -> VerificationResult:
 
 # ── 3. 1-D Wave Equation ──────────────────────────────────────
 
+
 @maxwell_cite(
-    787, part=6, chapter="Electromagnetic Theory of Light",
+    787,
+    part=6,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="electromagnetic wave equation verified symbolically",
 )
@@ -257,8 +278,11 @@ def verify_wave_equation_1d() -> VerificationResult:
 
 # ── 4. Laplace Equation in Spherical Coordinates ───────────────
 
+
 @maxwell_cite(
-    134, part=2, chapter="General Equations of Electrostatics",
+    134,
+    part=2,
+    chapter="General Equations of Electrostatics",
     theory_class="maxwell_original",
     description="Laplace's equation in spherical coordinates for 1/r potential",
 )
@@ -285,9 +309,7 @@ def verify_laplace_spherical() -> VerificationResult:
 
     # Angular part for theta-independent potential simplifies to zero
     # (no phi dependence, and d/dtheta of constant = 0)
-    angular = (1 / (r**2 * sin(theta))) * diff(
-        sin(theta) * diff(V, theta), theta
-    )
+    angular = (1 / (r**2 * sin(theta))) * diff(sin(theta) * diff(V, theta), theta)
 
     laplacian = simplify(radial + angular)
     symbolic_zero = _is_symbolic_zero(radial + angular)
@@ -314,8 +336,11 @@ def verify_laplace_spherical() -> VerificationResult:
 
 # ── 5. Coulomb's Law from Potential ────────────────────────────
 
+
 @maxwell_cite(
-    27, part=1, chapter="Mathematical Methods",
+    27,
+    part=1,
+    chapter="Mathematical Methods",
     theory_class="maxwell_original",
     description="electric field from Coulomb potential E = -grad(V)",
 )
@@ -352,7 +377,11 @@ def verify_coulomb_law_symbolic() -> VerificationResult:
     actual_num = float(E_sq.subs(pt))
     expected_num = float(expected_expr.subs(pt))
 
-    rel_err = abs(actual_num - expected_num) / expected_num if expected_num else abs(actual_num)
+    rel_err = (
+        abs(actual_num - expected_num) / expected_num
+        if expected_num
+        else abs(actual_num)
+    )
 
     return VerificationResult(
         module_name=mod,
@@ -373,8 +402,11 @@ def verify_coulomb_law_symbolic() -> VerificationResult:
 
 # ── 6. Biot-Savart Law Verification ────────────────────────────
 
+
 @maxwell_cite(
-    515, part=4, chapter="Electromagnetic Momentum",
+    515,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Biot-Savart law for magnetic field from a current element",
 )
@@ -436,8 +468,11 @@ def verify_biot_savart() -> VerificationResult:
 
 # ── 7. Faraday's Law (Differential Form) ───────────────────────
 
+
 @maxwell_cite(
-    593, part=4, chapter="Electromagnetic Induction",
+    593,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Faraday's law: curl(E) = -dB/dt in differential form",
 )
@@ -501,8 +536,11 @@ def verify_faraday_symbolic() -> VerificationResult:
 
 # ── 8. Continuity Equation ─────────────────────────────────────
 
+
 @maxwell_cite(
-    64, part=1, chapter="Equation of Continuity",
+    64,
+    part=1,
+    chapter="Equation of Continuity",
     theory_class="maxwell_original",
     description="charge conservation: d rho/dt + div(J) = 0",
 )
@@ -565,8 +603,11 @@ def verify_continuity_equation() -> VerificationResult:
 
 # ── 9. Maxwell Displacement Current ────────────────────────────
 
+
 @maxwell_cite(
-    597, part=4, chapter="Electromagnetic Theory",
+    597,
+    part=4,
+    chapter="Electromagnetic Theory",
     theory_class="maxwell_original",
     description="Maxwell displacement current restores consistency to Ampere's law",
 )
@@ -617,8 +658,7 @@ def verify_maxwell_correction() -> VerificationResult:
     # (1/c)*dEz/dt = -E0*omega/c * cos(kx - wt)
     # Match when omega/c = k => omega = c*k (wave dispersion)
     match_expr = simplify(
-        -E0 * k * cos(k * x - omega * t)
-        - (-E0 * omega / c * cos(k * x - omega * t))
+        -E0 * k * cos(k * x - omega * t) - (-E0 * omega / c * cos(k * x - omega * t))
     )
     dispersion_match = _is_symbolic_zero(match_expr.subs(omega, c * k))
 
@@ -643,8 +683,11 @@ def verify_maxwell_correction() -> VerificationResult:
 
 # ── 10. Stokes' Theorem (Symbolic) ─────────────────────────────
 
+
 @maxwell_cite(
-    46, part=1, chapter="Flux",
+    46,
+    part=1,
+    chapter="Flux",
     theory_class="standard_math",
     description="Stokes' theorem equates surface integral of curl to line integral",
 )
@@ -714,8 +757,11 @@ def verify_stokes_theorem() -> VerificationResult:
 
 # ── 11. Lorentz Force Symbolic ─────────────────────────────────
 
+
 @maxwell_cite(
-    490, part=4, chapter="Electromagnetism",
+    490,
+    part=4,
+    chapter="Electromagnetism",
     theory_class="maxwell_original",
     description="Lorentz force F = q*(v x B) verified symbolically",
 )
@@ -783,8 +829,11 @@ def verify_lorentz_force() -> VerificationResult:
 
 # ── 12. Maxwell Stress Tensor Properties ───────────────────────
 
+
 @maxwell_cite(
-    641, part=4, chapter="Electromagnetism",
+    641,
+    part=4,
+    chapter="Electromagnetism",
     theory_class="maxwell_original",
     description="Maxwell stress tensor symmetry and trace properties",
 )
@@ -862,8 +911,11 @@ def verify_stress_tensor_properties() -> VerificationResult:
 
 # ── 13. Ampere's Law (Symbolic) ───────────────────────────────
 
+
 @maxwell_cite(
-    606, part=4, chapter="Electromagnetism",
+    606,
+    part=4,
+    chapter="Electromagnetism",
     theory_class="maxwell_original",
     description="Ampere's law: circulation of H equals enclosed current",
 )
@@ -902,9 +954,7 @@ def verify_ampere_law() -> VerificationResult:
 
     # For an infinite wire, curl(H)_z should be 0 away from the origin
     # (current is a delta function at origin)
-    curl_z_away_from_origin = _is_symbolic_zero(
-        curl_H_z, [x, y, I_sym]
-    )
+    curl_z_away_from_origin = _is_symbolic_zero(curl_H_z, [x, y, I_sym])
 
     # Verify Hx and Hy have no z-dependence (infinite wire)
     hx_z_indep = _is_symbolic_zero(diff(Hx, z))
@@ -918,7 +968,9 @@ def verify_ampere_law() -> VerificationResult:
     circulation = sympy.Integral(H_phi, (theta, 0, 2 * pi_sym)).doit()
     circulation_match = simplify(circulation - I_sym) == 0
 
-    all_pass = curl_z_away_from_origin and hx_z_indep and hy_z_indep and circulation_match
+    all_pass = (
+        curl_z_away_from_origin and hx_z_indep and hy_z_indep and circulation_match
+    )
 
     # Numeric check: curl_H_z at a point away from origin
     pt = {x: 2.0, y: 3.0, I_sym: 1.0}

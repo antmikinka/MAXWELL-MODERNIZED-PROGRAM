@@ -7,31 +7,27 @@ disturbances explain Faraday rotation and light propagation.
 
 from __future__ import annotations
 
-from maxwell.vortex_engine.vortex_lattice import (
-    MolecularVortex,
-    VortexLattice,
-    append_mechanical_theory_notes,
-)
-
-from maxwell.vortex_engine.helmholtz_law import (
-    apply_helmholtz_vortex_law,
-    calc_vortex_stretching,
-)
-
-from maxwell.vortex_engine.kinetic_energy import (
-    calc_disturbed_vortex_energy,
-    express_vortex_current_velocity,
-    calc_plane_wave_vortex_energy,
-)
-
 from maxwell.vortex_engine.equations_of_motion import (
     VortexEquations,
     calc_vortex_circular_velocity,
 )
-
+from maxwell.vortex_engine.helmholtz_law import (
+    apply_helmholtz_vortex_law,
+    calc_vortex_stretching,
+)
+from maxwell.vortex_engine.kinetic_energy import (
+    calc_disturbed_vortex_energy,
+    calc_plane_wave_vortex_energy,
+    express_vortex_current_velocity,
+)
 from maxwell.vortex_engine.magnetic_rotation import (
-    derive_magnetic_rotation,
     compare_verdet_data,
+    derive_magnetic_rotation,
+)
+from maxwell.vortex_engine.vortex_lattice import (
+    MolecularVortex,
+    VortexLattice,
+    append_mechanical_theory_notes,
 )
 
 __all__ = [

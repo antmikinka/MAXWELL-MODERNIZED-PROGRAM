@@ -38,12 +38,12 @@ References:
 
 from __future__ import annotations
 
-from typing import Callable, Tuple, Dict, Any
 from dataclasses import dataclass
+from typing import Any, Callable, Dict, Tuple
+
 import numpy as np
 
 from maxwell.meta.citation import maxwell_cite
-
 
 # Type aliases
 ComplexFunction = Callable[[complex], complex]
@@ -77,8 +77,12 @@ class ConjugatePair:
 
 
 @maxwell_cite(
-    182, 183, 184, 185,
-    part=1, chapter="Mathematical Theory of Electrification",
+    182,
+    183,
+    184,
+    185,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="standard_math",
     description="Verify Cauchy-Riemann equations for conjugate functions (Arts. 182-185)",
 )
@@ -155,8 +159,12 @@ def cauchy_riemann_check(
 
 
 @maxwell_cite(
-    186, 187, 188, 189,
-    part=1, chapter="Mathematical Theory of Electrification",
+    186,
+    187,
+    188,
+    189,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Find conjugate function using line integration (Arts. 186-189)",
 )
@@ -244,8 +252,13 @@ def conjugate_function(
 
 
 @maxwell_cite(
-    190, 191, 192, 193, 194,
-    part=1, chapter="Mathematical Theory of Electrification",
+    190,
+    191,
+    192,
+    193,
+    194,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Inversion conformal mapping z -> 1/z (Arts. 190-194)",
 )
@@ -291,8 +304,13 @@ def inversion_transform(
 
 
 @maxwell_cite(
-    190, 191, 192, 193, 194,
-    part=1, chapter="Mathematical Theory of Electrification",
+    190,
+    191,
+    192,
+    193,
+    194,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Inverse of inversion transformation (Arts. 190-194)",
 )
@@ -330,8 +348,13 @@ def inverse_inversion_transform(
 
 
 @maxwell_cite(
-    190, 191, 192, 193, 194,
-    part=1, chapter="Mathematical Theory of Electrification",
+    190,
+    191,
+    192,
+    193,
+    194,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Map geometry under inversion (Arts. 190-194)",
 )
@@ -374,14 +397,14 @@ def map_geometry_under_inversion(
         z_points = np.asarray(points, dtype=complex)
 
     # Apply inversion, handling potential singularity at origin
-    with np.errstate(divide='ignore', invalid='ignore'):
+    with np.errstate(divide="ignore", invalid="ignore"):
         transformed = scale / z_points
         transformed = np.where(np.isfinite(transformed), transformed, np.nan)
 
     result = {"transformed": transformed}
 
     if include_inverse:
-        with np.errstate(divide='ignore', invalid='ignore'):
+        with np.errstate(divide="ignore", invalid="ignore"):
             inverse = scale / transformed
             inverse = np.where(np.isfinite(inverse), inverse, np.nan)
         result["inverse"] = inverse
@@ -390,8 +413,12 @@ def map_geometry_under_inversion(
 
 
 @maxwell_cite(
-    195, 196, 197, 198,
-    part=1, chapter="Mathematical Theory of Electrification",
+    195,
+    196,
+    197,
+    198,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Exponential mapping w = exp(z) for parallel plates (Arts. 195-198)",
 )
@@ -440,8 +467,12 @@ def exponential_transform(
 
 
 @maxwell_cite(
-    195, 196, 197, 198,
-    part=1, chapter="Mathematical Theory of Electrification",
+    195,
+    196,
+    197,
+    198,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Inverse of exponential mapping w = log(z) (Arts. 195-198)",
 )
@@ -495,8 +526,11 @@ def logarithmic_transform(
 
 
 @maxwell_cite(
-    199, 200, 201,
-    part=1, chapter="Mathematical Theory of Electrification",
+    199,
+    200,
+    201,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Combined log-exp mapping for line charge problems (Arts. 199-201)",
 )
@@ -568,8 +602,11 @@ def line_charge_mapping(
 
 
 @maxwell_cite(
-    202, 203, 204,
-    part=1, chapter="Mathematical Theory of Electrification",
+    202,
+    203,
+    204,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Bilinear (Mobius) transformation (Arts. 202-204)",
 )
@@ -636,15 +673,21 @@ def bilinear_transform(
 
 
 @maxwell_cite(
-    202, 203, 204,
-    part=1, chapter="Mathematical Theory of Electrification",
+    202,
+    203,
+    204,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Compute bilinear transform coefficients from point mapping (Arts. 202-204)",
 )
 def bilinear_transform_coefficients(
-    z1: complex, w1: complex,
-    z2: complex, w2: complex,
-    z3: complex, w3: complex,
+    z1: complex,
+    w1: complex,
+    z2: complex,
+    w2: complex,
+    z3: complex,
+    w3: complex,
 ) -> Dict[str, complex]:
     """
     Compute bilinear transform coefficients that map three points to three targets.
@@ -702,7 +745,9 @@ def bilinear_transform_coefficients(
                 a = (rhs1 - rhs2) / (z1 - z2)
                 b = rhs1 - a * z1
         else:
-            raise NotImplementedError("Infinity handling for w1 or w2 not fully implemented")
+            raise NotImplementedError(
+                "Infinity handling for w1 or w2 not fully implemented"
+            )
     else:
         # Standard case: all finite
         # Use cross-ratio formula or direct solution
@@ -719,11 +764,14 @@ def bilinear_transform_coefficients(
         # a*z2 + b - w2*c*z2 = w2
         # a*z3 + b - w3*c*z3 = w3
 
-        A = np.array([
-            [z1, 1, -w1 * z1],
-            [z2, 1, -w2 * z2],
-            [z3, 1, -w3 * z3],
-        ], dtype=complex)
+        A = np.array(
+            [
+                [z1, 1, -w1 * z1],
+                [z2, 1, -w2 * z2],
+                [z3, 1, -w3 * z3],
+            ],
+            dtype=complex,
+        )
         b_vec = np.array([w1, w2, w3], dtype=complex)
 
         try:
@@ -733,11 +781,14 @@ def bilinear_transform_coefficients(
         except np.linalg.LinAlgError:
             # Matrix singular, try setting c = 1 instead
             # a*z1 + b - w1*d = w1*z1
-            A = np.array([
-                [z1, 1, -w1],
-                [z2, 1, -w2],
-                [z3, 1, -w3],
-            ], dtype=complex)
+            A = np.array(
+                [
+                    [z1, 1, -w1],
+                    [z2, 1, -w2],
+                    [z3, 1, -w3],
+                ],
+                dtype=complex,
+            )
             b_vec = np.array([w1 * z1, w2 * z2, w3 * z3], dtype=complex)
             solution = np.linalg.solve(A, b_vec)
             a, b, d = solution
@@ -747,8 +798,10 @@ def bilinear_transform_coefficients(
 
 
 @maxwell_cite(
-    205, 206,
-    part=1, chapter="Mathematical Theory of Electrification",
+    205,
+    206,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Compute edge effect correction for parallel plate capacitor (Arts. 205-206)",
 )
@@ -860,8 +913,19 @@ def edge_effect_correction(
 
 
 @maxwell_cite(
-    190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200,
-    part=1, chapter="Mathematical Theory of Electrification",
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Map capacitor geometry using conformal transformation (Arts. 190-200)",
 )
@@ -947,7 +1011,7 @@ def map_capacitor_geometry(
             elif mapping_type == "logarithmic":
                 dw_dz[i, j] = (d / np.pi) / (z + 1e-10)
             elif mapping_type == "schwarz_christoffel":
-                dw_dz[i, j] = 1 / np.sqrt(1 - (z / (L / 2))**2 + 1e-10)
+                dw_dz[i, j] = 1 / np.sqrt(1 - (z / (L / 2)) ** 2 + 1e-10)
 
     field_grid = np.abs(dw_dz) * V / d
 
@@ -960,8 +1024,14 @@ def map_capacitor_geometry(
 
 
 @maxwell_cite(
-    195, 196, 197, 198, 199, 200,
-    part=1, chapter="Mathematical Theory of Electrification",
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Compute 2D capacitance using conformal mapping (Arts. 195-200)",
 )
@@ -1058,7 +1128,9 @@ def capacitance_2d(
 
         # Strip above ground plane: approximate formula using conformal mapping
         # C ~ epsilon * W / h * (1 + correction for fringe)
-        fringe_correction = 1.0 + (height / (np.pi * width)) * np.log(2 * np.pi * width / height)
+        fringe_correction = 1.0 + (height / (np.pi * width)) * np.log(
+            2 * np.pi * width / height
+        )
         capacitance = epsilon_0 * width / height * fringe_correction
 
         return {
@@ -1091,9 +1163,33 @@ def capacitance_2d(
 
 
 @maxwell_cite(
-    182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194,
-    195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206,
-    part=1, chapter="Mathematical Theory of Electrification",
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Verify conjugate function relations and transformations",
 )
@@ -1144,7 +1240,7 @@ def verify_conjugate_functions(
     def psi_exp(x, y):
         return np.exp(x) * np.sin(y)
 
-    cr_exp = cauchy_riemann_check(phi_exp, psi_exp, 0.5, np.pi/4, tolerance=tolerance)
+    cr_exp = cauchy_riemann_check(phi_exp, psi_exp, 0.5, np.pi / 4, tolerance=tolerance)
     results["exp_cr"] = cr_exp["satisfied"]
     all_verified = all_verified and cr_exp["satisfied"]
 
@@ -1165,13 +1261,13 @@ def verify_conjugate_functions(
     all_verified = all_verified and exp_log_verified
 
     # Test 5: Bilinear transform with known coefficients
-    w_test = bilinear_transform(1+1j, a=1, b=0, c=0, d=1)  # Identity
-    bilinear_verified = abs(w_test - (1+1j)) < tolerance
+    w_test = bilinear_transform(1 + 1j, a=1, b=0, c=0, d=1)  # Identity
+    bilinear_verified = abs(w_test - (1 + 1j)) < tolerance
     results["bilinear_identity"] = bilinear_verified
     all_verified = all_verified and bilinear_verified
 
     # Test 6: Line charge potential
-    lc_result = line_charge_mapping(1+0j, 0+0j, 1.0)
+    lc_result = line_charge_mapping(1 + 0j, 0 + 0j, 1.0)
     # For line charge at origin, potential at r=1 should be 0 (since ln(1)=0)
     lc_verified = abs(lc_result["potential"]) < tolerance
     results["line_charge_potential"] = lc_verified
@@ -1187,7 +1283,9 @@ def verify_conjugate_functions(
 
     c_pp = capacitance_2d("parallel_plate", width=1.0, separation=1.0)
     expected_c = epsilon_0 = 1.0 / (4.0 * np.pi)
-    pp_verified = abs(c_pp["capacitance"] - expected_c) / expected_c < 0.01  # 1% tolerance
+    pp_verified = (
+        abs(c_pp["capacitance"] - expected_c) / expected_c < 0.01
+    )  # 1% tolerance
     results["parallel_plate_capacitance"] = pp_verified
     all_verified = all_verified and pp_verified
 
@@ -1198,9 +1296,33 @@ def verify_conjugate_functions(
 
 
 @maxwell_cite(
-    182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194,
-    195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206,
-    part=1, chapter="Mathematical Theory of Electrification",
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    part=1,
+    chapter="Mathematical Theory of Electrification",
     theory_class="maxwell_original",
     description="Complete conjugate function analysis toolkit",
 )
@@ -1237,10 +1359,18 @@ def analyze_conjugate_functions(
     # Default test functions
     if test_functions is None:
         test_functions = [
-            (lambda x, y: x**2 - y**2, lambda x, y: 2*x*y, "z_squared"),
-            (lambda x, y: np.exp(x)*np.cos(y), lambda x, y: np.exp(x)*np.sin(y), "exp_z"),
+            (lambda x, y: x**2 - y**2, lambda x, y: 2 * x * y, "z_squared"),
+            (
+                lambda x, y: np.exp(x) * np.cos(y),
+                lambda x, y: np.exp(x) * np.sin(y),
+                "exp_z",
+            ),
             (lambda x, y: x, lambda x, y: y, "identity"),  # w = z
-            (lambda x, y: x/(x**2 + y**2), lambda x, y: -y/(x**2 + y**2), "inverse_z"),
+            (
+                lambda x, y: x / (x**2 + y**2),
+                lambda x, y: -y / (x**2 + y**2),
+                "inverse_z",
+            ),
         ]
 
     results = {}
@@ -1300,11 +1430,9 @@ def analyze_conjugate_functions(
 __all__ = [
     # Data classes
     "ConjugatePair",
-
     # Core functions (Arts. 182-189)
     "cauchy_riemann_check",
     "conjugate_function",
-
     # Conformal mappings (Arts. 190-204)
     "inversion_transform",
     "inverse_inversion_transform",
@@ -1313,17 +1441,13 @@ __all__ = [
     "logarithmic_transform",
     "bilinear_transform",
     "bilinear_transform_coefficients",
-
     # Line charge and applications (Arts. 199-201)
     "line_charge_mapping",
-
     # Edge effects (Arts. 205-206)
     "edge_effect_correction",
-
     # Geometry mapping and capacitance (Arts. 190-200)
     "map_capacitor_geometry",
     "capacitance_2d",
-
     # Verification and analysis
     "verify_conjugate_functions",
     "analyze_conjugate_functions",

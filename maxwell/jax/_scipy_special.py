@@ -31,6 +31,7 @@ __all__ = [
 
 # ── Associated Legendre Functions ───────────────────────────────
 
+
 def lpmv_jax(m: int, n: int, x: jax.Array) -> jax.Array:
     """Associated Legendre function P_m^n(x) for |m| <= n.
 
@@ -73,14 +74,14 @@ def lpmv_jax(m: int, n: int, x: jax.Array) -> jax.Array:
     # ── Compute P_m^m(x) and P_{m+1}^m(x) ──────────────────────
     # P_m^m(x) = (-1)^m · (2m-1)!! · (1-x²)^(m/2)
     # P_{m+1}^m(x) = x · (2m+1) · P_m^m(x)
-    sin_theta = jnp.sqrt(jnp.maximum(1.0 - x ** 2, 0.0))
+    sin_theta = jnp.sqrt(jnp.maximum(1.0 - x**2, 0.0))
 
     # (2m-1)!! for m >= 1
     double_fact = 1.0
     for k in range(1, 2 * m_abs, 2):
         double_fact *= k
 
-    p_mm = (-1.0) ** m_abs * double_fact * sin_theta ** m_abs
+    p_mm = (-1.0) ** m_abs * double_fact * sin_theta**m_abs
 
     # P_{m+1}^m = x * (2m+1) * P_m^m
     if m_abs + 1 > n:
@@ -158,19 +159,22 @@ def roots_legendre_jax(n: int) -> tuple[jax.Array, jax.Array]:
     def newton_step(i: int, x_nodes: jax.Array) -> jax.Array:
         p_n = legendre_jax(n, x_nodes)
         p_nm1 = legendre_jax(n - 1, x_nodes)
-        dp_n = n * (x_nodes * p_n - p_nm1) / (x_nodes ** 2 - 1.0)
+        dp_n = n * (x_nodes * p_n - p_nm1) / (x_nodes**2 - 1.0)
         return x_nodes - p_n / dp_n
 
     x = lax.fori_loop(0, 20, newton_step, x)
 
     # Weights: w_i = 2 / [(1 - x_i^2) * P_n'(x_i)^2]
     p_nm1 = legendre_jax(n - 1, x)
-    weights = 2.0 / ((1.0 - x ** 2) * (n * (x * legendre_jax(n, x) - p_nm1) / (x ** 2 - 1.0)) ** 2)
+    weights = 2.0 / (
+        (1.0 - x**2) * (n * (x * legendre_jax(n, x) - p_nm1) / (x**2 - 1.0)) ** 2
+    )
 
     return x, weights
 
 
 # ── Spherical Harmonics ─────────────────────────────────────────
+
 
 def sph_harm_y_jax(m: int, n: int, phi: jax.Array, theta: jax.Array) -> jax.Array:
     """Spherical harmonic Y_n^m(theta, phi) using pure JAX.
@@ -213,7 +217,8 @@ def sph_harm_y_jax(m: int, n: int, phi: jax.Array, theta: jax.Array) -> jax.Arra
 
     # Normalization: sqrt((2n+1)/(4pi) * (n-m)!/(n+m)!)
     norm_val = math.sqrt(
-        (2 * n + 1) / (4.0 * math.pi)
+        (2 * n + 1)
+        / (4.0 * math.pi)
         * math.factorial(n - m_abs)
         / math.factorial(n + m_abs)
     )

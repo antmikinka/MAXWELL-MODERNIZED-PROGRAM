@@ -96,9 +96,14 @@ class LorentzForceJAX:
 # ── Standalone Lorentz force functions ──────────────────────────
 
 
-@maxwell_cite(490, 491, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Force on a straight current-carrying wire in CGS-EMU units")
+@maxwell_cite(
+    490,
+    491,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Force on a straight current-carrying wire in CGS-EMU units",
+)
 def force_on_wire_jax(
     current: jax.Array,
     length: jax.Array,
@@ -122,9 +127,13 @@ def force_on_wire_jax(
     return current * jnp.cross(length, B_field)
 
 
-@maxwell_cite(491, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Lorentz force on a moving charge in CGS-EMU units")
+@maxwell_cite(
+    491,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Lorentz force on a moving charge in CGS-EMU units",
+)
 def force_on_charge_jax(
     charge: jax.Array,
     velocity: jax.Array,
@@ -148,9 +157,14 @@ def force_on_charge_jax(
     return charge * jnp.cross(velocity, B_field)
 
 
-@maxwell_cite(490, 491, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Torque on a current loop in magnetic field")
+@maxwell_cite(
+    490,
+    491,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Torque on a current loop in magnetic field",
+)
 def torque_on_loop_jax(
     magnetic_moment: jax.Array,
     B_field: jax.Array,
@@ -171,9 +185,13 @@ def torque_on_loop_jax(
     return jnp.cross(magnetic_moment, B_field)
 
 
-@maxwell_cite(490, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Force density from current in magnetic field")
+@maxwell_cite(
+    490,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Force density from current in magnetic field",
+)
 def force_density_jax(
     J: jax.Array,
     B: jax.Array,
@@ -194,9 +212,13 @@ def force_density_jax(
     return jnp.cross(J, B)
 
 
-@maxwell_cite(492, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Force between parallel current-carrying conductors")
+@maxwell_cite(
+    492,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Force between parallel current-carrying conductors",
+)
 def parallel_current_force_jax(
     I1: jax.Array,
     I2: jax.Array,
@@ -246,14 +268,16 @@ class MaxwellStressTensorJAX:
     def __post_init__(self):
         zero3 = jnp.zeros(3, dtype=jnp.float64)
         object.__setattr__(
-            self, 'E_field',
+            self,
+            "E_field",
             jnp.asarray(
                 self.E_field if self.E_field is not None else zero3,
                 dtype=jnp.float64,
             ),
         )
         object.__setattr__(
-            self, 'H_field',
+            self,
+            "H_field",
             jnp.asarray(
                 self.H_field if self.H_field is not None else zero3,
                 dtype=jnp.float64,
@@ -286,9 +310,8 @@ class MaxwellStressTensorJAX:
         total_sq = E_sq + H_sq
 
         # Outer products: E_i E_j + H_i H_j
-        field_product = (
-            jnp.outer(self.E_field, self.E_field)
-            + jnp.outer(self.H_field, self.H_field)
+        field_product = jnp.outer(self.E_field, self.E_field) + jnp.outer(
+            self.H_field, self.H_field
         )
 
         # Isotropic pressure term: -(1/8pi)(E^2+H^2) * I
@@ -319,9 +342,13 @@ class MaxwellStressTensorJAX:
 # ── Standalone stress tensor functions ──────────────────────────
 
 
-@maxwell_cite(641, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Maxwell stress tensor for electromagnetic force transmission")
+@maxwell_cite(
+    641,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Maxwell stress tensor for electromagnetic force transmission",
+)
 def stress_tensor_jax(
     E_field: jax.Array,
     H_field: jax.Array,
@@ -348,9 +375,13 @@ def stress_tensor_jax(
     return field_product / (4.0 * jnp.pi) + pressure
 
 
-@maxwell_cite(643, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Electromagnetic pressure from field energy density")
+@maxwell_cite(
+    643,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Electromagnetic pressure from field energy density",
+)
 def electromagnetic_pressure_jax(
     E_field: jax.Array,
     H_field: jax.Array,
@@ -364,9 +395,13 @@ def electromagnetic_pressure_jax(
     return (jnp.dot(E, E) + jnp.dot(H, H)) / (8.0 * jnp.pi)
 
 
-@maxwell_cite(644, part=4, chapter="Electromagnetism",
-              theory_class="maxwell_original",
-              description="Surface force from Maxwell stress tensor integration")
+@maxwell_cite(
+    644,
+    part=4,
+    chapter="Electromagnetism",
+    theory_class="maxwell_original",
+    description="Surface force from Maxwell stress tensor integration",
+)
 def surface_force_jax(
     E_field: jax.Array,
     H_field: jax.Array,

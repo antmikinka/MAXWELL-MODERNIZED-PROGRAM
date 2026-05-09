@@ -39,6 +39,7 @@ __all__ = [
 
 # -- Data classes -------------------------------------------------------------------
 
+
 @jax_tree
 @dataclass
 class OhmsLawJAX:
@@ -142,7 +143,9 @@ class ResistanceJAX:
 
     def __post_init__(self) -> None:
         self.base_resistance = jnp.asarray(self.base_resistance, dtype=jnp.float64)
-        self.temperature_coefficient = jnp.asarray(self.temperature_coefficient, dtype=jnp.float64)
+        self.temperature_coefficient = jnp.asarray(
+            self.temperature_coefficient, dtype=jnp.float64
+        )
 
     def series_combine(self, resistances: jax.Array) -> jax.Array:
         """Total resistance in series: R_total = sum(R_i)."""
@@ -154,7 +157,9 @@ class ResistanceJAX:
 
     def at_temperature(self, T: float, ref_temp: float = 20.0) -> jax.Array:
         """Temperature-corrected resistance: R(T) = R0 * (1 + alpha * (T - T0))."""
-        return self._temp_correct_jit(self.base_resistance, self.temperature_coefficient, T, ref_temp)
+        return self._temp_correct_jit(
+            self.base_resistance, self.temperature_coefficient, T, ref_temp
+        )
 
     @staticmethod
     @jax.jit
@@ -284,7 +289,7 @@ class PowerDissipationJAX:
         """P = I^2 * R."""
         I = jnp.asarray(I, dtype=jnp.float64)
         R = jnp.asarray(R, dtype=jnp.float64)
-        return I ** 2 * R
+        return I**2 * R
 
     @staticmethod
     @jax.jit
@@ -292,7 +297,7 @@ class PowerDissipationJAX:
         """P = V^2 / R."""
         V = jnp.asarray(V, dtype=jnp.float64)
         R = jnp.asarray(R, dtype=jnp.float64)
-        return safe_div(V ** 2, R)
+        return safe_div(V**2, R)
 
     @staticmethod
     @jax.jit
@@ -305,7 +310,10 @@ class PowerDissipationJAX:
 
 # -- Standalone functions -------------------------------------------------------------
 
-@maxwell_cite(230, part=2, chapter="Electrokinematics", description="Ohm's law: V = I * R")
+
+@maxwell_cite(
+    230, part=2, chapter="Electrokinematics", description="Ohm's law: V = I * R"
+)
 def calc_voltage_jax(I: float, R: float) -> jax.Array:
     """Calculate voltage from current and resistance. Art. 230.
 
@@ -314,7 +322,9 @@ def calc_voltage_jax(I: float, R: float) -> jax.Array:
     return OhmsLawJAX._voltage_jit(I, R)
 
 
-@maxwell_cite(230, part=2, chapter="Electrokinematics", description="Ohm's law: I = V / R")
+@maxwell_cite(
+    230, part=2, chapter="Electrokinematics", description="Ohm's law: I = V / R"
+)
 def calc_current_jax(V: float, R: float) -> jax.Array:
     """Calculate current from voltage and resistance. Art. 230.
 
@@ -325,7 +335,9 @@ def calc_current_jax(V: float, R: float) -> jax.Array:
     return safe_div(V_arr, R_arr)
 
 
-@maxwell_cite(230, part=2, chapter="Electrokinematics", description="Ohm's law: R = V / I")
+@maxwell_cite(
+    230, part=2, chapter="Electrokinematics", description="Ohm's law: R = V / I"
+)
 def calc_resistance_jax(V: float, I: float) -> jax.Array:
     """Calculate resistance from voltage and current. Art. 230.
 
@@ -336,7 +348,9 @@ def calc_resistance_jax(V: float, I: float) -> jax.Array:
     return safe_div(V_arr, I_arr)
 
 
-@maxwell_cite(244, part=2, chapter="Conduction and Resistance", description="Conductance G = 1/R")
+@maxwell_cite(
+    244, part=2, chapter="Conduction and Resistance", description="Conductance G = 1/R"
+)
 def calc_conductance_jax(R: float) -> jax.Array:
     """Calculate conductance from resistance. Art. 244.
 
@@ -346,7 +360,9 @@ def calc_conductance_jax(R: float) -> jax.Array:
     return safe_div(jnp.array(1.0, dtype=jnp.float64), R_arr)
 
 
-@maxwell_cite(251, part=2, chapter="Conductivity", description="Resistivity rho = 1/sigma")
+@maxwell_cite(
+    251, part=2, chapter="Conductivity", description="Resistivity rho = 1/sigma"
+)
 def calc_resistivity_jax(sigma: float) -> jax.Array:
     """Calculate resistivity from conductivity. Art. 251.
 
@@ -356,7 +372,9 @@ def calc_resistivity_jax(sigma: float) -> jax.Array:
     return safe_div(jnp.array(1.0, dtype=jnp.float64), sigma_arr)
 
 
-@maxwell_cite(251, part=2, chapter="Conductivity", description="Conductivity sigma = 1/rho")
+@maxwell_cite(
+    251, part=2, chapter="Conductivity", description="Conductivity sigma = 1/rho"
+)
 def calc_conductivity_jax(rho: float) -> jax.Array:
     """Calculate conductivity from resistivity. Art. 251.
 
@@ -366,7 +384,12 @@ def calc_conductivity_jax(rho: float) -> jax.Array:
     return safe_div(jnp.array(1.0, dtype=jnp.float64), rho_arr)
 
 
-@maxwell_cite(245, part=2, chapter="Series Resistance", description="Series resistance: R_total = sum(R_i)")
+@maxwell_cite(
+    245,
+    part=2,
+    chapter="Series Resistance",
+    description="Series resistance: R_total = sum(R_i)",
+)
 def series_resistance_jax(resistances: jax.Array) -> jax.Array:
     """Calculate total resistance for series connection. Art. 245.
 
@@ -375,7 +398,12 @@ def series_resistance_jax(resistances: jax.Array) -> jax.Array:
     return ResistanceJAX._series_jit(resistances)
 
 
-@maxwell_cite(246, part=2, chapter="Parallel Resistance", description="Parallel resistance: 1/R_total = sum(1/R_i)")
+@maxwell_cite(
+    246,
+    part=2,
+    chapter="Parallel Resistance",
+    description="Parallel resistance: 1/R_total = sum(1/R_i)",
+)
 def parallel_resistance_jax(resistances: jax.Array) -> jax.Array:
     """Calculate total resistance for parallel connection. Art. 246.
 
@@ -384,7 +412,12 @@ def parallel_resistance_jax(resistances: jax.Array) -> jax.Array:
     return ResistanceJAX._parallel_jit(resistances)
 
 
-@maxwell_cite(250, part=2, chapter="Temperature Dependence", description="Temperature-corrected resistance")
+@maxwell_cite(
+    250,
+    part=2,
+    chapter="Temperature Dependence",
+    description="Temperature-corrected resistance",
+)
 def temperature_corrected_resistance_jax(
     R0: float, alpha: float, T: float, T0: float = 20.0
 ) -> jax.Array:
@@ -395,7 +428,12 @@ def temperature_corrected_resistance_jax(
     return ResistanceJAX._temp_correct_jit(R0, alpha, T, T0)
 
 
-@maxwell_cite(261, part=2, chapter="Power Dissipation", description="Power from voltage and current")
+@maxwell_cite(
+    261,
+    part=2,
+    chapter="Power Dissipation",
+    description="Power from voltage and current",
+)
 def calc_power_from_IV_jax(V: float, I: float) -> jax.Array:
     """Calculate power from voltage and current. Art. 261.
 
@@ -404,7 +442,12 @@ def calc_power_from_IV_jax(V: float, I: float) -> jax.Array:
     return PowerDissipationJAX._iv_jit(V, I)
 
 
-@maxwell_cite(262, part=2, chapter="Joule Heating", description="Power from current squared times resistance")
+@maxwell_cite(
+    262,
+    part=2,
+    chapter="Joule Heating",
+    description="Power from current squared times resistance",
+)
 def calc_power_from_I2R_jax(I: float, R: float) -> jax.Array:
     """Calculate power from current and resistance (Joule heating). Art. 262.
 
@@ -413,7 +456,12 @@ def calc_power_from_I2R_jax(I: float, R: float) -> jax.Array:
     return PowerDissipationJAX._i2r_jit(I, R)
 
 
-@maxwell_cite(263, part=2, chapter="Power Dissipation", description="Power from voltage squared over resistance")
+@maxwell_cite(
+    263,
+    part=2,
+    chapter="Power Dissipation",
+    description="Power from voltage squared over resistance",
+)
 def calc_power_from_V2R_jax(V: float, R: float) -> jax.Array:
     """Calculate power from voltage and resistance. Art. 263.
 
@@ -422,7 +470,16 @@ def calc_power_from_V2R_jax(V: float, R: float) -> jax.Array:
     return PowerDissipationJAX._v2r_jit(V, R)
 
 
-@maxwell_cite(230, 244, 261, 262, 263, part=2, chapter="Ohm's Law Verification", description="Verify Ohm's law consistency")
+@maxwell_cite(
+    230,
+    244,
+    261,
+    262,
+    263,
+    part=2,
+    chapter="Ohm's Law Verification",
+    description="Verify Ohm's law consistency",
+)
 def verify_ohms_law_jax(
     V: float = 10.0,
     I: float = 2.0,
@@ -448,7 +505,9 @@ def verify_ohms_law_jax(
     V_close = jnp.abs(V_from_IR - V_arr) < tolerance
     I_close = jnp.abs(I_from_VR - I_arr) < tolerance
     R_close = jnp.abs(R_from_VI - R_arr) < tolerance
-    power_close = (jnp.abs(power_IV - power_I2R) < tolerance) & (jnp.abs(power_IV - power_V2R) < tolerance)
+    power_close = (jnp.abs(power_IV - power_I2R) < tolerance) & (
+        jnp.abs(power_IV - power_V2R) < tolerance
+    )
 
     verified = V_close & I_close & R_close & power_close
 
@@ -463,7 +522,15 @@ def verify_ohms_law_jax(
     }
 
 
-@maxwell_cite(230, 244, 251, 261, part=2, chapter="Ohm's Law Analysis", description="Comprehensive Ohm's law analysis")
+@maxwell_cite(
+    230,
+    244,
+    251,
+    261,
+    part=2,
+    chapter="Ohm's Law Analysis",
+    description="Comprehensive Ohm's law analysis",
+)
 def analyze_ohms_law_jax(
     voltage: Optional[float] = None,
     current: Optional[float] = None,
@@ -479,8 +546,12 @@ def analyze_ohms_law_jax(
     if voltage is not None and current is not None:
         result["resistance"] = calc_resistance_jax(voltage, current)
         result["power_IV"] = calc_power_from_IV_jax(voltage, current)
-        result["power_I2R"] = calc_power_from_I2R_jax(current, float(result["resistance"]))
-        result["power_V2R"] = calc_power_from_V2R_jax(voltage, float(result["resistance"]))
+        result["power_I2R"] = calc_power_from_I2R_jax(
+            current, float(result["resistance"])
+        )
+        result["power_V2R"] = calc_power_from_V2R_jax(
+            voltage, float(result["resistance"])
+        )
 
     if voltage is not None and resistance is not None:
         result["current"] = calc_current_jax(voltage, resistance)

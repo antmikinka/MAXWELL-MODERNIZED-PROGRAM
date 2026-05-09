@@ -33,10 +33,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -115,7 +116,8 @@ class MagneticEnergy:
     @classmethod
     @maxwell_cite(
         632,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Create magnetic energy from H field and permeability",
     )
@@ -147,7 +149,8 @@ class MagneticEnergy:
     @classmethod
     @maxwell_cite(
         632,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Create magnetic energy from B and H fields",
     )
@@ -177,11 +180,14 @@ class MagneticEnergy:
 
     @maxwell_cite(
         632,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate energy density at a point",
     )
-    def energy_density_at(self, H_field: np.ndarray = None, B_field: np.ndarray = None) -> float:
+    def energy_density_at(
+        self, H_field: np.ndarray = None, B_field: np.ndarray = None
+    ) -> float:
         """
         Calculate energy density at a specified field point.
 
@@ -205,7 +211,8 @@ class MagneticEnergy:
 
     @maxwell_cite(
         632,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate total energy in volume",
     )
@@ -231,7 +238,8 @@ class MagneticEnergy:
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate magnetic energy density: u = (1/8π) μ H²",
 )
@@ -284,7 +292,8 @@ def calc_magnetic_energy_density(
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate magnetic energy density from B field: u = B²/(8πμ)",
 )
@@ -330,7 +339,8 @@ def calc_magnetic_energy_density_from_B(
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate total magnetic energy: U = (1/8π) ∫ B·H dV",
 )
@@ -385,7 +395,8 @@ def calc_total_magnetic_energy(
 
 @maxwell_cite(
     633,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate inductor energy: U = (1/2) L I²",
 )
@@ -433,12 +444,13 @@ def calc_inductor_energy(
     if current < 0:
         raise ValueError(f"Current must be non-negative, got {current}")
 
-    return 0.5 * inductance * current ** 2
+    return 0.5 * inductance * current**2
 
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy in magnetic material: u = (1/8π) B·H",
 )
@@ -502,7 +514,8 @@ def calc_energy_in_magnetic_material(
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy density from B and H dot product",
 )
@@ -538,7 +551,8 @@ def calc_energy_density_from_BH_dot(
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Verify magnetic energy density formula",
 )
@@ -583,13 +597,13 @@ def verify_magnetic_energy_density(
     u_z = calc_magnetic_energy_density(H_z, permeability)
 
     # Expected: u = (1/8π) μ H²
-    expected = (permeability / (8.0 * np.pi)) * H_magnitude ** 2
+    expected = (permeability / (8.0 * np.pi)) * H_magnitude**2
 
     # Verify all orientations give same result (isotropy)
     all_match = (
-        np.isclose(u_x, u_y, rtol=tolerance) and
-        np.isclose(u_y, u_z, rtol=tolerance) and
-        np.isclose(u_x, expected, rtol=tolerance)
+        np.isclose(u_x, u_y, rtol=tolerance)
+        and np.isclose(u_y, u_z, rtol=tolerance)
+        and np.isclose(u_x, expected, rtol=tolerance)
     )
 
     return {
@@ -604,8 +618,10 @@ def verify_magnetic_energy_density(
 
 
 @maxwell_cite(
-    632, 633,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    632,
+    633,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Complete magnetic energy analysis",
 )
@@ -685,7 +701,8 @@ def analyze_magnetic_energy(
 
 @maxwell_cite(
     632,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate energy density integrated over 3D field",
 )

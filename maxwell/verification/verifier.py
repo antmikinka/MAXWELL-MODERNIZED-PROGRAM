@@ -56,7 +56,7 @@ class EquationVerifier:
             List of VerificationResult for each equation
         """
         results = []
-        source = py_file.read_text(encoding='utf-8')
+        source = py_file.read_text(encoding="utf-8")
 
         # Extract cited articles
         cited = self._extract_cited_articles(source)
@@ -79,7 +79,9 @@ class EquationVerifier:
         self._results.extend(results)
         return results
 
-    def verify_all_modules(self, module_dir: Path, registry) -> list[VerificationResult]:
+    def verify_all_modules(
+        self, module_dir: Path, registry
+    ) -> list[VerificationResult]:
         """Verify all Python modules in a directory tree."""
         all_results = []
         for py_file in sorted(Path(module_dir).rglob("*.py")):
@@ -93,9 +95,16 @@ class EquationVerifier:
             all_results.extend(results)
 
             for r in results:
-                status_icon = {"verified": "[OK]", "mismatch": "[!!]", "unverified": "[??]", "error": "[ER]"}
+                status_icon = {
+                    "verified": "[OK]",
+                    "mismatch": "[!!]",
+                    "unverified": "[??]",
+                    "error": "[ER]",
+                }
                 icon = status_icon.get(r.status, "??")
-                print(f"    {icon} Art.{r.article_number}: {r.python_function} -- {r.status} ({r.confidence:.0%})")
+                print(
+                    f"    {icon} Art.{r.article_number}: {r.python_function} -- {r.status} ({r.confidence:.0%})"
+                )
 
         return all_results
 
@@ -126,8 +135,12 @@ class EquationVerifier:
         lines.append("")
 
         if verified + mismatch > 0:
-            trust_score = verified / (verified + mismatch) if (verified + mismatch) > 0 else 0
-            lines.append(f"**Trust Score:** {trust_score:.0%} ({verified}/{verified + mismatch} verified)")
+            trust_score = (
+                verified / (verified + mismatch) if (verified + mismatch) > 0 else 0
+            )
+            lines.append(
+                f"**Trust Score:** {trust_score:.0%} ({verified}/{verified + mismatch} verified)"
+            )
             lines.append("")
 
         # Details by file
@@ -144,9 +157,16 @@ class EquationVerifier:
             lines.append(f"### `{filepath}`")
             lines.append("")
             for r in results:
-                status_icon = {"verified": "[OK]", "mismatch": "[!!]", "unverified": "[??]", "error": "[ER]"}
+                status_icon = {
+                    "verified": "[OK]",
+                    "mismatch": "[!!]",
+                    "unverified": "[??]",
+                    "error": "[ER]",
+                }
                 icon = status_icon.get(r.status, "?")
-                lines.append(f"- {icon} **Art.{r.article_number}** `{r.python_function}`: {r.status}")
+                lines.append(
+                    f"- {icon} **Art.{r.article_number}** `{r.python_function}`: {r.status}"
+                )
                 lines.append(f"  - LaTeX: `{r.equation_latex[:100]}`")
                 if r.details:
                     lines.append(f"  - {r.details}")
@@ -169,14 +189,16 @@ class EquationVerifier:
         if output_path:
             output_path = Path(output_path)
             output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_text(report, encoding='utf-8')
+            output_path.write_text(report, encoding="utf-8")
             print(f"\n  Report saved to {output_path}")
 
         return report
 
     # ── Private methods ──────────────────────────────────────────
 
-    def _verify_equation(self, eq, func_name: str, py_file: str, func_source: str) -> VerificationResult:
+    def _verify_equation(
+        self, eq, func_name: str, py_file: str, func_source: str
+    ) -> VerificationResult:
         """Verify a single equation against its Python implementation."""
         result = VerificationResult(
             article_number=eq.article_number or 0,
@@ -197,10 +219,12 @@ class EquationVerifier:
 
         return result
 
-    def _sympy_verify(self, eq, func_source: str, result: VerificationResult) -> VerificationResult:
+    def _sympy_verify(
+        self, eq, func_source: str, result: VerificationResult
+    ) -> VerificationResult:
         """Verify using SymPy symbolic comparison."""
         try:
-            from sympy import sympify, latex, Eq, symbols
+            from sympy import Eq, latex, symbols, sympify
             from sympy.parsing.latex import parse_latex
 
             # Try to parse the LaTeX equation
@@ -229,7 +253,9 @@ class EquationVerifier:
 
         return result
 
-    def _structural_verify(self, eq, func_source: str, result: VerificationResult) -> VerificationResult:
+    def _structural_verify(
+        self, eq, func_source: str, result: VerificationResult
+    ) -> VerificationResult:
         """Verify using structural/heuristic matching."""
         if self._structural_match(eq.latex, func_source):
             result.status = "verified"
@@ -269,25 +295,28 @@ class EquationVerifier:
         tokens = []
 
         # Variable names
-        tokens.extend(re.findall(r'\\?[a-zA-Z]+', latex))
+        tokens.extend(re.findall(r"\\?[a-zA-Z]+", latex))
 
         # Numbers
-        tokens.extend(re.findall(r'\d+\.?\d*', latex))
+        tokens.extend(re.findall(r"\d+\.?\d*", latex))
 
         # Operators
-        tokens.extend(re.findall(r'[+=\-\*/^]', latex))
+        tokens.extend(re.findall(r"[+=\-\*/^]", latex))
 
         # Greek letters
-        tokens.extend(re.findall(r'\\[a-z]{3,}', latex))
+        tokens.extend(re.findall(r"\\[a-z]{3,}", latex))
 
         # Function names
-        tokens.extend(re.findall(r'\\(?:frac|sqrt|int|sum|prod|partial|nabla|left|right)', latex))
+        tokens.extend(
+            re.findall(r"\\(?:frac|sqrt|int|sum|prod|partial|nabla|left|right)", latex)
+        )
 
         return list(set(tokens))
 
     def _extract_cited_articles(self, source: str) -> list[int]:
         """Extract article numbers from @maxwell_cite decorators."""
         import ast
+
         articles = set()
         try:
             tree = ast.parse(source)
@@ -297,22 +326,29 @@ class EquationVerifier:
                         if isinstance(decorator, ast.Call):
                             # Get positional args (article numbers)
                             for arg in decorator.args:
-                                if isinstance(arg, ast.Constant) and isinstance(arg.value, int):
+                                if isinstance(arg, ast.Constant) and isinstance(
+                                    arg.value, int
+                                ):
                                     articles.add(arg.value)
                             # Also check for articles= keyword (list form)
                             for kw in decorator.keywords:
-                                if kw.arg == 'articles':
+                                if kw.arg == "articles":
                                     if isinstance(kw.value, ast.List):
                                         for elt in kw.value.elts:
-                                            if isinstance(elt, ast.Constant) and isinstance(elt.value, int):
+                                            if isinstance(
+                                                elt, ast.Constant
+                                            ) and isinstance(elt.value, int):
                                                 articles.add(elt.value)
         except SyntaxError:
             pass
         return sorted(articles)
 
-    def _find_function_for_article(self, source: str, article_number: int) -> Optional[str]:
+    def _find_function_for_article(
+        self, source: str, article_number: int
+    ) -> Optional[str]:
         """Find the function name that cites a specific article."""
         import ast
+
         try:
             tree = ast.parse(source)
             for node in ast.walk(tree):
@@ -321,14 +357,22 @@ class EquationVerifier:
                         if isinstance(decorator, ast.Call):
                             # Check positional args (article numbers)
                             for arg in decorator.args:
-                                if isinstance(arg, ast.Constant) and isinstance(arg.value, int) and arg.value == article_number:
+                                if (
+                                    isinstance(arg, ast.Constant)
+                                    and isinstance(arg.value, int)
+                                    and arg.value == article_number
+                                ):
                                     return node.name
                             # Also check articles= keyword
                             for kw in decorator.keywords:
-                                if kw.arg == 'articles':
+                                if kw.arg == "articles":
                                     if isinstance(kw.value, ast.List):
                                         for elt in kw.value.elts:
-                                            if isinstance(elt, ast.Constant) and isinstance(elt.value, int) and elt.value == article_number:
+                                            if (
+                                                isinstance(elt, ast.Constant)
+                                                and isinstance(elt.value, int)
+                                                and elt.value == article_number
+                                            ):
                                                 return node.name
         except SyntaxError:
             pass
@@ -337,15 +381,19 @@ class EquationVerifier:
     def _extract_function_source(self, source: str, func_name: str) -> str:
         """Extract the source code of a specific function."""
         import ast
+
         try:
             tree = ast.parse(source)
             for node in ast.walk(tree):
-                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == func_name:
-                    lines = source.split('\n')
+                if (
+                    isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                    and node.name == func_name
+                ):
+                    lines = source.split("\n")
                     # AST uses 0-based line numbers
                     start = node.lineno - 1
                     end = node.end_lineno
-                    return '\n'.join(lines[start:end])
+                    return "\n".join(lines[start:end])
         except (SyntaxError, AttributeError):
             pass
         return ""

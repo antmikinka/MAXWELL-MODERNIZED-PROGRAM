@@ -21,12 +21,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-from maxwell.materials.induction import MagneticSusceptibility, InducedMagnetization
 from maxwell.fields.constitutive import MagneticConstitutiveRelation
+from maxwell.materials.induction import InducedMagnetization, MagneticSusceptibility
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -59,7 +60,8 @@ class InductionProblem:
     @classmethod
     @maxwell_cite(
         427,
-        part=3, chapter="Induction Solvers",
+        part=3,
+        chapter="Induction Solvers",
         theory_class="maxwell_original",
         description="Create induction problem from uniform body",
     )
@@ -86,6 +88,7 @@ class InductionProblem:
         Reference:
             Part III, Art. 427: Uniform body induction.
         """
+
         def kappa_func(r):
             return susceptibility
 
@@ -129,7 +132,8 @@ class InductionSolution:
 
     @maxwell_cite(
         427,
-        part=3, chapter="Induction Solvers",
+        part=3,
+        chapter="Induction Solvers",
         theory_class="maxwell_original",
         description="Verify solution self-consistency",
     )
@@ -164,7 +168,9 @@ class InductionSolution:
 
             # Check consistency
             I_expected = kappa_avg * self.total_field
-            error = np.linalg.norm(self.magnetization - I_expected) / np.linalg.norm(self.magnetization)
+            error = np.linalg.norm(self.magnetization - I_expected) / np.linalg.norm(
+                self.magnetization
+            )
 
             return error < tolerance
 
@@ -173,7 +179,8 @@ class InductionSolution:
 
 @maxwell_cite(
     427,
-    part=3, chapter="Induction Solvers",
+    part=3,
+    chapter="Induction Solvers",
     theory_class="maxwell_original",
     description="Solve induction by fixed-point iteration",
 )
@@ -269,7 +276,8 @@ def solve_induction_iterative(
 
 @maxwell_cite(
     427,
-    part=3, chapter="Induction Solvers",
+    part=3,
+    chapter="Induction Solvers",
     theory_class="maxwell_original",
     description="Compute demagnetizing field from magnetization",
 )
@@ -345,7 +353,8 @@ def compute_demagnetizing_field(
 
 @maxwell_cite(
     428,
-    part=3, chapter="Induction Solvers",
+    part=3,
+    chapter="Induction Solvers",
     theory_class="maxwell_original",
     description="Compute demagnetizing factors for standard shapes",
 )
@@ -391,11 +400,11 @@ def demagnetizing_factors(
             m = a / b  # Aspect ratio
             if m > 1:
                 # Prolate
-                e2 = 1 - 1/m**2
+                e2 = 1 - 1 / m**2
                 e = np.sqrt(e2) if e2 > 0 else 0
                 if e > 1e-6:
                     L = np.log((1 + e) / (1 - e))
-                    N_x = 4 * np.pi * (1 - e2) / (2 * e**3) * (L - 2*e)
+                    N_x = 4 * np.pi * (1 - e2) / (2 * e**3) * (L - 2 * e)
                 else:
                     N_x = 4 * np.pi / 3
                 N_y = N_z = (4 * np.pi - N_x) / 2
@@ -437,7 +446,7 @@ def demagnetizing_factors(
 
         if aspect > 10:
             # Long thin cylinder
-            N_z = 4 * np.pi * (R / L)**2 * np.log(L/R)
+            N_z = 4 * np.pi * (R / L) ** 2 * np.log(L / R)
             N_x = N_y = (4 * np.pi - N_z) / 2
         elif aspect < 0.1:
             # Thin disk
@@ -471,7 +480,8 @@ def demagnetizing_factors(
 
 @maxwell_cite(
     428,
-    part=3, chapter="Induction Solvers",
+    part=3,
+    chapter="Induction Solvers",
     theory_class="maxwell_original",
     description="Solve induction for ellipsoid analytically",
 )
@@ -536,7 +546,8 @@ def solve_ellipsoid_induction(
 
 @maxwell_cite(
     429,
-    part=3, chapter="Induction Solvers",
+    part=3,
+    chapter="Induction Solvers",
     theory_class="maxwell_original",
     description="Solve induction with boundary conditions",
 )
@@ -648,8 +659,11 @@ def _compute_surface_normal(points: np.ndarray, idx: int) -> np.ndarray:
 
 
 @maxwell_cite(
-    427, 428, 429,
-    part=3, chapter="Induction Solvers",
+    427,
+    428,
+    429,
+    part=3,
+    chapter="Induction Solvers",
     theory_class="maxwell_original",
     description="Verify induction solver accuracy",
 )

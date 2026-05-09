@@ -36,10 +36,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -123,8 +124,10 @@ class DisplacementCurrent:
 
     @classmethod
     @maxwell_cite(
-        606, 607,
-        part=4, chapter="Displacement Current",
+        606,
+        607,
+        part=4,
+        chapter="Displacement Current",
         theory_class="maxwell_original",
         description="Create displacement current from E field and its time derivative",
     )
@@ -156,7 +159,8 @@ class DisplacementCurrent:
     @classmethod
     @maxwell_cite(
         606,
-        part=4, chapter="Displacement Current",
+        part=4,
+        chapter="Displacement Current",
         theory_class="maxwell_original",
         description="Create displacement current from D field derivative",
     )
@@ -262,8 +266,10 @@ class AmpereMaxwellLaw:
 
     @classmethod
     @maxwell_cite(
-        606, 607,
-        part=4, chapter="Ampere-Maxwell Law",
+        606,
+        607,
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Create Ampere-Maxwell law calculator",
     )
@@ -295,7 +301,8 @@ class AmpereMaxwellLaw:
     @classmethod
     @maxwell_cite(
         606,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Create from H field curl and permittivity",
     )
@@ -326,7 +333,8 @@ class AmpereMaxwellLaw:
 
     @maxwell_cite(
         607,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Calculate curl of H field",
     )
@@ -360,7 +368,8 @@ class AmpereMaxwellLaw:
 
     @maxwell_cite(
         606,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Calculate displacement current density",
     )
@@ -391,7 +400,8 @@ class AmpereMaxwellLaw:
 
     @maxwell_cite(
         607,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Calculate total current density",
     )
@@ -423,7 +433,8 @@ class AmpereMaxwellLaw:
 
 @maxwell_cite(
     606,
-    part=4, chapter="Ampere-Maxwell Law",
+    part=4,
+    chapter="Ampere-Maxwell Law",
     theory_class="maxwell_original",
     description="Calculate Ampere's law: ∮H·dl = 4πI",
 )
@@ -480,7 +491,7 @@ def calc_ampere_law(
     # For uniform J, estimate I as J * A where A is effective area
     # For a circular path, A = πr² and path = 2πr, so r = path/(2π)
     # A = path²/(4π)
-    effective_area = (path_length ** 2) / (4.0 * np.pi)
+    effective_area = (path_length**2) / (4.0 * np.pi)
     I_enclosed = np.linalg.norm(current_density) * effective_area
 
     # ∮H·dl = 4πI
@@ -489,7 +500,8 @@ def calc_ampere_law(
 
 @maxwell_cite(
     606,
-    part=4, chapter="Ampere-Maxwell Law",
+    part=4,
+    chapter="Ampere-Maxwell Law",
     theory_class="maxwell_original",
     description="Calculate displacement current: J_d = (ε/4π)·dE/dt",
 )
@@ -546,7 +558,8 @@ def calc_displacement_current(
 
 @maxwell_cite(
     607,
-    part=4, chapter="Ampere-Maxwell Law",
+    part=4,
+    chapter="Ampere-Maxwell Law",
     theory_class="maxwell_original",
     description="Calculate Ampere-Maxwell law: ∇×H = 4πJ + dD/dt",
 )
@@ -622,7 +635,8 @@ def calc_ampere_maxwell(
 
 @maxwell_cite(
     606,
-    part=4, chapter="Ampere-Maxwell Law",
+    part=4,
+    chapter="Ampere-Maxwell Law",
     theory_class="maxwell_original",
     description="Calculate magnetic field from steady current",
 )
@@ -687,7 +701,7 @@ def calc_magnetic_field_from_current(
         r_hat = position / r_mag
 
         # dH = (1/4π) · (Idl × r) / r³
-        dH = (1.0 / (4.0 * np.pi)) * np.cross(current_element, r_hat) / (r_mag ** 2)
+        dH = (1.0 / (4.0 * np.pi)) * np.cross(current_element, r_hat) / (r_mag**2)
         return dH
     else:
         # Simplified: field from uniform current sheet
@@ -707,8 +721,10 @@ def calc_magnetic_field_from_current(
 
 
 @maxwell_cite(
-    606, 607,
-    part=4, chapter="Ampere-Maxwell Law",
+    606,
+    607,
+    part=4,
+    chapter="Ampere-Maxwell Law",
     theory_class="maxwell_original",
     description="Calculate total current density: J_total = J + J_d",
 )
@@ -759,8 +775,10 @@ def calc_total_current_density(
 
 
 @maxwell_cite(
-    606, 607,
-    part=4, chapter="Ampere-Maxwell Law",
+    606,
+    607,
+    part=4,
+    chapter="Ampere-Maxwell Law",
     theory_class="maxwell_original",
     description="Demonstrate necessity of displacement current (capacitor paradox)",
 )
@@ -871,8 +889,10 @@ def verify_displacement_current_necessity(
 
 
 @maxwell_cite(
-    606, 607,
-    part=4, chapter="Ampere-Maxwell Law",
+    606,
+    607,
+    part=4,
+    chapter="Ampere-Maxwell Law",
     theory_class="maxwell_original",
     description="Complete Ampere-Maxwell law analysis",
 )
@@ -944,7 +964,7 @@ def analyze_ampere_maxwell(
     if J_cond_mag > 1e-15:
         current_ratio = J_disp_mag / J_cond_mag
     else:
-        current_ratio = float('inf') if J_disp_mag > 0 else 0.0
+        current_ratio = float("inf") if J_disp_mag > 0 else 0.0
 
     # Determine regime
     if current_ratio > 10:
@@ -1002,7 +1022,8 @@ class AmpereMaxwellCalculator:
 
     @maxwell_cite(
         606,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Calculate displacement current density",
     )
@@ -1028,7 +1049,8 @@ class AmpereMaxwellCalculator:
 
     @maxwell_cite(
         607,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Calculate total current density",
     )
@@ -1056,7 +1078,8 @@ class AmpereMaxwellCalculator:
 
     @maxwell_cite(
         607,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Calculate curl of H field",
     )
@@ -1085,7 +1108,8 @@ class AmpereMaxwellCalculator:
 
     @maxwell_cite(
         606,
-        part=4, chapter="Ampere-Maxwell Law",
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Calculate magnetic field from current",
     )
@@ -1112,8 +1136,10 @@ class AmpereMaxwellCalculator:
         return calc_magnetic_field_from_current(J_total, position)
 
     @maxwell_cite(
-        606, 607,
-        part=4, chapter="Ampere-Maxwell Law",
+        606,
+        607,
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Complete Ampere-Maxwell analysis",
     )
@@ -1151,8 +1177,10 @@ class AmpereMaxwellCalculator:
         )
 
     @maxwell_cite(
-        606, 607,
-        part=4, chapter="Ampere-Maxwell Law",
+        606,
+        607,
+        part=4,
+        chapter="Ampere-Maxwell Law",
         theory_class="maxwell_original",
         description="Verify displacement current necessity",
     )

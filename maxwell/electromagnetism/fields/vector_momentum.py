@@ -38,10 +38,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -70,8 +71,11 @@ class VectorPotential:
     gauge: str = "coulomb"
 
     @maxwell_cite(
-        585, 586, 587,
-        part=4, chapter="Electromagnetic Momentum",
+        585,
+        586,
+        587,
+        part=4,
+        chapter="Electromagnetic Momentum",
         theory_class="maxwell_original",
         description="Calculate vector potential at position",
     )
@@ -94,8 +98,10 @@ class VectorPotential:
         return np.asarray(self.A_function(position, time), dtype=np.float64)
 
     @maxwell_cite(
-        588, 589,
-        part=4, chapter="Electromagnetic Momentum",
+        588,
+        589,
+        part=4,
+        chapter="Electromagnetic Momentum",
         theory_class="maxwell_original",
         description="Calculate electromagnetic momentum density",
     )
@@ -124,8 +130,10 @@ class VectorPotential:
         return charge_density * A
 
     @maxwell_cite(
-        590, 591,
-        part=4, chapter="Electromagnetic Momentum",
+        590,
+        591,
+        part=4,
+        chapter="Electromagnetic Momentum",
         theory_class="maxwell_original",
         description="Calculate electromagnetic momentum for a charge",
     )
@@ -156,8 +164,11 @@ class VectorPotential:
 
 
 @maxwell_cite(
-    585, 586, 587,
-    part=4, chapter="Electromagnetic Momentum",
+    585,
+    586,
+    587,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Calculate vector potential from current distribution",
 )
@@ -212,15 +223,17 @@ def calc_vector_potential_from_current(
                     continue
 
                 j_val = np.asarray(current_density(r_prime), dtype=np.float64)
-                A += j_val / r_mag * (dx ** 3)
+                A += j_val / r_mag * (dx**3)
 
     # In CGS-EMU: A = (1/c) * integral(j/r) dV
     return A / CONST.C
 
 
 @maxwell_cite(
-    585, 586,
-    part=4, chapter="Electromagnetic Momentum",
+    585,
+    586,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Calculate vector potential for infinite straight wire",
 )
@@ -260,8 +273,10 @@ def calc_vector_potential_wire(
 
 
 @maxwell_cite(
-    587, 588,
-    part=4, chapter="Electromagnetic Momentum",
+    587,
+    588,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Calculate vector potential for magnetic dipole",
 )
@@ -292,12 +307,14 @@ def calc_vector_potential_dipole(
     if r_mag < 1e-15:
         return np.zeros(3)
 
-    return np.cross(magnetic_moment, position) / (r_mag ** 3)
+    return np.cross(magnetic_moment, position) / (r_mag**3)
 
 
 @maxwell_cite(
-    588, 589,
-    part=4, chapter="Electromagnetic Momentum",
+    588,
+    589,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Calculate electromagnetic momentum density",
 )
@@ -330,8 +347,10 @@ def calc_momentum_density(
 
 
 @maxwell_cite(
-    589, 590,
-    part=4, chapter="Electromagnetic Momentum",
+    589,
+    590,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Calculate total electromagnetic momentum",
 )
@@ -367,8 +386,10 @@ def calc_total_momentum(
 
 
 @maxwell_cite(
-    590, 591,
-    part=4, chapter="Electromagnetic Momentum",
+    590,
+    591,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Verify electromagnetic momentum relations",
 )
@@ -406,15 +427,27 @@ def verify_momentum_relations(
 
     # Verify: for uniform B, A = (1/2) * B x r
     A_expected = 0.5 * np.cross(B_field, pos)
-    A_error = np.linalg.norm(A - A_expected) / np.linalg.norm(A_expected) if np.linalg.norm(A_expected) > 1e-15 else 0
+    A_error = (
+        np.linalg.norm(A - A_expected) / np.linalg.norm(A_expected)
+        if np.linalg.norm(A_expected) > 1e-15
+        else 0
+    )
 
     # Momentum density for test E and B
     E_test = np.array([100.0, 0.0, 0.0])
     g = calc_momentum_density(E_test, B_field)
 
     # Verify momentum density direction (perpendicular to both E and B)
-    g_perp_E = abs(np.dot(g, E_test)) / (np.linalg.norm(g) * np.linalg.norm(E_test)) if np.linalg.norm(g) > 1e-15 else 0
-    g_perp_B = abs(np.dot(g, B_field)) / (np.linalg.norm(g) * np.linalg.norm(B_field)) if np.linalg.norm(g) > 1e-15 else 0
+    g_perp_E = (
+        abs(np.dot(g, E_test)) / (np.linalg.norm(g) * np.linalg.norm(E_test))
+        if np.linalg.norm(g) > 1e-15
+        else 0
+    )
+    g_perp_B = (
+        abs(np.dot(g, B_field)) / (np.linalg.norm(g) * np.linalg.norm(B_field))
+        if np.linalg.norm(g) > 1e-15
+        else 0
+    )
 
     return {
         "B_field": B_field,
@@ -425,13 +458,17 @@ def verify_momentum_relations(
         "momentum_density": g,
         "g_perpendicular_to_E": bool(g_perp_E < tolerance),
         "g_perpendicular_to_B": bool(g_perp_B < tolerance),
-        "verified": bool(A_error < tolerance and g_perp_E < tolerance and g_perp_B < tolerance),
+        "verified": bool(
+            A_error < tolerance and g_perp_E < tolerance and g_perp_B < tolerance
+        ),
     }
 
 
 @maxwell_cite(
-    591, 592,
-    part=4, chapter="Electromagnetic Momentum",
+    591,
+    592,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Verify momentum conservation",
 )
@@ -471,7 +508,9 @@ def verify_momentum_conservation(
     total_change = np.linalg.norm(delta_g)
 
     conservation_error = np.linalg.norm(delta_g + mechanical_momentum)
-    relative_error = conservation_error / max(total_change, np.linalg.norm(mechanical_momentum), 1e-15)
+    relative_error = conservation_error / max(
+        total_change, np.linalg.norm(mechanical_momentum), 1e-15
+    )
 
     return {
         "g_initial": g_initial,
@@ -485,8 +524,16 @@ def verify_momentum_conservation(
 
 
 @maxwell_cite(
-    585, 586, 587, 588, 589, 590, 591, 592,
-    part=4, chapter="Electromagnetic Momentum",
+    585,
+    586,
+    587,
+    588,
+    589,
+    590,
+    591,
+    592,
+    part=4,
+    chapter="Electromagnetic Momentum",
     theory_class="maxwell_original",
     description="Complete electromagnetic momentum analysis",
 )

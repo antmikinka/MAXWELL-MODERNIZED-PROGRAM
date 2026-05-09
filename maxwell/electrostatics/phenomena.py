@@ -25,11 +25,10 @@ from typing import Callable
 
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.charge import PointCharge
 from maxwell.core.field import ElectricField
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # ENUMERATIONS AND DATA CLASSES
@@ -41,6 +40,7 @@ class ElectrificationType(Enum):
 
     Arts. 12-14: Vitreous and resinous electrification.
     """
+
     VITREOUS = "vitreous"  # Positive (+) - from glass rubbed with silk
     RESINOUS = "resinous"  # Negative (-) - from resin rubbed with fur
 
@@ -50,6 +50,7 @@ class PhenomenonClass(Enum):
 
     Arts. 12-19: Maxwell's classification scheme.
     """
+
     FRICTION = "friction"  # Electrification by rubbing
     INDUCTION = "induction"  # Electrification by influence
     CONTACT = "contact"  # Direct contact charging
@@ -70,6 +71,7 @@ class FrictionPair:
         material1_type: Type of electrification acquired by material1.
         material2_type: Type of electrification acquired by material2.
     """
+
     material1: str
     material2: str
     material1_type: ElectrificationType
@@ -87,6 +89,7 @@ class DischargePhenomenon:
         description: Description of the phenomenon.
         conditions: Conditions required for the discharge.
     """
+
     phenomenon_type: str
     description: str
     conditions: dict
@@ -104,6 +107,7 @@ class SparkProperties:
         breakdown_field: Electric field at breakdown (statvolt/cm).
         duration: Approximate duration (seconds).
     """
+
     length: float
     potential_difference: float
     breakdown_field: float
@@ -116,8 +120,11 @@ class SparkProperties:
 
 
 @maxwell_cite(
-    12, 13, 14,
-    part=1, chapter="Description of Phenomena",
+    12,
+    13,
+    14,
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Electrification by friction — rubbing produces electrification",
 )
@@ -222,8 +229,10 @@ def electrification_by_friction(
 
 
 @maxwell_cite(
-    12, 13,
-    part=1, chapter="Description of Phenomena",
+    12,
+    13,
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Vitreous electrification from glass and silk",
 )
@@ -259,8 +268,10 @@ def vitreous_electrification_glass_silk(
 
 
 @maxwell_cite(
-    13, 14,
-    part=1, chapter="Description of Phenomena",
+    13,
+    14,
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Resinous electrification from resin and fur",
 )
@@ -297,7 +308,8 @@ def resinous_electrification_resin_fur(
 
 @maxwell_cite(
     14,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Conservation of charge in friction electrification",
 )
@@ -333,8 +345,10 @@ def verify_friction_conservation(
 
 
 @maxwell_cite(
-    15, 16,
-    part=1, chapter="Description of Phenomena",
+    15,
+    16,
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Electrification by induction — influence without contact",
 )
@@ -403,7 +417,7 @@ def electrification_by_induction(
 
     # Induced dipole moment for conducting sphere
     # p = a^3 * E (in CGS)
-    induced_dipole = (conductor_radius ** 3) * E_center
+    induced_dipole = (conductor_radius**3) * E_center
 
     # Induced charges on near and far sides
     # Magnitude from method of images approximation
@@ -440,7 +454,8 @@ def electrification_by_induction(
 
 @maxwell_cite(
     15,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Induced charge distribution on conductor surface",
 )
@@ -485,8 +500,8 @@ def induced_surface_distribution(
         raise ValueError("Evaluation point must be outside inducing charge")
 
     # Maximum induced charge density (at theta = 0, facing the charge)
-    sigma_max = -3 * inducing_charge.q / (4 * np.pi * conductor_radius ** 2)
-    sigma_max *= (conductor_radius / r_mag)
+    sigma_max = -3 * inducing_charge.q / (4 * np.pi * conductor_radius**2)
+    sigma_max *= conductor_radius / r_mag
 
     # Cosine variation
     cos_theta = np.cos(evaluation_angle)
@@ -501,7 +516,8 @@ def induced_surface_distribution(
 
 @maxwell_cite(
     17,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Electrification by direct contact",
 )
@@ -582,7 +598,8 @@ def electrification_by_contact(
 
 @maxwell_cite(
     17,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Charge sharing between equal conductors",
 )
@@ -629,7 +646,8 @@ def charge_sharing_equal_spheres(
 
 @maxwell_cite(
     18,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Electric scintillation — discharge phenomena",
 )
@@ -723,7 +741,8 @@ def electric_scintillation(
 
 @maxwell_cite(
     18,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Corona discharge at sharp points",
 )
@@ -803,7 +822,8 @@ def corona_discharge_at_point(
 
 @maxwell_cite(
     19,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Properties of electric sparks",
 )
@@ -865,7 +885,8 @@ def electric_spark_properties(
 
 @maxwell_cite(
     19,
-    part=1, chapter="Description of Phenomena",
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Spark gap breakdown potential",
 )
@@ -936,8 +957,16 @@ def spark_gap_breakdown(
 
 
 @maxwell_cite(
-    12, 13, 14, 15, 16, 17, 18, 19,
-    part=1, chapter="Description of Phenomena",
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Classification of electrical phenomena",
 )
@@ -1077,8 +1106,16 @@ def phenomena_classifier(
 
 
 @maxwell_cite(
-    12, 13, 14, 15, 16, 17, 18, 19,
-    part=1, chapter="Description of Phenomena",
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    part=1,
+    chapter="Description of Phenomena",
     theory_class="maxwell_original",
     description="Complete phenomenological description",
 )

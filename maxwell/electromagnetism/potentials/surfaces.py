@@ -24,10 +24,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -69,12 +70,16 @@ class EquipotentialSurface:
         return self.potential_value / self.current
 
     @maxwell_cite(
-        486, 487,
-        part=4, chapter="Equipotential Surfaces",
+        486,
+        487,
+        part=4,
+        chapter="Equipotential Surfaces",
         theory_class="maxwell_original",
         description="Check if point lies on equipotential surface",
     )
-    def contains_point(self, solid_angle_at_point: float, tolerance: float = 1e-6) -> bool:
+    def contains_point(
+        self, solid_angle_at_point: float, tolerance: float = 1e-6
+    ) -> bool:
         """
         Check if a point lies on this equipotential surface.
 
@@ -94,8 +99,10 @@ class EquipotentialSurface:
         return abs(solid_angle_at_point - self.solid_angle) < tolerance
 
     @maxwell_cite(
-        486, 487,
-        part=4, chapter="Equipotential Surfaces",
+        486,
+        487,
+        part=4,
+        chapter="Equipotential Surfaces",
         theory_class="maxwell_original",
         description="Calculate potential at helicoidal surface point",
     )
@@ -161,8 +168,16 @@ class CurrentLoopPotential:
         if self.radius <= 0:
             raise ValueError(f"Radius must be positive, got {self.radius}")
 
-        self.center = np.asarray(self.center, dtype=np.float64) if self.center is not None else np.zeros(3)
-        self.normal = np.asarray(self.normal, dtype=np.float64) if self.normal is not None else np.array([0.0, 0.0, 1.0])
+        self.center = (
+            np.asarray(self.center, dtype=np.float64)
+            if self.center is not None
+            else np.zeros(3)
+        )
+        self.normal = (
+            np.asarray(self.normal, dtype=np.float64)
+            if self.normal is not None
+            else np.array([0.0, 0.0, 1.0])
+        )
 
         # Normalize normal vector
         norm = np.linalg.norm(self.normal)
@@ -170,8 +185,10 @@ class CurrentLoopPotential:
             self.normal = self.normal / norm
 
     @maxwell_cite(
-        486, 487,
-        part=4, chapter="Equipotential Surfaces",
+        486,
+        487,
+        part=4,
+        chapter="Equipotential Surfaces",
         theory_class="maxwell_original",
         description="Calculate solid angle subtended by loop at point",
     )
@@ -209,15 +226,15 @@ class CurrentLoopPotential:
         # On-axis formula (exact on axis, approximate nearby)
         if r_perp < 1e-10 * self.radius:
             # On axis: omega = 2*pi * (1 - z/sqrt(z² + a²))
-            R = np.sqrt(z ** 2 + self.radius ** 2)
+            R = np.sqrt(z**2 + self.radius**2)
             omega = 2.0 * np.pi * (1.0 - z / R)
         else:
             # Off-axis: use approximate formula
             # For r_perp >> a, loop looks like dipole
             # omega ≈ pi*a²*z / (r_perp² + z²)^(3/2)  [dipole approximation]
-            R3 = (r_perp ** 2 + z ** 2) ** 1.5
+            R3 = (r_perp**2 + z**2) ** 1.5
             if R3 > 1e-15:
-                omega = np.pi * self.radius ** 2 * z / R3
+                omega = np.pi * self.radius**2 * z / R3
             else:
                 omega = 0.0
 
@@ -226,7 +243,8 @@ class CurrentLoopPotential:
 
     @maxwell_cite(
         486,
-        part=4, chapter="Equipotential Surfaces",
+        part=4,
+        chapter="Equipotential Surfaces",
         theory_class="maxwell_original",
         description="Calculate magnetic potential at point",
     )
@@ -250,7 +268,8 @@ class CurrentLoopPotential:
 
     @maxwell_cite(
         487,
-        part=4, chapter="Equipotential Surfaces",
+        part=4,
+        chapter="Equipotential Surfaces",
         theory_class="maxwell_original",
         description="Calculate magnetic field from potential gradient",
     )
@@ -285,8 +304,10 @@ class CurrentLoopPotential:
 
 
 @maxwell_cite(
-    486, 487,
-    part=4, chapter="Equipotential Surfaces",
+    486,
+    487,
+    part=4,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
     description="Calculate solid angle of circular loop: omega = 2*pi*(1 - cos(alpha))",
 )
@@ -332,16 +353,16 @@ def calc_solid_angle_circular_loop(
 
     if r < 1e-10 * a:
         # On axis: exact formula
-        R = np.sqrt(z ** 2 + a ** 2)
+        R = np.sqrt(z**2 + a**2)
         if R > 0:
             omega = 2.0 * np.pi * (1.0 - z / R)
         else:
             omega = 2.0 * np.pi  # At center, full half-space
     else:
         # Off axis: dipole approximation
-        R3 = (r ** 2 + z ** 2) ** 1.5
+        R3 = (r**2 + z**2) ** 1.5
         if R3 > 1e-15:
-            omega = np.pi * a ** 2 * z / R3
+            omega = np.pi * a**2 * z / R3
         else:
             omega = 0.0
 
@@ -350,7 +371,8 @@ def calc_solid_angle_circular_loop(
 
 @maxwell_cite(
     486,
-    part=4, chapter="Equipotential Surfaces",
+    part=4,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
     description="Calculate magnetic potential from solid angle: Omega = I*omega",
 )
@@ -388,7 +410,8 @@ def calc_magnetic_potential(
 
 @maxwell_cite(
     487,
-    part=4, chapter="Equipotential Surfaces",
+    part=4,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
     description="Calculate potential of magnetic dipole",
 )
@@ -435,12 +458,14 @@ def calc_dipole_potential(
     if r_mag < 1e-15:
         return 0.0  # At dipole (singularity)
 
-    return np.dot(magnetic_moment, position) / (r_mag ** 3)
+    return np.dot(magnetic_moment, position) / (r_mag**3)
 
 
 @maxwell_cite(
-    486, 487,
-    part=4, chapter="Equipotential Surfaces",
+    486,
+    487,
+    part=4,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
     description="Calculate field of magnetic dipole",
 )
@@ -488,12 +513,14 @@ def calc_dipole_field(
     m_dot_r = np.dot(magnetic_moment, r_hat)
 
     # H = (3(m·r_hat)r_hat - m) / r³
-    return (3.0 * m_dot_r * r_hat - magnetic_moment) / (r_mag ** 3)
+    return (3.0 * m_dot_r * r_hat - magnetic_moment) / (r_mag**3)
 
 
 @maxwell_cite(
-    486, 487,
-    part=4, chapter="Equipotential Surfaces",
+    486,
+    487,
+    part=4,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
     description="Verify equipotential surface properties",
 )
@@ -532,7 +559,7 @@ def verify_equipotential_surfaces(
     exact = loop.potential_at(np.array([0, 0, z_far]))
 
     # Dipole moment of loop: m = I * area = I * pi * a²
-    m = np.array([0, 0, current * np.pi * loop_radius ** 2])
+    m = np.array([0, 0, current * np.pi * loop_radius**2])
     dipole_approx = calc_dipole_potential(m, np.array([0, 0, z_far]))
 
     dipole_error = abs(exact - dipole_approx) / abs(exact) if exact != 0 else 0
@@ -542,9 +569,13 @@ def verify_equipotential_surfaces(
     field_z = loop.field_at(np.array([0, 0, z_test]))
 
     # Analytical field on axis: H_z = 2*pi*I*a² / (z² + a²)^(3/2)
-    H_analytical = 2.0 * np.pi * current * loop_radius ** 2 / (z_test ** 2 + loop_radius ** 2) ** 1.5
+    H_analytical = (
+        2.0 * np.pi * current * loop_radius**2 / (z_test**2 + loop_radius**2) ** 1.5
+    )
 
-    field_error = abs(field_z[2] - H_analytical) / H_analytical if H_analytical != 0 else 0
+    field_error = (
+        abs(field_z[2] - H_analytical) / H_analytical if H_analytical != 0 else 0
+    )
 
     verified = dipole_error < tolerance and field_error < tolerance
 
@@ -562,8 +593,10 @@ def verify_equipotential_surfaces(
 
 
 @maxwell_cite(
-    486, 487,
-    part=4, chapter="Equipotential Surfaces",
+    486,
+    487,
+    part=4,
+    chapter="Equipotential Surfaces",
     theory_class="maxwell_original",
     description="Complete equipotential surface analysis",
 )
@@ -595,12 +628,12 @@ def analyze_equipotential_surfaces(
     loop = CurrentLoopPotential(current=current, radius=loop_radius)
 
     # Dipole moment
-    dipole_moment = current * np.pi * loop_radius ** 2
+    dipole_moment = current * np.pi * loop_radius**2
 
     result = {
         "current": current,
         "loop_radius": loop_radius,
-        "loop_area": np.pi * loop_radius ** 2,
+        "loop_area": np.pi * loop_radius**2,
         "dipole_moment": dipole_moment,
         "potential_at_center": loop.potential_at(np.array([0, 0, 0])),
         "field_on_axis_at_1cm": loop.field_at(np.array([0, 0, 1.0])),
