@@ -21,7 +21,7 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
+from typing import Any, Callable
 
 import numpy as np
 
@@ -425,7 +425,7 @@ def torque_on_shell(
 def shell_equilibrium_orientation(
     shell: MagneticShell,
     H_field: np.ndarray,
-) -> dict[str, any]:
+) -> dict[str, Any]:
     """
     Find equilibrium orientation of shell in magnetic field.
 

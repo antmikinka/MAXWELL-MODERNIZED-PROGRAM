@@ -58,18 +58,40 @@ jobs:
         run: |
           python -c "
           import numpy as np
-          from maxwell.math.vector_operators import gradient, divergence, curl, laplacian
+          from maxwell.math.vector_operators import (
+              gradient,
+              divergence,
+              curl,
+              laplacian,
+              identity_curl_grad_zero,
+              identity_div_curl_zero,
+          )
 
-          # div(curl(F)) = 0 for any smooth vector field F
-          # Test with polynomial field
-          def Fx(x, y, z): return x**2 * y
-          def Fy(x, y, z): return y**2 * z
-          def Fz(x, y, z): return z**2 * x
+          # curl(grad phi) = 0 for any scalar field
+          def phi(x, y, z):
+              return x**3 + y**3 + z**3
 
-          # Curl of gradient = 0 for any scalar field
-          def phi(x, y, z): return x**3 + y**3 + z**3
-          grad_phi = gradient(phi)
-          # The gradient of a scalar should be irrotational
+          # Verify at multiple points
+          for pt in [(1.0, 0.0, 0.0), (1.0, 1.0, 1.0), (2.0, -1.0, 0.5)]:
+              assert identity_curl_grad_zero(phi, *pt), f'curl(grad phi) != 0 at {pt}'
+
+          # div(curl F) = 0 for any vector field F
+          def Fx(x, y, z):
+              return x**2 * y
+
+          def Fy(x, y, z):
+              return y**2 * z
+
+          def Fz(x, y, z):
+              return z**2 * x
+
+          for pt in [(1.0, 1.0, 1.0), (2.0, 0.5, 1.5)]:
+              assert identity_div_curl_zero(Fx, Fy, Fz, *pt), f'div(curl F) != 0 at {pt}'
+
+          # Also verify gradient returns correct shape
+          g = gradient(phi, 1.0, 1.0, 1.0)
+          assert len(g) == 3, f'gradient returned {len(g)} components'
+
           print('Vector calculus identities: PASS')
           "
 

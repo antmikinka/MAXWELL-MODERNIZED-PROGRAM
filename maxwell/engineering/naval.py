@@ -27,6 +27,7 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 import numpy as np
 
@@ -454,7 +455,7 @@ def quadrantal_correctors(
     coefficient_D: float,
     coefficient_E: float,
     compass_diameter: float,
-) -> dict[str, any]:
+) -> dict[str, Any]:
     """
     Calculate soft iron corrector placement for quadrantal deviation.
 
@@ -514,7 +515,7 @@ def simulate_compass_swinging(
     true_headings: list[float],
     latitude: float,
     ship_params: dict,
-) -> dict[str, any]:
+) -> dict[str, Any]:
     """
     Simulate the compass swinging procedure to determine deviation.
 
@@ -638,7 +639,7 @@ def _fit_deviation_coefficients(measurements: list[dict]) -> dict[str, float]:
     theory_class="maxwell_original",
     description="Verify naval magnetism calculations",
 )
-def verify_naval_magnetism() -> dict[str, any]:
+def verify_naval_magnetism() -> dict[str, Any]:
     """
     Verify naval magnetism calculations.
 
