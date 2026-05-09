@@ -72,8 +72,13 @@ symbolic = [
 accel = [
     "jax>=0.4.0",
 ]
+ui = [
+    "streamlit>=1.20.0",
+    "sympy>=1.12",
+    "matplotlib>=3.5.0",
+]
 all = [
-    "maxwell[dev,enhanced,viz,symbolic,accel]",
+    "maxwell[dev,enhanced,viz,symbolic,accel,ui]",
 ]
 
 [tool.pytest.ini_options]
