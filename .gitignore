@@ -1,44 +1,124 @@
-# Python
+# ============================================================
+# Python bytecode & caches
+# ============================================================
 __pycache__/
 *.py[cod]
 *$py.class
+
+# ============================================================
+# Packaging & distribution
+# ============================================================
 *.egg-info/
 .eggs/
 dist/
 build/
 *.egg
+*.whl
+*.tar.gz
 
+# ============================================================
 # Virtual environments
+# ============================================================
 .venv/
 venv/
 env/
+.env
+.env.*
 
-# Coverage
+# ============================================================
+# Type checkers & linters (caches contain local paths)
+# ============================================================
+.mypy_cache/
+.pytype/
+.pyre/
+.ruff_cache/
+
+# ============================================================
+# Testing & coverage
+# ============================================================
 .coverage
 coverage.xml
 htmlcov/
+.pytest_cache/
+.tox/
+.nox/
 
-# IDE
+# ============================================================
+# IDE & editor
+# ============================================================
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
-# OS
+# ============================================================
+# OS artifacts
+# ============================================================
 .DS_Store
 Thumbs.db
+Desktop.ini
+ehthumbs.db
 
-# Verification artifacts
+# ============================================================
+# Databases & runtime data (never commit these)
+# ============================================================
+chroma_data/
+*.sqlite3
+*.sqlite
+*.db
+
+# ============================================================
+# Secrets, credentials & keys (CRITICAL)
+# ============================================================
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.pypirc
+.npmrc
+pip.conf
+credentials.json
+secrets.json
+*.secret
+
+# ============================================================
+# Junk / accidental files (e.g. pip install without quotes)
+# ============================================================
+=*
+
+# ============================================================
+# Scratch & helper scripts (hardcoded local paths)
+# ============================================================
+_write_files.py
+
+# ============================================================
+# Claude Code / AI agent artifacts (contain local paths)
+# ============================================================
+.claude/
+
+# ============================================================
+# Security audit reports (contain C:\Users\ paths — DO NOT COMMIT)
+# ============================================================
+SECURITY_AUDIT_*.md
+
+# ============================================================
+# Planning / agent docs with potential local paths
+# ============================================================
+agents/
+
+# ============================================================
+# Verification & registry artifacts (large, generated)
+# ============================================================
 verification_report.md
 verification_report.json
 equation_registry.json
 test_results.json
 coverage_baseline.json
 
-# Runtime data
-chroma_data/
-
-# PyPI build artifacts
-*.whl
-*.tar.gz
-
+# ============================================================
 # Example output (generated PNGs)
+# ============================================================
 examples/output/
