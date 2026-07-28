@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    {name = "Anthony Mikinka", email = "anthony.mikinka@gmail.com"},
+    {name = "Anthony Mikinka", email = "67480807+antmikinka@users.noreply.github.com"},
     {name = "Maxwell Modernization Project"},
 ]
 keywords = [
@@ -94,11 +94,11 @@ markers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/maxwell-treatise/modernized-program"
-Documentation = "https://github.com/maxwell-treatise/modernized-program#readme"
-Repository = "https://github.com/maxwell-treatise/modernized-program.git"
-"Bug Tracker" = "https://github.com/maxwell-treatise/modernized-program/issues"
-Changelog = "https://github.com/maxwell-treatise/modernized-program/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM"
+Documentation = "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM#readme"
+Repository = "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM.git"
+"Bug Tracker" = "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/issues"
+Changelog = "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -85,6 +85,7 @@ jobs:
 
   smoke-test-testpypi:
     needs: publish-testpypi
+    runs-on: ubuntu-latest
     if: ${{ needs.publish-testpypi.result == 'success' }}
     steps:
       - name: Set up Python
