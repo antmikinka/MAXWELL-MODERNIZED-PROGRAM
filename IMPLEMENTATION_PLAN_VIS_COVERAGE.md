@@ -1306,12 +1306,12 @@ Tasks 1-4 can proceed in parallel. Task 5 depends on Tasks 1-4 completing. Task 
 
 | Deliverable | File Path | Estimated Tests | Lines (est.) |
 |-------------|-----------|-----------------|--------------|
-| Thermal gradients tests | `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\tests\test_vis_thermal_gradients.py` | 28 | ~280 |
-| Molecular vortices tests | `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\tests\test_vis_molecular_vortices.py` | 22 | ~220 |
-| Helicoidal potentials tests | `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\tests\test_vis_helicoidal_potentials.py` | 21 | ~210 |
-| Electrotonic state module | `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\maxwell\vis\electrotonic_state.py` | -- | ~400 |
-| Electrotonic state tests | `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\tests\test_vis_electrotonic_state.py` | 28 | ~280 |
-| Rendering validation tests | `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\tests\test_vis_rendering.py` | 15 | ~180 |
+| Thermal gradients tests | `./tests\test_vis_thermal_gradients.py` | 28 | ~280 |
+| Molecular vortices tests | `./tests\test_vis_molecular_vortices.py` | 22 | ~220 |
+| Helicoidal potentials tests | `./tests\test_vis_helicoidal_potentials.py` | 21 | ~210 |
+| Electrotonic state module | `./maxwell\vis\electrotonic_state.py` | -- | ~400 |
+| Electrotonic state tests | `./tests\test_vis_electrotonic_state.py` | 28 | ~280 |
+| Rendering validation tests | `./tests\test_vis_rendering.py` | 15 | ~180 |
 | **Total new tests** | | **~114** | **~1570** |
 
 ---

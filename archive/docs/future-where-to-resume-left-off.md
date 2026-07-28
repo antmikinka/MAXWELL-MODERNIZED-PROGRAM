@@ -12,7 +12,7 @@
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │  STAGE 1: OCR Processing (✅ COMPLETE)                              │
-│  Location: C:\Users\antmi\Downloads\maxwell_em_processor            │
+│  Location: maxwell_em_processor            │
 │  Tool: Mathpix API → JSON output per article/chapter                │
 │  Input: Maxwell PDF volumes (Vol 1 & 2)                             │
 │  Output: 112 JSON files, 96%+ OCR confidence                       │

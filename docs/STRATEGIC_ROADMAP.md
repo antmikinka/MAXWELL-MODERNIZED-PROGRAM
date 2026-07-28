@@ -71,7 +71,7 @@ Phase 8:         Performance & Production Hardening (v1.0.0)
 
 ### 2.1 CITATION.cff File
 
-**File:** `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\CITATION.cff`
+**File:** `./CITATION.cff`
 
 ```yaml
 cff-version: 1.2.0
@@ -112,7 +112,7 @@ references:
 
 ### 2.2 CHANGELOG.md Enhancement
 
-**File:** `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\CHANGELOG.md`
+**File:** `./CHANGELOG.md`
 
 The current CHANGELOG has a single entry for v0.1.0. It needs to be expanded to follow Keep a Changelog conventions with clear separation of Added/Changed/Fixed/Removed categories across the project history. The CHANGELOG must also link to the CHANGELOG URL in `pyproject.toml` (line 71).
 
@@ -123,7 +123,7 @@ The current CHANGELOG has a single entry for v0.1.0. It needs to be expanded to 
 
 ### 2.3 README Badge Integration
 
-**File:** `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\README.md`
+**File:** `./README.md`
 
 Add the following badge block immediately after the `# Maxwell Modernized` header:
 
@@ -245,7 +245,7 @@ def test_version_consistency():
 
 ### 2.7 MANIFEST.in Audit
 
-**File:** `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\MANIFEST.in`
+**File:** `./MANIFEST.in`
 
 The current MANIFEST.in exists (471 bytes). Verify it includes:
 - `LICENSE`
@@ -257,7 +257,7 @@ The current MANIFEST.in exists (471 bytes). Verify it includes:
 
 ### 2.8 PyPI Classifier Updates
 
-**File:** `C:\Users\antmi\downloads\MAXWELL-MODERNIZED-PROGRAM\pyproject.toml`
+**File:** `./pyproject.toml`
 
 Current classifiers say `Development Status :: 3 - Alpha`. For v0.1.0 PyPI release, this is appropriate. For v1.0.0, update to `Development Status :: 4 - Beta`.
 
