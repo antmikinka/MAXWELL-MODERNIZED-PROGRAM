@@ -44,6 +44,14 @@ def test_maxwell_version_format():
     ), f"Version '{version}' does not follow semver format"
 
 
+def test_pypi_distribution_name():
+    """PyPI name is maxwell-modernized; import package stays maxwell."""
+    content = _read("pyproject.toml")
+    match = re.search(r'^name\s*=\s*"([^"]+)"', content, re.MULTILINE)
+    assert match and match.group(1) == "maxwell-modernized"
+    assert maxwell.__name__ == "maxwell"
+
+
 def test_version_matches_pyproject():
     """maxwell.__version__ must match pyproject.toml version."""
     content = _read("pyproject.toml")
@@ -61,7 +69,7 @@ def test_version_matches_metadata():
     try:
         from importlib.metadata import version as meta_version
 
-        meta_ver = meta_version("maxwell")
+        meta_ver = meta_version("maxwell-modernized")
         assert maxwell.__version__ == meta_ver, (
             f"Version mismatch: __version__={maxwell.__version__!r}, "
             f"metadata={meta_ver!r}"

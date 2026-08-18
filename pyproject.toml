@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "maxwell"
+name = "maxwell-modernized"
 version = "1.0.0"
 description = "A computational implementation of Maxwell's 1873 Treatise on Electricity and Magnetism — all 866 articles, CGS-EMU units, citation-traceable."
 readme = "README.md"

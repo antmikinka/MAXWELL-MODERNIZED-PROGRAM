@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - README states this repo is part 3 of 3 and the product, with links to Maxwell-Latex-Books and maxwell-em-processor
+- PyPI distribution name is `maxwell-modernized` (`import maxwell` unchanged). `maxwell` is taken on PyPI by an unrelated package.
 - Adopted split licensing: MIT for software, CC BY 4.0 for scholarly content, public-domain notice for Maxwell's 1873 Treatise text
 - Added `LICENSE-CONTENT` (CC BY 4.0) and directory license notes under `docs/`, `archive/`, and `paper/`
 - README, `CITATION.cff`, `.zenodo.json`, `CONTRIBUTING.md`, and `paper/paper.md` now describe the split

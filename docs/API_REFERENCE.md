@@ -571,7 +571,7 @@ Subpackage `constitutive/`:
 ### maxwell.jax — JAX GPU/TPU Acceleration
 
 > GPU/TPU-accelerated, auto-differentiable implementations. All adapters preserve CGS-EMU units and citation traceability.
-> Install with `pip install maxwell[accel]`. See `maxwell/jax/README.md` for full documentation.
+> Install with `pip install maxwell-modernized[accel]`. See `maxwell/jax/README.md` for full documentation.
 
 #### Core Adapters
 

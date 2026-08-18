@@ -990,7 +990,7 @@ The visualization strategy maps 17 specific visual outputs across all six Parts.
 - [x] Optional dependencies: dev, enhanced, viz, symbolic, accel, all
 - [x] PyPI publish workflow configured and tested
 - [x] Smoke test workflow after publish
-- [x] PyPI project URL: https://pypi.org/p/maxwell
+- [ ] PyPI project URL: https://pypi.org/p/maxwell-modernized (name reserved in metadata; not uploaded yet)
 - [x] Package imports verified: maxwell, PointCharge, LorentzForce, etc.
 
 ### Remaining PyPI Considerations

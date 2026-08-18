@@ -2,11 +2,14 @@
 
 ## Installation
 
+### Q: Why is it `pip install maxwell-modernized` but `import maxwell`?
+A: `maxwell` is already taken on PyPI by an unrelated linguistics library. The distribution name is `maxwell-modernized`. The Python import stays `maxwell`.
+
 ### Q: Which Python versions are supported?
 A: Python 3.10, 3.11, 3.12, and 3.13.
 
 ### Q: How do I install with GPU support?
-A: `pip install maxwell[accel]` installs JAX for GPU/TPU acceleration.
+A: `pip install maxwell-modernized[accel]` installs JAX for GPU/TPU acceleration.
 
 ### Q: What are the optional dependency groups?
 A:
@@ -57,10 +60,10 @@ A:
 A: Ensure you installed the correct extras: `pip install -e ".[dev,accel]"` for the full test suite.
 
 ### Q: JAX tests are skipped
-A: Install the accel extra: `pip install maxwell[accel]`.
+A: Install the accel extra: `pip install maxwell-modernized[accel]`.
 
 ### Q: Import error on maxwell.jax
-A: JAX is an optional dependency. Install with `pip install maxwell[accel]`.
+A: JAX is an optional dependency. Install with `pip install maxwell-modernized[accel]`.
 
 ## Licensing
 

@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/maxwell
+      url: https://pypi.org/p/maxwell-modernized
     permissions:
       id-token: write
     steps:
@@ -98,7 +98,7 @@ jobs:
 
       - name: Install from Test PyPI
         run: |
-          pip install --index-url https://test.pypi.org/simple/ maxwell
+          pip install --index-url https://test.pypi.org/simple/ maxwell-modernized
 
       - name: Smoke test imports
         run: |
@@ -121,7 +121,7 @@ jobs:
 
       - name: Install from PyPI
         run: |
-          pip install maxwell[accel]
+          pip install maxwell-modernized[accel]
 
       - name: Smoke test imports
         run: |

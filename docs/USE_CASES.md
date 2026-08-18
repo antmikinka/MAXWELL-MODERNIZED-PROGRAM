@@ -386,7 +386,7 @@ print(f"All Maxwell equations satisfied: {verified}")
 
 ### 7. JAX GPU/TPU Acceleration & Advanced Computation
 
-The `maxwell.jax` package enables high-performance computing workflows that are not possible with the standard NumPy-based library. Install with `pip install maxwell[accel]`.
+The `maxwell.jax` package enables high-performance computing workflows that are not possible with the standard NumPy-based library. Install with `pip install maxwell-modernized[accel]`.
 
 #### GPU-Accelerated Batch Field Evaluation
 

@@ -85,7 +85,7 @@ Maxwell died in 1879. The Treatise text is **public domain worldwide**. This mea
 | Trigger | Relevance |
 |---------|-----------|
 | **JOSS submission planned** | JOSS requires OSI-approved software license + clear paper license. Split licensing is effectively mandatory. |
-| **PyPI publication** | `pip install maxwell` reads the license from `pyproject.toml`. Must be a valid software SPDX identifier. |
+| **PyPI publication** | `pip install maxwell-modernized` reads the license from `pyproject.toml`. Must be a valid software SPDX identifier. |
 | **Repo going public** | Once public, the license is the first thing contributors and users see. Getting it right before publication avoids confusing history. |
 | **Security audit complete** | The repo has been hardened (no secrets, no PII). Licensing is the last governance item before publication. |
 

@@ -32,14 +32,14 @@ The project serves two audiences:
 
 ### Installation
 
-From PyPI (recommended):
+From PyPI (recommended). The distribution name is `maxwell-modernized`; the import stays `maxwell`.
 
 ```bash
-pip install maxwell           # Core library
-pip install maxwell[viz]      # With visualization support
-pip install maxwell[dev]      # With development tools
-pip install maxwell[accel]    # With JAX GPU/TPU acceleration
-pip install maxwell[all]      # Everything
+pip install maxwell-modernized           # Core library
+pip install maxwell-modernized[viz]      # With visualization support
+pip install maxwell-modernized[dev]      # With development tools
+pip install maxwell-modernized[accel]    # With JAX GPU/TPU acceleration
+pip install maxwell-modernized[all]      # Everything
 ```
 
 From source:
@@ -196,7 +196,7 @@ points = jax.numpy.linspace(-10, 10, 1000).reshape(-1, 3)
 E_batch = charge.field_at_batched(points)  # shape (1000, 3)
 ```
 
-Install with `pip install maxwell[accel]` for the JAX runtime. See `maxwell/jax/README.md` for the complete adapter registry.
+Install with `pip install maxwell-modernized[accel]` for the JAX runtime. See `maxwell/jax/README.md` for the complete adapter registry.
 
 ## Documentation
 

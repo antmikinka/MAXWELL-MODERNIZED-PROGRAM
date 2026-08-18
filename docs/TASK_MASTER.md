@@ -1918,7 +1918,7 @@
 | Maxwell articles covered | 866 / 866 (100%) |
 | @maxwell_cite decorator usages | 1,889 |
 | PyPI version | 0.1.0 |
-| PyPI URL | https://pypi.org/p/maxwell |
+| PyPI URL | https://pypi.org/p/maxwell-modernized (not uploaded yet) |
 
 ---
 

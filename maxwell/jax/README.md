@@ -1301,7 +1301,7 @@ All JAX implementations maintain the `@maxwell_cite` decorator from the NumPy ve
 
 If you see `ModuleNotFoundError: No module named 'jax'`, install the accel extra:
 ```bash
-pip install maxwell[accel]
+pip install maxwell-modernized[accel]
 ```
 
 ### Float64 not enabled
@@ -1328,8 +1328,8 @@ If no GPU appears, verify:
 
 All JAX modules require the `accel` extra. The core library works without JAX:
 ```bash
-pip install maxwell        # Core only (NumPy)
-pip install maxwell[accel] # With JAX
+pip install maxwell-modernized        # Core only (NumPy)
+pip install maxwell-modernized[accel] # With JAX
 ```
 
 ### Pytree registration errors
