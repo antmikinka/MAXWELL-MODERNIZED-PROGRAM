@@ -122,3 +122,6 @@ coverage_baseline.json
 # Example output (generated PNGs)
 # ============================================================
 examples/output/
+
+# Native TeX raster cache for page verifier pane 2
+page_verifier/data/latex_cache/

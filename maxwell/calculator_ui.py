@@ -388,13 +388,13 @@ def _render_equation_calculator(registry: EquationRegistry) -> None:
                         # Units display
                         st.caption("All results in CGS units.")
 
-                # Preset examples
+                # Preset examples (keys must be unique per formula tab)
                 if entry.examples:
                     st.subheader("Load Example")
                     for idx, ex in enumerate(entry.examples):
                         if st.button(
                             f"{ex.name}: {ex.description}",
-                            key=f"example_{selected_set}_{idx}",
+                            key=f"example_{selected_set}_{formula.equation_id}_{idx}",
                         ):
                             _load_example_to_session(ex, selected_set, formula)
 
