@@ -3,9 +3,7 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
-  push:
-    branches:
-      - feat/pypi-package
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -40,7 +38,7 @@ jobs:
 
   publish:
     needs: build
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -108,7 +106,7 @@ jobs:
 
   smoke-test:
     needs: publish
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
