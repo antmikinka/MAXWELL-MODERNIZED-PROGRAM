@@ -337,7 +337,7 @@ isort maxwell/ tests/
 
 ## License
 
-- **Software** (Python library, tests, scripts, CI/CD, page-verifier application, agent definitions, notebooks): [MIT License](LICENSE)
+- **Software** (Python library, tests, scripts, CI/CD, notebooks): [MIT License](LICENSE)
 - **Content** (documentation, architecture maps, figures, curated interpretive material): [CC BY 4.0](LICENSE-CONTENT)
 - **Maxwell's original Treatise text** (1873): public domain. This project does not claim copyright in Maxwell's words, mechanical OCR of those words, or mathematical facts.
 

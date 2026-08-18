@@ -67,7 +67,7 @@ A: JAX is an optional dependency. Install with `pip install maxwell[accel]`.
 ### Q: What license is this project under?
 A: Split licensing:
 
-- **Software** (the Python library, tests, scripts, CI, page-verifier app, notebooks): [MIT License](../LICENSE)
+- **Software** (the Python library, tests, scripts, CI, notebooks): [MIT License](../LICENSE)
 - **Scholarly content** (documentation, architecture maps, figures): [CC BY 4.0](../LICENSE-CONTENT)
 - **Maxwell's 1873 Treatise text**: public domain. This project does not claim copyright in Maxwell's words.
 

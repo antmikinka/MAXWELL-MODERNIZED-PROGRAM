@@ -1,7 +1,7 @@
 # License for `docs/`
 
-Documentation, figures, and curated page-map PDFs in this directory are
-licensed under [Creative Commons Attribution 4.0 International](../LICENSE-CONTENT)
+Documentation and figures in this directory are licensed under
+[Creative Commons Attribution 4.0 International](../LICENSE-CONTENT)
 (CC BY 4.0).
 
 Software in this repository is licensed under the [MIT License](../LICENSE).

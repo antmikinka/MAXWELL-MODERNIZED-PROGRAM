@@ -4,7 +4,6 @@ in this repository. We are working toward a preprint; that work is not
 part of this repository and is not a citable article yet.
 
 Software in this repository — the Python library, tests, scripts, CI/CD
-definitions, page-verifier application (including HTML/CSS/JS), agent
 definitions, and notebooks — is licensed under the MIT License (see LICENSE).
 
 Project governance files (CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md)
@@ -16,8 +15,8 @@ original words, in mechanical OCR reproductions of those words, or in
 mathematical facts. New annotations, commentary, arrangement, and analysis
 layered on that public-domain source are licensed under the terms below.
 
-Generated build and cache artifacts (including page_verifier/data/latex_cache)
-are not a curated scholarly dataset and are not licensed as content.
+Generated build and cache artifacts are not a curated scholarly dataset
+and are not licensed as content.
 
 ---
 

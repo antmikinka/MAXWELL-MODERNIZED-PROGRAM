@@ -207,9 +207,8 @@ pytest tests/test_jax_adapter.py -v
 
 This repository uses split licensing. By contributing, you agree that:
 
-- **Software** contributions (Python, tests, scripts, CI, page-verifier application
-  code, agent definitions, notebooks) are licensed under the
-  [MIT License](LICENSE).
+- **Software** contributions (Python, tests, scripts, CI, notebooks) are licensed
+  under the [MIT License](LICENSE).
 - **Scholarly content** contributions (documentation, architecture maps,
   figures, curated interpretive material) are licensed under
   [CC BY 4.0](LICENSE-CONTENT).

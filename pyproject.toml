@@ -7,8 +7,8 @@ name = "maxwell"
 version = "1.0.0"
 description = "A computational implementation of Maxwell's 1873 Treatise on Electricity and Magnetism — all 866 articles, CGS-EMU units, citation-traceable."
 readme = "README.md"
-# Software license for PyPI / SPDX. Documentation, paper, and scholarly
-# content are CC BY 4.0 (see LICENSE-CONTENT). Maxwell 1873 text is PD.
+# Software license for PyPI / SPDX. Released documentation is CC BY 4.0
+# (see LICENSE-CONTENT). Maxwell 1873 text is PD. No paper is included.
 license = "MIT"
 requires-python = ">=3.10"
 authors = [

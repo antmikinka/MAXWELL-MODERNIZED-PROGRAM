@@ -315,9 +315,8 @@ You *can*, but it will:
 ### "Does CC BY 4.0 on the content affect the code?"
 
 No. The licenses are cleanly separated by directory. Code in `maxwell/`, `tests/`,
-etc. is MIT. Content in `docs/`, `paper/`, `archive/` is CC BY 4.0. There is no
-overlap. The equation registry is a special case: the *equations* are mathematical
-facts (not copyrightable), but the *registry structure and annotations* are CC BY 4.0.
+etc. is MIT. Released content in `docs/` and `archive/` is CC BY 4.0. There is no
+overlap. A preprint is being worked toward off-repo and is not part of this tree.
 
 ### "What about Maxwell's original text?"
 

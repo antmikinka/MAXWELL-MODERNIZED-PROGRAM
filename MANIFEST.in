@@ -9,7 +9,7 @@ recursive-include notebooks *.ipynb
 recursive-include maxwell *.py *.json *.md
 recursive-include tests *.py
 
-# Scholarly docs, paper, and archive live in the git repository under
+# Released scholarly docs and archive live in the git repository under
 # CC BY 4.0 (LICENSE-CONTENT). They are not part of the Python sdist.
 prune docs
 prune paper
