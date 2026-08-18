@@ -204,11 +204,10 @@ The `archive/docs/` directory contains 24 legacy development documents (architec
 
 ## Citing This Work
 
-If you use Maxwell Modernized in your research, please cite it using the
-[CITATION.cff](CITATION.cff) file provided with this repository. You can
-import the citation directly from GitHub or use the following BibTeX entry.
-Cite the software (MIT) for the library; cite the paper manuscript (CC BY 4.0)
-when you reuse the written analysis. Always cite Maxwell 1873 as the source work.
+If you use Maxwell Modernized in your research, please cite the software
+using the [CITATION.cff](CITATION.cff) file, or the BibTeX below, and cite
+Maxwell 1873 as the source work. A JOSS paper is in preparation; there is
+not yet a paper to cite.
 
 ```bibtex
 @software{maxwell_modernized_2026,
@@ -339,8 +338,10 @@ isort maxwell/ tests/
 ## License
 
 - **Software** (Python library, tests, scripts, CI/CD, page-verifier application, agent definitions, notebooks): [MIT License](LICENSE)
-- **Content** (paper, documentation, architecture maps, figures, curated interpretive material): [CC BY 4.0](LICENSE-CONTENT)
+- **Content** (documentation, architecture maps, figures, curated interpretive material): [CC BY 4.0](LICENSE-CONTENT)
 - **Maxwell's original Treatise text** (1873): public domain. This project does not claim copyright in Maxwell's words, mechanical OCR of those words, or mathematical facts.
+
+A JOSS paper is in preparation. It is not part of this release and is not a citable article yet.
 
 See [LICENSING_DECISION.md](LICENSING_DECISION.md) for the adopted split and inventory.
 

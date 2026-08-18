@@ -376,8 +376,6 @@ Two GitHub Actions workflows ensure ongoing correctness:
 
 This project is a computational homage to James Clerk Maxwell and his _A Treatise on Electricity and Magnetism_ (1873), one of the foundational works of classical physics. The Treatise text is in the public domain; the Dover Publications reprint provides the article numbering and chapter structure used throughout this implementation. The citation system and verification framework are original contributions of this project.
 
-This paper and its figures are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0). The Maxwell Modernized software is licensed under the MIT License. Maxwell is cited as the author of the 1873 source work, not as a software co-author.
-
 # References
 
 <!-- References are managed via paper.bib. JOSS will render them automatically. -->

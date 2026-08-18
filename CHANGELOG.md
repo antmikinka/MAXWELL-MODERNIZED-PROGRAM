@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - James Clerk Maxwell is cited as the 1873 source author, not as a software co-author
 - Python sdist no longer ships bulk `docs/` without the content license; `LICENSE-CONTENT` is included
 - Living publication metadata aligned to **1.0.0** (`CITATION.cff`, `.zenodo.json`, `paper/`, API reference)
-- Recorded author ORCID `0009-0005-2955-4140` in the paper, `CITATION.cff`, and `.zenodo.json`
+- Recorded author ORCID `0009-0005-2955-4140` in `CITATION.cff` and `.zenodo.json`
+- JOSS paper taken out of the public citation set: it is in preparation, not a citable article yet
 - `.zenodo.json` `pub_state` set to `draft` until an actual Zenodo deposit exists
 
 ## [1.0.0] - 2026-05-07

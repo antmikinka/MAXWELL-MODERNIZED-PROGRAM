@@ -1,10 +1,11 @@
 cff-version: 1.2.0
 message: >
   If you use the Maxwell Modernized software, please cite it as below.
-  Software is licensed MIT. Documentation, the paper manuscript, figures,
-  architecture maps, and other scholarly content are licensed CC BY 4.0
-  (see LICENSE-CONTENT). James Clerk Maxwell's 1873 Treatise text is
-  public domain and is cited as the source work, not as software authorship.
+  Software is licensed MIT. Documentation, architecture maps, and other
+  released scholarly content are licensed CC BY 4.0 (see LICENSE-CONTENT).
+  A JOSS paper is in preparation and is not yet a citable article.
+  James Clerk Maxwell's 1873 Treatise text is public domain and is cited
+  as the source work, not as software authorship.
 title: "Maxwell Modernized"
 version: 1.0.0
 date-released: 2026-05-07
@@ -38,12 +39,3 @@ references:
     publisher:
       name: "Clarendon Press"
     notes: "Public domain. Source text for this computational implementation."
-  - type: article
-    authors:
-      - family-names: Mikinka
-        given-names: Anthony
-    title: "Maxwell Modernized: A Complete Computational Implementation of Maxwell's 1873 Treatise on Electricity and Magnetism"
-    year: "2026"
-    license: CC-BY-4.0
-    url: "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM"
-    notes: "JOSS paper manuscript in paper/. Licensed CC BY 4.0."

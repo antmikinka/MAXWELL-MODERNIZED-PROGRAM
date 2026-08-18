@@ -4,9 +4,10 @@ Ensures that living metadata agrees:
 - maxwell.__version__
 - pyproject.toml [project].version
 - importlib.metadata
-- CITATION.cff, .zenodo.json, paper/paper.md citation.version
+- CITATION.cff, .zenodo.json
 - MIT software license + LICENSE / LICENSE-CONTENT files
 - no phantom GitHub org and no fabricated ORCID in living files
+- JOSS paper is not treated as a released citation surface
 """
 
 from __future__ import annotations
@@ -28,27 +29,11 @@ LIVING_METADATA_FILES = (
     ".zenodo.json",
     "pyproject.toml",
     "CONTRIBUTING.md",
-    "paper/paper.md",
-    "paper/paper.bib",
 )
 
 
 def _read(relative: str) -> str:
     return (REPO_ROOT / relative).read_text(encoding="utf-8")
-
-
-def _citation_yaml_version(text: str) -> str | None:
-    in_citation = False
-    for line in text.splitlines():
-        if line.startswith("citation:"):
-            in_citation = True
-            continue
-        if in_citation:
-            if line.startswith("  version:"):
-                return line.split(":", 1)[1].strip()
-            if line and not line.startswith(" "):
-                break
-    return None
 
 
 def test_maxwell_version_format():
@@ -101,13 +86,15 @@ def test_version_matches_zenodo():
     assert data["pub_state"] != "published"
 
 
-def test_version_matches_paper_citation():
-    """JOSS paper citation.version must match the package."""
-    version = _citation_yaml_version(_read("paper/paper.md"))
-    assert version == maxwell.__version__, (
-        f"paper/paper.md citation.version={version!r}, "
-        f"package={maxwell.__version__!r}"
-    )
+def test_joss_paper_is_not_a_citable_article_yet():
+    """Do not advertise an unpublished draft as a released JOSS paper."""
+    cff = _read("CITATION.cff")
+    readme = _read("README.md")
+    assert "type: article" not in cff
+    assert "in preparation" in cff
+    assert "in preparation" in readme
+    assert (REPO_ROOT / "paper" / "README.md").is_file()
+    assert not (REPO_ROOT / "paper" / "LICENSE.md").exists()
 
 
 def test_software_license_is_mit():
@@ -137,17 +124,13 @@ def test_living_metadata_uses_canonical_repo():
         text = _read(relative)
         assert PHANTOM_REPO not in text, f"{relative} still mentions {PHANTOM_REPO}"
     assert CANONICAL_REPO in _read("CITATION.cff")
-    assert CANONICAL_REPO in _read("paper/paper.md")
 
 
 def test_author_orcid_is_recorded():
     """Living citation files carry the real ORCID, never the all-zero placeholder."""
-    paper = _read("paper/paper.md")
     cff = _read("CITATION.cff")
     zenodo = _read(".zenodo.json")
-    assert PLACEHOLDER_ORCID not in paper
     assert PLACEHOLDER_ORCID not in cff.split("references:")[0]
-    assert AUTHOR_ORCID in paper
     assert AUTHOR_ORCID in cff
     assert AUTHOR_ORCID in zenodo
 

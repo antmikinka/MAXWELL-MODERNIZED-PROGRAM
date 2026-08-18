@@ -210,9 +210,10 @@ This repository uses split licensing. By contributing, you agree that:
 - **Software** contributions (Python, tests, scripts, CI, page-verifier application
   code, agent definitions, notebooks) are licensed under the
   [MIT License](LICENSE).
-- **Scholarly content** contributions (paper, documentation, architecture maps,
+- **Scholarly content** contributions (documentation, architecture maps,
   figures, curated interpretive material) are licensed under
-  [CC BY 4.0](LICENSE-CONTENT).
+  [CC BY 4.0](LICENSE-CONTENT). A JOSS paper is in preparation and is not
+  part of the current release.
 
 James Clerk Maxwell's 1873 Treatise text is public domain and cannot be
 relicensed. Do not list Maxwell as a software author.

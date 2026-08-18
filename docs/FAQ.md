@@ -68,13 +68,15 @@ A: JAX is an optional dependency. Install with `pip install maxwell[accel]`.
 A: Split licensing:
 
 - **Software** (the Python library, tests, scripts, CI, page-verifier app, notebooks): [MIT License](../LICENSE)
-- **Scholarly content** (paper, documentation, architecture maps, figures): [CC BY 4.0](../LICENSE-CONTENT)
+- **Scholarly content** (documentation, architecture maps, figures): [CC BY 4.0](../LICENSE-CONTENT)
 - **Maxwell's 1873 Treatise text**: public domain. This project does not claim copyright in Maxwell's words.
+
+A JOSS paper is in preparation. It is not included as a citable article yet.
 
 See [LICENSING_DECISION.md](../LICENSING_DECISION.md).
 
 ### Q: Why isn't everything CC BY 4.0? This is a scholarly modernization.
-A: CC BY 4.0 is the right license for the paper and docs. It is not an OSI-approved software license, so it cannot be the license of the PyPI/JOSS software package.
+A: CC BY 4.0 is the right license for released documentation. It is not an OSI-approved software license, so it cannot be the license of the PyPI package. When a JOSS paper exists, JOSS will publish that article as CC BY 4.0.
 
 ### Q: Why isn't James Clerk Maxwell listed as a software author?
 A: He wrote the 1873 Treatise, which is public domain. He did not write this Python library. Cite the book as the source work; cite this repository for the computational edition.

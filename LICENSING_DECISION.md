@@ -196,7 +196,7 @@ Do **not** execute the first draft of this table. The adopted inventory is below
 
 | Path | Description |
 |------|-------------|
-| `paper/**` | JOSS manuscript, bibliography, figures; `paper/LICENSE.md` |
+| `paper/**` | **Unpublished draft only.** A JOSS paper is in preparation. Not a released article and not part of the current software citation. See `paper/README.md`. |
 | `docs/**` | Documentation, architecture analysis, curated page-map PDFs; `docs/LICENSE.md` |
 | `archive/**` | Architecture Maps Parts I–VI and preserved scholarly reports; `archive/LICENSE.md` |
 | `IMPLEMENTATION_PLAN_*.md` | Implementation planning documents |
@@ -247,7 +247,7 @@ CITATION.cff         → license: MIT; message notes CC BY content and PD source
                        Maxwell cited as book reference, not software author
 .zenodo.json         → license MIT; same URL; Maxwell not a software creator
 README.md            → Dual badge + License section + correct clone URL
-paper/               → CC BY 4.0 (LICENSE.md + manuscript note)
+paper/               → unpublished draft (`paper/README.md`); not a citable JOSS article
 docs/                → LICENSE.md (CC BY 4.0)
 archive/             → LICENSE.md (CC BY 4.0)
 CONTRIBUTING.md      → dual contribution grant
@@ -267,7 +267,7 @@ MANIFEST.in          → includes LICENSE-CONTENT; excludes docs/paper/archive
 
 ### Phase 2: Directory License Notes
 
-- [x] `paper/LICENSE.md` plus manuscript / acknowledgements note
+- [x] `paper/README.md` — draft is in preparation, not a released JOSS article
 - [x] `docs/LICENSE.md`
 - [x] `archive/LICENSE.md`
 - [x] `page_verifier/data/README.md` — generated cache, **not** CC BY scholarship
@@ -381,3 +381,4 @@ These draft claims were **not** implemented:
 6. **`CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `CHANGELOG.md` stay MIT.**
 7. **James Clerk Maxwell is not a software author.** Cite the 1873 book.
 8. **`MANIFEST.in` must not ship `docs/` inside an MIT-only sdist** without `LICENSE-CONTENT`. Adopted approach: ship `LICENSE` + `LICENSE-CONTENT` + README; keep bulk scholarly docs in git, not in the wheel.
+9. **The JOSS paper is not included yet.** A manuscript may exist under `paper/` as a working draft. It is not a published article and must not appear in `CITATION.cff` as a citable paper. Mention only that a JOSS paper is in preparation.
