@@ -11,6 +11,14 @@
 
 ## What This Is
 
+This repository is **one part of a three-part project**. The **product** is here: the executable Python library. The other two parts supply the source edition and the OCR pipeline.
+
+| Part | Repository | What this part is |
+|------|------------|-------------------|
+| 1 | [Maxwell-Latex-Books](https://github.com/antmikinka/Maxwell-Latex-Books) | Source edition of the Treatise: article indexes, page text, and architecture maps. |
+| 2 | [maxwell_em_processor](https://github.com/antmikinka/maxwell-em-processor) | Processing pipeline: OCR and organize scanned volumes into volume → part → chapter → article. |
+| 3 (this repo — the product) | [MAXWELL-MODERNIZED-PROGRAM](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM) | Executable Python re-implementation of all 866 articles. |
+
 In 1873, James Clerk Maxwell published _A Treatise on Electricity and Magnetism_, the definitive work that unified electricity, magnetism, and light into a single theoretical framework. This project is a complete computational re-implementation of that Treatise -- every one of its 866 articles translated into modern, executable Python.
 
 **100% coverage** means the entire work is represented: from the elementary definitions of charge and force in Part I through the electromagnetic theory of light in Part IV, including the supplementary chapters on molecular theory, optics, and the philosophy of the electromagnetic field. Every function is traceable to its source article. Every result is computationally reproducible.
