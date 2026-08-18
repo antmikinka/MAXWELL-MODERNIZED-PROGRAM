@@ -110,6 +110,9 @@ SECURITY_AUDIT_*.md
 # ============================================================
 agents/
 
+# Unpublished preprint / JOSS draft — keep local, do not publish
+paper/
+
 # ============================================================
 # Verification & registry artifacts (large, generated)
 # ============================================================

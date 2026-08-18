@@ -1,8 +1,7 @@
 This license applies to documentation, figures, architecture maps,
 planning and audit reports, and other released non-code scholarly content
-in this repository. A JOSS paper is in preparation; unpublished drafts
-under paper/ are not a released article and are not part of the current
-software citation.
+in this repository. We are working toward a preprint; that work is not
+part of this repository and is not a citable article yet.
 
 Software in this repository — the Python library, tests, scripts, CI/CD
 definitions, page-verifier application (including HTML/CSS/JS), agent

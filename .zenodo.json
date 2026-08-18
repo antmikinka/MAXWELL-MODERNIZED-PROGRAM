@@ -8,7 +8,7 @@
     }
   ],
   "title": "Maxwell Modernized",
-  "description": "A complete computational implementation of James Clerk Maxwell's 1873 A Treatise on Electricity and Magnetism. All 866 articles are implemented in Python with CGS-EMU units and citation-based traceability. Software is licensed under MIT. Documentation and other released scholarly content are licensed under CC BY 4.0. A JOSS paper is in preparation and is not yet a citable article. Maxwell's 1873 Treatise text is in the public domain and is the source work, not a software co-authorship.",
+  "description": "A complete computational implementation of James Clerk Maxwell's 1873 A Treatise on Electricity and Magnetism. All 866 articles are implemented in Python with CGS-EMU units and citation-based traceability. Software is licensed under MIT. Documentation and other released scholarly content are licensed under CC BY 4.0. We are working toward a preprint; it is not part of this deposit. Maxwell's 1873 Treatise text is in the public domain and is the source work, not a software co-authorship.",
   "license": "MIT",
   "notes": "Software: MIT (LICENSE). Scholarly content: CC BY 4.0 (LICENSE-CONTENT). Maxwell 1873 Treatise text: public domain.",
   "keywords": [

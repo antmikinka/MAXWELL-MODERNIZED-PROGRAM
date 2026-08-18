@@ -7,7 +7,7 @@ Ensures that living metadata agrees:
 - CITATION.cff, .zenodo.json
 - MIT software license + LICENSE / LICENSE-CONTENT files
 - no phantom GitHub org and no fabricated ORCID in living files
-- JOSS paper is not treated as a released citation surface
+- preprint/JOSS manuscript is not part of the repository; only a 'working toward a preprint' mention is allowed
 """
 
 from __future__ import annotations
@@ -86,14 +86,16 @@ def test_version_matches_zenodo():
     assert data["pub_state"] != "published"
 
 
-def test_joss_paper_is_not_a_citable_article_yet():
-    """Do not advertise an unpublished draft as a released JOSS paper."""
+def test_preprint_is_mentioned_not_included():
+    """A preprint may be mentioned as future work; it must not be in the repo."""
     cff = _read("CITATION.cff")
     readme = _read("README.md")
+    gitignore = _read(".gitignore")
     assert "type: article" not in cff
-    assert "in preparation" in cff
-    assert "in preparation" in readme
-    assert (REPO_ROOT / "paper" / "README.md").is_file()
+    assert "preprint" in cff.lower()
+    assert "preprint" in readme.lower()
+    assert re.search(r"(?m)^paper/$", gitignore)
+    # Local drafts may remain on disk; they must not ship a public paper license.
     assert not (REPO_ROOT / "paper" / "LICENSE.md").exists()
 
 

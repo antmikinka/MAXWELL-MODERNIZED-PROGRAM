@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Python sdist no longer ships bulk `docs/` without the content license; `LICENSE-CONTENT` is included
 - Living publication metadata aligned to **1.0.0** (`CITATION.cff`, `.zenodo.json`, `paper/`, API reference)
 - Recorded author ORCID `0009-0005-2955-4140` in `CITATION.cff` and `.zenodo.json`
-- JOSS paper taken out of the public citation set: it is in preparation, not a citable article yet
+- Preprint/JOSS manuscript is not included in the repository; public text only notes that we are working toward a preprint
 - `.zenodo.json` `pub_state` set to `draft` until an actual Zenodo deposit exists
 
 ## [1.0.0] - 2026-05-07

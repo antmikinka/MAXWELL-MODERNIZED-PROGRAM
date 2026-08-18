@@ -196,7 +196,7 @@ Do **not** execute the first draft of this table. The adopted inventory is below
 
 | Path | Description |
 |------|-------------|
-| `paper/**` | **Unpublished draft only.** A JOSS paper is in preparation. Not a released article and not part of the current software citation. See `paper/README.md`. |
+| `paper/**` | **Not in the repository.** Local drafts stay local (gitignored). Public text may say we are working toward a preprint. |
 | `docs/**` | Documentation, architecture analysis, curated page-map PDFs; `docs/LICENSE.md` |
 | `archive/**` | Architecture Maps Parts I–VI and preserved scholarly reports; `archive/LICENSE.md` |
 | `IMPLEMENTATION_PLAN_*.md` | Implementation planning documents |
@@ -247,7 +247,7 @@ CITATION.cff         → license: MIT; message notes CC BY content and PD source
                        Maxwell cited as book reference, not software author
 .zenodo.json         → license MIT; same URL; Maxwell not a software creator
 README.md            → Dual badge + License section + correct clone URL
-paper/               → unpublished draft (`paper/README.md`); not a citable JOSS article
+paper/               → not tracked; gitignored. Mention only: working toward a preprint.
 docs/                → LICENSE.md (CC BY 4.0)
 archive/             → LICENSE.md (CC BY 4.0)
 CONTRIBUTING.md      → dual contribution grant
@@ -267,7 +267,7 @@ MANIFEST.in          → includes LICENSE-CONTENT; excludes docs/paper/archive
 
 ### Phase 2: Directory License Notes
 
-- [x] `paper/README.md` — draft is in preparation, not a released JOSS article
+- [x] `paper/` untracked and gitignored — not included on the remote
 - [x] `docs/LICENSE.md`
 - [x] `archive/LICENSE.md`
 - [x] `page_verifier/data/README.md` — generated cache, **not** CC BY scholarship
@@ -381,4 +381,4 @@ These draft claims were **not** implemented:
 6. **`CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `CHANGELOG.md` stay MIT.**
 7. **James Clerk Maxwell is not a software author.** Cite the 1873 book.
 8. **`MANIFEST.in` must not ship `docs/` inside an MIT-only sdist** without `LICENSE-CONTENT`. Adopted approach: ship `LICENSE` + `LICENSE-CONTENT` + README; keep bulk scholarly docs in git, not in the wheel.
-9. **The JOSS paper is not included yet.** A manuscript may exist under `paper/` as a working draft. It is not a published article and must not appear in `CITATION.cff` as a citable paper. Mention only that a JOSS paper is in preparation.
+9. **Do not include a paper in this repository.** We are working toward a preprint. That work stays off the remote. Public files may mention the goal in one sentence. Do not cite a paper, do not add `paper/LICENSE.md`, and do not list a paper in `CITATION.cff`.
