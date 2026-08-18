@@ -1,8 +1,23 @@
 # Maxwell Modernized
 
+[![Tests](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/test.yml/badge.svg)](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/test.yml)
+[![Math Verification](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/math-verification.yml/badge.svg)](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/math-verification.yml)
+[![Coverage](https://img.shields.io/badge/coverage-866%2F866%20articles-brightgreen)](docs/COVERAGE_SUMMARY.md)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE-CONTENT)
+
 > A computational implementation of James Clerk Maxwell's 1873 _A Treatise on Electricity and Magnetism_ -- all 866 articles, modernized in Python.
 
 ## What This Is
+
+This repository is **one part of a three-part project**. The **product** is here: the executable Python library. The other two parts supply the source edition and the OCR pipeline.
+
+| Part | Repository | What this part is |
+|------|------------|-------------------|
+| 1 | [Maxwell-Latex-Books](https://github.com/antmikinka/Maxwell-Latex-Books) | Source edition of the Treatise: article indexes, page text, and architecture maps. |
+| 2 | [maxwell_em_processor](https://github.com/antmikinka/maxwell-em-processor) | Processing pipeline: OCR and organize scanned volumes into volume → part → chapter → article. |
+| 3 (this repo — the product) | [MAXWELL-MODERNIZED-PROGRAM](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM) | Executable Python re-implementation of all 866 articles. |
 
 In 1873, James Clerk Maxwell published _A Treatise on Electricity and Magnetism_, the definitive work that unified electricity, magnetism, and light into a single theoretical framework. This project is a complete computational re-implementation of that Treatise -- every one of its 866 articles translated into modern, executable Python.
 
@@ -17,10 +32,22 @@ The project serves two audiences:
 
 ### Installation
 
+From PyPI (recommended):
+
 ```bash
-git clone https://github.com/maxwell-treatise/modernized-program.git
-cd modernized-program
-pip install -e ".[dev]"
+pip install maxwell           # Core library
+pip install maxwell[viz]      # With visualization support
+pip install maxwell[dev]      # With development tools
+pip install maxwell[accel]    # With JAX GPU/TPU acceleration
+pip install maxwell[all]      # Everything
+```
+
+From source:
+
+```bash
+git clone https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM.git
+cd MAXWELL-MODERNIZED-PROGRAM
+pip install -e ".[dev,viz]"
 ```
 
 ### Your First Calculation
@@ -47,7 +74,7 @@ E_field = gradient(potential_field)
 
 ```bash
 pytest tests/ -v
-# 522 passed in X.XXs
+# 1795 passed in <N> seconds
 ```
 
 ## What Can I Use This For?
@@ -110,16 +137,66 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | Metric | Count |
 |--------|-------|
 | Articles covered | 866 / 866 (100%) |
-| Python modules | 165 |
-| Functions | 1,174 |
-| Classes | 244 |
-| Tests | 522 / 522 passing |
+| Python modules | 290+ |
+| Functions | 2,900+ |
+| Classes | 290+ |
+| Tests | 1795 / 1795 passing |
+| Math validations | 50 / 50 passing |
+| SymPy verifiers | 66 / 66 passing |
+| JAX adapters | 20+ |
+| Visualization modules | 15 (15 visualizations) |
 
 ### Validation
 
+- 1795/1795 tests passing (629 core + 847 JAX + 66 SymPy + 232 visualization + 21 dynamics)
 - 50/50 mathematical validation checks pass (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals, differential equations, integral transforms)
 - 100% citation compliance -- every public function is linked to its source article
-- All 165 modules import without errors
+- All 260+ modules import without errors
+
+### Lagrangian Kernel (Layer 52)
+
+The `maxwell.dynamics.lagrangian` package provides a JAX-powered Lagrangian mechanics framework:
+
+- **`GeneralizedSystem`** -- dataclass representing a system in generalized coordinates (q, p state)
+- **Force-from-energy derivation** -- forces computed via `jax.grad` of potential/kinetic energy
+- **Proof of concept** -- `derive_electrostatic_force()` derives Coulomb force from U = q1*q2/r via auto-diff
+
+```python
+from maxwell.dynamics.lagrangian import GeneralizedSystem, derive_electrostatic_force
+
+# Derive Coulomb force from potential energy via JAX auto-diff
+force = derive_electrostatic_force(q1=1.0, q2=1.0, r=1.0)  # Uses jax.grad internally
+```
+
+### JAX GPU/TPU Acceleration
+
+The `maxwell.jax` package provides JAX-compatible implementations of core Maxwell calculations, enabling:
+
+- **GPU/TPU execution** -- vectorized batch evaluation of fields, forces, and energies across thousands of points
+- **Automatic differentiation** -- exact gradients via `jax.grad` for field derivatives and sensitivity analysis
+- **JIT compilation** -- compiled kernels for repeated evaluation via `jax.jit`
+- **CGS-EMU precision** -- 64-bit floats (`jax_enable_x64`) preserve unit consistency
+
+20+ JAX adapters cover all four Parts of the Treatise: `PointChargeJAX`, `MagneticPoleJAX`, `MagnetJAX`, `VectorPotentialJAX`, `ElectricFieldJAX`, `FaradayInductionJAX`, `MaxwellEquationsJAX`, `SphericalHarmonicExpansionJAX`, `LorentzForceJAX`, `MaxwellStressTensorJAX`, `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX`, `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX`, `MagneticEnergyJAX`, `InductorEnergyJAX`, `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX`, `OhmsLawJAX`, `NetworkSolverJAX`, `Conduction3DJAX`, `FaradayLawsJAX`, `ElectrolysisCellJAX`, `JouleHeatingJAX`, and more.
+
+```python
+import jax
+from maxwell.jax.core.charge import PointChargeJAX
+
+charge = PointChargeJAX(q=1.0, position=jax.numpy.array([0.0, 0.0, 0.0]))
+
+# Auto-differentiation: dV/dq at r=1
+V_at = lambda q: PointChargeJAX(q=q, position=jax.numpy.zeros(3)).potential_at(
+    jax.numpy.array([1.0, 0.0, 0.0])
+)
+dVdq = jax.grad(V_at)(1.0)  # = 1.0
+
+# Batched field evaluation over 1000 points
+points = jax.numpy.linspace(-10, 10, 1000).reshape(-1, 3)
+E_batch = charge.field_at_batched(points)  # shape (1000, 3)
+```
+
+Install with `pip install maxwell[accel]` for the JAX runtime. See `maxwell/jax/README.md` for the complete adapter registry.
 
 ## Documentation
 
@@ -129,8 +206,38 @@ print(citation)  # MaxwellCitation(Part 4, Art. 528, Art. 529, Art. 530)
 | [docs/API_REFERENCE.md](docs/API_REFERENCE.md) | Module-by-module API index with function counts and article mappings |
 | [docs/COVERAGE_SUMMARY.md](docs/COVERAGE_SUMMARY.md) | Article coverage by Part, chapter, and module |
 | [docs/validation_report.md](docs/validation_report.md) | Test results, math validation, import verification |
+| [maxwell/jax/README.md](maxwell/jax/README.md) | JAX GPU/TPU adapter documentation, auto-diff, JIT compilation |
 
 The `archive/docs/` directory contains 24 legacy development documents (architecture maps, OCR audits, integration reports) preserved for historical reference.
+
+## Citing This Work
+
+If you use Maxwell Modernized in your research, please cite the software
+using the [CITATION.cff](CITATION.cff) file, or the BibTeX below, and cite
+Maxwell 1873 as the source work. We are working toward a preprint; there
+is not yet a paper to cite.
+
+```bibtex
+@software{maxwell_modernized_2026,
+  title = {Maxwell Modernized},
+  author = {Mikinka, Anthony},
+  year = {2026},
+  url = {https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM},
+  description = {A complete computational implementation of Maxwell's 1873 Treatise}
+}
+```
+
+The original Treatise should also be cited:
+
+```bibtex
+@book{maxwell1873,
+  author = {Maxwell, James Clerk},
+  title = {A Treatise on Electricity and Magnetism},
+  publisher = {Clarendon Press},
+  address = {Oxford},
+  year = {1873}
+}
+```
 
 ## For Scholars
 
@@ -187,7 +294,7 @@ maxwell/
     meta/                # Citation system (@maxwell_cite)
     ... and more
 tests/
-    test_*.py            # 522 tests across electrostatics, electromagnetism, etc.
+    test_*.py            # 1795 tests (629 core + 847 JAX + 66 SymPy + 232 visualization + 21 dynamics)
 archive/                 # Legacy development documents
 docs/                    # API reference, coverage, validation
 ```
@@ -233,8 +340,18 @@ isort maxwell/ tests/
 
 - **Scholarly fidelity.** Every implementation must trace back to a specific article in the Treatise. The original text is the authoritative specification.
 - **Computational correctness.** Mathematical implementations are validated against analytical results. All 50 math checks pass.
-- **Open access.** The Treatise is public domain. This implementation is too -- free for scholars, students, and developers everywhere.
+- **Open access.** The Treatise is public domain. The software is MIT-licensed and the scholarly content is CC BY 4.0 -- free for scholars, students, and developers everywhere.
 - **Reproducibility.** Every result can be recomputed from source. The test suite is the specification.
+
+## License
+
+- **Software** (Python library, tests, scripts, CI/CD, notebooks): [MIT License](LICENSE)
+- **Content** (documentation, architecture maps, figures, curated interpretive material): [CC BY 4.0](LICENSE-CONTENT)
+- **Maxwell's original Treatise text** (1873): public domain. This project does not claim copyright in Maxwell's words, mechanical OCR of those words, or mathematical facts.
+
+We are working toward a preprint. It is not part of this repository or release.
+
+See [LICENSING_DECISION.md](LICENSING_DECISION.md) for the adopted split and inventory.
 
 ## Acknowledgments
 

@@ -20,10 +20,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -54,7 +55,8 @@ class MagneticLineIntegral:
     @classmethod
     @maxwell_cite(
         401,
-        part=3, chapter="Magnetic Integrals",
+        part=3,
+        chapter="Magnetic Integrals",
         theory_class="maxwell_original",
         description="Compute line integral of H field",
     )
@@ -129,7 +131,8 @@ class MagneticSurfaceIntegral:
     @classmethod
     @maxwell_cite(
         402,
-        part=3, chapter="Magnetic Integrals",
+        part=3,
+        chapter="Magnetic Integrals",
         theory_class="maxwell_original",
         description="Compute surface integral of B field",
     )
@@ -194,7 +197,8 @@ class MagneticSurfaceIntegral:
 
 @maxwell_cite(
     401,
-    part=3, chapter="Magnetic Integrals",
+    part=3,
+    chapter="Magnetic Integrals",
     theory_class="maxwell_original",
     description="Line integral of H force along path",
 )
@@ -240,7 +244,8 @@ def calc_line_integral_force(
 
 @maxwell_cite(
     402,
-    part=3, chapter="Magnetic Integrals",
+    part=3,
+    chapter="Magnetic Integrals",
     theory_class="maxwell_original",
     description="Surface integral of magnetic induction",
 )
@@ -294,7 +299,8 @@ def calc_surface_induction(
 
 @maxwell_cite(
     401,
-    part=3, chapter="Magnetic Integrals",
+    part=3,
+    chapter="Magnetic Integrals",
     theory_class="maxwell_original",
     description="Closed loop integral — Ampère's law",
 )
@@ -350,7 +356,8 @@ def amperes_law_integral(
 
 @maxwell_cite(
     402,
-    part=3, chapter="Magnetic Integrals",
+    part=3,
+    chapter="Magnetic Integrals",
     theory_class="maxwell_original",
     description="Verify zero flux through closed surface",
 )
@@ -420,14 +427,18 @@ def verify_closed_surface_zero_flux(
         "is_zero": abs(flux) <= tolerance,
         "positive_flux": positive_flux,
         "negative_flux": negative_flux,
-        "flux_balance": abs(negative_flux) / positive_flux if positive_flux > 0 else float('inf'),
+        "flux_balance": (
+            abs(negative_flux) / positive_flux if positive_flux > 0 else float("inf")
+        ),
         "tolerance_used": tolerance,
     }
 
 
 @maxwell_cite(
-    401, 402,
-    part=3, chapter="Magnetic Integrals",
+    401,
+    402,
+    part=3,
+    chapter="Magnetic Integrals",
     theory_class="maxwell_original",
     description="Stokes' theorem for magnetic field",
 )

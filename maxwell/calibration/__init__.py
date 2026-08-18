@@ -13,13 +13,13 @@ Maxwell's methods (Arts. 758-767):
 from maxwell.calibration.absolute_resistance import (
     AbsoluteResistance,
     StandardResistanceCoil,
-    calc_absolute_resistance_recoil,
-    calc_absolute_resistance_lenz,
-    calc_absolute_resistance_rotating_coil,
+    analyze_absolute_resistance,
     calc_absolute_resistance_joule,
+    calc_absolute_resistance_lenz,
+    calc_absolute_resistance_recoil,
+    calc_absolute_resistance_rotating_coil,
     calc_temperature_corrected_resistance,
     verify_absolute_resistance,
-    analyze_absolute_resistance,
 )
 
 __all__ = [

@@ -31,10 +31,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -58,13 +59,17 @@ class GeneralizedEMF:
 
     def __post_init__(self):
         """Validate vertices."""
-        self.circuit_vertices = [np.asarray(v, dtype=np.float64) for v in self.circuit_vertices]
+        self.circuit_vertices = [
+            np.asarray(v, dtype=np.float64) for v in self.circuit_vertices
+        ]
         if len(self.circuit_vertices) < 3:
             raise ValueError("Circuit must have at least 3 vertices")
 
     @maxwell_cite(
-        576, 577,
-        part=4, chapter="Generalized EMF",
+        576,
+        577,
+        part=4,
+        chapter="Generalized EMF",
         theory_class="maxwell_original",
         description="Calculate transformer EMF from changing B field",
     )
@@ -102,8 +107,10 @@ class GeneralizedEMF:
         return -np.dot(dB_dt, area_normal) * area_mag
 
     @maxwell_cite(
-        576, 577,
-        part=4, chapter="Generalized EMF",
+        576,
+        577,
+        part=4,
+        chapter="Generalized EMF",
         theory_class="maxwell_original",
         description="Calculate motional EMF from moving conductor",
     )
@@ -147,8 +154,10 @@ class GeneralizedEMF:
         return emf
 
     @maxwell_cite(
-        576, 577,
-        part=4, chapter="Generalized EMF",
+        576,
+        577,
+        part=4,
+        chapter="Generalized EMF",
         theory_class="maxwell_original",
         description="Calculate total generalized EMF",
     )
@@ -215,8 +224,10 @@ class GeneralizedEMF:
 
 
 @maxwell_cite(
-    576, 577,
-    part=4, chapter="Generalized EMF",
+    576,
+    577,
+    part=4,
+    chapter="Generalized EMF",
     theory_class="maxwell_original",
     description="Calculate EMF from changing flux: EMF = -d(Phi)/dt",
 )
@@ -245,8 +256,10 @@ def calc_generalized_emf(
 
 
 @maxwell_cite(
-    576, 577,
-    part=4, chapter="Generalized EMF",
+    576,
+    577,
+    part=4,
+    chapter="Generalized EMF",
     theory_class="maxwell_original",
     description="Calculate motional EMF: EMF = integral((v × B) · dl)",
 )
@@ -281,8 +294,10 @@ def calc_motional_emf_general(
 
 
 @maxwell_cite(
-    576, 577,
-    part=4, chapter="Generalized EMF",
+    576,
+    577,
+    part=4,
+    chapter="Generalized EMF",
     theory_class="maxwell_original",
     description="Calculate EMF from rotating loop",
 )
@@ -322,8 +337,10 @@ def calc_rotating_loop_emf(
 
 
 @maxwell_cite(
-    576, 577,
-    part=4, chapter="Generalized EMF",
+    576,
+    577,
+    part=4,
+    chapter="Generalized EMF",
     theory_class="maxwell_original",
     description="Calculate EMF from sliding conductor",
 )
@@ -355,8 +372,10 @@ def calc_sliding_conductor_emf(
 
 
 @maxwell_cite(
-    576, 577,
-    part=4, chapter="Generalized EMF",
+    576,
+    577,
+    part=4,
+    chapter="Generalized EMF",
     theory_class="maxwell_original",
     description="Verify generalized EMF relations",
 )
@@ -400,12 +419,20 @@ def verify_generalized_emf(
     emf_max_expected = n_turns * B_field * loop_area * angular_velocity
     emf_max_actual = max(abs(e) for e in emf_values)
 
-    max_error = abs(emf_max_actual - emf_max_expected) / emf_max_expected if emf_max_expected > 0 else 0
+    max_error = (
+        abs(emf_max_actual - emf_max_expected) / emf_max_expected
+        if emf_max_expected > 0
+        else 0
+    )
 
     # Verify sinusoidal (zero crossings at expected times)
     period = 2 * np.pi / angular_velocity
-    emf_at_zero = calc_rotating_loop_emf(B_field, loop_area, n_turns, angular_velocity, 0)
-    emf_at_half_period = calc_rotating_loop_emf(B_field, loop_area, n_turns, angular_velocity, period / 2)
+    emf_at_zero = calc_rotating_loop_emf(
+        B_field, loop_area, n_turns, angular_velocity, 0
+    )
+    emf_at_half_period = calc_rotating_loop_emf(
+        B_field, loop_area, n_turns, angular_velocity, period / 2
+    )
 
     zero_crossing_verified = abs(emf_at_zero) < tolerance * emf_max_expected
     half_period_verified = abs(emf_at_half_period) < tolerance * emf_max_expected
@@ -430,8 +457,10 @@ def verify_generalized_emf(
 
 
 @maxwell_cite(
-    576, 577,
-    part=4, chapter="Generalized EMF",
+    576,
+    577,
+    part=4,
+    chapter="Generalized EMF",
     theory_class="maxwell_original",
     description="Complete generalized EMF analysis",
 )
@@ -466,8 +495,7 @@ def analyze_generalized_emf(
     times = np.linspace(time_range[0], time_range[1], n_points)
 
     emf_calculator = GeneralizedEMF(
-        circuit_vertices=circuit_vertices,
-        velocity_function=velocity_function
+        circuit_vertices=circuit_vertices, velocity_function=velocity_function
     )
 
     emf_transformer = []
@@ -484,7 +512,11 @@ def analyze_generalized_emf(
             return (B_plus - B_minus) / (2 * dt)
 
         emf_t = emf_calculator.transformer_emf(numerical_dB_dt, t)
-        emf_m = emf_calculator.motional_emf(B_field_function, t) if velocity_function else 0.0
+        emf_m = (
+            emf_calculator.motional_emf(B_field_function, t)
+            if velocity_function
+            else 0.0
+        )
 
         emf_transformer.append(emf_t)
         emf_motional.append(emf_m)

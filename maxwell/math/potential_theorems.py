@@ -45,23 +45,27 @@ References:
 
 from __future__ import annotations
 
-from typing import Callable, Tuple, Optional, Union
+from typing import Callable, Optional, Tuple, Union
+
 import numpy as np
 from numpy.typing import ArrayLike
 
 from maxwell.meta.citation import maxwell_cite
 
-
 # Type aliases
-VectorField = Tuple[Callable[[float, float, float], float],
-                    Callable[[float, float, float], float],
-                    Callable[[float, float, float], float]]
+VectorField = Tuple[
+    Callable[[float, float, float], float],
+    Callable[[float, float, float], float],
+    Callable[[float, float, float], float],
+]
 ScalarField = Callable[[float, float, float], float]
 
 
 @maxwell_cite(
-    79, 80,
-    part=1, chapter="On the Surface-Integral of the Electric Induction",
+    79,
+    80,
+    part=1,
+    chapter="On the Surface-Integral of the Electric Induction",
     theory_class="maxwell_original",
     description="Compute surface integral of electric induction (Arts. 79-80)",
 )
@@ -161,7 +165,8 @@ def surface_integral_flux(
 
 @maxwell_cite(
     81,
-    part=1, chapter="On the Surface-Integral of the Electric Induction",
+    part=1,
+    chapter="On the Surface-Integral of the Electric Induction",
     theory_class="maxwell_original",
     description="Characteristic equation at a surface - Gauss's law (Art. 81)",
 )
@@ -219,42 +224,43 @@ def gauss_law_surface(
     """
     from maxwell.math.vector_operators import divergence
 
-    if surface_type == 'sphere':
-        center = surface_params.get('center', (0.0, 0.0, 0.0))
-        R = surface_params['radius']
+    if surface_type == "sphere":
+        center = surface_params.get("center", (0.0, 0.0, 0.0))
+        R = surface_params["radius"]
         cx, cy, cz = center
 
         def r_func(theta, phi):
             return (
                 cx + R * np.sin(theta) * np.cos(phi),
                 cy + R * np.sin(theta) * np.sin(phi),
-                cz + R * np.cos(theta)
+                cz + R * np.cos(theta),
             )
 
         # For sphere: dS = R² sin(θ) dθ dφ, n = (sin(θ)cos(φ), sin(θ)sin(φ), cos(θ))
         flux = surface_integral_flux(
-            Dx, Dy, Dz, r_func,
-            (0, np.pi), (0, 2 * np.pi),
-            n_theta=n_points, n_phi=n_points
+            Dx,
+            Dy,
+            Dz,
+            r_func,
+            (0, np.pi),
+            (0, 2 * np.pi),
+            n_theta=n_points,
+            n_phi=n_points,
         )
         area = 4 * np.pi * R**2
 
-    elif surface_type == 'cylinder':
-        axis = surface_params.get('axis', 'z')
-        center = surface_params.get('center', (0.0, 0.0))
-        R = surface_params['radius']
-        L = surface_params.get('length', 10.0)
+    elif surface_type == "cylinder":
+        axis = surface_params.get("axis", "z")
+        center = surface_params.get("center", (0.0, 0.0))
+        R = surface_params["radius"]
+        L = surface_params.get("length", 10.0)
 
         # Cylinder along z-axis
-        if axis == 'z':
+        if axis == "z":
             cy, cz = center
 
             def r_side(phi, z_param):
-                return (
-                    cy[0] + R * np.cos(phi),
-                    cy[1] + R * np.sin(phi),
-                    z_param
-                )
+                return (cy[0] + R * np.cos(phi), cy[1] + R * np.sin(phi), z_param)
 
             # Side surface
             flux_side = 0.0
@@ -262,7 +268,7 @@ def gauss_law_surface(
             n_z = n_points
 
             for i in range(n_z):
-                z_val = -L/2 + (L / (n_z - 1)) * i
+                z_val = -L / 2 + (L / (n_z - 1)) * i
                 for j in range(n_phi):
                     phi = 2 * np.pi * j / (n_phi - 1)
                     x, y, z = r_side(phi, z_val)
@@ -310,11 +316,11 @@ def gauss_law_surface(
         else:
             raise NotImplementedError(f"Cylinder along {axis} axis not yet implemented")
 
-    elif surface_type == 'plane':
-        normal = np.array(surface_params['normal'])
+    elif surface_type == "plane":
+        normal = np.array(surface_params["normal"])
         normal = normal / np.linalg.norm(normal)
-        point = np.array(surface_params['point'])
-        size = surface_params['size']
+        point = np.array(surface_params["point"])
+        size = surface_params["size"]
 
         # Create orthonormal basis on plane
         if abs(normal[2]) < 0.9:
@@ -330,16 +336,18 @@ def gauss_law_surface(
 
         for i in range(n_u):
             for j in range(n_v):
-                u_val = -size/2 + (size / (n_u - 1)) * i
-                v_val = -size/2 + (size / (n_v - 1)) * j
+                u_val = -size / 2 + (size / (n_u - 1)) * i
+                v_val = -size / 2 + (size / (n_v - 1)) * j
 
                 pos = point + u_val * u + v_val * v
                 x, y, z = pos
 
                 dS = (size / (n_u - 1)) * (size / (n_v - 1))
-                flux += (Dx(x, y, z) * normal[0] +
-                         Dy(x, y, z) * normal[1] +
-                         Dz(x, y, z) * normal[2]) * dS
+                flux += (
+                    Dx(x, y, z) * normal[0]
+                    + Dy(x, y, z) * normal[1]
+                    + Dz(x, y, z) * normal[2]
+                ) * dS
 
         area = size**2
 
@@ -350,16 +358,17 @@ def gauss_law_surface(
     enclosed_charge = flux / (4 * np.pi)
 
     return {
-        'flux': flux,
-        'enclosed_charge': enclosed_charge,
-        'surface_type': surface_type,
-        'surface_area': area,
+        "flux": flux,
+        "enclosed_charge": enclosed_charge,
+        "surface_type": surface_type,
+        "surface_area": area,
     }
 
 
 @maxwell_cite(
     83,
-    part=1, chapter="On the Potential",
+    part=1,
+    chapter="On the Potential",
     theory_class="maxwell_original",
     description="Mean value theorem for potential over a sphere (Art. 83)",
 )
@@ -463,19 +472,20 @@ def potential_mean_value(
     verified = difference < tolerance
 
     return {
-        'center_potential': center_potential,
-        'surface_mean': surface_mean,
-        'difference': difference,
-        'verified': verified,
-        'surface_area': surface_area,
-        'surface_area_computed': total_weight,
-        'sphere_surface_values': np.array(surface_values),
+        "center_potential": center_potential,
+        "surface_mean": surface_mean,
+        "difference": difference,
+        "verified": verified,
+        "surface_area": surface_area,
+        "surface_area_computed": total_weight,
+        "sphere_surface_values": np.array(surface_values),
     }
 
 
 @maxwell_cite(
     111,
-    part=1, chapter="On the Action at a Distance Between Two Electrified Bodies",
+    part=1,
+    chapter="On the Action at a Distance Between Two Electrified Bodies",
     theory_class="maxwell_original",
     description="Mechanical action along lines of force (Art. 111)",
 )
@@ -645,19 +655,22 @@ def field_line_mechanics(
     force_density = np.array([fx, fy, fz])
 
     return {
-        'field_magnitude': E_mag,
-        'field_direction': n,
-        'stress_tensor': stress_tensor,
-        'tension_parallel': tension_parallel,
-        'pressure_perp': pressure_perp,
-        'force_density': force_density,
-        'energy_density': energy_density,
+        "field_magnitude": E_mag,
+        "field_direction": n,
+        "stress_tensor": stress_tensor,
+        "tension_parallel": tension_parallel,
+        "pressure_perp": pressure_perp,
+        "force_density": force_density,
+        "energy_density": energy_density,
     }
 
 
 @maxwell_cite(
-    231, 232, 233,
-    part=2, chapter="The Electric Current",
+    231,
+    232,
+    233,
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Definition and measurement of electric current (Arts. 231-233)",
 )
@@ -764,19 +777,24 @@ def current_definition(
     }
 
     return {
-        'current_type': current_type,
-        'magnitude': magnitude,
-        'magnitude_emu': magnitude_emu,
-        'direction': direction_unit,
-        'conductor_type': conductor_type,
-        'charge_transferred': charge_transferred,
-        'maxwell_description': descriptions.get(conductor_type, "Unknown conductor type"),
+        "current_type": current_type,
+        "magnitude": magnitude,
+        "magnitude_emu": magnitude_emu,
+        "direction": direction_unit,
+        "conductor_type": conductor_type,
+        "charge_transferred": charge_transferred,
+        "maxwell_description": descriptions.get(
+            conductor_type, "Unknown conductor type"
+        ),
     }
 
 
 @maxwell_cite(
-    234, 235, 236,
-    part=2, chapter="The Electric Current",
+    234,
+    235,
+    236,
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Direction of current flow (Arts. 234-236)",
 )
@@ -824,11 +842,11 @@ def current_direction(
         >>> result = current_direction(J, normal, {'type': 'disk', 'radius': 1.0})
     """
     # Get surface type and parameters
-    surface_type = surface_params.get('type', 'plane')
+    surface_type = surface_params.get("type", "plane")
 
-    if surface_type == 'plane':
-        point = np.array(surface_params.get('point', [0.0, 0.0, 0.0]))
-        size = surface_params.get('size', 1.0)
+    if surface_type == "plane":
+        point = np.array(surface_params.get("point", [0.0, 0.0, 0.0]))
+        size = surface_params.get("size", 1.0)
 
         # Create orthonormal basis on plane
         n0 = np.array(surface_normal(point[0], point[1], point[2]))
@@ -846,8 +864,8 @@ def current_direction(
 
         for i in range(n_points):
             for j in range(n_points):
-                u_val = -size/2 + (size / (n_points - 1)) * i
-                v_val = -size/2 + (size / (n_points - 1)) * j
+                u_val = -size / 2 + (size / (n_points - 1)) * i
+                v_val = -size / 2 + (size / (n_points - 1)) * j
 
                 pos = point + u_val * u + v_val * v
                 x, y, z = pos
@@ -857,13 +875,13 @@ def current_direction(
                 n_vec = n_vec / np.linalg.norm(n_vec)
 
                 j_samples.append(J_vec)
-                dS = (size / (n_points - 1))**2
+                dS = (size / (n_points - 1)) ** 2
                 total_current += np.dot(J_vec, n_vec) * dS
 
-    elif surface_type == 'disk':
-        radius = surface_params.get('radius', 1.0)
-        center = np.array(surface_params.get('center', [0.0, 0.0, 0.0]))
-        normal_vec = np.array(surface_params.get('normal', [0.0, 0.0, 1.0]))
+    elif surface_type == "disk":
+        radius = surface_params.get("radius", 1.0)
+        center = np.array(surface_params.get("center", [0.0, 0.0, 0.0]))
+        normal_vec = np.array(surface_params.get("normal", [0.0, 0.0, 1.0]))
         normal_vec = normal_vec / np.linalg.norm(normal_vec)
 
         # Orthonormal basis
@@ -928,18 +946,22 @@ def current_direction(
     continuity_holds = abs(div_J) < 1e-6
 
     return {
-        'total_current': total_current,
-        'current_density_sample': j_samples[:10] if j_samples else [],
-        'net_direction': net_direction,
-        'surface_integral': total_current,
-        'divergence_J': div_J,
-        'continuity_check': continuity_holds,
+        "total_current": total_current,
+        "current_density_sample": j_samples[:10] if j_samples else [],
+        "net_direction": net_direction,
+        "surface_integral": total_current,
+        "divergence_J": div_J,
+        "continuity_check": continuity_holds,
     }
 
 
 @maxwell_cite(
-    237, 238, 239, 240,
-    part=2, chapter="The Electric Current",
+    237,
+    238,
+    239,
+    240,
+    part=2,
+    chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Magnetic, chemical, thermal effects of current (Arts. 237-240)",
 )
@@ -1002,12 +1024,12 @@ def current_effects(
 
     # Magnetic effect (Art. 239)
     if coil_params is not None:
-        n_turns = coil_params.get('n_turns', 1)
-        radius = coil_params.get('radius', 1.0)
-        current_unit = coil_params.get('current_unit', 'emu')
+        n_turns = coil_params.get("n_turns", 1)
+        radius = coil_params.get("radius", 1.0)
+        current_unit = coil_params.get("current_unit", "emu")
 
         # Convert to emu if necessary
-        if current_unit == 'esu':
+        if current_unit == "esu":
             c_cgs = 2.99792458e10
             I_emu = current / c_cgs
         else:
@@ -1018,26 +1040,26 @@ def current_effects(
         # For coil with n turns: B = (2π n N I) / R
         B_center = (2 * np.pi * n_turns * I_emu) / radius
 
-        results['magnetic_effect'] = {
-            'B_center': B_center,  # in gauss (emu)
-            'n_turns': n_turns,
-            'coil_radius': radius,
-            'description': 'Magnetic field at center of galvanometer coil',
+        results["magnetic_effect"] = {
+            "B_center": B_center,  # in gauss (emu)
+            "n_turns": n_turns,
+            "coil_radius": radius,
+            "description": "Magnetic field at center of galvanometer coil",
         }
 
         # Galvanometer deflection (simplified model)
         # Assuming Earth's horizontal field H ≈ 0.2 gauss
         H_earth = 0.2  # gauss
-        if 'B_center' in results['magnetic_effect']:
+        if "B_center" in results["magnetic_effect"]:
             tan_theta = B_center / H_earth
             theta_rad = np.arctan(tan_theta)
             theta_deg = np.degrees(theta_rad)
-            results['magnetic_effect']['deflection_deg'] = theta_deg
+            results["magnetic_effect"]["deflection_deg"] = theta_deg
 
     # Chemical effect (Arts. 237-238)
     if electrolyte_params is not None and time is not None:
-        eq_weight = electrolyte_params.get('equivalent_weight', 1.0)
-        valence = electrolyte_params.get('valence', 1)
+        eq_weight = electrolyte_params.get("equivalent_weight", 1.0)
+        valence = electrolyte_params.get("valence", 1)
 
         # Faraday's law of electrolysis:
         # m = (I t M) / (n F)
@@ -1056,15 +1078,15 @@ def current_effects(
         # Mass deposited
         mass_deposited = (eq_weight * Q_emu) / F_emu
 
-        results['chemical_effect'] = {
-            'mass_deposited': mass_deposited,  # grams
-            'equivalent_weight': eq_weight,
-            'charge_passed': Q_emu,  # abcoulombs
-            'description': 'Mass of substance deposited by electrolysis',
+        results["chemical_effect"] = {
+            "mass_deposited": mass_deposited,  # grams
+            "equivalent_weight": eq_weight,
+            "charge_passed": Q_emu,  # abcoulombs
+            "description": "Mass of substance deposited by electrolysis",
         }
     else:
-        results['chemical_effect'] = {
-            'description': 'No electrolysis parameters provided',
+        results["chemical_effect"] = {
+            "description": "No electrolysis parameters provided",
         }
 
     # Thermal effect (Joule heating)
@@ -1082,20 +1104,20 @@ def current_effects(
         # Convert to joules for reference
         heat_joules = heat_emu / 1e7
 
-        results['thermal_effect'] = {
-            'heat_ergs': heat_emu,
-            'heat_joules': heat_joules,
-            'resistance': resistance,
-            'time': time,
-            'description': 'Heat generated by Joule heating (I²R)',
+        results["thermal_effect"] = {
+            "heat_ergs": heat_emu,
+            "heat_joules": heat_joules,
+            "resistance": resistance,
+            "time": time,
+            "description": "Heat generated by Joule heating (I²R)",
         }
     else:
-        results['thermal_effect'] = {
-            'description': 'No resistance or time provided for thermal calculation',
+        results["thermal_effect"] = {
+            "description": "No resistance or time provided for thermal calculation",
         }
 
     # Maxwell's synthesis
-    results['maxwell_analysis'] = (
+    results["maxwell_analysis"] = (
         f"Current of {current} produces:\n"
         f"  - Magnetic field detectable by galvanometer (Art. 239)\n"
         f"  - Chemical decomposition in electrolytes (Arts. 237-238)\n"
@@ -1106,8 +1128,10 @@ def current_effects(
 
 
 @maxwell_cite(
-    242, 243,
-    part=2, chapter="Conduction and Resistance",
+    242,
+    243,
+    part=2,
+    chapter="Conduction and Resistance",
     theory_class="maxwell_original",
     description="Electromotive force definition (Arts. 242-243)",
 )
@@ -1210,7 +1234,9 @@ def emf_definition(
                 f"Estimated Seebeck EMF: {estimated_emf:.2e} statvolts."
             )
         else:
-            description = "Thermoelectric source: EMF from temperature gradient (Seebeck effect)."
+            description = (
+                "Thermoelectric source: EMF from temperature gradient (Seebeck effect)."
+            )
     elif source_type == "contact":
         if contact_materials is not None:
             description = (
@@ -1228,21 +1254,22 @@ def emf_definition(
         description = "General EMF source."
 
     return {
-        'emf': emf,
-        'emf_emu': emf_emu,
-        'emf_volts': emf * 299.792458,  # Convert statvolts to volts
-        'source_type': source_type,
-        'open_circuit_voltage': open_circuit_voltage,
-        'short_circuit_current': short_circuit_current,
-        'max_power': max_power,
-        'internal_resistance': internal_resistance,
-        'maxwell_description': description,
+        "emf": emf,
+        "emf_emu": emf_emu,
+        "emf_volts": emf * 299.792458,  # Convert statvolts to volts
+        "source_type": source_type,
+        "open_circuit_voltage": open_circuit_voltage,
+        "short_circuit_current": short_circuit_current,
+        "max_power": max_power,
+        "internal_resistance": internal_resistance,
+        "maxwell_description": description,
     }
 
 
 @maxwell_cite(
     244,
-    part=2, chapter="Conduction and Resistance",
+    part=2,
+    chapter="Conduction and Resistance",
     theory_class="maxwell_original",
     description="Methods of measuring electromotive force (Art. 244)",
 )
@@ -1304,12 +1331,12 @@ def emf_measurement(
         >>> print(f"Unknown EMF: {result['calculated_emf']} statvolts")
     """
     results = {
-        'measured_emf': measured_emf,
-        'measurement_method': measurement_method,
+        "measured_emf": measured_emf,
+        "measurement_method": measurement_method,
     }
 
     if measurement_method == "potentiometer":
-        results['method_description'] = (
+        results["method_description"] = (
             "Potentiometer method: Compare unknown EMF with standard cell "
             "using a uniform resistance wire. At balance, no current flows "
             "and the ratio of EMFs equals the ratio of lengths."
@@ -1322,52 +1349,52 @@ def emf_measurement(
             if standard_cell_emf is not None:
                 # E_unknown = E_standard * (L_unknown / L_std)
                 calculated_emf = standard_cell_emf * (L_unknown / L_std)
-                results['calculated_emf'] = calculated_emf
+                results["calculated_emf"] = calculated_emf
 
                 # Potentiometer accuracy: typically 0.01% to 0.1%
-                results['accuracy_estimate'] = "0.01% to 0.1% (high precision)"
-                results['potentiometer_ratio'] = L_unknown / L_std
+                results["accuracy_estimate"] = "0.01% to 0.1% (high precision)"
+                results["potentiometer_ratio"] = L_unknown / L_std
 
         else:
-            results['accuracy_estimate'] = "0.01% to 0.1% (high precision)"
+            results["accuracy_estimate"] = "0.01% to 0.1% (high precision)"
 
     elif measurement_method == "galvanometer":
-        results['method_description'] = (
+        results["method_description"] = (
             "Galvanometer method: Pass current through known resistance "
             "and measure deflection. Requires calibration of galvanometer "
             "constant and knowledge of circuit resistance."
         )
 
         if galvanometer_params is not None:
-            R_total = galvanometer_params.get('resistance', 1.0)
-            sensitivity = galvanometer_params.get('sensitivity', 1.0)
+            R_total = galvanometer_params.get("resistance", 1.0)
+            sensitivity = galvanometer_params.get("sensitivity", 1.0)
 
             # I = E / R, deflection = sensitivity * I
             # So E = deflection * R / sensitivity
-            results['galvanometer_formula'] = "E = theta * R / k"
-            results['circuit_resistance'] = R_total
-            results['sensitivity'] = sensitivity
+            results["galvanometer_formula"] = "E = theta * R / k"
+            results["circuit_resistance"] = R_total
+            results["sensitivity"] = sensitivity
 
         # Galvanometer accuracy: typically 1% to 5%
-        results['accuracy_estimate'] = "1% to 5% (moderate precision)"
+        results["accuracy_estimate"] = "1% to 5% (moderate precision)"
 
     elif measurement_method == "electrometer":
-        results['method_description'] = (
+        results["method_description"] = (
             "Electrometer method: Direct measurement using an absolute "
             "electrometer (Kelvin type). Measures force between charged "
             "plates to determine potential difference absolutely."
         )
 
         # Electrometer accuracy: typically 0.1% to 1%
-        results['accuracy_estimate'] = "0.1% to 1% (good precision)"
+        results["accuracy_estimate"] = "0.1% to 1% (good precision)"
 
     else:
-        results['method_description'] = "Unknown measurement method."
-        results['accuracy_estimate'] = "Unknown"
+        results["method_description"] = "Unknown measurement method."
+        results["accuracy_estimate"] = "Unknown"
 
     # Convert to practical units
-    results['emf_volts'] = measured_emf * 299.792458
-    results['emf_abvolts'] = measured_emf * 2.99792458e10
+    results["emf_volts"] = measured_emf * 299.792458
+    results["emf_abvolts"] = measured_emf * 2.99792458e10
 
     return results
 
@@ -1378,7 +1405,6 @@ __all__ = [
     "gauss_law_surface",
     "potential_mean_value",
     "field_line_mechanics",
-
     # Electric current theory (Arts. 231-240, 242-244)
     "current_definition",
     "current_direction",

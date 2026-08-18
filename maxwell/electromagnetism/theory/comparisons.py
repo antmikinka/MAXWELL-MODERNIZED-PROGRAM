@@ -27,10 +27,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -60,8 +61,10 @@ class ForceLawComparison:
             raise ValueError(f"law_type must be one of {valid_types}")
 
     @maxwell_cite(
-        526, 527,
-        part=4, chapter="Force Law Comparisons",
+        526,
+        527,
+        part=4,
+        chapter="Force Law Comparisons",
         theory_class="maxwell_original",
         description="Calculate force using selected law",
     )
@@ -98,8 +101,10 @@ class ForceLawComparison:
 
 
 def _ampere_force(
-    I1: float, dl1: np.ndarray,
-    I2: float, dl2: np.ndarray,
+    I1: float,
+    dl1: np.ndarray,
+    I2: float,
+    dl2: np.ndarray,
     r_vec: np.ndarray,
 ) -> np.ndarray:
     """Ampere's original force law."""
@@ -112,15 +117,17 @@ def _ampere_force(
     dl1_dot_r = np.dot(dl1, r_hat)
     dl2_dot_r = np.dot(dl2, r_hat)
 
-    factor = (I1 * I2) / (r_mag ** 2)
-    bracket = 2.0 * (dl1_dot_r * dl2_dot_r) / (r_mag ** 2) - dl1_dot_dl2
+    factor = (I1 * I2) / (r_mag**2)
+    bracket = 2.0 * (dl1_dot_r * dl2_dot_r) / (r_mag**2) - dl1_dot_dl2
 
     return factor * bracket * r_hat
 
 
 def _grassmann_force(
-    I1: float, dl1: np.ndarray,
-    I2: float, dl2: np.ndarray,
+    I1: float,
+    dl1: np.ndarray,
+    I2: float,
+    dl2: np.ndarray,
     r_vec: np.ndarray,
 ) -> np.ndarray:
     """Grassmann's force law (field-based)."""
@@ -132,12 +139,14 @@ def _grassmann_force(
     cross1 = np.cross(dl1, r_hat)
     cross2 = np.cross(dl2, cross1)
 
-    return (I1 * I2 / (r_mag ** 2)) * cross2
+    return (I1 * I2 / (r_mag**2)) * cross2
 
 
 def _weber_force(
-    I1: float, dl1: np.ndarray,
-    I2: float, dl2: np.ndarray,
+    I1: float,
+    dl1: np.ndarray,
+    I2: float,
+    dl2: np.ndarray,
     r_vec: np.ndarray,
 ) -> np.ndarray:
     """
@@ -154,8 +163,10 @@ def _weber_force(
 
 
 @maxwell_cite(
-    526, 527,
-    part=4, chapter="Force Law Comparisons",
+    526,
+    527,
+    part=4,
+    chapter="Force Law Comparisons",
     theory_class="maxwell_original",
     description="Compare force laws for specific geometry",
 )
@@ -185,9 +196,21 @@ def compare_force_laws(
     Reference:
         Part IV, Arts. 526-527: Force law comparison.
     """
-    dl1 = np.asarray(dl1, dtype=np.float64) if dl1 is not None else np.array([1.0, 0.0, 0.0])
-    dl2 = np.asarray(dl2, dtype=np.float64) if dl2 is not None else np.array([1.0, 0.0, 0.0])
-    r_vector = np.asarray(r_vector, dtype=np.float64) if r_vector is not None else np.array([0.0, 1.0, 0.0])
+    dl1 = (
+        np.asarray(dl1, dtype=np.float64)
+        if dl1 is not None
+        else np.array([1.0, 0.0, 0.0])
+    )
+    dl2 = (
+        np.asarray(dl2, dtype=np.float64)
+        if dl2 is not None
+        else np.array([1.0, 0.0, 0.0])
+    )
+    r_vector = (
+        np.asarray(r_vector, dtype=np.float64)
+        if r_vector is not None
+        else np.array([0.0, 1.0, 0.0])
+    )
 
     F_ampere = _ampere_force(current1, dl1, current2, dl2, r_vector)
     F_grassmann = _grassmann_force(current1, dl1, current2, dl2, r_vector)
@@ -216,8 +239,10 @@ def compare_force_laws(
 
 
 @maxwell_cite(
-    526, 527,
-    part=4, chapter="Force Law Comparisons",
+    526,
+    527,
+    part=4,
+    chapter="Force Law Comparisons",
     theory_class="maxwell_original",
     description="Verify action-reaction for force laws",
 )
@@ -247,8 +272,16 @@ def verify_action_reaction(
     Returns:
         Dictionary with verification results for each force law.
     """
-    dl1 = np.asarray(dl1, dtype=np.float64) if dl1 is not None else np.array([1.0, 0.0, 0.0])
-    dl2 = np.asarray(dl2, dtype=np.float64) if dl2 is not None else np.array([0.0, 1.0, 0.0])
+    dl1 = (
+        np.asarray(dl1, dtype=np.float64)
+        if dl1 is not None
+        else np.array([1.0, 0.0, 0.0])
+    )
+    dl2 = (
+        np.asarray(dl2, dtype=np.float64)
+        if dl2 is not None
+        else np.array([0.0, 1.0, 0.0])
+    )
 
     r_vec = np.array([0.0, separation, 0.0])
     r_rev = -r_vec
@@ -275,8 +308,10 @@ def verify_action_reaction(
 
 
 @maxwell_cite(
-    526, 527,
-    part=4, chapter="Force Law Comparisons",
+    526,
+    527,
+    part=4,
+    chapter="Force Law Comparisons",
     theory_class="maxwell_original",
     description="Compare force laws for parallel elements",
 )
@@ -318,13 +353,19 @@ def compare_parallel_elements(
         "force_grassmann": F_grassmann,
         "force_weber": F_weber,
         "all_attractive": F_ampere[1] < 0 and F_grassmann[1] < 0 and F_weber[1] < 0,
-        "magnitude_ratio_AG": np.linalg.norm(F_ampere) / np.linalg.norm(F_grassmann) if np.linalg.norm(F_grassmann) > 0 else float('inf'),
+        "magnitude_ratio_AG": (
+            np.linalg.norm(F_ampere) / np.linalg.norm(F_grassmann)
+            if np.linalg.norm(F_grassmann) > 0
+            else float("inf")
+        ),
     }
 
 
 @maxwell_cite(
-    526, 527,
-    part=4, chapter="Force Law Comparisons",
+    526,
+    527,
+    part=4,
+    chapter="Force Law Comparisons",
     theory_class="maxwell_original",
     description="Complete force law comparison analysis",
 )
@@ -352,10 +393,30 @@ def analyze_force_laws(
     """
     if test_geometries is None:
         test_geometries = [
-            {"name": "parallel_perp_to_r", "dl1": [1, 0, 0], "dl2": [1, 0, 0], "r": [0, 1, 0]},
-            {"name": "parallel_along_r", "dl1": [0, 1, 0], "dl2": [0, 1, 0], "r": [0, 1, 0]},
-            {"name": "perpendicular_elements", "dl1": [1, 0, 0], "dl2": [0, 0, 1], "r": [0, 1, 0]},
-            {"name": "perpendicular_r", "dl1": [1, 0, 0], "dl2": [0, 0, 1], "r": [0, 1, 0]},
+            {
+                "name": "parallel_perp_to_r",
+                "dl1": [1, 0, 0],
+                "dl2": [1, 0, 0],
+                "r": [0, 1, 0],
+            },
+            {
+                "name": "parallel_along_r",
+                "dl1": [0, 1, 0],
+                "dl2": [0, 1, 0],
+                "r": [0, 1, 0],
+            },
+            {
+                "name": "perpendicular_elements",
+                "dl1": [1, 0, 0],
+                "dl2": [0, 0, 1],
+                "r": [0, 1, 0],
+            },
+            {
+                "name": "perpendicular_r",
+                "dl1": [1, 0, 0],
+                "dl2": [0, 0, 1],
+                "r": [0, 1, 0],
+            },
         ]
 
     results = []
@@ -378,8 +439,10 @@ def analyze_force_laws(
 
 
 @maxwell_cite(
-    526, 527,
-    part=4, chapter="Force Law Comparisons",
+    526,
+    527,
+    part=4,
+    chapter="Force Law Comparisons",
     theory_class="maxwell_original",
     description="Ampere force law for parallel wires: F/L = 2*I1*I2/r",
 )
@@ -403,8 +466,10 @@ def ampere_force_law(I1: float, I2: float, r: float) -> float:
 
 
 @maxwell_cite(
-    526, 527,
-    part=4, chapter="Force Law Comparisons",
+    526,
+    527,
+    part=4,
+    chapter="Force Law Comparisons",
     theory_class="maxwell_original",
     description="Grassmann force law: F = I * dl × B",
 )
@@ -434,8 +499,10 @@ def grassmann_force_law(
 
 
 @maxwell_cite(
-    526, 527,
-    part=4, chapter="Force Law Comparisons",
+    526,
+    527,
+    part=4,
+    chapter="Force Law Comparisons",
     theory_class="maxwell_original",
     description="Weber force law for moving charges",
 )
@@ -476,13 +543,13 @@ def weber_force_law(
     r_hat = r / r_mag
 
     # Coulomb term
-    F_coulomb = q1 * q2 / (r_mag ** 2) * r_hat
+    F_coulomb = q1 * q2 / (r_mag**2) * r_hat
 
     # Velocity-dependent correction (simplified Weber form)
     v1_dot_v2 = np.dot(v1, v2)
     v1_dot_r = np.dot(v1, r_hat)
     v2_dot_r = np.dot(v2, r_hat)
 
-    correction = (3.0 * v1_dot_r * v2_dot_r - 2.0 * v1_dot_v2) / (CONST.C ** 2)
+    correction = (3.0 * v1_dot_r * v2_dot_r - 2.0 * v1_dot_v2) / (CONST.C**2)
 
     return F_coulomb * (1.0 + correction)

@@ -31,16 +31,19 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.electromagnetism.components.circular_coils import calc_coil_off_axis
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
-    675, 676,
-    part=4, chapter="Solenoids",
+    675,
+    676,
+    part=4,
+    chapter="Solenoids",
     theory_class="maxwell_original",
     description="Calculate magnetic field of long solenoid",
 )
@@ -82,8 +85,8 @@ def calc_solenoid_field(
     z2 = L / 2 + z  # distance to far end
 
     # Angles
-    r1 = np.sqrt(a ** 2 + z1 ** 2)
-    r2 = np.sqrt(a ** 2 + z2 ** 2)
+    r1 = np.sqrt(a**2 + z1**2)
+    r2 = np.sqrt(a**2 + z2**2)
 
     if r1 < 1e-15 or r2 < 1e-15:
         return 2.0 * np.pi * turns_per_cm * current / CONST.C
@@ -95,8 +98,10 @@ def calc_solenoid_field(
 
 
 @maxwell_cite(
-    677, 678,
-    part=4, chapter="Solenoids",
+    677,
+    678,
+    part=4,
+    chapter="Solenoids",
     theory_class="maxwell_original",
     description="Calculate infinite solenoid field",
 )
@@ -124,8 +129,11 @@ def calc_infinite_solenoid_field(
 
 
 @maxwell_cite(
-    679, 680, 681,
-    part=4, chapter="Solenoids",
+    679,
+    680,
+    681,
+    part=4,
+    chapter="Solenoids",
     theory_class="maxwell_original",
     description="Calculate Helmholtz coil field at center",
 )
@@ -158,8 +166,10 @@ def calc_helmholtz_center(
 
 
 @maxwell_cite(
-    682, 683,
-    part=4, chapter="Solenoids",
+    682,
+    683,
+    part=4,
+    chapter="Solenoids",
     theory_class="maxwell_original",
     description="Calculate Helmholtz coil uniformity region",
 )
@@ -190,15 +200,21 @@ def calc_helmholtz_uniformity(
     B_center = calc_helmholtz_center(current, coil_radius, n_turns)
 
     # Test field at offsets
-    from maxwell.electromagnetism.components.circular_coils import calc_double_coil_field
+    from maxwell.electromagnetism.components.circular_coils import (
+        calc_double_coil_field,
+    )
 
     offsets = np.linspace(0, max_offset, 10)
     variations = []
 
     for offset in offsets:
-        B = calc_double_coil_field(current, coil_radius, np.array([0, 0, offset]), n_turns=n_turns)
+        B = calc_double_coil_field(
+            current, coil_radius, np.array([0, 0, offset]), n_turns=n_turns
+        )
         B_mag = np.linalg.norm(B)
-        variation = abs(B_mag - abs(B_center)) / abs(B_center) if abs(B_center) > 1e-15 else 0
+        variation = (
+            abs(B_mag - abs(B_center)) / abs(B_center) if abs(B_center) > 1e-15 else 0
+        )
         variations.append(variation)
 
     return {
@@ -232,20 +248,25 @@ class Solenoid:
 
     @maxwell_cite(
         675,
-        part=4, chapter="Solenoids",
+        part=4,
+        chapter="Solenoids",
         theory_class="maxwell_original",
         description="Get field at axial position",
     )
     def field_at(self, axial_position: float) -> float:
         """Calculate field at axial position from center."""
         return calc_solenoid_field(
-            self.current, self.turns_per_cm,
-            self.length, self.radius, axial_position,
+            self.current,
+            self.turns_per_cm,
+            self.length,
+            self.radius,
+            axial_position,
         )
 
     @maxwell_cite(
         677,
-        part=4, chapter="Solenoids",
+        part=4,
+        chapter="Solenoids",
         theory_class="maxwell_original",
         description="Get infinite solenoid approximation",
     )
@@ -255,7 +276,8 @@ class Solenoid:
 
     @maxwell_cite(
         675,
-        part=4, chapter="Solenoids",
+        part=4,
+        chapter="Solenoids",
         theory_class="maxwell_original",
         description="Get field at center",
     )
@@ -265,8 +287,11 @@ class Solenoid:
 
 
 @maxwell_cite(
-    675, 676, 677,
-    part=4, chapter="Solenoids",
+    675,
+    676,
+    677,
+    part=4,
+    chapter="Solenoids",
     theory_class="maxwell_original",
     description="Verify solenoid field relations",
 )
@@ -321,8 +346,15 @@ def verify_solenoid_field(
 
 
 @maxwell_cite(
-    675, 676, 677, 678, 679, 680, 681,
-    part=4, chapter="Solenoids",
+    675,
+    676,
+    677,
+    678,
+    679,
+    680,
+    681,
+    part=4,
+    chapter="Solenoids",
     theory_class="maxwell_original",
     description="Complete solenoid analysis",
 )
@@ -354,7 +386,9 @@ def analyze_solenoid(
 
     # Axial profile
     z_values = np.linspace(-length, length, 40)
-    B_profile = [calc_solenoid_field(current, turns_per_cm, length, radius, z) for z in z_values]
+    B_profile = [
+        calc_solenoid_field(current, turns_per_cm, length, radius, z) for z in z_values
+    ]
 
     # Center and end fields
     B_center = calc_solenoid_field(current, turns_per_cm, length, radius, 0)

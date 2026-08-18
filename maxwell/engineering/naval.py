@@ -27,12 +27,14 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
+from maxwell.components.ellipsoids import MagneticEllipsoid
 from maxwell.config.constants import CONST
 from maxwell.materials.induction import MagneticSusceptibility
-from maxwell.components.ellipsoids import MagneticEllipsoid
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -61,12 +63,21 @@ class ShipMagnetism:
     compass_position: np.ndarray = None  # Position relative to ship center
 
     def __post_init__(self):
-        self.permanent_moment = np.asarray(self.permanent_moment, dtype=np.float64) if self.permanent_moment is not None else np.zeros(3)
-        self.compass_position = np.asarray(self.compass_position, dtype=np.float64) if self.compass_position is not None else np.zeros(3)
+        self.permanent_moment = (
+            np.asarray(self.permanent_moment, dtype=np.float64)
+            if self.permanent_moment is not None
+            else np.zeros(3)
+        )
+        self.compass_position = (
+            np.asarray(self.compass_position, dtype=np.float64)
+            if self.compass_position is not None
+            else np.zeros(3)
+        )
 
     @maxwell_cite(
         441,
-        part=3, chapter="Naval Magnetism",
+        part=3,
+        chapter="Naval Magnetism",
         theory_class="maxwell_original",
         description="Calculate deviation from ship magnetism",
     )
@@ -191,7 +202,8 @@ class ShipMagnetism:
     @classmethod
     @maxwell_cite(
         441,
-        part=3, chapter="Naval Magnetism",
+        part=3,
+        chapter="Naval Magnetism",
         theory_class="maxwell_original",
         description="Create ship model from deviation coefficients",
     )
@@ -231,7 +243,11 @@ class ShipMagnetism:
 
         # Simplified estimation
         # m ≈ H_earth × r³ × coefficient
-        r_mag = np.linalg.norm(compass_position) if np.linalg.norm(compass_position) > 0 else 100
+        r_mag = (
+            np.linalg.norm(compass_position)
+            if np.linalg.norm(compass_position) > 0
+            else 100
+        )
         H_earth = 0.3  # Typical horizontal field
 
         # Fore-aft moment (from C coefficient)
@@ -273,7 +289,8 @@ class MagneticCompass:
 
     @maxwell_cite(
         441,
-        part=3, chapter="Naval Magnetism",
+        part=3,
+        chapter="Naval Magnetism",
         theory_class="maxwell_original",
         description="Convert compass heading to true heading",
     )
@@ -324,7 +341,8 @@ class MagneticCompass:
 
     @maxwell_cite(
         441,
-        part=3, chapter="Naval Magnetism",
+        part=3,
+        chapter="Naval Magnetism",
         theory_class="maxwell_original",
         description="Generate deviation table for compass",
     )
@@ -359,12 +377,14 @@ class MagneticCompass:
                 latitude=latitude,
             )
 
-            table.append({
-                "heading_deg": float(heading * 180 / np.pi),
-                "heading_rad": float(heading),
-                "deviation_deg": float(deviation * 180 / np.pi),
-                "deviation_rad": float(deviation),
-            })
+            table.append(
+                {
+                    "heading_deg": float(heading * 180 / np.pi),
+                    "heading_rad": float(heading),
+                    "deviation_deg": float(deviation * 180 / np.pi),
+                    "deviation_rad": float(deviation),
+                }
+            )
 
         self.deviation_table = {d["heading_deg"]: d["deviation_deg"] for d in table}
 
@@ -373,7 +393,8 @@ class MagneticCompass:
 
 @maxwell_cite(
     441,
-    part=3, chapter="Naval Magnetism",
+    part=3,
+    chapter="Naval Magnetism",
     theory_class="maxwell_original",
     description="Calculate Flinders bar correction",
 )
@@ -412,7 +433,7 @@ def flinders_bar_correction(
     bar_diameter = bar_length / 20
 
     # Volume of iron needed
-    bar_volume = np.pi * (bar_diameter/2)**2 * bar_length
+    bar_volume = np.pi * (bar_diameter / 2) ** 2 * bar_length
 
     return {
         "bar_length_cm": float(bar_length),
@@ -425,7 +446,8 @@ def flinders_bar_correction(
 
 @maxwell_cite(
     441,
-    part=3, chapter="Naval Magnetism",
+    part=3,
+    chapter="Naval Magnetism",
     theory_class="maxwell_original",
     description="Calculate quadrantal corrector settings",
 )
@@ -433,7 +455,7 @@ def quadrantal_correctors(
     coefficient_D: float,
     coefficient_E: float,
     compass_diameter: float,
-) -> dict[str, any]:
+) -> dict[str, Any]:
     """
     Calculate soft iron corrector placement for quadrantal deviation.
 
@@ -484,7 +506,8 @@ def quadrantal_correctors(
 
 @maxwell_cite(
     441,
-    part=3, chapter="Naval Magnetism",
+    part=3,
+    chapter="Naval Magnetism",
     theory_class="maxwell_original",
     description="Simulate compass swinging procedure",
 )
@@ -492,7 +515,7 @@ def simulate_compass_swinging(
     true_headings: list[float],
     latitude: float,
     ship_params: dict,
-) -> dict[str, any]:
+) -> dict[str, Any]:
     """
     Simulate the compass swinging procedure to determine deviation.
 
@@ -517,11 +540,13 @@ def simulate_compass_swinging(
     """
     # Create ship model
     ship = ShipMagnetism(
-        permanent_moment=np.array([
-            ship_params.get("m_fore_aft", 1000),
-            ship_params.get("m_athwartships", 500),
-            ship_params.get("m_vertical", 100),
-        ]),
+        permanent_moment=np.array(
+            [
+                ship_params.get("m_fore_aft", 1000),
+                ship_params.get("m_athwartships", 500),
+                ship_params.get("m_vertical", 100),
+            ]
+        ),
         susceptibility=ship_params.get("susceptibility", 0.01),
         compass_position=np.array([0, 0, 50]),  # 50 cm above center
     )
@@ -533,14 +558,16 @@ def simulate_compass_swinging(
         deviation = ship.compass_deviation(heading=true_h, latitude=latitude)
         compass_reading = true_h - deviation
 
-        measurements.append({
-            "true_heading_rad": float(true_h),
-            "true_heading_deg": float(true_h * 180 / np.pi),
-            "compass_heading_rad": float(compass_reading),
-            "compass_heading_deg": float(compass_reading * 180 / np.pi),
-            "deviation_rad": float(deviation),
-            "deviation_deg": float(deviation * 180 / np.pi),
-        })
+        measurements.append(
+            {
+                "true_heading_rad": float(true_h),
+                "true_heading_deg": float(true_h * 180 / np.pi),
+                "compass_heading_rad": float(compass_reading),
+                "compass_heading_deg": float(compass_reading * 180 / np.pi),
+                "deviation_rad": float(deviation),
+                "deviation_deg": float(deviation * 180 / np.pi),
+            }
+        )
 
     # Fit deviation coefficients (simplified)
     # δ = A + B sin(θ) + C cos(θ) + D sin(2θ) + E cos(2θ)
@@ -579,10 +606,10 @@ def _fit_deviation_coefficients(measurements: list[dict]) -> dict[str, float]:
         D_sum += delta * np.sin(2 * theta)
         E_sum += delta * np.cos(2 * theta)
 
-        sin_sum += np.sin(theta)**2
-        cos_sum += np.cos(theta)**2
-        sin2_sum += np.sin(2 * theta)**2
-        cos2_sum += np.cos(2 * theta)**2
+        sin_sum += np.sin(theta) ** 2
+        cos_sum += np.cos(theta) ** 2
+        sin2_sum += np.sin(2 * theta) ** 2
+        cos2_sum += np.cos(2 * theta) ** 2
 
     # Normalize
     A /= n
@@ -607,11 +634,12 @@ def _fit_deviation_coefficients(measurements: list[dict]) -> dict[str, float]:
 
 @maxwell_cite(
     441,
-    part=3, chapter="Naval Magnetism",
+    part=3,
+    chapter="Naval Magnetism",
     theory_class="maxwell_original",
     description="Verify naval magnetism calculations",
 )
-def verify_naval_magnetism() -> dict[str, any]:
+def verify_naval_magnetism() -> dict[str, Any]:
     """
     Verify naval magnetism calculations.
 
@@ -637,10 +665,10 @@ def verify_naval_magnetism() -> dict[str, any]:
     )
 
     deviations = []
-    headings = np.linspace(0, 2*np.pi, 36)
+    headings = np.linspace(0, 2 * np.pi, 36)
 
     for h in headings:
-        dev = ship.compass_deviation(heading=h, latitude=np.pi/4)
+        dev = ship.compass_deviation(heading=h, latitude=np.pi / 4)
         deviations.append(dev)
 
     # Should show periodic variation
@@ -652,11 +680,9 @@ def verify_naval_magnetism() -> dict[str, any]:
     }
 
     # Test 2: Heeling error depends on latitude
-    dev_equator = ship.compass_deviation(
-        heading=np.pi/2, latitude=0, heel_angle=0.1
-    )
+    dev_equator = ship.compass_deviation(heading=np.pi / 2, latitude=0, heel_angle=0.1)
     dev_polar = ship.compass_deviation(
-        heading=np.pi/2, latitude=np.pi/3, heel_angle=0.1
+        heading=np.pi / 2, latitude=np.pi / 3, heel_angle=0.1
     )
 
     results["heeling_latitude"] = {
@@ -666,10 +692,10 @@ def verify_naval_magnetism() -> dict[str, any]:
     }
 
     # Test 3: Compass swinging simulation
-    true_headings = np.linspace(0, 2*np.pi, 12, endpoint=False).tolist()
+    true_headings = np.linspace(0, 2 * np.pi, 12, endpoint=False).tolist()
     swing_result = simulate_compass_swinging(
         true_headings=true_headings,
-        latitude=np.pi/4,
+        latitude=np.pi / 4,
         ship_params={"m_fore_aft": 1000, "m_athwartships": 500},
     )
 

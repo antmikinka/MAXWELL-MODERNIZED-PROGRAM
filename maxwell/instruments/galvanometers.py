@@ -347,9 +347,7 @@ class ThreeCoilGalvanometer:
     @maxwell_cite(715, part=4, theory_class="standard_math")
     def combined_coil_constant(self) -> float:
         """Calculate combined G constant for three-coil arrangement."""
-        return sum(
-            2.0 * PI * n / r for n, r in zip(self.n_turns, self.radii)
-        )
+        return sum(2.0 * PI * n / r for n, r in zip(self.n_turns, self.radii))
 
     @maxwell_cite(715, part=4, theory_class="standard_math")
     def measure_current(self, theta_rad: float) -> float:

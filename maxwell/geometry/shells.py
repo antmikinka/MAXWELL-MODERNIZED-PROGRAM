@@ -24,15 +24,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST
 from maxwell.calculus.cyclic import (
     calc_solid_angle_closed_curve,
-    solid_angle_planar_loop,
     solid_angle_determinant,
+    solid_angle_planar_loop,
 )
+from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -74,7 +75,8 @@ class MagneticShell:
     @classmethod
     @maxwell_cite(
         409,
-        part=3, chapter="Magnetic Shells",
+        part=3,
+        chapter="Magnetic Shells",
         theory_class="maxwell_original",
         description="Create shell from surface and strength",
     )
@@ -110,7 +112,8 @@ class MagneticShell:
     @classmethod
     @maxwell_cite(
         409,
-        part=3, chapter="Magnetic Shells",
+        part=3,
+        chapter="Magnetic Shells",
         theory_class="maxwell_original",
         description="Create equivalent shell from current loop",
     )
@@ -188,7 +191,8 @@ class MagneticShell:
 
     @maxwell_cite(
         409,
-        part=3, chapter="Magnetic Shells",
+        part=3,
+        chapter="Magnetic Shells",
         theory_class="maxwell_original",
         description="Calculate shell potential via solid angle",
     )
@@ -225,7 +229,8 @@ class MagneticShell:
 
     @maxwell_cite(
         410,
-        part=3, chapter="Magnetic Shells",
+        part=3,
+        chapter="Magnetic Shells",
         theory_class="maxwell_original",
         description="Calculate shell field from potential",
     )
@@ -263,7 +268,8 @@ class MagneticShell:
 
 @maxwell_cite(
     409,
-    part=3, chapter="Magnetic Shells",
+    part=3,
+    chapter="Magnetic Shells",
     theory_class="maxwell_original",
     description="Shell potential = strength × solid angle",
 )
@@ -308,7 +314,8 @@ def shell_potential(
 
 @maxwell_cite(
     410,
-    part=3, chapter="Magnetic Shells",
+    part=3,
+    chapter="Magnetic Shells",
     theory_class="maxwell_original",
     description="Alternative proof of shell potential formula",
 )
@@ -367,7 +374,7 @@ def shell_potential_alternative_proof(
             normal = normal / norm_mag
 
         # dΩ = Φ × (r̂ · n) / r² dA
-        dOmega = shell_strength * float(np.dot(r_vec / r_mag, normal)) / (r_mag ** 2) * dA
+        dOmega = shell_strength * float(np.dot(r_vec / r_mag, normal)) / (r_mag**2) * dA
         Omega += dOmega
 
     return Omega
@@ -375,7 +382,8 @@ def shell_potential_alternative_proof(
 
 @maxwell_cite(
     411,
-    part=3, chapter="Magnetic Shells",
+    part=3,
+    chapter="Magnetic Shells",
     theory_class="maxwell_original",
     description="Potential discontinuity across shell",
 )
@@ -447,8 +455,11 @@ def shell_potential_discontinuity(
 
 
 @maxwell_cite(
-    409, 410, 411,
-    part=3, chapter="Magnetic Shells",
+    409,
+    410,
+    411,
+    part=3,
+    chapter="Magnetic Shells",
     theory_class="maxwell_original",
     description="Shell equivalence to current loop",
 )
@@ -497,7 +508,8 @@ def shell_current_equivalence(
 
 @maxwell_cite(
     411,
-    part=3, chapter="Magnetic Shells",
+    part=3,
+    chapter="Magnetic Shells",
     theory_class="maxwell_original",
     description="Work done moving shell in magnetic field",
 )

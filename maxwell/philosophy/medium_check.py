@@ -45,10 +45,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -101,8 +102,10 @@ def _wave_impedance(K: float, mu: float) -> float:
 
 
 @maxwell_cite(
-    865, 866,
-    part=4, chapter="Theory Completeness",
+    865,
+    866,
+    part=4,
+    chapter="Theory Completeness",
     theory_class="maxwell_original",
     description="Calculate wave properties in medium",
 )
@@ -138,8 +141,10 @@ def calc_wave_properties(
 
 
 @maxwell_cite(
-    865, 866,
-    part=4, chapter="Theory Completeness",
+    865,
+    866,
+    part=4,
+    chapter="Theory Completeness",
     theory_class="maxwell_original",
     description="Calculate reflection coefficient at interface",
 )
@@ -171,11 +176,12 @@ def calc_reflection_coefficient(
         R = ((n1 - n2) / (n1 + n2)) ** 2
     else:
         # Fresnel equations (s-polarization average)
-        from math import sin, cos, sqrt
+        from math import cos, sin, sqrt
+
         sin_t = n1 * sin(angle_incidence) / n2
         if abs(sin_t) > 1:
             return 1.0  # Total internal reflection
-        cos_t = sqrt(1 - sin_t ** 2)
+        cos_t = sqrt(1 - sin_t**2)
         cos_i = cos(angle_incidence)
 
         Rs = ((n1 * cos_i - n2 * cos_t) / (n1 * cos_i + n2 * cos_t)) ** 2
@@ -186,8 +192,10 @@ def calc_reflection_coefficient(
 
 
 @maxwell_cite(
-    865, 866,
-    part=4, chapter="Theory Completeness",
+    865,
+    866,
+    part=4,
+    chapter="Theory Completeness",
     theory_class="maxwell_original",
     description="Verify Maxwell's relation n^2 = K",
 )
@@ -249,8 +257,10 @@ def verify_maxwell_relation(
 
 
 @maxwell_cite(
-    865, 866,
-    part=4, chapter="Theory Completeness",
+    865,
+    866,
+    part=4,
+    chapter="Theory Completeness",
     theory_class="maxwell_original",
     description="Verify wave speed equals speed of light",
 )
@@ -314,8 +324,10 @@ def verify_wave_speed(
 
 
 @maxwell_cite(
-    865, 866,
-    part=4, chapter="Theory Completeness",
+    865,
+    866,
+    part=4,
+    chapter="Theory Completeness",
     theory_class="maxwell_original",
     description="Complete theory completeness check",
 )

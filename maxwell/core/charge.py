@@ -15,10 +15,13 @@ References:
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
+
 import numpy as np
-from maxwell.meta.citation import maxwell_cite
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -41,8 +44,10 @@ class PointCharge:
             raise ValueError(f"Position must be 3D, got shape {self.position.shape}")
 
     @maxwell_cite(
-        29, 30,
-        part=1, chapter="Electrification",
+        29,
+        30,
+        part=1,
+        chapter="Electrification",
         theory_class="maxwell_original",
         description="Electric field of a point charge: E = q/r^2",
     )
@@ -65,11 +70,12 @@ class PointCharge:
         if r_mag == 0:
             return np.zeros(3)
         r_hat = r_vec / r_mag
-        return self.q * r_hat / r_mag ** 2
+        return self.q * r_hat / r_mag**2
 
     @maxwell_cite(
         30,
-        part=1, chapter="Electrification",
+        part=1,
+        chapter="Electrification",
         theory_class="maxwell_original",
         description="Potential of a point charge: V = q/r",
     )
@@ -90,7 +96,8 @@ class PointCharge:
 
 @maxwell_cite(
     45,
-    part=1, chapter="Electrical Work and Energy",
+    part=1,
+    chapter="Electrical Work and Energy",
     theory_class="maxwell_original",
     description="Faraday's proof: no absolute isolated charge",
 )
@@ -117,7 +124,8 @@ def faraday_isolation_proof() -> str:
 
 @maxwell_cite(
     245,
-    part=2, chapter="Conduction and Resistance",
+    part=2,
+    chapter="Conduction and Resistance",
     theory_class="maxwell_original",
     description="No isolated absolute charge in electrokinematics",
 )

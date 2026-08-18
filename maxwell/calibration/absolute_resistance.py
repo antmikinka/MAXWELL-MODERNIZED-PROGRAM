@@ -43,10 +43,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -62,11 +63,12 @@ class AbsoluteResistance:
         method: Measurement method ('recoil', 'lenz', 'rotating').
     """
 
-    method: str = 'recoil'
+    method: str = "recoil"
 
     @maxwell_cite(
         758,
-        part=4, chapter="Absolute Resistance",
+        part=4,
+        chapter="Absolute Resistance",
         theory_class="maxwell_original",
         description="Calculate resistance by recoil method",
     )
@@ -103,11 +105,15 @@ class AbsoluteResistance:
         if second_deflection <= 0:
             raise ValueError(f"Second deflection must be positive")
 
-        return (2.0 * mutual_inductance / period) * (first_deflection / second_deflection)
+        return (2.0 * mutual_inductance / period) * (
+            first_deflection / second_deflection
+        )
 
     @maxwell_cite(
-        759, 760,
-        part=4, chapter="Absolute Resistance",
+        759,
+        760,
+        part=4,
+        chapter="Absolute Resistance",
         theory_class="maxwell_original",
         description="Calculate resistance by Lenz's law method",
     )
@@ -134,12 +140,13 @@ class AbsoluteResistance:
             Part IV, Arts. 759-760: Lenz's law method.
         """
         if induced_current == 0:
-            return float('inf')
+            return float("inf")
         return induced_emf / induced_current
 
     @maxwell_cite(
         761,
-        part=4, chapter="Absolute Resistance",
+        part=4,
+        chapter="Absolute Resistance",
         theory_class="maxwell_original",
         description="Calculate resistance by rotating coil method",
     )
@@ -176,7 +183,7 @@ class AbsoluteResistance:
             Part IV, Art. 761: Rotating coil method.
         """
         if induced_current <= 0:
-            return float('inf')
+            return float("inf")
 
         emf = n_turns * magnetic_field * coil_area * angular_velocity
         total_resistance = emf / induced_current
@@ -184,7 +191,8 @@ class AbsoluteResistance:
 
     @maxwell_cite(
         762,
-        part=4, chapter="Absolute Resistance",
+        part=4,
+        chapter="Absolute Resistance",
         theory_class="maxwell_original",
         description="Calculate resistance from energy dissipation",
     )
@@ -215,9 +223,9 @@ class AbsoluteResistance:
             Part IV, Art. 762: Energy dissipation method.
         """
         if current == 0 or time <= 0:
-            return float('inf')
+            return float("inf")
 
-        return heat_generated / (current ** 2 * time)
+        return heat_generated / (current**2 * time)
 
 
 @dataclass
@@ -235,30 +243,35 @@ class StandardResistanceCoil:
     """
 
     nominal_resistance: float
-    material: str = 'german_silver'
+    material: str = "german_silver"
     temperature_coefficient: float = 0.0004
 
     # Temperature coefficients for common materials
     MATERIAL_COEFFICIENTS = {
-        'german_silver': 0.0004,
-        'platinoid': 0.00025,
-        'manganin': 0.00002,
-        'copper': 0.004,
-        'silver': 0.004,
+        "german_silver": 0.0004,
+        "platinoid": 0.00025,
+        "manganin": 0.00002,
+        "copper": 0.004,
+        "silver": 0.004,
     }
 
     def __post_init__(self):
         """Set temperature coefficient from material."""
         if self.material.lower() in self.MATERIAL_COEFFICIENTS:
-            self.temperature_coefficient = self.MATERIAL_COEFFICIENTS[self.material.lower()]
+            self.temperature_coefficient = self.MATERIAL_COEFFICIENTS[
+                self.material.lower()
+            ]
 
     @maxwell_cite(
         763,
-        part=4, chapter="Absolute Resistance",
+        part=4,
+        chapter="Absolute Resistance",
         theory_class="maxwell_original",
         description="Calculate resistance at temperature",
     )
-    def resistance_at_temperature(self, temperature: float, reference_temp: float = 20.0) -> float:
+    def resistance_at_temperature(
+        self, temperature: float, reference_temp: float = 20.0
+    ) -> float:
         """
         Calculate resistance at given temperature.
 
@@ -281,7 +294,8 @@ class StandardResistanceCoil:
 
     @maxwell_cite(
         764,
-        part=4, chapter="Absolute Resistance",
+        part=4,
+        chapter="Absolute Resistance",
         theory_class="maxwell_original",
         description="Calculate coil inductance",
     )
@@ -312,12 +326,13 @@ class StandardResistanceCoil:
         wire_length = self.nominal_resistance / 0.0001  # Assume thin wire
         n_turns = int(wire_length / (2 * np.pi * coil_radius))
 
-        return 4.0 * np.pi ** 2 * n_turns ** 2 * coil_radius ** 2 / coil_length
+        return 4.0 * np.pi**2 * n_turns**2 * coil_radius**2 / coil_length
 
 
 @maxwell_cite(
     758,
-    part=4, chapter="Absolute Resistance",
+    part=4,
+    chapter="Absolute Resistance",
     theory_class="maxwell_original",
     description="Calculate absolute resistance from recoil",
 )
@@ -349,12 +364,16 @@ def calc_absolute_resistance_recoil(
         >>> print(f"R = {R:.2f} abohms")
     """
     ar = AbsoluteResistance()
-    return ar.recoil_method(mutual_inductance, period, first_deflection, second_deflection)
+    return ar.recoil_method(
+        mutual_inductance, period, first_deflection, second_deflection
+    )
 
 
 @maxwell_cite(
-    759, 760,
-    part=4, chapter="Absolute Resistance",
+    759,
+    760,
+    part=4,
+    chapter="Absolute Resistance",
     theory_class="maxwell_original",
     description="Calculate resistance from induced EMF and current",
 )
@@ -383,7 +402,8 @@ def calc_absolute_resistance_lenz(
 
 @maxwell_cite(
     761,
-    part=4, chapter="Absolute Resistance",
+    part=4,
+    chapter="Absolute Resistance",
     theory_class="maxwell_original",
     description="Calculate resistance by rotating coil method",
 )
@@ -418,7 +438,8 @@ def calc_absolute_resistance_rotating_coil(
 
 @maxwell_cite(
     762,
-    part=4, chapter="Absolute Resistance",
+    part=4,
+    chapter="Absolute Resistance",
     theory_class="maxwell_original",
     description="Calculate resistance from heat dissipation",
 )
@@ -449,7 +470,8 @@ def calc_absolute_resistance_joule(
 
 @maxwell_cite(
     763,
-    part=4, chapter="Absolute Resistance",
+    part=4,
+    chapter="Absolute Resistance",
     theory_class="maxwell_original",
     description="Calculate temperature-corrected resistance",
 )
@@ -486,8 +508,18 @@ def calc_temperature_corrected_resistance(
 
 
 @maxwell_cite(
-    758, 759, 760, 761, 762, 763, 764, 765, 766, 767,
-    part=4, chapter="Absolute Resistance",
+    758,
+    759,
+    760,
+    761,
+    762,
+    763,
+    764,
+    765,
+    766,
+    767,
+    part=4,
+    chapter="Absolute Resistance",
     theory_class="maxwell_original",
     description="Verify absolute resistance measurements",
 )
@@ -531,7 +563,7 @@ def verify_absolute_resistance(
 
     # Energy method (reverse calculation)
     time = 1.0
-    heat = R_lenz * induced_current ** 2 * time
+    heat = R_lenz * induced_current**2 * time
     R_energy = ar.energy_dissipation_method(induced_current, time, heat)
 
     # Verify R has dimensions of velocity (cm/s)
@@ -555,13 +587,23 @@ def verify_absolute_resistance(
 
 
 @maxwell_cite(
-    758, 759, 760, 761, 762, 763, 764, 765, 766, 767,
-    part=4, chapter="Absolute Resistance",
+    758,
+    759,
+    760,
+    761,
+    762,
+    763,
+    764,
+    765,
+    766,
+    767,
+    part=4,
+    chapter="Absolute Resistance",
     theory_class="maxwell_original",
     description="Complete absolute resistance analysis",
 )
 def analyze_absolute_resistance(
-    method: str = 'recoil',
+    method: str = "recoil",
     mutual_inductance: float = 1000.0,
     period: float = 2.0,
     deflection_ratio: float = 1.25,
@@ -600,7 +642,9 @@ def analyze_absolute_resistance(
     # Calculate by each method
     R_recoil = ar.recoil_method(mutual_inductance, period, deflection_ratio, 1.0)
     R_lenz = ar.lenz_method(induced_emf, induced_current)
-    R_energy = ar.energy_dissipation_method(induced_current, 1.0, induced_emf * induced_current)
+    R_energy = ar.energy_dissipation_method(
+        induced_current, 1.0, induced_emf * induced_current
+    )
 
     # Temperature correction
     src = StandardResistanceCoil(nominal_resistance=nominal_resistance)

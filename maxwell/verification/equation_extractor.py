@@ -51,28 +51,41 @@ class EquationExtractor:
     """Extract and classify equations from Maxwell OCR JSON files."""
 
     # Patterns for equation extraction
-    DISPLAY_EQ = re.compile(r'\\\[(.+?)\\\]', re.DOTALL)
-    INLINE_EQ = re.compile(r'\\\((.+?)\\\)', re.DOTALL)
-    DOLLAR_EQ = re.compile(r'\$\$(.+?)\$\$', re.DOTALL)
+    DISPLAY_EQ = re.compile(r"\\\[(.+?)\\\]", re.DOTALL)
+    INLINE_EQ = re.compile(r"\\\((.+?)\\\)", re.DOTALL)
+    DOLLAR_EQ = re.compile(r"\$\$(.+?)\$\$", re.DOTALL)
 
     # Article number patterns: "38.]", "241.]", etc. (match anywhere in text)
-    ARTICLE_RE = re.compile(r'(\d{1,4})\.\]')
+    ARTICLE_RE = re.compile(r"(\d{1,4})\.\]")
 
     # Equation significance patterns
     SIGNIFICANT_KWS = [
-        '=', r'\int', r'\iint', r'\iiint', r'\oint',
-        r'\frac', r'\sum', r'\prod', r'\nabla',
-        r'\partial', r'\cdot', r'\times', r'\otimes',
-        r'\left', r'\right', r'\sqrt', r'^\d',
+        "=",
+        r"\int",
+        r"\iint",
+        r"\iiint",
+        r"\oint",
+        r"\frac",
+        r"\sum",
+        r"\prod",
+        r"\nabla",
+        r"\partial",
+        r"\cdot",
+        r"\times",
+        r"\otimes",
+        r"\left",
+        r"\right",
+        r"\sqrt",
+        r"^\d",
     ]
 
     # Type classification patterns
     TYPE_PATTERNS = {
-        'differential': [r'\frac{d', r'\partial', r'\nabla'],
-        'integral': [r'\int', r'\iint', r'\iiint', r'\oint'],
-        'vector': [r'\cdot', r'\times', r'\nabla', r'\vec'],
-        'algebraic': [r'\frac', r'\left', r'\sqrt', r'^\d'],
-        'dimensional': [r'\[', r'\]', r'M', r'L', r'T'],
+        "differential": [r"\frac{d", r"\partial", r"\nabla"],
+        "integral": [r"\int", r"\iint", r"\iiint", r"\oint"],
+        "vector": [r"\cdot", r"\times", r"\nabla", r"\vec"],
+        "algebraic": [r"\frac", r"\left", r"\sqrt", r"^\d"],
+        "dimensional": [r"\[", r"\]", r"M", r"L", r"T"],
     }
 
     def __init__(self):
@@ -81,7 +94,7 @@ class EquationExtractor:
     def extract_file(self, filepath: Path | str) -> list[ExtractedEquation]:
         """Extract equations from a single JSON file."""
         filepath = Path(filepath)
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         equations = []
@@ -95,16 +108,28 @@ class EquationExtractor:
                     page_num = int(page_num_str)
                 except ValueError:
                     page_num = None
-                items.append({'page_number': page_num, 'mathpix_markdown': text, 'raw_text': text})
+                items.append(
+                    {
+                        "page_number": page_num,
+                        "mathpix_markdown": text,
+                        "raw_text": text,
+                    }
+                )
         else:
             items = data
 
         for item in items:
-            page_num = item.get('page_number')
-            text = str(item.get('mathpix_markdown', '')) + '\n' + str(item.get('raw_text', ''))
+            page_num = item.get("page_number")
+            text = (
+                str(item.get("mathpix_markdown", ""))
+                + "\n"
+                + str(item.get("raw_text", ""))
+            )
 
             # Find all article numbers on this page with their positions
-            article_positions = [(m.start(), int(m.group(1))) for m in self.ARTICLE_RE.finditer(text)]
+            article_positions = [
+                (m.start(), int(m.group(1))) for m in self.ARTICLE_RE.finditer(text)
+            ]
             article_positions.sort()
 
             # Extract equations
@@ -137,7 +162,7 @@ class EquationExtractor:
                     latex=eq_text,
                     source_file=str(filepath),
                     equation_type=eq_type,
-                    has_equals='=' in eq_text,
+                    has_equals="=" in eq_text,
                     context_text=context,
                 )
                 equations.append(eq)
@@ -145,11 +170,20 @@ class EquationExtractor:
         self._equations.extend(equations)
         return equations
 
-    def extract_directory(self, dirpath: Path | str, pattern: str = "*.json") -> list[ExtractedEquation]:
+    def extract_directory(
+        self, dirpath: Path | str, pattern: str = "*.json"
+    ) -> list[ExtractedEquation]:
         """Extract equations from all matching JSON files in a directory tree."""
         dirpath = Path(dirpath)
         all_eqs = []
-        skip_patterns = ["direct_result", "_flat.json", "PRELIM", "PLATES", "INDEX", "ALL_PAGES"]
+        skip_patterns = [
+            "direct_result",
+            "_flat.json",
+            "PRELIM",
+            "PLATES",
+            "INDEX",
+            "ALL_PAGES",
+        ]
         for filepath in sorted(dirpath.rglob(pattern)):
             # Skip large aggregate files and non-chapter files
             if any(sp in filepath.name for sp in skip_patterns):
@@ -193,10 +227,12 @@ class EquationExtractor:
                 by_article[eq.article_number] = by_article.get(eq.article_number, 0) + 1
 
         return {
-            'total_equations': len(self._equations),
-            'by_type': by_type,
-            'articles_covered': len(by_article),
-            'article_range': f"{min(by_article)}-{max(by_article)}" if by_article else "none",
+            "total_equations": len(self._equations),
+            "by_type": by_type,
+            "articles_covered": len(by_article),
+            "article_range": (
+                f"{min(by_article)}-{max(by_article)}" if by_article else "none"
+            ),
         }
 
     # ── Private methods ──────────────────────────────────────────
@@ -221,10 +257,22 @@ class EquationExtractor:
             return False
         # Use string-based matching to avoid regex escape issues
         significant_tokens = [
-            '=', r'\int', r'\iint', r'\iiint', r'\oint',
-            r'\frac', r'\sum', r'\prod', r'\nabla',
-            r'\partial', r'\cdot', r'\times', r'\otimes',
-            r'\left', r'\right', r'\sqrt',
+            "=",
+            r"\int",
+            r"\iint",
+            r"\iiint",
+            r"\oint",
+            r"\frac",
+            r"\sum",
+            r"\prod",
+            r"\nabla",
+            r"\partial",
+            r"\cdot",
+            r"\times",
+            r"\otimes",
+            r"\left",
+            r"\right",
+            r"\sqrt",
         ]
         return any(tok in eq for tok in significant_tokens)
 
@@ -233,7 +281,7 @@ class EquationExtractor:
         for eq_type, patterns in self.TYPE_PATTERNS.items():
             if any(p in eq for p in patterns):
                 return eq_type
-        return 'algebraic'
+        return "algebraic"
 
     def _extract_context(self, text: str, eq: str, span: int = 50) -> str:
         """Extract surrounding text context for an equation."""
@@ -244,4 +292,4 @@ class EquationExtractor:
             return ""
         start = max(0, idx - span)
         end = min(len(text), idx + len(eq) + span)
-        return text[start:end].replace('\n', ' ').strip()
+        return text[start:end].replace("\n", " ").strip()

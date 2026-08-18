@@ -162,16 +162,16 @@ def append_mechanical_theory_notes() -> dict[str, str]:
     """
     return {
         "note_1": "The vortex model provides a mechanical picture of "
-                  "magnetic phenomena, but the exact nature of the "
-                  "ether remains speculative.",
+        "magnetic phenomena, but the exact nature of the "
+        "ether remains speculative.",
         "note_2": "The idle-wheel particles between vortices serve as "
-                  "electricity -- their motion constitutes electric current.",
+        "electricity -- their motion constitutes electric current.",
         "note_3": "The model successfully explains Faraday rotation as a "
-                  "modification of vortex speeds by the applied field.",
+        "modification of vortex speeds by the applied field.",
         "note_4": "The wave speed in the vortex lattice equals the "
-                  "speed of light, confirming the electromagnetic "
-                  "theory of light.",
+        "speed of light, confirming the electromagnetic "
+        "theory of light.",
         "note_5": "Maxwell does not claim the vortex model is literally "
-                  "true -- it is a working hypothesis that connects "
-                  "diverse phenomena.",
+        "true -- it is a working hypothesis that connects "
+        "diverse phenomena.",
     }

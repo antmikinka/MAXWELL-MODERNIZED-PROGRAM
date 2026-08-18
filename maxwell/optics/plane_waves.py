@@ -38,15 +38,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Tuple
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
     790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify transverse wave condition",
 )
@@ -88,7 +90,8 @@ def verify_transverse_condition(E: np.ndarray, k: np.ndarray) -> dict:
 
 @maxwell_cite(
     791,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate B field from E field",
 )
@@ -132,7 +135,8 @@ def calc_B_from_E(E: np.ndarray, k: np.ndarray, omega: float) -> np.ndarray:
 
 @maxwell_cite(
     792,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate Poynting vector",
 )
@@ -172,7 +176,8 @@ def calc_poynting_vector(E: np.ndarray, B: np.ndarray) -> np.ndarray:
 
 @maxwell_cite(
     790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify wave equation",
 )
@@ -208,7 +213,7 @@ def verify_wave_equation(
     """
     v = CONST.C / np.sqrt(permittivity * permeability)
 
-    omega_squared = omega ** 2
+    omega_squared = omega**2
     vk_squared = (v * k_magnitude) ** 2
 
     error = abs(omega_squared - vk_squared) / omega_squared if omega_squared > 0 else 0
@@ -254,7 +259,8 @@ class PlaneWave:
 
     @maxwell_cite(
         790,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate E field at position and time",
     )
@@ -285,7 +291,8 @@ class PlaneWave:
 
     @maxwell_cite(
         791,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate B field at position and time",
     )
@@ -333,7 +340,8 @@ class PolarizationState:
 
     @maxwell_cite(
         801,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Determine polarization type",
     )
@@ -360,8 +368,10 @@ class PolarizationState:
         delta = np.mod(self.phase_difference + np.pi, 2 * np.pi) - np.pi
 
         # Check for circular polarization
-        amplitude_ratio = self.Ey_amplitude / self.Ex_amplitude if self.Ex_amplitude > 0 else 0
-        if abs(amplitude_ratio - 1.0) < 1e-10 and (abs(abs(delta) - np.pi/2) < 1e-10):
+        amplitude_ratio = (
+            self.Ey_amplitude / self.Ex_amplitude if self.Ex_amplitude > 0 else 0
+        )
+        if abs(amplitude_ratio - 1.0) < 1e-10 and (abs(abs(delta) - np.pi / 2) < 1e-10):
             handedness = "right" if delta > 0 else "left"
             return f"circular_{handedness}"
 
@@ -373,7 +383,8 @@ class PolarizationState:
 
     @maxwell_cite(
         802,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate E field at position and time",
     )
@@ -411,7 +422,8 @@ class PolarizationState:
 
     @maxwell_cite(
         802,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate B field from E field",
     )
@@ -447,7 +459,8 @@ class PolarizationState:
 
     @maxwell_cite(
         803,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate Stokes parameters",
     )
@@ -472,8 +485,8 @@ class PolarizationState:
         Ey = self.Ey_amplitude
         delta = self.phase_difference
 
-        I = Ex ** 2 + Ey ** 2
-        Q = Ex ** 2 - Ey ** 2
+        I = Ex**2 + Ey**2
+        Q = Ex**2 - Ey**2
         U = 2 * Ex * Ey * np.cos(delta)
         V = 2 * Ex * Ey * np.sin(delta)
 
@@ -482,15 +495,13 @@ class PolarizationState:
     @classmethod
     @maxwell_cite(
         801,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create linear polarization state",
     )
     def linear_polarization(
-        cls,
-        amplitude: float,
-        angle: float,
-        **kwargs
+        cls, amplitude: float, angle: float, **kwargs
     ) -> PolarizationState:
         """
         Create linear polarization at specified angle.
@@ -516,21 +527,19 @@ class PolarizationState:
             Ex_amplitude=amplitude * np.cos(angle),
             Ey_amplitude=amplitude * np.sin(angle),
             phase_difference=0.0,
-            **kwargs
+            **kwargs,
         )
 
     @classmethod
     @maxwell_cite(
         801,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create circular polarization state",
     )
     def circular_polarization(
-        cls,
-        amplitude: float,
-        handedness: str = "right",
-        **kwargs
+        cls, amplitude: float, handedness: str = "right", **kwargs
     ) -> PolarizationState:
         """
         Create circular polarization state.
@@ -554,26 +563,18 @@ class PolarizationState:
         amp = amplitude / np.sqrt(2)
         delta = np.pi / 2 if handedness.lower() == "right" else -np.pi / 2
 
-        return cls(
-            Ex_amplitude=amp,
-            Ey_amplitude=amp,
-            phase_difference=delta,
-            **kwargs
-        )
+        return cls(Ex_amplitude=amp, Ey_amplitude=amp, phase_difference=delta, **kwargs)
 
     @classmethod
     @maxwell_cite(
         801,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create elliptical polarization state",
     )
     def elliptical_polarization(
-        cls,
-        Ex_amplitude: float,
-        Ey_amplitude: float,
-        phase_difference: float,
-        **kwargs
+        cls, Ex_amplitude: float, Ey_amplitude: float, phase_difference: float, **kwargs
     ) -> PolarizationState:
         """
         Create general elliptical polarization state.
@@ -597,13 +598,14 @@ class PolarizationState:
             Ex_amplitude=Ex_amplitude,
             Ey_amplitude=Ey_amplitude,
             phase_difference=phase_difference,
-            **kwargs
+            **kwargs,
         )
 
 
 @maxwell_cite(
     801,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate intensity of polarized wave",
 )
@@ -632,13 +634,14 @@ def calc_polarized_wave_intensity(
         >>> I = calc_polarized_wave_intensity(1000, 0)
         >>> print(f"I = {I:.2e} erg/cm²/s")
     """
-    E_squared = Ex_amplitude ** 2 + Ey_amplitude ** 2
+    E_squared = Ex_amplitude**2 + Ey_amplitude**2
     return (CONST.C / (8.0 * np.pi)) * E_squared
 
 
 @maxwell_cite(
     803,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate interference of two waves",
 )
@@ -681,7 +684,8 @@ def calc_wave_interference(
 
 @maxwell_cite(
     802,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate polarization ellipse parameters",
 )
@@ -724,12 +728,12 @@ def calc_polarization_ellipse(
     alpha = np.arctan(tan_alpha)
 
     # Orientation angle ψ
-    denom = Ex ** 2 - Ey ** 2
+    denom = Ex**2 - Ey**2
     tan_2psi = (2 * Ex * Ey * np.cos(delta)) / denom if abs(denom) > 1e-15 else np.inf
     psi = 0.5 * np.arctan(tan_2psi)
 
     # Ellipticity angle χ
-    sin_2chi = (2 * Ex * Ey * np.sin(delta)) / (Ex ** 2 + Ey ** 2)
+    sin_2chi = (2 * Ex * Ey * np.sin(delta)) / (Ex**2 + Ey**2)
     sin_2chi = np.clip(sin_2chi, -1, 1)
     chi = 0.5 * np.arcsin(sin_2chi)
 
@@ -745,7 +749,7 @@ def calc_polarization_ellipse(
         handedness = "none"  # Linear
 
     # Normalize axes (proportional to total amplitude)
-    total_amp = np.sqrt(Ex ** 2 + Ey ** 2)
+    total_amp = np.sqrt(Ex**2 + Ey**2)
     a = total_amp * np.cos(chi)  # Semi-major
     b = total_amp * np.sin(chi)  # Semi-minor
 
@@ -762,7 +766,8 @@ def calc_polarization_ellipse(
 
 @maxwell_cite(
     803,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate fringe visibility",
 )
@@ -800,8 +805,11 @@ def calc_fringe_visibility(
 
 
 @maxwell_cite(
-    801, 802, 803,
-    part=4, chapter="Electromagnetic Theory of Light",
+    801,
+    802,
+    803,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify polarization state relations",
 )
@@ -840,8 +848,8 @@ def verify_polarization_relations(
     I, Q, U, V = ps.stokes_parameters()
 
     # Verify Stokes relation for pure states: I² = Q² + U² + V²
-    lhs = I ** 2
-    rhs = Q ** 2 + U ** 2 + V ** 2
+    lhs = I**2
+    rhs = Q**2 + U**2 + V**2
     stokes_error = abs(lhs - rhs) / lhs if lhs > 0 else 0
 
     # Verify polarization type classification
@@ -849,16 +857,16 @@ def verify_polarization_relations(
 
     # Check circular conditions
     is_circular = (
-        abs(Ex_amplitude - Ey_amplitude) < tolerance * Ex_amplitude and
-        abs(abs(phase_difference) - np.pi / 2) < tolerance
+        abs(Ex_amplitude - Ey_amplitude) < tolerance * Ex_amplitude
+        and abs(abs(phase_difference) - np.pi / 2) < tolerance
     )
 
     # Check linear conditions
     is_linear = (
-        Ey_amplitude < tolerance or
-        Ex_amplitude < tolerance or
-        abs(phase_difference) < tolerance or
-        abs(abs(phase_difference) - np.pi) < tolerance
+        Ey_amplitude < tolerance
+        or Ex_amplitude < tolerance
+        or abs(phase_difference) < tolerance
+        or abs(abs(phase_difference) - np.pi) < tolerance
     )
 
     return {
@@ -879,8 +887,11 @@ def verify_polarization_relations(
 
 
 @maxwell_cite(
-    801, 802, 803,
-    part=4, chapter="Electromagnetic Theory of Light",
+    801,
+    802,
+    803,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete plane wave polarization analysis",
 )
@@ -940,7 +951,7 @@ def analyze_plane_wave_polarization(
         "stokes_Q": Q,
         "stokes_U": U,
         "stokes_V": V,
-        "degree_of_polarization": np.sqrt(Q ** 2 + U ** 2 + V ** 2) / I if I > 0 else 0,
+        "degree_of_polarization": np.sqrt(Q**2 + U**2 + V**2) / I if I > 0 else 0,
         "intensity": intensity,
         "wavelength_cm": wavelength,
         "wavelength_nm": wavelength * 1e7,

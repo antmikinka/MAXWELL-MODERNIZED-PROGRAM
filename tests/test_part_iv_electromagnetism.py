@@ -16,25 +16,21 @@ Tests verify:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
-from maxwell.meta.citation import get_citation, MaxwellCitation
-
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # OERSTED MODULE TESTS (Arts. 475-479)
 # =============================================================================
 
+
 class TestOerstedFieldFormula:
     """Test Oersted's field formula H = 2I/r."""
 
-    def test_oersted_field_formula(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_oersted_field_formula(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify H = 2I/r produces correct numeric value.
 
         For I = 1 abampere, r = 1 cm:
@@ -51,9 +47,7 @@ class TestOerstedFieldFormula:
         assert_cgs_close(H, 2.0, cgs_tolerance)
 
     def test_oersted_field_doubles_with_current(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify H(2I) = 2 * H(I) — linear proportionality with current."""
         from maxwell.electromagnetism.sources.oersted import calc_oersted_field
@@ -70,9 +64,7 @@ class TestOerstedFieldFormula:
         assert_cgs_close(H2, expected, cgs_tolerance)
 
     def test_oersted_field_halves_with_distance(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify H(2r) = H(r)/2 — inverse distance relationship."""
         from maxwell.electromagnetism.sources.oersted import calc_oersted_field
@@ -88,29 +80,21 @@ class TestOerstedFieldFormula:
         expected = H1 / 2.0
         assert_cgs_close(H2, expected, cgs_tolerance)
 
-    def test_oersted_field_zero_distance_raises(
-        self
-    ) -> None:
+    def test_oersted_field_zero_distance_raises(self) -> None:
         """Verify division by zero is prevented."""
         from maxwell.electromagnetism.sources.oersted import calc_oersted_field
 
         with pytest.raises(ValueError, match="Distance must be positive"):
             calc_oersted_field(1.0, 0.0)
 
-    def test_oersted_field_negative_distance_raises(
-        self
-    ) -> None:
+    def test_oersted_field_negative_distance_raises(self) -> None:
         """Verify negative distance is prevented."""
         from maxwell.electromagnetism.sources.oersted import calc_oersted_field
 
         with pytest.raises(ValueError, match="Distance must be positive"):
             calc_oersted_field(1.0, -1.0)
 
-    def test_oersted_field_zero_current(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_oersted_field_zero_current(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify zero current produces zero field."""
         from maxwell.electromagnetism.sources.oersted import calc_oersted_field
 
@@ -122,9 +106,7 @@ class TestOerstedFieldDirection:
     """Test right-hand rule for Oersted field direction."""
 
     def test_field_direction_is_tangential(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
+        self, assert_vectors_close, cgs_tolerance
     ) -> None:
         """Verify field direction follows right-hand rule (tangential).
 
@@ -133,7 +115,7 @@ class TestOerstedFieldDirection:
         - At point (0, 1, 0), field should point in -x direction
         """
         from maxwell.electromagnetism.sources.oersted import (
-            calc_circular_field_direction
+            calc_circular_field_direction,
         )
 
         current = 1.0
@@ -145,13 +127,11 @@ class TestOerstedFieldDirection:
         assert_vectors_close(direction, expected, cgs_tolerance)
 
     def test_field_direction_tangential_at_multiple_points(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
+        self, assert_vectors_close, cgs_tolerance
     ) -> None:
         """Verify field is always tangential (perpendicular to radius)."""
         from maxwell.electromagnetism.sources.oersted import (
-            calc_circular_field_direction
+            calc_circular_field_direction,
         )
 
         current = 1.0
@@ -166,18 +146,14 @@ class TestOerstedFieldDirection:
             direction = calc_circular_field_direction(current, pos)
             # Direction should be perpendicular to position (dot product = 0)
             dot = np.dot(direction[:2], pos[:2])
-            assert abs(dot) < cgs_tolerance, (
-                f"Field direction not tangential at {pos}: dot={dot}"
-            )
+            assert (
+                abs(dot) < cgs_tolerance
+            ), f"Field direction not tangential at {pos}: dot={dot}"
 
-    def test_field_direction_normalized(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_field_direction_normalized(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify direction vector is normalized (unit vector)."""
         from maxwell.electromagnetism.sources.oersted import (
-            calc_circular_field_direction
+            calc_circular_field_direction,
         )
 
         current = 1.0
@@ -193,9 +169,7 @@ class TestForceOnPole:
     """Test force on magnetic pole near current-carrying wire."""
 
     def test_force_on_pole_proportional_to_strength(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify F = m * H — force proportional to pole strength."""
         from maxwell.electromagnetism.sources.oersted import calc_force_on_pole
@@ -216,11 +190,7 @@ class TestForceOnPole:
         expected = 2.0 * F1
         assert_cgs_close(F2, expected, cgs_tolerance)
 
-    def test_force_on_pole_numeric_value(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_force_on_pole_numeric_value(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify F = m * H = m * 2I/r produces correct value.
 
         For m = 1 emu, I = 1 abampere, r = 1 cm:
@@ -238,9 +208,7 @@ class TestForceOnPole:
         # F = 2 * m * I / r = 2 dynes
         assert_cgs_close(F, 2.0, cgs_tolerance)
 
-    def test_force_on_pole_zero_distance_raises(
-        self
-    ) -> None:
+    def test_force_on_pole_zero_distance_raises(self) -> None:
         """Verify division by zero is prevented."""
         from maxwell.electromagnetism.sources.oersted import calc_force_on_pole
 
@@ -252,9 +220,7 @@ class TestOerstedClass:
     """Test OerstedField class."""
 
     def test_oersted_field_class_magnitude(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify OerstedField.magnitude property."""
         from maxwell.electromagnetism.sources.oersted import OerstedField
@@ -268,10 +234,7 @@ class TestOerstedClass:
         assert_cgs_close(field.magnitude, 1.0, cgs_tolerance)
 
     def test_oersted_field_class_field_at(
-        self,
-        assert_vectors_close,
-        cgs_tolerance,
-        assert_cgs_close
+        self, assert_vectors_close, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify OerstedField.field_at method."""
         from maxwell.electromagnetism.sources.oersted import OerstedField
@@ -290,9 +253,7 @@ class TestOerstedClass:
         actual_dir = H / np.linalg.norm(H)
         assert_vectors_close(actual_dir, expected_dir, cgs_tolerance)
 
-    def test_oersted_field_class_validation(
-        self
-    ) -> None:
+    def test_oersted_field_class_validation(self) -> None:
         """Verify OerstedField validates negative current."""
         from maxwell.electromagnetism.sources.oersted import OerstedField
 
@@ -304,14 +265,11 @@ class TestOerstedClass:
 # FARADAY MODULE TESTS (Arts. 528-531)
 # =============================================================================
 
+
 class TestMagneticFluxFormula:
     """Test Faraday's magnetic flux formula."""
 
-    def test_magnetic_flux_formula(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_magnetic_flux_formula(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify Φ = B * A * cos(θ).
 
         For B = 100 gauss, A = 10 cm², θ = 0 (perpendicular):
@@ -329,9 +287,7 @@ class TestMagneticFluxFormula:
         assert_cgs_close(flux, 1000.0, cgs_tolerance)
 
     def test_magnetic_flux_angle_dependence(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify Φ = B * A * cos(θ) angular dependence."""
         from maxwell.electromagnetism.induction.faraday import calc_magnetic_flux
@@ -351,14 +307,12 @@ class TestMagneticFluxFormula:
 
         # θ = 60°: cos(60°) = 0.5, normal at 60° from z-axis
         # Normal vector at 60° from z: [sin(60°), 0, cos(60°)]
-        normal_60 = np.array([np.sqrt(3)/2, 0.0, 0.5])  # Already normalized
+        normal_60 = np.array([np.sqrt(3) / 2, 0.0, 0.5])  # Already normalized
         flux_60 = calc_magnetic_flux(B_field, area, normal_60)
         expected_60 = 1000.0 * 0.5  # cos(60°) = 0.5
         assert_cgs_close(flux_60, expected_60, cgs_tolerance)
 
-    def test_magnetic_flux_negative_area_raises(
-        self
-    ) -> None:
+    def test_magnetic_flux_negative_area_raises(self) -> None:
         """Verify negative area is prevented."""
         from maxwell.electromagnetism.induction.faraday import calc_magnetic_flux
 
@@ -371,11 +325,7 @@ class TestMagneticFluxFormula:
 class TestInducedEMF:
     """Test Faraday's induced EMF and Lenz's law."""
 
-    def test_induced_emf_opposes_change(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_induced_emf_opposes_change(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify Lenz's law: negative sign in EMF = -dΦ/dt.
 
         For increasing flux (dΦ/dt > 0), EMF should be negative.
@@ -394,9 +344,7 @@ class TestInducedEMF:
         assert_cgs_close(emf_decreasing, 1000.0, cgs_tolerance)
 
     def test_motional_emf_proportional_to_velocity(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify motional EMF = vBL — proportional to velocity."""
         from maxwell.electromagnetism.induction.faraday import calc_motional_emf
@@ -414,11 +362,7 @@ class TestInducedEMF:
         expected = 2.0 * emf1
         assert_cgs_close(emf2, expected, cgs_tolerance)
 
-    def test_motional_emf_numeric_value(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_motional_emf_numeric_value(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify motional EMF = vBL produces correct value.
 
         For v = 100 cm/s, B = 1000 gauss, L = 10 cm (all perpendicular):
@@ -436,9 +380,7 @@ class TestInducedEMF:
         assert_cgs_close(emf, 1_000_000.0, cgs_tolerance)
 
     def test_self_induction_opposes_change(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify self-induction EMF = -L·dI/dt opposes current change."""
         from maxwell.electromagnetism.induction.faraday import calc_self_induction
@@ -459,11 +401,7 @@ class TestInducedEMF:
 class TestLenzLaw:
     """Test Lenz's law verification."""
 
-    def test_lenz_law_verification(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_lenz_law_verification(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify Lenz's law: induced current opposes flux change."""
         from maxwell.electromagnetism.induction.faraday import verify_lenz_law
 
@@ -491,9 +429,7 @@ class TestLenzLaw:
         assert result_decreasing["induced_emf"] > 0  # Positive, opposes decrease
 
     def test_lenz_law_induced_current_direction(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify induced current direction relative to flux change."""
         from maxwell.electromagnetism.induction.faraday import verify_lenz_law
@@ -517,9 +453,7 @@ class TestFaradayClass:
     """Test FaradayInduction class."""
 
     def test_faraday_induction_flux_per_turn(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify FaradayInduction.magnetic_flux with multiple turns."""
         from maxwell.electromagnetism.induction.faraday import FaradayInduction
@@ -537,11 +471,7 @@ class TestFaradayClass:
         flux_100 = faraday_100.magnetic_flux(B_field, area)
         assert_cgs_close(flux_100, 100_000.0, cgs_tolerance)
 
-    def test_faraday_induction_emf(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_faraday_induction_emf(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify FaradayInduction.induced_emf with N turns."""
         from maxwell.electromagnetism.induction.faraday import FaradayInduction
 
@@ -557,14 +487,12 @@ class TestFaradayClass:
 # LORENTZ MODULE TESTS (Arts. 490-492)
 # =============================================================================
 
+
 class TestForceOnWire:
     """Test Lorentz force on current-carrying wire."""
 
     def test_force_on_wire_formula(
-        self,
-        cgs_tolerance,
-        assert_cgs_close,
-        assert_vectors_close
+        self, cgs_tolerance, assert_cgs_close, assert_vectors_close
     ) -> None:
         """Verify F = I·L × B produces correct value.
 
@@ -587,9 +515,7 @@ class TestForceOnWire:
         assert_vectors_close(actual_direction, expected_direction, cgs_tolerance)
 
     def test_force_direction_right_hand_rule(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
+        self, assert_vectors_close, cgs_tolerance
     ) -> None:
         """Verify force direction follows right-hand rule (cross product)."""
         from maxwell.electromagnetism.forces.lorentz import calc_force_on_wire
@@ -611,9 +537,7 @@ class TestForceOnWire:
         assert_vectors_close(F2 / np.linalg.norm(F2), expected_x_pos, cgs_tolerance)
 
     def test_force_on_wire_parallel_to_field(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify zero force when wire parallel to field (sin(0) = 0)."""
         from maxwell.electromagnetism.forces.lorentz import calc_force_on_wire
@@ -628,10 +552,7 @@ class TestForceOnWire:
         assert_cgs_close(np.linalg.norm(F), 0.0, cgs_tolerance)
 
     def test_force_on_wire_proportional_to_current(
-        self,
-        cgs_tolerance,
-        assert_cgs_close,
-        assert_vectors_close
+        self, cgs_tolerance, assert_cgs_close, assert_vectors_close
     ) -> None:
         """Verify F ∝ I — linear proportionality with current."""
         from maxwell.electromagnetism.forces.lorentz import calc_force_on_wire
@@ -649,27 +570,23 @@ class TestForceOnWire:
         expected = 2.0 * F1
         assert_vectors_close(F2, expected, cgs_tolerance)
 
-    def test_force_on_wire_negative_current_raises(
-        self
-    ) -> None:
+    def test_force_on_wire_negative_current_raises(self) -> None:
         """Verify negative current is prevented."""
         from maxwell.electromagnetism.forces.lorentz import calc_force_on_wire
 
         with pytest.raises(ValueError, match="Current must be non-negative"):
-            calc_force_on_wire(-1.0, np.array([10.0, 0.0, 0.0]), np.array([0.0, 0.0, 1000.0]))
+            calc_force_on_wire(
+                -1.0, np.array([10.0, 0.0, 0.0]), np.array([0.0, 0.0, 1000.0])
+            )
 
 
 class TestParallelCurrents:
     """Test force between parallel currents."""
 
-    def test_parallel_currents_attract(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_parallel_currents_attract(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify same-direction currents attract (positive force)."""
         from maxwell.electromagnetism.forces.lorentz import (
-            calc_force_between_parallel_currents
+            calc_force_between_parallel_currents,
         )
 
         I1 = 1.0  # 1 abampere
@@ -683,14 +600,10 @@ class TestParallelCurrents:
         assert F > 0  # Positive = attractive
         assert_cgs_close(F, 20.0, cgs_tolerance)
 
-    def test_antiparallel_currents_repel(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_antiparallel_currents_repel(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify opposite-direction currents repel (negative force)."""
         from maxwell.electromagnetism.forces.lorentz import (
-            calc_force_between_parallel_currents
+            calc_force_between_parallel_currents,
         )
 
         I1 = 1.0  # 1 abampere
@@ -705,13 +618,11 @@ class TestParallelCurrents:
         assert_cgs_close(F, -20.0, cgs_tolerance)
 
     def test_parallel_currents_proportional_to_product(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify F ∝ I1 * I2 — proportional to product of currents."""
         from maxwell.electromagnetism.forces.lorentz import (
-            calc_force_between_parallel_currents
+            calc_force_between_parallel_currents,
         )
 
         separation = 1.0
@@ -727,13 +638,11 @@ class TestParallelCurrents:
         assert_cgs_close(F2, expected, cgs_tolerance)
 
     def test_parallel_currents_inverse_distance(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify F ∝ 1/r — inverse distance relationship."""
         from maxwell.electromagnetism.forces.lorentz import (
-            calc_force_between_parallel_currents
+            calc_force_between_parallel_currents,
         )
 
         I1 = 1.0
@@ -755,19 +664,14 @@ class TestTorqueOnCurrentLoop:
     """Test torque on magnetic dipole (current loop)."""
 
     def test_torque_on_current_loop(
-        self,
-        cgs_tolerance,
-        assert_cgs_close,
-        assert_vectors_close
+        self, cgs_tolerance, assert_cgs_close, assert_vectors_close
     ) -> None:
         """Verify τ = m × B — torque on current loop.
 
         For m = 100 EMU along x, B = 1000 gauss along z:
         τ = m × B = 100,000 dyne·cm along -y
         """
-        from maxwell.electromagnetism.forces.lorentz import (
-            calc_torque_on_current_loop
-        )
+        from maxwell.electromagnetism.forces.lorentz import calc_torque_on_current_loop
 
         magnetic_moment = np.array([100.0, 0.0, 0.0])  # 100 EMU along x
         B_field = np.array([0.0, 0.0, 1000.0])  # 1000 gauss along z
@@ -782,14 +686,10 @@ class TestTorqueOnCurrentLoop:
         assert_vectors_close(actual_direction, expected_direction, cgs_tolerance)
 
     def test_torque_on_loop_aligned_with_field(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify zero torque when dipole aligned with field."""
-        from maxwell.electromagnetism.forces.lorentz import (
-            calc_torque_on_current_loop
-        )
+        from maxwell.electromagnetism.forces.lorentz import calc_torque_on_current_loop
 
         magnetic_moment = np.array([100.0, 0.0, 0.0])
         B_field = np.array([1000.0, 0.0, 0.0])  # Same direction
@@ -804,9 +704,7 @@ class TestLorentzClass:
     """Test LorentzForce class."""
 
     def test_lorentz_force_class_force_vector(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify LorentzForce.force_vector property."""
         from maxwell.electromagnetism.forces.lorentz import LorentzForce
@@ -821,9 +719,7 @@ class TestLorentzClass:
         assert_cgs_close(np.linalg.norm(F), 10_000.0, cgs_tolerance)
 
     def test_lorentz_force_class_magnitude(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify LorentzForce.magnitude property."""
         from maxwell.electromagnetism.forces.lorentz import LorentzForce
@@ -837,9 +733,7 @@ class TestLorentzClass:
         assert_cgs_close(lorentz.magnitude, 10_000.0, cgs_tolerance)
 
     def test_lorentz_force_class_direction(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
+        self, assert_vectors_close, cgs_tolerance
     ) -> None:
         """Verify LorentzForce.direction property."""
         from maxwell.electromagnetism.forces.lorentz import LorentzForce
@@ -860,14 +754,11 @@ class TestLorentzClass:
 # AMPERE-MAXWELL MODULE TESTS (Arts. 606-607)
 # =============================================================================
 
+
 class TestAmpereLawCirculation:
     """Test Ampere's law circulation formula."""
 
-    def test_ampere_law_circulation(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
-    ) -> None:
+    def test_ampere_law_circulation(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify ∮H·dl = 4πI for steady current.
 
         For uniform current density J = 1 abA/cm² and path length 2π cm:
@@ -888,9 +779,7 @@ class TestAmpereLawCirculation:
         assert_cgs_close(result, expected, cgs_tolerance)
 
     def test_ampere_law_proportional_to_current(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify ∮H·dl ∝ I — proportional to current."""
         from maxwell.electromagnetism.fields.ampere_maxwell import calc_ampere_law
@@ -912,16 +801,16 @@ class TestDisplacementCurrent:
     """Test Maxwell's displacement current."""
 
     def test_displacement_current_formula(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify J_d = (ε/4π)·dE/dt.
 
         For dE/dt = 4π × 10^6 statV/cm/s in vacuum (ε = 1):
         J_d = (1/4π) * 4π × 10^6 = 10^6 abamperes/cm²
         """
-        from maxwell.electromagnetism.fields.ampere_maxwell import calc_displacement_current
+        from maxwell.electromagnetism.fields.ampere_maxwell import (
+            calc_displacement_current,
+        )
 
         dE_dt = np.array([0.0, 0.0, 4 * np.pi * 1e6])
         permittivity = 1.0  # Vacuum
@@ -932,13 +821,12 @@ class TestDisplacementCurrent:
         assert_cgs_close(np.linalg.norm(J_d), 1e6, cgs_tolerance)
 
     def test_displacement_current_proportional_to_dE_dt(
-        self,
-        cgs_tolerance,
-        assert_cgs_close,
-        assert_vectors_close
+        self, cgs_tolerance, assert_cgs_close, assert_vectors_close
     ) -> None:
         """Verify J_d ∝ dE/dt — linear proportionality."""
-        from maxwell.electromagnetism.fields.ampere_maxwell import calc_displacement_current
+        from maxwell.electromagnetism.fields.ampere_maxwell import (
+            calc_displacement_current,
+        )
 
         permittivity = 1.0
 
@@ -953,12 +841,12 @@ class TestDisplacementCurrent:
         assert_vectors_close(J_d_2, expected, cgs_tolerance)
 
     def test_displacement_current_direction(
-        self,
-        assert_vectors_close,
-        cgs_tolerance
+        self, assert_vectors_close, cgs_tolerance
     ) -> None:
         """Verify displacement current is in same direction as dE/dt."""
-        from maxwell.electromagnetism.fields.ampere_maxwell import calc_displacement_current
+        from maxwell.electromagnetism.fields.ampere_maxwell import (
+            calc_displacement_current,
+        )
 
         dE_dt = np.array([0.0, 1.0, 0.0])
         permittivity = 1.0
@@ -975,14 +863,11 @@ class TestTotalCurrent:
     """Test total current including displacement current."""
 
     def test_total_current_includes_displacement(
-        self,
-        cgs_tolerance,
-        assert_cgs_close,
-        assert_vectors_close
+        self, cgs_tolerance, assert_cgs_close, assert_vectors_close
     ) -> None:
         """Verify J_total = J + J_d — total current formula."""
         from maxwell.electromagnetism.fields.ampere_maxwell import (
-            calc_total_current_density
+            calc_total_current_density,
         )
 
         J_cond = np.array([1e-6, 0.0, 0.0])
@@ -1001,9 +886,7 @@ class TestDisplacementCurrentNecessity:
     """Test the capacitor paradox and necessity of displacement current."""
 
     def test_displacement_current_necessity(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify capacitor paradox is resolved by displacement current.
 
@@ -1011,7 +894,7 @@ class TestDisplacementCurrentNecessity:
         With displacement current: ∮H·dl = 4πI (consistent with wire surface)
         """
         from maxwell.electromagnetism.fields.ampere_maxwell import (
-            verify_displacement_current_necessity
+            verify_displacement_current_necessity,
         )
 
         charging_current = 1.0  # 1 abampere
@@ -1027,7 +910,9 @@ class TestDisplacementCurrentNecessity:
         )
 
         # Displacement current should equal conduction current
-        assert_cgs_close(result["displacement_current"], charging_current, cgs_tolerance)
+        assert_cgs_close(
+            result["displacement_current"], charging_current, cgs_tolerance
+        )
 
         # Without displacement current: ∮H·dl = 0 (wrong!)
         assert_cgs_close(result["without_displacement"], 0.0, cgs_tolerance)
@@ -1040,12 +925,10 @@ class TestDisplacementCurrentNecessity:
         assert bool(result["paradox_resolved"]) is True
         assert bool(result["current_match"]) is True
 
-    def test_displacement_current_necessity_zero_current_raises(
-        self
-    ) -> None:
+    def test_displacement_current_necessity_zero_current_raises(self) -> None:
         """Verify zero charging current is prevented."""
         from maxwell.electromagnetism.fields.ampere_maxwell import (
-            verify_displacement_current_necessity
+            verify_displacement_current_necessity,
         )
 
         with pytest.raises(ValueError, match="Charging current must be positive"):
@@ -1061,9 +944,7 @@ class TestAmpereMaxwellLaw:
     """Test complete Ampere-Maxwell law."""
 
     def test_ampere_maxwell_law_verification(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify ∇ × H = 4πJ_cond + dD/dt."""
         from maxwell.electromagnetism.fields.ampere_maxwell import calc_ampere_maxwell
@@ -1090,9 +971,7 @@ class TestDisplacementCurrentClass:
     """Test DisplacementCurrent class."""
 
     def test_displacement_current_class_J_d_property(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify DisplacementCurrent.J_displacement property."""
         from maxwell.electromagnetism.fields.ampere_maxwell import DisplacementCurrent
@@ -1100,16 +979,16 @@ class TestDisplacementCurrentClass:
         dE_dt = np.array([0.0, 0.0, 4 * np.pi * 1e6])
         permittivity = 1.0
 
-        dc = DisplacementCurrent(E_field=np.zeros(3), dE_dt=dE_dt, permittivity=permittivity)
+        dc = DisplacementCurrent(
+            E_field=np.zeros(3), dE_dt=dE_dt, permittivity=permittivity
+        )
 
         # J_d = (ε/4π) * dD/dt = (1/4π) * ε * dE/dt = 10^6
         J_d = dc.J_displacement
         assert_cgs_close(np.linalg.norm(J_d), 1e6, cgs_tolerance)
 
     def test_displacement_current_class_D_field_property(
-        self,
-        cgs_tolerance,
-        assert_cgs_close
+        self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify DisplacementCurrent.D_field property (D = εE)."""
         from maxwell.electromagnetism.fields.ampere_maxwell import DisplacementCurrent
@@ -1118,7 +997,9 @@ class TestDisplacementCurrentClass:
         dE_dt = np.zeros(3)
         permittivity = 1.0
 
-        dc = DisplacementCurrent(E_field=E_field, dE_dt=dE_dt, permittivity=permittivity)
+        dc = DisplacementCurrent(
+            E_field=E_field, dE_dt=dE_dt, permittivity=permittivity
+        )
 
         # D = εE = 1000
         D = dc.D_field
@@ -1129,20 +1010,19 @@ class TestDisplacementCurrentClass:
 # CITATION COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestPartIVCitationCompliance:
     """Test citation decorator compliance for all Part IV modules."""
 
     def test_oersted_module_citations(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Oersted module functions have correct citations."""
         from maxwell.electromagnetism.sources.oersted import (
-            calc_oersted_field,
+            calc_circular_field_direction,
             calc_field_from_element,
             calc_force_on_pole,
-            calc_circular_field_direction,
+            calc_oersted_field,
             verify_inverse_distance_law,
         )
 
@@ -1157,14 +1037,12 @@ class TestPartIVCitationCompliance:
         assert 479 in citation.articles
 
     def test_faraday_module_citations(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Faraday module functions have correct citations."""
         from maxwell.electromagnetism.induction.faraday import (
-            calc_magnetic_flux,
             calc_induced_emf,
+            calc_magnetic_flux,
             calc_motional_emf,
             calc_self_induction,
             verify_lenz_law,
@@ -1181,15 +1059,13 @@ class TestPartIVCitationCompliance:
         assert any(a in citation.articles for a in [529, 531])
 
     def test_lorentz_module_citations(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Lorentz module functions have correct citations."""
         from maxwell.electromagnetism.forces.lorentz import (
-            calc_force_on_wire,
-            calc_force_on_moving_charge,
             calc_force_between_parallel_currents,
+            calc_force_on_moving_charge,
+            calc_force_on_wire,
             calc_torque_on_current_loop,
         )
 
@@ -1204,9 +1080,7 @@ class TestPartIVCitationCompliance:
         assert 492 in citation.articles
 
     def test_ampere_maxwell_module_citations(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Ampere-Maxwell module functions have correct citations."""
         from maxwell.electromagnetism.fields.ampere_maxwell import (

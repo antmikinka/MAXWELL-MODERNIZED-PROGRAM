@@ -30,11 +30,12 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
-from typing import Optional, Callable
+from typing import Callable, Optional
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -62,7 +63,9 @@ class SurfaceCurrentDensity:
 
     i_x: float = 0.0
     i_y: float = 0.0
-    surface_normal: np.ndarray = field(default_factory=lambda: np.array([0.0, 0.0, 1.0]))
+    surface_normal: np.ndarray = field(
+        default_factory=lambda: np.array([0.0, 0.0, 1.0])
+    )
 
     def __post_init__(self):
         """Validate and compute derived quantities."""
@@ -74,16 +77,12 @@ class SurfaceCurrentDensity:
             raise ValueError("Surface normal cannot be zero")
 
         # 3D current vector (in surface plane)
-        self.current_3d = np.array([
-            float(self.i_x),
-            float(self.i_y),
-            0.0
-        ])
+        self.current_3d = np.array([float(self.i_x), float(self.i_y), 0.0])
 
     @property
     def magnitude(self) -> float:
         """Magnitude of surface current density (abamperes/cm)."""
-        return np.sqrt(self.i_x ** 2 + self.i_y ** 2)
+        return np.sqrt(self.i_x**2 + self.i_y**2)
 
     @property
     def direction(self) -> np.ndarray:
@@ -96,7 +95,8 @@ class SurfaceCurrentDensity:
     @classmethod
     @maxwell_cite(
         656,
-        part=4, chapter="Current-Sheets",
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create surface current from magnitude and direction",
     )
@@ -133,8 +133,10 @@ class SurfaceCurrentDensity:
 
     @classmethod
     @maxwell_cite(
-        656, 657,
-        part=4, chapter="Current-Sheets",
+        656,
+        657,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create surface current from volume current and thickness",
     )
@@ -176,8 +178,10 @@ class SurfaceCurrentDensity:
 
 
 @maxwell_cite(
-    656, 657,
-    part=4, chapter="Current-Sheets",
+    656,
+    657,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate surface current from total current and width",
 )
@@ -230,7 +234,8 @@ def calc_surface_current(
 
 @maxwell_cite(
     658,
-    part=4, chapter="Current-Sheets",
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate magnetic field from surface current element",
 )
@@ -295,7 +300,7 @@ def calc_field_from_surface_current(
 
     # Biot-Savart: dB = (1/c) · (i × r̂) / r²
     # For a unit area element
-    factor = surface_current.magnitude / (CONST.C * r_mag ** 2)
+    factor = surface_current.magnitude / (CONST.C * r_mag**2)
     i_hat = surface_current.direction
     B_dir = np.cross(i_hat, r_hat)
     B = factor * B_dir
@@ -303,14 +308,18 @@ def calc_field_from_surface_current(
     return {
         "field_B": B,
         "distance": r_mag,
-        "field_direction": B_dir / np.linalg.norm(B_dir) if np.linalg.norm(B_dir) > 0 else np.zeros(3),
+        "field_direction": (
+            B_dir / np.linalg.norm(B_dir) if np.linalg.norm(B_dir) > 0 else np.zeros(3)
+        ),
         "field_magnitude": np.linalg.norm(B),
     }
 
 
 @maxwell_cite(
-    657, 658,
-    part=4, chapter="Current-Sheets",
+    657,
+    658,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate boundary condition for surface current sheet",
 )
@@ -395,8 +404,11 @@ def calc_sheet_boundary_condition(
 
 
 @maxwell_cite(
-    659, 660, 661,
-    part=4, chapter="Current-Sheets",
+    659,
+    660,
+    661,
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Analyze surface current distribution in conductor",
 )
@@ -473,7 +485,7 @@ def analyze_surface_current_distribution(
         resistance_factor = penetration_ratio / 2.0
     else:
         # Transition region approximation
-        resistance_factor = 1.0 + (penetration_ratio ** 4) / 3.0
+        resistance_factor = 1.0 + (penetration_ratio**4) / 3.0
 
     return {
         "skin_depth": skin_depth,
@@ -488,7 +500,8 @@ def analyze_surface_current_distribution(
 
 @maxwell_cite(
     662,
-    part=4, chapter="Current-Sheets",
+    part=4,
+    chapter="Current-Sheets",
     theory_class="maxwell_original",
     description="Calculate surface impedance of conductor",
 )
@@ -551,7 +564,7 @@ def calc_surface_impedance(
     Z_s = complex(R_s, X_s)
 
     # Magnitude
-    Z_mag = np.sqrt(R_s ** 2 + X_s ** 2)
+    Z_mag = np.sqrt(R_s**2 + X_s**2)
 
     return {
         "surface_resistance": R_s,
@@ -583,7 +596,8 @@ class SurfaceCurrentAnalyzer:
 
     @maxwell_cite(
         656,
-        part=4, chapter="Current-Sheets",
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Create surface current density object",
     )
@@ -597,8 +611,10 @@ class SurfaceCurrentAnalyzer:
         return SurfaceCurrentDensity(i_x=i_x, i_y=i_y, surface_normal=normal)
 
     @maxwell_cite(
-        656, 657,
-        part=4, chapter="Current-Sheets",
+        656,
+        657,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate surface current from volume current",
     )
@@ -612,7 +628,8 @@ class SurfaceCurrentAnalyzer:
 
     @maxwell_cite(
         658,
-        part=4, chapter="Current-Sheets",
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate magnetic field from surface current",
     )
@@ -625,8 +642,10 @@ class SurfaceCurrentAnalyzer:
         return calc_field_from_surface_current(surface_current, point)
 
     @maxwell_cite(
-        657, 658,
-        part=4, chapter="Current-Sheets",
+        657,
+        658,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Verify boundary condition",
     )
@@ -640,8 +659,11 @@ class SurfaceCurrentAnalyzer:
         return calc_sheet_boundary_condition(surface_current, H_above, H_below)
 
     @maxwell_cite(
-        659, 660, 661,
-        part=4, chapter="Current-Sheets",
+        659,
+        660,
+        661,
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Analyze skin effect",
     )
@@ -664,7 +686,8 @@ class SurfaceCurrentAnalyzer:
 
     @maxwell_cite(
         662,
-        part=4, chapter="Current-Sheets",
+        part=4,
+        chapter="Current-Sheets",
         theory_class="maxwell_original",
         description="Calculate surface impedance",
     )

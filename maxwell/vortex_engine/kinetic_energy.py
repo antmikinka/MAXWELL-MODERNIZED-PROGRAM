@@ -67,7 +67,8 @@ def express_vortex_current_velocity(
     return {
         "vortex_energy": vortex.kinetic_energy(),
         "coupling_energy": np.dot(current_density, vortex.axis) * H_field,
-        "total": vortex.kinetic_energy() + np.dot(current_density, vortex.axis) * H_field,
+        "total": vortex.kinetic_energy()
+        + np.dot(current_density, vortex.axis) * H_field,
     }
 
 

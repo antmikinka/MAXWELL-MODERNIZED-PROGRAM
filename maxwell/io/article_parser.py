@@ -18,14 +18,17 @@ References:
 """
 
 from __future__ import annotations
+
 import re
 from typing import Any
+
 from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Parse article number from Maxwell's notation (e.g., '27.]')",
 )
@@ -84,7 +87,8 @@ def extract_article_number(text: str) -> int | None:
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Find all article boundaries in chapter text",
 )
@@ -143,22 +147,29 @@ def extract_all_articles_from_chapter(chapter_text: str) -> list[dict[str, Any]]
 
         # Extract content (from after the marker to next article or end)
         content_start = match.end()
-        content = chapter_text[content_start:end_idx].strip() if end_idx else chapter_text[content_start:].strip()
+        content = (
+            chapter_text[content_start:end_idx].strip()
+            if end_idx
+            else chapter_text[content_start:].strip()
+        )
 
-        articles.append({
-            "article_number": article_num,
-            "article_suffix": suffix,
-            "start_index": start_idx,
-            "end_index": end_idx,
-            "content": content,
-        })
+        articles.append(
+            {
+                "article_number": article_num,
+                "article_suffix": suffix,
+                "start_index": start_idx,
+                "end_index": end_idx,
+                "content": content,
+            }
+        )
 
     return articles
 
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract LaTeX equations from Mathpix markdown",
 )
@@ -192,11 +203,13 @@ def extract_equations(mathpix_markdown: str) -> list[dict[str, str]]:
     # Pattern 1: Display equations $$...$$
     display_pattern = r"\$\$(.+?)\$\$"
     for match in re.finditer(display_pattern, mathpix_markdown, re.DOTALL):
-        equations.append({
-            "type": "display",
-            "latex": match.group(1).strip(),
-            "position": match.start(),
-        })
+        equations.append(
+            {
+                "type": "display",
+                "latex": match.group(1).strip(),
+                "position": match.start(),
+            }
+        )
 
     # Pattern 2: Inline equations $...$ (but not $$)
     # Negative lookbehind for $ and negative lookahead for $
@@ -205,38 +218,48 @@ def extract_equations(mathpix_markdown: str) -> list[dict[str, str]]:
         latex = match.group(1).strip()
         # Skip if it contains newlines (likely a misidentified display eq)
         if "\n" not in latex:
-            equations.append({
-                "type": "inline",
-                "latex": latex,
-                "position": match.start(),
-            })
+            equations.append(
+                {
+                    "type": "inline",
+                    "latex": latex,
+                    "position": match.start(),
+                }
+            )
 
     # Pattern 3: \\[...\\] display equations
     bracket_display_pattern = r"\\\\\[(.+?)\\\\\]"
     for match in re.finditer(bracket_display_pattern, mathpix_markdown, re.DOTALL):
-        equations.append({
-            "type": "display_bracket",
-            "latex": match.group(1).strip(),
-            "position": match.start(),
-        })
+        equations.append(
+            {
+                "type": "display_bracket",
+                "latex": match.group(1).strip(),
+                "position": match.start(),
+            }
+        )
 
     # Pattern 4: \\(...\\) inline equations
     bracket_inline_pattern = r"\\\\\((.+?)\\\\\)"
     for match in re.finditer(bracket_inline_pattern, mathpix_markdown):
-        equations.append({
-            "type": "inline_bracket",
-            "latex": match.group(1).strip(),
-            "position": match.start(),
-        })
+        equations.append(
+            {
+                "type": "inline_bracket",
+                "latex": match.group(1).strip(),
+                "position": match.start(),
+            }
+        )
 
     # Pattern 5: aligned, gathered, matrix environments
-    env_pattern = r"\\begin\{(aligned|gathered|matrix|pmatrix|bmatrix|cases)\}(.+?)\\end\{\1\}"
+    env_pattern = (
+        r"\\begin\{(aligned|gathered|matrix|pmatrix|bmatrix|cases)\}(.+?)\\end\{\1\}"
+    )
     for match in re.finditer(env_pattern, mathpix_markdown, re.DOTALL):
-        equations.append({
-            "type": match.group(1),
-            "latex": f"\\begin{{{match.group(1)}}}{match.group(2)}\\end{{{match.group(1)}}}",
-            "position": match.start(),
-        })
+        equations.append(
+            {
+                "type": match.group(1),
+                "latex": f"\\begin{{{match.group(1)}}}{match.group(2)}\\end{{{match.group(1)}}}",
+                "position": match.start(),
+            }
+        )
 
     # Sort by position
     equations.sort(key=lambda x: x["position"])
@@ -246,7 +269,8 @@ def extract_equations(mathpix_markdown: str) -> list[dict[str, str]]:
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract figure and diagram references from markdown",
 )
@@ -291,12 +315,14 @@ def extract_figure_references(mathpix_markdown: str) -> list[dict[str, Any]]:
         end = min(len(mathpix_markdown), match.end() + 25)
         context = mathpix_markdown[start:end].strip()
 
-        references.append({
-            "type": "figure",
-            "reference": reference,
-            "position": match.start(),
-            "context": context,
-        })
+        references.append(
+            {
+                "type": "figure",
+                "reference": reference,
+                "position": match.start(),
+                "context": context,
+            }
+        )
 
     # Pattern 2: "Diagram X"
     diagram_pattern = r"[Dd]iagram\s*(\d+)([a-z])?"
@@ -309,12 +335,14 @@ def extract_figure_references(mathpix_markdown: str) -> list[dict[str, Any]]:
         end = min(len(mathpix_markdown), match.end() + 25)
         context = mathpix_markdown[start:end].strip()
 
-        references.append({
-            "type": "diagram",
-            "reference": reference,
-            "position": match.start(),
-            "context": context,
-        })
+        references.append(
+            {
+                "type": "diagram",
+                "reference": reference,
+                "position": match.start(),
+                "context": context,
+            }
+        )
 
     # Pattern 3: "Plate X" (for full-page illustrations)
     plate_pattern = r"[Pp]late\s*(\d+)([a-z])?"
@@ -327,12 +355,14 @@ def extract_figure_references(mathpix_markdown: str) -> list[dict[str, Any]]:
         end = min(len(mathpix_markdown), match.end() + 25)
         context = mathpix_markdown[start:end].strip()
 
-        references.append({
-            "type": "plate",
-            "reference": reference,
-            "position": match.start(),
-            "context": context,
-        })
+        references.append(
+            {
+                "type": "plate",
+                "reference": reference,
+                "position": match.start(),
+                "context": context,
+            }
+        )
 
     # Pattern 4: Markdown image syntax ![alt](url)
     image_pattern = r"!\[([^\]]*)\]\(([^)]+)\)"
@@ -344,13 +374,15 @@ def extract_figure_references(mathpix_markdown: str) -> list[dict[str, Any]]:
         end = min(len(mathpix_markdown), match.end() + 25)
         context = mathpix_markdown[start:end].strip()
 
-        references.append({
-            "type": "image",
-            "reference": image_url,
-            "alt_text": alt_text,
-            "position": match.start(),
-            "context": context,
-        })
+        references.append(
+            {
+                "type": "image",
+                "reference": image_url,
+                "alt_text": alt_text,
+                "position": match.start(),
+                "context": context,
+            }
+        )
 
     # Sort by position
     references.sort(key=lambda x: x["position"])
@@ -360,7 +392,8 @@ def extract_figure_references(mathpix_markdown: str) -> list[dict[str, Any]]:
 
 @maxwell_cite(
     1,
-    part=5, chapter="Data Loading Utilities",
+    part=5,
+    chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract cross-references to other articles",
 )
@@ -405,13 +438,15 @@ def extract_cross_references(text: str) -> list[dict[str, Any]]:
         end = min(len(text), match.end() + 20)
         context = text[start:end].strip()
 
-        references.append({
-            "type": "single",
-            "articles": [article_num],
-            "raw_reference": match.group(0),
-            "position": match.start(),
-            "context": context,
-        })
+        references.append(
+            {
+                "type": "single",
+                "articles": [article_num],
+                "raw_reference": match.group(0),
+                "position": match.start(),
+                "context": context,
+            }
+        )
 
     # Pattern 2: "Arts. X-Y" or "Arts. X to Y" (range)
     range_art_pattern = r"[Aa]rts\.\s*(\d+)([a-z])?\s*(?:[-–]|to)\s*(\d+)([a-z])?"
@@ -426,13 +461,15 @@ def extract_cross_references(text: str) -> list[dict[str, Any]]:
         end = min(len(text), match.end() + 20)
         context = text[start:end].strip()
 
-        references.append({
-            "type": "range",
-            "articles": article_range,
-            "raw_reference": match.group(0),
-            "position": match.start(),
-            "context": context,
-        })
+        references.append(
+            {
+                "type": "range",
+                "articles": article_range,
+                "raw_reference": match.group(0),
+                "position": match.start(),
+                "context": context,
+            }
+        )
 
     # Pattern 3: "(Art. X)" or "(Arts. X-Y)" in parentheses
     paren_pattern = r"\([Aa]rt\.?\s*(\d+)([a-z])?(?:\s*[-–]\s*(\d+)([a-z])?)?\)"
@@ -451,13 +488,15 @@ def extract_cross_references(text: str) -> list[dict[str, Any]]:
         end = min(len(text), match.end() + 20)
         context = text[start:end].strip()
 
-        references.append({
-            "type": ref_type,
-            "articles": article_range,
-            "raw_reference": match.group(0),
-            "position": match.start(),
-            "context": context,
-        })
+        references.append(
+            {
+                "type": ref_type,
+                "articles": article_range,
+                "raw_reference": match.group(0),
+                "position": match.start(),
+                "context": context,
+            }
+        )
 
     # Pattern 4: "compare Art. X" or "see Art. X"
     directive_pattern = r"(?:compare|see|refer\sto|cf\.?)\s+[Aa]rt\.\s*(\d+)([a-z])?"
@@ -468,14 +507,16 @@ def extract_cross_references(text: str) -> list[dict[str, Any]]:
         end = min(len(text), match.end() + 15)
         context = text[start:end].strip()
 
-        references.append({
-            "type": "directive",
-            "articles": [article_num],
-            "raw_reference": match.group(0),
-            "position": match.start(),
-            "context": context,
-            "directive": match.group(0).split()[0].lower().rstrip(".,"),
-        })
+        references.append(
+            {
+                "type": "directive",
+                "articles": [article_num],
+                "raw_reference": match.group(0),
+                "position": match.start(),
+                "context": context,
+                "directive": match.group(0).split()[0].lower().rstrip(".,"),
+            }
+        )
 
     # Remove duplicates based on position
     seen_positions = set()

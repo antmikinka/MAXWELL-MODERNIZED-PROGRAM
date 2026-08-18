@@ -45,10 +45,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -108,8 +109,10 @@ def _induced_charge(delta_flux: float, resistance: float) -> float:
 
 
 @maxwell_cite(
-    536, 537,
-    part=4, chapter="Felici's Law",
+    536,
+    537,
+    part=4,
+    chapter="Felici's Law",
     theory_class="maxwell_original",
     description="Simulate induction with linear flux ramp",
 )
@@ -148,8 +151,10 @@ def simulate_linear_ramp(
 
 
 @maxwell_cite(
-    537, 538,
-    part=4, chapter="Felici's Law",
+    537,
+    538,
+    part=4,
+    chapter="Felici's Law",
     theory_class="maxwell_original",
     description="Simulate induction with exponential flux decay",
 )
@@ -191,8 +196,10 @@ def simulate_exponential_decay(
 
 
 @maxwell_cite(
-    538, 539,
-    part=4, chapter="Felici's Law",
+    538,
+    539,
+    part=4,
+    chapter="Felici's Law",
     theory_class="maxwell_original",
     description="Simulate induction from mutual inductance",
 )
@@ -233,8 +240,12 @@ def simulate_mutual_induction(
 
 
 @maxwell_cite(
-    536, 537, 538, 539,
-    part=4, chapter="Felici's Law",
+    536,
+    537,
+    538,
+    539,
+    part=4,
+    chapter="Felici's Law",
     theory_class="maxwell_original",
     description="Verify Felici's law with different time profiles",
 )
@@ -269,24 +280,45 @@ def verify_felici_law(
     slow = simulate_linear_ramp(initial_flux, final_flux, resistance, duration=1.0)
 
     # Linear ramp: very slow
-    very_slow = simulate_linear_ramp(initial_flux, final_flux, resistance, duration=10.0)
+    very_slow = simulate_linear_ramp(
+        initial_flux, final_flux, resistance, duration=10.0
+    )
 
     # Exponential decay (same total delta)
     exponential = simulate_exponential_decay(delta_flux, resistance, time_constant=0.1)
 
     # Check all charges are equal
-    charges = [fast.induced_charge, slow.induced_charge, very_slow.induced_charge, exponential.induced_charge]
+    charges = [
+        fast.induced_charge,
+        slow.induced_charge,
+        very_slow.induced_charge,
+        exponential.induced_charge,
+    ]
     Q_ref = charges[0]
 
-    all_equal = all(abs(q - Q_ref) / abs(Q_ref) < tolerance for q in charges if abs(Q_ref) > 1e-15)
+    all_equal = all(
+        abs(q - Q_ref) / abs(Q_ref) < tolerance for q in charges if abs(Q_ref) > 1e-15
+    )
 
     # Check against expected
-    matches_expected = abs(Q_expected - Q_ref) / abs(Q_expected) < tolerance if abs(Q_expected) > 1e-15 else True
+    matches_expected = (
+        abs(Q_expected - Q_ref) / abs(Q_expected) < tolerance
+        if abs(Q_expected) > 1e-15
+        else True
+    )
 
     # Peak EMF should be inversely proportional to duration
-    emf_ratio = fast.induced_emf_peak / slow.induced_emf_peak if slow.induced_emf_peak > 1e-15 else 0
+    emf_ratio = (
+        fast.induced_emf_peak / slow.induced_emf_peak
+        if slow.induced_emf_peak > 1e-15
+        else 0
+    )
     expected_ratio = slow.duration / fast.duration  # 1.0 / 0.01 = 100
-    emf_correct = abs(emf_ratio - expected_ratio) / expected_ratio < tolerance if expected_ratio > 1e-15 else True
+    emf_correct = (
+        abs(emf_ratio - expected_ratio) / expected_ratio < tolerance
+        if expected_ratio > 1e-15
+        else True
+    )
 
     return {
         "Q_expected": Q_expected,
@@ -302,8 +334,12 @@ def verify_felici_law(
 
 
 @maxwell_cite(
-    536, 537, 538, 539,
-    part=4, chapter="Felici's Law",
+    536,
+    537,
+    538,
+    539,
+    part=4,
+    chapter="Felici's Law",
     theory_class="maxwell_original",
     description="Complete Felici's law analysis",
 )
@@ -332,13 +368,17 @@ def analyze_felici_law(
     """
     # Linear ramps at different speeds
     durations = [0.001, 0.01, 0.1, 1.0, 10.0]
-    linear_results = [simulate_linear_ramp(0, delta_flux, resistance, d) for d in durations]
+    linear_results = [
+        simulate_linear_ramp(0, delta_flux, resistance, d) for d in durations
+    ]
 
     # Exponential decay
     exp_result = simulate_exponential_decay(delta_flux, resistance, time_constant=0.1)
 
     # Mutual induction
-    mutual_result = simulate_mutual_induction(mutual_inductance, 0, delta_current, resistance)
+    mutual_result = simulate_mutual_induction(
+        mutual_inductance, 0, delta_current, resistance
+    )
 
     # Verification
     verification = verify_felici_law(delta_flux, resistance)

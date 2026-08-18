@@ -25,10 +25,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -58,7 +59,8 @@ class LamellarDistribution:
     @classmethod
     @maxwell_cite(
         412,
-        part=3, chapter="Field Decomposition",
+        part=3,
+        chapter="Field Decomposition",
         theory_class="maxwell_original",
         description="Create lamellar distribution from scalar potential",
     )
@@ -87,6 +89,7 @@ class LamellarDistribution:
         Reference:
             Part III, Art. 412: Lamellar distributions.
         """
+
         def magnetization_at(point: np.ndarray) -> np.ndarray:
             point = np.asarray(point, dtype=np.float64)
             grad = np.zeros(3)
@@ -108,7 +111,8 @@ class LamellarDistribution:
 
     @maxwell_cite(
         412,
-        part=3, chapter="Field Decomposition",
+        part=3,
+        chapter="Field Decomposition",
         theory_class="maxwell_original",
         description="Verify lamellar condition ∇×I = 0",
     )
@@ -163,7 +167,11 @@ class LamellarDistribution:
 
                         # Levi-Civita symbol contribution
                         sign = 1 if (i, j) in [(0, 1), (1, 2), (2, 0)] else -1
-                        curl[i] += sign * (I_plus[(i + 1) % 3] - I_minus[(i + 1) % 3]) / (2 * h)
+                        curl[i] += (
+                            sign
+                            * (I_plus[(i + 1) % 3] - I_minus[(i + 1) % 3])
+                            / (2 * h)
+                        )
 
             if np.linalg.norm(curl) > tolerance:
                 return False
@@ -193,7 +201,8 @@ class ComplexLamellarDistribution:
     @classmethod
     @maxwell_cite(
         415,
-        part=3, chapter="Field Decomposition",
+        part=3,
+        chapter="Field Decomposition",
         theory_class="maxwell_original",
         description="Create complex lamellar system from components",
     )
@@ -262,7 +271,8 @@ class ComplexLamellarDistribution:
 
 @maxwell_cite(
     412,
-    part=3, chapter="Field Decomposition",
+    part=3,
+    chapter="Field Decomposition",
     theory_class="maxwell_original",
     description="Calculate lamellar potential",
 )
@@ -313,7 +323,8 @@ def lamellar_potential(
 
 @maxwell_cite(
     413,
-    part=3, chapter="Field Decomposition",
+    part=3,
+    chapter="Field Decomposition",
     theory_class="maxwell_original",
     description="Calculate vector potential for lamellar field",
 )
@@ -370,7 +381,7 @@ def lamellar_vector_potential(
         I_prime = magnetization_func(r_prime)
 
         # dA = (I × r̂) / r² dV = (I × r) / r³ dV
-        dA = volume * np.cross(I_prime, r_vec) / (r_mag ** 3)
+        dA = volume * np.cross(I_prime, r_vec) / (r_mag**3)
         A += dA
 
     return A
@@ -378,7 +389,8 @@ def lamellar_vector_potential(
 
 @maxwell_cite(
     415,
-    part=3, chapter="Field Decomposition",
+    part=3,
+    chapter="Field Decomposition",
     theory_class="maxwell_original",
     description="Decompose field into lamellar and solenoidal parts",
 )
@@ -450,7 +462,9 @@ def helmholtz_decomposition(
             phi += divergences[i] / r_mag
 
     phi /= -4 * np.pi
-    phi *= (np.prod(np.max(sample_points, axis=0) - np.min(sample_points, axis=0)) / len(sample_points))
+    phi *= np.prod(np.max(sample_points, axis=0) - np.min(sample_points, axis=0)) / len(
+        sample_points
+    )
 
     # Lamellar part: -∇φ (approximate as F projected onto radial direction)
     # This is a simplified approximation
@@ -471,7 +485,8 @@ def helmholtz_decomposition(
 
 @maxwell_cite(
     416,
-    part=3, chapter="Field Decomposition",
+    part=3,
+    chapter="Field Decomposition",
     theory_class="maxwell_original",
     description="Relation between scalar and vector potentials",
 )
@@ -533,8 +548,12 @@ def relate_scalar_vector_potential(
 
 
 @maxwell_cite(
-    412, 413, 415, 416,
-    part=3, chapter="Field Decomposition",
+    412,
+    413,
+    415,
+    416,
+    part=3,
+    chapter="Field Decomposition",
     theory_class="maxwell_original",
     description="Check if magnetization is lamellar",
 )

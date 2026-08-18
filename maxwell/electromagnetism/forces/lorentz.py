@@ -31,10 +31,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -75,7 +76,9 @@ class LorentzForce:
         self.length = np.asarray(self.length, dtype=np.float64)
 
         if self.B_field.shape != (3,):
-            raise ValueError(f"B_field must be 3D vector, got shape {self.B_field.shape}")
+            raise ValueError(
+                f"B_field must be 3D vector, got shape {self.B_field.shape}"
+            )
         if self.length.shape != (3,):
             raise ValueError(f"Length must be 3D vector, got shape {self.length.shape}")
 
@@ -114,8 +117,10 @@ class LorentzForce:
 
     @classmethod
     @maxwell_cite(
-        490, 491,
-        part=4, chapter="Lorentz Force",
+        490,
+        491,
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Create Lorentz force from current, length, and B field",
     )
@@ -146,7 +151,8 @@ class LorentzForce:
 
     @maxwell_cite(
         490,
-        part=4, chapter="Lorentz Force",
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Calculate force at a point with given field",
     )
@@ -172,7 +178,8 @@ class LorentzForce:
 
     @maxwell_cite(
         490,
-        part=4, chapter="Lorentz Force",
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Calculate force magnitude",
     )
@@ -195,7 +202,8 @@ class LorentzForce:
 
     @maxwell_cite(
         490,
-        part=4, chapter="Lorentz Force",
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Calculate force direction",
     )
@@ -218,8 +226,10 @@ class LorentzForce:
 
 
 @maxwell_cite(
-    490, 491,
-    part=4, chapter="Lorentz Force",
+    490,
+    491,
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Calculate force on current-carrying wire: F = I·L × B",
 )
@@ -275,7 +285,8 @@ def calc_force_on_wire(
 
 @maxwell_cite(
     491,
-    part=4, chapter="Lorentz Force",
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Calculate force on moving charge: F = q·v × B",
 )
@@ -329,7 +340,8 @@ def calc_force_on_moving_charge(
 
 @maxwell_cite(
     492,
-    part=4, chapter="Lorentz Force",
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Calculate force between parallel currents: F = 2·I₁·I₂·L/r",
 )
@@ -387,8 +399,10 @@ def calc_force_between_parallel_currents(
 
 
 @maxwell_cite(
-    490, 491,
-    part=4, chapter="Lorentz Force",
+    490,
+    491,
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Calculate torque on current loop: τ = m × B",
 )
@@ -437,7 +451,8 @@ def calc_torque_on_current_loop(
 
 @maxwell_cite(
     490,
-    part=4, chapter="Lorentz Force",
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Calculate force density: f = J × B",
 )
@@ -484,7 +499,8 @@ def calc_force_density(
 
 @maxwell_cite(
     492,
-    part=4, chapter="Lorentz Force",
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Verify attraction of parallel currents with same direction",
 )
@@ -538,7 +554,9 @@ def verify_parallel_current_attraction(
     expected_same = 2.0 * I1 * I2 * wire_length / separation
 
     # Force for opposite direction (should be repulsive/negative)
-    force_opposite = calc_force_between_parallel_currents(I1, -I2, separation, wire_length)
+    force_opposite = calc_force_between_parallel_currents(
+        I1, -I2, separation, wire_length
+    )
     expected_opposite = 2.0 * I1 * (-I2) * wire_length / separation
 
     # Verify inverse-distance law by checking at different separations
@@ -553,8 +571,12 @@ def verify_parallel_current_attraction(
     inverse_r_max_error = max(inverse_r_errors)
 
     # Verification checks
-    attraction_verified = force_same > 0 and abs(force_same - expected_same) < tolerance * abs(expected_same)
-    repulsion_verified = force_opposite < 0 and abs(force_opposite - expected_opposite) < tolerance * abs(expected_opposite)
+    attraction_verified = force_same > 0 and abs(
+        force_same - expected_same
+    ) < tolerance * abs(expected_same)
+    repulsion_verified = force_opposite < 0 and abs(
+        force_opposite - expected_opposite
+    ) < tolerance * abs(expected_opposite)
     inverse_r_verified = inverse_r_max_error <= tolerance
 
     verified = attraction_verified and repulsion_verified and inverse_r_verified
@@ -576,8 +598,11 @@ def verify_parallel_current_attraction(
 
 
 @maxwell_cite(
-    490, 491, 492,
-    part=4, chapter="Lorentz Force",
+    490,
+    491,
+    492,
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Complete Lorentz force analysis for current in magnetic field",
 )
@@ -637,7 +662,9 @@ def analyze_lorentz_force(
     # Force calculation
     force_vector = calc_force_on_wire(current, wire_length, B_field)
     force_magnitude = float(np.linalg.norm(force_vector))
-    force_direction = force_vector / force_magnitude if force_magnitude > 0 else np.zeros(3)
+    force_direction = (
+        force_vector / force_magnitude if force_magnitude > 0 else np.zeros(3)
+    )
 
     # Geometry
     L_mag = np.linalg.norm(wire_length)
@@ -679,8 +706,10 @@ def analyze_lorentz_force(
 
 
 @maxwell_cite(
-    490, 491,
-    part=4, chapter="Lorentz Force",
+    490,
+    491,
+    part=4,
+    chapter="Lorentz Force",
     theory_class="maxwell_original",
     description="Calculate force on arbitrary current distribution",
 )
@@ -724,7 +753,7 @@ def calc_force_on_distribution(
 
     # Volume and differential
     volume = (x_max - x_min) * (y_max - y_min) * (z_max - z_min)
-    dV = volume / (n_points ** 3)
+    dV = volume / (n_points**3)
 
     # Generate sample points
     x_vals = np.linspace(x_min, x_max, n_points, endpoint=False)
@@ -772,11 +801,15 @@ class LorentzForceCalculator:
             B_field: Optional background magnetic field (gauss).
                      Can be provided later to individual methods.
         """
-        self.B_field = np.asarray(B_field, dtype=np.float64) if B_field is not None else None
+        self.B_field = (
+            np.asarray(B_field, dtype=np.float64) if B_field is not None else None
+        )
 
     @maxwell_cite(
-        490, 491,
-        part=4, chapter="Lorentz Force",
+        490,
+        491,
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Calculate force on wire with this calculator's field",
     )
@@ -809,7 +842,8 @@ class LorentzForceCalculator:
 
     @maxwell_cite(
         491,
-        part=4, chapter="Lorentz Force",
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Calculate force on moving charge",
     )
@@ -841,8 +875,10 @@ class LorentzForceCalculator:
         return calc_force_on_moving_charge(charge, velocity, B)
 
     @maxwell_cite(
-        490, 491,
-        part=4, chapter="Lorentz Force",
+        490,
+        491,
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Calculate torque on current loop",
     )
@@ -873,7 +909,8 @@ class LorentzForceCalculator:
 
     @maxwell_cite(
         490,
-        part=4, chapter="Lorentz Force",
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Calculate force density",
     )
@@ -903,8 +940,10 @@ class LorentzForceCalculator:
         return calc_force_density(J, B_field)
 
     @maxwell_cite(
-        490, 491,
-        part=4, chapter="Lorentz Force",
+        490,
+        491,
+        part=4,
+        chapter="Lorentz Force",
         theory_class="maxwell_original",
         description="Complete Lorentz force analysis",
     )

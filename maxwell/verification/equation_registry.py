@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 from collections import defaultdict
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -61,11 +61,12 @@ class EquationRegistry:
         """
         # Parse the module to find cited articles
         import ast
+
         p = Path(module_path)
         if not p.exists():
             return []
 
-        source = p.read_text(encoding='utf-8')
+        source = p.read_text(encoding="utf-8")
         cited_articles = self._extract_cited_articles(source)
 
         equations = []
@@ -79,38 +80,42 @@ class EquationRegistry:
         filepath.parent.mkdir(parents=True, exist_ok=True)
 
         data = {
-            'articles': {},
-            'statistics': {
-                'total_articles': len(self._equations),
-                'total_equations': sum(len(v) for v in self._equations.values()),
-                'article_range': f"{min(self._equations)}-{max(self._equations)}" if self._equations else "none",
-            }
+            "articles": {},
+            "statistics": {
+                "total_articles": len(self._equations),
+                "total_equations": sum(len(v) for v in self._equations.values()),
+                "article_range": (
+                    f"{min(self._equations)}-{max(self._equations)}"
+                    if self._equations
+                    else "none"
+                ),
+            },
         }
 
         for art_num in sorted(self._equations.keys()):
             eqs = self._equations[art_num]
-            data['articles'][str(art_num)] = {
-                'count': len(eqs),
-                'equations': [
+            data["articles"][str(art_num)] = {
+                "count": len(eqs),
+                "equations": [
                     {
-                        'latex': eq.latex,
-                        'page': eq.page_number,
-                        'type': eq.equation_type,
-                        'has_equals': eq.has_equals,
-                        'context': eq.context_text[:100],
-                        'source': eq.source_file,
+                        "latex": eq.latex,
+                        "page": eq.page_number,
+                        "type": eq.equation_type,
+                        "has_equals": eq.has_equals,
+                        "context": eq.context_text[:100],
+                        "source": eq.source_file,
                     }
                     for eq in eqs
-                ]
+                ],
             }
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
     def load(self, filepath: Path | str) -> None:
         """Load registry from JSON file."""
         filepath = Path(filepath)
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         # Note: Loading back ExtractedEquation objects requires source files
@@ -128,7 +133,7 @@ class EquationRegistry:
             if py_file.name.startswith("test_") or py_file.name == "__init__.py":
                 continue
 
-            source = py_file.read_text(encoding='utf-8')
+            source = py_file.read_text(encoding="utf-8")
             cited = self._extract_cited_articles(source)
 
             for art_num in cited:
@@ -159,11 +164,15 @@ class EquationRegistry:
                 by_type[eq.equation_type] += 1
 
         return {
-            'total_articles_with_equations': len(self._equations),
-            'total_equations': total,
-            'by_type': dict(by_type),
-            'article_range': f"{min(self._equations)}-{max(self._equations)}" if self._equations else "none",
-            'verification_entries': len(self._verifications),
+            "total_articles_with_equations": len(self._equations),
+            "total_equations": total,
+            "by_type": dict(by_type),
+            "article_range": (
+                f"{min(self._equations)}-{max(self._equations)}"
+                if self._equations
+                else "none"
+            ),
+            "verification_entries": len(self._verifications),
         }
 
     # ── Private methods ──────────────────────────────────────────
@@ -171,6 +180,7 @@ class EquationRegistry:
     def _extract_cited_articles(self, source: str) -> list[int]:
         """Extract article numbers from @maxwell_cite decorators in source code."""
         import ast
+
         articles = set()
         try:
             tree = ast.parse(source)
@@ -180,22 +190,29 @@ class EquationRegistry:
                         if isinstance(decorator, ast.Call):
                             # Get positional args (article numbers)
                             for arg in decorator.args:
-                                if isinstance(arg, ast.Constant) and isinstance(arg.value, int):
+                                if isinstance(arg, ast.Constant) and isinstance(
+                                    arg.value, int
+                                ):
                                     articles.add(arg.value)
                             # Also check for articles= keyword (list form)
                             for kw in decorator.keywords:
-                                if kw.arg == 'articles':
+                                if kw.arg == "articles":
                                     if isinstance(kw.value, ast.List):
                                         for elt in kw.value.elts:
-                                            if isinstance(elt, ast.Constant) and isinstance(elt.value, int):
+                                            if isinstance(
+                                                elt, ast.Constant
+                                            ) and isinstance(elt.value, int):
                                                 articles.add(elt.value)
         except SyntaxError:
             pass
         return sorted(articles)
 
-    def _find_function_for_article(self, source: str, article_number: int) -> Optional[str]:
+    def _find_function_for_article(
+        self, source: str, article_number: int
+    ) -> Optional[str]:
         """Find the function name that cites a specific article."""
         import ast
+
         try:
             tree = ast.parse(source)
             for node in ast.walk(tree):
@@ -204,14 +221,22 @@ class EquationRegistry:
                         if isinstance(decorator, ast.Call):
                             # Check positional args (article numbers)
                             for arg in decorator.args:
-                                if isinstance(arg, ast.Constant) and isinstance(arg.value, int) and arg.value == article_number:
+                                if (
+                                    isinstance(arg, ast.Constant)
+                                    and isinstance(arg.value, int)
+                                    and arg.value == article_number
+                                ):
                                     return node.name
                             # Also check articles= keyword
                             for kw in decorator.keywords:
-                                if kw.arg == 'articles':
+                                if kw.arg == "articles":
                                     if isinstance(kw.value, ast.List):
                                         for elt in kw.value.elts:
-                                            if isinstance(elt, ast.Constant) and isinstance(elt.value, int) and elt.value == article_number:
+                                            if (
+                                                isinstance(elt, ast.Constant)
+                                                and isinstance(elt.value, int)
+                                                and elt.value == article_number
+                                            ):
                                                 return node.name
         except SyntaxError:
             pass

@@ -25,10 +25,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -63,7 +64,8 @@ class MagnetostrictionTensor:
 
     @maxwell_cite(
         447,
-        part=3, chapter="Magnetostriction",
+        part=3,
+        chapter="Magnetostriction",
         theory_class="maxwell_original",
         description="Calculate strain tensor from magnetization",
     )
@@ -95,16 +97,17 @@ class MagnetostrictionTensor:
         for i in range(3):
             for j in range(3):
                 if i == j:
-                    epsilon[i, j] = (3/2) * self.lambda_100 * (alpha[i]**2 - 1/3)
+                    epsilon[i, j] = (3 / 2) * self.lambda_100 * (alpha[i] ** 2 - 1 / 3)
                 else:
                     # Off-diagonal (λ₁₁₁ contribution)
-                    epsilon[i, j] = (3/2) * self.lambda_111 * alpha[i] * alpha[j]
+                    epsilon[i, j] = (3 / 2) * self.lambda_111 * alpha[i] * alpha[j]
 
         return epsilon
 
     @maxwell_cite(
         447,
-        part=3, chapter="Magnetostriction",
+        part=3,
+        chapter="Magnetostriction",
         theory_class="maxwell_original",
         description="Calculate linear strain along measurement direction",
     )
@@ -176,7 +179,8 @@ class MagnetostrictiveMaterial:
     @classmethod
     @maxwell_cite(
         447,
-        part=3, chapter="Magnetostriction",
+        part=3,
+        chapter="Magnetostriction",
         theory_class="maxwell_original",
         description="Create material from saturation magnetostriction",
     )
@@ -207,8 +211,8 @@ class MagnetostrictiveMaterial:
             Part III, Art. 447: Saturation magnetostriction.
         """
         # For isotropic material, λ₁₀₀ = λ₁₁₁ = (2/3)λ_s
-        lambda_100 = (2/3) * lambda_s
-        lambda_111 = (2/3) * lambda_s
+        lambda_100 = (2 / 3) * lambda_s
+        lambda_111 = (2 / 3) * lambda_s
 
         return cls(
             name=name,
@@ -222,7 +226,8 @@ class MagnetostrictiveMaterial:
 
     @maxwell_cite(
         448,
-        part=3, chapter="Magnetostriction",
+        part=3,
+        chapter="Magnetostriction",
         theory_class="maxwell_original",
         description="Calculate magnetostrictive stress",
     )
@@ -269,7 +274,8 @@ class MagnetostrictiveMaterial:
 
     @maxwell_cite(
         448,
-        part=3, chapter="Magnetostriction",
+        part=3,
+        chapter="Magnetostriction",
         theory_class="maxwell_original",
         description="Calculate Villari effect (inverse magnetostriction)",
     )
@@ -310,8 +316,9 @@ class MagnetostrictiveMaterial:
 
         # Magnetoelastic coupling tends to align M with stress
         # for positive λ_s, perpendicular for negative λ_s
-        lambda_s = (self.magnetostriction.lambda_100 +
-                   2 * self.magnetostriction.lambda_111) / 3
+        lambda_s = (
+            self.magnetostriction.lambda_100 + 2 * self.magnetostriction.lambda_111
+        ) / 3
 
         if lambda_s > 0:
             # Align with tensile stress
@@ -328,7 +335,8 @@ class MagnetostrictiveMaterial:
 
 @maxwell_cite(
     447,
-    part=3, chapter="Magnetostriction",
+    part=3,
+    chapter="Magnetostriction",
     theory_class="maxwell_original",
     description="Calculate Joule magnetostriction",
 )
@@ -367,12 +375,13 @@ def joule_magnetostriction(
 
     cos_theta = float(np.dot(H_dir, meas_dir))
 
-    return float((3/2) * lambda_s * cos_theta**2)
+    return float((3 / 2) * lambda_s * cos_theta**2)
 
 
 @maxwell_cite(
     448,
-    part=3, chapter="Magnetostriction",
+    part=3,
+    chapter="Magnetostriction",
     theory_class="maxwell_original",
     description="Calculate volume magnetostriction",
 )
@@ -414,7 +423,8 @@ def volume_magnetostriction(
 
 @maxwell_cite(
     447,
-    part=3, chapter="Magnetostriction",
+    part=3,
+    chapter="Magnetostriction",
     theory_class="maxwell_original",
     description="Typical magnetostriction constants for materials",
 )
@@ -490,8 +500,10 @@ def typical_magnetostriction_constants() -> dict[str, dict[str, float]]:
 
 
 @maxwell_cite(
-    447, 448,
-    part=3, chapter="Magnetostriction",
+    447,
+    448,
+    part=3,
+    chapter="Magnetostriction",
     theory_class="maxwell_original",
     description="Calculate magnetoelastic energy",
 )
@@ -532,12 +544,13 @@ def magnetoelastic_energy(
     # Stress along magnetization direction: σ = Mᵀ σ M
     sigma_M = float(M_dir @ stress_tensor @ M_dir)
 
-    return float(-(3/2) * lambda_s * sigma_M)
+    return float(-(3 / 2) * lambda_s * sigma_M)
 
 
 @maxwell_cite(
     447,
-    part=3, chapter="Magnetostriction",
+    part=3,
+    chapter="Magnetostriction",
     theory_class="maxwell_original",
     description="Explain magnetostriction phenomena",
 )

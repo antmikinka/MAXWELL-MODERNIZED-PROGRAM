@@ -38,10 +38,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -81,11 +82,14 @@ class LightDiffusion:
 
     @maxwell_cite(
         806,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate transmitted intensity (Beer-Lambert law)",
     )
-    def transmitted_intensity(self, incident_intensity: float, thickness: float) -> float:
+    def transmitted_intensity(
+        self, incident_intensity: float, thickness: float
+    ) -> float:
         """
         Calculate transmitted intensity through medium.
 
@@ -112,7 +116,8 @@ class LightDiffusion:
 
     @maxwell_cite(
         807,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate absorbance",
     )
@@ -140,7 +145,8 @@ class LightDiffusion:
 
     @maxwell_cite(
         808,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate mean free path",
     )
@@ -162,13 +168,14 @@ class LightDiffusion:
             Part IV, Art. 808: Mean free path.
         """
         if self.total_attenuation <= 0:
-            return float('inf')
+            return float("inf")
 
         return 1.0 / self.total_attenuation
 
     @maxwell_cite(
         808,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate penetration depth",
     )
@@ -193,7 +200,8 @@ class LightDiffusion:
 
 @maxwell_cite(
     806,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate Beer-Lambert transmission",
 )
@@ -233,7 +241,8 @@ def calc_beer_lambert_transmission(
 
 @maxwell_cite(
     806,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate transmitted intensity",
 )
@@ -277,7 +286,8 @@ def calc_transmitted_intensity(
 
 @maxwell_cite(
     807,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate absorbance from coefficients",
 )
@@ -318,7 +328,8 @@ def calc_absorbance(
 
 @maxwell_cite(
     808,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate scattering albedo",
 )
@@ -360,7 +371,8 @@ def calc_scattering_albedo(
 
 @maxwell_cite(
     808,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate mean free path of photons",
 )
@@ -392,14 +404,17 @@ def calc_mean_free_path(
     """
     mu_t = absorption_coefficient + scattering_coefficient
     if mu_t <= 0:
-        return float('inf')
+        return float("inf")
 
     return 1.0 / mu_t
 
 
 @maxwell_cite(
-    806, 807, 808,
-    part=4, chapter="Electromagnetic Theory of Light",
+    806,
+    807,
+    808,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate optical depth",
 )
@@ -442,8 +457,11 @@ def calc_optical_depth(
 
 
 @maxwell_cite(
-    806, 807, 808,
-    part=4, chapter="Electromagnetic Theory of Light",
+    806,
+    807,
+    808,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify light diffusion relations",
 )
@@ -491,13 +509,19 @@ def verify_light_diffusion(
 
     # Verify mean free path
     l_star = ld.mean_free_path()
-    l_star_expected = 1.0 / mu_t if mu_t > 0 else float('inf')
-    l_error = abs(l_star - l_star_expected) / l_star_expected if l_star_expected < float('inf') and l_star_expected > 0 else 0
+    l_star_expected = 1.0 / mu_t if mu_t > 0 else float("inf")
+    l_error = (
+        abs(l_star - l_star_expected) / l_star_expected
+        if l_star_expected < float("inf") and l_star_expected > 0
+        else 0
+    )
 
     # Verify albedo
     omega = ld.albedo
     omega_expected = scattering_coefficient / mu_t if mu_t > 0 else 0
-    omega_error = abs(omega - omega_expected) / omega_expected if omega_expected > 0 else 0
+    omega_error = (
+        abs(omega - omega_expected) / omega_expected if omega_expected > 0 else 0
+    )
 
     return {
         "absorption_coefficient": absorption_coefficient,
@@ -512,18 +536,23 @@ def verify_light_diffusion(
         "absorbance_error": A_error,
         "mean_free_path_error": l_error,
         "albedo_error": omega_error,
-        "verified": all([
-            T_error < tolerance,
-            A_error < tolerance,
-            l_error < tolerance,
-            omega_error < tolerance,
-        ]),
+        "verified": all(
+            [
+                T_error < tolerance,
+                A_error < tolerance,
+                l_error < tolerance,
+                omega_error < tolerance,
+            ]
+        ),
     }
 
 
 @maxwell_cite(
-    806, 807, 808,
-    part=4, chapter="Electromagnetic Theory of Light",
+    806,
+    807,
+    808,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete light diffusion analysis",
 )
@@ -566,7 +595,9 @@ def analyze_light_diffusion(
     z_min, z_max, n_points = thickness_range
     thicknesses = np.linspace(z_min, z_max, n_points)
 
-    transmissions = [ld.transmitted_intensity(incident_intensity, z) for z in thicknesses]
+    transmissions = [
+        ld.transmitted_intensity(incident_intensity, z) for z in thicknesses
+    ]
     absorbances = [ld.absorbance(z) for z in thicknesses]
 
     return {
@@ -584,13 +615,16 @@ def analyze_light_diffusion(
         "transmission_at_max": transmissions[-1],
         "absorbance_at_min": absorbances[0],
         "absorbance_at_max": absorbances[-1],
-        "optical_depth_at_max": calc_optical_depth(absorption_coefficient, scattering_coefficient, z_max),
+        "optical_depth_at_max": calc_optical_depth(
+            absorption_coefficient, scattering_coefficient, z_max
+        ),
     }
 
 
 @maxwell_cite(
     801,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate field diffusion time",
 )
@@ -623,12 +657,13 @@ def calc_diffusion_time(L: float, sigma: float) -> float:
     if sigma <= 0:
         raise ValueError(f"Conductivity must be positive")
 
-    return sigma * L ** 2
+    return sigma * L**2
 
 
 @maxwell_cite(
     802,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate field diffusion length",
 )
@@ -666,7 +701,8 @@ def calc_diffusion_length(t: float, sigma: float) -> float:
 
 @maxwell_cite(
     803,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify field diffusion equation",
 )
@@ -703,7 +739,7 @@ def verify_diffusion_equation(sigma: float, L: float, t: float) -> dict:
         return {"diffusion_verified": False, "error": "Invalid parameters"}
 
     # Characteristic diffusion time: tau = 4*pi*sigma*L^2
-    tau = 4.0 * np.pi * sigma * L ** 2
+    tau = 4.0 * np.pi * sigma * L**2
 
     # Diffusion length: L_diff = sqrt(t / (4*pi*sigma))
     L_diff = np.sqrt(t / (4.0 * np.pi * sigma))
@@ -725,7 +761,8 @@ def verify_diffusion_equation(sigma: float, L: float, t: float) -> dict:
 
 @maxwell_cite(
     804,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate field at depth in conductor",
 )
@@ -783,7 +820,8 @@ class FieldDiffusion:
 
     @maxwell_cite(
         801,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate skin depth at 60 Hz",
     )
@@ -804,12 +842,14 @@ class FieldDiffusion:
             Part IV, Art. 801: Skin depth at 60 Hz.
         """
         from maxwell.config.constants import CONST
+
         omega = 2.0 * np.pi * 60.0
         return CONST.C / np.sqrt(2.0 * np.pi * self.conductivity * omega)
 
     @maxwell_cite(
         804,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate field at depth",
     )

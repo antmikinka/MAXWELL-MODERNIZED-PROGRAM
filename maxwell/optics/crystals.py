@@ -35,11 +35,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # Optical constants for common birefringent crystals
 # Format: {name: {"n_o": ..., "n_e": ..., "type": "positive"|"negative"}}
@@ -87,7 +87,9 @@ class CrystalOptics:
         if self.optic_axis_direction is None:
             self.optic_axis_direction = np.array([0.0, 0.0, 1.0])
         else:
-            self.optic_axis_direction = np.asarray(self.optic_axis_direction, dtype=np.float64)
+            self.optic_axis_direction = np.asarray(
+                self.optic_axis_direction, dtype=np.float64
+            )
             norm = np.linalg.norm(self.optic_axis_direction)
             if norm > 0:
                 self.optic_axis_direction = self.optic_axis_direction / norm
@@ -106,7 +108,8 @@ class CrystalOptics:
 
     @maxwell_cite(
         804,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate ordinary ray velocity",
     )
@@ -129,7 +132,8 @@ class CrystalOptics:
 
     @maxwell_cite(
         805,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate extraordinary ray velocity",
     )
@@ -151,8 +155,10 @@ class CrystalOptics:
         return CONST.C / self.n_e
 
     @maxwell_cite(
-        804, 805,
-        part=4, chapter="Electromagnetic Theory of Light",
+        804,
+        805,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate retardation through crystal",
     )
@@ -184,7 +190,8 @@ class CrystalOptics:
 
     @maxwell_cite(
         804,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate path difference",
     )
@@ -211,8 +218,10 @@ class CrystalOptics:
         return abs(self.birefringence) * thickness
 
     @maxwell_cite(
-        804, 805,
-        part=4, chapter="Electromagnetic Theory of Light",
+        804,
+        805,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate effective refractive index at angle",
     )
@@ -238,7 +247,7 @@ class CrystalOptics:
         cos_sq = np.cos(theta) ** 2
         sin_sq = np.sin(theta) ** 2
 
-        inv_n_sq = cos_sq / (self.n_o ** 2) + sin_sq / (self.n_e ** 2)
+        inv_n_sq = cos_sq / (self.n_o**2) + sin_sq / (self.n_e**2)
 
         return 1.0 / np.sqrt(inv_n_sq)
 
@@ -258,7 +267,8 @@ class CrystalOptics:
 
     @maxwell_cite(
         804,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate quarter-wave plate thickness",
     )
@@ -288,7 +298,8 @@ class CrystalOptics:
 
     @maxwell_cite(
         804,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate half-wave plate thickness",
     )
@@ -319,7 +330,8 @@ class CrystalOptics:
 
 @maxwell_cite(
     804,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Get crystal optical constants",
 )
@@ -366,8 +378,10 @@ def get_crystal_constants(crystal_name: str) -> dict[str, float | str]:
 
 
 @maxwell_cite(
-    804, 805,
-    part=4, chapter="Electromagnetic Theory of Light",
+    804,
+    805,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate birefringence",
 )
@@ -402,8 +416,10 @@ def calc_birefringence(n_o: float, n_e: float) -> float:
 
 
 @maxwell_cite(
-    804, 805,
-    part=4, chapter="Electromagnetic Theory of Light",
+    804,
+    805,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate velocity difference between rays",
 )
@@ -430,7 +446,8 @@ def calc_velocity_difference(n_o: float, n_e: float) -> float:
 
 @maxwell_cite(
     804,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate retardation in waves",
 )
@@ -468,8 +485,10 @@ def calc_retardation_waves(
 
 
 @maxwell_cite(
-    804, 805,
-    part=4, chapter="Electromagnetic Theory of Light",
+    804,
+    805,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify crystal optics relations",
 )
@@ -533,18 +552,22 @@ def verify_crystal_optics(
         "half_wave_thickness": d_hwp,
         "half_wave_retardation": Gamma_hwp,
         "hwp_error": hwp_error,
-        "verified": all([
-            v_o_error < tolerance,
-            v_e_error < tolerance,
-            qwp_error < tolerance,
-            hwp_error < tolerance,
-        ]),
+        "verified": all(
+            [
+                v_o_error < tolerance,
+                v_e_error < tolerance,
+                qwp_error < tolerance,
+                hwp_error < tolerance,
+            ]
+        ),
     }
 
 
 @maxwell_cite(
-    804, 805,
-    part=4, chapter="Electromagnetic Theory of Light",
+    804,
+    805,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete crystal optics analysis",
 )
@@ -615,7 +638,9 @@ def analyze_crystal_optics(
         "thickness_cm": thickness,
         "retardation_radians": co.retardation(thickness, wavelength),
         "retardation_degrees": np.degrees(co.retardation(thickness, wavelength)),
-        "retardation_waves": calc_retardation_waves(thickness, co.birefringence, wavelength),
+        "retardation_waves": calc_retardation_waves(
+            thickness, co.birefringence, wavelength
+        ),
         "quarter_wave_thickness_cm": co.quarter_wave_thickness(wavelength),
         "half_wave_thickness_cm": co.half_wave_thickness(wavelength),
         "n_eff_min": min(n_eff_values),
@@ -626,7 +651,8 @@ def analyze_crystal_optics(
 
 @maxwell_cite(
     794,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate refraction angle from Snell's law",
 )
@@ -668,7 +694,8 @@ def calc_refraction_angle(incident: float, n: float) -> float:
 
 @maxwell_cite(
     805,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate effective refractive index at angle",
 )
@@ -706,6 +733,6 @@ def calc_effective_index(n_o: float, n_e: float, theta: float) -> float:
     cos_sq = np.cos(theta) ** 2
     sin_sq = np.sin(theta) ** 2
 
-    inv_n_sq = cos_sq / (n_o ** 2) + sin_sq / (n_e ** 2)
+    inv_n_sq = cos_sq / (n_o**2) + sin_sq / (n_e**2)
 
     return 1.0 / np.sqrt(inv_n_sq)

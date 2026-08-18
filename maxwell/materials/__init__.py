@@ -11,33 +11,31 @@ Category: A (maxwell_original) — Maxwell's theory of magnetic materials.
 
 from __future__ import annotations
 
+from maxwell.materials.hysteresis import (
+    HysteresisLoop,
+    WeberModelWithHysteresis,
+    analyze_hysteresis_loop,
+    explain_hysteresis_phenomena,
+    generate_theoretical_hysteresis_loop,
+    hysteresis_loss_steinmetz,
+    typical_hysteresis_parameters,
+)
 from maxwell.materials.induction import (
-    SubstanceInduction,
-    MagneticSusceptibility,
     InducedMagnetization,
-    calc_induced_magnetization,
+    MagneticSusceptibility,
+    SubstanceInduction,
     calc_B_in_material,
+    calc_induced_magnetization,
     determine_susceptibility,
     force_on_induced_magnet,
     typical_susceptibility_values,
 )
-
 from maxwell.materials.saturation import (
     WeberModel,
-    observe_saturation,
-    fit_weber_model,
     approach_to_saturation,
+    fit_weber_model,
     molecular_alignment_fraction,
-)
-
-from maxwell.materials.hysteresis import (
-    HysteresisLoop,
-    WeberModelWithHysteresis,
-    explain_hysteresis_phenomena,
-    analyze_hysteresis_loop,
-    hysteresis_loss_steinmetz,
-    generate_theoretical_hysteresis_loop,
-    typical_hysteresis_parameters,
+    observe_saturation,
 )
 
 __all__ = [

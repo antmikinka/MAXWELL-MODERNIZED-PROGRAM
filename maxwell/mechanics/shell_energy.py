@@ -21,12 +21,13 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
+from typing import Any, Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.geometry.shells import MagneticShell
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -59,7 +60,8 @@ class ShellEnergy:
     @classmethod
     @maxwell_cite(
         423,
-        part=3, chapter="Shell Energy",
+        part=3,
+        chapter="Shell Energy",
         theory_class="maxwell_original",
         description="Create shell energy from shell and field",
     )
@@ -92,7 +94,8 @@ class ShellEnergy:
 
 @maxwell_cite(
     423,
-    part=3, chapter="Shell Energy",
+    part=3,
+    chapter="Shell Energy",
     theory_class="maxwell_original",
     description="Calculate shell potential energy in field",
 )
@@ -132,10 +135,14 @@ def calc_shell_potential_energy(
 
     # Compute flux
     flux = compute_shell_flux(
-        type('Shell', (), {
-            'surface_points': surface_points,
-            'strength': shell_strength,
-        })(),
+        type(
+            "Shell",
+            (),
+            {
+                "surface_points": surface_points,
+                "strength": shell_strength,
+            },
+        )(),
         H_field_func,
     )
 
@@ -144,7 +151,8 @@ def calc_shell_potential_energy(
 
 @maxwell_cite(
     423,
-    part=3, chapter="Shell Energy",
+    part=3,
+    chapter="Shell Energy",
     theory_class="maxwell_original",
     description="Compute magnetic flux through shell",
 )
@@ -208,7 +216,8 @@ def compute_shell_flux(
 
 @maxwell_cite(
     423,
-    part=3, chapter="Shell Energy",
+    part=3,
+    chapter="Shell Energy",
     theory_class="maxwell_original",
     description="Work done moving shell in magnetic field",
 )
@@ -250,8 +259,12 @@ def work_moving_shell(
     # Compute flux at start and end positions
     # For simplicity, translate the shell surface
 
-    start_surface = shell.surface_points + (start_position - np.mean(shell.surface_points, axis=0))
-    end_surface = shell.surface_points + (end_position - np.mean(shell.surface_points, axis=0))
+    start_surface = shell.surface_points + (
+        start_position - np.mean(shell.surface_points, axis=0)
+    )
+    end_surface = shell.surface_points + (
+        end_position - np.mean(shell.surface_points, axis=0)
+    )
 
     # Create temporary shells for flux calculation
     start_shell = MagneticShell(
@@ -276,7 +289,8 @@ def work_moving_shell(
 
 @maxwell_cite(
     423,
-    part=3, chapter="Shell Energy",
+    part=3,
+    chapter="Shell Energy",
     theory_class="maxwell_original",
     description="Force on shell in non-uniform field",
 )
@@ -309,6 +323,7 @@ def force_on_shell(
     Reference:
         Part III, Art. 423: Force on shell.
     """
+
     # Compute gradient of energy
     def energy_at(pt: np.ndarray) -> float:
         # Create shell at position pt
@@ -337,7 +352,8 @@ def force_on_shell(
 
 @maxwell_cite(
     423,
-    part=3, chapter="Shell Energy",
+    part=3,
+    chapter="Shell Energy",
     theory_class="maxwell_original",
     description="Torque on shell tending to rotate it",
 )
@@ -401,14 +417,15 @@ def torque_on_shell(
 
 @maxwell_cite(
     423,
-    part=3, chapter="Shell Energy",
+    part=3,
+    chapter="Shell Energy",
     theory_class="maxwell_original",
     description="Equilibrium orientation of shell in field",
 )
 def shell_equilibrium_orientation(
     shell: MagneticShell,
     H_field: np.ndarray,
-) -> dict[str, any]:
+) -> dict[str, Any]:
     """
     Find equilibrium orientation of shell in magnetic field.
 

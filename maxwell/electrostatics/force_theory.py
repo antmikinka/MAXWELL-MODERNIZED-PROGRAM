@@ -37,11 +37,10 @@ from typing import Callable
 
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.charge import PointCharge
 from maxwell.core.field import ElectricField
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # FORCE THEORY (Arts. 27-28, 31-37, 41-42)
@@ -49,8 +48,10 @@ from maxwell.core.field import ElectricField
 
 
 @maxwell_cite(
-    27, 28,
-    part=1, chapter="Electrification",
+    27,
+    28,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Electric tension along lines of force",
 )
@@ -91,8 +92,11 @@ def electric_tension(
 
 
 @maxwell_cite(
-    31, 32, 33,
-    part=1, chapter="Electrification",
+    31,
+    32,
+    33,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Electrostatic attraction between oppositely charged bodies",
 )
@@ -140,14 +144,16 @@ def electrostatic_attraction(
     r_hat = r_vec / r_mag
     # F = q1 * q2 / r^2 (CGS-ESU)
     # If q1*q2 < 0, force is attractive (negative sign in direction of r_hat)
-    force_magnitude = (charge1.q * charge2.q) / (r_mag ** 2)
+    force_magnitude = (charge1.q * charge2.q) / (r_mag**2)
 
     return force_magnitude * r_hat
 
 
 @maxwell_cite(
-    34, 35,
-    part=1, chapter="Electrification",
+    34,
+    35,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Electrostatic repulsion between like-charged bodies",
 )
@@ -194,14 +200,16 @@ def repulsion_law(
     r_hat = r_vec / r_mag
     # F = q1 * q2 / r^2 (CGS-ESU)
     # If q1*q2 > 0, force is repulsive (positive sign)
-    force_magnitude = (charge1.q * charge2.q) / (r_mag ** 2)
+    force_magnitude = (charge1.q * charge2.q) / (r_mag**2)
 
     return force_magnitude * r_hat
 
 
 @maxwell_cite(
-    36, 37,
-    part=1, chapter="Electrification",
+    36,
+    37,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Role of medium in electrostatic force",
 )
@@ -250,14 +258,16 @@ def force_medium(
 
     r_hat = r_vec / r_mag
     # F = q1 * q2 / (K * r^2) (CGS-ESU with dielectric)
-    force_magnitude = (charge1.q * charge2.q) / (inductive_capacity * r_mag ** 2)
+    force_magnitude = (charge1.q * charge2.q) / (inductive_capacity * r_mag**2)
 
     return force_magnitude * r_hat
 
 
 @maxwell_cite(
-    41, 42,
-    part=1, chapter="Electrification",
+    41,
+    42,
+    part=1,
+    chapter="Electrification",
     theory_class="maxwell_original",
     description="Superposition of electrostatic forces",
 )
@@ -299,7 +309,7 @@ def force_superposition(
 
         r_hat = r_vec / r_mag
         # F = q_test * q_source / r^2 (CGS-ESU)
-        force_magnitude = (test_charge.q * source.q) / (r_mag ** 2)
+        force_magnitude = (test_charge.q * source.q) / (r_mag**2)
         # Force on test charge is in direction of r_hat if attractive
         # (opposite signs), opposite if repulsive (same signs)
         resultant_force += force_magnitude * r_hat
@@ -317,6 +327,7 @@ class ElectricityType(Enum):
 
     Art. 59: Two kinds of electrification.
     """
+
     VITREOUS = "vitreous"  # Positive (+)
     RESINOUS = "resinous"  # Negative (-)
 
@@ -326,13 +337,17 @@ class HistoricalTheory(Enum):
 
     Arts. 50-55: Competing theories that Maxwell reviews.
     """
+
     TWO_FLUID = "two_fluid"  # Symmer's theory (Arts. 50-52)
     ONE_FLUID = "one_fluid"  # Franklin's theory (Arts. 53-55)
 
 
 @maxwell_cite(
-    50, 51, 52,
-    part=1, chapter="Elementary Theory",
+    50,
+    51,
+    52,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Two-fluid theory of electricity (Symmer)",
 )
@@ -386,8 +401,11 @@ def two_fluid_theory() -> dict:
 
 
 @maxwell_cite(
-    53, 54, 55,
-    part=1, chapter="Elementary Theory",
+    53,
+    54,
+    55,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="One-fluid theory of electricity (Franklin)",
 )
@@ -447,8 +465,11 @@ def one_fluid_theory() -> dict:
 
 
 @maxwell_cite(
-    56, 57, 58,
-    part=1, chapter="Elementary Theory",
+    56,
+    57,
+    58,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Conservation of electric charge",
 )
@@ -490,8 +511,10 @@ def charge_conservation(charges: list[PointCharge]) -> tuple[float, bool]:
 
 
 @maxwell_cite(
-    56, 57,
-    part=1, chapter="Elementary Theory",
+    56,
+    57,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Charge conservation in isolated system",
 )
@@ -522,8 +545,11 @@ def verify_isolated_system_conservation(
 
 
 @maxwell_cite(
-    59, 60, 61,
-    part=1, chapter="Elementary Theory",
+    59,
+    60,
+    61,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Types of electrification: vitreous and resinous",
 )
@@ -559,8 +585,10 @@ def electrification_types(charge_value: float) -> ElectricityType:
 
 
 @maxwell_cite(
-    59, 60,
-    part=1, chapter="Elementary Theory",
+    59,
+    60,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Force between different electrification types",
 )
@@ -600,7 +628,7 @@ def force_between_types(
         sign = -1.0  # Attractive
 
     # Coulomb's law magnitude (CGS-ESU)
-    force_magnitude = (magnitude1 * magnitude2) / (distance ** 2)
+    force_magnitude = (magnitude1 * magnitude2) / (distance**2)
 
     return sign * force_magnitude
 
@@ -616,6 +644,7 @@ class InductionSystem:
         induced_body_position: Position of the body being polarized.
         induced_body_radius: Effective radius of the induced body (cm).
     """
+
     inducing_charge: PointCharge
     induced_body_position: np.ndarray
     induced_body_radius: float
@@ -627,8 +656,10 @@ class InductionSystem:
 
 
 @maxwell_cite(
-    62, 63,
-    part=1, chapter="Elementary Theory",
+    62,
+    63,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Electrostatic induction on a nearby body",
 )
@@ -671,9 +702,7 @@ def charge_induction(
         Art. 62: Description of induction phenomenon.
         Art. 63: Explanation of apparent action at a distance.
     """
-    induced_body_position = np.asarray(
-        induced_body_position, dtype=np.float64
-    )
+    induced_body_position = np.asarray(induced_body_position, dtype=np.float64)
 
     # Vector from inducing charge to induced body
     r_vec = induced_body_position - inducing_charge.position
@@ -688,7 +717,7 @@ def charge_induction(
     # p = a^3 * E_external (in CGS)
     # where E_external is the field at the sphere center
     E_at_sphere = inducing_charge.field_at(induced_body_position)
-    induced_dipole = (induced_body_radius ** 3) * E_at_sphere
+    induced_dipole = (induced_body_radius**3) * E_at_sphere
 
     # The induced charges:
     # Near side: opposite sign to inducing charge
@@ -706,7 +735,7 @@ def charge_induction(
     # Net attractive force (dipole in non-uniform field)
     # F = p . grad(E) ~ p * dE/dr
     # For point charge: dE/dr ~ 2q/r^3
-    dE_dr = 2 * abs(inducing_charge.q) / (r_mag ** 3)
+    dE_dr = 2 * abs(inducing_charge.q) / (r_mag**3)
     attractive_force = -abs(induced_dipole[0]) * dE_dr  # Always attractive
 
     return {
@@ -721,7 +750,8 @@ def charge_induction(
 
 @maxwell_cite(
     62,
-    part=1, chapter="Elementary Theory",
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Induced charge distribution on conductor",
 )
@@ -765,7 +795,7 @@ def induced_charge_distribution(
     # Simplified model: sigma ~ cos(theta) distribution
     # Maximum induced charge on the side facing the inducing charge
     cos_theta = np.cos(evaluation_angle)
-    sigma_max = -inducing_charge.q / (4 * np.pi * conductor_radius ** 2)
+    sigma_max = -inducing_charge.q / (4 * np.pi * conductor_radius**2)
     sigma_induced = sigma_max * (conductor_radius / r_mag) ** 2 * 3 * cos_theta
 
     return sigma_induced
@@ -773,7 +803,8 @@ def induced_charge_distribution(
 
 @maxwell_cite(
     65,
-    part=1, chapter="Elementary Theory",
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Field concept: action at a distance vs medium",
 )
@@ -864,7 +895,8 @@ def field_concept() -> dict:
 
 @maxwell_cite(
     65,
-    part=1, chapter="Elementary Theory",
+    part=1,
+    chapter="Elementary Theory",
     theory_class="maxwell_original",
     description="Electric field as physical reality",
 )
@@ -898,8 +930,11 @@ def field_reality_statement() -> str:
 
 
 @maxwell_cite(
-    30, 31, 34,
-    part=1, chapter="Electrification",
+    30,
+    31,
+    34,
+    part=1,
+    chapter="Electrification",
     theory_class="standard_math",
     description="Coulomb force between two point charges",
 )
@@ -932,8 +967,10 @@ def coulomb_force(
 
 
 @maxwell_cite(
-    41, 42,
-    part=1, chapter="Electrification",
+    41,
+    42,
+    part=1,
+    chapter="Electrification",
     theory_class="standard_math",
     description="Electric field from multiple charges via superposition",
 )
@@ -967,8 +1004,11 @@ def field_from_charges(
 
 
 @maxwell_cite(
-    56, 57, 58,
-    part=1, chapter="Elementary Theory",
+    56,
+    57,
+    58,
+    part=1,
+    chapter="Elementary Theory",
     theory_class="standard_math",
     description="Check charge conservation for a system",
 )

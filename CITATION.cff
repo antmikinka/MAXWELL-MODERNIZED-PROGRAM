@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: >
+  If you use the Maxwell Modernized software, please cite it as below.
+  Software is licensed MIT. Documentation, architecture maps, and other
+  released scholarly content are licensed CC BY 4.0 (see LICENSE-CONTENT).
+  We are working toward a preprint; there is not yet a paper to cite.
+  James Clerk Maxwell's 1873 Treatise text is public domain and is cited
+  as the source work, not as software authorship.
+title: "Maxwell Modernized"
+version: 1.0.0
+date-released: 2026-05-07
+url: "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM"
+repository-code: "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM"
+license: MIT
+type: software
+authors:
+  - family-names: Mikinka
+    given-names: Anthony
+    orcid: "https://orcid.org/0009-0005-2955-4140"
+keywords:
+  - electromagnetism
+  - computational-physics
+  - maxwell-equations
+  - classical-physics
+  - cgs-units
+  - spherical-harmonics
+  - maxwell-treatise
+abstract: >
+  A complete computational implementation of James Clerk Maxwell's 1873
+  A Treatise on Electricity and Magnetism. All 866 articles are implemented
+  in Python with CGS-EMU units and citation-based traceability.
+references:
+  - type: book
+    authors:
+      - family-names: Maxwell
+        given-names: James Clerk
+    title: "A Treatise on Electricity and Magnetism"
+    year: "1873"
+    publisher:
+      name: "Clarendon Press"
+    notes: "Public domain. Source text for this computational implementation."

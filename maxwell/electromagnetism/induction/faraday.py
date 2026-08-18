@@ -35,10 +35,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -104,8 +105,10 @@ class MagneticFlux:
 
     @classmethod
     @maxwell_cite(
-        528, 529,
-        part=4, chapter="Electromagnetic Induction",
+        528,
+        529,
+        part=4,
+        chapter="Electromagnetic Induction",
         theory_class="maxwell_original",
         description="Create magnetic flux from B field and area",
     )
@@ -197,8 +200,10 @@ class InducedEMF:
 
     @classmethod
     @maxwell_cite(
-        529, 542,
-        part=4, chapter="Electromagnetic Induction",
+        529,
+        542,
+        part=4,
+        chapter="Electromagnetic Induction",
         theory_class="maxwell_original",
         description="Create induced EMF from flux change rate",
     )
@@ -231,8 +236,11 @@ class InducedEMF:
 
 
 @maxwell_cite(
-    528, 529, 530,
-    part=4, chapter="Electromagnetic Induction",
+    528,
+    529,
+    530,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Calculate magnetic flux through a surface: Φ = B · A",
 )
@@ -295,8 +303,10 @@ def calc_magnetic_flux(
 
 
 @maxwell_cite(
-    529, 531,
-    part=4, chapter="Electromagnetic Induction",
+    529,
+    531,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Calculate induced EMF from flux change rate: EMF = -dΦ/dt",
 )
@@ -342,8 +352,10 @@ def calc_induced_emf(
 
 
 @maxwell_cite(
-    529, 530,
-    part=4, chapter="Electromagnetic Induction",
+    529,
+    530,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Calculate motional EMF: EMF = ∮(v × B)·dl",
 )
@@ -410,8 +422,10 @@ def calc_motional_emf(
 
 
 @maxwell_cite(
-    529, 542,
-    part=4, chapter="Electromagnetic Induction",
+    529,
+    542,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Calculate self-induction EMF: EMF = -L·dI/dt",
 )
@@ -464,8 +478,11 @@ def calc_self_induction(
 
 
 @maxwell_cite(
-    528, 529, 530,
-    part=4, chapter="Electromagnetic Induction",
+    528,
+    529,
+    530,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Calculate flux through a circular loop at specified position",
 )
@@ -527,7 +544,8 @@ def calc_flux_through_loop(
 
 @maxwell_cite(
     542,
-    part=4, chapter="Electromagnetic Induction",
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Verify Lenz's law — induced current opposes flux change",
 )
@@ -617,8 +635,12 @@ def verify_lenz_law(
 
 
 @maxwell_cite(
-    528, 529, 530, 531,
-    part=4, chapter="Electromagnetic Induction",
+    528,
+    529,
+    530,
+    531,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Complete Faraday induction analysis for a circuit",
 )
@@ -693,7 +715,9 @@ def analyze_faraday_induction(
     loop_normal = loop_normal / np.linalg.norm(loop_normal)
 
     # Flux per turn
-    flux_initial = calc_flux_through_loop(B_initial, np.zeros(3), loop_normal, loop_area)
+    flux_initial = calc_flux_through_loop(
+        B_initial, np.zeros(3), loop_normal, loop_area
+    )
     flux_final = calc_flux_through_loop(B_final, np.zeros(3), loop_normal, loop_area)
     flux_change = flux_final - flux_initial
 
@@ -728,7 +752,8 @@ def analyze_faraday_induction(
 
 @maxwell_cite(
     529,
-    part=4, chapter="Electromagnetic Induction",
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Calculate flux change needed for a given EMF",
 )
@@ -780,8 +805,12 @@ def flux_change_for_emf(
 
 
 @maxwell_cite(
-    528, 529, 530, 542,
-    part=4, chapter="Electromagnetic Induction",
+    528,
+    529,
+    530,
+    542,
+    part=4,
+    chapter="Electromagnetic Induction",
     theory_class="maxwell_original",
     description="Verify Faraday's law with numerical experiment",
 )
@@ -836,7 +865,9 @@ def verify_faradays_law(
     loop_normal = np.array([0.0, 0.0, 1.0])
 
     # Calculate fluxes
-    initial_flux = calc_flux_through_loop(B_initial, np.zeros(3), loop_normal, loop_area)
+    initial_flux = calc_flux_through_loop(
+        B_initial, np.zeros(3), loop_normal, loop_area
+    )
     final_flux = calc_flux_through_loop(B_final, np.zeros(3), loop_normal, loop_area)
     flux_change = final_flux - initial_flux
 
@@ -920,8 +951,11 @@ class FaradayInduction:
         self.resistance = resistance
 
     @maxwell_cite(
-        528, 529, 530,
-        part=4, chapter="Electromagnetic Induction",
+        528,
+        529,
+        530,
+        part=4,
+        chapter="Electromagnetic Induction",
         theory_class="maxwell_original",
         description="Calculate magnetic flux through surface",
     )
@@ -952,8 +986,10 @@ class FaradayInduction:
         return self.num_turns * flux_per_turn
 
     @maxwell_cite(
-        529, 531,
-        part=4, chapter="Electromagnetic Induction",
+        529,
+        531,
+        part=4,
+        chapter="Electromagnetic Induction",
         theory_class="maxwell_original",
         description="Calculate induced EMF from flux change rate",
     )
@@ -988,8 +1024,10 @@ class FaradayInduction:
         return emf
 
     @maxwell_cite(
-        529, 530,
-        part=4, chapter="Electromagnetic Induction",
+        529,
+        530,
+        part=4,
+        chapter="Electromagnetic Induction",
         theory_class="maxwell_original",
         description="Calculate motional EMF for moving conductor",
     )
@@ -1024,8 +1062,10 @@ class FaradayInduction:
         return self.num_turns * emf_per_conductor
 
     @maxwell_cite(
-        529, 542,
-        part=4, chapter="Electromagnetic Induction",
+        529,
+        542,
+        part=4,
+        chapter="Electromagnetic Induction",
         theory_class="maxwell_original",
         description="Calculate self-induction EMF",
     )
@@ -1055,7 +1095,8 @@ class FaradayInduction:
 
     @maxwell_cite(
         542,
-        part=4, chapter="Electromagnetic Induction",
+        part=4,
+        chapter="Electromagnetic Induction",
         theory_class="maxwell_original",
         description="Verify Lenz's law for induction scenario",
     )
@@ -1092,4 +1133,4 @@ class FaradayInduction:
     @property
     def last_induced_current(self) -> float | None:
         """Get the induced current from the last EMF calculation."""
-        return getattr(self, '_last_induced_current', None)
+        return getattr(self, "_last_induced_current", None)

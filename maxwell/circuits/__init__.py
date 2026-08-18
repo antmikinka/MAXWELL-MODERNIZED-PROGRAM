@@ -32,16 +32,16 @@ References:
 from maxwell.circuits.dynamics import (
     Circuit,
     CoupledCircuits,
-    calc_solenoid_inductance,
-    calc_self_inductance,
-    calc_mutual_inductance,
+    analyze_circuit_system,
     calc_coupling_coefficient,
     calc_emf_from_mutual_inductance,
     calc_force_between_circuits,
+    calc_mutual_inductance,
+    calc_self_inductance,
+    calc_solenoid_inductance,
     calc_torque_between_circuits,
-    analyze_circuit_system,
-    verify_energy_conservation,
     verify_circuit_dynamics,
+    verify_energy_conservation,
 )
 
 __all__ = [

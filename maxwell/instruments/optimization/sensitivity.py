@@ -132,7 +132,9 @@ def apply_sensitivity_wire_law(
     # so optimal wire thickness should increase
     # Maxwell's law: wire cross-section proportional to r
     fractional_position = (position_in_coil - inner_r) / (outer_r - inner_r)
-    base_radius = np.sqrt(external_resistance * (inner_r) / (wire_resistivity * 2.0 * PI))
+    base_radius = np.sqrt(
+        external_resistance * (inner_r) / (wire_resistivity * 2.0 * PI)
+    )
 
     # Scale wire radius with position
     return base_radius * (1.0 + fractional_position)

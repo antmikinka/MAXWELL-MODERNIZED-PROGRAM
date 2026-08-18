@@ -36,18 +36,18 @@ from __future__ import annotations
 
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 def _mutual_inductance_coaxial(a: float, b: float, z: float) -> float:
     """Mutual inductance of coaxial circular loops using elliptic integrals."""
-    k_sq = 4.0 * a * b / ((a + b) ** 2 + z ** 2)
+    k_sq = 4.0 * a * b / ((a + b) ** 2 + z**2)
     k_sq = min(max(k_sq, 0), 1 - 1e-15)
 
     # Elliptic integral approximations
-    K = (np.pi / 2) * (1 + k_sq / 4 + 9 * k_sq ** 2 / 64)
-    E = (np.pi / 2) * (1 - k_sq / 4 - 3 * k_sq ** 2 / 64)
+    K = (np.pi / 2) * (1 + k_sq / 4 + 9 * k_sq**2 / 64)
+    E = (np.pi / 2) * (1 - k_sq / 4 - 3 * k_sq**2 / 64)
 
     k = np.sqrt(k_sq)
     if k < 1e-10:
@@ -59,8 +59,10 @@ def _mutual_inductance_coaxial(a: float, b: float, z: float) -> float:
 
 
 @maxwell_cite(
-    697, 698,
-    part=4, chapter="Coil Forces",
+    697,
+    698,
+    part=4,
+    chapter="Coil Forces",
     theory_class="maxwell_original",
     description="Calculate force between coaxial coils",
 )
@@ -101,8 +103,10 @@ def calc_coaxial_coil_force(
 
 
 @maxwell_cite(
-    698, 699,
-    part=4, chapter="Coil Forces",
+    698,
+    699,
+    part=4,
+    chapter="Coil Forces",
     theory_class="maxwell_original",
     description="Calculate torque between inclined coils",
 )
@@ -148,7 +152,8 @@ def calc_coil_torque(
 
 @maxwell_cite(
     697,
-    part=4, chapter="Coil Forces",
+    part=4,
+    chapter="Coil Forces",
     theory_class="maxwell_original",
     description="Calculate force between coaxial solenoids",
 )
@@ -194,14 +199,20 @@ def calc_solenoid_force(
     n2 = turns_per_cm2 * length2
 
     return calc_coaxial_coil_force(
-        current1 * n1, current2 * n2,
-        avg_radius, avg_radius, axial_separation,
+        current1 * n1,
+        current2 * n2,
+        avg_radius,
+        avg_radius,
+        axial_separation,
     )
 
 
 @maxwell_cite(
-    697, 698, 699,
-    part=4, chapter="Coil Forces",
+    697,
+    698,
+    699,
+    part=4,
+    chapter="Coil Forces",
     theory_class="maxwell_original",
     description="Calculate energy of coupled coil system",
 )
@@ -229,14 +240,19 @@ def calc_coil_system_energy(
     Returns:
         Total energy (ergs).
     """
-    return (0.5 * self_inductance1 * current1 ** 2
-            + 0.5 * self_inductance2 * current2 ** 2
-            + mutual_inductance * current1 * current2)
+    return (
+        0.5 * self_inductance1 * current1**2
+        + 0.5 * self_inductance2 * current2**2
+        + mutual_inductance * current1 * current2
+    )
 
 
 @maxwell_cite(
-    697, 698, 699,
-    part=4, chapter="Coil Forces",
+    697,
+    698,
+    699,
+    part=4,
+    chapter="Coil Forces",
     theory_class="maxwell_original",
     description="Verify coil force relations",
 )
@@ -297,8 +313,11 @@ def verify_coil_forces(
 
 
 @maxwell_cite(
-    697, 698, 699,
-    part=4, chapter="Coil Forces",
+    697,
+    698,
+    699,
+    part=4,
+    chapter="Coil Forces",
     theory_class="maxwell_original",
     description="Complete coil force analysis",
 )
@@ -343,7 +362,12 @@ def analyze_coil_forces(
 
     # Torque at various angles
     angles = np.linspace(0, np.pi, 10)
-    torques = [calc_coil_torque(current1, current2, radius1, radius2, theta, max(radius1, radius2) * 2) for theta in angles]
+    torques = [
+        calc_coil_torque(
+            current1, current2, radius1, radius2, theta, max(radius1, radius2) * 2
+        )
+        for theta in angles
+    ]
 
     # Energy
     L1 = 4.0 * np.pi * radius1 * (np.log(8 * radius1 / (0.1 * radius1)) - 2)

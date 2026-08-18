@@ -29,10 +29,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -64,8 +65,10 @@ class SlidingConductor:
             raise ValueError(f"Resistance must be positive")
 
     @maxwell_cite(
-        594, 595,
-        part=4, chapter="Motional EMF",
+        594,
+        595,
+        part=4,
+        chapter="Motional EMF",
         theory_class="maxwell_original",
         description="Calculate motional EMF",
     )
@@ -86,8 +89,10 @@ class SlidingConductor:
         return self.magnetic_field * velocity * self.conductor_length
 
     @maxwell_cite(
-        594, 596,
-        part=4, chapter="Motional EMF",
+        594,
+        596,
+        part=4,
+        chapter="Motional EMF",
         theory_class="maxwell_original",
         description="Calculate induced current",
     )
@@ -109,8 +114,10 @@ class SlidingConductor:
         return emf / self.circuit_resistance
 
     @maxwell_cite(
-        596, 597,
-        part=4, chapter="Motional EMF",
+        596,
+        597,
+        part=4,
+        chapter="Motional EMF",
         theory_class="maxwell_original",
         description="Calculate magnetic braking force",
     )
@@ -134,8 +141,10 @@ class SlidingConductor:
         return -I * self.conductor_length * self.magnetic_field
 
     @maxwell_cite(
-        594, 597,
-        part=4, chapter="Motional EMF",
+        594,
+        597,
+        part=4,
+        chapter="Motional EMF",
         theory_class="maxwell_original",
         description="Calculate terminal velocity",
     )
@@ -160,15 +169,17 @@ class SlidingConductor:
         L = self.conductor_length
         R = self.circuit_resistance
 
-        denominator = B ** 2 * L ** 2
+        denominator = B**2 * L**2
         if denominator < 1e-15:
-            return float('inf')
+            return float("inf")
 
         return applied_force * R / denominator
 
     @maxwell_cite(
-        594, 597,
-        part=4, chapter="Motional EMF",
+        594,
+        597,
+        part=4,
+        chapter="Motional EMF",
         theory_class="maxwell_original",
         description="Calculate velocity vs time under constant force",
     )
@@ -199,17 +210,19 @@ class SlidingConductor:
         L = self.conductor_length
         R = self.circuit_resistance
 
-        tau = mass * R / (B ** 2 * L ** 2) if B > 0 else float('inf')
+        tau = mass * R / (B**2 * L**2) if B > 0 else float("inf")
 
-        if tau == float('inf') or tau < 1e-15:
+        if tau == float("inf") or tau < 1e-15:
             return v_terminal
 
         return v_terminal * (1.0 - np.exp(-time / tau))
 
 
 @maxwell_cite(
-    594, 595,
-    part=4, chapter="Motional EMF",
+    594,
+    595,
+    part=4,
+    chapter="Motional EMF",
     theory_class="maxwell_original",
     description="Calculate motional EMF: EMF = |v×B|*L",
 )
@@ -243,8 +256,10 @@ def calc_motional_emf(
 
 
 @maxwell_cite(
-    594, 595,
-    part=4, chapter="Motional EMF",
+    594,
+    595,
+    part=4,
+    chapter="Motional EMF",
     theory_class="maxwell_original",
     description="Calculate motional EMF: EMF = B*v*L",
 )
@@ -275,8 +290,10 @@ def calc_motional_emf_sliding(
 
 
 @maxwell_cite(
-    596, 597,
-    part=4, chapter="Motional EMF",
+    596,
+    597,
+    part=4,
+    chapter="Motional EMF",
     theory_class="maxwell_original",
     description="Calculate magnetic braking force",
 )
@@ -310,12 +327,16 @@ def calc_magnetic_braking_force(
     if resistance <= 0:
         return 0.0
 
-    return -(B_field ** 2) * (conductor_length ** 2) * velocity / resistance
+    return -(B_field**2) * (conductor_length**2) * velocity / resistance
 
 
 @maxwell_cite(
-    594, 595, 596, 597,
-    part=4, chapter="Motional EMF",
+    594,
+    595,
+    596,
+    597,
+    part=4,
+    chapter="Motional EMF",
     theory_class="maxwell_original",
     description="Calculate power dissipation in sliding conductor",
 )
@@ -351,12 +372,14 @@ def calc_power_dissipation(
         return 0.0
 
     emf = B_field * velocity * conductor_length
-    return emf ** 2 / resistance
+    return emf**2 / resistance
 
 
 @maxwell_cite(
-    594, 597,
-    part=4, chapter="Motional EMF",
+    594,
+    597,
+    part=4,
+    chapter="Motional EMF",
     theory_class="maxwell_original",
     description="Calculate motional EMF for arbitrary motion",
 )
@@ -391,8 +414,12 @@ def calc_motional_emf_arbitrary(
 
 
 @maxwell_cite(
-    594, 595, 596, 597,
-    part=4, chapter="Motional EMF",
+    594,
+    595,
+    596,
+    597,
+    part=4,
+    chapter="Motional EMF",
     theory_class="maxwell_original",
     description="Verify motional EMF and braking relations",
 )
@@ -425,14 +452,20 @@ def verify_motional_emf(
     # Calculate quantities
     emf = calc_motional_emf_sliding(B_field, velocity, conductor_length)
     current = emf / resistance
-    braking_force = calc_magnetic_braking_force(B_field, velocity, conductor_length, resistance)
-    power_electrical = calc_power_dissipation(B_field, velocity, conductor_length, resistance)
+    braking_force = calc_magnetic_braking_force(
+        B_field, velocity, conductor_length, resistance
+    )
+    power_electrical = calc_power_dissipation(
+        B_field, velocity, conductor_length, resistance
+    )
 
     # Mechanical power (force * velocity)
     power_mechanical = abs(braking_force * velocity)
 
     # Verify power balance
-    power_error = abs(power_electrical - power_mechanical) / max(power_electrical, 1e-15)
+    power_error = abs(power_electrical - power_mechanical) / max(
+        power_electrical, 1e-15
+    )
 
     # Verify force relation
     expected_force = -current * conductor_length * B_field
@@ -456,13 +489,19 @@ def verify_motional_emf(
         "emf_error": emf_error,
         "force_error": force_error,
         "power_error": power_error,
-        "verified": emf_error < tolerance and force_error < tolerance and power_error < tolerance,
+        "verified": emf_error < tolerance
+        and force_error < tolerance
+        and power_error < tolerance,
     }
 
 
 @maxwell_cite(
-    594, 595, 596, 597,
-    part=4, chapter="Motional EMF",
+    594,
+    595,
+    596,
+    597,
+    part=4,
+    chapter="Motional EMF",
     theory_class="maxwell_original",
     description="Complete sliding conductor analysis",
 )
@@ -498,14 +537,16 @@ def analyze_sliding_conductor(
     slider = SlidingConductor(
         conductor_length=conductor_length,
         magnetic_field=B_field,
-        circuit_resistance=resistance
+        circuit_resistance=resistance,
     )
 
     result = {
         "B_field": B_field,
         "conductor_length": conductor_length,
         "resistance": resistance,
-        "terminal_velocity": slider.terminal_velocity(applied_force) if applied_force > 0 else 0,
+        "terminal_velocity": (
+            slider.terminal_velocity(applied_force) if applied_force > 0 else 0
+        ),
     }
 
     if applied_force > 0 and mass is not None and time_range is not None:

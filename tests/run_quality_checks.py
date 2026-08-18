@@ -24,14 +24,13 @@ Exit codes:
 
 from __future__ import annotations
 
-import sys
-import json
 import argparse
-from pathlib import Path
+import json
+import sys
 from dataclasses import dataclass, field
-from typing import Callable, Any
 from datetime import datetime
-
+from pathlib import Path
+from typing import Any, Callable
 
 # ── Configuration ──────────────────────────────────────────────────
 
@@ -45,9 +44,11 @@ sys.path.insert(0, str(PROJECT_DIR))
 
 # ── Data Classes ───────────────────────────────────────────────────
 
+
 @dataclass
 class CheckResult:
     """Result of a single quality check."""
+
     name: str
     passed: bool
     message: str = ""
@@ -57,6 +58,7 @@ class CheckResult:
 @dataclass
 class QualityReport:
     """Aggregated quality check report."""
+
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
     total_checks: int = 0
     passed_checks: int = 0
@@ -77,6 +79,7 @@ class QualityReport:
 
 
 # ── Check 1: Module Import Verification ────────────────────────────
+
 
 def check_module_imports() -> CheckResult:
     """Verify all modules in maxwell/ can be imported."""
@@ -106,8 +109,8 @@ def check_module_imports() -> CheckResult:
             "failed_imports": failed_imports,
             "total_modules": len(modules_tested) + len(failed_imports),
             "successful_imports": len(modules_tested),
-            "failed_count": len(failed_imports)
-        }
+            "failed_count": len(failed_imports),
+        },
     )
 
     return result, modules_tested
@@ -115,10 +118,12 @@ def check_module_imports() -> CheckResult:
 
 # ── Check 2: Citation Decorator Compliance ────────────────────────
 
+
 def check_citation_coverage(modules: list[str]) -> CheckResult:
     """Verify all public functions have @maxwell_cite decorator."""
-    from maxwell.meta.citation import get_citation, get_all_citations
     import inspect
+
+    from maxwell.meta.citation import get_all_citations, get_citation
 
     report = QualityReport()
 
@@ -164,10 +169,7 @@ def check_citation_coverage(modules: list[str]) -> CheckResult:
             issues.append(f"Invalid theory_class: {citation.theory_class}")
 
         if issues:
-            invalid_citations.append({
-                "function": qualname,
-                "issues": issues
-            })
+            invalid_citations.append({"function": qualname, "issues": issues})
 
     total_functions = len(all_citations)
     uncited_count = len(report.uncited_functions)
@@ -182,14 +184,15 @@ def check_citation_coverage(modules: list[str]) -> CheckResult:
             "uncited_functions": uncited_count,
             "invalid_citations": invalid_count,
             "uncited_list": report.uncited_functions[:20],  # Limit for readability
-            "invalid_details": invalid_citations[:10]
-        }
+            "invalid_details": invalid_citations[:10],
+        },
     )
 
     return result
 
 
 # ── Check 3: CGS Unit Constants ───────────────────────────────────
+
 
 def check_cgs_constants() -> CheckResult:
     """Validate CGS constants are correctly defined."""
@@ -209,7 +212,7 @@ def check_cgs_constants() -> CheckResult:
     if CONST.MU0_EMU != 1.0:
         errors.append(f"MU0_EMU = {CONST.MU0_EMU}, expected 1.0")
 
-    expected_eps0 = 1.0 / C ** 2
+    expected_eps0 = 1.0 / C**2
     if abs(CONST.EPS0_EMU - expected_eps0) > 1e-25:
         errors.append(f"EPS0_EMU incorrect: {CONST.EPS0_EMU}")
 
@@ -217,7 +220,7 @@ def check_cgs_constants() -> CheckResult:
     if CONST.EPS0_ESU != 1.0:
         errors.append(f"EPS0_ESU = {CONST.EPS0_ESU}, expected 1.0")
 
-    expected_mu0_esu = C ** 2
+    expected_mu0_esu = C**2
     if abs(CONST.MU0_ESU - expected_mu0_esu) > 1e5:
         errors.append(f"MU0_ESU incorrect: {CONST.MU0_ESU}")
 
@@ -228,20 +231,25 @@ def check_cgs_constants() -> CheckResult:
     result = CheckResult(
         name="CGS Constants Validation",
         passed=len(errors) == 0,
-        message=f"All CGS constants valid" if not errors else f"{len(errors)} constant errors",
+        message=(
+            f"All CGS constants valid"
+            if not errors
+            else f"{len(errors)} constant errors"
+        ),
         details={
             "C": CONST.C,
             "C_APPROX": CONST.C_APPROX,
             "MU0_EMU": CONST.MU0_EMU,
             "EPS0_EMU": CONST.EPS0_EMU,
-            "errors": errors
-        }
+            "errors": errors,
+        },
     )
 
     return result
 
 
 # ── Check 4: Physics Formula Validation ───────────────────────────
+
 
 def check_inverse_distance_law() -> CheckResult:
     """Verify inverse-distance law compliance for Oersted field."""
@@ -254,7 +262,7 @@ def check_inverse_distance_law() -> CheckResult:
             name="Inverse Distance Law (Oersted)",
             passed=False,
             message="Oersted module not available",
-            details={"status": "module_not_found"}
+            details={"status": "module_not_found"},
         )
 
     # Test H = 2I/r at multiple distances
@@ -280,7 +288,11 @@ def check_inverse_distance_law() -> CheckResult:
     result = CheckResult(
         name="Inverse Distance Law (Oersted)",
         passed=passed,
-        message=f"Max deviation: {max_deviation:.2e}" if passed else f"Deviation {max_deviation:.2e} exceeds tolerance",
+        message=(
+            f"Max deviation: {max_deviation:.2e}"
+            if passed
+            else f"Deviation {max_deviation:.2e} exceeds tolerance"
+        ),
         details={
             "current_abamp": current,
             "distances_cm": distances,
@@ -288,8 +300,8 @@ def check_inverse_distance_law() -> CheckResult:
             "H_r_products": products,
             "expected_product": expected_product,
             "max_deviation": max_deviation,
-            "tolerance": 1e-10
-        }
+            "tolerance": 1e-10,
+        },
     )
 
     return result
@@ -304,7 +316,7 @@ def check_lenz_law() -> CheckResult:
             name="Lenz's Law Verification",
             passed=False,
             message="Faraday module not available",
-            details={"status": "module_not_found"}
+            details={"status": "module_not_found"},
         )
 
     # Test that positive dPhi/dt produces negative EMF
@@ -325,8 +337,8 @@ def check_lenz_law() -> CheckResult:
             "emf_for_increasing_flux": emf_increasing,
             "emf_for_decreasing_flux": emf_decreasing,
             "opposes_increase": opposes_increase,
-            "opposes_decrease": opposes_decrease
-        }
+            "opposes_decrease": opposes_decrease,
+        },
     )
 
     return result
@@ -337,13 +349,15 @@ def check_right_hand_rule() -> CheckResult:
     import numpy as np
 
     try:
-        from maxwell.electromagnetism.sources.oersted import calc_circular_field_direction
+        from maxwell.electromagnetism.sources.oersted import (
+            calc_circular_field_direction,
+        )
     except ImportError:
         return CheckResult(
             name="Right-Hand Rule Verification",
             passed=False,
             message="Oersted module not available",
-            details={"status": "module_not_found"}
+            details={"status": "module_not_found"},
         )
 
     current = 1.0
@@ -367,7 +381,9 @@ def check_right_hand_rule() -> CheckResult:
 
         # Check direction matches expected
         if not np.allclose(direction, expected_dir, atol=1e-10):
-            failures.append(f"Wrong direction at {pos}: got {direction}, expected {expected_dir}")
+            failures.append(
+                f"Wrong direction at {pos}: got {direction}, expected {expected_dir}"
+            )
 
         # Check normalized
         magnitude = np.linalg.norm(direction)
@@ -380,10 +396,7 @@ def check_right_hand_rule() -> CheckResult:
         name="Right-Hand Rule Verification",
         passed=passed,
         message="Right-hand rule verified" if passed else f"{len(failures)} failures",
-        details={
-            "test_cases": len(test_cases),
-            "failures": failures
-        }
+        details={"test_cases": len(test_cases), "failures": failures},
     )
 
     return result
@@ -400,7 +413,7 @@ def check_lorentz_force_direction() -> CheckResult:
             name="Lorentz Force Direction",
             passed=False,
             message="Lorentz module not available",
-            details={"status": "module_not_found"}
+            details={"status": "module_not_found"},
         )
 
     current = 1.0
@@ -431,14 +444,17 @@ def check_lorentz_force_direction() -> CheckResult:
             "force_vector": F.tolist(),
             "force_magnitude": np.linalg.norm(F),
             "expected_magnitude": expected_magnitude,
-            "direction_correct": np.allclose(actual_direction, expected_direction, atol=1e-10)
-        }
+            "direction_correct": np.allclose(
+                actual_direction, expected_direction, atol=1e-10
+            ),
+        },
     )
 
     return result
 
 
 # ── Check 5: Documentation Completeness ───────────────────────────
+
 
 def check_documentation_completeness(modules: list[str]) -> CheckResult:
     """Verify all modules and functions have documentation."""
@@ -475,17 +491,22 @@ def check_documentation_completeness(modules: list[str]) -> CheckResult:
     result = CheckResult(
         name="Documentation Completeness",
         passed=passed,
-        message=f"All documented" if passed else f"{len(undocumented_modules)} modules, {len(undocumented_functions)} functions undocumented",
+        message=(
+            f"All documented"
+            if passed
+            else f"{len(undocumented_modules)} modules, {len(undocumented_functions)} functions undocumented"
+        ),
         details={
             "undocumented_modules": undocumented_modules[:10],
-            "undocumented_functions": undocumented_functions[:20]
-        }
+            "undocumented_functions": undocumented_functions[:20],
+        },
     )
 
     return result
 
 
 # ── Report Generation ─────────────────────────────────────────────
+
 
 def generate_text_report(report: QualityReport) -> str:
     """Generate human-readable text report."""
@@ -546,30 +567,34 @@ def generate_text_report(report: QualityReport) -> str:
 
 def generate_json_report(report: QualityReport) -> str:
     """Generate JSON report."""
-    return json.dumps({
-        "timestamp": report.timestamp,
-        "summary": {
-            "total_checks": report.total_checks,
-            "passed_checks": report.passed_checks,
-            "failed_checks": report.failed_checks,
-            "pass_rate": report.pass_rate,
-            "all_passed": report.all_passed,
-            "modules_tested_count": len(report.modules_tested)
+    return json.dumps(
+        {
+            "timestamp": report.timestamp,
+            "summary": {
+                "total_checks": report.total_checks,
+                "passed_checks": report.passed_checks,
+                "failed_checks": report.failed_checks,
+                "pass_rate": report.pass_rate,
+                "all_passed": report.all_passed,
+                "modules_tested_count": len(report.modules_tested),
+            },
+            "results": [
+                {
+                    "name": r.name,
+                    "passed": r.passed,
+                    "message": r.message,
+                    "details": r.details,
+                }
+                for r in report.results
+            ],
+            "uncited_functions": report.uncited_functions,
         },
-        "results": [
-            {
-                "name": r.name,
-                "passed": r.passed,
-                "message": r.message,
-                "details": r.details
-            }
-            for r in report.results
-        ],
-        "uncited_functions": report.uncited_functions
-    }, indent=2)
+        indent=2,
+    )
 
 
 # ── Main Execution ─────────────────────────────────────────────────
+
 
 def main():
     parser = argparse.ArgumentParser(description="Maxwell Quality Checks")

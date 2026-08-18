@@ -6,12 +6,12 @@ References:
 
 from maxwell.electromagnetism.physics.stress import (
     MaxwellStress,
-    calc_stress_tensor,
+    analyze_stress,
     calc_force_from_stress,
     calc_stress_on_plane,
-    verify_stress_tensor,
+    calc_stress_tensor,
     verify_electric_stress,
-    analyze_stress,
+    verify_stress_tensor,
 )
 
 __all__ = [

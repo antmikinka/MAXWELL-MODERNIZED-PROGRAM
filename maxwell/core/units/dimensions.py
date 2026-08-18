@@ -45,15 +45,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import ClassVar
+
 import numpy as np
 
+from maxwell.config.constants import C_APPROX, CONST, C
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
-
 
 # =============================================================================
 # DIMENSION CLASS
 # =============================================================================
+
 
 @dataclass(frozen=True)
 class Dimension:
@@ -101,8 +102,12 @@ class Dimension:
         Exponents are stored doubled to support half-integer values exactly.
         """
         # All exponents should be integers (doubled representation)
-        if not all(isinstance(x, int) for x in [self.mass_exp, self.length_exp, self.time_exp]):
-            raise TypeError("Dimension exponents must be integers (doubled representation)")
+        if not all(
+            isinstance(x, int) for x in [self.mass_exp, self.length_exp, self.time_exp]
+        ):
+            raise TypeError(
+                "Dimension exponents must be integers (doubled representation)"
+            )
 
     def to_dimensional_string(self) -> str:
         """
@@ -118,7 +123,11 @@ class Dimension:
             'M^(1/2) L^(3/2) T^(-1)'
         """
         parts = []
-        for name, exp in [("M", self.mass_exp), ("L", self.length_exp), ("T", self.time_exp)]:
+        for name, exp in [
+            ("M", self.mass_exp),
+            ("L", self.length_exp),
+            ("T", self.time_exp),
+        ]:
             if exp == 0:
                 continue
             # Display as fraction if odd (doubled representation for half-integers)
@@ -292,6 +301,7 @@ class Dimension:
 # ELECTROMAGNETIC UNIT CLASS
 # =============================================================================
 
+
 @dataclass
 class ElectromagneticUnit:
     """
@@ -332,7 +342,9 @@ class ElectromagneticUnit:
         """Validate unit system."""
         valid_systems = {"esu", "emu", "gaussian"}
         if self.system not in valid_systems:
-            raise ValueError(f"System must be one of {valid_systems}, got {self.system!r}")
+            raise ValueError(
+                f"System must be one of {valid_systems}, got {self.system!r}"
+            )
 
     def __repr__(self) -> str:
         """Return readable representation."""
@@ -345,6 +357,7 @@ class ElectromagneticUnit:
 # =============================================================================
 # DIMENSIONAL FORMULAE TABLES (Arts. 620-628)
 # =============================================================================
+
 
 class ESUDimensions:
     """
@@ -380,10 +393,19 @@ class ESUDimensions:
     INDUCTANCE: ClassVar[Dimension] = Dimension(mass_exp=0, length_exp=-2, time_exp=4)
 
     #: Electric field: [M^(1/2) L^(-1/2) T^(-1)] — statvolt/cm
-    ELECTRIC_FIELD: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=-1, time_exp=-2)
+    ELECTRIC_FIELD: ClassVar[Dimension] = Dimension(
+        mass_exp=1, length_exp=-1, time_exp=-2
+    )
 
     #: Dielectric displacement: [M^(1/2) L^(-1/2) T^(-1)] — same as E in ESU
-    DISPLACEMENT: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=-1, time_exp=-2)
+    DISPLACEMENT: ClassVar[Dimension] = Dimension(
+        mass_exp=1, length_exp=-1, time_exp=-2
+    )
+
+    #: Magnetic field: [M^(1/2) L^(-1/2) T^(-1)] — same as E in ESU (vacuum)
+    MAGNETIC_FIELD: ClassVar[Dimension] = Dimension(
+        mass_exp=1, length_exp=-1, time_exp=-2
+    )
 
 
 class EMUDimensions:
@@ -421,27 +443,39 @@ class EMUDimensions:
     INDUCTANCE: ClassVar[Dimension] = Dimension(mass_exp=0, length_exp=2, time_exp=0)
 
     #: Magnetic field H: [M^(1/2) L^(-1/2) T^(-1)] — oersted
-    MAGNETIC_FIELD: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=-1, time_exp=-2)
+    MAGNETIC_FIELD: ClassVar[Dimension] = Dimension(
+        mass_exp=1, length_exp=-1, time_exp=-2
+    )
 
     #: Magnetic induction B: [M^(1/2) L^(-1/2) T^(-1)] — gauss (same as H in CGS)
-    MAGNETIC_INDUCTION: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=-1, time_exp=-2)
+    MAGNETIC_INDUCTION: ClassVar[Dimension] = Dimension(
+        mass_exp=1, length_exp=-1, time_exp=-2
+    )
 
     #: Magnetic pole strength: [M^(1/2) L^(3/2) T^(-1)]
-    POLE_STRENGTH: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=3, time_exp=-2)
+    POLE_STRENGTH: ClassVar[Dimension] = Dimension(
+        mass_exp=1, length_exp=3, time_exp=-2
+    )
 
     #: Magnetic moment: [M^(1/2) L^(5/2) T^(-1)]
-    MAGNETIC_MOMENT: ClassVar[Dimension] = Dimension(mass_exp=1, length_exp=5, time_exp=-2)
+    MAGNETIC_MOMENT: ClassVar[Dimension] = Dimension(
+        mass_exp=1, length_exp=5, time_exp=-2
+    )
 
 
 # =============================================================================
 # DIMENSIONAL ANALYSIS FUNCTIONS
 # =============================================================================
 
+
 @maxwell_cite(
-    620, 621, 622,
-    part=4, chapter="Dimensional Analysis of Electromagnetic Quantities",
+    620,
+    621,
+    622,
+    part=4,
+    chapter="Dimensional Analysis of Electromagnetic Quantities",
     theory_class="maxwell_original",
-    description="Get ESU dimensions for a physical quantity"
+    description="Get ESU dimensions for a physical quantity",
 )
 def get_esu_dimensions(quantity: str) -> Dimension:
     """
@@ -491,20 +525,24 @@ def get_esu_dimensions(quantity: str) -> Dimension:
         "inductance": ESUDimensions.INDUCTANCE,
         "electric_field": ESUDimensions.ELECTRIC_FIELD,
         "displacement": ESUDimensions.DISPLACEMENT,
+        "magnetic_field": ESUDimensions.MAGNETIC_FIELD,
     }
     if quantity not in mapping:
         raise KeyError(
-            f"Unknown quantity: {quantity!r}. "
-            f"Available: {list(mapping.keys())}"
+            f"Unknown quantity: {quantity!r}. " f"Available: {list(mapping.keys())}"
         )
     return mapping[quantity]
 
 
 @maxwell_cite(
-    620, 626, 627, 628,
-    part=4, chapter="Dimensional Analysis of Electromagnetic Quantities",
+    620,
+    626,
+    627,
+    628,
+    part=4,
+    chapter="Dimensional Analysis of Electromagnetic Quantities",
     theory_class="maxwell_original",
-    description="Get EMU dimensions for a physical quantity"
+    description="Get EMU dimensions for a physical quantity",
 )
 def get_emu_dimensions(quantity: str) -> Dimension:
     """
@@ -565,17 +603,20 @@ def get_emu_dimensions(quantity: str) -> Dimension:
     }
     if quantity not in mapping:
         raise KeyError(
-            f"Unknown quantity: {quantity!r}. "
-            f"Available: {list(mapping.keys())}"
+            f"Unknown quantity: {quantity!r}. " f"Available: {list(mapping.keys())}"
         )
     return mapping[quantity]
 
 
 @maxwell_cite(
-    620, 771, 772, 773,
-    part=4, chapter="Ratio of Units and the Speed of Light",
+    620,
+    771,
+    772,
+    773,
+    part=4,
+    chapter="Ratio of Units and the Speed of Light",
     theory_class="maxwell_original",
-    description="Calculate the ESU/EMU ratio for a quantity"
+    description="Calculate the ESU/EMU ratio for a quantity",
 )
 def calc_unit_ratio(quantity: str) -> dict[str, float | str]:
     """
@@ -635,12 +676,11 @@ def calc_unit_ratio(quantity: str) -> dict[str, float | str]:
 
     if quantity not in c_powers:
         raise KeyError(
-            f"Unknown quantity: {quantity!r}. "
-            f"Available: {list(c_powers.keys())}"
+            f"Unknown quantity: {quantity!r}. " f"Available: {list(c_powers.keys())}"
         )
 
     n = c_powers[quantity]
-    ratio = C ** n
+    ratio = C**n
 
     # Get dimensional formulae
     try:
@@ -672,10 +712,14 @@ def calc_unit_ratio(quantity: str) -> dict[str, float | str]:
 
 
 @maxwell_cite(
-    771, 772, 773, 781,
-    part=4, chapter="Electromagnetic Theory of Light",
+    771,
+    772,
+    773,
+    781,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
-    description="Verify that the unit ratio equals the speed of light"
+    description="Verify that the unit ratio equals the speed of light",
 )
 def verify_speed_of_light_relationship() -> dict[str, float | bool | list[str]]:
     """
@@ -719,7 +763,7 @@ def verify_speed_of_light_relationship() -> dict[str, float | bool | list[str]]:
     direct_ratio = C
 
     # For resistance where ratio = c²
-    sqrt_ratio = np.sqrt(C ** 2)
+    sqrt_ratio = np.sqrt(C**2)
 
     results["c_from_charge"] = direct_ratio
     results["c_from_current"] = direct_ratio
@@ -742,10 +786,13 @@ def verify_speed_of_light_relationship() -> dict[str, float | bool | list[str]]:
 
 
 @maxwell_cite(
-    620, 771, 772,
-    part=4, chapter="Ratio of Units",
+    620,
+    771,
+    772,
+    part=4,
+    chapter="Ratio of Units",
     theory_class="maxwell_original",
-    description="Convert a value from ESU to EMU"
+    description="Convert a value from ESU to EMU",
 )
 def convert_esu_to_emu(value: float, quantity: str) -> float:
     """
@@ -791,10 +838,13 @@ def convert_esu_to_emu(value: float, quantity: str) -> float:
 
 
 @maxwell_cite(
-    620, 771, 772,
-    part=4, chapter="Ratio of Units",
+    620,
+    771,
+    772,
+    part=4,
+    chapter="Ratio of Units",
     theory_class="maxwell_original",
-    description="Convert a value from EMU to ESU"
+    description="Convert a value from EMU to ESU",
 )
 def convert_emu_to_esu(value: float, quantity: str) -> float:
     """
@@ -837,10 +887,13 @@ def convert_emu_to_esu(value: float, quantity: str) -> float:
 
 
 @maxwell_cite(
-    771, 772, 773,
-    part=4, chapter="Ratio of Units",
+    771,
+    772,
+    773,
+    part=4,
+    chapter="Ratio of Units",
     theory_class="standard_math",
-    description="Generate practical unit conversion table"
+    description="Generate practical unit conversion table",
 )
 def get_practical_unit_conversions() -> dict[str, dict[str, float | str]]:
     """
@@ -888,7 +941,7 @@ def get_practical_unit_conversions() -> dict[str, dict[str, float | str]]:
             "emu_name": "abampere",
         },
         "ohm": {
-            "to_esu": 1.0e9 / (C ** 2),  # 1 ohm = 10^9/c^2 statohm
+            "to_esu": 1.0e9 / (C**2),  # 1 ohm = 10^9/c^2 statohm
             "to_emu": 1.0e9,  # 1 ohm = 10^9 abohms
             "esu_name": "statohm",
             "emu_name": "abohm",
@@ -909,10 +962,16 @@ def get_practical_unit_conversions() -> dict[str, dict[str, float | str]]:
 
 
 @maxwell_cite(
-    620, 621, 622, 626, 627, 628,
-    part=4, chapter="Dimensional Analysis of Electromagnetic Quantities",
+    620,
+    621,
+    622,
+    626,
+    627,
+    628,
+    part=4,
+    chapter="Dimensional Analysis of Electromagnetic Quantities",
     theory_class="maxwell_original",
-    description="Verify dimensional consistency of a quantity"
+    description="Verify dimensional consistency of a quantity",
 )
 def verify_dimensional_consistency(quantity: str) -> dict[str, bool | str | dict]:
     """
@@ -974,8 +1033,7 @@ def verify_dimensional_consistency(quantity: str) -> dict[str, bool | str | dict
     # In doubled exponents: L^(2n) T^(-2n)
 
     is_pure_velocity_power = (
-        ratio_dims.mass_exp == 0
-        and ratio_dims.length_exp == -ratio_dims.time_exp
+        ratio_dims.mass_exp == 0 and ratio_dims.length_exp == -ratio_dims.time_exp
     )
 
     if is_pure_velocity_power:
@@ -991,13 +1049,9 @@ def verify_dimensional_consistency(quantity: str) -> dict[str, bool | str | dict
     # Build explanation
     if consistent:
         if n > 0:
-            explanation = (
-                f"[{quantity}]_ESU / [{quantity}]_EMU = c^{n} (velocity^{n})"
-            )
+            explanation = f"[{quantity}]_ESU / [{quantity}]_EMU = c^{n} (velocity^{n})"
         elif n < 0:
-            explanation = (
-                f"[{quantity}]_ESU / [{quantity}]_EMU = c^{n} (velocity^{n})"
-            )
+            explanation = f"[{quantity}]_ESU / [{quantity}]_EMU = c^{n} (velocity^{n})"
         else:
             explanation = f"[{quantity}]_ESU = [{quantity}]_EMU (same dimensions)"
     else:
@@ -1027,19 +1081,42 @@ if __name__ == "__main__":
     print("=" * 70)
 
     print("\n--- ESU Dimensional Formulae (Arts. 621-625) ---")
-    for q in ["charge", "current", "potential", "resistance", "capacitance", "inductance"]:
+    for q in [
+        "charge",
+        "current",
+        "potential",
+        "resistance",
+        "capacitance",
+        "inductance",
+    ]:
         dims = get_esu_dimensions(q)
         print(f"  {q:15} : {dims.to_dimensional_string()}")
 
     print("\n--- EMU Dimensional Formulae (Arts. 626-628) ---")
-    for q in ["charge", "current", "potential", "resistance", "capacitance", "inductance"]:
+    for q in [
+        "charge",
+        "current",
+        "potential",
+        "resistance",
+        "capacitance",
+        "inductance",
+    ]:
         dims = get_emu_dimensions(q)
         print(f"  {q:15} : {dims.to_dimensional_string()}")
 
     print("\n--- ESU/EMU Ratios (Arts. 771-773) ---")
-    for q in ["charge", "current", "potential", "resistance", "capacitance", "inductance"]:
+    for q in [
+        "charge",
+        "current",
+        "potential",
+        "resistance",
+        "capacitance",
+        "inductance",
+    ]:
         result = calc_unit_ratio(q)
-        print(f"  {q:15} : ESU/EMU = c^{result['power_of_c']:<2} = {result['ratio']:.3e}")
+        print(
+            f"  {q:15} : ESU/EMU = c^{result['power_of_c']:<2} = {result['ratio']:.3e}"
+        )
 
     print("\n--- Speed of Light Relationship Verification (Art. 781) ---")
     result = verify_speed_of_light_relationship()

@@ -17,16 +17,16 @@ Tests verify:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
-from maxwell.meta.citation import get_citation, MaxwellCitation
-
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # AMPERE'S MOLECULAR THEORY TESTS (Arts. 832-840)
 # =============================================================================
+
 
 class TestAmperesMolecularTheory:
     """Test Ampere's molecular current theory: m = I*A/c."""
@@ -47,7 +47,9 @@ class TestAmperesMolecularTheory:
 
         assert_cgs_close(m, expected, cgs_tolerance)
 
-    def test_molecular_field_dipole_formula(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_molecular_field_dipole_formula(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify B = (2m/r³)*cos(theta) for dipole field.
 
         For m = 1 erg/gauss, r = 1 cm, theta = 0:
@@ -89,10 +91,7 @@ class TestAmperesMolecularTheory:
         """
         from maxwell.molecular.amperes_theory import AmperesTheory
 
-        at = AmperesTheory(
-            number_density=1e23,
-            alignment_factor=0.5
-        )
+        at = AmperesTheory(number_density=1e23, alignment_factor=0.5)
 
         m = 1e-23
         M = at.magnetization(m)
@@ -108,10 +107,7 @@ class TestAmperesMolecularTheory:
         """
         from maxwell.molecular.amperes_theory import AmperesTheory
 
-        at = AmperesTheory(
-            number_density=1e23,
-            alignment_factor=1.0
-        )
+        at = AmperesTheory(number_density=1e23, alignment_factor=1.0)
 
         m = 1e-23
         T1 = 300.0
@@ -131,9 +127,7 @@ class TestAmperesMolecularTheory:
         from maxwell.molecular.amperes_theory import MolecularCurrent
 
         mc = MolecularCurrent(
-            current=1e-6,
-            area=1e-16,
-            normal=np.array([0.0, 0.0, 1.0])
+            current=1e-6, area=1e-16, normal=np.array([0.0, 0.0, 1.0])
         )
 
         # Test magnetic moment
@@ -162,11 +156,7 @@ class TestAmperesMolecularTheory:
         """Verify Ampere's theory relations."""
         from maxwell.molecular.amperes_theory import verify_amperes_theory
 
-        result = verify_amperes_theory(
-            current=1e-6,
-            area=1e-16,
-            number_density=1e23
-        )
+        result = verify_amperes_theory(current=1e-6, area=1e-16, number_density=1e23)
 
         assert result["verified"] is True
 
@@ -174,6 +164,7 @@ class TestAmperesMolecularTheory:
 # =============================================================================
 # WEBER'S THEORY TESTS (Arts. 841-850)
 # =============================================================================
+
 
 class TestWebersTheory:
     """Test Weber's velocity-dependent force law."""
@@ -198,7 +189,9 @@ class TestWebersTheory:
         assert abs(F[2]) < cgs_tolerance
         assert F[0] > 0  # Repulsive for like charges
 
-    def test_weber_force_static_limit(self, cgs_tolerance, assert_cgs_close, assert_vectors_close) -> None:
+    def test_weber_force_static_limit(
+        self, cgs_tolerance, assert_cgs_close, assert_vectors_close
+    ) -> None:
         """Verify Weber force reduces to Coulomb for v = 0.
 
         For v1 = v2 = 0:
@@ -214,7 +207,7 @@ class TestWebersTheory:
 
         F = weber_force(q1, q2, r_vec, v1, v2)
 
-        expected = q1 * q2 / (1.0 ** 2)  # Along x
+        expected = q1 * q2 / (1.0**2)  # Along x
         assert_cgs_close(F[0], expected, cgs_tolerance)
 
     def test_weber_theory_class(self, cgs_tolerance, assert_cgs_close) -> None:
@@ -225,16 +218,19 @@ class TestWebersTheory:
 
         # Test force calculation
         F = wt.force(
-            q1=1.0, q2=1.0,
+            q1=1.0,
+            q2=1.0,
             r_vec=np.array([1.0, 0.0, 0.0]),
             v1=np.zeros(3),
-            v2=np.zeros(3)
+            v2=np.zeros(3),
         )
 
         expected = 1.0  # Coulomb force
         assert_cgs_close(F[0], expected, cgs_tolerance)
 
-    def test_velocity_dependent_correction(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_velocity_dependent_correction(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify velocity-dependent correction term."""
         from maxwell.molecular.webers_theory import weber_force
 
@@ -270,6 +266,7 @@ class TestWebersTheory:
 # =============================================================================
 # NEUMANN'S THEORY TESTS (Arts. 851-858)
 # =============================================================================
+
 
 class TestNeumannsTheory:
     """Test Neumann's potential theory for mutual inductance."""
@@ -361,6 +358,7 @@ class TestNeumannsTheory:
 # COMPETING THEORIES TESTS (Arts. 859-866)
 # =============================================================================
 
+
 class TestCompetingTheories:
     """Test comparison of competing electromagnetic theories."""
 
@@ -426,6 +424,7 @@ class TestCompetingTheories:
 # MOLECULAR MAGNETISM TESTS
 # =============================================================================
 
+
 class TestMolecularMagnetism:
     """Test molecular magnetism phenomena."""
 
@@ -433,15 +432,10 @@ class TestMolecularMagnetism:
         """Verify paramagnetic chi > 0."""
         from maxwell.molecular.amperes_theory import AmperesTheory
 
-        at = AmperesTheory(
-            number_density=1e23,
-            alignment_factor=1.0
-        )
+        at = AmperesTheory(number_density=1e23, alignment_factor=1.0)
 
         chi = at.susceptibility(
-            molecular_moment=1e-23,
-            temperature=300.0,
-            applied_field=1000.0
+            molecular_moment=1e-23, temperature=300.0, applied_field=1000.0
         )
 
         assert chi > 0  # Paramagnetic
@@ -459,6 +453,7 @@ class TestMolecularMagnetism:
 # =============================================================================
 # CGS UNIT COMPLIANCE TESTS
 # =============================================================================
+
 
 class TestMolecularCGSUnits:
     """Test CGS unit compliance for molecular theory modules."""
@@ -494,18 +489,17 @@ class TestMolecularCGSUnits:
 # CITATION COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestMolecularCitationCompliance:
     """Test citation decorator compliance for molecular theory modules."""
 
     def test_amperes_theory_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Ampere's theory functions have correct citations."""
         from maxwell.molecular.amperes_theory import (
-            calc_molecular_moment,
             calc_molecular_field,
+            calc_molecular_moment,
         )
 
         citation = require_citation(calc_molecular_moment)
@@ -513,37 +507,38 @@ class TestMolecularCitationCompliance:
         assert any(a in citation.articles for a in [832, 833, 834])
 
     def test_webers_theory_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Weber's theory functions have correct citations."""
         from maxwell.molecular.webers_theory import weber_force
 
         citation = require_citation(weber_force)
         assert citation.part == 4
-        assert any(a in citation.articles for a in [841, 842, 843, 844, 845, 846, 847, 848, 849, 850])
+        assert any(
+            a in citation.articles
+            for a in [841, 842, 843, 844, 845, 846, 847, 848, 849, 850]
+        )
 
     def test_neumanns_theory_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify Neumann's theory functions have correct citations."""
         from maxwell.molecular.neumanns_theory import neumann_mutual_inductance
 
         citation = require_citation(neumann_mutual_inductance)
         assert citation.part == 4
-        assert any(a in citation.articles for a in [851, 852, 853, 854, 855, 856, 857, 858])
+        assert any(
+            a in citation.articles for a in [851, 852, 853, 854, 855, 856, 857, 858]
+        )
 
     def test_competing_theories_citation(
-        self,
-        require_citation,
-        validate_citation_articles
+        self, require_citation, validate_citation_articles
     ) -> None:
         """Verify competing theories functions have correct citations."""
         from maxwell.molecular.competing_theories import compare_theories
 
         citation = require_citation(compare_theories)
         assert citation.part == 4
-        assert any(a in citation.articles for a in [859, 860, 861, 862, 863, 864, 865, 866])
+        assert any(
+            a in citation.articles for a in [859, 860, 861, 862, 863, 864, 865, 866]
+        )

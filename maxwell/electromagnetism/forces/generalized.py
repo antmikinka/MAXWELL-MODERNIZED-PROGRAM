@@ -29,10 +29,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -56,8 +57,11 @@ class GeneralizedForce:
     mutual_inductance_function: callable = None
 
     @maxwell_cite(
-        573, 574, 575,
-        part=4, chapter="Generalized Forces",
+        573,
+        574,
+        575,
+        part=4,
+        chapter="Generalized Forces",
         theory_class="maxwell_original",
         description="Calculate force at constant current",
     )
@@ -82,11 +86,13 @@ class GeneralizedForce:
         Returns:
             Force (dynes).
         """
-        return 0.5 * current ** 2 * dL_dx
+        return 0.5 * current**2 * dL_dx
 
     @maxwell_cite(
-        573, 574,
-        part=4, chapter="Generalized Forces",
+        573,
+        574,
+        part=4,
+        chapter="Generalized Forces",
         theory_class="maxwell_original",
         description="Calculate force between coupled circuits",
     )
@@ -116,8 +122,10 @@ class GeneralizedForce:
         return current1 * current2 * dM_dx
 
     @maxwell_cite(
-        573, 575,
-        part=4, chapter="Generalized Forces",
+        573,
+        575,
+        part=4,
+        chapter="Generalized Forces",
         theory_class="maxwell_original",
         description="Calculate torque on circuit",
     )
@@ -148,8 +156,11 @@ class GeneralizedForce:
 
 
 @maxwell_cite(
-    573, 574, 575,
-    part=4, chapter="Generalized Forces",
+    573,
+    574,
+    575,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Calculate generalized force from energy gradient",
 )
@@ -174,12 +185,15 @@ def calc_generalized_force(
     Reference:
         Part IV, Arts. 573-575: Generalized force.
     """
-    return 0.5 * current ** 2 * inductance_gradient
+    return 0.5 * current**2 * inductance_gradient
 
 
 @maxwell_cite(
-    573, 574, 575,
-    part=4, chapter="Generalized Forces",
+    573,
+    574,
+    575,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Calculate force from energy gradient",
 )
@@ -212,8 +226,10 @@ def calc_force_from_energy(
 
 
 @maxwell_cite(
-    573, 574,
-    part=4, chapter="Generalized Forces",
+    573,
+    574,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Calculate force on movable coil",
 )
@@ -244,8 +260,10 @@ def calc_force_movable_coil(
 
 
 @maxwell_cite(
-    573, 575,
-    part=4, chapter="Generalized Forces",
+    573,
+    575,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Calculate torque on current loop in B field",
 )
@@ -279,8 +297,11 @@ def calc_torque_on_loop(
 
 
 @maxwell_cite(
-    573, 574, 575,
-    part=4, chapter="Generalized Forces",
+    573,
+    574,
+    575,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Calculate force on magnetic dipole",
 )
@@ -323,8 +344,11 @@ def calc_force_on_dipole(
 
 
 @maxwell_cite(
-    573, 574, 575,
-    part=4, chapter="Generalized Forces",
+    573,
+    574,
+    575,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Calculate force between coaxial coils",
 )
@@ -363,7 +387,7 @@ def calc_force_coaxial_coils(
     z = separation
 
     # k² parameter for elliptic integrals
-    k_squared = 4.0 * a * b / ((a + b) ** 2 + z ** 2)
+    k_squared = 4.0 * a * b / ((a + b) ** 2 + z**2)
 
     if k_squared <= 0 or k_squared > 1:
         return 0.0
@@ -374,7 +398,7 @@ def calc_force_coaxial_coils(
     delta = 1e-6 * z if z > 0 else 1e-6
 
     def mutual_inductance(sep):
-        k2 = 4.0 * a * b / ((a + b) ** 2 + sep ** 2)
+        k2 = 4.0 * a * b / ((a + b) ** 2 + sep**2)
         if k2 <= 0 or k2 > 1:
             return 0.0
         kk = np.sqrt(k2)
@@ -392,8 +416,11 @@ def calc_force_coaxial_coils(
 
 
 @maxwell_cite(
-    573, 574, 575,
-    part=4, chapter="Generalized Forces",
+    573,
+    574,
+    575,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Verify generalized force relations",
 )
@@ -436,7 +463,9 @@ def verify_generalized_forces(
     attraction_verified = all(f < 0 for f in forces if abs(f) > 1e-15)
 
     # Verify force decreases with separation
-    decreasing_verified = all(abs(forces[i]) >= abs(forces[i+1]) for i in range(len(forces)-1))
+    decreasing_verified = all(
+        abs(forces[i]) >= abs(forces[i + 1]) for i in range(len(forces) - 1)
+    )
 
     # Verify current reversal changes sign
     F_same = calc_force_coaxial_coils(current1, current2, radius1, radius2, 2.0)
@@ -451,13 +480,18 @@ def verify_generalized_forces(
         "attraction_verified": attraction_verified,
         "decreasing_verified": decreasing_verified,
         "sign_change_verified": sign_change_verified,
-        "verified": attraction_verified and decreasing_verified and sign_change_verified,
+        "verified": attraction_verified
+        and decreasing_verified
+        and sign_change_verified,
     }
 
 
 @maxwell_cite(
-    573, 574, 575,
-    part=4, chapter="Generalized Forces",
+    573,
+    574,
+    575,
+    part=4,
+    chapter="Generalized Forces",
     theory_class="maxwell_original",
     description="Complete generalized force analysis",
 )
@@ -520,7 +554,9 @@ def analyze_generalized_forces(
 
     elif geometry == "dipole":
         m = np.asarray(parameters.get("magnetic_moment", [0, 0, 100]), dtype=np.float64)
-        B_grad = np.asarray(parameters.get("field_gradient", [0, 0, 100]), dtype=np.float64)
+        B_grad = np.asarray(
+            parameters.get("field_gradient", [0, 0, 100]), dtype=np.float64
+        )
 
         force = calc_force_on_dipole(m, B_grad)
 

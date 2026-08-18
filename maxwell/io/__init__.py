@@ -17,20 +17,19 @@ References:
 
 from __future__ import annotations
 
+from maxwell.io.article_parser import (
+    extract_all_articles_from_chapter,
+    extract_article_number,
+    extract_cross_references,
+    extract_equations,
+    extract_figure_references,
+)
 from maxwell.io.json_loader import (
+    batch_load_articles,
+    list_available_articles,
     load_article_json,
     load_chapter_json,
     load_volume_result,
-    list_available_articles,
-    batch_load_articles,
-)
-
-from maxwell.io.article_parser import (
-    extract_article_number,
-    extract_all_articles_from_chapter,
-    extract_equations,
-    extract_figure_references,
-    extract_cross_references,
 )
 
 __all__ = [

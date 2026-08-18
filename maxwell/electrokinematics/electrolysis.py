@@ -36,11 +36,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
+from maxwell.config.constants import C_APPROX, CONST, C
 from maxwell.meta.citation import maxwell_cite
-from maxwell.config.constants import CONST, C, C_APPROX
-
 
 # =============================================================================
 # FARADAY CONSTANT AND ELECTROCHEMICAL EQUIVALENTS
@@ -62,13 +62,18 @@ AVOGADRO_NUMBER: float = 6.02214076e23
 # FARADAY'S LAWS OF ELECTROLYSIS (Arts. 249-252)
 # =============================================================================
 
+
 @maxwell_cite(
-    249, 250,
-    part=2, chapter="Electrolysis",
+    249,
+    250,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate mass deposited during electrolysis per Faraday's first law"
+    description="Calculate mass deposited during electrolysis per Faraday's first law",
 )
-def faraday_first_law(current: float, time: float, electrochemical_equivalent: float) -> float:
+def faraday_first_law(
+    current: float, time: float, electrochemical_equivalent: float
+) -> float:
     """Calculate mass deposited during electrolysis per Faraday's first law.
 
     Art. 249-250: The chemical action of a current is proportional to the
@@ -111,16 +116,20 @@ def faraday_first_law(current: float, time: float, electrochemical_equivalent: f
     if time < 0:
         raise ValueError(f"Time must be non-negative, got {time}")
     if electrochemical_equivalent < 0:
-        raise ValueError(f"Electrochemical equivalent must be non-negative, got {electrochemical_equivalent}")
+        raise ValueError(
+            f"Electrochemical equivalent must be non-negative, got {electrochemical_equivalent}"
+        )
 
     return electrochemical_equivalent * current * time
 
 
 @maxwell_cite(
-    251, 252,
-    part=2, chapter="Electrolysis",
+    251,
+    252,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate mass deposited using Faraday's second law with molar mass"
+    description="Calculate mass deposited using Faraday's second law with molar mass",
 )
 def faraday_second_law(
     current: float,
@@ -195,9 +204,10 @@ def faraday_second_law(
 
 @maxwell_cite(
     251,
-    part=2, chapter="Electrolysis",
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate electrochemical equivalent of a substance"
+    description="Calculate electrochemical equivalent of a substance",
 )
 def electrochemical_equivalent(
     molar_mass: float,
@@ -262,11 +272,14 @@ def electrochemical_equivalent(
 # EMF OF POLARIZATION (Arts. 253-256)
 # =============================================================================
 
+
 @maxwell_cite(
-    253, 254,
-    part=2, chapter="Electrolysis",
+    253,
+    254,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate EMF of polarization from electrolysis products"
+    description="Calculate EMF of polarization from electrolysis products",
 )
 def polarization_emf(
     reversible_potential: float,
@@ -321,7 +334,9 @@ def polarization_emf(
         electrokinetic theory (Arts. 243-248) laid the foundation for it.
     """
     if exchange_current_density <= 0:
-        raise ValueError(f"Exchange current density must be positive, got {exchange_current_density}")
+        raise ValueError(
+            f"Exchange current density must be positive, got {exchange_current_density}"
+        )
 
     # Gas constant in CGS (erg/(mol*K))
     R_GAS = 8.314462618e7  # erg/(mol*K)
@@ -338,16 +353,20 @@ def polarization_emf(
         activation_overpotential = 0.0
     else:
         ratio = current_density / (2.0 * exchange_current_density)
-        activation_overpotential = (thermal_voltage / n_electrons) * np.arcsinh(ratio) / transfer_coefficient
+        activation_overpotential = (
+            (thermal_voltage / n_electrons) * np.arcsinh(ratio) / transfer_coefficient
+        )
 
     return reversible_potential + activation_overpotential
 
 
 @maxwell_cite(
-    255, 256,
-    part=2, chapter="Electrolysis",
+    255,
+    256,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate decomposition voltage for electrolysis"
+    description="Calculate decomposition voltage for electrolysis",
 )
 def decomposition_voltage(
     reversible_emf: float,
@@ -404,11 +423,15 @@ def decomposition_voltage(
 # ELECTROLYTIC CONDUCTION (Arts. 257-263)
 # =============================================================================
 
+
 @maxwell_cite(
-    257, 258, 259,
-    part=2, chapter="Electrolysis",
+    257,
+    258,
+    259,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate ion migration velocity in electric field"
+    description="Calculate ion migration velocity in electric field",
 )
 def ion_migration_velocity(
     ion_mobility: float,
@@ -474,10 +497,12 @@ def ion_migration_velocity(
 
 
 @maxwell_cite(
-    260, 261,
-    part=2, chapter="Electrolysis",
+    260,
+    261,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate electrolyte conductivity from ion concentrations"
+    description="Calculate electrolyte conductivity from ion concentrations",
 )
 def electrolyte_conductivity(
     ion_concentrations: list[float],
@@ -544,10 +569,12 @@ def electrolyte_conductivity(
 
 
 @maxwell_cite(
-    262, 263,
-    part=2, chapter="Electrolysis",
+    262,
+    263,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate molar conductivity using Kohlrausch's law"
+    description="Calculate molar conductivity using Kohlrausch's law",
 )
 def kohlrausch_law(
     limiting_molar_conductivity: float,
@@ -597,7 +624,9 @@ def kohlrausch_law(
         >>> print(f"Molar conductivity: {Lambda_m:.2f}")
     """
     if limiting_molar_conductivity < 0:
-        raise ValueError(f"Limiting molar conductivity must be non-negative, got {limiting_molar_conductivity}")
+        raise ValueError(
+            f"Limiting molar conductivity must be non-negative, got {limiting_molar_conductivity}"
+        )
     if concentration < 0:
         raise ValueError(f"Concentration must be non-negative, got {concentration}")
 
@@ -605,10 +634,13 @@ def kohlrausch_law(
 
 
 @maxwell_cite(
-    260, 261, 262,
-    part=2, chapter="Electrolysis",
+    260,
+    261,
+    262,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate concentration polarization in electrolyte"
+    description="Calculate concentration polarization in electrolyte",
 )
 def concentration_polarization(
     bulk_concentration: float,
@@ -682,13 +714,21 @@ def concentration_polarization(
         >>> print(f"Concentration overpotential: {eta:.2e} abV")
     """
     if bulk_concentration < 0:
-        raise ValueError(f"Bulk concentration must be non-negative, got {bulk_concentration}")
+        raise ValueError(
+            f"Bulk concentration must be non-negative, got {bulk_concentration}"
+        )
     if surface_concentration < 0:
-        raise ValueError(f"Surface concentration must be non-negative, got {surface_concentration}")
+        raise ValueError(
+            f"Surface concentration must be non-negative, got {surface_concentration}"
+        )
     if diffusion_coefficient <= 0:
-        raise ValueError(f"Diffusion coefficient must be positive, got {diffusion_coefficient}")
+        raise ValueError(
+            f"Diffusion coefficient must be positive, got {diffusion_coefficient}"
+        )
     if diffusion_layer_thickness <= 0:
-        raise ValueError(f"Diffusion layer thickness must be positive, got {diffusion_layer_thickness}")
+        raise ValueError(
+            f"Diffusion layer thickness must be positive, got {diffusion_layer_thickness}"
+        )
 
     # Gas constant in CGS (erg/(mol*K))
     R_GAS = 8.314462618e7
@@ -701,16 +741,24 @@ def concentration_polarization(
 
     # Calculate limiting current density
     limiting_current = (
-        abs(charge_number) * FARADAY_CONSTANT * diffusion_coefficient * bulk_concentration / diffusion_layer_thickness
+        abs(charge_number)
+        * FARADAY_CONSTANT
+        * diffusion_coefficient
+        * bulk_concentration
+        / diffusion_layer_thickness
     )
 
     # Concentration overpotential
     if limiting_current > 0 and current_density < limiting_current:
         # Using the limiting current form
-        eta_conc = (thermal_voltage / abs(charge_number)) * np.log(1 - current_density / limiting_current)
+        eta_conc = (thermal_voltage / abs(charge_number)) * np.log(
+            1 - current_density / limiting_current
+        )
     elif surface_concentration > 0 and bulk_concentration > 0:
         # Direct concentration ratio form
-        eta_conc = (thermal_voltage / abs(charge_number)) * np.log(surface_concentration / bulk_concentration)
+        eta_conc = (thermal_voltage / abs(charge_number)) * np.log(
+            surface_concentration / bulk_concentration
+        )
     else:
         eta_conc = 0.0
 
@@ -718,10 +766,14 @@ def concentration_polarization(
 
 
 @maxwell_cite(
-    255, 256, 257, 258,
-    part=2, chapter="Electrolysis",
+    255,
+    256,
+    257,
+    258,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate back EMF in a voltaic battery"
+    description="Calculate back EMF in a voltaic battery",
 )
 def battery_back_emf(
     reversible_emf: float,
@@ -769,7 +821,9 @@ def battery_back_emf(
         >>> print(f"Terminal voltage: {V:.2e} abV")
     """
     if internal_resistance < 0:
-        raise ValueError(f"Internal resistance must be non-negative, got {internal_resistance}")
+        raise ValueError(
+            f"Internal resistance must be non-negative, got {internal_resistance}"
+        )
 
     ohmic_drop = current * internal_resistance
     polarization = polarization_coefficient * current
@@ -782,6 +836,7 @@ def battery_back_emf(
 # =============================================================================
 # ELECTROLYSIS CELL CLASS
 # =============================================================================
+
 
 @dataclass
 class ElectrolysisCell:
@@ -823,10 +878,14 @@ class ElectrolysisCell:
     internal_resistance: float = None
 
     @maxwell_cite(
-        249, 250, 251, 252,
-        part=2, chapter="Electrolysis",
+        249,
+        250,
+        251,
+        252,
+        part=2,
+        chapter="Electrolysis",
         theory_class="maxwell_original",
-        description="Calculate mass deposited for given current and time"
+        description="Calculate mass deposited for given current and time",
     )
     def calculate_mass_deposited(
         self,
@@ -866,10 +925,14 @@ class ElectrolysisCell:
         return faraday_second_law(current, time, M, n)
 
     @maxwell_cite(
-        253, 254, 255, 256,
-        part=2, chapter="Electrolysis",
+        253,
+        254,
+        255,
+        256,
+        part=2,
+        chapter="Electrolysis",
         theory_class="maxwell_original",
-        description="Calculate required voltage for electrolysis"
+        description="Calculate required voltage for electrolysis",
     )
     def calculate_required_voltage(
         self,
@@ -909,13 +972,17 @@ class ElectrolysisCell:
         else:
             ohmic_drop = 0.0
 
-        return decomposition_voltage(E_rev, anode_overpotential, cathode_overpotential, ohmic_drop)
+        return decomposition_voltage(
+            E_rev, anode_overpotential, cathode_overpotential, ohmic_drop
+        )
 
     @maxwell_cite(
-        260, 261,
-        part=2, chapter="Electrolysis",
+        260,
+        261,
+        part=2,
+        chapter="Electrolysis",
         theory_class="maxwell_original",
-        description="Calculate cell resistance from conductivity"
+        description="Calculate cell resistance from conductivity",
     )
     def calculate_cell_resistance(
         self,
@@ -951,7 +1018,11 @@ class ElectrolysisCell:
         """
         kappa = conductivity if conductivity is not None else self.conductivity
         A = electrode_area if electrode_area is not None else self.electrode_area
-        L = electrode_spacing if electrode_spacing is not None else self.electrode_spacing
+        L = (
+            electrode_spacing
+            if electrode_spacing is not None
+            else self.electrode_spacing
+        )
 
         if kappa is None:
             raise ValueError("Conductivity must be provided or set on instance")
@@ -966,6 +1037,7 @@ class ElectrolysisCell:
 # =============================================================================
 # ION DATA (Common Ions for Reference)
 # =============================================================================
+
 
 @dataclass(frozen=True)
 class IonData:
@@ -995,82 +1067,135 @@ class IonData:
 ION_DATA = {
     # Cations
     "H+": IonData(
-        symbol="H+", charge_number=1, molar_mass=1.008,
-        limiting_conductivity=349.8, mobility=36.23e-4
+        symbol="H+",
+        charge_number=1,
+        molar_mass=1.008,
+        limiting_conductivity=349.8,
+        mobility=36.23e-4,
     ),
     "Li+": IonData(
-        symbol="Li+", charge_number=1, molar_mass=6.94,
-        limiting_conductivity=38.7, mobility=4.01e-4
+        symbol="Li+",
+        charge_number=1,
+        molar_mass=6.94,
+        limiting_conductivity=38.7,
+        mobility=4.01e-4,
     ),
     "Na+": IonData(
-        symbol="Na+", charge_number=1, molar_mass=22.99,
-        limiting_conductivity=50.1, mobility=5.19e-4
+        symbol="Na+",
+        charge_number=1,
+        molar_mass=22.99,
+        limiting_conductivity=50.1,
+        mobility=5.19e-4,
     ),
     "K+": IonData(
-        symbol="K+", charge_number=1, molar_mass=39.10,
-        limiting_conductivity=73.5, mobility=7.62e-4
+        symbol="K+",
+        charge_number=1,
+        molar_mass=39.10,
+        limiting_conductivity=73.5,
+        mobility=7.62e-4,
     ),
     "NH4+": IonData(
-        symbol="NH4+", charge_number=1, molar_mass=18.04,
-        limiting_conductivity=73.5, mobility=7.62e-4
+        symbol="NH4+",
+        charge_number=1,
+        molar_mass=18.04,
+        limiting_conductivity=73.5,
+        mobility=7.62e-4,
     ),
     "Ag+": IonData(
-        symbol="Ag+", charge_number=1, molar_mass=107.87,
-        limiting_conductivity=61.9, mobility=6.42e-4
+        symbol="Ag+",
+        charge_number=1,
+        molar_mass=107.87,
+        limiting_conductivity=61.9,
+        mobility=6.42e-4,
     ),
     "Cu2+": IonData(
-        symbol="Cu2+", charge_number=2, molar_mass=63.55,
-        limiting_conductivity=54.0, mobility=2.80e-4
+        symbol="Cu2+",
+        charge_number=2,
+        molar_mass=63.55,
+        limiting_conductivity=54.0,
+        mobility=2.80e-4,
     ),
     "Zn2+": IonData(
-        symbol="Zn2+", charge_number=2, molar_mass=65.38,
-        limiting_conductivity=53.0, mobility=2.75e-4
+        symbol="Zn2+",
+        charge_number=2,
+        molar_mass=65.38,
+        limiting_conductivity=53.0,
+        mobility=2.75e-4,
     ),
     "Ca2+": IonData(
-        symbol="Ca2+", charge_number=2, molar_mass=40.08,
-        limiting_conductivity=59.0, mobility=3.06e-4
+        symbol="Ca2+",
+        charge_number=2,
+        molar_mass=40.08,
+        limiting_conductivity=59.0,
+        mobility=3.06e-4,
     ),
     "Mg2+": IonData(
-        symbol="Mg2+", charge_number=2, molar_mass=24.31,
-        limiting_conductivity=53.0, mobility=2.75e-4
+        symbol="Mg2+",
+        charge_number=2,
+        molar_mass=24.31,
+        limiting_conductivity=53.0,
+        mobility=2.75e-4,
     ),
     # Anions
     "OH-": IonData(
-        symbol="OH-", charge_number=-1, molar_mass=17.01,
-        limiting_conductivity=198.3, mobility=20.55e-4
+        symbol="OH-",
+        charge_number=-1,
+        molar_mass=17.01,
+        limiting_conductivity=198.3,
+        mobility=20.55e-4,
     ),
     "Cl-": IonData(
-        symbol="Cl-", charge_number=-1, molar_mass=35.45,
-        limiting_conductivity=76.3, mobility=7.91e-4
+        symbol="Cl-",
+        charge_number=-1,
+        molar_mass=35.45,
+        limiting_conductivity=76.3,
+        mobility=7.91e-4,
     ),
     "Br-": IonData(
-        symbol="Br-", charge_number=-1, molar_mass=79.90,
-        limiting_conductivity=78.1, mobility=8.09e-4
+        symbol="Br-",
+        charge_number=-1,
+        molar_mass=79.90,
+        limiting_conductivity=78.1,
+        mobility=8.09e-4,
     ),
     "I-": IonData(
-        symbol="I-", charge_number=-1, molar_mass=126.90,
-        limiting_conductivity=76.8, mobility=7.96e-4
+        symbol="I-",
+        charge_number=-1,
+        molar_mass=126.90,
+        limiting_conductivity=76.8,
+        mobility=7.96e-4,
     ),
     "NO3-": IonData(
-        symbol="NO3-", charge_number=-1, molar_mass=62.00,
-        limiting_conductivity=71.4, mobility=7.40e-4
+        symbol="NO3-",
+        charge_number=-1,
+        molar_mass=62.00,
+        limiting_conductivity=71.4,
+        mobility=7.40e-4,
     ),
     "SO4 2-": IonData(
-        symbol="SO4 2-", charge_number=-2, molar_mass=96.06,
-        limiting_conductivity=80.0, mobility=4.15e-4
+        symbol="SO4 2-",
+        charge_number=-2,
+        molar_mass=96.06,
+        limiting_conductivity=80.0,
+        mobility=4.15e-4,
     ),
     "CO3 2-": IonData(
-        symbol="CO3 2-", charge_number=-2, molar_mass=60.01,
-        limiting_conductivity=69.3, mobility=3.59e-4
+        symbol="CO3 2-",
+        charge_number=-2,
+        molar_mass=60.01,
+        limiting_conductivity=69.3,
+        mobility=3.59e-4,
     ),
 }
 
 
 @maxwell_cite(
-    262, 263,
-    part=2, chapter="Electrolysis",
+    262,
+    263,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Get ion data from reference database"
+    description="Get ion data from reference database",
 )
 def get_ion_data(ion_symbol: str) -> IonData:
     """Get reference data for a common ion.
@@ -1096,17 +1221,19 @@ def get_ion_data(ion_symbol: str) -> IonData:
     """
     if ion_symbol not in ION_DATA:
         available = list(ION_DATA.keys())
-        raise KeyError(
-            f"Ion '{ion_symbol}' not found. Available ions: {available}"
-        )
+        raise KeyError(f"Ion '{ion_symbol}' not found. Available ions: {available}")
     return ION_DATA[ion_symbol]
 
 
 @maxwell_cite(
-    260, 261, 262, 263,
-    part=2, chapter="Electrolysis",
+    260,
+    261,
+    262,
+    263,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate limiting molar conductivity of an electrolyte"
+    description="Calculate limiting molar conductivity of an electrolyte",
 )
 def limiting_molar_conductivity(
     cation_symbol: str,
@@ -1156,14 +1283,20 @@ def limiting_molar_conductivity(
     cation = get_ion_data(cation_symbol)
     anion = get_ion_data(anion_symbol)
 
-    return cation_stoichiometry * cation.limiting_conductivity + anion_stoichiometry * anion.limiting_conductivity
+    return (
+        cation_stoichiometry * cation.limiting_conductivity
+        + anion_stoichiometry * anion.limiting_conductivity
+    )
 
 
 @maxwell_cite(
-    257, 258, 259,
-    part=2, chapter="Electrolysis",
+    257,
+    258,
+    259,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Calculate transference number of an ion"
+    description="Calculate transference number of an ion",
 )
 def transference_number(
     cation_symbol: str,
@@ -1233,11 +1366,27 @@ def transference_number(
 # COMPREHENSIVE ANALYSIS FUNCTION
 # =============================================================================
 
+
 @maxwell_cite(
-    249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263,
-    part=2, chapter="Electrolysis",
+    249,
+    250,
+    251,
+    252,
+    253,
+    254,
+    255,
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Complete electrolysis analysis"
+    description="Complete electrolysis analysis",
 )
 def analyze_electrolysis(
     current: float,
@@ -1331,7 +1480,7 @@ def analyze_electrolysis(
     # Energy calculations
     energy = required_voltage * charge  # ergs (abvolt * abcoulomb)
     power = required_voltage * current  # ergs/s
-    energy_per_gram = energy / mass if mass > 0 else float('inf')
+    energy_per_gram = energy / mass if mass > 0 else float("inf")
 
     return {
         "mass_deposited": mass,
@@ -1353,11 +1502,16 @@ def analyze_electrolysis(
 # VERIFICATION AND VALIDATION FUNCTIONS
 # =============================================================================
 
+
 @maxwell_cite(
-    249, 250, 251, 252,
-    part=2, chapter="Electrolysis",
+    249,
+    250,
+    251,
+    252,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Verify Faraday's laws consistency"
+    description="Verify Faraday's laws consistency",
 )
 def verify_faradays_laws(
     tolerance: float = 1e-10,
@@ -1396,8 +1550,7 @@ def verify_faradays_laws(
     m3 = faraday_first_law(1.0, 200, Z)
 
     first_law_verified = (
-        abs(m2 - 2*m1) / m1 < tolerance and
-        abs(m3 - 2*m1) / m1 < tolerance
+        abs(m2 - 2 * m1) / m1 < tolerance and abs(m3 - 2 * m1) / m1 < tolerance
     )
 
     # Test 2: Second law - mass ∝ M/n
@@ -1409,7 +1562,9 @@ def verify_faradays_laws(
     # Ratio should equal ratio of equivalent weights
     expected_ratio = (107.87 / 1) / (63.55 / 2)
     actual_ratio = m_ag / m_cu
-    second_law_verified = abs(actual_ratio - expected_ratio) / expected_ratio < tolerance
+    second_law_verified = (
+        abs(actual_ratio - expected_ratio) / expected_ratio < tolerance
+    )
 
     # Test 3: Consistency between first and second law
     Z_ag = electrochemical_equivalent(107.87, 1)
@@ -1437,10 +1592,12 @@ def verify_faradays_laws(
 
 
 @maxwell_cite(
-    262, 263,
-    part=2, chapter="Electrolysis",
+    262,
+    263,
+    part=2,
+    chapter="Electrolysis",
     theory_class="maxwell_original",
-    description="Verify Kohlrausch's law of independent migration"
+    description="Verify Kohlrausch's law of independent migration",
 )
 def verify_kohlrausch_law(
     tolerance: float = 1e-10,
@@ -1498,10 +1655,10 @@ def verify_kohlrausch_law(
     divalent_verified = abs(Lambda_CuSO4 - (Lambda_Cu + Lambda_SO4)) < tolerance
 
     verified = (
-        additivity_verified and
-        transference_sum_verified and
-        common_ion_verified and
-        divalent_verified
+        additivity_verified
+        and transference_sum_verified
+        and common_ion_verified
+        and divalent_verified
     )
 
     return {
@@ -1592,7 +1749,9 @@ if __name__ == "__main__":
     for cation, anion in [("Na+", "Cl-"), ("K+", "Cl-"), ("Cu2+", "SO4 2-")]:
         Lambda = limiting_molar_conductivity(cation, anion)
         t = transference_number(cation, anion)
-        print(f"{cation}/{anion}: Lambda^0 = {Lambda:.1f}, t+ = {t['t_cation']:.3f}, t- = {t['t_anion']:.3f}")
+        print(
+            f"{cation}/{anion}: Lambda^0 = {Lambda:.1f}, t+ = {t['t_cation']:.3f}, t- = {t['t_anion']:.3f}"
+        )
 
     print("\n--- Concentration Polarization ---")
     eta = concentration_polarization(

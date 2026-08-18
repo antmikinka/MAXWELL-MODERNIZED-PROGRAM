@@ -10,19 +10,18 @@ Category: A (maxwell_original) — Maxwell's magnetic geometry.
 
 from __future__ import annotations
 
-from maxwell.geometry.solenoids import (
-    Solenoid,
-    ComplexSolenoid,
-    solenoid_potential,
-)
-
 from maxwell.geometry.shells import (
     MagneticShell,
+    shell_current_equivalence,
     shell_potential,
     shell_potential_alternative_proof,
     shell_potential_discontinuity,
-    shell_current_equivalence,
     work_moving_shell_in_field,
+)
+from maxwell.geometry.solenoids import (
+    ComplexSolenoid,
+    Solenoid,
+    solenoid_potential,
 )
 
 __all__ = [

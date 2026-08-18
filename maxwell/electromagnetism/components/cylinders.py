@@ -35,15 +35,18 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
-    680, 681,
-    part=4, chapter="Cylindrical Conductors",
+    680,
+    681,
+    part=4,
+    chapter="Cylindrical Conductors",
     theory_class="maxwell_original",
     description="Calculate magnetic field of cylindrical conductor",
 )
@@ -81,15 +84,17 @@ def calc_cylindrical_field(
 
     if r <= a:
         # Inside: B = 2*I*r/(c*a^2)
-        return 2.0 * current * r / (CONST.C * a ** 2)
+        return 2.0 * current * r / (CONST.C * a**2)
     else:
         # Outside: B = 2*I/(c*r)
         return 2.0 * current / (CONST.C * r)
 
 
 @maxwell_cite(
-    682, 683,
-    part=4, chapter="Cylindrical Conductors",
+    682,
+    683,
+    part=4,
+    chapter="Cylindrical Conductors",
     theory_class="maxwell_original",
     description="Calculate field of hollow cylindrical conductor",
 )
@@ -129,14 +134,16 @@ def calc_hollow_cylinder_field(
         return 0.0
     elif r <= b:
         # Inside the conductor wall
-        return 2.0 * current * (r ** 2 - a ** 2) / (CONST.C * r * (b ** 2 - a ** 2))
+        return 2.0 * current * (r**2 - a**2) / (CONST.C * r * (b**2 - a**2))
     else:
         return 2.0 * current / (CONST.C * r)
 
 
 @maxwell_cite(
-    684, 685,
-    part=4, chapter="Cylindrical Conductors",
+    684,
+    685,
+    part=4,
+    chapter="Cylindrical Conductors",
     theory_class="maxwell_original",
     description="Calculate self-inductance per unit length of wire",
 )
@@ -174,8 +181,10 @@ def calc_wire_self_inductance(
 
 
 @maxwell_cite(
-    686, 687,
-    part=4, chapter="Cylindrical Conductors",
+    686,
+    687,
+    part=4,
+    chapter="Cylindrical Conductors",
     theory_class="maxwell_original",
     description="Calculate vector potential inside cylindrical conductor",
 )
@@ -207,7 +216,7 @@ def calc_cylinder_vector_potential(
         return -current / CONST.C
 
     if r <= a:
-        return -current / CONST.C * (r ** 2 / a ** 2)
+        return -current / CONST.C * (r**2 / a**2)
     else:
         return -current / CONST.C * (1 + 2 * np.log(r / a))
 
@@ -231,7 +240,8 @@ class CylindricalConductor:
 
     @maxwell_cite(
         680,
-        part=4, chapter="Cylindrical Conductors",
+        part=4,
+        chapter="Cylindrical Conductors",
         theory_class="maxwell_original",
         description="Get field at radial distance",
     )
@@ -245,18 +255,25 @@ class CylindricalConductor:
 
     @maxwell_cite(
         686,
-        part=4, chapter="Cylindrical Conductors",
+        part=4,
+        chapter="Cylindrical Conductors",
         theory_class="maxwell_original",
         description="Get vector potential at radial distance",
     )
     def vector_potential_at(self, radial_distance: float) -> float:
         """Calculate vector potential at radial distance."""
-        return calc_cylinder_vector_potential(self.current, self.radius, radial_distance)
+        return calc_cylinder_vector_potential(
+            self.current, self.radius, radial_distance
+        )
 
 
 @maxwell_cite(
-    680, 681, 682, 683,
-    part=4, chapter="Cylindrical Conductors",
+    680,
+    681,
+    682,
+    683,
+    part=4,
+    chapter="Cylindrical Conductors",
     theory_class="maxwell_original",
     description="Verify cylindrical conductor field relations",
 )
@@ -298,7 +315,9 @@ def verify_cylindrical_field(
     continuity_error = abs(B_inside_surface - B_outside_surface) / B_inside_surface
 
     # Hollow cylinder: B = 0 for r < a
-    B_hollow_inside = calc_hollow_cylinder_field(current, radius, 2 * radius, radius / 2)
+    B_hollow_inside = calc_hollow_cylinder_field(
+        current, radius, 2 * radius, radius / 2
+    )
     hollow_error = abs(B_hollow_inside)
 
     return {
@@ -316,15 +335,23 @@ def verify_cylindrical_field(
         "continuity_verified": bool(continuity_error < 0.01),
         "hollow_verified": bool(hollow_error < tolerance),
         "verified": bool(
-            half_error < tolerance and double_error < tolerance
-            and continuity_error < 0.01 and hollow_error < tolerance
+            half_error < tolerance
+            and double_error < tolerance
+            and continuity_error < 0.01
+            and hollow_error < tolerance
         ),
     }
 
 
 @maxwell_cite(
-    680, 681, 682, 683, 684, 685,
-    part=4, chapter="Cylindrical Conductors",
+    680,
+    681,
+    682,
+    683,
+    684,
+    685,
+    part=4,
+    chapter="Cylindrical Conductors",
     theory_class="maxwell_original",
     description="Complete cylindrical conductor analysis",
 )

@@ -8,7 +8,7 @@ A computational reference library containing every formula from James Clerk Maxw
 
 The library uses CGS-EMU (centimeter-gram-second electromagnetic units) throughout, the system Maxwell himself employed. SI equivalents are available for reference and cross-checking.
 
-**165 modules. 1,174 functions. 244 classes. 522 tests. All passing.**
+**260 modules. 1,250+ functions. 270+ classes. 1542 tests. All passing.**
 
 ---
 
@@ -384,6 +384,99 @@ print(f"All Maxwell equations satisfied: {verified}")
 
 ---
 
+### 7. JAX GPU/TPU Acceleration & Advanced Computation
+
+The `maxwell.jax` package enables high-performance computing workflows that are not possible with the standard NumPy-based library. Install with `pip install maxwell[accel]`.
+
+#### GPU-Accelerated Batch Field Evaluation
+
+Evaluate fields at thousands of points simultaneously on GPU/TPU:
+
+```python
+import jax
+from maxwell.jax.core.charge import PointChargeJAX
+
+jax.config.update("jax_enable_x64", True)
+
+# Single charge
+charge = PointChargeJAX(q=1.0, position=jax.numpy.array([0.0, 0.0, 0.0]))
+
+# Batched evaluation over 100,000 points on GPU
+points = jax.numpy.linspace(-100, 100, 300000).reshape(-1, 3)
+E_batch = charge.field_at_batched(points)  # shape (100000, 3)
+```
+
+#### Automatic Differentiation for Field Sensitivity
+
+Compute exact gradients of any Maxwell computation:
+
+```python
+from jax import grad
+from maxwell.jax.core.charge import PointChargeJAX
+
+# dV/dq: how does potential change with charge?
+V_at = lambda q: PointChargeJAX(q=q, position=jax.numpy.zeros(3)).potential_at(
+    jax.numpy.array([1.0, 0.0, 0.0])
+)
+dVdq = grad(V_at)(1.0)  # = 1.0 statvolt/esu
+
+# d(energy)/d(E_x): sensitivity of electrostatic energy to field component
+from maxwell.jax.electromagnetism.energy import ElectrostaticEnergyJAX
+dU_dEx = grad(lambda Ex: ElectrostaticEnergyJAX._density_jit(
+    jax.numpy.array([Ex, 0.0, 0.0]), 1.0
+))(100.0)
+```
+
+#### JIT-Compiled Repeated Evaluation
+
+Compile kernels for repeated use in simulation loops:
+
+```python
+from jax import jit
+
+@jit
+def field_on_grid(q, pos, point):
+    c = PointChargeJAX(q=q, position=pos)
+    return c.field_at(point)
+
+# First call compiles, subsequent calls use compiled XLA kernel
+for step in range(10000):
+    E = field_on_grid(q, pos, point)
+```
+
+#### Parameter Sweeps with vmap
+
+Vectorize across parameter dimensions:
+
+```python
+from jax import vmap
+
+# Evaluate field from charges at multiple positions simultaneously
+charges_vmap = vmap(PointChargeJAX, in_axes=(0, 0))
+positions = jax.numpy.array([[0, 0, 0], [1, 0, 0], [2, 0, 0]])
+q_values = jax.numpy.array([1.0, 2.0, 3.0])
+charges = charges_vmap(q_values, positions)
+```
+
+#### Network Analysis on Accelerators
+
+Solve large conductance matrices with JAX linear algebra:
+
+```python
+from maxwell.jax.electromagnetism.network_solver import NetworkSolverJAX
+
+# 100-node network solved on GPU
+solver = NetworkSolverJAX.from_edges(
+    n_nodes=100,
+    edges=[(i, i+1, 0.1) for i in range(99)],
+    current_sources=[(0, 1.0), (99, -1.0)],
+    reference_node=0,
+)
+V = solver.node_potentials  # solved via jax.numpy.linalg.solve
+```
+
+---
+
 ## What This Library Is NOT
 
 Honesty about limitations is important for choosing the right tool.
@@ -554,8 +647,8 @@ print(f"Hysteresis loss: {loss:.2f} erg/s")
 
 ```bash
 # Clone and install
-git clone https://github.com/maxwell-treatise/modernized-program.git
-cd modernized-program
+git clone https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM.git
+cd MAXWELL-MODERNIZED-PROGRAM
 pip install -e ".[dev]"
 
 # Run the test suite to verify installation

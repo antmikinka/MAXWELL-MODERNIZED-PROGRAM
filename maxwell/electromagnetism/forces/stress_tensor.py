@@ -35,10 +35,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -98,7 +99,8 @@ class MaxwellStressTensor:
 
     @maxwell_cite(
         641,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate full stress tensor T_ij",
     )
@@ -129,7 +131,10 @@ class MaxwellStressTensor:
         for i in range(3):
             for j in range(3):
                 # E_i E_j + H_i H_j term
-                field_product = self.E_field[i] * self.E_field[j] + self.H_field[i] * self.H_field[j]
+                field_product = (
+                    self.E_field[i] * self.E_field[j]
+                    + self.H_field[i] * self.H_field[j]
+                )
 
                 # Full tensor component
                 if i == j:
@@ -141,7 +146,8 @@ class MaxwellStressTensor:
 
     @maxwell_cite(
         641,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate specific tensor component T_ij",
     )
@@ -167,7 +173,9 @@ class MaxwellStressTensor:
             raise ValueError(f"Indices must be 0, 1, or 2, got i={i}, j={j}")
 
         # E_i E_j + H_i H_j
-        field_product = self.E_field[i] * self.E_field[j] + self.H_field[i] * self.H_field[j]
+        field_product = (
+            self.E_field[i] * self.E_field[j] + self.H_field[i] * self.H_field[j]
+        )
 
         # Kronecker delta term
         delta_ij = 1.0 if i == j else 0.0
@@ -176,15 +184,20 @@ class MaxwellStressTensor:
         E_sq = self.E_squared
         H_sq = self.H_squared
 
-        return (field_product / (4.0 * np.pi)) - (delta_ij * (E_sq + H_sq) / (8.0 * np.pi))
+        return (field_product / (4.0 * np.pi)) - (
+            delta_ij * (E_sq + H_sq) / (8.0 * np.pi)
+        )
 
     @maxwell_cite(
         642,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Calculate force density from stress divergence",
     )
-    def force_density(self, grad_E: np.ndarray = None, grad_H: np.ndarray = None) -> np.ndarray:
+    def force_density(
+        self, grad_E: np.ndarray = None, grad_H: np.ndarray = None
+    ) -> np.ndarray:
         """
         Calculate electromagnetic force density from stress tensor divergence.
 
@@ -221,7 +234,8 @@ class MaxwellStressTensor:
     @classmethod
     @maxwell_cite(
         641,
-        part=4, chapter="Energy in the Electromagnetic Field",
+        part=4,
+        chapter="Energy in the Electromagnetic Field",
         theory_class="maxwell_original",
         description="Create stress tensor from E and H fields",
     )
@@ -251,7 +265,8 @@ class MaxwellStressTensor:
 
 @maxwell_cite(
     641,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate Maxwell stress tensor: T_ij = (1/4π)[E_i E_j + H_i H_j - (1/2)δ_ij(E² + H²)]",
 )
@@ -323,7 +338,8 @@ def calc_maxwell_stress_tensor(
 
 @maxwell_cite(
     641,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate electric stress tensor: T_ij = (1/4π)[E_i E_j - (1/2)δ_ij E²]",
 )
@@ -375,7 +391,8 @@ def calc_electric_stress_tensor(
 
 @maxwell_cite(
     641,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate magnetic stress tensor: T_ij = (1/4π)[H_i H_j - (1/2)δ_ij H²]",
 )
@@ -427,7 +444,8 @@ def calc_magnetic_stress_tensor(
 
 @maxwell_cite(
     643,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate electromagnetic pressure: P = (1/8π)(E² + H²)",
 )
@@ -473,7 +491,8 @@ def calc_electromagnetic_pressure(
 
 @maxwell_cite(
     642,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate force density: f = ∇ · T",
 )
@@ -509,7 +528,8 @@ def calc_force_density_from_stress(
 
 @maxwell_cite(
     644,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate surface force: F = ∮ T · dA",
 )
@@ -572,7 +592,8 @@ def calc_surface_force(
 
 @maxwell_cite(
     644,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate force on surface from uniform field stress",
 )
@@ -617,7 +638,8 @@ def calc_force_on_surface(
 
 @maxwell_cite(
     641,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate tension along field line",
 )
@@ -647,7 +669,8 @@ def calc_field_line_tension(
 
 @maxwell_cite(
     641,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate pressure perpendicular to field lines",
 )
@@ -676,8 +699,12 @@ def calc_field_line_pressure(
 
 
 @maxwell_cite(
-    641, 642, 643, 644,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    641,
+    642,
+    643,
+    644,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Verify stress tensor properties",
 )
@@ -749,8 +776,12 @@ def verify_stress_tensor_properties(
 
 
 @maxwell_cite(
-    641, 642, 643, 644,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    641,
+    642,
+    643,
+    644,
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Complete stress tensor analysis",
 )
@@ -829,7 +860,8 @@ def analyze_stress_tensor(
 
 @maxwell_cite(
     644,
-    part=4, chapter="Energy in the Electromagnetic Field",
+    part=4,
+    chapter="Energy in the Electromagnetic Field",
     theory_class="maxwell_original",
     description="Calculate force on charged conductor surface",
 )

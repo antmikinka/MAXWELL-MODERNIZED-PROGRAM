@@ -31,10 +31,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -56,7 +57,8 @@ class VolumeCharge:
 
     @maxwell_cite(
         612,
-        part=4, chapter="Volume Charge",
+        part=4,
+        chapter="Volume Charge",
         theory_class="maxwell_original",
         description="Calculate charge density from D field divergence",
     )
@@ -98,7 +100,8 @@ class VolumeCharge:
 
     @maxwell_cite(
         612,
-        part=4, chapter="Volume Charge",
+        part=4,
+        chapter="Volume Charge",
         theory_class="maxwell_original",
         description="Calculate total charge in volume",
     )
@@ -145,7 +148,8 @@ class VolumeCharge:
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Calculate charge density: ρ = div(D)/(4π)",
 )
@@ -175,7 +179,8 @@ def calc_volume_charge_density(
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Calculate charge density from E field divergence",
 )
@@ -205,7 +210,8 @@ def calc_charge_density_from_E(
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Calculate total charge from uniform density",
 )
@@ -235,7 +241,8 @@ def calc_total_charge_uniform(
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Calculate charge in sphere with uniform density",
 )
@@ -263,13 +270,14 @@ def calc_charge_in_sphere(
     if radius <= 0:
         return 0.0
 
-    volume = (4.0 / 3.0) * np.pi * radius ** 3
+    volume = (4.0 / 3.0) * np.pi * radius**3
     return charge_density * volume
 
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Calculate E field from uniform charged sphere",
 )
@@ -306,11 +314,11 @@ def calc_field_from_charged_sphere(
 
     if r >= sphere_radius:
         # Outside: point charge field
-        E_mag = total_charge / (r ** 2)
+        E_mag = total_charge / (r**2)
     else:
         # Inside: linear field
         if sphere_radius > 0:
-            E_mag = total_charge * r / (sphere_radius ** 3)
+            E_mag = total_charge * r / (sphere_radius**3)
         else:
             E_mag = 0.0
 
@@ -319,7 +327,8 @@ def calc_field_from_charged_sphere(
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Verify Gauss's law for volume charge",
 )
@@ -348,15 +357,19 @@ def verify_gauss_law_volume(
 
     # Flux through surface at r > R
     r_test = 2.0 * sphere_radius
-    E_surface = calc_field_from_charged_sphere(Q, sphere_radius, np.array([r_test, 0, 0]))
+    E_surface = calc_field_from_charged_sphere(
+        Q, sphere_radius, np.array([r_test, 0, 0])
+    )
 
     # Flux = E * 4πr²
-    flux = np.linalg.norm(E_surface) * 4.0 * np.pi * r_test ** 2
+    flux = np.linalg.norm(E_surface) * 4.0 * np.pi * r_test**2
 
     # Gauss's law: flux = 4πQ
     expected_flux = 4.0 * np.pi * Q
 
-    flux_error = abs(flux - expected_flux) / abs(expected_flux) if expected_flux != 0 else 0
+    flux_error = (
+        abs(flux - expected_flux) / abs(expected_flux) if expected_flux != 0 else 0
+    )
 
     return {
         "charge_density": charge_density,
@@ -373,7 +386,8 @@ def verify_gauss_law_volume(
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Complete volume charge analysis",
 )
@@ -403,7 +417,9 @@ def analyze_volume_charge(
     if callable(charge_density):
         # Numerical integration
         vc = VolumeCharge()
-        total_charge = vc.total_charge_in_volume(charge_density, volume_bounds, n_points=20)
+        total_charge = vc.total_charge_in_volume(
+            charge_density, volume_bounds, n_points=20
+        )
         avg_density = total_charge / volume if volume > 0 else 0
     else:
         total_charge = charge_density * volume
@@ -419,7 +435,8 @@ def analyze_volume_charge(
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Verify continuity equation",
 )
@@ -467,7 +484,8 @@ def verify_continuity_equation(
 
 @maxwell_cite(
     612,
-    part=4, chapter="Volume Charge",
+    part=4,
+    chapter="Volume Charge",
     theory_class="maxwell_original",
     description="Verify charge conservation",
 )

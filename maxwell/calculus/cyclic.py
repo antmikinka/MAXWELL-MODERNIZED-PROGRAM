@@ -25,10 +25,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -59,7 +60,8 @@ class CyclicFunction:
     @classmethod
     @maxwell_cite(
         422,
-        part=3, chapter="Cyclic Functions",
+        part=3,
+        chapter="Cyclic Functions",
         theory_class="maxwell_original",
         description="Create cyclic function from solid angle",
     )
@@ -107,7 +109,8 @@ class CyclicFunction:
 
 @maxwell_cite(
     417,
-    part=3, chapter="Solid Angles",
+    part=3,
+    chapter="Solid Angles",
     theory_class="maxwell_original",
     description="Calculate solid angle of closed curve",
 )
@@ -173,14 +176,15 @@ def calc_solid_angle_closed_curve(
 
         # (r × dl) · r̂ / r²
         cross = np.cross(r_mid, dl)
-        Omega += float(np.dot(cross, r_mid)) / (r_mag ** 3)
+        Omega += float(np.dot(cross, r_mid)) / (r_mag**3)
 
     return Omega
 
 
 @maxwell_cite(
     418,
-    part=3, chapter="Solid Angles",
+    part=3,
+    chapter="Solid Angles",
     theory_class="maxwell_original",
     description="Solid angle as spherical curve area",
 )
@@ -273,7 +277,8 @@ def solid_angle_as_sphere_curve(
 
 @maxwell_cite(
     419,
-    part=3, chapter="Solid Angles",
+    part=3,
+    chapter="Solid Angles",
     theory_class="maxwell_original",
     description="Gauss's double line integral for solid angle",
 )
@@ -340,14 +345,15 @@ def solid_angle_double_line_integral(
 
             # (dl1 × dl2) · r̂ / r²
             cross = np.cross(dl1, dl2)
-            integral += float(np.dot(cross, r_vec)) / (r_mag ** 3)
+            integral += float(np.dot(cross, r_vec)) / (r_mag**3)
 
     return integral
 
 
 @maxwell_cite(
     420,
-    part=3, chapter="Solid Angles",
+    part=3,
+    chapter="Solid Angles",
     theory_class="maxwell_original",
     description="Determinant formulation of solid angle",
 )
@@ -417,7 +423,8 @@ def solid_angle_determinant(
 
 @maxwell_cite(
     421,
-    part=3, chapter="Cyclic Functions",
+    part=3,
+    chapter="Cyclic Functions",
     theory_class="maxwell_original",
     description="Vector potential of closed curve via solid angle",
 )
@@ -476,7 +483,8 @@ def vector_potential_closed_curve(
 
 @maxwell_cite(
     422,
-    part=3, chapter="Cyclic Functions",
+    part=3,
+    chapter="Cyclic Functions",
     theory_class="maxwell_original",
     description="Cyclic function period for magnetic shell",
 )
@@ -509,8 +517,14 @@ def magnetic_shell_potential_jump(
 
 
 @maxwell_cite(
-    417, 418, 419, 420, 421, 422,
-    part=3, chapter="Solid Angles and Cyclic Functions",
+    417,
+    418,
+    419,
+    420,
+    421,
+    422,
+    part=3,
+    chapter="Solid Angles and Cyclic Functions",
     theory_class="maxwell_original",
     description="Solid angle of planar loop",
 )

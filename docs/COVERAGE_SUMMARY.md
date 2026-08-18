@@ -1,17 +1,17 @@
 # Maxwell Modernized - Coverage Summary
 
-**Generated:** 2026-04-12  
+**Generated:** 2026-05-06 (Cycle 12)  
 **Total Articles in Treatise:** 866  
 **Articles Covered:** 866  
 **Coverage:** 100%  
-**Test Status:** 522/522 tests passing (100%)  
+**Test Status:** 1795/1795 tests passing (100%) -- 629 core + 847 JAX + 66 SymPy + 232 visualization + 21 dynamics  
 **Math Validation:** 50/50 checks passing (100%)
 
 ---
 
 ## Executive Summary
 
-The Maxwell Modernized project has successfully modernized **100%** of Maxwell's Treatise on Electricity and Magnetism. The codebase contains **165 Python modules** with **1,174 functions** and **244 classes**, all traceable to Maxwell's original articles via the `@maxwell_cite` decorator system.
+The Maxwell Modernized project has successfully modernized **100%** of Maxwell's Treatise on Electricity and Magnetism. The codebase contains **290 Python modules** with **2,904 functions** and **290 classes**, all traceable to Maxwell's original articles via the `@maxwell_cite` decorator system.
 
 ### Coverage by Part
 
@@ -52,7 +52,7 @@ The Maxwell Modernized project has successfully modernized **100%** of Maxwell's
 
 ### Coverage Status
 
-All 126 articles in Part I are fully covered with implementations and tests.
+All 126 articles in Part I are fully covered with implementations and tests. All 4 Part I visualizations are implemented (field lines, equipotentials, method of images, edge singularities). Part II now has 3 visualizations (dielectric soakage, flow tubes, thermal gradients). Part III now has 3 visualizations (hysteresis loops, magnetic shell, spherical harmonics). Part IV now has 5 visualizations (stress tensor, EM wave propagation, helicoidal potentials, molecular vortices, electrotonic state). All classical visualization gaps are now closed (15/15 classical visualizations complete). Cycle 12 added citation decorators to base visualization modules, exported 3 additional functions, unified type annotations, added 5 example scripts, and 8 rendering validation tests (1795 total tests, 56 vis exports).
 
 ---
 
@@ -271,16 +271,17 @@ python -m maxwell.meta.citation --article 528
 
 ## Coverage Milestones
 
-### Final Status (2026-04-12)
+### Final Status (2026-05-06)
 
 | Metric | Value | Status |
 |--------|-------|--------|
 | Article Coverage | 866/866 | 100% Complete |
-| Test Coverage | 522/522 | 100% Passing |
+| Test Coverage | 1795/1795 | 100% Passing |
 | Math Validation | 50/50 | 100% Passing |
-| Module Count | 165 | Complete |
-| Function Count | 1,174 | Complete |
-| Class Count | 244 | Complete |
+| Module Count | 290 | Complete |
+| Function Count | 2,904 | Complete |
+| Class Count | 290 | Complete |
+| Vis Exports | 56 | Complete |
 
 ### Version History
 
@@ -324,6 +325,7 @@ python -m maxwell.meta.citation --article 528
 | circuits | 1 | 10 | 2 | 7 |
 | components | 2 | 11 | 5 | 8 |
 | config | 2 | 6 | 4 | 2 |
+| dynamics | 2 | 5 | 1 | Layer 52 |
 | core | 9 | 46 | 23 | 64 |
 | electrokinematics | 10 | 102 | 13 | 125 |
 | electromagnetism | 54 | 418 | 71 | 269 |
@@ -348,9 +350,88 @@ python -m maxwell.meta.citation --article 528
 | solvers | 2 | 12 | 4 | 5 |
 | theories | 1 | 8 | 1 | 3 |
 | verification | 3 | 0 | 6 | 0 |
+| vis | 15 | 56 | 0 | -- |
+| notebooks | 3 | -- | -- | -- |
 | vortex_engine | 5 | 9 | 3 | 10 |
-| **TOTAL** | **165** | **1,174** | **244** | **866** |
+| **TOTAL** | **290** | **2,904** | **290** | **866** |
 
 ---
+
+---
+
+## JAX Adapter Coverage
+
+The `maxwell.jax` package provides JAX-accelerated versions of core calculations, covering all four Parts of the Treatise:
+
+### Part I: Electrostatics (JAX)
+
+| JAX Adapter | Articles | Tests |
+|---|---|---|
+| PointChargeJAX | 29-30 | 9 |
+
+### Part II: Electrokinematics (JAX)
+
+| JAX Adapter | Articles | Tests |
+|---|---|---|
+| OhmsLawJAX | 230-234 | 15 |
+| ResistanceJAX | 273-284, 359-362 | 20 |
+| ConductivityJAX | 285-288 | 15 |
+| PowerDissipationJAX | 230 | 10 |
+| NetworkSolverJAX | 276-280 | 25 |
+| KirchhoffJAX | 273-275 | 10 |
+| WheatstoneBridgeJAX | 281-284 | 15 |
+| ReciprocityVerifierJAX | 277-278 | 10 |
+| Conduction3DJAX | 285-288 | 15 |
+| SpreadingResistanceJAX | 297-309 | 20 |
+| EffectiveConductivityJAX | 310-324 | 15 |
+| FaradayLawsJAX | 249-252 | 20 |
+| IonTransportJAX | 257-263 | 15 |
+| PolarizationJAX | 253-256 | 15 |
+| ElectrolysisCellJAX | 249-263 | 15 |
+| JouleHeatingJAX | 351-358 | 25 |
+| HeatDissipationJAX | 351-358 | 20 |
+| SubstanceResistanceJAX | 359-370 | 15 |
+
+### Part III: Magnetism (JAX)
+
+| JAX Adapter | Articles | Tests |
+|---|---|---|
+| MagneticPoleJAX | 371 | 8 |
+| MagnetJAX | 372-376, 392 | 15 |
+
+### Part IV: Electromagnetism (JAX)
+
+| JAX Adapter | Articles | Tests |
+|---|---|---|
+| FaradayInductionJAX | 528-531, 542 | 16 |
+| MaxwellEquationsJAX | 594-603 | 11 |
+| LorentzForceJAX | 490-492 | 13 |
+| MaxwellStressTensorJAX | 641-646 | 13 |
+| DisplacementCurrentJAX | 606-607 | 10 |
+| AmpereMaxwellLawJAX | 606-607 | 10 |
+| ElectricFieldJAX | 44-49, 68-76 | 14 |
+| ElectrokineticEnergyJAX | 634-638 | 30 |
+| CoupledCircuitEnergyJAX | 634-638 | 31 |
+| MagneticEnergyJAX | 639-640 | 25 |
+| InductorEnergyJAX | 639-640 | 25 |
+| ElectrostaticEnergyJAX | 630-631 | 30 |
+| CapacitorEnergyJAX | 630-631 | 30 |
+
+### Mathematics (JAX)
+
+| JAX Adapter | Articles | Tests |
+|---|---|---|
+| SphericalHarmonicExpansionJAX | 128-146 | 14 |
+| ellipk_jax, ellipe_jax | 149-152 | 8 |
+
+### JAX Infrastructure
+
+| Module | Tests |
+|---|---|
+| Pytree registration | 3 |
+| Safe arithmetic | 5 |
+| JAX special functions | 7 |
+
+**Total JAX tests:** 847
 
 *Generated by SCRIBA - Documentation & Technical Writing Agent*

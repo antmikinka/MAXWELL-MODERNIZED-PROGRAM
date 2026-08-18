@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "mcp__clear-thought-server__sequentialthinking",
-      "mcp__sequential-thinking__sequentialthinking"
-    ]
-  }
-}

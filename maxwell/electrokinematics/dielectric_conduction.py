@@ -37,23 +37,26 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, Optional
-import numpy as np
 from functools import wraps
+from typing import Callable, Optional
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST, C
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # DIELECTRIC CONDUCTIVITY (Arts. 325-326)
 # =============================================================================
 
+
 @maxwell_cite(
-    325, 326,
-    part=2, chapter="Conduction in Dielectric Media",
+    325,
+    326,
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Finite conductivity of insulating materials"
+    description="Finite conductivity of insulating materials",
 )
 def dielectric_conductivity(
     material: str = None,
@@ -159,7 +162,7 @@ def dielectric_conductivity(
         # AC conductivity from loss tangent
         omega = 2 * np.pi * frequency
         # In CGS-EMU, epsilon_0 = 1/(c^2) where c is speed of light in cm/s
-        epsilon_0_emu = 1.0 / (C ** 2)
+        epsilon_0_emu = 1.0 / (C**2)
         epsilon = epsilon_0_emu * permittivity
         sigma_ac = omega * epsilon * loss_tangent
         sigma_dc = sigma_ac
@@ -169,11 +172,11 @@ def dielectric_conductivity(
         result["note"] = "Default conductivity for ideal insulator"
 
     result["conductivity"] = sigma_dc
-    result["resistivity"] = 1.0 / sigma_dc if sigma_dc > 0 else float('inf')
+    result["resistivity"] = 1.0 / sigma_dc if sigma_dc > 0 else float("inf")
 
     if frequency is not None and loss_tangent is not None:
         omega = 2 * np.pi * frequency
-        epsilon_0_emu = 1.0 / (C ** 2)
+        epsilon_0_emu = 1.0 / (C**2)
         epsilon = epsilon_0_emu * permittivity
         result["loss_conductivity"] = omega * epsilon * loss_tangent
         result["angular_frequency"] = omega
@@ -186,11 +189,14 @@ def dielectric_conductivity(
 # LEAKAGE CURRENT DENSITY (Arts. 327-328)
 # =============================================================================
 
+
 @maxwell_cite(
-    327, 328,
-    part=2, chapter="Conduction in Dielectric Media",
+    327,
+    328,
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Leakage current through dielectric under electric field"
+    description="Leakage current through dielectric under electric field",
 )
 def leakage_current_density(
     electric_field: np.ndarray,
@@ -276,11 +282,14 @@ def leakage_current_density(
 # DIELECTRIC ABSORPTION (Arts. 329-330)
 # =============================================================================
 
+
 @maxwell_cite(
-    329, 330,
-    part=2, chapter="Conduction in Dielectric Media",
+    329,
+    330,
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Time-dependent dielectric absorption (soakage)"
+    description="Time-dependent dielectric absorption (soakage)",
 )
 def dielectric_absorption(
     voltage: float,
@@ -356,7 +365,9 @@ def dielectric_absorption(
     # Calculate absorbed charge
     absorbed_charge = 0.0
     for a_i, tau_i in absorption_constants:
-        absorbed_charge += nominal_charge * a_i * (1.0 - np.exp(-absorption_time / tau_i))
+        absorbed_charge += (
+            nominal_charge * a_i * (1.0 - np.exp(-absorption_time / tau_i))
+        )
 
     if initial_charge is not None:
         absorbed_charge += initial_charge
@@ -377,10 +388,12 @@ def dielectric_absorption(
 
 
 @maxwell_cite(
-    329, 330,
-    part=2, chapter="Conduction in Dielectric Media",
+    329,
+    330,
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Absorption current decay after voltage step"
+    description="Absorption current decay after voltage step",
 )
 def absorption_current(
     voltage: float,
@@ -480,11 +493,13 @@ def absorption_current(
 # RESIDUAL CHARGE (Art. 331)
 # =============================================================================
 
+
 @maxwell_cite(
     331,
-    part=2, chapter="Conduction in Dielectric Media",
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Residual charge after capacitor discharge"
+    description="Residual charge after capacitor discharge",
 )
 def residual_charge(
     initial_voltage: float,
@@ -585,9 +600,10 @@ def residual_charge(
 
 @maxwell_cite(
     331,
-    part=2, chapter="Conduction in Dielectric Media",
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Voltage recovery after open circuit"
+    description="Voltage recovery after open circuit",
 )
 def residual_charge_recovery(
     initial_voltage: float,
@@ -684,11 +700,14 @@ def residual_charge_recovery(
 # LAYERED DIELECTRICS (Arts. 332-333)
 # =============================================================================
 
+
 @maxwell_cite(
-    332, 333,
-    part=2, chapter="Conduction in Dielectric Media",
+    332,
+    333,
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Multi-layer dielectric with conduction and absorption"
+    description="Multi-layer dielectric with conduction and absorption",
 )
 def layered_dielectric(
     layer_thicknesses: list[float],
@@ -774,7 +793,9 @@ def layered_dielectric(
         resistance_area = np.sum(layer_thicknesses / layer_conductivities)
         current_density = applied_voltage / resistance_area
     else:
-        current_density = applied_field * layer_conductivities[0]  # Not quite right for multi-layer
+        current_density = (
+            applied_field * layer_conductivities[0]
+        )  # Not quite right for multi-layer
 
     # Field in each layer: E_i = J / sigma_i
     field_per_layer = current_density / layer_conductivities
@@ -787,7 +808,7 @@ def layered_dielectric(
 
     # Interface charges (from discontinuity in D = epsilon * E)
     interface_charges = []
-    epsilon_0_emu = 1.0 / (C ** 2)
+    epsilon_0_emu = 1.0 / (C**2)
     for i in range(n - 1):
         D_i = epsilon_0_emu * layer_permittivities[i] * field_per_layer[i]
         D_ip1 = epsilon_0_emu * layer_permittivities[i + 1] * field_per_layer[i + 1]
@@ -813,11 +834,13 @@ def layered_dielectric(
 # COMPOSITE DIELECTRIC CONDUCTIVITY (Art. 334)
 # =============================================================================
 
+
 @maxwell_cite(
     334,
-    part=2, chapter="Conduction in Dielectric Media",
+    part=2,
+    chapter="Conduction in Dielectric Media",
     theory_class="maxwell_original",
-    description="Effective conductivity of heterogeneous dielectric"
+    description="Effective conductivity of heterogeneous dielectric",
 )
 def composite_dielectric_conductivity(
     matrix_conductivity: float,
@@ -892,16 +915,27 @@ def composite_dielectric_conductivity(
         >>> print(f"Enhancement = {result['enhancement_factor']:.1f}x")
     """
     if not 0 <= volume_fraction <= 1:
-        raise ValueError(f"Volume fraction must be between 0 and 1, got {volume_fraction}")
+        raise ValueError(
+            f"Volume fraction must be between 0 and 1, got {volume_fraction}"
+        )
 
     # Conductivity ratio
-    cond_ratio = inclusion_conductivity / matrix_conductivity if matrix_conductivity > 0 else float('inf')
+    cond_ratio = (
+        inclusion_conductivity / matrix_conductivity
+        if matrix_conductivity > 0
+        else float("inf")
+    )
 
     # Maxwell-Garnett formula for spherical inclusions
     if inclusion_shape == "sphere":
         # Full Maxwell-Garnett formula
-        numerator = 2 * (1 - volume_fraction) * matrix_conductivity + (1 + 2 * volume_fraction) * inclusion_conductivity
-        denominator = (2 + volume_fraction) * matrix_conductivity + (1 - volume_fraction) * inclusion_conductivity
+        numerator = (
+            2 * (1 - volume_fraction) * matrix_conductivity
+            + (1 + 2 * volume_fraction) * inclusion_conductivity
+        )
+        denominator = (2 + volume_fraction) * matrix_conductivity + (
+            1 - volume_fraction
+        ) * inclusion_conductivity
 
         if abs(denominator) > 1e-15:
             effective_conductivity = matrix_conductivity * numerator / denominator
@@ -910,11 +944,15 @@ def composite_dielectric_conductivity(
 
     elif inclusion_shape == "needle":
         # Needle parallel to field: simple parallel combination
-        effective_conductivity = (1 - volume_fraction) * matrix_conductivity + volume_fraction * inclusion_conductivity
+        effective_conductivity = (
+            1 - volume_fraction
+        ) * matrix_conductivity + volume_fraction * inclusion_conductivity
 
     elif inclusion_shape == "disk":
         # Disk perpendicular to field: series combination
-        inv_sigma_eff = (1 - volume_fraction) / matrix_conductivity + volume_fraction / inclusion_conductivity
+        inv_sigma_eff = (
+            1 - volume_fraction
+        ) / matrix_conductivity + volume_fraction / inclusion_conductivity
         effective_conductivity = 1.0 / inv_sigma_eff if inv_sigma_eff > 0 else 0.0
 
     elif inclusion_shape == "random":
@@ -932,7 +970,7 @@ def composite_dielectric_conductivity(
             B = a + b - 3 * f * (b - a) - 2 * a
             C = -a * b
 
-            discriminant = B ** 2 - 4 * A * C
+            discriminant = B**2 - 4 * A * C
             if discriminant >= 0:
                 sigma_eff1 = (-B + np.sqrt(discriminant)) / (2 * A)
                 sigma_eff2 = (-B - np.sqrt(discriminant)) / (2 * A)
@@ -946,11 +984,24 @@ def composite_dielectric_conductivity(
         raise ValueError(f"Unknown inclusion_shape: {inclusion_shape}")
 
     # Effective permittivity (same formula structure)
-    perm_num = 2 * (1 - volume_fraction) * matrix_permittivity + (1 + 2 * volume_fraction) * inclusion_permittivity
-    perm_den = (2 + volume_fraction) * matrix_permittivity + (1 - volume_fraction) * inclusion_permittivity
-    effective_permittivity = matrix_permittivity * perm_num / perm_den if abs(perm_den) > 1e-15 else inclusion_permittivity
+    perm_num = (
+        2 * (1 - volume_fraction) * matrix_permittivity
+        + (1 + 2 * volume_fraction) * inclusion_permittivity
+    )
+    perm_den = (2 + volume_fraction) * matrix_permittivity + (
+        1 - volume_fraction
+    ) * inclusion_permittivity
+    effective_permittivity = (
+        matrix_permittivity * perm_num / perm_den
+        if abs(perm_den) > 1e-15
+        else inclusion_permittivity
+    )
 
-    enhancement_factor = effective_conductivity / matrix_conductivity if matrix_conductivity > 0 else float('inf')
+    enhancement_factor = (
+        effective_conductivity / matrix_conductivity
+        if matrix_conductivity > 0
+        else float("inf")
+    )
 
     return {
         "effective_conductivity": effective_conductivity,
@@ -967,6 +1018,7 @@ def composite_dielectric_conductivity(
 # =============================================================================
 # DIELECTRIC-CONDUCTOR CLASS
 # =============================================================================
+
 
 @dataclass
 class DielectricConductor:
@@ -994,10 +1046,17 @@ class DielectricConductor:
     temperature: float = 293.15
 
     @maxwell_cite(
-        325, 326, 327, 328, 329, 330, 331,
-        part=2, chapter="Conduction in Dielectric Media",
+        325,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331,
+        part=2,
+        chapter="Conduction in Dielectric Media",
         theory_class="maxwell_original",
-        description="Initialize real dielectric model"
+        description="Initialize real dielectric model",
     )
     def __post_init__(self):
         """Validate and initialize the dielectric model."""
@@ -1010,13 +1069,17 @@ class DielectricConductor:
         if not self.absorption_branches:
             # G_abs and C_abs such that tau = C_abs/G_abs = 10s
             # and G_abs/G_leak represents absorption fraction
-            self.absorption_branches = [(self.leakage_conductance * 0.05, self.capacitance * 0.05)]
+            self.absorption_branches = [
+                (self.leakage_conductance * 0.05, self.capacitance * 0.05)
+            ]
 
     @maxwell_cite(
-        327, 328,
-        part=2, chapter="Conduction in Dielectric Media",
+        327,
+        328,
+        part=2,
+        chapter="Conduction in Dielectric Media",
         theory_class="maxwell_original",
-        description="Calculate steady-state leakage current"
+        description="Calculate steady-state leakage current",
     )
     def leakage_current(self, voltage: float) -> float:
         """
@@ -1031,10 +1094,12 @@ class DielectricConductor:
         return self.leakage_conductance * voltage
 
     @maxwell_cite(
-        329, 330,
-        part=2, chapter="Conduction in Dielectric Media",
+        329,
+        330,
+        part=2,
+        chapter="Conduction in Dielectric Media",
         theory_class="maxwell_original",
-        description="Calculate absorption current at time t"
+        description="Calculate absorption current at time t",
     )
     def absorption_current(self, voltage: float, time: float) -> float:
         """
@@ -1049,15 +1114,16 @@ class DielectricConductor:
         """
         I_abs = 0.0
         for G_abs, C_abs in self.absorption_branches:
-            tau = C_abs / G_abs if G_abs > 0 else float('inf')
+            tau = C_abs / G_abs if G_abs > 0 else float("inf")
             I_abs += (voltage * G_abs) * np.exp(-time / tau)
         return I_abs
 
     @maxwell_cite(
         331,
-        part=2, chapter="Conduction in Dielectric Media",
+        part=2,
+        chapter="Conduction in Dielectric Media",
         theory_class="maxwell_original",
-        description="Calculate residual charge after discharge"
+        description="Calculate residual charge after discharge",
     )
     def residual_charge_after_discharge(
         self,
@@ -1078,7 +1144,7 @@ class DielectricConductor:
         """
         Q_residual = 0.0
         for G_abs, C_abs in self.absorption_branches:
-            tau = C_abs / G_abs if G_abs > 0 else float('inf')
+            tau = C_abs / G_abs if G_abs > 0 else float("inf")
             # Charge absorbed during charging
             Q_abs = charge_voltage * C_abs * (1 - np.exp(-charge_time / tau))
             # Fraction remaining after discharge
@@ -1086,10 +1152,17 @@ class DielectricConductor:
         return Q_residual
 
     @maxwell_cite(
-        325, 326, 327, 328, 329, 330, 331,
-        part=2, chapter="Conduction in Dielectric Media",
+        325,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331,
+        part=2,
+        chapter="Conduction in Dielectric Media",
         theory_class="maxwell_original",
-        description="Full time-domain response to voltage step"
+        description="Full time-domain response to voltage step",
     )
     def step_response(
         self,
@@ -1125,7 +1198,7 @@ class DielectricConductor:
         I_abs = np.zeros(n_times)
         Q_abs = np.zeros(n_times)
         for G_abs, C_abs in self.absorption_branches:
-            tau = C_abs / G_abs if G_abs > 0 else float('inf')
+            tau = C_abs / G_abs if G_abs > 0 else float("inf")
             I_abs += (voltage * G_abs) * np.exp(-times / tau)
             Q_abs += voltage * C_abs * (1 - np.exp(-times / tau))
 
@@ -1146,10 +1219,17 @@ class DielectricConductor:
         }
 
     @maxwell_cite(
-        325, 326, 327, 328, 329, 330, 331,
-        part=2, chapter="Conduction in Dielectric Media",
+        325,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331,
+        part=2,
+        chapter="Conduction in Dielectric Media",
         theory_class="maxwell_original",
-        description="Extract equivalent circuit parameters"
+        description="Extract equivalent circuit parameters",
     )
     def equivalent_circuit(self) -> dict[str, float]:
         """
@@ -1162,12 +1242,16 @@ class DielectricConductor:
             - absorption_branches: List of (R_abs, C_abs) tuples
             - time_constants: List of tau = R*C for each branch
         """
-        R_leak = 1.0 / self.leakage_conductance if self.leakage_conductance > 0 else float('inf')
+        R_leak = (
+            1.0 / self.leakage_conductance
+            if self.leakage_conductance > 0
+            else float("inf")
+        )
 
         abs_branches = []
         time_constants = []
         for G_abs, C_abs in self.absorption_branches:
-            R_abs = 1.0 / G_abs if G_abs > 0 else float('inf')
+            R_abs = 1.0 / G_abs if G_abs > 0 else float("inf")
             tau = R_abs * C_abs
             abs_branches.append((R_abs, C_abs))
             time_constants.append(tau)
@@ -1212,7 +1296,7 @@ if __name__ == "__main__":
         voltage=100,
         capacitance=1.0,
         absorption_time=10.0,
-        absorption_constants=[(0.05, 5.0), (0.03, 30.0)]
+        absorption_constants=[(0.05, 5.0), (0.03, 30.0)],
     )
     print(f"  C = 1 abF, V = 100 abV, t = 10 s")
     print(f"    Q_nominal = {result['nominal_charge']} abC")
@@ -1222,10 +1306,7 @@ if __name__ == "__main__":
     # Test absorption current
     print("\n--- Absorption Current (Arts. 329-330) ---")
     result = absorption_current(
-        voltage=100,
-        capacitance=1.0,
-        time=5.0,
-        absorption_constants=[(0.05, 10.0)]
+        voltage=100, capacitance=1.0, time=5.0, absorption_constants=[(0.05, 10.0)]
     )
     print(f"  t = 5 s:")
     print(f"    I_abs = {result['absorption_current']:.6f} abA")
@@ -1238,7 +1319,7 @@ if __name__ == "__main__":
         initial_voltage=100,
         capacitance=1.0,
         discharge_time=30.0,
-        absorption_constants=[(0.05, 10.0)]
+        absorption_constants=[(0.05, 10.0)],
     )
     print(f"  After 30 s discharge:")
     print(f"    Q_residual = {result['residual_charge']:.4f} abC")
@@ -1251,7 +1332,7 @@ if __name__ == "__main__":
         capacitance=1.0,
         open_circuit_time=60.0,
         absorption_constants=[(0.05, 10.0)],
-        charge_time=100.0
+        charge_time=100.0,
     )
     print(f"  After 60 s open circuit:")
     print(f"    V_recovered = {result['recovered_voltage']:.4f} abV")
@@ -1263,7 +1344,7 @@ if __name__ == "__main__":
         layer_thicknesses=[0.1, 0.2],
         layer_conductivities=[1e-12, 1e-14],
         layer_permittivities=[5.0, 6.0],
-        applied_voltage=1000
+        applied_voltage=1000,
     )
     print(f"  Two-layer: d1=0.1cm (sigma=1e-12), d2=0.2cm (sigma=1e-14)")
     print(f"    J = {result['current_density']:.2e} abA/cm²")
@@ -1279,7 +1360,7 @@ if __name__ == "__main__":
         inclusion_conductivity=1e-10,
         inclusion_permittivity=10.0,
         volume_fraction=0.2,
-        inclusion_shape="sphere"
+        inclusion_shape="sphere",
     )
     print(f"  Spherical inclusions (f=0.2) in matrix:")
     print(f"    sigma_eff = {result['effective_conductivity']:.2e} S/cm")
@@ -1288,16 +1369,14 @@ if __name__ == "__main__":
     # Test DielectricConductor class
     print("\n--- DielectricConductor Class ---")
     diel = DielectricConductor(
-        capacitance=1.0,
-        leakage_conductance=1e-12,
-        absorption_branches=[(5e-14, 5e-13)]
+        capacitance=1.0, leakage_conductance=1e-12, absorption_branches=[(5e-14, 5e-13)]
     )
     print(f"  C = 1 abF, G_leak = 1e-12 S")
     print(f"  Leakage at 100 abV: I = {diel.leakage_current(100):.2e} abA")
     print(f"  Absorption at t=10s: I = {diel.absorption_current(100, 10):.2e} abA")
     response = diel.step_response(100, times=np.array([0.1, 1.0, 10.0, 100.0]))
     print(f"  Step response:")
-    for t, I in zip(response['times'], response['total_current']):
+    for t, I in zip(response["times"], response["total_current"]):
         print(f"    t={t:.1f}s: I={I:.2e} abA")
 
     print("\n" + "=" * 70)

@@ -1,0 +1,33 @@
+include README.md
+include LICENSE
+include LICENSE-CONTENT
+include CHANGELOG.md
+include CITATION.cff
+include pyproject.toml
+
+recursive-include notebooks *.ipynb
+recursive-include maxwell *.py *.json *.md
+recursive-include tests *.py
+
+# Released scholarly docs and archive live in the git repository under
+# CC BY 4.0 (LICENSE-CONTENT). They are not part of the Python sdist.
+prune docs
+prune paper
+prune archive
+
+# Generated caches and agent/tooling trees stay out of the package.
+prune page_verifier
+prune agents
+prune chroma_data
+prune audit_logs
+prune build
+prune dist
+prune .claude
+prune .playwright-mcp
+
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.egg-info
+global-exclude .pytest_cache
+global-exclude .benchmarks
+global-exclude *.egg

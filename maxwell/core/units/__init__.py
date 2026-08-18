@@ -15,22 +15,21 @@ from __future__ import annotations
 from maxwell.core.units.dimensions import (
     Dimension,
     ElectromagneticUnit,
-    ESUDimensions,
     EMUDimensions,
-    get_esu_dimensions,
-    get_emu_dimensions,
+    ESUDimensions,
     calc_unit_ratio,
-    verify_speed_of_light_relationship,
-    convert_esu_to_emu,
     convert_emu_to_esu,
+    convert_esu_to_emu,
+    get_emu_dimensions,
+    get_esu_dimensions,
     get_practical_unit_conversions,
     verify_dimensional_consistency,
+    verify_speed_of_light_relationship,
 )
-
 from maxwell.core.units.units import (
+    CONVERTER,
     CGSUnitConverter,
     MagneticDimensions,
-    CONVERTER,
 )
 
 __all__ = [

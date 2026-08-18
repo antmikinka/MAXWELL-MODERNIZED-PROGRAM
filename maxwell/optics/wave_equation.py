@@ -48,10 +48,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -96,7 +97,9 @@ class ElectromagneticWave:
         self.wavevector = np.asarray(self.wavevector, dtype=np.float64)
 
         if self.angular_frequency < 0:
-            raise ValueError(f"Angular frequency must be non-negative, got {self.angular_frequency}")
+            raise ValueError(
+                f"Angular frequency must be non-negative, got {self.angular_frequency}"
+            )
         if self.permittivity <= 0:
             raise ValueError(f"Permittivity must be positive, got {self.permittivity}")
         if self.permeability <= 0:
@@ -115,7 +118,7 @@ class ElectromagneticWave:
         """
         k_mag = np.linalg.norm(self.wavevector)
         if k_mag < 1e-15:
-            return float('inf')
+            return float("inf")
         return 2.0 * np.pi / k_mag
 
     @property
@@ -178,8 +181,15 @@ class ElectromagneticWave:
 
     @classmethod
     @maxwell_cite(
-        781, 782, 783, 784, 785, 786, 787,
-        part=4, chapter="Electromagnetic Theory of Light",
+        781,
+        782,
+        783,
+        784,
+        785,
+        786,
+        787,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create EM wave from E amplitude, k, and ω",
     )
@@ -241,8 +251,11 @@ class ElectromagneticWave:
 
     @classmethod
     @maxwell_cite(
-        785, 786, 787,
-        part=4, chapter="Electromagnetic Theory of Light",
+        785,
+        786,
+        787,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create plane wave with given polarization and propagation",
     )
@@ -333,11 +346,14 @@ class ElectromagneticWave:
 
     @maxwell_cite(
         785,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Evaluate E and B fields at position and time",
     )
-    def evaluate(self, position: np.ndarray, time: float) -> tuple[np.ndarray, np.ndarray]:
+    def evaluate(
+        self, position: np.ndarray, time: float
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         Evaluate electric and magnetic fields at given position and time.
 
@@ -378,7 +394,8 @@ class ElectromagneticWave:
 
     @maxwell_cite(
         789,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate energy density u = (1/8π)(E² + B²)",
     )
@@ -419,11 +436,14 @@ class ElectromagneticWave:
 
     @maxwell_cite(
         788,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate Poynting vector S = (c/4π) E × B",
     )
-    def poynting_vector(self, position: np.ndarray = None, time: float = 0.0) -> np.ndarray:
+    def poynting_vector(
+        self, position: np.ndarray = None, time: float = 0.0
+    ) -> np.ndarray:
         """
         Calculate Poynting vector (energy flux density).
 
@@ -456,8 +476,10 @@ class ElectromagneticWave:
         return (CONST.C / (4.0 * np.pi)) * np.cross(E_field, B_field)
 
     @maxwell_cite(
-        788, 789,
-        part=4, chapter="Electromagnetic Theory of Light",
+        788,
+        789,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate wave intensity I = <|S|>",
     )
@@ -524,12 +546,17 @@ class PlaneWave:
         self.k = np.asarray(self.k, dtype=np.float64)
 
         if self.omega < 0:
-            raise ValueError(f"Angular frequency must be non-negative, got {self.omega}")
+            raise ValueError(
+                f"Angular frequency must be non-negative, got {self.omega}"
+            )
 
     @classmethod
     @maxwell_cite(
-        783, 784, 785,
-        part=4, chapter="Electromagnetic Theory of Light",
+        783,
+        784,
+        785,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create plane wave from E₀, k, ω",
     )
@@ -561,12 +588,18 @@ class PlaneWave:
         Reference:
             Part IV, Arts. 783-785: Plane wave formulation.
         """
-        return cls(E0=E0, k=k, omega=omega,
-                   permittivity=permittivity, permeability=permeability)
+        return cls(
+            E0=E0,
+            k=k,
+            omega=omega,
+            permittivity=permittivity,
+            permeability=permeability,
+        )
 
     @maxwell_cite(
         785,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Evaluate E and B at position and time",
     )
@@ -620,7 +653,8 @@ class PlaneWave:
 
     @maxwell_cite(
         789,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate energy density u = (1/8π)(E² + B²)",
     )
@@ -657,11 +691,14 @@ class PlaneWave:
 
     @maxwell_cite(
         788,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate Poynting vector S = (c/4π) E × B",
     )
-    def poynting_vector(self, position: np.ndarray = None, time: float = 0.0) -> np.ndarray:
+    def poynting_vector(
+        self, position: np.ndarray = None, time: float = 0.0
+    ) -> np.ndarray:
         """
         Calculate Poynting vector (energy flux).
 
@@ -689,8 +726,10 @@ class PlaneWave:
         return (CONST.C / (4.0 * np.pi)) * np.cross(E_field, B_field)
 
     @maxwell_cite(
-        788, 789,
-        part=4, chapter="Electromagnetic Theory of Light",
+        788,
+        789,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate intensity I = <|S|>",
     )
@@ -712,7 +751,8 @@ class PlaneWave:
 
 @maxwell_cite(
     783,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Derive wave equation from Maxwell's equations in vacuum",
 )
@@ -780,7 +820,8 @@ def derive_wave_equation_from_maxwell() -> dict[str, str]:
 
 @maxwell_cite(
     784,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wave speed v = c/√(με)",
 )
@@ -835,7 +876,8 @@ def calc_wave_speed(permittivity: float, permeability: float) -> float:
 
 @maxwell_cite(
     790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wavelength λ = v/ν",
 )
@@ -886,7 +928,8 @@ def calc_wavelength(frequency: float, speed: float) -> float:
 
 @maxwell_cite(
     785,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate plane wave E field: E(r,t) = E₀ cos(k·r - ωt)",
 )
@@ -951,8 +994,10 @@ def calc_plane_wave_E(
 
 
 @maxwell_cite(
-    786, 787,
-    part=4, chapter="Electromagnetic Theory of Light",
+    786,
+    787,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate B field from E: B = (c/ω) k × E",
 )
@@ -1007,7 +1052,8 @@ def calc_plane_wave_B_from_E(
 
 @maxwell_cite(
     788,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate Poynting vector S = (c/4π) E × B",
 )
@@ -1050,7 +1096,8 @@ def calc_poynting_vector(E_field: np.ndarray, B_field: np.ndarray) -> np.ndarray
 
 @maxwell_cite(
     789,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate energy density u = (1/8π)(E² + B²)",
 )
@@ -1099,8 +1146,10 @@ def calc_energy_density(E_field: np.ndarray, B_field: np.ndarray) -> float:
 
 
 @maxwell_cite(
-    788, 789,
-    part=4, chapter="Electromagnetic Theory of Light",
+    788,
+    789,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate wave intensity I = (c/8π) E₀²",
 )
@@ -1142,11 +1191,14 @@ def calc_wave_intensity(E_amplitude: np.ndarray) -> float:
 
 @maxwell_cite(
     786,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify transversality k·E = 0",
 )
-def verify_transversality(wavevector: np.ndarray, E_field: np.ndarray, tolerance: float = 1e-10) -> dict[str, float | bool]:
+def verify_transversality(
+    wavevector: np.ndarray, E_field: np.ndarray, tolerance: float = 1e-10
+) -> dict[str, float | bool]:
     """
     Verify that an electromagnetic wave is transverse.
 
@@ -1200,7 +1252,11 @@ def verify_transversality(wavevector: np.ndarray, E_field: np.ndarray, tolerance
         angle_deg = 90.0  # Undefined, assume perpendicular
 
     # Verify transversality
-    normalized_error = abs(dot_product) / (k_mag * E_mag) if (k_mag > 1e-15 and E_mag > 1e-15) else abs(dot_product)
+    normalized_error = (
+        abs(dot_product) / (k_mag * E_mag)
+        if (k_mag > 1e-15 and E_mag > 1e-15)
+        else abs(dot_product)
+    )
     is_transverse = abs(dot_product) < tolerance * k_mag * E_mag
     verified = is_transverse
 
@@ -1216,8 +1272,10 @@ def verify_transversality(wavevector: np.ndarray, E_field: np.ndarray, tolerance
 
 
 @maxwell_cite(
-    783, 784,
-    part=4, chapter="Electromagnetic Theory of Light",
+    783,
+    784,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify EM wave speed equals speed of light",
 )
@@ -1302,8 +1360,14 @@ def verify_speed_equals_c(tolerance: float = 1e-10) -> dict[str, float | bool | 
 
 
 @maxwell_cite(
-    785, 786, 787, 788, 789, 790,
-    part=4, chapter="Electromagnetic Theory of Light",
+    785,
+    786,
+    787,
+    788,
+    789,
+    790,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete analysis of electromagnetic wave",
 )
@@ -1376,11 +1440,13 @@ def analyze_wave(
 
     # Wave properties
     k_mag = np.linalg.norm(k)
-    wavelength = 2.0 * np.pi / k_mag if k_mag > 1e-15 else float('inf')
+    wavelength = 2.0 * np.pi / k_mag if k_mag > 1e-15 else float("inf")
     frequency = omega / (2.0 * np.pi)
     wave_speed = omega / k_mag if k_mag > 1e-15 else 0.0
     expected_speed = CONST.C / np.sqrt(permittivity * permeability)
-    speed_verified = np.isclose(wave_speed, expected_speed, rtol=1e-10) if k_mag > 1e-15 else False
+    speed_verified = (
+        np.isclose(wave_speed, expected_speed, rtol=1e-10) if k_mag > 1e-15 else False
+    )
 
     # Field evaluation
     E_field = None
@@ -1401,10 +1467,10 @@ def analyze_wave(
     E_mag = np.linalg.norm(E0)
     if omega > 1e-15 and k_mag > 1e-15:
         B_mag = k_mag * E_mag / omega  # |B| = |k||E|/ω
-        E_B_ratio = E_mag / B_mag if B_mag > 1e-15 else float('inf')
+        E_B_ratio = E_mag / B_mag if B_mag > 1e-15 else float("inf")
     else:
         B_mag = 0.0
-        E_B_ratio = float('inf')
+        E_B_ratio = float("inf")
 
     # Poynting vector (using amplitudes)
     if omega > 1e-15:
@@ -1479,7 +1545,8 @@ class WaveEquationCalculator:
 
     @maxwell_cite(
         783,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Derive wave equation from Maxwell's equations",
     )
@@ -1499,7 +1566,8 @@ class WaveEquationCalculator:
 
     @maxwell_cite(
         784,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate wave speed",
     )
@@ -1519,7 +1587,8 @@ class WaveEquationCalculator:
 
     @maxwell_cite(
         785,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Create plane wave",
     )
@@ -1562,8 +1631,10 @@ class WaveEquationCalculator:
         )
 
     @maxwell_cite(
-        788, 789,
-        part=4, chapter="Electromagnetic Theory of Light",
+        788,
+        789,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate intensity from E amplitude",
     )
@@ -1586,11 +1657,14 @@ class WaveEquationCalculator:
 
     @maxwell_cite(
         786,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Verify wave transversality",
     )
-    def verify_transverse(self, k: np.ndarray, E: np.ndarray, tolerance: float = 1e-10) -> dict:
+    def verify_transverse(
+        self, k: np.ndarray, E: np.ndarray, tolerance: float = 1e-10
+    ) -> dict:
         """
         Verify wave transversality (k ⊥ E).
 
@@ -1610,8 +1684,10 @@ class WaveEquationCalculator:
         return verify_transversality(k, E, tolerance)
 
     @maxwell_cite(
-        783, 784,
-        part=4, chapter="Electromagnetic Theory of Light",
+        783,
+        784,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Verify EM wave speed equals c",
     )
@@ -1632,12 +1708,20 @@ class WaveEquationCalculator:
         """
         result = verify_speed_equals_c(tolerance)
         result["medium_wave_speed"] = self.wave_speed
-        result["medium_refractive_index"] = np.sqrt(self.permittivity * self.permeability)
+        result["medium_refractive_index"] = np.sqrt(
+            self.permittivity * self.permeability
+        )
         return result
 
     @maxwell_cite(
-        785, 786, 787, 788, 789, 790,
-        part=4, chapter="Electromagnetic Theory of Light",
+        785,
+        786,
+        787,
+        788,
+        789,
+        790,
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Complete wave analysis",
     )

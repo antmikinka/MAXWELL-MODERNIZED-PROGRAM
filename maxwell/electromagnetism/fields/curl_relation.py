@@ -31,10 +31,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 def _numerical_curl(F_func: callable, position: np.ndarray, delta: float) -> np.ndarray:
@@ -80,7 +81,9 @@ def _numerical_curl(F_func: callable, position: np.ndarray, delta: float) -> np.
     return curl
 
 
-def _numerical_divergence(F_func: callable, position: np.ndarray, delta: float) -> float:
+def _numerical_divergence(
+    F_func: callable, position: np.ndarray, delta: float
+) -> float:
     """Calculate numerical divergence of vector field F.
 
     div F = dFx/dx + dFy/dy + dFz/dz
@@ -99,7 +102,9 @@ def _numerical_divergence(F_func: callable, position: np.ndarray, delta: float) 
     return div
 
 
-def _numerical_gradient(f_func: callable, position: np.ndarray, delta: float) -> np.ndarray:
+def _numerical_gradient(
+    f_func: callable, position: np.ndarray, delta: float
+) -> np.ndarray:
     """Calculate numerical gradient of scalar field f."""
     grad = np.zeros(3)
 
@@ -136,8 +141,10 @@ class CurlRelations:
     delta: float = 1e-6
 
     @maxwell_cite(
-        590, 591,
-        part=4, chapter="Curl Relations",
+        590,
+        591,
+        part=4,
+        chapter="Curl Relations",
         theory_class="maxwell_original",
         description="Calculate B = curl(A)",
     )
@@ -155,11 +162,14 @@ class CurlRelations:
         """
         if self.A_function is None:
             return np.zeros(3)
-        return _numerical_curl(self.A_function, np.asarray(position, dtype=np.float64), self.delta)
+        return _numerical_curl(
+            self.A_function, np.asarray(position, dtype=np.float64), self.delta
+        )
 
     @maxwell_cite(
         590,
-        part=4, chapter="Curl Relations",
+        part=4,
+        chapter="Curl Relations",
         theory_class="maxwell_original",
         description="Verify div(B) = 0",
     )
@@ -194,8 +204,10 @@ class CurlRelations:
 
 
 @maxwell_cite(
-    590, 591,
-    part=4, chapter="Curl Relations",
+    590,
+    591,
+    part=4,
+    chapter="Curl Relations",
     theory_class="maxwell_original",
     description="Verify B = curl(A) relation",
 )
@@ -242,12 +254,14 @@ def verify_curl_relation(
         rel_error = error / B_mag if B_mag > 1e-15 else error
 
         errors.append(rel_error)
-        results.append({
-            "position": pos,
-            "B_calculated": B_calc,
-            "B_expected": B_exp,
-            "relative_error": rel_error,
-        })
+        results.append(
+            {
+                "position": pos,
+                "B_calculated": B_calc,
+                "B_expected": B_exp,
+                "relative_error": rel_error,
+            }
+        )
 
     max_error = max(errors) if errors else 0
 
@@ -262,7 +276,8 @@ def verify_curl_relation(
 
 @maxwell_cite(
     590,
-    part=4, chapter="Curl Relations",
+    part=4,
+    chapter="Curl Relations",
     theory_class="maxwell_original",
     description="Verify curl(grad(phi)) = 0",
 )
@@ -318,8 +333,10 @@ def verify_curl_gradient_identity(
 
 
 @maxwell_cite(
-    591, 592,
-    part=4, chapter="Curl Relations",
+    591,
+    592,
+    part=4,
+    chapter="Curl Relations",
     theory_class="maxwell_original",
     description="Verify div(B) = 0 for vector potential",
 )
@@ -368,8 +385,11 @@ def verify_divergence_free_B(
 
 
 @maxwell_cite(
-    590, 591, 592,
-    part=4, chapter="Curl Relations",
+    590,
+    591,
+    592,
+    part=4,
+    chapter="Curl Relations",
     theory_class="maxwell_original",
     description="Calculate curl of vector field",
 )
@@ -397,8 +417,10 @@ def calc_curl(
 
 
 @maxwell_cite(
-    590, 591,
-    part=4, chapter="Curl Relations",
+    590,
+    591,
+    part=4,
+    chapter="Curl Relations",
     theory_class="maxwell_original",
     description="Calculate divergence of vector field",
 )
@@ -426,8 +448,10 @@ def calc_divergence(
 
 
 @maxwell_cite(
-    591, 592,
-    part=4, chapter="Curl Relations",
+    591,
+    592,
+    part=4,
+    chapter="Curl Relations",
     theory_class="maxwell_original",
     description="Verify gauge invariance of B field",
 )
@@ -488,8 +512,11 @@ def verify_gauge_invariance(
 
 
 @maxwell_cite(
-    590, 591, 592,
-    part=4, chapter="Curl Relations",
+    590,
+    591,
+    592,
+    part=4,
+    chapter="Curl Relations",
     theory_class="maxwell_original",
     description="Complete curl relation analysis",
 )

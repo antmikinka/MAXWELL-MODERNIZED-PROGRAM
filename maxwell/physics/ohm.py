@@ -14,6 +14,7 @@ References:
 """
 
 from __future__ import annotations
+
 from maxwell.meta.citation import maxwell_cite
 
 

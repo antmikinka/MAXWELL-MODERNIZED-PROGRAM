@@ -39,10 +39,11 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -80,12 +81,14 @@ def _parallel_wire_force(
     """
     if separation < 1e-15:
         return 0.0
-    return 2.0 * current1 * current2 * wire_length / (CONST.C ** 2 * separation)
+    return 2.0 * current1 * current2 * wire_length / (CONST.C**2 * separation)
 
 
 @maxwell_cite(
-    579, 580,
-    part=4, chapter="Current Balance",
+    579,
+    580,
+    part=4,
+    chapter="Current Balance",
     theory_class="maxwell_original",
     description="Simulate Ampere's current balance experiment",
 )
@@ -136,8 +139,10 @@ def simulate_ampere_balance(
 
 
 @maxwell_cite(
-    581, 582,
-    part=4, chapter="Current Balance",
+    581,
+    582,
+    part=4,
+    chapter="Current Balance",
     theory_class="maxwell_original",
     description="Calculate force vs separation curve",
 )
@@ -161,13 +166,17 @@ def force_vs_separation(
     if separations is None:
         separations = [0.5, 1.0, 2.0, 5.0, 10.0, 20.0]
 
-    forces = [_parallel_wire_force(current, current, wire_length, d) for d in separations]
+    forces = [
+        _parallel_wire_force(current, current, wire_length, d) for d in separations
+    ]
     return list(separations), forces
 
 
 @maxwell_cite(
-    582, 583,
-    part=4, chapter="Current Balance",
+    582,
+    583,
+    part=4,
+    chapter="Current Balance",
     theory_class="maxwell_original",
     description="Calculate force vs current curve",
 )
@@ -196,8 +205,14 @@ def force_vs_current(
 
 
 @maxwell_cite(
-    579, 580, 581, 582, 583, 584,
-    part=4, chapter="Current Balance",
+    579,
+    580,
+    581,
+    582,
+    583,
+    584,
+    part=4,
+    chapter="Current Balance",
     theory_class="maxwell_original",
     description="Verify Ampere's force law",
 )
@@ -228,15 +243,15 @@ def verify_ampere_balance(
     F0 = _parallel_wire_force(current, current, wire_length, separation)
 
     # Double current -> 4x force
-    F_2I = _parallel_wire_force(2*current, 2*current, wire_length, separation)
+    F_2I = _parallel_wire_force(2 * current, 2 * current, wire_length, separation)
     current_squared = abs(F_2I / F0 - 4.0) < tolerance if abs(F0) > 1e-15 else True
 
     # Double length -> 2x force
-    F_2L = _parallel_wire_force(current, current, 2*wire_length, separation)
+    F_2L = _parallel_wire_force(current, current, 2 * wire_length, separation)
     length_linear = abs(F_2L / F0 - 2.0) < tolerance if abs(F0) > 1e-15 else True
 
     # Double separation -> 1/2 force
-    F_2d = _parallel_wire_force(current, current, wire_length, 2*separation)
+    F_2d = _parallel_wire_force(current, current, wire_length, 2 * separation)
     inverse_distance = abs(F_2d / F0 - 0.5) < tolerance if abs(F0) > 1e-15 else True
 
     # Opposite currents -> repulsive (sign check)
@@ -252,13 +267,21 @@ def verify_ampere_balance(
         "length_linear": bool(length_linear),
         "inverse_distance": bool(inverse_distance),
         "opposite_currents_repel": bool(opposite_sign),
-        "verified": bool(current_squared and length_linear and inverse_distance and opposite_sign),
+        "verified": bool(
+            current_squared and length_linear and inverse_distance and opposite_sign
+        ),
     }
 
 
 @maxwell_cite(
-    579, 580, 581, 582, 583, 584,
-    part=4, chapter="Current Balance",
+    579,
+    580,
+    581,
+    582,
+    583,
+    584,
+    part=4,
+    chapter="Current Balance",
     theory_class="maxwell_original",
     description="Complete current balance analysis",
 )

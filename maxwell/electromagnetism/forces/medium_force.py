@@ -40,13 +40,16 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
-def _numerical_gradient_field(B_func: callable, position: np.ndarray, delta: float) -> np.ndarray:
+def _numerical_gradient_field(
+    B_func: callable, position: np.ndarray, delta: float
+) -> np.ndarray:
     """Calculate gradient of a vector field component along its direction.
 
     Returns grad_B_dot = (B . grad) B evaluated at position.
@@ -66,14 +69,20 @@ def _numerical_gradient_field(B_func: callable, position: np.ndarray, delta: flo
 
         # d/dx_i of (B . B) / 2 = B . (dB/dx_i)
         dB2_dx = (np.dot(B_plus, B_plus) - np.dot(B_minus, B_minus)) / (2 * delta)
-        grad[i] = B_at_pos[i] * dB2_dx / (2.0 * np.linalg.norm(B_at_pos)) if np.linalg.norm(B_at_pos) > 1e-15 else 0
+        grad[i] = (
+            B_at_pos[i] * dB2_dx / (2.0 * np.linalg.norm(B_at_pos))
+            if np.linalg.norm(B_at_pos) > 1e-15
+            else 0
+        )
 
     return grad
 
 
 @maxwell_cite(
-    639, 640,
-    part=4, chapter="Forces in Magnetic Medium",
+    639,
+    640,
+    part=4,
+    chapter="Forces in Magnetic Medium",
     theory_class="maxwell_original",
     description="Calculate force on magnetic dipole in medium",
 )
@@ -128,8 +137,10 @@ def calc_medium_force(
 
 
 @maxwell_cite(
-    639, 640,
-    part=4, chapter="Forces in Magnetic Medium",
+    639,
+    640,
+    part=4,
+    chapter="Forces in Magnetic Medium",
     theory_class="maxwell_original",
     description="Calculate force on magnetized body",
 )
@@ -184,8 +195,10 @@ def calc_magnetized_body_force(
 
 
 @maxwell_cite(
-    639, 640,
-    part=4, chapter="Forces in Magnetic Medium",
+    639,
+    640,
+    part=4,
+    chapter="Forces in Magnetic Medium",
     theory_class="maxwell_original",
     description="Calculate force in permeable medium",
 )
@@ -261,8 +274,10 @@ class MediumForceCalculator:
     permeability: float = 1.0
 
     @maxwell_cite(
-        639, 640,
-        part=4, chapter="Forces in Magnetic Medium",
+        639,
+        640,
+        part=4,
+        chapter="Forces in Magnetic Medium",
         theory_class="maxwell_original",
         description="Calculate dipole force",
     )
@@ -284,8 +299,10 @@ class MediumForceCalculator:
         return calc_medium_force(magnetic_moment, self.B_function, position)
 
     @maxwell_cite(
-        639, 640,
-        part=4, chapter="Forces in Magnetic Medium",
+        639,
+        640,
+        part=4,
+        chapter="Forces in Magnetic Medium",
         theory_class="maxwell_original",
         description="Calculate permeable body force",
     )
@@ -307,14 +324,19 @@ class MediumForceCalculator:
             Force (dynes).
         """
         return calc_permeable_medium_force(
-            self.B_function, position, self.permeability,
-            susceptibility, volume,
+            self.B_function,
+            position,
+            self.permeability,
+            susceptibility,
+            volume,
         )
 
 
 @maxwell_cite(
-    639, 640,
-    part=4, chapter="Forces in Magnetic Medium",
+    639,
+    640,
+    part=4,
+    chapter="Forces in Magnetic Medium",
     theory_class="maxwell_original",
     description="Calculate force on dipole near current-carrying wire",
 )
@@ -358,8 +380,10 @@ def calc_dipole_force_near_wire(
 
 
 @maxwell_cite(
-    639, 640,
-    part=4, chapter="Forces in Magnetic Medium",
+    639,
+    640,
+    part=4,
+    chapter="Forces in Magnetic Medium",
     theory_class="maxwell_original",
     description="Verify medium force relations",
 )
@@ -399,7 +423,11 @@ def verify_medium_force(
     # Analytical: F_z = m_x * dB_z/dx = m_x * B0/L
     F_expected_z = magnetic_moment[0] * B0 / L
 
-    z_error = abs(F[2] - F_expected_z) / abs(F_expected_z) if abs(F_expected_z) > 1e-15 else abs(F[2])
+    z_error = (
+        abs(F[2] - F_expected_z) / abs(F_expected_z)
+        if abs(F_expected_z) > 1e-15
+        else abs(F[2])
+    )
 
     # Test: force should be zero for uniform field
     def uniform_B(r):
@@ -423,8 +451,10 @@ def verify_medium_force(
 
 
 @maxwell_cite(
-    639, 640,
-    part=4, chapter="Forces in Magnetic Medium",
+    639,
+    640,
+    part=4,
+    chapter="Forces in Magnetic Medium",
     theory_class="maxwell_original",
     description="Verify paramagnetic vs diamagnetic response",
 )
@@ -447,6 +477,7 @@ def verify_magnetic_response(
     Returns:
         Dictionary with response verification results.
     """
+
     # Non-uniform field: B increases with z (gradient along z)
     def B_func(r):
         return np.array([0.0, 0.0, 1000.0 * np.exp(-r[2] / 10.0)])
@@ -477,13 +508,17 @@ def verify_magnetic_response(
         "dia_toward_weaker_field": bool(dia_toward_weaker),
         "magnitude_ratio": mag_ratio,
         "magnitude_error": mag_error,
-        "response_verified": bool(para_toward_stronger and dia_toward_weaker and mag_error < tolerance),
+        "response_verified": bool(
+            para_toward_stronger and dia_toward_weaker and mag_error < tolerance
+        ),
     }
 
 
 @maxwell_cite(
-    639, 640,
-    part=4, chapter="Forces in Magnetic Medium",
+    639,
+    640,
+    part=4,
+    chapter="Forces in Magnetic Medium",
     theory_class="maxwell_original",
     description="Complete medium force analysis",
 )

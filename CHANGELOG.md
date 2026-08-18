@@ -1,0 +1,181 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Changed
+- README states this repo is part 3 of 3 and the product, with links to Maxwell-Latex-Books and maxwell-em-processor
+- Adopted split licensing: MIT for software, CC BY 4.0 for scholarly content, public-domain notice for Maxwell's 1873 Treatise text
+- Added `LICENSE-CONTENT` (CC BY 4.0) and directory license notes under `docs/`, `archive/`, and `paper/`
+- README, `CITATION.cff`, `.zenodo.json`, `CONTRIBUTING.md`, and `paper/paper.md` now describe the split
+- Canonical repository URLs set to `https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM`
+- James Clerk Maxwell is cited as the 1873 source author, not as a software co-author
+- Python sdist no longer ships bulk `docs/` without the content license; `LICENSE-CONTENT` is included
+- Living publication metadata aligned to **1.0.0** (`CITATION.cff`, `.zenodo.json`, `paper/`, API reference)
+- Recorded author ORCID `0009-0005-2955-4140` in `CITATION.cff` and `.zenodo.json`
+- Preprint/JOSS manuscript is not included in the repository; public text only notes that we are working toward a preprint
+- Public license text names only software and docs that are actually in the repository
+- `.zenodo.json` `pub_state` set to `draft` until an actual Zenodo deposit exists
+
+## [1.0.0] - 2026-05-07
+
+### Major Milestone -- First Stable Release
+
+First production-ready release of the complete computational implementation of Maxwell's 1873 Treatise on Electricity and Magnetism.
+
+### Added
+- **Complete coverage of all 866 articles** of Maxwell's 1873 Treatise across 4 Parts (electrostatics, electrokinematics, magnetism, electromagnetism)
+- **15 visualization modules** with 56 exported functions -- 100% of classical visualization scope complete (field lines, equipotentials, method of images, edge singularities, dielectric soakage, flow tubes, thermal gradients, magnetic shell, spherical harmonics, hysteresis loops, electrotonic state, stress tensor, helicoidal potentials, molecular vortices, EM wave propagation)
+- **JAX acceleration** (GPU/TPU) -- 20+ JAX adapters enabling JIT compilation and automatic differentiation for all four Parts of the Treatise
+- **SymPy verification layer** -- 13 symbolic verifiers proving div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem, Lorentz force, stress tensor properties, Ampere's law
+- **1795 tests passing** (100% pass rate) -- comprehensive coverage across core physics, JAX adapters, SymPy verifiers, visualization modules, and rendering validation
+- **CGS-EMU unit system** throughout with ESU/SI conversion utilities
+- **Citation traceability** via `@maxwell_cite` decorator linking every function to source articles
+- **Lagrangian dynamics kernel** with JAX auto-diff force derivation from energy
+- **Spherical harmonics infrastructure** (Legendre polynomials, associated Legendre functions, Y_lm, coefficient expansion)
+- **Elliptic integral computation** (complete and incomplete, K, E, Pi)
+- **5 example scripts** in `examples/` directory demonstrating visualization workflows
+- **3 Jupyter notebooks** providing guided tours (quick start, EM deep dive, visualization showcase)
+- **CODE_OF_CONDUCT.md, SECURITY.md, GitHub issue/PR templates**
+- **CITATION.cff** for academic referencing
+
+### Sprint 1 Fixes
+- PEP 639 license classifier handling in `pyproject.toml`
+- CI workflows updated to run full test suite with `.[dev,accel]` dependencies
+- Deprecation warnings resolved across test suite
+- `jax_tree` decorator converted to callable class supporting `static_fields` parameter
+- Graceful matplotlib degradation when absent
+
+### Sprint 2 Fixes
+- Dead code removal across visualization modules during quality review
+- Type annotation modernization to PEP 604 syntax (`Optional[X]` -> `X | None`, `Tuple` -> `tuple`)
+- Quality review of unused imports in `_compat.py` and visualization modules
+- `@maxwell_cite` decorators added to base visualization modules (field_lines, equipotential, stress)
+- 3 previously internal functions exported to public API (`plot_dipole_field_lines`, `plot_dipole_equipotentials`, `verify_stress_tensor_plot`)
+- Pillow dependency correctly categorized in `pyproject.toml` extras
+- All CI workflows updated to run all 1795 tests
+
+---
+
+### Added -- Cycle 11 (Visualization Completion)
+- **Electrotonic State visualization** (`maxwell.vis.electrotonic_state`) -- `calc_electrotonic_straight_wire()`, `calc_electrotonic_transient()`, `calc_B_from_electrotonic()`, `plot_electrotonic_state_2d()`, `plot_A_and_B_fields()`, `plot_A_transient()`, `plot_electrotonic_3d_surface()` for visualizing Maxwell's vector potential A-field around current-carrying conductors, transient behavior, and curl relationship B = curl(A) (Arts. 540, 617). Completes the LAST classical visualization gap.
+- **Thermal Gradients visualization** (`maxwell.vis.thermal_gradients`) -- `calc_joule_heat_distribution()`, `calc_thermal_gradients()`, `calc_peltier_junction()`, `plot_thermal_gradients()`, `plot_joule_heat_distribution()`, `plot_thermoelectric_effects()` for Joule heating overlay and thermoelectric Peltier effects (Arts. 242, 249).
+- **Molecular Vortices visualization** (`maxwell.vis.molecular_vortices`) -- `calc_vortex_lattice()`, `calc_magnetic_field_from_vortices()`, `plot_molecular_vortices()`, `plot_vortex_3d_surface()` for Maxwell's mechanical vortex lattice model of magnetism (Arts. 822-824).
+- **Helicoidal Potentials visualization** (`maxwell.vis.helicoidal_potentials`) -- `calc_solid_angle_loop()`, `plot_helicoidal_potentials()`, `plot_loop_potential_3d()`, `plot_loop_field_lines()` for helicoidal magnetic equipotential surfaces generated by current loops (Arts. 486-487).
+- **4 new visualization test files** (+104 tests total):
+  - `test_vis_thermal_gradients.py` (28 tests)
+  - `test_vis_molecular_vortices.py` (22 tests)
+  - `test_vis_helicoidal_potentials.py` (21 tests)
+  - `test_vis_electrotonic_state.py` (28 tests)
+- **Test count**: 1683 -> 1787 (+104 tests, all passing)
+- **Vis module count**: 14 -> 15 modules
+- **Vis exports**: 46 -> 53 functions
+
+### Changed -- Cycle 11
+- `maxwell.vis` exports expanded from 46 to 53 (+7: thermal_gradients, molecular_vortices, helicoidal_potentials, electrotonic_state)
+- All 15 classical visualizations now complete (100% of classical scope)
+- Test coverage by visualization: 224 total vis tests across 11 test files
+
+### Fixed -- Cycle 11
+- Quality review: dead code removed from new visualization modules during Cycle 11 review
+
+---
+
+### Added
+- **Unit Tubes of Flow visualization** (`maxwell.vis.flow_tubes`) -- `calc_unit_tubes()`, `plot_unit_tubes_of_flow()`, `plot_unit_tubes_3d()` for 3D current density field visualization with streamlines/quiver arrows representing Maxwell's unit tubes of flow theory (Art. 290)
+- **Magnetic Shell visualization** (`maxwell.vis.magnetic_shell`) -- `calc_solid_angle()`, `calc_shell_potential()`, `plot_magnetic_shell()`, `plot_shell_potential()` for 3D/2D visualization of Maxwell's magnetic shell theory with current loop equivalence and solid angle calculation (Art. 409)
+- **Spherical Harmonic Globes visualization** (`maxwell.vis.spherical_harmonics`) -- `calc_gauss_harmonics()`, `calc_field_intensity()`, `plot_harmonic_globe()`, `plot_harmonic_modes()`, `plot_harmonic_contour()` for 3D globe and 2D map visualization of Gauss coefficient spherical harmonic decomposition of terrestrial magnetism (Art. 467)
+- **Hysteresis Loops visualization** (`maxwell.vis.hysteresis_loops`) -- `calc_hysteresis_loop()`, `plot_hysteresis_loops()`, `plot_material_comparison()` for magnetic B-H loop with coercivity/retentivity labels, area shading, and material comparison (soft iron vs steel vs permanent magnet) (Arts. 442-446)
+- **EM Wave Propagation visualization** (`maxwell.vis.em_wave_propagation`) -- `calc_em_wave()`, `plot_em_wave_propagation()`, `plot_wave_snapshot_3d()` for orthogonal E/B fields vs position with 3D vector field and linear/circular/elliptical polarization support (Art. 791)
+- **Lagrangian Kernel** (`maxwell.dynamics.lagrangian`) -- Layer 52 implementation with `GeneralizedSystem` dataclass, `potential_energy()`, `kinetic_energy()`, `lagrangian()`, `derive_forces()`, and `derive_electrostatic_force()` proof-of-concept (JAX auto-diff force derivation from energy)
+- **Dynamics package** (`maxwell.dynamics`) -- New top-level package for mechanics-based formulations
+- **JAX adapter package** (`maxwell.jax`) -- 20+ JAX adapters enabling GPU/TPU acceleration, automatic differentiation, and JIT compilation for all four Parts of the Treatise
+- **Method of Images visualization** (`maxwell.vis.method_of_images`) -- `calc_method_of_images()` and `plot_method_of_images()` for visualizing a point charge above a conducting plane with image charge technique (Art. 155)
+- **Edge Singularities visualization** (`maxwell.vis.edge_singularities`) -- `calc_wedge_field()`, `calc_edge_singularity()`, `plot_edge_singularity()`, and `plot_singularity_comparison()` for visualizing power-law field enhancement near conducting wedge edges (Art. 191)
+- **Test PyPI CI workflow** -- Automated Test PyPI publishing on `feat/pypi-package` branch pushes, with build verification and pip install smoke test
+- **JAX classes**: `PointChargeJAX`, `MagneticPoleJAX`, `MagnetJAX`, `VectorPotentialJAX`, `ElectricFieldJAX`, `FaradayInductionJAX`, `MaxwellEquationsJAX`, `SphericalHarmonicExpansionJAX`, `LorentzForceJAX`, `MaxwellStressTensorJAX`, `DisplacementCurrentJAX`, `AmpereMaxwellLawJAX`, `ElectrostaticEnergyJAX`, `CapacitorEnergyJAX`, `MagneticEnergyJAX`, `InductorEnergyJAX`, `ElectrokineticEnergyJAX`, `CoupledCircuitEnergyJAX`, `OhmsLawJAX`, `NetworkSolverJAX`, `Conduction3DJAX`, `SpreadingResistanceJAX`, `EffectiveConductivityJAX`, `FaradayLawsJAX`, `IonTransportJAX`, `PolarizationJAX`, `ElectrolysisCellJAX`, `JouleHeatingJAX`, `HeatDissipationJAX`, `SubstanceResistanceJAX`
+- **JAX infrastructure**: `@jax_tree` pytree registration, `safe_div`/`safe_sqrt`/`safe_log` arithmetic, AGM-based elliptic integrals, pure-JAX special functions (Legendre polynomials, spherical harmonics)
+- **SymPy symbolic verifiers** -- 13 verifiers proving div/curl identities, Laplace equation, wave equation, Coulomb's law, Biot-Savart, Faraday's law, continuity equation, Maxwell displacement current, Stokes' theorem, Lorentz force, stress tensor properties, Ampere's law
+- **Test suite growth**: 548 -> 1662 tests (629 core + 847 JAX + 66 SymPy + 120 visualization), all passing
+- `[all]` optional dependency in `pyproject.toml` for installing everything at once
+- Python 3.13 classifier
+
+### Changed
+- `maxwell.vis` exports expanded from 29 to 32 (added `calc_unit_tubes`, `plot_unit_tubes_of_flow`, `plot_unit_tubes_3d`)
+- Test count: 1618 -> 1683 (+65 tests: 22 magnetic shell + 22 spherical harmonics + 21 flow tubes)
+- CI workflows now install `.[dev,accel]` to run the full 1618-test suite in GitHub Actions
+- `jax_tree` decorator converted to callable class supporting `static_fields` parameter for PyTree registration
+
+### Fixed
+- PEP 639 license classifier removed from `pyproject.toml` (build now succeeds)
+- `maxwell.vis` exports expanded from 5 to 12 (Cycle 6: method of images, edge singularities), then from 12 to 20 (Cycle 7: dielectric soakage, hysteresis, EM wave propagation)
+- Test count: 1542 -> 1556 -> 1618 (+14 Cycle 6, +62 Cycle 7)
+
+## [0.1.0] - 2026-04-25
+
+### Added
+- Complete computational implementation of Maxwell's 1873 Treatise on Electricity and Magnetism
+- All 866 articles covered across 4 Parts (electrostatics, electrokinematics, magnetism, electromagnetism)
+- 241 Python modules across 81 subpackages
+- Citation-based traceability via `@maxwell_cite` decorator linking every function to source articles
+- CGS-EMU unit system throughout with ESU/SI conversion utilities
+- 548 passing tests (522 core + 23 visualization + 3 version sync) covering all major functionality
+- 50/50 mathematical validation checks (dimensional analysis, vector calculus, spherical harmonics, elliptic integrals)
+- Electrostatic visualization engine (2D field lines, equipotentials, stress tensor plots)
+- Visualization scaffold with matplotlib optional dependency (`pip install maxwell[viz]`)
+- CI/CD pipeline with multi-OS, multi-Python test matrix (3 OS x 3 Python versions)
+- Spherical harmonics infrastructure (Legendre polynomials, associated Legendre functions, Y_lm, coefficient expansion)
+- Vector calculus operators (gradient, divergence, curl) in CGS
+- Elliptic integral computation (complete and incomplete, K, E, Pi)
+- Maxwell stress tensor with symmetry and trace verification
+- Electromagnetic field theory (Maxwell equations, Poynting vector, energy-momentum)
+- Material property models (hysteresis, magnetization, permeability, conductivity)
+- Instrument models (galvanometers, Helmholtz coils, dynamometers)
+- Competing theory implementations (Ampere, Weber, Neumann formulations with quantitative comparison)
+
+### Key Features
+- **Electrostatics** (Part I, Arts. 27-229): Point charges, fields, dielectrics, image charges, capacitance, Green's theorem
+- **Electrokinematics** (Part II, Arts. 230-370): Ohm's law, electrolysis, EMF, network analysis, Wheatstone bridge
+- **Magnetism** (Part III, Arts. 371-474): Terrestrial magnetism, hysteresis, demagnetizing factors, compass deviation
+- **Electromagnetism** (Part IV, Arts. 475-866): Induction, Lorentz force, Ampere-Maxwell law, all Maxwell equations, stress tensor, EM waves
+- **Optics** (Arts. 781-808): Wave equation, radiation pressure, metal reflectance, birefringence, Faraday rotation
+- **Mathematics**: Spherical harmonics, elliptic integrals, vector calculus, gauge theory
+- **Instruments**: Galvanometers, dynamometers, Helmholtz coils, suspended coils
+- **Materials**: Magnetization, electric displacement, conductivity, permeability
+- **Competing Theories**: Ampere, Weber, and Neumann formulations with quantitative comparison
+
+### Technical
+- NumPy >= 1.24 and SciPy >= 1.10 for numerical computation
+- Matplotlib >= 3.5 for optional visualization
+- Python 3.10, 3.11, 3.12 support
+- MIT License
+
+## [0.0.2] - 2026-04-24
+
+### Added
+- Visualization scaffold with matplotlib integration
+- 2D electrostatic field line plotting
+- 2D equipotential contour plotting
+- 2D Maxwell stress tensor visualization
+- Graceful degradation when matplotlib is absent
+- 23 visualization tests
+
+### Fixed
+- Deprecation warnings in test suite
+
+## [0.0.1] - 2026-04-23
+
+### Added
+- Initial 100% article coverage of Maxwell's 1873 Treatise (866 articles)
+- Core primitives: PointCharge, ElectricField, ElectricPotential, Magnet, MagneticMoment
+- Maxwell equations implementation (all 7 equations)
+- Lorentz force and stress tensor calculations
+- Faraday induction and Ampere-Maxwell law
+- Spherical harmonic expansion with full coefficient computation
+- CGS unit system with dimensional analysis
+- 522 initial tests
+- `@maxwell_cite` decorator and citation query system

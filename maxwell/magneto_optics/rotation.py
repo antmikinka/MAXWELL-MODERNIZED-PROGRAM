@@ -76,7 +76,7 @@ def establish_rotation_laws() -> dict[str, str]:
         "law_3": "Rotation direction depends on the direction of the magnetic field",
         "law_4": "Rotation is independent of the initial polarization direction",
         "law_5": "Reversing the light direction does NOT reverse the rotation "
-                 "(non-reciprocal effect, distinguishing from natural optical rotation)",
+        "(non-reciprocal effect, distinguishing from natural optical rotation)",
     }
 
 

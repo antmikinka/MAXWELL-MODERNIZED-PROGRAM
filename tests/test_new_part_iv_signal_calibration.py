@@ -15,16 +15,16 @@ Tests verify:
 
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from maxwell.config.constants import CONST, C, cgs_unit_of
-from maxwell.meta.citation import get_citation, MaxwellCitation
-
+from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
 # TELEGRAPHY TESTS (Arts. 730-757)
 # =============================================================================
+
 
 class TestTelegraphLine:
     """Test TelegraphLine class for signal transmission."""
@@ -74,7 +74,7 @@ class TestTelegraphLine:
         from maxwell.signal_processing.telegraphy import TelegraphLine
 
         line = TelegraphLine(L=10.0, C=0.0)
-        assert line.characteristic_impedance() == float('inf')
+        assert line.characteristic_impedance() == float("inf")
 
     def test_attenuation_constant_low_frequency(
         self, cgs_tolerance, assert_cgs_close
@@ -196,7 +196,8 @@ class TestSignalTransmission:
         Art. 740: t_r ≈ 2.2 * R * C * L^2
         """
         from maxwell.signal_processing.telegraphy import (
-            TelegraphLine, SignalTransmission
+            SignalTransmission,
+            TelegraphLine,
         )
 
         line = TelegraphLine(R=0.01, L=10.0, C=1e-10, G=0.0)
@@ -205,13 +206,14 @@ class TestSignalTransmission:
         length = 1000.0  # 1000 cm
         t_r = st.rise_time(length)
 
-        expected = 2.2 * 0.01 * 1e-10 * (1000.0 ** 2)
+        expected = 2.2 * 0.01 * 1e-10 * (1000.0**2)
         assert_cgs_close(t_r, expected, cgs_tolerance)
 
     def test_rise_time_zero_length(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify rise time = 0 for zero length."""
         from maxwell.signal_processing.telegraphy import (
-            TelegraphLine, SignalTransmission
+            SignalTransmission,
+            TelegraphLine,
         )
 
         line = TelegraphLine(R=0.01, L=10.0, C=1e-10, G=0.0)
@@ -225,7 +227,8 @@ class TestSignalTransmission:
         Art. 745: BW ≈ 0.35 / t_r
         """
         from maxwell.signal_processing.telegraphy import (
-            TelegraphLine, SignalTransmission
+            SignalTransmission,
+            TelegraphLine,
         )
 
         line = TelegraphLine(R=0.01, L=10.0, C=1e-10, G=0.0)
@@ -244,7 +247,8 @@ class TestSignalTransmission:
         Art. 750: f_max ≈ 1 / (2 * t_r)
         """
         from maxwell.signal_processing.telegraphy import (
-            TelegraphLine, SignalTransmission
+            SignalTransmission,
+            TelegraphLine,
         )
 
         line = TelegraphLine(R=0.01, L=10.0, C=1e-10, G=0.0)
@@ -277,7 +281,9 @@ class TestTelegraphFunctions:
         assert calc_signal_velocity(L=0.0, C=1e-10) == 0.0
         assert calc_signal_velocity(L=10.0, C=0.0) == 0.0
 
-    def test_calc_characteristic_impedance(self, cgs_tolerance, assert_cgs_close) -> None:
+    def test_calc_characteristic_impedance(
+        self, cgs_tolerance, assert_cgs_close
+    ) -> None:
         """Verify calc_characteristic_impedance function."""
         from maxwell.signal_processing.telegraphy import calc_characteristic_impedance
 
@@ -291,7 +297,9 @@ class TestTelegraphFunctions:
         from maxwell.signal_processing.telegraphy import calc_propagation_constant
 
         omega = 2 * np.pi * 1e6
-        gamma = calc_propagation_constant(R=0.01, L=10.0, C=1e-10, G=0.0, angular_frequency=omega)
+        gamma = calc_propagation_constant(
+            R=0.01, L=10.0, C=1e-10, G=0.0, angular_frequency=omega
+        )
 
         # Should be complex
         assert isinstance(gamma, (complex, np.complex128))
@@ -313,9 +321,7 @@ class TestTelegraphFunctions:
         """Verify verify_telegraph_line function."""
         from maxwell.signal_processing.telegraphy import verify_telegraph_line
 
-        result = verify_telegraph_line(
-            R=0.01, L=10.0, C=1e-10, G=0.0, frequency=1e6
-        )
+        result = verify_telegraph_line(R=0.01, L=10.0, C=1e-10, G=0.0, frequency=1e6)
 
         assert result["verified"] is True or result["verified"] is np.True_
         assert "signal_velocity" in result
@@ -328,9 +334,7 @@ class TestTelegraphFunctions:
         from maxwell.signal_processing.telegraphy import analyze_telegraph_line
 
         result = analyze_telegraph_line(
-            R=0.003, L=1.7, C=0.3e-6, G=0.0,
-            length=3000e5,  # 3000 km
-            frequency=1e6
+            R=0.003, L=1.7, C=0.3e-6, G=0.0, length=3000e5, frequency=1e6  # 3000 km
         )
 
         assert "signal_velocity_cm_s" in result
@@ -389,6 +393,7 @@ class TestTelegraphLinePhysicalRelationships:
 # ABSOLUTE RESISTANCE TESTS (Arts. 758-767)
 # =============================================================================
 
+
 class TestAbsoluteResistanceRecoilMethod:
     """Test recoil method for absolute resistance measurement."""
 
@@ -402,13 +407,13 @@ class TestAbsoluteResistanceRecoilMethod:
         """
         from maxwell.calibration.absolute_resistance import AbsoluteResistance
 
-        ar = AbsoluteResistance(method='recoil')
+        ar = AbsoluteResistance(method="recoil")
 
         R = ar.recoil_method(
             mutual_inductance=1000.0,
             period=2.0,
             first_deflection=0.1,
-            second_deflection=0.08  # ratio = 1.25
+            second_deflection=0.08,  # ratio = 1.25
         )
 
         expected = (2 * 1000.0 / 2.0) * (0.1 / 0.08)
@@ -418,13 +423,15 @@ class TestAbsoluteResistanceRecoilMethod:
         self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify calc_absolute_resistance_recoil function."""
-        from maxwell.calibration.absolute_resistance import calc_absolute_resistance_recoil
+        from maxwell.calibration.absolute_resistance import (
+            calc_absolute_resistance_recoil,
+        )
 
         R = calc_absolute_resistance_recoil(
             mutual_inductance=1000.0,
             period=2.0,
             first_deflection=0.1,
-            second_deflection=0.08
+            second_deflection=0.08,
         )
 
         expected = (2 * 1000.0 / 2.0) * (0.1 / 0.08)
@@ -441,7 +448,7 @@ class TestAbsoluteResistanceRecoilMethod:
                 mutual_inductance=1000.0,
                 period=0.0,
                 first_deflection=0.1,
-                second_deflection=0.08
+                second_deflection=0.08,
             )
 
     def test_recoil_method_invalid_deflection(self) -> None:
@@ -455,7 +462,7 @@ class TestAbsoluteResistanceRecoilMethod:
                 mutual_inductance=1000.0,
                 period=2.0,
                 first_deflection=0.1,
-                second_deflection=0.0
+                second_deflection=0.0,
             )
 
 
@@ -472,12 +479,9 @@ class TestAbsoluteResistanceLenzMethod:
         """
         from maxwell.calibration.absolute_resistance import AbsoluteResistance
 
-        ar = AbsoluteResistance(method='lenz')
+        ar = AbsoluteResistance(method="lenz")
 
-        R = ar.lenz_method(
-            induced_emf=1.0,
-            induced_current=0.1
-        )
+        R = ar.lenz_method(induced_emf=1.0, induced_current=0.1)
 
         expected = 1.0 / 0.1
         assert_cgs_close(R, expected, cgs_tolerance)
@@ -486,12 +490,11 @@ class TestAbsoluteResistanceLenzMethod:
         self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify calc_absolute_resistance_lenz function."""
-        from maxwell.calibration.absolute_resistance import calc_absolute_resistance_lenz
-
-        R = calc_absolute_resistance_lenz(
-            induced_emf=1.0,
-            induced_current=0.1
+        from maxwell.calibration.absolute_resistance import (
+            calc_absolute_resistance_lenz,
         )
+
+        R = calc_absolute_resistance_lenz(induced_emf=1.0, induced_current=0.1)
 
         expected = 1.0 / 0.1
         assert_cgs_close(R, expected, cgs_tolerance)
@@ -502,20 +505,15 @@ class TestAbsoluteResistanceLenzMethod:
 
         ar = AbsoluteResistance()
 
-        R = ar.lenz_method(
-            induced_emf=1.0,
-            induced_current=0.0
-        )
+        R = ar.lenz_method(induced_emf=1.0, induced_current=0.0)
 
-        assert R == float('inf')
+        assert R == float("inf")
 
 
 class TestAbsoluteResistanceRotatingCoilMethod:
     """Test rotating coil (Lorenz) method."""
 
-    def test_rotating_coil_method_basic(
-        self, cgs_tolerance, assert_cgs_close
-    ) -> None:
+    def test_rotating_coil_method_basic(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify rotating coil method formula.
 
         Art. 761: EMF = N * B * A * omega
@@ -525,14 +523,16 @@ class TestAbsoluteResistanceRotatingCoilMethod:
         EMF = 100 * 1000 * 10 * 100 = 1e8 abvolts
         For I = 0.01 abampere: R = 1e10 abohms
         """
-        from maxwell.calibration.absolute_resistance import calc_absolute_resistance_rotating_coil
+        from maxwell.calibration.absolute_resistance import (
+            calc_absolute_resistance_rotating_coil,
+        )
 
         R = calc_absolute_resistance_rotating_coil(
             n_turns=100,
             coil_area=10.0,
             angular_velocity=100.0,
             magnetic_field=1000.0,
-            induced_current=0.01
+            induced_current=0.01,
         )
 
         expected_emf = 100 * 1000.0 * 10.0 * 100.0
@@ -552,10 +552,10 @@ class TestAbsoluteResistanceRotatingCoilMethod:
             angular_velocity=100.0,
             magnetic_field=1000.0,
             induced_current=0.0,
-            circuit_resistance_known=0.0
+            circuit_resistance_known=0.0,
         )
 
-        assert R == float('inf')
+        assert R == float("inf")
 
 
 class TestAbsoluteResistanceEnergyMethod:
@@ -574,30 +574,24 @@ class TestAbsoluteResistanceEnergyMethod:
         """
         from maxwell.calibration.absolute_resistance import AbsoluteResistance
 
-        ar = AbsoluteResistance(method='energy')
+        ar = AbsoluteResistance(method="energy")
 
-        R = ar.energy_dissipation_method(
-            current=1.0,
-            time=1.0,
-            heat_generated=10.0
-        )
+        R = ar.energy_dissipation_method(current=1.0, time=1.0, heat_generated=10.0)
 
-        expected = 10.0 / (1.0 ** 2 * 1.0)
+        expected = 10.0 / (1.0**2 * 1.0)
         assert_cgs_close(R, expected, cgs_tolerance)
 
     def test_energy_dissipation_direct_calculation(
         self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify calc_absolute_resistance_joule function."""
-        from maxwell.calibration.absolute_resistance import calc_absolute_resistance_joule
-
-        R = calc_absolute_resistance_joule(
-            current=1.0,
-            time=1.0,
-            heat_energy=10.0
+        from maxwell.calibration.absolute_resistance import (
+            calc_absolute_resistance_joule,
         )
 
-        expected = 10.0 / (1.0 ** 2 * 1.0)
+        R = calc_absolute_resistance_joule(current=1.0, time=1.0, heat_energy=10.0)
+
+        expected = 10.0 / (1.0**2 * 1.0)
         assert_cgs_close(R, expected, cgs_tolerance)
 
     def test_energy_dissipation_zero_current(self) -> None:
@@ -606,13 +600,9 @@ class TestAbsoluteResistanceEnergyMethod:
 
         ar = AbsoluteResistance()
 
-        R = ar.energy_dissipation_method(
-            current=0.0,
-            time=1.0,
-            heat_generated=10.0
-        )
+        R = ar.energy_dissipation_method(current=0.0, time=1.0, heat_generated=10.0)
 
-        assert R == float('inf')
+        assert R == float("inf")
 
 
 class TestStandardResistanceCoil:
@@ -628,10 +618,7 @@ class TestStandardResistanceCoil:
         """
         from maxwell.calibration.absolute_resistance import StandardResistanceCoil
 
-        src = StandardResistanceCoil(
-            nominal_resistance=100.0,
-            material='copper'
-        )
+        src = StandardResistanceCoil(nominal_resistance=100.0, material="copper")
 
         R = src.resistance_at_temperature(temperature=30.0)
 
@@ -656,16 +643,12 @@ class TestStandardResistanceCoil:
 
         # Manganin has very low temperature coefficient
         src_manganin = StandardResistanceCoil(
-            nominal_resistance=100.0,
-            material='manganin'
+            nominal_resistance=100.0, material="manganin"
         )
         assert src_manganin.temperature_coefficient == 0.00002
 
         # Copper has high temperature coefficient
-        src_copper = StandardResistanceCoil(
-            nominal_resistance=100.0,
-            material='copper'
-        )
+        src_copper = StandardResistanceCoil(nominal_resistance=100.0, material="copper")
         assert src_copper.temperature_coefficient == 0.004
 
     def test_self_inductance_calculation(self) -> None:
@@ -696,13 +679,15 @@ class TestTemperatureCorrectedResistance:
         self, cgs_tolerance, assert_cgs_close
     ) -> None:
         """Verify calc_temperature_corrected_resistance function."""
-        from maxwell.calibration.absolute_resistance import calc_temperature_corrected_resistance
+        from maxwell.calibration.absolute_resistance import (
+            calc_temperature_corrected_resistance,
+        )
 
         R = calc_temperature_corrected_resistance(
             nominal_resistance=100.0,
             temperature=30.0,
             temperature_coefficient=0.004,
-            reference_temp=20.0
+            reference_temp=20.0,
         )
 
         expected = 100.0 * (1.0 + 0.004 * 10.0)
@@ -721,7 +706,7 @@ class TestAbsoluteResistanceVerification:
             period=2.0,
             deflection_ratio=1.25,
             induced_emf=1.0,
-            induced_current=0.1
+            induced_current=0.1,
         )
 
         assert result["verified"] is True
@@ -735,14 +720,14 @@ class TestAbsoluteResistanceVerification:
         from maxwell.calibration.absolute_resistance import analyze_absolute_resistance
 
         result = analyze_absolute_resistance(
-            method='recoil',
+            method="recoil",
             mutual_inductance=1000.0,
             period=2.0,
             deflection_ratio=1.25,
             induced_emf=1.0,
             induced_current=0.1,
             nominal_resistance=10.0,
-            temperature=20.0
+            temperature=20.0,
         )
 
         assert "R_recoil" in result
@@ -755,6 +740,7 @@ class TestAbsoluteResistanceVerification:
 # =============================================================================
 # CGS UNIT COMPLIANCE TESTS
 # =============================================================================
+
 
 class TestTelegraphyCGSUnits:
     """Test CGS unit compliance for telegraphy modules."""
@@ -804,6 +790,7 @@ class TestTelegraphyCGSUnits:
 # CITATION COMPLIANCE TESTS
 # =============================================================================
 
+
 class TestTelegraphyCitationCompliance:
     """Test citation decorator compliance for telegraphy modules."""
 
@@ -823,7 +810,10 @@ class TestTelegraphyCitationCompliance:
         self, require_citation, validate_citation_articles
     ) -> None:
         """Verify SignalTransmission methods have correct citations."""
-        from maxwell.signal_processing.telegraphy import SignalTransmission, TelegraphLine
+        from maxwell.signal_processing.telegraphy import (
+            SignalTransmission,
+            TelegraphLine,
+        )
 
         line = TelegraphLine()
         st = SignalTransmission(line)
@@ -837,9 +827,9 @@ class TestTelegraphyCitationCompliance:
     ) -> None:
         """Verify telegraph calc_* functions have correct citations."""
         from maxwell.signal_processing.telegraphy import (
-            calc_signal_velocity,
             calc_characteristic_impedance,
             calc_propagation_constant,
+            calc_signal_velocity,
             verify_telegraph_line,
         )
 
@@ -886,9 +876,9 @@ class TestAbsoluteResistanceCitationCompliance:
     ) -> None:
         """Verify absolute resistance calc_* functions have correct citations."""
         from maxwell.calibration.absolute_resistance import (
-            calc_absolute_resistance_recoil,
-            calc_absolute_resistance_lenz,
             calc_absolute_resistance_joule,
+            calc_absolute_resistance_lenz,
+            calc_absolute_resistance_recoil,
             verify_absolute_resistance,
         )
 

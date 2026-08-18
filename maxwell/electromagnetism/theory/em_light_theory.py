@@ -34,16 +34,18 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-import numpy as np
-from typing import Optional, Tuple, List, Dict
+from typing import Dict, List, Optional, Tuple
 
-from maxwell.meta.citation import maxwell_cite
+import numpy as np
+
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
     593,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="General electromagnetic theory of light summary",
 )
@@ -109,7 +111,8 @@ def em_theory_light_summary() -> dict[str, str | float]:
 
 @maxwell_cite(
     604,
-    part=4, chapter="Velocity of Light from EM Constants",
+    part=4,
+    chapter="Velocity of Light from EM Constants",
     theory_class="maxwell_original",
     description="Derive light velocity from electromagnetic constants",
 )
@@ -239,8 +242,10 @@ class ElectromagneticOscillator:
 
 
 @maxwell_cite(
-    618, 619,
-    part=4, chapter="Electromagnetic Radiation",
+    618,
+    619,
+    part=4,
+    chapter="Electromagnetic Radiation",
     theory_class="maxwell_original",
     description="Calculate radiation from oscillating dipole",
 )
@@ -338,7 +343,7 @@ def radiation_from_oscillator(
 
     if far_field:
         # Radiation field amplitude
-        E_amp = (p0 * omega ** 2 / (CONST.C ** 2)) * sin_theta * cos_phase / r_mag
+        E_amp = (p0 * omega**2 / (CONST.C**2)) * sin_theta * cos_phase / r_mag
         E_field = E_amp * theta_hat
 
         # B field: B = (1/c) * r_hat × E
@@ -353,7 +358,7 @@ def radiation_from_oscillator(
         near_factor_2 = 1.0 / (kr) ** 3
 
         # Simplified: still use far-field for demonstration
-        E_amp = (p0 * omega ** 2 / (CONST.C ** 2)) * sin_theta * cos_phase / r_mag
+        E_amp = (p0 * omega**2 / (CONST.C**2)) * sin_theta * cos_phase / r_mag
         E_field = E_amp * theta_hat
         B_field = (1.0 / CONST.C) * np.cross(r_hat, E_field)
 
@@ -370,13 +375,15 @@ def radiation_from_oscillator(
         "theta_radians": theta,
         "distance": r_mag,
         "sin_theta": sin_theta,
-        "radiation_pattern": sin_theta ** 2,  # Angular distribution
+        "radiation_pattern": sin_theta**2,  # Angular distribution
     }
 
 
 @maxwell_cite(
-    618, 619,
-    part=4, chapter="Electromagnetic Radiation",
+    618,
+    619,
+    part=4,
+    chapter="Electromagnetic Radiation",
     theory_class="maxwell_original",
     description="Calculate total radiated power from oscillator",
 )
@@ -414,7 +421,7 @@ def calc_radiated_power(oscillator: ElectromagneticOscillator) -> dict[str, floa
     c = CONST.C
 
     # Larmor formula (peak power)
-    P_peak = (2.0 / 3.0) * (p0 ** 2 * omega ** 4) / (c ** 3)
+    P_peak = (2.0 / 3.0) * (p0**2 * omega**4) / (c**3)
 
     # Time-averaged power
     P_avg = P_peak / 2.0
@@ -436,8 +443,11 @@ def calc_radiated_power(oscillator: ElectromagneticOscillator) -> dict[str, floa
 
 
 @maxwell_cite(
-    623, 624, 625,
-    part=4, chapter="Energy Flow in Electromagnetic Fields",
+    623,
+    624,
+    625,
+    part=4,
+    chapter="Energy Flow in Electromagnetic Fields",
     theory_class="maxwell_original",
     description="Calculate Poynting vector and energy flow",
 )
@@ -529,8 +539,11 @@ def poynting_theorem(
 
 
 @maxwell_cite(
-    623, 624, 625,
-    part=4, chapter="Energy Flow in Electromagnetic Fields",
+    623,
+    624,
+    625,
+    part=4,
+    chapter="Energy Flow in Electromagnetic Fields",
     theory_class="maxwell_original",
     description="Verify Poynting's theorem for simple cases",
 )
@@ -570,12 +583,12 @@ def verify_poynting_theorem(
 
         # For plane wave: |S| = (c/4*pi) * |E x B|
         # Since B = E/c: |S| = (c/4*pi) * E0 * (E0/c) = E0^2 / (4*pi)
-        S_expected = E0 ** 2 / (4.0 * np.pi)
+        S_expected = E0**2 / (4.0 * np.pi)
 
         # Energy density: u = (E^2 + B^2)/(8*pi)
         # For plane wave B = E/c, so B^2 is negligible compared to E^2
         # u = E^2/(8*pi) + E^2/(8*pi*c^2) = E^2/(8*pi) (approximately)
-        u_expected = E0 ** 2 / (8.0 * np.pi)
+        u_expected = E0**2 / (8.0 * np.pi)
         S_from_u = u_expected * CONST.C  # Should equal S_expected
 
         S_error = abs(result["energy_flux_magnitude"] - S_expected) / S_expected
@@ -641,7 +654,8 @@ def verify_poynting_theorem(
 
 @maxwell_cite(
     629,
-    part=4, chapter="Radiation Pressure",
+    part=4,
+    chapter="Radiation Pressure",
     theory_class="maxwell_original",
     description="Calculate electromagnetic radiation pressure",
 )
@@ -718,7 +732,7 @@ def radiation_pressure(
     pressure = P_base * angle_factor
 
     # Momentum flux (momentum per unit area per unit time)
-    momentum_flux = intensity / (CONST.C ** 2)
+    momentum_flux = intensity / (CONST.C**2)
 
     return {
         "pressure": pressure,
@@ -734,7 +748,8 @@ def radiation_pressure(
 
 @maxwell_cite(
     629,
-    part=4, chapter="Radiation Pressure",
+    part=4,
+    chapter="Radiation Pressure",
     theory_class="maxwell_original",
     description="Calculate radiation pressure from various sources",
 )
@@ -799,8 +814,16 @@ def radiation_pressure_sources() -> dict[str, dict[str, float]]:
 
 
 @maxwell_cite(
-    593, 604, 618, 619, 623, 624, 625, 629,
-    part=4, chapter="Electromagnetic Theory of Light",
+    593,
+    604,
+    618,
+    619,
+    623,
+    624,
+    625,
+    629,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete analysis of EM theory of light",
 )

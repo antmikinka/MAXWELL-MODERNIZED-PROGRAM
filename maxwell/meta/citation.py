@@ -11,6 +11,7 @@ Category: B (user_original) — Citation system designed for this project.
 """
 
 from __future__ import annotations
+
 import functools
 import inspect
 from dataclasses import dataclass, field

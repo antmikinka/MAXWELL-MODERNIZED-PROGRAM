@@ -11,26 +11,25 @@ Category: A (maxwell_original) — Maxwell's analytical solutions.
 
 from __future__ import annotations
 
-from maxwell.components.spheres import (
-    MagneticSphere,
-    sphere_field,
-    sphere_demagnetizing_field,
-    sphere_equivalent_dipole,
-    sphere_induced_magnetization,
-    HollowMagneticSphere,
-    hollow_sphere_in_field,
-    verify_sphere_magnetism,
-)
-
 from maxwell.components.ellipsoids import (
     MagneticEllipsoid,
-    ProlateSpheroid,
     OblateSpheroid,
+    ProlateSpheroid,
+    ellipsoid_demagnetizing_energy,
     ellipsoid_field,
     ellipsoid_induced_magnetization,
-    ellipsoid_demagnetizing_energy,
     find_easy_axis,
     verify_ellipsoid_magnetism,
+)
+from maxwell.components.spheres import (
+    HollowMagneticSphere,
+    MagneticSphere,
+    hollow_sphere_in_field,
+    sphere_demagnetizing_field,
+    sphere_equivalent_dipole,
+    sphere_field,
+    sphere_induced_magnetization,
+    verify_sphere_magnetism,
 )
 
 __all__ = [

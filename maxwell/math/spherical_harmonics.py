@@ -39,12 +39,35 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Tuple
+
 import numpy as np
-from scipy.special import lpmv, sph_harm, legendre
+from scipy.special import legendre, lpmv, sph_harm_y
 
-from maxwell.meta.citation import maxwell_cite
+
+def _sph_harm(m: int, n: int, phi, theta) -> complex:
+    """Wrapper around scipy's sph_harm_y (replaces deprecated sph_harm).
+
+    scipy.special.sph_harm was deprecated in 1.15.0. The replacement
+    sph_harm_y has a different signature: sph_harm_y(n, m, theta, phi)
+    and returns a complex numpy ndarray instead of a complex scalar.
+
+    Args:
+        m: Order.
+        n: Degree.
+        phi: Azimuthal angle(s).
+        theta: Polar angle(s).
+
+    Returns:
+        Complex value (scalar if inputs are scalar, array if inputs are arrays).
+    """
+    result = sph_harm_y(n, m, theta, phi)
+    if isinstance(result, np.ndarray) and result.size == 1:
+        return complex(result.item())
+    return result
+
+
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # =============================================================================
 # PART I, CHAPTER IX: SPHERICAL HARMONICS (Arts. 128-146)
@@ -53,6 +76,7 @@ from maxwell.config.constants import CONST
 # These functions implement the mathematical apparatus for solving Laplace's
 # equation in spherical coordinates and expanding arbitrary potentials.
 # =============================================================================
+
 
 @dataclass
 class LaplaceSpherical:
@@ -76,7 +100,8 @@ class LaplaceSpherical:
 
     @maxwell_cite(
         128,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Laplace's equation in spherical coordinates",
     )
@@ -133,12 +158,14 @@ class LaplaceSpherical:
         V_t_minus = V(r, theta - dtheta, phi)
 
         # Compute ∂/∂θ(sin θ ∂V/∂θ) using product rule discretization
-        sin_t_plus = np.sin(theta + dtheta/2)
-        sin_t_minus = np.sin(theta - dtheta/2)
+        sin_t_plus = np.sin(theta + dtheta / 2)
+        sin_t_minus = np.sin(theta - dtheta / 2)
         dV_dtheta_plus = (V_t_plus - V_r) / dtheta
         dV_dtheta_minus = (V_r - V_t_minus) / dtheta
 
-        d_dtheta_sin_dV = (sin_t_plus * dV_dtheta_plus - sin_t_minus * dV_dtheta_minus) / dtheta
+        d_dtheta_sin_dV = (
+            sin_t_plus * dV_dtheta_plus - sin_t_minus * dV_dtheta_minus
+        ) / dtheta
         polar_part = d_dtheta_sin_dV / (r**2 * sin_theta)
 
         # Azimuthal part: (1/(r² sin² θ)) ∂²V/∂φ²
@@ -151,7 +178,8 @@ class LaplaceSpherical:
 
     @maxwell_cite(
         129,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Separation of variables for Laplace equation",
     )
@@ -190,7 +218,8 @@ class LaplaceSpherical:
 
     @maxwell_cite(
         130,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Verify solution satisfies Laplace equation",
     )
@@ -270,7 +299,8 @@ class SurfaceHarmonic:
 
     @maxwell_cite(
         131,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Surface harmonic definition",
     )
@@ -292,12 +322,13 @@ class SurfaceHarmonic:
             Part I, Art. 131: Surface harmonic definition.
         """
         # Use scipy's sph_harm (Condon-Shortley phase convention)
-        result = sph_harm(self.m, self.l, phi, theta)
+        result = _sph_harm(self.m, self.l, phi, theta)
         return complex(result)
 
     @maxwell_cite(
         132,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Classify harmonic type (zonal/tesseral/sectorial)",
     )
@@ -325,7 +356,8 @@ class SurfaceHarmonic:
 
     @maxwell_cite(
         133,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Zonal harmonic (axisymmetric)",
     )
@@ -356,7 +388,8 @@ class SurfaceHarmonic:
 
     @maxwell_cite(
         134,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Tesseral harmonic component",
     )
@@ -390,7 +423,8 @@ class SurfaceHarmonic:
 
     @maxwell_cite(
         135,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Surface integral of harmonic product",
     )
@@ -478,7 +512,8 @@ class SolidHarmonic:
 
     @maxwell_cite(
         136,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Solid harmonic evaluation",
     )
@@ -502,10 +537,10 @@ class SolidHarmonic:
         Reference:
             Part I, Art. 136: Solid harmonic definition.
         """
-        Y_lm = sph_harm(self.m, self.l, phi, theta)
+        Y_lm = _sph_harm(self.m, self.l, phi, theta)
 
         if self.harmonic_type == "internal":
-            radial_factor = r ** self.l
+            radial_factor = r**self.l
         else:  # external
             if r == 0:
                 raise ValueError("External harmonic undefined at r=0")
@@ -515,7 +550,8 @@ class SolidHarmonic:
 
     @maxwell_cite(
         137,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Homogeneous function property",
     )
@@ -542,7 +578,8 @@ class SolidHarmonic:
 
     @maxwell_cite(
         138,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Verify harmonic property (∇²Φ = 0)",
     )
@@ -569,10 +606,10 @@ class SolidHarmonic:
         """
         # Test at multiple angles
         test_points = [
-            (test_r, np.pi/4, 0),
-            (test_r, np.pi/3, np.pi/4),
-            (test_r, np.pi/2, np.pi/2),
-            (test_r, 2*np.pi/3, np.pi),
+            (test_r, np.pi / 4, 0),
+            (test_r, np.pi / 3, np.pi / 4),
+            (test_r, np.pi / 2, np.pi / 2),
+            (test_r, 2 * np.pi / 3, np.pi),
         ]
 
         def phi_func(r, theta, phi):
@@ -593,6 +630,7 @@ class SolidHarmonic:
 # =============================================================================
 # EXPANSION OF ARBITRARY FUNCTIONS IN SPHERICAL HARMONICS (Arts. 139-142)
 # =============================================================================
+
 
 @dataclass
 class SphericalHarmonicExpansion:
@@ -627,7 +665,8 @@ class SphericalHarmonicExpansion:
 
     @maxwell_cite(
         139,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Expand function in spherical harmonics",
     )
@@ -669,7 +708,7 @@ class SphericalHarmonicExpansion:
                 for theta in theta_vals:
                     sin_theta = np.sin(theta)
                     for phi in phi_vals:
-                        Y_lm = sph_harm(m, l, phi, theta)
+                        Y_lm = _sph_harm(m, l, phi, theta)
                         weight = sin_theta  # dΩ = sin θ dθ dφ
                         integral += f(theta, phi) * np.conj(Y_lm) * weight
 
@@ -679,7 +718,8 @@ class SphericalHarmonicExpansion:
 
     @maxwell_cite(
         140,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Reconstruct function from coefficients",
     )
@@ -714,14 +754,15 @@ class SphericalHarmonicExpansion:
         for l in range(n_terms + 1):
             for m in range(-l, l + 1):
                 if (l, m) in self.coefficients:
-                    Y_lm = sph_harm(m, l, phi, theta)
+                    Y_lm = _sph_harm(m, l, phi, theta)
                     result += self.coefficients[(l, m)] * Y_lm
 
         return result
 
     @maxwell_cite(
         141,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Axisymmetric expansion (zonal harmonics only)",
     )
@@ -757,7 +798,7 @@ class SphericalHarmonicExpansion:
 
         for l in range(self.max_l + 1):
             # Only m=0 for axisymmetric case
-            Y_l0 = sph_harm(0, l, 0, theta_vals)  # phi=0, arbitrary
+            Y_l0 = _sph_harm(0, l, 0, theta_vals)  # phi=0, arbitrary
             f_vals = np.array([f(theta) for theta in theta_vals])
             weight = np.sin(theta_vals)  # dΩ = sin θ dθ dφ, integrated over φ gives 2π
 
@@ -769,7 +810,8 @@ class SphericalHarmonicExpansion:
 
     @maxwell_cite(
         142,
-        part=1, chapter="Spherical Harmonics",
+        part=1,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Convergence check for expansion",
     )
@@ -823,9 +865,11 @@ class SphericalHarmonicExpansion:
 # ADDITION THEOREM FOR SPHERICAL HARMONICS (Arts. 143-146)
 # =============================================================================
 
+
 @maxwell_cite(
     143,
-    part=1, chapter="Spherical Harmonics",
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Addition theorem for spherical harmonics",
 )
@@ -864,8 +908,9 @@ def addition_theorem(
         Part I, Art. 143: Addition theorem.
     """
     # Compute the angle γ between the two directions
-    cos_gamma = (np.cos(theta1) * np.cos(theta2) +
-                 np.sin(theta1) * np.sin(theta2) * np.cos(phi1 - phi2))
+    cos_gamma = np.cos(theta1) * np.cos(theta2) + np.sin(theta1) * np.sin(
+        theta2
+    ) * np.cos(phi1 - phi2)
 
     # Clamp to [-1, 1] to avoid numerical issues
     cos_gamma = np.clip(cos_gamma, -1.0, 1.0)
@@ -876,8 +921,8 @@ def addition_theorem(
     # Sum over m using spherical harmonics
     sum_over_m = 0.0j
     for m in range(-l, l + 1):
-        Y1 = sph_harm(m, l, phi1, theta1)
-        Y2 = sph_harm(m, l, phi2, theta2)
+        Y1 = _sph_harm(m, l, phi1, theta1)
+        Y2 = _sph_harm(m, l, phi2, theta2)
         sum_over_m += Y1 * np.conj(Y2)
 
     # Addition theorem result
@@ -888,7 +933,8 @@ def addition_theorem(
 
 @maxwell_cite(
     144,
-    part=1, chapter="Spherical Harmonics",
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Compute angle between two directions",
 )
@@ -918,8 +964,9 @@ def angle_between_directions(
     Reference:
         Part I, Art. 144: Angular separation.
     """
-    cos_gamma = (np.cos(theta1) * np.cos(theta2) +
-                 np.sin(theta1) * np.sin(theta2) * np.cos(phi1 - phi2))
+    cos_gamma = np.cos(theta1) * np.cos(theta2) + np.sin(theta1) * np.sin(
+        theta2
+    ) * np.cos(phi1 - phi2)
 
     # Clamp to [-1, 1] to avoid numerical issues
     cos_gamma = np.clip(cos_gamma, -1.0, 1.0)
@@ -929,7 +976,8 @@ def angle_between_directions(
 
 @maxwell_cite(
     145,
-    part=1, chapter="Spherical Harmonics",
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Verify addition theorem",
 )
@@ -962,8 +1010,9 @@ def verify_addition_theorem(
         Part I, Art. 145: Addition theorem verification.
     """
     # Compute angle between directions
-    cos_gamma = (np.cos(theta1) * np.cos(theta2) +
-                 np.sin(theta1) * np.sin(theta2) * np.cos(phi1 - phi2))
+    cos_gamma = np.cos(theta1) * np.cos(theta2) + np.sin(theta1) * np.sin(
+        theta2
+    ) * np.cos(phi1 - phi2)
     cos_gamma = np.clip(cos_gamma, -1.0, 1.0)
 
     # Direct evaluation
@@ -972,8 +1021,8 @@ def verify_addition_theorem(
     # Addition theorem sum
     sum_over_m = 0.0j
     for m in range(-l, l + 1):
-        Y1 = sph_harm(m, l, phi1, theta1)
-        Y2 = sph_harm(m, l, phi2, theta2)
+        Y1 = _sph_harm(m, l, phi1, theta1)
+        Y2 = _sph_harm(m, l, phi2, theta2)
         sum_over_m += Y1 * np.conj(Y2)
 
     P_l_addition = (4 * np.pi / (2 * l + 1)) * sum_over_m
@@ -998,7 +1047,8 @@ def verify_addition_theorem(
 
 @maxwell_cite(
     146,
-    part=1, chapter="Spherical Harmonics",
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Application to potential theory",
 )
@@ -1051,13 +1101,13 @@ def potential_expansion_addition_theorem(
     result = 0.0j
 
     for l in range(max_l + 1):
-        radial_factor = (r_min ** l) / (r_max ** (l + 1))
+        radial_factor = (r_min**l) / (r_max ** (l + 1))
 
         # Sum over m using addition theorem
         sum_over_m = 0.0j
         for m in range(-l, l + 1):
-            Y1 = sph_harm(m, l, phi1, theta1)
-            Y2 = sph_harm(m, l, phi2, theta2)
+            Y1 = _sph_harm(m, l, phi1, theta1)
+            Y2 = _sph_harm(m, l, phi2, theta2)
             sum_over_m += Y1 * np.conj(Y2)
 
         result += (4 * np.pi / (2 * l + 1)) * radial_factor * sum_over_m
@@ -1067,7 +1117,8 @@ def potential_expansion_addition_theorem(
 
 @maxwell_cite(
     146,
-    part=1, chapter="Spherical Harmonics",
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Direct distance calculation for comparison",
 )
@@ -1107,24 +1158,41 @@ def distance_between_points(
     y2 = r2 * np.sin(theta2) * np.sin(phi2)
     z2 = r2 * np.cos(theta2)
 
-    return np.sqrt((x1 - x2)**2 + (y1 - y2)**2 + (z1 - z2)**2)
+    return np.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2)
 
 
 # =============================================================================
 # PART I, CHAPTER IX VERIFICATION (Arts. 128-146)
 # =============================================================================
 
+
 @maxwell_cite(
-    128, 129, 130, 131, 132, 133, 134, 135,
-    136, 137, 138,
-    139, 140, 141, 142,
-    143, 144, 145, 146,
-    part=1, chapter="Spherical Harmonics",
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Complete verification of Part I Chapter IX",
 )
 def verify_chapter_ix(
-    laplace_tolerance: float = 1e-3,      # Coarser for numerical Laplacian
+    laplace_tolerance: float = 1e-3,  # Coarser for numerical Laplacian
     orthogonality_tolerance: float = 1e-6,
     expansion_tolerance: float = 1e-3,
     addition_tolerance: float = 1e-10,
@@ -1157,13 +1225,13 @@ def verify_chapter_ix(
     # Use a known harmonic: V = r^l Y_lm (solid harmonic)
     def test_potential(r, theta, phi):
         """Internal solid harmonic with l=1, m=0."""
-        Y_10 = sph_harm(0, 1, phi, theta)
-        return (r ** 1 * Y_10).real
+        Y_10 = _sph_harm(0, 1, phi, theta)
+        return (r**1 * Y_10).real
 
     laplace_test = LaplaceSpherical.verify_harmonic(
         test_potential,
-        [(5.0, np.pi/4, 0), (5.0, np.pi/3, np.pi/4)],
-        laplace_tolerance
+        [(5.0, np.pi / 4, 0), (5.0, np.pi / 3, np.pi / 4)],
+        laplace_tolerance,
     )
     results["arts_128_130_laplace"] = laplace_test
 
@@ -1185,8 +1253,12 @@ def verify_chapter_ix(
     solid_int = SolidHarmonic(l=1, m=0, harmonic_type="internal")
     solid_ext = SolidHarmonic(l=1, m=0, harmonic_type="external")
 
-    solid_int_verify = solid_int.verify_harmonic(test_r=5.0, tolerance=laplace_tolerance)
-    solid_ext_verify = solid_ext.verify_harmonic(test_r=5.0, tolerance=laplace_tolerance)
+    solid_int_verify = solid_int.verify_harmonic(
+        test_r=5.0, tolerance=laplace_tolerance
+    )
+    solid_ext_verify = solid_ext.verify_harmonic(
+        test_r=5.0, tolerance=laplace_tolerance
+    )
 
     results["arts_136_138_solid"] = {
         "internal_harmonic": solid_int_verify["all_harmonic"],
@@ -1217,12 +1289,14 @@ def verify_chapter_ix(
     }
 
     # Test addition theorem (Arts. 143-146)
-    theta1, phi1 = np.pi/4, 0
-    theta2, phi2 = np.pi/3, np.pi/6
+    theta1, phi1 = np.pi / 4, 0
+    theta2, phi2 = np.pi / 3, np.pi / 6
 
     addition_results = {}
     for l_test in [0, 1, 2, 3]:
-        add_verify = verify_addition_theorem(l_test, theta1, phi1, theta2, phi2, addition_tolerance)
+        add_verify = verify_addition_theorem(
+            l_test, theta1, phi1, theta2, phi2, addition_tolerance
+        )
         addition_results[f"l{l_test}"] = add_verify
         results[f"arts_143_146_addition_l{l_test}"] = add_verify["verified"]
 
@@ -1230,12 +1304,12 @@ def verify_chapter_ix(
 
     # Summary
     all_passed = (
-        results["arts_128_130_laplace"]["all_harmonic"] and
-        results["arts_131_135_surface"]["orthogonality_check"] and
-        results["arts_136_138_solid"]["internal_harmonic"] and
-        results["arts_136_138_solid"]["external_harmonic"] and
-        results["arts_139_142_expansion"]["converged"] and
-        all(results[k] for k in results if "addition_l" in k)
+        results["arts_128_130_laplace"]["all_harmonic"]
+        and results["arts_131_135_surface"]["orthogonality_check"]
+        and results["arts_136_138_solid"]["internal_harmonic"]
+        and results["arts_136_138_solid"]["external_harmonic"]
+        and results["arts_139_142_expansion"]["converged"]
+        and all(results[k] for k in results if "addition_l" in k)
     )
 
     results["summary"] = {
@@ -1254,11 +1328,27 @@ def verify_chapter_ix(
 
 
 @maxwell_cite(
-    128, 129, 130, 131, 132, 133, 134, 135,
-    136, 137, 138,
-    139, 140, 141, 142,
-    143, 144, 145, 146,
-    part=1, chapter="Spherical Harmonics",
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    part=1,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Comprehensive analysis of Chapter IX",
 )
@@ -1342,8 +1432,8 @@ def analyze_chapter_ix(
 
     # Addition theorem demo (Arts. 143-146)
     addition_results = {}
-    theta1, phi1 = np.pi/4, 0
-    theta2, phi2 = np.pi/3, np.pi/4
+    theta1, phi1 = np.pi / 4, 0
+    theta2, phi2 = np.pi / 3, np.pi / 4
 
     for l in range(max_l + 1):
         verification = verify_addition_theorem(l, theta1, phi1, theta2, phi2)
@@ -1366,8 +1456,6 @@ def analyze_chapter_ix(
 
 
 @dataclass
-
-
 @dataclass
 class LegendrePolynomial:
     """
@@ -1388,8 +1476,10 @@ class LegendrePolynomial:
             raise ValueError(f"Degree must be non-negative")
 
     @maxwell_cite(
-        128, 675,
-        part=4, chapter="Spherical Harmonics",
+        128,
+        675,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate Legendre polynomial",
     )
@@ -1413,8 +1503,10 @@ class LegendrePolynomial:
         return float(legendre(self.degree)(x))
 
     @maxwell_cite(
-        129, 676,
-        part=4, chapter="Spherical Harmonics",
+        129,
+        676,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate derivative of Legendre polynomial",
     )
@@ -1445,11 +1537,19 @@ class LegendrePolynomial:
         P_prev = float(legendre(self.degree - 1)(x))
         P_next = float(legendre(self.degree + 1)(x))
 
-        return self.degree * (self.degree + 1) / (2 * self.degree + 1) * (P_next - P_prev) / 2
+        return (
+            self.degree
+            * (self.degree + 1)
+            / (2 * self.degree + 1)
+            * (P_next - P_prev)
+            / 2
+        )
 
     @maxwell_cite(
-        130, 677,
-        part=4, chapter="Spherical Harmonics",
+        130,
+        677,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate Rodrigues formula",
     )
@@ -1474,8 +1574,10 @@ class LegendrePolynomial:
         return self.evaluate(x)
 
     @maxwell_cite(
-        131, 678,
-        part=4, chapter="Spherical Harmonics",
+        131,
+        678,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Check orthogonality",
     )
@@ -1532,8 +1634,10 @@ class SphericalHarmonic:
             raise ValueError(f"|m| must be ≤ l")
 
     @maxwell_cite(
-        132, 685,
-        part=4, chapter="Spherical Harmonics",
+        132,
+        685,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate spherical harmonic",
     )
@@ -1559,12 +1663,14 @@ class SphericalHarmonic:
         """
         # Use scipy's sph_harm which uses the standard Condon-Shortley phase
         # Note: scipy uses (phi, theta) order
-        result = sph_harm(self.m, self.l, phi, theta)
+        result = _sph_harm(self.m, self.l, phi, theta)
         return complex(result)
 
     @maxwell_cite(
-        133, 686,
-        part=4, chapter="Spherical Harmonics",
+        133,
+        686,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate real spherical harmonic",
     )
@@ -1596,8 +1702,10 @@ class SphericalHarmonic:
             return Y.imag * np.sqrt(2)
 
     @maxwell_cite(
-        134, 687,
-        part=4, chapter="Spherical Harmonics",
+        134,
+        687,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate intensity",
     )
@@ -1625,8 +1733,10 @@ class SphericalHarmonic:
         return abs(Y) ** 2
 
     @maxwell_cite(
-        135, 688,
-        part=4, chapter="Spherical Harmonics",
+        135,
+        688,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Check normalization",
     )
@@ -1670,8 +1780,10 @@ class SphericalHarmonic:
         return integral
 
     @maxwell_cite(
-        136, 689,
-        part=4, chapter="Spherical Harmonics",
+        136,
+        689,
+        part=4,
+        chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate associated Legendre function",
     )
@@ -1697,8 +1809,12 @@ class SphericalHarmonic:
 
 
 @maxwell_cite(
-    137, 138, 675, 676,
-    part=4, chapter="Spherical Harmonics",
+    137,
+    138,
+    675,
+    676,
+    part=4,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate Legendre polynomial Pₗ(x)",
 )
@@ -1727,8 +1843,10 @@ def calc_legendre_polynomial(l: int, x: float) -> float:
 
 
 @maxwell_cite(
-    139, 689,
-    part=4, chapter="Spherical Harmonics",
+    139,
+    689,
+    part=4,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate associated Legendre function Pₗᵐ(x)",
 )
@@ -1755,8 +1873,10 @@ def calc_associated_legendre(l: int, m: int, x: float) -> float:
 
 
 @maxwell_cite(
-    140, 685,
-    part=4, chapter="Spherical Harmonics",
+    140,
+    685,
+    part=4,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate spherical harmonic Yₗᵐ(θ, φ)",
 )
@@ -1787,8 +1907,13 @@ def calc_spherical_harmonic(l: int, m: int, theta: float, phi: float) -> complex
 
 
 @maxwell_cite(
-    141, 142, 690, 691, 692,
-    part=4, chapter="Spherical Harmonics",
+    141,
+    142,
+    690,
+    691,
+    692,
+    part=4,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate multipole expansion of potential",
 )
@@ -1828,7 +1953,9 @@ def calc_multipole_expansion(
     """
     potential = 0.0j
 
-    for l in range(min(max_l + 1, max(multipole_moments.keys()) + 1 if multipole_moments else 1)):
+    for l in range(
+        min(max_l + 1, max(multipole_moments.keys()) + 1 if multipole_moments else 1)
+    ):
         if l not in multipole_moments:
             continue
 
@@ -1844,8 +1971,24 @@ def calc_multipole_expansion(
 
 
 @maxwell_cite(
-    143, 144, 145, 146, 675, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695,
-    part=4, chapter="Spherical Harmonics",
+    143,
+    144,
+    145,
+    146,
+    675,
+    685,
+    686,
+    687,
+    688,
+    689,
+    690,
+    691,
+    692,
+    693,
+    694,
+    695,
+    part=4,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Verify spherical harmonic relations",
 )
@@ -1912,8 +2055,24 @@ def verify_spherical_harmonics(
 
 
 @maxwell_cite(
-    143, 144, 145, 146, 675, 685, 686, 687, 688, 689, 690, 691, 692, 693, 694, 695,
-    part=4, chapter="Spherical Harmonics",
+    143,
+    144,
+    145,
+    146,
+    675,
+    685,
+    686,
+    687,
+    688,
+    689,
+    690,
+    691,
+    692,
+    693,
+    694,
+    695,
+    part=4,
+    chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Complete spherical harmonic analysis",
 )
@@ -1959,8 +2118,8 @@ def analyze_spherical_harmonics(
         for m in range(-l, l + 1):
             sh = SphericalHarmonic(l=l, m=m)
             key = f"Y_{l}^{m}"
-            sh_values[key] = sh.evaluate(np.pi/2, 0)
-            intensity_values[key] = sh.intensity(np.pi/2, 0)
+            sh_values[key] = sh.evaluate(np.pi / 2, 0)
+            intensity_values[key] = sh.intensity(np.pi / 2, 0)
 
     # Normalization checks
     normalization_checks = {}

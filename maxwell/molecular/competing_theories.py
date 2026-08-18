@@ -30,10 +30,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -58,7 +59,8 @@ class CompetingTheory:
 
     @maxwell_cite(
         859,
-        part=4, chapter="Competing Theories",
+        part=4,
+        chapter="Competing Theories",
         theory_class="maxwell_original",
         description="Get theory characteristics",
     )
@@ -86,7 +88,8 @@ class CompetingTheory:
 
     @maxwell_cite(
         860,
-        part=4, chapter="Competing Theories",
+        part=4,
+        chapter="Competing Theories",
         theory_class="maxwell_original",
         description="Evaluate theory against experimental facts",
     )
@@ -153,7 +156,8 @@ class CompetingTheory:
 
     @maxwell_cite(
         861,
-        part=4, chapter="Competing Theories",
+        part=4,
+        chapter="Competing Theories",
         theory_class="maxwell_original",
         description="Check internal consistency",
     )
@@ -207,7 +211,8 @@ class CompetingTheory:
 
     @maxwell_cite(
         862,
-        part=4, chapter="Competing Theories",
+        part=4,
+        chapter="Competing Theories",
         theory_class="maxwell_original",
         description="Compare theories across all criteria",
     )
@@ -254,7 +259,9 @@ class CompetingTheory:
         consistency = list(self.internal_consistency().values())
 
         exp_avg = np.mean(exp_scores) if exp_scores else 0.5
-        consistency_avg = sum(1 for c in consistency if c) / len(consistency) if consistency else 0.5
+        consistency_avg = (
+            sum(1 for c in consistency if c) / len(consistency) if consistency else 0.5
+        )
 
         return 0.6 * exp_avg + 0.4 * consistency_avg
 
@@ -299,7 +306,8 @@ class TheoryComparison:
 
     @maxwell_cite(
         862,
-        part=4, chapter="Competing Theories",
+        part=4,
+        chapter="Competing Theories",
         theory_class="maxwell_original",
         description="Compare theories across all criteria",
     )
@@ -352,14 +360,18 @@ class TheoryComparison:
         consistency = list(theory.internal_consistency().values())
 
         exp_avg = np.mean(exp_scores) if exp_scores else 0.5
-        consistency_avg = sum(1 for c in consistency if c) / len(consistency) if consistency else 0.5
+        consistency_avg = (
+            sum(1 for c in consistency if c) / len(consistency) if consistency else 0.5
+        )
 
         return 0.6 * exp_avg + 0.4 * consistency_avg
 
 
 @maxwell_cite(
-    859, 860,
-    part=4, chapter="Competing Theories",
+    859,
+    860,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Compare electromagnetic theories",
 )
@@ -407,8 +419,10 @@ def compare_electromagnetic_theories(
 
 
 @maxwell_cite(
-    861, 862,
-    part=4, chapter="Competing Theories",
+    861,
+    862,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Analyze differences between theories",
 )
@@ -459,14 +473,20 @@ def analyze_theory_differences(
         "theory2": theory2,
         "conceptual_differences": conceptual_diffs,
         "predictive_differences": predictive_diffs,
-        "key_distinction": chars1.get("action_type") + " vs " + chars2.get("action_type"),
-        "experimental_advantage": theory1 if sum(exp1.values()) > sum(exp2.values()) else theory2,
+        "key_distinction": chars1.get("action_type")
+        + " vs "
+        + chars2.get("action_type"),
+        "experimental_advantage": (
+            theory1 if sum(exp1.values()) > sum(exp2.values()) else theory2
+        ),
     }
 
 
 @maxwell_cite(
-    863, 864,
-    part=4, chapter="Competing Theories",
+    863,
+    864,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Verify consistency between theories",
 )
@@ -514,8 +534,16 @@ def verify_theory_consistency(
 
 
 @maxwell_cite(
-    859, 860, 861, 862, 863, 864, 865, 866,
-    part=4, chapter="Competing Theories",
+    859,
+    860,
+    861,
+    862,
+    863,
+    864,
+    865,
+    866,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Synthesize comparison of all theories",
 )
@@ -549,7 +577,7 @@ def synthesize_theory_comparison() -> Dict[str, Dict | str]:
     differences = {}
     theory_names = list(comparison.keys())
     for i, t1 in enumerate(theory_names):
-        for t2 in theory_names[i+1:]:
+        for t2 in theory_names[i + 1 :]:
             diff = analyze_theory_differences(t1, t2)
             differences[f"{t1}_vs_{t2}"] = diff
 
@@ -564,9 +592,9 @@ def synthesize_theory_comparison() -> Dict[str, Dict | str]:
         "consistency_checks": consistency_checks,
         "best_theory": best_theory,
         "recommendation": f"Maxwell's field theory is recommended due to complete "
-                         f"experimental agreement and internal consistency.",
+        f"experimental agreement and internal consistency.",
         "key_insight": "Field theory provides local energy propagation and "
-                      "predicts electromagnetic waves, unlike action-at-distance theories.",
+        "predicts electromagnetic waves, unlike action-at-distance theories.",
     }
 
 
@@ -574,9 +602,18 @@ def synthesize_theory_comparison() -> Dict[str, Dict | str]:
 # STANDALONE FUNCTIONS FOR DIRECT IMPORT (as expected by tests)
 # =============================================================================
 
+
 @maxwell_cite(
-    859, 860, 861, 862, 863, 864, 865, 866,
-    part=4, chapter="Competing Theories",
+    859,
+    860,
+    861,
+    862,
+    863,
+    864,
+    865,
+    866,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Compare all electromagnetic theories",
 )
@@ -602,7 +639,9 @@ def compare_theories() -> Dict[str, Dict]:
 
     # Reformat keys to match test expectations
     result = {
-        "amperes_theory": comparison.get("Maxwell", {}),  # Ampere's theory is the molecular current basis
+        "amperes_theory": comparison.get(
+            "Maxwell", {}
+        ),  # Ampere's theory is the molecular current basis
         "webers_theory": comparison.get("Weber", {}),
         "neumanns_theory": comparison.get("Neumann", {}),
     }
@@ -610,8 +649,10 @@ def compare_theories() -> Dict[str, Dict]:
 
 
 @maxwell_cite(
-    859, 860,
-    part=4, chapter="Competing Theories",
+    859,
+    860,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Analyze Ampere's theory characteristics",
 )
@@ -651,8 +692,18 @@ def analyze_amperes_theory() -> Dict[str, str | list]:
 
 
 @maxwell_cite(
-    841, 842, 843, 844, 845, 846, 847, 848, 849, 850,
-    part=4, chapter="Weber's Theory",
+    841,
+    842,
+    843,
+    844,
+    845,
+    846,
+    847,
+    848,
+    849,
+    850,
+    part=4,
+    chapter="Weber's Theory",
     theory_class="maxwell_original",
     description="Analyze Weber's theory characteristics",
 )
@@ -694,8 +745,16 @@ def analyze_webers_theory() -> Dict[str, str | list]:
 
 
 @maxwell_cite(
-    851, 852, 853, 854, 855, 856, 857, 858,
-    part=4, chapter="Neumann's Theory",
+    851,
+    852,
+    853,
+    854,
+    855,
+    856,
+    857,
+    858,
+    part=4,
+    chapter="Neumann's Theory",
     theory_class="maxwell_original",
     description="Analyze Neumann's theory characteristics",
 )
@@ -738,8 +797,16 @@ def analyze_neumanns_theory() -> Dict[str, str | list]:
 
 
 @maxwell_cite(
-    859, 860, 861, 862, 863, 864, 865, 866,
-    part=4, chapter="Competing Theories",
+    859,
+    860,
+    861,
+    862,
+    863,
+    864,
+    865,
+    866,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Maxwell's field theory advantages",
 )
@@ -796,8 +863,10 @@ def maxwell_advantages() -> Dict[str, str | list]:
 
 
 @maxwell_cite(
-    859, 860,
-    part=4, chapter="Competing Theories",
+    859,
+    860,
+    part=4,
+    chapter="Competing Theories",
     theory_class="maxwell_original",
     description="Calculate diamagnetic response",
 )

@@ -20,11 +20,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Optional
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
 from maxwell.core.magnet import Magnet, MagneticPole
+from maxwell.meta.citation import maxwell_cite
 
 
 @dataclass
@@ -87,7 +88,8 @@ class Solenoid:
     @classmethod
     @maxwell_cite(
         407,
-        part=3, chapter="Magnetic Solenoids",
+        part=3,
+        chapter="Magnetic Solenoids",
         theory_class="maxwell_original",
         description="Create solenoid from geometric parameters",
     )
@@ -132,7 +134,8 @@ class Solenoid:
 
     @maxwell_cite(
         407,
-        part=3, chapter="Magnetic Solenoids",
+        part=3,
+        chapter="Magnetic Solenoids",
         theory_class="maxwell_original",
         description="Convert solenoid to equivalent bar magnet",
     )
@@ -161,7 +164,8 @@ class Solenoid:
 
     @maxwell_cite(
         408,
-        part=3, chapter="Magnetic Solenoids",
+        part=3,
+        chapter="Magnetic Solenoids",
         theory_class="maxwell_original",
         description="Calculate solenoid potential at point",
     )
@@ -210,7 +214,8 @@ class Solenoid:
 
     @maxwell_cite(
         408,
-        part=3, chapter="Magnetic Solenoids",
+        part=3,
+        chapter="Magnetic Solenoids",
         theory_class="maxwell_original",
         description="Calculate solenoid field at point",
     )
@@ -247,9 +252,9 @@ class Solenoid:
         r_s_mag = np.linalg.norm(r_s)
 
         if r_n_mag > 0:
-            H += magnet.north_pole.signed_strength * r_n / (r_n_mag ** 3)
+            H += magnet.north_pole.signed_strength * r_n / (r_n_mag**3)
         if r_s_mag > 0:
-            H += magnet.south_pole.signed_strength * r_s / (r_s_mag ** 3)
+            H += magnet.south_pole.signed_strength * r_s / (r_s_mag**3)
 
         return H
 
@@ -281,14 +286,17 @@ class ComplexSolenoid:
             raise ValueError("axis_curve must be (N, 3) array")
 
         if self.moment_density_values is not None:
-            self.moment_density_values = np.asarray(self.moment_density_values, dtype=np.float64)
+            self.moment_density_values = np.asarray(
+                self.moment_density_values, dtype=np.float64
+            )
             if len(self.moment_density_values) != len(self.axis_curve):
                 raise ValueError("Must have moment density for each axis point")
 
     @classmethod
     @maxwell_cite(
         414,
-        part=3, chapter="Magnetic Solenoids",
+        part=3,
+        chapter="Magnetic Solenoids",
         theory_class="maxwell_original",
         description="Create complex solenoid from discrete data",
     )
@@ -335,7 +343,9 @@ class ComplexSolenoid:
         total = 0.0
         for i in range(len(self.axis_curve) - 1):
             dl = np.linalg.norm(self.axis_curve[i + 1] - self.axis_curve[i])
-            dm_dl = (self.moment_density_values[i] + self.moment_density_values[i + 1]) / 2
+            dm_dl = (
+                self.moment_density_values[i] + self.moment_density_values[i + 1]
+            ) / 2
             total += dm_dl * dl
 
         # Direction from overall axis
@@ -349,7 +359,8 @@ class ComplexSolenoid:
 
     @maxwell_cite(
         414,
-        part=3, chapter="Magnetic Solenoids",
+        part=3,
+        chapter="Magnetic Solenoids",
         theory_class="maxwell_original",
         description="Calculate potential of complex solenoid",
     )
@@ -387,7 +398,9 @@ class ComplexSolenoid:
                 continue
 
             # Average moment density for segment
-            dm_dl = (self.moment_density_values[i] + self.moment_density_values[i + 1]) / 2
+            dm_dl = (
+                self.moment_density_values[i] + self.moment_density_values[i + 1]
+            ) / 2
 
             # Treat segment as small dipole
             seg_center = (seg_start + seg_end) / 2
@@ -397,7 +410,7 @@ class ComplexSolenoid:
             if r_mag > dl:
                 # Far field: use dipole approximation
                 r_hat = r_vec / r_mag
-                dOmega = dm_dl * dl * float(np.dot(dl_vec / dl, r_hat)) / (r_mag ** 2)
+                dOmega = dm_dl * dl * float(np.dot(dl_vec / dl, r_hat)) / (r_mag**2)
                 Omega += dOmega
             else:
                 # Near field: use pole approximation
@@ -413,8 +426,11 @@ class ComplexSolenoid:
 
 
 @maxwell_cite(
-    407, 408, 414,
-    part=3, chapter="Magnetic Solenoids",
+    407,
+    408,
+    414,
+    part=3,
+    chapter="Magnetic Solenoids",
     theory_class="maxwell_original",
     description="Calculate solenoid potential from solid angle",
 )

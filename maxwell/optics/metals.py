@@ -40,25 +40,25 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Tuple
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
-
+from maxwell.meta.citation import maxwell_cite
 
 # Optical constants for common metals at visible wavelengths (λ ≈ 589 nm)
 # Format: {name: (n, κ)} where ñ = n + iκ
 METAL_OPTICAL_CONSTANTS = {
-    "silver": (0.05, 3.88),      # Highly reflective in visible
-    "gold": (0.47, 2.41),        # Yellow color from interband transitions
-    "copper": (0.62, 2.57),      # Reddish color
-    "aluminum": (1.39, 7.61),    # Good UV reflector
-    "chromium": (3.11, 4.20),    # Used for mirrors
+    "silver": (0.05, 3.88),  # Highly reflective in visible
+    "gold": (0.47, 2.41),  # Yellow color from interband transitions
+    "copper": (0.62, 2.57),  # Reddish color
+    "aluminum": (1.39, 7.61),  # Good UV reflector
+    "chromium": (3.11, 4.20),  # Used for mirrors
     "nickel": (1.88, 3.46),
     "platinum": (2.19, 3.39),
     "titanium": (2.53, 3.31),
     "iron": (2.47, 3.37),
-    "sodium": (0.04, 2.37),      # Alkali metal
+    "sodium": (0.04, 2.37),  # Alkali metal
 }
 
 
@@ -93,7 +93,8 @@ class MetallicReflection:
 
     @maxwell_cite(
         795,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate Fresnel reflection coefficient (perpendicular)",
     )
@@ -127,7 +128,7 @@ class MetallicReflection:
         sin_theta2 = (self.n1 / n2_complex) * sin_theta1
 
         # cos(θ2) = sqrt(1 - sin²(θ2))
-        cos_theta2 = np.sqrt(1.0 - sin_theta2 ** 2)
+        cos_theta2 = np.sqrt(1.0 - sin_theta2**2)
 
         # r_s = (n1*cos(θ1) - ñ2*cos(θ2)) / (n1*cos(θ1) + ñ2*cos(θ2))
         numerator = self.n1 * cos_theta1 - n2_complex * cos_theta2
@@ -137,7 +138,8 @@ class MetallicReflection:
 
     @maxwell_cite(
         796,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate Fresnel reflection coefficient (parallel)",
     )
@@ -164,7 +166,7 @@ class MetallicReflection:
         sin_theta1 = np.sin(theta1)
         n2_complex = self.complex_refractive_index
         sin_theta2 = (self.n1 / n2_complex) * sin_theta1
-        cos_theta2 = np.sqrt(1.0 - sin_theta2 ** 2)
+        cos_theta2 = np.sqrt(1.0 - sin_theta2**2)
 
         # r_p = (ñ2*cos(θ1) - n1*cos(θ2)) / (ñ2*cos(θ1) + n1*cos(θ2))
         numerator = n2_complex * cos_theta1 - self.n1 * cos_theta2
@@ -174,11 +176,14 @@ class MetallicReflection:
 
     @maxwell_cite(
         797,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate reflectance R = |r|²",
     )
-    def reflectance(self, angle_incidence: float, polarization: str = "unpolarized") -> float:
+    def reflectance(
+        self, angle_incidence: float, polarization: str = "unpolarized"
+    ) -> float:
         """
         Calculate reflectance (intensity reflection coefficient).
 
@@ -213,7 +218,8 @@ class MetallicReflection:
 
     @maxwell_cite(
         798,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate skin depth in metal",
     )
@@ -239,13 +245,14 @@ class MetallicReflection:
         if wavelength <= 0:
             raise ValueError(f"Wavelength must be positive")
         if self.kappa <= 0:
-            return float('inf')
+            return float("inf")
 
         return wavelength / (2.0 * np.pi * self.kappa)
 
     @maxwell_cite(
         799,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate absorption coefficient",
     )
@@ -277,7 +284,8 @@ class MetallicReflection:
 
     @maxwell_cite(
         800,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate normal incidence reflectance",
     )
@@ -303,15 +311,16 @@ class MetallicReflection:
         n = self.n2_real
         k = self.kappa
 
-        numerator = (self.n1 - n) ** 2 + k ** 2
-        denominator = (self.n1 + n) ** 2 + k ** 2
+        numerator = (self.n1 - n) ** 2 + k**2
+        denominator = (self.n1 + n) ** 2 + k**2
 
         return numerator / denominator
 
 
 @maxwell_cite(
     795,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Get metal optical constants",
 )
@@ -355,8 +364,10 @@ def get_metal_constants(metal_name: str) -> dict[str, float]:
 
 
 @maxwell_cite(
-    795, 796,
-    part=4, chapter="Electromagnetic Theory of Light",
+    795,
+    796,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate Fresnel reflection coefficient for metal",
 )
@@ -401,7 +412,7 @@ def calc_fresnel_reflection_metal(
 
     # Complex Snell's law
     sin_theta2 = (n1 / n2_complex) * sin_theta1
-    cos_theta2 = np.sqrt(1.0 - sin_theta2 ** 2)
+    cos_theta2 = np.sqrt(1.0 - sin_theta2**2)
 
     if polarization == "s":
         numerator = n1 * cos_theta1 - n2_complex * cos_theta2
@@ -415,7 +426,8 @@ def calc_fresnel_reflection_metal(
 
 @maxwell_cite(
     797,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate metal reflectance at normal incidence",
 )
@@ -449,14 +461,15 @@ def calc_metal_reflectance_normal(
         >>> R = calc_metal_reflectance_normal(1.0, 0.05, 3.88)
         >>> print(f"R = {R:.4f}")  # R ≈ 0.95
     """
-    numerator = (n1 - n2_real) ** 2 + kappa ** 2
-    denominator = (n1 + n2_real) ** 2 + kappa ** 2
+    numerator = (n1 - n2_real) ** 2 + kappa**2
+    denominator = (n1 + n2_real) ** 2 + kappa**2
     return numerator / denominator
 
 
 @maxwell_cite(
     798,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate skin depth in metal",
 )
@@ -490,14 +503,15 @@ def calc_skin_depth(
     if wavelength <= 0:
         raise ValueError(f"Wavelength must be positive")
     if kappa <= 0:
-        return float('inf')
+        return float("inf")
 
     return wavelength / (2.0 * np.pi * kappa)
 
 
 @maxwell_cite(
     799,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate absorption coefficient",
 )
@@ -535,8 +549,14 @@ def calc_absorption_coefficient(
 
 
 @maxwell_cite(
-    795, 796, 797, 798, 799, 800,
-    part=4, chapter="Electromagnetic Theory of Light",
+    795,
+    796,
+    797,
+    798,
+    799,
+    800,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify metallic reflection relations",
 )
@@ -601,8 +621,14 @@ def verify_metallic_reflection(
 
 
 @maxwell_cite(
-    795, 796, 797, 798, 799, 800,
-    part=4, chapter="Electromagnetic Theory of Light",
+    795,
+    796,
+    797,
+    798,
+    799,
+    800,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete metallic reflection analysis",
 )
@@ -691,7 +717,8 @@ def analyze_metallic_reflection(
 
 @maxwell_cite(
     798,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate skin depth from conductivity",
 )
@@ -730,7 +757,8 @@ def calc_skin_depth(sigma: float, omega: float) -> float:
 
 @maxwell_cite(
     799,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate absorption coefficient from skin depth",
 )
@@ -762,7 +790,8 @@ def calc_absorption_coefficient(delta: float) -> float:
 
 @maxwell_cite(
     797,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate metal reflectivity",
 )
@@ -804,7 +833,8 @@ def calc_metal_reflectivity(sigma: float, omega: float) -> float:
 
 @maxwell_cite(
     798,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Check transparency criterion for material",
 )
@@ -863,7 +893,8 @@ class MetalOptics:
 
     @maxwell_cite(
         798,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate skin depth at given frequency",
     )
@@ -886,7 +917,8 @@ class MetalOptics:
 
     @maxwell_cite(
         799,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate absorption coefficient",
     )
@@ -909,7 +941,8 @@ class MetalOptics:
 
     @maxwell_cite(
         797,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate reflectivity at frequency",
     )
@@ -929,4 +962,3 @@ class MetalOptics:
             Part IV, Arts. 797-800: Metal reflectivity.
         """
         return calc_metal_reflectivity(self.conductivity, omega)
-

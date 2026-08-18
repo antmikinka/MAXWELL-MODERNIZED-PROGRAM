@@ -37,15 +37,17 @@ References:
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 
-from maxwell.meta.citation import maxwell_cite
 from maxwell.config.constants import CONST
+from maxwell.meta.citation import maxwell_cite
 
 
 @maxwell_cite(
     792,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate radiation pressure: P = u",
 )
@@ -85,7 +87,8 @@ def calc_radiation_pressure(u: float) -> float:
 
 @maxwell_cite(
     792,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate radiation pressure for reflection: P = 2u",
 )
@@ -118,7 +121,8 @@ def calc_radiation_pressure_reflection(u: float) -> float:
 
 @maxwell_cite(
     791,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate radiation pressure from intensity: P = I/c",
 )
@@ -161,7 +165,8 @@ class RadiationPressure:
 
     @maxwell_cite(
         791,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate radiation pressure on absorbing surface",
     )
@@ -186,7 +191,8 @@ class RadiationPressure:
 
     @maxwell_cite(
         792,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate radiation pressure on reflecting surface",
     )
@@ -211,7 +217,8 @@ class RadiationPressure:
 
     @maxwell_cite(
         794,
-        part=4, chapter="Electromagnetic Theory of Light",
+        part=4,
+        chapter="Electromagnetic Theory of Light",
         theory_class="maxwell_original",
         description="Calculate force on area from radiation pressure",
     )
@@ -240,7 +247,8 @@ class RadiationPressure:
 
 @maxwell_cite(
     793,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate radiation pressure at oblique incidence",
 )
@@ -290,8 +298,10 @@ def calc_radiation_pressure_oblique(
 
 
 @maxwell_cite(
-    791, 794,
-    part=4, chapter="Electromagnetic Theory of Light",
+    791,
+    794,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate force from radiation on surface",
 )
@@ -341,7 +351,8 @@ def calc_radiation_force(
 
 @maxwell_cite(
     791,
-    part=4, chapter="Electromagnetic Theory of Light",
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate energy density from intensity",
 )
@@ -376,8 +387,10 @@ def calc_energy_density_from_intensity(intensity: float) -> float:
 
 
 @maxwell_cite(
-    791, 794,
-    part=4, chapter="Electromagnetic Theory of Light",
+    791,
+    794,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate momentum carried by radiation",
 )
@@ -413,12 +426,16 @@ def calc_radiation_momentum(energy: float) -> float:
 
 
 @maxwell_cite(
-    791, 794,
-    part=4, chapter="Electromagnetic Theory of Light",
+    791,
+    794,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Calculate radiation pressure from E field amplitude",
 )
-def calc_radiation_pressure_from_E(E_amplitude: float, reflecting: bool = False) -> float:
+def calc_radiation_pressure_from_E(
+    E_amplitude: float, reflecting: bool = False
+) -> float:
     """
     Calculate radiation pressure from electric field amplitude.
 
@@ -445,7 +462,7 @@ def calc_radiation_pressure_from_E(E_amplitude: float, reflecting: bool = False)
     if E_amplitude < 0:
         raise ValueError(f"Field amplitude must be non-negative")
 
-    E_sq = E_amplitude ** 2
+    E_sq = E_amplitude**2
     base_pressure = E_sq / (8.0 * np.pi)
 
     if reflecting:
@@ -455,8 +472,12 @@ def calc_radiation_pressure_from_E(E_amplitude: float, reflecting: bool = False)
 
 
 @maxwell_cite(
-    791, 792, 793, 794,
-    part=4, chapter="Electromagnetic Theory of Light",
+    791,
+    792,
+    793,
+    794,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Verify radiation pressure relations",
 )
@@ -490,11 +511,19 @@ def verify_radiation_pressure(
 
     # Verify P_absorb = I/c
     P_absorb_expected = intensity / CONST.C
-    absorb_error = abs(P_absorb - P_absorb_expected) / P_absorb_expected if P_absorb_expected > 0 else 0
+    absorb_error = (
+        abs(P_absorb - P_absorb_expected) / P_absorb_expected
+        if P_absorb_expected > 0
+        else 0
+    )
 
     # Verify P_reflect = 2I/c
     P_reflect_expected = 2.0 * intensity / CONST.C
-    reflect_error = abs(P_reflect - P_reflect_expected) / P_reflect_expected if P_reflect_expected > 0 else 0
+    reflect_error = (
+        abs(P_reflect - P_reflect_expected) / P_reflect_expected
+        if P_reflect_expected > 0
+        else 0
+    )
 
     # Verify u = I/c
     u_expected = intensity / CONST.C
@@ -516,18 +545,24 @@ def verify_radiation_pressure(
         "energy_density_error": energy_density_error,
         "reflect_absorb_ratio": ratio,
         "ratio_error": ratio_error,
-        "verified": all([
-            absorb_error < tolerance,
-            reflect_error < tolerance,
-            energy_density_error < tolerance,
-            ratio_error < tolerance,
-        ]),
+        "verified": all(
+            [
+                absorb_error < tolerance,
+                reflect_error < tolerance,
+                energy_density_error < tolerance,
+                ratio_error < tolerance,
+            ]
+        ),
     }
 
 
 @maxwell_cite(
-    791, 792, 793, 794,
-    part=4, chapter="Electromagnetic Theory of Light",
+    791,
+    792,
+    793,
+    794,
+    part=4,
+    chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
     description="Complete radiation pressure analysis",
 )
@@ -583,8 +618,12 @@ def analyze_radiation_pressure(
         "momentum_flux": rp.momentum_flux(),
         "force_absorbing_normal": rp.force_on_surface(area, reflecting=False),
         "force_reflecting_normal": rp.force_on_surface(area, reflecting=True),
-        "force_absorbing_oblique": calc_radiation_force(intensity, area, reflecting=False, angle=angle),
-        "force_reflecting_oblique": calc_radiation_force(intensity, area, reflecting=True, angle=angle),
+        "force_absorbing_oblique": calc_radiation_force(
+            intensity, area, reflecting=False, angle=angle
+        ),
+        "force_reflecting_oblique": calc_radiation_force(
+            intensity, area, reflecting=True, angle=angle
+        ),
     }
 
     return result
