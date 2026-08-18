@@ -54,56 +54,6 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
-  publish-testpypi:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/pypi-package' && secrets.TEST_PYPI_API_TOKEN != ''
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install twine
-        run: |
-          python -m pip install --upgrade pip
-          pip install twine
-
-      - name: Upload to Test PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        run: |
-          twine upload --repository testpypi dist/*
-
-  smoke-test-testpypi:
-    needs: publish-testpypi
-    runs-on: ubuntu-latest
-    if: ${{ needs.publish-testpypi.result == 'success' }}
-    steps:
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Wait for Test PyPI propagation
-        run: sleep 60
-
-      - name: Install from Test PyPI
-        run: |
-          pip install --index-url https://test.pypi.org/simple/ maxwell-modernized
-
-      - name: Smoke test imports
-        run: |
-          python -c "import maxwell; print(f'maxwell {maxwell.__version__}')"
-          python -c "from maxwell.core.charge import PointCharge; print('Core OK')"
-          python -c "from maxwell.electromagnetism.forces.lorentz import LorentzForce; print('EM OK')"
-
   smoke-test:
     needs: publish
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
