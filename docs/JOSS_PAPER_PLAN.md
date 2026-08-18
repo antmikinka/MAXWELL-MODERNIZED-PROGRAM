@@ -67,7 +67,7 @@ The paper must tell a single clear story: **Maxwell Modernized is the first comp
    - 866/866 articles covered (100%)
    - 241 Python modules, 1,174 functions, 244 classes
    - 629 tests passing, 50 mathematical validations, 81 cross-module verification checks
-   - MIT-licensed, PyPI-installable, CI-verified (GitHub Actions)
+   - Software MIT-licensed and PyPI-installable; paper CC BY 4.0; CI-verified (GitHub Actions)
 
 5. **Target audience (1-2 sentences):** The library serves historians of science (executable primary-source analysis), physics educators (teaching classical EM from original formulations), computational physicists (verified analytical formulas for benchmarking), and engineers (reference calculations in CGS-EMU).
 
@@ -479,8 +479,8 @@ plt.savefig('paper/figure_coverage.png', dpi=300)
   author    = {Mikinka, Anthony},
   title     = {Maxwell Modernized},
   year      = {2026},
-  url       = {https://github.com/maxwell-treatise/modernized-program},
-  note      = {Version 0.1.0}
+  url       = {https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM},
+  note      = {Version 1.0.0}
 }
 
 @article{harris2020array,

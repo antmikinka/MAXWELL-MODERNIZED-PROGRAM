@@ -1,10 +1,11 @@
 # Maxwell Modernized
 
-[![Tests](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml)
-[![Math Verification](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml)
+[![Tests](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/test.yml/badge.svg)](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/test.yml)
+[![Math Verification](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/math-verification.yml/badge.svg)](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/math-verification.yml)
 [![Coverage](https://img.shields.io/badge/coverage-866%2F866%20articles-brightgreen)](docs/COVERAGE_SUMMARY.md)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE-CONTENT)
 
 > A computational implementation of James Clerk Maxwell's 1873 _A Treatise on Electricity and Magnetism_ -- all 866 articles, modernized in Python.
 
@@ -36,8 +37,8 @@ pip install maxwell[all]      # Everything
 From source:
 
 ```bash
-git clone https://github.com/maxwell-treatise/modernized-program.git
-cd modernized-program
+git clone https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM.git
+cd MAXWELL-MODERNIZED-PROGRAM
 pip install -e ".[dev,viz]"
 ```
 
@@ -205,14 +206,16 @@ The `archive/docs/` directory contains 24 legacy development documents (architec
 
 If you use Maxwell Modernized in your research, please cite it using the
 [CITATION.cff](CITATION.cff) file provided with this repository. You can
-import the citation directly from GitHub or use the following BibTeX entry:
+import the citation directly from GitHub or use the following BibTeX entry.
+Cite the software (MIT) for the library; cite the paper manuscript (CC BY 4.0)
+when you reuse the written analysis. Always cite Maxwell 1873 as the source work.
 
 ```bibtex
 @software{maxwell_modernized_2026,
   title = {Maxwell Modernized},
   author = {Mikinka, Anthony},
   year = {2026},
-  url = {https://github.com/maxwell-treatise/modernized-program},
+  url = {https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM},
   description = {A complete computational implementation of Maxwell's 1873 Treatise}
 }
 ```
@@ -330,8 +333,16 @@ isort maxwell/ tests/
 
 - **Scholarly fidelity.** Every implementation must trace back to a specific article in the Treatise. The original text is the authoritative specification.
 - **Computational correctness.** Mathematical implementations are validated against analytical results. All 50 math checks pass.
-- **Open access.** The Treatise is public domain. This implementation is too -- free for scholars, students, and developers everywhere.
+- **Open access.** The Treatise is public domain. The software is MIT-licensed and the scholarly content is CC BY 4.0 -- free for scholars, students, and developers everywhere.
 - **Reproducibility.** Every result can be recomputed from source. The test suite is the specification.
+
+## License
+
+- **Software** (Python library, tests, scripts, CI/CD, page-verifier application, agent definitions, notebooks): [MIT License](LICENSE)
+- **Content** (paper, documentation, architecture maps, figures, curated interpretive material): [CC BY 4.0](LICENSE-CONTENT)
+- **Maxwell's original Treatise text** (1873): public domain. This project does not claim copyright in Maxwell's words, mechanical OCR of those words, or mathematical facts.
+
+See [LICENSING_DECISION.md](LICENSING_DECISION.md) for the adopted split and inventory.
 
 ## Acknowledgments
 

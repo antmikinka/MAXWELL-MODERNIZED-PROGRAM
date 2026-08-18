@@ -77,20 +77,15 @@ Phase 8:         Performance & Production Hardening (v1.0.0)
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "Maxwell Modernized"
-version: 0.1.0
-date-released: 2026-04-25
-url: "https://github.com/maxwell-treatise/modernized-program"
-repository-code: "https://github.com/maxwell-treatise/modernized-program"
+version: 1.0.0
+date-released: 2026-05-07
+url: "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM"
+repository-code: "https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM"
 license: MIT
 type: software
 authors:
   - family-names: Mikinka
     given-names: Anthony
-    orcid: "https://orcid.org/0000-0000-0000-0000"
-  - orcid: "https://orcid.org/0000-0000-0000-0000"
-    family-names: Maxwell
-    given-names: James Clerk
-    role: Original author (Treatise on Electricity and Magnetism, 1873)
 keywords:
   - electromagnetism
   - computational-physics
@@ -128,11 +123,12 @@ The current CHANGELOG has a single entry for v0.1.0. It needs to be expanded to 
 Add the following badge block immediately after the `# Maxwell Modernized` header:
 
 ```markdown
-[![Tests](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/test.yml)
-[![Math Verification](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml/badge.svg)](https://github.com/maxwell-treatise/modernized-program/actions/workflows/math-verification.yml)
+[![Tests](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/test.yml/badge.svg)](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/test.yml)
+[![Math Verification](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/math-verification.yml/badge.svg)](https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM/actions/workflows/math-verification.yml)
 [![Coverage](https://img.shields.io/badge/coverage-866%2F866%20articles-brightgreen)](docs/COVERAGE_SUMMARY.md)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE-CONTENT)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
 ```
 
@@ -1651,7 +1647,7 @@ tags:
   - history-of-physics
 authors:
   - name: Anthony Mikinka
-    orcid: 0000-0000-0000-0000
+    orcid: 0009-0005-2955-4140
     affiliation: 1
 affiliations:
   - name: Maxwell Modernization Project

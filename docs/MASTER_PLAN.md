@@ -3,7 +3,7 @@
 > **Comprehensive catalog of all work completed across Parts I-VI of Maxwell's 1873 Treatise on Electricity and Magnetism, cross-referenced against the 8 architecture map documents and verified against the actual codebase.**
 
 **Generated:** 2026-05-03
-**Version:** 0.1.0
+**Version:** 1.0.0
 **Repository:** `./`
 **Branch:** `feat/pypi-package`
 
@@ -67,7 +67,7 @@
 - **Visualization (optional):** Matplotlib >= 3.5
 - **Development:** pytest, mypy, black, isort
 - **CI/CD:** GitHub Actions (3 OS x 4 Python versions)
-- **License:** MIT
+- **License:** MIT (software); CC BY 4.0 (documentation and paper); Maxwell 1873 text is public domain
 
 ---
 
@@ -974,8 +974,8 @@ The visualization strategy maps 17 specific visual outputs across all six Parts.
 ## 11. PyPI Readiness Status
 
 **Package Name:** maxwell
-**Version:** 0.1.0
-**License:** MIT
+**Version:** 1.0.0
+**License:** MIT (software); CC BY 4.0 (documentation and paper); Maxwell 1873 text is public domain
 
 ### Readiness Checklist
 
@@ -995,7 +995,7 @@ The visualization strategy maps 17 specific visual outputs across all six Parts.
 
 ### Remaining PyPI Considerations
 
-- [ ] Version bump to 1.0.0 for stable release (currently 0.1.0 alpha)
+- [x] Version bump to 1.0.0 for stable release (pyproject.toml, maxwell.__version__, CITATION.cff, paper, zenodo)
 - [ ] Consider adding type stubs (.pyi files) for better IDE support
 - [ ] Part VI (Scalar Physics) gap should be documented in package description
 - [ ] Consider adding a CONTRIBUTING.md (exists but review needed)

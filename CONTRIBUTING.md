@@ -6,8 +6,8 @@ Thank you for your interest in contributing to Maxwell Modernized. This project 
 
 ```bash
 # Clone the repository
-git clone https://github.com/maxwell-treatise/modernized-program.git
-cd modernized-program
+git clone https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM.git
+cd MAXWELL-MODERNIZED-PROGRAM
 
 # Install with development dependencies
 pip install -e ".[dev]"
@@ -205,4 +205,14 @@ pytest tests/test_jax_adapter.py -v
 
 ## License
 
-This project is licensed under the MIT License. By contributing, you agree that your contributions will be licensed under the same terms.
+This repository uses split licensing. By contributing, you agree that:
+
+- **Software** contributions (Python, tests, scripts, CI, page-verifier application
+  code, agent definitions, notebooks) are licensed under the
+  [MIT License](LICENSE).
+- **Scholarly content** contributions (paper, documentation, architecture maps,
+  figures, curated interpretive material) are licensed under
+  [CC BY 4.0](LICENSE-CONTENT).
+
+James Clerk Maxwell's 1873 Treatise text is public domain and cannot be
+relicensed. Do not list Maxwell as a software author.

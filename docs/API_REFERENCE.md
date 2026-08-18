@@ -1,6 +1,6 @@
 # Maxwell Modernized — API Reference
 
-**Version:** 0.1.0
+**Version:** 1.0.0
 **Generated:** 2026-04-26
 **Coverage:** 866/866 articles (100%) across all 4 Parts of Maxwell's Treatise
 **Tests:** 1542/1542 passing (629 core + 847 JAX + 66 SymPy)

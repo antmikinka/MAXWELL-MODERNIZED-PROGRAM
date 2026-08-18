@@ -1547,10 +1547,11 @@
 - [x] `README.md` -- Primary documentation (~330 lines, updated for 1542 tests)
 - [x] `CHANGELOG.md` -- Version history in Keep a Changelog format
 - [x] `CONTRIBUTING.md` -- Developer contribution guide with pytest markers
-- [x] `LICENSE` -- MIT License
-- [x] `CITATION.cff` -- Citation metadata for academic use
-- [x] `MANIFEST.in` -- Source distribution manifest
-- [x] `pyproject.toml` -- Build configuration with optional dependencies
+- [x] `LICENSE` -- MIT License (software)
+- [x] `LICENSE-CONTENT` -- CC BY 4.0 (scholarly content); Maxwell 1873 text noted as public domain
+- [x] `CITATION.cff` -- Citation metadata for academic use (software MIT; paper CC BY 4.0)
+- [x] `MANIFEST.in` -- Source distribution manifest (includes LICENSE-CONTENT; excludes docs/paper/archive)
+- [x] `pyproject.toml` -- Build configuration with optional dependencies (`license = "MIT"`)
 
 #### docs/ Directory (13 files)
 - [x] `docs/API_REFERENCE.md` -- Module-by-module API index (updated for 1683 tests)

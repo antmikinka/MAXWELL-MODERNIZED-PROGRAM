@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Adopted split licensing: MIT for software, CC BY 4.0 for scholarly content, public-domain notice for Maxwell's 1873 Treatise text
+- Added `LICENSE-CONTENT` (CC BY 4.0) and directory license notes under `docs/`, `archive/`, and `paper/`
+- README, `CITATION.cff`, `.zenodo.json`, `CONTRIBUTING.md`, and `paper/paper.md` now describe the split
+- Canonical repository URLs set to `https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM`
+- James Clerk Maxwell is cited as the 1873 source author, not as a software co-author
+- Python sdist no longer ships bulk `docs/` without the content license; `LICENSE-CONTENT` is included
+- Living publication metadata aligned to **1.0.0** (`CITATION.cff`, `.zenodo.json`, `paper/`, API reference)
+- Recorded author ORCID `0009-0005-2955-4140` in the paper, `CITATION.cff`, and `.zenodo.json`
+- `.zenodo.json` `pub_state` set to `draft` until an actual Zenodo deposit exists
+
 ## [1.0.0] - 2026-05-07
 
 ### Major Milestone -- First Stable Release

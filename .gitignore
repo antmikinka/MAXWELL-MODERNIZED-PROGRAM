@@ -98,6 +98,7 @@ _write_files.py
 # Claude Code / AI agent artifacts (contain local paths)
 # ============================================================
 .claude/
+.playwright-mcp/
 
 # ============================================================
 # Security audit reports (contain C:\Users\ paths — DO NOT COMMIT)

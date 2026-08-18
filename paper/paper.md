@@ -12,16 +12,16 @@ tags:
   - python
 authors:
   - name: Anthony Mikinka
-    orcid: 0000-0000-0000-0000
+    orcid: 0009-0005-2955-4140
     affiliation: 1
 affiliations:
   - name: Maxwell Modernization Project
     index: 1
 date: 2026-04-26
 citation:
-  date-released: 2026-04-25
-  version: 0.1.0
-  repository: https://github.com/maxwell-treatise/modernized-program
+  date-released: 2026-05-07
+  version: 1.0.0
+  repository: https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM
 ---
 
 # Summary
@@ -33,7 +33,7 @@ Maxwell Modernized translates every one of the 866 articles into executable Pyth
 - **866/866 articles covered** (100% of the Treatise)
 - **246 Python modules**, 1,140 functions, 246 classes
 - **1542 tests** passing (629 core + 847 JAX adapter + 66 SymPy verification), 50 mathematical validations, 81 cross-module verification checks
-- MIT-licensed, PyPI-installable, CI-verified on three platforms and three Python versions
+- Software MIT-licensed and PyPI-installable; this paper and its figures licensed CC BY 4.0; CI-verified on three platforms and three Python versions
 
 The library serves historians of science (executable primary-source analysis), physics educators (teaching classical electromagnetism from original formulations), computational physicists (verified analytical formulas for benchmarking numerical solvers), and engineers (reference calculations in CGS-EMU units). This is a computational edition of Maxwell's Treatise -- every formula, every derivation, every article -- implemented as reproducible, testable Python code with full scholarly traceability.
 
@@ -375,6 +375,8 @@ Two GitHub Actions workflows ensure ongoing correctness:
 # Acknowledgements
 
 This project is a computational homage to James Clerk Maxwell and his _A Treatise on Electricity and Magnetism_ (1873), one of the foundational works of classical physics. The Treatise text is in the public domain; the Dover Publications reprint provides the article numbering and chapter structure used throughout this implementation. The citation system and verification framework are original contributions of this project.
+
+This paper and its figures are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0). The Maxwell Modernized software is licensed under the MIT License. Maxwell is cited as the author of the 1873 source work, not as a software co-author.
 
 # References
 

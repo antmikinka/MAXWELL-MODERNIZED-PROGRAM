@@ -428,9 +428,9 @@ cffconvert --validate
 
 Current `CITATION.cff` has these potential issues to check:
 - Line 14: Second author has no `given-names` or `family-names` populated (only orcid)
-- ORCID `0000-0000-0000-0000` is a placeholder for Anthony Mikinka -- should be replaced with real ORCID
-- `date-released: 2026-04-25` should match the actual release date
-- Version should match `pyproject.toml` version (`0.1.0`) -- currently matches
+- Author ORCID is `0009-0005-2955-4140` (`https://orcid.org/0009-0005-2955-4140`). The all-zero placeholder must not return.
+- `date-released` should match the 1.0.0 release date (`2026-05-07`)
+- Version should match `pyproject.toml` version (`1.0.0`)
 
 **Recommended fix** (remove the incomplete second author or fill in real data):
 ```yaml

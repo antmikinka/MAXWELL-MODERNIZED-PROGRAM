@@ -647,8 +647,8 @@ print(f"Hysteresis loss: {loss:.2f} erg/s")
 
 ```bash
 # Clone and install
-git clone https://github.com/maxwell-treatise/modernized-program.git
-cd modernized-program
+git clone https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM.git
+cd MAXWELL-MODERNIZED-PROGRAM
 pip install -e ".[dev]"
 
 # Run the test suite to verify installation
