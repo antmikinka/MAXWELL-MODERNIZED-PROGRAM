@@ -38,6 +38,12 @@ from maxwell.math.elliptic_integrals import (
     calc_elliptic_integral_third_kind,
     verify_elliptic_integrals,
 )
+from maxwell.math.quaternion import (
+    Quaternion,
+    nabla_of_vector,
+    scalar_nabla,
+    vector_nabla,
+)
 from maxwell.math.spherical_harmonics import (  # Part I, Chapter IX (Arts. 128-146) — Core spherical harmonics; Part IV (Arts. 675-695) — Multipole expansions
     LaplaceSpherical,
     LegendrePolynomial,
@@ -61,6 +67,11 @@ from maxwell.math.spherical_harmonics import (  # Part I, Chapter IX (Arts. 128-
 )
 
 __all__ = [
+    # Part IV, Arts. 618-619 — unsplit nabla quaternion
+    "Quaternion",
+    "nabla_of_vector",
+    "scalar_nabla",
+    "vector_nabla",
     # Part I, Chapter IX (Arts. 128-146) — Spherical harmonics foundations
     "LaplaceSpherical",
     "SurfaceHarmonic",

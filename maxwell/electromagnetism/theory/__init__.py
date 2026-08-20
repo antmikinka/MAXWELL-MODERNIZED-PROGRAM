@@ -2,6 +2,8 @@
 
 Maxwell's general equations (Arts. 594-603) and related theory including
 energy conservation, dynamical models, and force law comparisons.
+Arts. 618-619 live in quaternion_expressions (unsplit nabla object);
+general_equations remains the 594-603 split form.
 """
 
 from maxwell.electromagnetism.theory.comparisons import (
@@ -16,6 +18,11 @@ from maxwell.electromagnetism.theory.dynamical_model import (
     calc_energy_density,
     calc_field_momentum,
     calc_poynting_vector,
+)
+from maxwell.electromagnetism.theory.quaternion_expressions import (
+    impose_s_nabla_A_zero,
+    magnetic_induction_from_potential,
+    scalar_part_of_potential,
 )
 from maxwell.electromagnetism.theory.general_equations import (
     ElectromagneticField,
@@ -54,6 +61,10 @@ __all__ = [
     "numerical_curl",
     "verify_maxwell_equations",
     "analyze_complete_field",
+    # Arts. 618-619 unsplit nabla quaternion
+    "magnetic_induction_from_potential",
+    "scalar_part_of_potential",
+    "impose_s_nabla_A_zero",
     # Force comparisons (Arts. 526-527)
     "compare_force_laws",
     "verify_action_reaction",
