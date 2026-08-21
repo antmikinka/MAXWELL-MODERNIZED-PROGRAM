@@ -1,5 +1,8 @@
 """maxwell.math.algebra.quaternions — Quaternion algebra (Art. 522).
 
+The Chapter IX nabla object (Arts. 618-619) is ``maxwell.math.quaternion.Quaternion``
+(S, V). This module is Hamilton-product algebra (w, x, y, z) only.
+
 Implements Maxwell's use of quaternion algebra for electromagnetic
 field representation. Maxwell was one of the first to use quaternions
 in physics, predating modern vector notation.

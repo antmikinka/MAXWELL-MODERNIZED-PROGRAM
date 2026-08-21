@@ -84,6 +84,14 @@ from maxwell.electromagnetism.sources.oersted import (
     calc_oersted_field,
     verify_inverse_distance_law,
 )
+from maxwell.electromagnetism.theory.quaternion_expressions import (
+    Quaternion,
+    impose_s_nabla_A_zero,
+    magnetic_induction_from_potential,
+    nabla_of_vector,
+    scalar_part_of_potential,
+    verify_nabla_quaternion_parts,
+)
 from maxwell.electromagnetism.theory.general_equations import (
     ElectromagneticField,
     GeneralEquationsCalculator,
@@ -152,6 +160,13 @@ __all__ = [
     "calc_ampere_maxwell",
     "calc_total_current_density",
     "verify_displacement_current_necessity",
+    # Quaternion nabla (Arts. 618-619) — unsplit; S not assumed zero at ingest
+    "Quaternion",
+    "nabla_of_vector",
+    "magnetic_induction_from_potential",
+    "scalar_part_of_potential",
+    "impose_s_nabla_A_zero",
+    "verify_nabla_quaternion_parts",
     # General Equations (Arts. 594-603)
     "ElectromagneticField",
     "MaxwellEquations",

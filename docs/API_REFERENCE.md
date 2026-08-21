@@ -234,7 +234,8 @@ All 39 symbols importable directly from `maxwell`:
 
 | Module | Public API | Articles |
 |---|---|---|
-| `theory.general_equations` | `ElectromagneticField`, `MaxwellEquations`, `GeneralEquationsCalculator` — all 7 equations A-G | 594-603 |
+| `theory.general_equations` | `ElectromagneticField`, `MaxwellEquations`, `GeneralEquationsCalculator` — all 7 equations A-G (Heaviside/Gibbs split form) | 594-603 |
+| `theory.quaternion_expressions` | `Quaternion`, `nabla_of_vector`, `magnetic_induction_from_potential`, `scalar_part_of_potential`, `impose_s_nabla_A_zero` — unsplit ∇A = S∇A + V∇A; S not assumed zero at ingest | 618-619 |
 | `theory.connected_systems` | `ConnectedSystem` — coupled EM systems | 553-567 |
 | `theory.dynamical_model` | `DynamicalModel` — Lagrangian formulation | 568-577 |
 | `theory.comparisons` | `ForceLawComparison` — compare force laws | 526, 527 |
@@ -363,7 +364,8 @@ Subpackages:
 
 | Module | Public API | Articles |
 |---|---|---|
-| `algebra.quaternions` | `Quaternion` — quaternion algebra | 522 |
+| `algebra.quaternions` | `Quaternion` — quaternion algebra (Hamilton product; Art. 522) | 522 |
+| `quaternion` | `Quaternion(S, V)`, `nabla_of_vector` — unsplit ∇A; S not assumed zero at ingest | 618-619 |
 | `gauge.manager` | `GaugeTransformation`, `coulomb_gauge`, `lorenz_gauge` | 616, 617 |
 | `geometry.gmd` | `GMDCalculator` — geometric mean distance | 691-693 |
 

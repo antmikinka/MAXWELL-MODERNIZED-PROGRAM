@@ -121,9 +121,11 @@ All 26 articles in Part III are fully covered with implementations and tests.
 | Ch. I | 475-495 | Oersted & Ampere | electromagnetism/sources/oersted.py | Complete |
 | Ch. II-III | 496-527 | Forces & Comparisons | electromagnetism/forces/*.py, theory/comparisons.py | Complete |
 | Ch. IV-V | 528-577 | Induction & Theory | electromagnetism/induction/*.py, theory/*.py | Complete |
-| Ch. VI-VIII | 578-607 | Fields & Maxwell's Eq | electromagnetism/fields/*.py | Complete |
-| Ch. IX-X | 608-644 | Energy & Stress | electromagnetism/energy/*.py, forces/stress_tensor.py | Complete |
-| Ch. XI-XIII | 645-695 | Current Sheets | electromagnetism/current_sheets/*.py | Complete |
+| Ch. VI-VIII | 578-603 | Circuits, secondary circuit, split field eqs | electromagnetism/fields/*.py, theory/general_equations.py | Split (Gibbs/Heaviside) form |
+| Ch. IX | 604-619 | General Equations of the Electromagnetic Field | theory/general_equations.py (594–603 split); theory/quaternion_expressions.py (618–619 unsplit ∇A) | 618–619 quaternion object added; S∇A is not assumed zero at ingest |
+| Ch. X | 620-629 | Dimensions of Units | core/units | Mapped |
+| Ch. XI | 630-646 | Energy & Stress | electromagnetism/energy/*.py, forces/stress_tensor.py | Complete |
+| Ch. XII-XIII | 647-695 | Current Sheets | electromagnetism/current_sheets/*.py | Complete |
 | Ch. XIV-XV | 696-705 | Coils & Instruments | electromagnetism/components/*.py | Complete |
 | Ch. XVI-XX | 706-795 | Waves & Optics | electromagnetism/waves/*.py, optics/*.py | Complete |
 
@@ -140,10 +142,14 @@ All 26 articles in Part III are fully covered with implementations and tests.
 | `electromagnetism/current_sheets/sheet_theory.py` | 647-655 | Current sheet theory |
 | `electromagnetism/waves/wave_equation.py` | 781-785 | EM wave equation |
 | `electromagnetism/theory/connected_systems.py` | 553-567 | Coupled systems |
+| `electromagnetism/theory/quaternion_expressions.py` | 618-619 | ∇A as one quaternion (S, V); S not dropped at ingest |
+| `math/quaternion.py` | 618-619 | Quaternion type + Hamilton/Tait nabla |
 
 ### Coverage Status
 
-All 269 articles in Part IV are fully covered with implementations and tests.
+Chapter IX of Part IV is *General Equations of the Electromagnetic Field* (Arts. 604–619), not Energy & Stress. Energy & Stress is Chapter XI (Arts. 630–646).
+
+Arts. 594–603 remain in split (component) form in `electromagnetism/theory/general_equations.py`. Arts. 618–619 now have the unsplit nabla-as-quaternion object in `electromagnetism/theory/quaternion_expressions.py` (S∇A is kept; S = 0 is an explicit later constraint). This is not a complete quaternion transcription of 604–619.
 
 ---
 

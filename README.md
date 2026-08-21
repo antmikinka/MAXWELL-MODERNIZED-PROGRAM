@@ -32,7 +32,7 @@ The project serves two audiences:
 
 ### Installation
 
-From PyPI (recommended). The distribution name is `maxwell-modernized`; the import stays `maxwell`.
+The distribution name is `maxwell-modernized`. The import stays `maxwell`. Do **not** run `pip install maxwell` — that PyPI name is an unrelated linguistics package.
 
 ```bash
 pip install maxwell-modernized           # Core library
@@ -42,7 +42,7 @@ pip install maxwell-modernized[accel]    # With JAX GPU/TPU acceleration
 pip install maxwell-modernized[all]      # Everything
 ```
 
-From source:
+From this repository:
 
 ```bash
 git clone https://github.com/antmikinka/MAXWELL-MODERNIZED-PROGRAM.git

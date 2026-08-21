@@ -93,6 +93,7 @@ from maxwell.materials.constitutive import (
 )
 from maxwell.materials.hysteresis import HysteresisLoop
 from maxwell.math.elliptic_integrals import EllipticIntegral
+from maxwell.math.quaternion import Quaternion
 
 # ── Mathematics ───────────────────────────────────────────────────────
 from maxwell.math.spherical_harmonics import (
@@ -150,6 +151,7 @@ __all__ = [
     "SphericalHarmonicExpansion",
     "LegendrePolynomial",
     "EllipticIntegral",
+    "Quaternion",
     # Instruments
     "TangentGalvanometer",
     "HelmholtzCoil",
