@@ -101,7 +101,7 @@ class ElectricCurrent:
 
 @maxwell_cite(
     150,
-    part=2,
+    part=1,
     chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Current density: J = I / A",
@@ -153,7 +153,7 @@ def calc_current_density(
 
 @maxwell_cite(
     177,
-    part=2,
+    part=1,
     chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Continuity equation: ∇·J = -∂ρ/∂t",
@@ -249,7 +249,7 @@ def continuity_equation(
 
 @maxwell_cite(
     150,
-    part=2,
+    part=1,
     chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Total current as surface integral of current density",
@@ -328,7 +328,7 @@ def calc_total_current(
 
 @maxwell_cite(
     64,
-    part=2,
+    part=1,
     chapter="Electric Currents",
     theory_class="maxwell_original",
     description="Current as a vector quantity with direction",
@@ -363,7 +363,7 @@ def current_vector(
 
 @maxwell_cite(
     150,
-    part=2,
+    part=1,
     chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Current through surface at arbitrary angle",
@@ -398,7 +398,7 @@ def current_through_tilted_surface(
 
 @maxwell_cite(
     177,
-    part=2,
+    part=1,
     chapter="Mathematical Theory of Distribution",
     theory_class="maxwell_original",
     description="Steady current condition: ∇·J = 0",
@@ -488,7 +488,7 @@ def verify_steady_current(
 
 @maxwell_cite(
     152,
-    part=2,
+    part=1,
     chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Current density from multiple parallel conductors",
@@ -528,7 +528,7 @@ def current_density_parallel(
 
 @maxwell_cite(
     150,
-    part=2,
+    part=1,
     chapter="The Electric Current",
     theory_class="maxwell_original",
     description="Verify current conservation in a junction",

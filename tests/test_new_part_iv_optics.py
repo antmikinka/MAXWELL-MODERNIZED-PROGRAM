@@ -648,10 +648,15 @@ class TestFieldDiffusion:
         assert tau > 0
 
     def test_diffusion_length(self, cgs_tolerance, assert_cgs_close) -> None:
-        """Verify diffusion length: L_diff = sqrt(t/sigma).
+        """Verify diffusion length: L_diff = sqrt(t*c^2/(4*pi*sigma)).
 
-        For t = 1 s, sigma -> large:
-        L_diff -> small
+        Arts. 801-803 (defect D-01, fixed 2026-08-21): magnetic diffusion
+        dB/dt = (c^2/(4*pi*sigma))*nabla^2 B gives diffusivity c^2/(4*pi*sigma),
+        hence the distance diffused in time t is L_diff = sqrt(t*c^2/(4*pi*sigma)).
+        For t = 1 s, sigma = 1e17 s^-1 (CGS):
+        L_diff = sqrt(c^2/(4*pi*1e17)) = 26.7433... cm.
+        The pre-fix assertion (L_diff < 1.0) enshrined the defective formula
+        sqrt(t/sigma); it is replaced here by the correct physics.
         """
         from maxwell.optics.diffusion import calc_diffusion_length
 
@@ -660,7 +665,16 @@ class TestFieldDiffusion:
 
         L_diff = calc_diffusion_length(t, sigma)
         assert L_diff > 0
-        assert L_diff < 1.0  # Small for high conductivity
+        # Correct physics (Arts. 801-803; defect D-01, fixed 2026-08-21):
+        #     L_diff = sqrt(t*c^2/(4*pi*sigma))
+        expected = np.sqrt(t * CONST.C**2 / (4.0 * np.pi * sigma))
+        assert L_diff == pytest.approx(expected, rel=1e-12)
+        # Hand-computed golden value (independent of the implementation):
+        # sqrt((2.99792458e10)^2 / (4*pi*1e17)) = 26.74334770792584 cm
+        assert L_diff == pytest.approx(26.74334770792584, rel=1e-9)
+        # Qualitative guard retained (stronger form): diffusion in a good
+        # conductor is vastly slower than free-space propagation, L_diff << c*t.
+        assert L_diff < CONST.C * t
 
     def test_diffusion_equation_solution(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify diffusion equation: dB/dt = (1/4pi*sigma)*nabla²B."""

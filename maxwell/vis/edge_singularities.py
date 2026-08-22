@@ -20,7 +20,7 @@ from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 @maxwell_cite(
     191,
-    part=2,
+    part=1,
     chapter="Singular Points and Lines of Force",
     description="Calculate field magnitude near a conducting wedge of given angle.",
 )
@@ -60,7 +60,7 @@ def calc_wedge_field(
 
 @maxwell_cite(
     191,
-    part=2,
+    part=1,
     chapter="Singular Points and Lines of Force",
     description="Calculate field on 2D grid near a conducting edge.",
 )
@@ -95,7 +95,7 @@ def calc_edge_singularity(
 
 @maxwell_cite(
     191,
-    part=2,
+    part=1,
     chapter="Singular Points and Lines of Force",
     description="Plot field enhancement near conducting edge with logarithmic colormap.",
 )
@@ -175,7 +175,7 @@ def plot_edge_singularity(
 
 @maxwell_cite(
     191,
-    part=2,
+    part=1,
     chapter="Singular Points and Lines of Force",
     description="Compare singularity strength for different wedge angles.",
 )

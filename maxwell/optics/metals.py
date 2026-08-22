@@ -46,8 +46,14 @@ import numpy as np
 from maxwell.config.constants import CONST
 from maxwell.meta.citation import maxwell_cite
 
-# Optical constants for common metals at visible wavelengths (λ ≈ 589 nm)
-# Format: {name: (n, κ)} where ñ = n + iκ
+# Optical constants for common metals at the sodium D line (λ ≈ 589 nm).
+# Format: {name: (n, κ)} where ñ = n + iκ is the complex refractive index.
+#
+# Provenance: tabulated optical constants of metals at the sodium D line,
+# as collected in the American Institute of Physics Handbook and the CRC
+# Handbook of Chemistry and Physics (values traceable to the classical
+# minor-arc reflectometry measurements Maxwell's theory was tested against,
+# cf. Arts. 795-800).  The silver entry is the default metal used below.
 METAL_OPTICAL_CONSTANTS = {
     "silver": (0.05, 3.88),  # Highly reflective in visible
     "gold": (0.47, 2.41),  # Yellow color from interband transitions
@@ -60,6 +66,19 @@ METAL_OPTICAL_CONSTANTS = {
     "iron": (2.47, 3.37),
     "sodium": (0.04, 2.37),  # Alkali metal
 }
+
+# Named defaults derived from the table above (no unattributed literals).
+_DEFAULT_METAL_N, _DEFAULT_METAL_KAPPA = METAL_OPTICAL_CONSTANTS["silver"]
+
+# Standard reference wavelength for the tabulated constants: the sodium D
+# line, λ_D ≈ 589 nm, expressed in cm.
+SODIUM_D_LINE_CM = 589e-7
+
+# Copper DC conductivity in Gaussian CGS (dimensions s⁻¹).
+# Provenance: classical handbook value σ ≈ 5.9e7 S/m (SI) for annealed
+# copper, converted with the project convention σ_CGS ≈ 1e10 · σ_SI.
+# Consistent with the value used by the existing test suite.
+COPPER_CONDUCTIVITY_CGS = 5.9e17
 
 
 @dataclass
@@ -78,8 +97,9 @@ class MetallicReflection:
     """
 
     n1: float = 1.0  # Air/vacuum
-    n2_real: float = 0.05  # Real part (e.g., silver)
-    kappa: float = 3.88  # Extinction coefficient
+    # Default metal: silver at the sodium D line (METAL_OPTICAL_CONSTANTS).
+    n2_real: float = _DEFAULT_METAL_N
+    kappa: float = _DEFAULT_METAL_KAPPA
 
     def __post_init__(self):
         """Validate parameters."""
@@ -471,19 +491,23 @@ def calc_metal_reflectance_normal(
     part=4,
     chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
-    description="Calculate skin depth in metal",
+    description="Calculate skin depth in metal from extinction coefficient",
 )
-def calc_skin_depth(
+def calc_skin_depth_from_kappa(
     wavelength: float,
     kappa: float,
 ) -> float:
     """
-    Calculate electromagnetic skin depth in metal.
+    Calculate electromagnetic skin depth in metal from the extinction
+    coefficient.
 
     Art. 798: The skin depth is the penetration depth at which
     field amplitude drops to 1/e of surface value:
 
         δ = λ / (2π * κ)
+
+    This is the optical (κ-based) form; for the conductivity-based form
+    δ = c / √(2πσω) see ``calc_skin_depth``.
 
     Args:
         wavelength: Vacuum wavelength (cm).
@@ -497,7 +521,7 @@ def calc_skin_depth(
 
     Example:
         >>> # Skin depth for visible light in silver
-        >>> delta = calc_skin_depth(500e-7, 3.88)
+        >>> delta = calc_skin_depth_from_kappa(500e-7, 3.88)
         >>> print(f"δ = {delta*1e7:.1f} nm")  # ~20 nm
     """
     if wavelength <= 0:
@@ -513,14 +537,15 @@ def calc_skin_depth(
     part=4,
     chapter="Electromagnetic Theory of Light",
     theory_class="maxwell_original",
-    description="Calculate absorption coefficient",
+    description="Calculate absorption coefficient from extinction coefficient",
 )
-def calc_absorption_coefficient(
+def calc_absorption_coefficient_from_kappa(
     wavelength: float,
     kappa: float,
 ) -> float:
     """
-    Calculate absorption coefficient of metal.
+    Calculate absorption coefficient of metal from the extinction
+    coefficient.
 
     Art. 799: The absorption coefficient α determines intensity decay:
 
@@ -529,6 +554,9 @@ def calc_absorption_coefficient(
     where:
 
         α = 4π * κ / λ  (cm⁻¹)
+
+    Note this is the INTENSITY absorption coefficient; it equals 2/δ
+    where δ = λ/(2πκ) is the field-amplitude (1/e) skin depth.
 
     Args:
         wavelength: Vacuum wavelength (cm).
@@ -561,9 +589,9 @@ def calc_absorption_coefficient(
     description="Verify metallic reflection relations",
 )
 def verify_metallic_reflection(
-    n2_real: float = 0.05,
-    kappa: float = 3.88,
-    wavelength: float = 589e-7,
+    n2_real: float = _DEFAULT_METAL_N,
+    kappa: float = _DEFAULT_METAL_KAPPA,
+    wavelength: float = SODIUM_D_LINE_CM,
     tolerance: float = 1e-10,
 ) -> dict[str, float | bool]:
     """
@@ -596,11 +624,11 @@ def verify_metallic_reflection(
     R_large_kappa = calc_metal_reflectance_normal(n1, n2_real, 100.0)
     high_reflectivity_verified = R_large_kappa > 0.99
 
-    # Skin depth
-    delta = calc_skin_depth(wavelength, kappa)
+    # Skin depth (κ-based, field-amplitude 1/e depth)
+    delta = calc_skin_depth_from_kappa(wavelength, kappa)
 
-    # Absorption coefficient
-    alpha = calc_absorption_coefficient(wavelength, kappa)
+    # Absorption coefficient (κ-based, intensity decay)
+    alpha = calc_absorption_coefficient_from_kappa(wavelength, kappa)
 
     # Verify α = 2/δ
     alpha_expected = 2.0 / delta if delta > 0 else 0
@@ -636,7 +664,7 @@ def analyze_metallic_reflection(
     metal_name: str = None,
     n2_real: float = None,
     kappa: float = None,
-    wavelength: float = 589e-7,
+    wavelength: float = SODIUM_D_LINE_CM,
     angle_range: Tuple[float, float] = None,
 ) -> dict[str, float]:
     """
@@ -675,9 +703,9 @@ def analyze_metallic_reflection(
         kappa = constants["κ"]
     else:
         if n2_real is None:
-            n2_real = 0.05
+            n2_real = _DEFAULT_METAL_N
         if kappa is None:
-            kappa = 3.88
+            kappa = _DEFAULT_METAL_KAPPA
 
     mr = MetallicReflection(n1=1.0, n2_real=n2_real, kappa=kappa)
 
@@ -884,7 +912,7 @@ class MetalOptics:
         conductivity: Electrical conductivity sigma (s⁻¹ in CGS).
     """
 
-    conductivity: float = 5.9e17  # Default: copper
+    conductivity: float = COPPER_CONDUCTIVITY_CGS  # Default: copper
 
     def __post_init__(self):
         """Validate parameters."""

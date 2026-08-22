@@ -1,4 +1,4 @@
-"""maxwell.electromagnetism.measurements.galvanometers_extended — Galvanometer designs and analysis (Arts. 736-757).
+"""maxwell.electromagnetism.measurements.galvanometers_extended — Galvanometer designs and analysis (Arts. 736-754).
 
 Implements Maxwell's detailed treatment of galvanometers and electrical
 measurement instruments from Part IV:
@@ -9,13 +9,16 @@ measurement instruments from Part IV:
 - Wattmeter (Arts. 744, 746)
 - Electrodynamometer (Arts. 747-749)
 - Current weigher (Arts. 751-754)
-- Joule balance (Arts. 755-757)
+- Joule balance (Q = I^2 R t; standard_math, no article numbers —
+  D-17 re-map 2026-08-21: the Joule-balance instrument post-dates the
+  1873 Treatise and Arts. 755-757 belong to Ch XVII "Comparison of
+  Coils", not to Joule heating)
 
 Galvanometers measure electric current by the magnetic force produced
 by the current. Maxwell's analysis (CGS units):
 
 Tangent galvanometer:
-    I = (H * r / (2 * pi * n)) * tan(theta)
+    I = (c * H * r / (2 * pi * n)) * tan(theta)
 
 where:
     H = horizontal component of Earth's field (gauss)
@@ -24,21 +27,31 @@ where:
     theta = deflection angle
 
 Sine galvanometer:
-    I = (H * r / (2 * pi * n)) * sin(theta)
+    I = (c * H * r / (2 * pi * n)) * sin(theta)
 
 Helmholtz galvanometer (two coils):
     More uniform field, improved accuracy
 
-CGS Units:
-    I = current (abamperes)
+CGS Units (explicit-c Gaussian convention, D-16 class):
+    Coil fields are computed as B = (2 pi n I)/(c r) and related forms,
+    i.e. the current value is read as statamperes (equivalently I/c with
+    I in abamperes, since 1 abampere = CONST.C statamperes).  Labels in
+    method docstrings that say "abamperes" should be read through this
+    convention; the numeric convention is pinned by the Ch XVI qualifying
+    tests against an independent Biot-Savart quadrature.
+    I = current (statamperes in the explicit-c forms)
     H = magnetic field (gauss = oersted in air)
     r = distance (cm)
     theta = angle (radians or degrees)
 
-Category: A (maxwell_original) — Maxwell's galvanometer theory.
+Category: A (maxwell_original) — Maxwell's galvanometer theory
+(arts. 736-754); the Joule balance is Category B (standard_math) per the
+D-17 re-map.
 
 References:
-    Part IV, Ch XVI: Electrical Measurement (Arts. 736-757).
+    Part IV, Ch XVI: Observations (Arts. 736-751 head) and Ch XVII head
+    (Arts. 752-754, current weigher mapping as adjudicated by this
+    program; Arts. 755-757 NOT claimed — see joule_balance D-17 note).
 """
 
 from __future__ import annotations
@@ -49,7 +62,16 @@ from typing import List, Optional, Tuple
 import numpy as np
 
 from maxwell.config.constants import CONST
+from maxwell.math.elliptic_integrals import (
+    calc_complete_elliptic_integral_first_kind,
+    calc_complete_elliptic_integral_second_kind,
+)
 from maxwell.meta.citation import maxwell_cite
+
+#: Standard gravity (cm/s^2) for force -> equivalent-mass conversion.
+#: Sourced from ``maxwell.config.constants.CONST.G_STANDARD`` (Wave-6
+#: constant hygiene; Stage-3 D-33).
+_G_STANDARD: float = CONST.G_STANDARD
 
 
 @dataclass
@@ -447,8 +469,16 @@ class HelmholtzGalvanometer:
     between the coils.
 
     For two coils of radius r, separated by distance r:
-        B_center = (8 * pi * n * I) / (5 * sqrt(5) * c * r)
-                 = 0.7155 * (2 * pi * n * I) / (c * r)
+        B_center = (32 * pi * n * I) / (5 * sqrt(5) * c * r)
+                 = 2 * (4/5)^(3/2) * (2 * pi * n * I) / (c * r)
+                 ≈ 1.4311 * (single-coil center field)
+
+    (Each coil contributes 2 pi n I r^2 / (c (r^2 + (r/2)^2)^(3/2));
+    the earlier 8/(5 sqrt(5)) prefactor was short by a factor of 4 —
+    repaired 2026-08-21 against an independent Biot-Savart quadrature
+    in tests/test_articles_ch16_observations_730_750.py and the
+    adjudicated EMU form 32 pi n I / (5 sqrt(5) a) of
+    maxwell.instruments.helmholtz.HelmholtzCoil.field_at_center.)
 
     The field uniformity is much better than a single coil:
         - Single coil: B varies as 1/r^3 away from center
@@ -474,16 +504,24 @@ class HelmholtzGalvanometer:
     @property
     def helmholtz_factor(self) -> float:
         """
-        Helmholtz field reduction factor.
+        Helmholtz field factor (pair midpoint field / single-coil center
+        field).
 
         For ideal Helmholtz (separation = radius):
-            factor = 8 / (5 * sqrt(5)) = 0.7155
+            factor = 2 * (4/5)^(3/2) = 16 / (5 * sqrt(5)) ≈ 1.4311
+
+        (Greater than 1: two coils at half-radius separation produce a
+        STRONGER midpoint field than one coil at its centre.  Repaired
+        2026-08-21: the former special-case value 8/(5 sqrt(5)) = 0.7155
+        was the (4/5)^(3/2) coefficient alone and contradicted both the
+        general-separation branch below — which yields 1.4311 at d = r —
+        and Biot-Savart quadrature.)
 
         Returns:
-            Field reduction factor relative to single coil.
+            Field factor relative to a single coil.
         """
         if self.coil_separation == self.coil_radius:
-            return 8.0 / (5.0 * np.sqrt(5.0))
+            return 16.0 / (5.0 * np.sqrt(5.0))
         # General formula for arbitrary separation
         r = self.coil_radius
         d = self.coil_separation
@@ -517,18 +555,25 @@ class HelmholtzGalvanometer:
     )
     def field_at_center(self, current: float) -> float:
         """
-        Calculate magnetic field at Helmholtz coil center.
+        Calculate magnetic field at the Helmholtz-pair midpoint.
 
-        Arts. 741-743: For ideal Helmholtz coils:
-            B = (8 * pi * n * I) / (5 * sqrt(5) * c * r)
+        Arts. 741-743: For ideal Helmholtz coils (separation = radius),
+        each coil contributes 2 pi n I r^2 / (c (r^2 + (r/2)^2)^(3/2)),
+        hence
+
+            B = (32 * pi * n * I) / (5 * sqrt(5) * c * r)
+
+        (explicit-c convention: the numeric current reads as statamperes;
+        see module docstring.  Prefactor repaired 2026-08-21 — the former
+        8/(5 sqrt(5)) form was short by a factor of 4.)
 
         Args:
-            current: Current I (abamperes).
+            current: Current I (statamperes in the explicit-c form).
 
         Returns:
             Magnetic field B (gauss).
         """
-        return (8.0 * np.pi * self.num_turns_per_coil * current) / (
+        return (32.0 * np.pi * self.num_turns_per_coil * current) / (
             5.0 * np.sqrt(5.0) * CONST.C * self.coil_radius
         )
 
@@ -585,7 +630,8 @@ def helmholtz_galvanometer(
     The Helmholtz arrangement provides a highly uniform magnetic field
     by using two identical coils separated by their radius. This gives:
 
-        B_center = (8 * pi * n * I) / (5 * sqrt(5) * c * r)
+        B_center = (32 * pi * n * I) / (5 * sqrt(5) * c * r)
+                 = (16 / (5 * sqrt(5))) * (single-coil center field)
 
     The field uniformity is excellent near the center, making this
     ideal for precision measurements.
@@ -874,6 +920,80 @@ def electrodynamometer(
     }
 
 
+def _coaxial_mutual_inductance_emu(a: float, b: float, z: float) -> float:
+    """
+    Mutual inductance (EMU, centimetres) of two coaxial circular filaments.
+
+    Maxwell's elliptic-integral formula (Treatise, the Arts. 703-704
+    methods as applied to the current weigher, Arts. 751-754):
+
+        M = 4 pi sqrt(a b) [ (2/k - k) K(k^2) - (2/k) E(k^2) ]
+        k^2 = 4 a b / [ (a + b)^2 + z^2 ]
+
+    Pure EMU convention: inductance has dimensions of length (mu_0 = 4 pi
+    is absorbed into the definition), no factor of c appears. K and E are
+    evaluated by the scipy-backed complete elliptic integrals of
+    ``maxwell.math.elliptic_integrals`` (machine precision for all
+    0 <= k^2 < 1; the k^2 -> 1 limit is the filament-coincident
+    divergence of the Neumann integral and is clamped).
+
+    Args:
+        a: Radius of first loop (cm).
+        b: Radius of second loop (cm).
+        z: Axial separation of the loop planes (cm).
+
+    Returns:
+        Mutual inductance M (cm, EMU).
+    """
+    if a <= 0.0 or b <= 0.0:
+        return 0.0
+    s_sq = (a + b) ** 2 + z * z
+    k_sq = 4.0 * a * b / s_sq
+    # k^2 = 1 only for coincident filaments (self-inductance divergence);
+    # clamp to keep K finite for numerically degenerate inputs.
+    k_sq = min(k_sq, 1.0 - 1e-15)
+    k = np.sqrt(k_sq)
+    K = calc_complete_elliptic_integral_first_kind(k)
+    E = calc_complete_elliptic_integral_second_kind(k)
+    return 4.0 * np.pi * np.sqrt(a * b) * ((2.0 / k - k) * K - (2.0 / k) * E)
+
+
+def _coaxial_mutual_gradient_emu(a: float, b: float, z: float) -> float:
+    """
+    Axial gradient dM/dz (dimensionless, EMU) of the coaxial-filament
+    mutual inductance — analytic derivative of Maxwell's elliptic formula.
+
+    With s^2 = (a + b)^2 + z^2, m = k^2 = 4 a b / s^2, one has
+    dk/dz = -k z / s^2 and d/dk [(2/k - k) K - (2/k) E]
+    = [ (2 - k^2) E / (1 - k^2) - 2 K ] / k^2, hence
+
+        dM/dz = (4 pi sqrt(a b) z / (k s^2))
+                * [ 2 K(m) - (2 - m) E(m) / (1 - m) ] .
+
+    Checks: odd in z (attraction symmetry), exactly 0 at z = 0, and for
+    z >> a + b reduces to -6 pi^2 a^2 b^2 / z^4, the derivative of the
+    dipole-limit mutual inductance M -> 2 pi^2 a^2 b^2 / z^3.
+
+    Args:
+        a: Radius of first loop (cm).
+        b: Radius of second loop (cm).
+        z: Axial separation of the loop planes (cm).
+
+    Returns:
+        dM/dz (dimensionless in EMU).
+    """
+    if a <= 0.0 or b <= 0.0 or z == 0.0:
+        return 0.0  # gradient vanishes by symmetry at z = 0
+    s_sq = (a + b) ** 2 + z * z
+    m = 4.0 * a * b / s_sq
+    m = min(m, 1.0 - 1e-15)
+    k = np.sqrt(m)
+    K = calc_complete_elliptic_integral_first_kind(k)
+    E = calc_complete_elliptic_integral_second_kind(k)
+    bracket = 2.0 * K - (2.0 - m) * E / (1.0 - m)
+    return 4.0 * np.pi * np.sqrt(a * b) * z / (k * s_sq) * bracket
+
+
 @maxwell_cite(
     751,
     752,
@@ -895,38 +1015,49 @@ def current_weigher(
     Calculate force in a current weigher (ampere balance).
 
     Arts. 751-754: A current weigher measures current by weighing
-    the magnetic force between coils. This is an absolute method
-    for current measurement.
+    the axial magnetic force between two coaxial coils. This is an
+    absolute method: the force is fixed by the geometry through the
+    mutual inductance, with no empirical calibration factor.
 
-    For two coaxial circular coils:
-        F = (mu0 / 4pi) * (2 * pi^2 * N1 * N2 * I^2 * r1^2 * r2^2) / d^4
-            [for small coils at large separation]
+    Pure EMU formulation (no mu_0, no factor of c): the generalized
+    electromagnetic force conjugate to a coordinate x is
 
-    More generally, the force is:
-        F = I^2 * (dM/dx)
+        F_x = I1 * I2 * dM/dx
 
-    where M is the mutual inductance and x is the separation.
+    and when a circuit is weighed against itself (I1 = I2 = I, the
+    weigher configuration)
 
-    The current is determined from:
-        I = sqrt(F / (dM/dx))
+        F = I^2 * dM/dx ,
 
-    In CGS units, the force between coaxial coils:
-        F = (2 * pi * N1 * N2 * I^2 / c^2) * f(r1, r2, d)
+    with M the mutual inductance in centimetres, I in abamperes and
+    F in dynes. For N1 fixed and N2 movable turns of common radius r,
+    M_total = N1 * N2 * M_loop, where the mutual inductance of two
+    coaxial circular filaments is Maxwell's elliptic-integral formula
 
-    where f is a geometric factor.
+        M_loop = 4 pi r [ (2/k - k) K(k^2) - (2/k) E(k^2) ] ,
+        k^2 = 4 r^2 / (4 r^2 + x^2) ,
+
+    and dM_loop/dx is its analytic derivative (see
+    ``_coaxial_mutual_gradient_emu``). The current is read from the
+    weighed force by
+
+        I = sqrt(F / (N1 * N2 * dM_loop/dx)) .
 
     Args:
-        current: Current I (abamperes).
-        coil_radius: Radius of coils (cm, assumed equal).
-        num_turns_fixed: N1 turns in fixed coil.
-        num_turns_movable: N2 turns in movable coil.
-        coil_separation: Distance between coils (cm).
+        current: Current I (abamperes), identical in both coils.
+        coil_radius: Radius of both coils (cm, assumed equal).
+        num_turns_fixed: N1 turns in the fixed coil.
+        num_turns_movable: N2 turns in the movable coil.
+        coil_separation: Axial distance x between coil planes (cm).
 
     Returns:
         Dictionary with:
-        - force: Magnetic force (dynes)
-        - equivalent_mass: Mass that balances force (grams)
-        - mutual_inductance_gradient: dM/dx
+        - force: Axial force on the movable coil in the direction of
+          increasing separation (dynes); negative = attraction for
+          currents in the same sense
+        - equivalent_mass: force / g_standard (grams)
+        - dM_dx: Total gradient N1 * N2 * dM_loop/dx (dimensionless)
+        - mutual_inductance: Total M at this separation (cm, EMU)
 
     Reference:
         Part IV, Arts. 751-754: Current weigher.
@@ -946,50 +1077,49 @@ def current_weigher(
     N1 = num_turns_fixed
     N2 = num_turns_movable
 
-    # Approximate formula for coaxial coils (r << d)
-    # Force ~ (2*pi*N1*N2*I^2/c^2) * (r^4/d^4) for small coils
-    # More accurate: use elliptic integral formulas
+    # Mutual inductance of one coaxial filament pair (cm, EMU) and its
+    # exact axial gradient — no c^2, no invented geometry factor.
+    M_loop = _coaxial_mutual_inductance_emu(r, r, d)
+    dM_loop_dx = _coaxial_mutual_gradient_emu(r, r, d)
 
-    # Simplified geometric factor
-    if d > 2 * r:
-        # Far-field approximation
-        geom_factor = (r**4) / (d**4)
-    else:
-        # Near-field - use empirical correction
-        geom_factor = (r**2) / (d**2 + r**2)
+    # N1 * N2 turn pairs act in series: M_total = N1 * N2 * M_loop.
+    dM_dx = N1 * N2 * dM_loop_dx
 
-    # Force in CGS
-    force = (2.0 * np.pi * N1 * N2 * current**2 / (CONST.C**2)) * geom_factor
+    # Arts. 751-754 (EMU): F = I^2 dM/dx, force in dynes for I in
+    # abamperes and M in centimetres.
+    force = current**2 * dM_dx
 
-    # Equivalent mass (F = m*g)
-    g = 980.665  # cm/s^2
-    equivalent_mass = force / g
-
-    # Mutual inductance gradient (dM/dx)
-    # F = I^2 * (dM/dx), so dM/dx = F/I^2
-    dM_dx = force / (current**2) if current > 0 else 0
+    # Equivalent mass that balances the force (F = m g)
+    equivalent_mass = force / _G_STANDARD
 
     return {
         "force": force,
         "equivalent_mass": equivalent_mass,
         "dM_dx": dM_dx,
+        "mutual_inductance": N1 * N2 * M_loop,
         "current": current,
         "coil_radius": coil_radius,
         "num_turns_fixed": N1,
         "num_turns_movable": N2,
         "coil_separation": d,
-        "geometric_factor": geom_factor,
     }
 
 
+# D-17 re-map (2026-08-21, Stage-3 defect register S2): the former
+# citation of Treatise Arts. 755-757 was anachronistic on two counts —
+# (1) Ch XVII (Arts. 752-757) of Part IV is "Comparison of Coils", not
+# Joule heating; (2) the Joule-balance instrument (weighing a current by
+# its resistive heat) was developed in the 1880s, after the 1873
+# Treatise.  Q = I^2 R t itself is Joule's 1841 law — established
+# physics, hence standard_math with NO article numbers.  Genuine Ch XVII
+# coil-comparison methods are a separate work package (not faked here):
+# they are implemented, article by article (Arts. 752-757), in
+# maxwell/electromagnetism/coil_comparison/ (CIRCUITUS, Wave 7).
 @maxwell_cite(
-    755,
-    756,
-    757,
     part=4,
-    chapter="Joule Balance",
-    theory_class="maxwell_original",
-    description="Calculate energy in Joule balance",
+    chapter="",
+    theory_class="standard_math",
+    description="Joule heating Q = I^2 R t (Joule 1841; anachronistic as a Treatise instrument)",
 )
 def joule_balance(
     current: float,
@@ -1000,8 +1130,8 @@ def joule_balance(
     """
     Calculate heat production using Joule's law (Joule balance).
 
-    Arts. 755-757: Joule's experiments established that the heat
-    produced in a resistor is:
+    D-17 re-map (2026-08-21): this function implements the generic Joule
+    heating law (Joule, 1841), NOT any Treatise article:
 
         Q = I^2 * R * t
 
@@ -1011,11 +1141,15 @@ def joule_balance(
         R = resistance
         t = time
 
+    Anachronism note: the Joule-balance instrument post-dates the 1873
+    Treatise, and Arts. 755-757 belong to Ch XVII "Comparison of Coils".
+    No article numbers are claimed (see decorator comment).
+
     The mechanical equivalent of heat:
         1 calorie = 4.184e7 ergs = 4.184 joules
 
-    The Joule balance measures current by the heat produced,
-    providing an absolute current standard.
+    As a modern extension, a Joule balance measures current by the heat
+    produced, providing an absolute current standard.
 
     Temperature rise (if heat capacity known):
         Delta_T = Q / C
@@ -1032,9 +1166,6 @@ def joule_balance(
         - heat_calories: Q in calories
         - temperature_rise: Delta_T (if C given)
         - power: I^2 * R (watts)
-
-    Reference:
-        Part IV, Arts. 755-757: Joule balance.
 
     Example:
         >>> result = joule_balance(current=1.0, resistance=1.0, time=1.0)
@@ -1073,6 +1204,19 @@ def joule_balance(
     return result
 
 
+# Range justification (lint rule 6): this aggregator reports one result
+# block per instrument article-cluster implemented in this module; each
+# listed article has an article-specific computation elsewhere in this
+# file (tangent 736-738, sine 739, Helmholtz 741-743, wattmeter 744/746,
+# electrodynamometer 747-749, current weigher 751-754).  Arts. 755-757
+# were removed by the D-17 re-map (2026-08-21): the Joule balance is
+# standard_math and post-dates the Treatise.  Chapter field names Ch XVI
+# (Observations, 730-751), which holds the bulk of the range; 752-754
+# sit at the head of Ch XVII (Comparison of Coils) per the PARTS table
+# and are carried by the current-weigher mapping adjudicated with D-05.
+# Article-specific computations for Ch XVII's own subject matter
+# (Comparison of Coils, Arts. 752-757) additionally live in
+# maxwell/electromagnetism/coil_comparison/.
 @maxwell_cite(
     736,
     737,
@@ -1090,11 +1234,8 @@ def joule_balance(
     752,
     753,
     754,
-    755,
-    756,
-    757,
     part=4,
-    chapter="Electrical Measurements",
+    chapter="Ch XVI: Observations",
     theory_class="maxwell_original",
     description="Complete galvanometer and measurement analysis",
 )
@@ -1102,8 +1243,10 @@ def analyze_galvanometers() -> dict[str, dict]:
     """
     Complete analysis of galvanometers and electrical measurements.
 
-    Arts. 736-757: Comprehensive analysis including all types of
+    Arts. 736-754: Comprehensive analysis including all types of
     galvanometers and measurement instruments described by Maxwell.
+    The Joule-balance block is a standard_math extension (D-17 re-map;
+    no Treatise articles claimed for it).
 
     Returns:
         Dictionary with complete analysis of:
@@ -1113,10 +1256,10 @@ def analyze_galvanometers() -> dict[str, dict]:
         - Wattmeter
         - Electrodynamometer
         - Current weigher
-        - Joule balance
+        - Joule balance (standard_math extension, D-17)
 
     Reference:
-        Part IV, Arts. 736-757: Complete measurement analysis.
+        Part IV, Arts. 736-754: Complete measurement analysis.
     """
     results = {}
 

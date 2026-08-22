@@ -229,10 +229,11 @@ class TestVerifyUnitsAndDimensions:
 
     def test_speed_of_light(self):
         results = verify_units_and_dimensions()
-        c = [r for r in results if "c = 2.9979e10" in r.test_name]
+        c = [r for r in results if "299792458" in r.test_name]
         assert len(c) == 1
         assert c[0].passed
-        assert c[0].expected == pytest.approx(2.9979e10, rel=1e-3)
+        # Expected is the SI-defined value (299792458 m/s) expressed in cm/s.
+        assert c[0].expected == pytest.approx(299792458 * 100, rel=1e-12)
 
 
 class TestVerifyOpticsAndWaves:

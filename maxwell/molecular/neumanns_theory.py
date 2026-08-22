@@ -67,7 +67,7 @@ class NeumannPotential:
     @maxwell_cite(
         851,
         part=4,
-        chapter="Neumann's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate vector potential from current loop",
     )
@@ -119,7 +119,7 @@ class NeumannPotential:
     @maxwell_cite(
         852,
         part=4,
-        chapter="Neumann's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate magnetic flux through loop",
     )
@@ -182,7 +182,7 @@ class NeumannTheory:
     @maxwell_cite(
         853,
         part=4,
-        chapter="Neumann's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate mutual inductance between loops",
     )
@@ -266,7 +266,7 @@ class NeumannTheory:
     @maxwell_cite(
         854,
         part=4,
-        chapter="Neumann's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate self-inductance of loop",
     )
@@ -280,9 +280,14 @@ class NeumannTheory:
         Calculate self-inductance of a current loop.
 
         Art. 854: Self-inductance requires wire radius to avoid
-        divergence at r = 0:
+        divergence at r = 0.  Maxwell's formula for a circular circuit
+        of radius R and wire radius a (Treatise, circular-circuit
+        formula) is, in CGS-EMU with L in cm (abhenries),
 
-            L ≈ μ₀ * R * [ln(8R/a) - 2]  (for circular loop)
+            L = 4π R [ln(8R/a) - 2]
+
+        where the -2 corresponds to a surface-current distribution on
+        the wire (a uniform volume distribution gives -7/4 instead).
 
         Args:
             loop: Loop parametrization.
@@ -295,7 +300,6 @@ class NeumannTheory:
         Reference:
             Part IV, Art. 854: Self-inductance.
         """
-        # Use approximate formula for circular loop
         # Get characteristic radius from loop
         points = [loop(t) for t in np.linspace(0, 2 * np.pi, n_segments)]
         distances = [np.linalg.norm(p) for p in points]
@@ -304,15 +308,15 @@ class NeumannTheory:
         if R <= wire_radius:
             return 0.0
 
-        # Approximate formula for circular loop
-        L = R * (np.log(8 * R / wire_radius) - 2.0)
+        # Maxwell's circular-circuit formula (surface-current form).
+        L = 4.0 * np.pi * R * (np.log(8 * R / wire_radius) - 2.0)
 
         return L
 
     @maxwell_cite(
         855,
         part=4,
-        chapter="Neumann's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate induced EMF from changing current",
     )
@@ -345,7 +349,7 @@ class NeumannTheory:
     @maxwell_cite(
         853,
         part=4,
-        chapter="Neumann's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate mutual inductance between circular loops",
     )
@@ -385,7 +389,7 @@ class NeumannTheory:
     @maxwell_cite(
         852,
         part=4,
-        chapter="Neumann's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate potential energy of coupled circuits",
     )
@@ -419,7 +423,7 @@ class NeumannTheory:
 @maxwell_cite(
     853,
     part=4,
-    chapter="Neumann's Theory",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
     description="Calculate mutual inductance by Neumann's formula",
 )
@@ -464,14 +468,14 @@ def calc_mutual_inductance_neumann(
             [loop2_radius * np.cos(t), loop2_radius * np.sin(t), separation]
         )
 
-    nt = NeumannsTheory()
+    nt = NeumannTheory()
     return nt.mutual_inductance(loop1, loop2, n_segments)
 
 
 @maxwell_cite(
     851,
     part=4,
-    chapter="Neumann's Theory",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
     description="Calculate Neumann potential for current element",
 )
@@ -513,18 +517,15 @@ def calc_neumann_potential(
 
 
 @maxwell_cite(
-    851,
     852,
     853,
     854,
-    855,
     856,
-    857,
-    858,
     part=4,
-    chapter="Neumann's Theory",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
-    description="Verify Neumann's theory relations",
+    description="Verify the reciprocity, self-inductance, and energy "
+    "relations computed below",
 )
 def verify_neumanns_theory(
     loop1_radius: float = 10.0,
@@ -565,11 +566,11 @@ def verify_neumanns_theory(
             [loop2_radius * np.cos(t), loop2_radius * np.sin(t), separation]
         )
 
-    nt = NeumannsTheory()
+    nt = NeumannTheory()
 
     # Mutual inductance (should be symmetric)
-    M_12 = nt.mutual_inductance(loop1, loop2, 50)
-    M_21 = nt.mutual_inductance(loop2, loop1, 50)
+    M_12 = nt.mutual_inductance(loop1, loop2, n_segments=50)
+    M_21 = nt.mutual_inductance(loop2, loop1, n_segments=50)
 
     # Symmetry check
     symmetry_error = abs(M_12 - M_21) / ((M_12 + M_21) / 2) if (M_12 + M_21) > 0 else 0
@@ -612,18 +613,14 @@ def verify_neumanns_theory(
 
 
 @maxwell_cite(
-    851,
     852,
     853,
     854,
-    855,
-    856,
-    857,
-    858,
     part=4,
-    chapter="Neumann's Theory",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
-    description="Complete analysis of Neumann's theory",
+    description="Mutual inductance vs separation, self-inductance, and "
+    "coupling coefficients from Neumann's formula",
 )
 def analyze_neumanns_theory(
     loop1_radius: float = 10.0,
@@ -661,11 +658,11 @@ def analyze_neumanns_theory(
     def loop2(t, sep):
         return np.array([loop2_radius * np.cos(t), loop2_radius * np.sin(t), sep])
 
-    nt = NeumannsTheory()
+    nt = NeumannTheory()
 
     mutual_inductances = []
     for s in separations:
-        M = nt.mutual_inductance(loop1, lambda t: loop2(t, s), 50)
+        M = nt.mutual_inductance(loop1, lambda t: loop2(t, s), n_segments=50)
         mutual_inductances.append(M)
 
     # Self-inductance
@@ -700,7 +697,7 @@ def analyze_neumanns_theory(
 @maxwell_cite(
     853,
     part=4,
-    chapter="Neumann's Theory",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
     description="Calculate mutual inductance between circular loops",
 )
@@ -736,7 +733,7 @@ def neumann_mutual_inductance(
 @maxwell_cite(
     854,
     part=4,
-    chapter="Neumann's Theory",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
     description="Calculate self-inductance of circular loop",
 )
@@ -747,9 +744,13 @@ def circular_loop_inductance(
     """
     Calculate self-inductance of a circular loop.
 
-    Art. 854: For a circular loop of radius R and wire radius a:
+    Art. 854: Maxwell's formula for a circular circuit of radius R and
+    wire radius a (CGS-EMU, L in cm / abhenries):
 
-        L ≈ R * [ln(8R/a) - 2]
+        L = 4π R [ln(8R/a) - 2]
+
+    The -2 corresponds to a surface-current distribution on the wire;
+    a uniform volume distribution would give -7/4.
 
     Args:
         R: Loop radius (cm).
@@ -763,13 +764,13 @@ def circular_loop_inductance(
     """
     if R <= a:
         return 0.0
-    return R * (np.log(8 * R / a) - 2.0)
+    return 4.0 * np.pi * R * (np.log(8 * R / a) - 2.0)
 
 
 @maxwell_cite(
     852,
     part=4,
-    chapter="Neumann's Theory",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
     description="Calculate mutual potential energy",
 )
@@ -797,3 +798,197 @@ def mutual_potential_energy(
         Part IV, Art. 852: Mutual potential energy.
     """
     return M * I1 * I2
+
+
+# =============================================================================
+# ARTS. 856-858 CONSEQUENCES OF NEUMANN'S FORMULA
+# =============================================================================
+
+
+@maxwell_cite(
+    853,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Elliptic closed form for the mutual inductance of coaxial "
+    "circles (Maxwell's formula), used as an independent oracle",
+)
+def maxwell_mutual_inductance_closed_form(
+    R1: float,
+    R2: float,
+    d: float,
+) -> float:
+    """
+    Mutual inductance of two coaxial circles in elliptic closed form.
+
+    Maxwell's own closed-form evaluation of the Neumann integral for two
+    coaxial circles of radii R1, R2 at axial separation d:
+
+        M = 4π sqrt(R1 R2) [ (2/k - k) K(k²) - (2/k) E(k²) ],
+        k² = 4 R1 R2 / ((R1 + R2)² + d²),
+
+    with K, E the complete elliptic integrals of the first and second
+    kind (DLMF 19.2).  This is an independent evaluation path from the
+    double quadrature of :func:`neumann_mutual_inductance`; comparing
+    the two is the Art. 856-857 verification below.
+
+    Args:
+        R1: Radius of first loop (cm).
+        R2: Radius of second loop (cm).
+        d: Axial separation (cm).
+
+    Returns:
+        Mutual inductance M (cm, CGS-EMU).
+
+    Reference:
+        Part IV, Art. 853: Neumann's formula, elliptic evaluation.
+    """
+    from scipy.special import ellipe, ellipk
+
+    k2 = 4.0 * R1 * R2 / ((R1 + R2) ** 2 + d * d)
+    k = np.sqrt(k2)
+    return float(
+        4.0
+        * np.pi
+        * np.sqrt(R1 * R2)
+        * ((2.0 / k - k) * ellipk(k2) - (2.0 / k) * ellipe(k2))
+    )
+
+
+@maxwell_cite(
+    856,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="maxwell_original",
+    description="Computed reciprocity residual M12 - M21 of Neumann's "
+    "formula",
+)
+def neumann_reciprocity_residual(
+    R1: float = 1.0,
+    R2: float = 2.0,
+    d: float = 3.0,
+    n_segments_12: int = 160,
+    n_segments_21: int = 120,
+) -> float:
+    """
+    Reciprocity residual of the mutual inductance.
+
+    Art. 856 (computed consequence): Neumann's double integral is
+    symmetric under exchange of the two circuits, so the mutual
+    inductance must satisfy M12 = M21.  The residual
+
+        |M(R1, R2, d) - M(R2, R1, d)| / M(R1, R2, d)
+
+    is evaluated with DIFFERENT discretizations in the two directions
+    (n_segments_12 vs n_segments_21) so the test is not trivially zero
+    by construction.
+
+    Args:
+        R1, R2: Loop radii (cm); use unequal values for a real test.
+        d: Axial separation (cm).
+        n_segments_12: Segments for the M12 evaluation.
+        n_segments_21: Segments for the M21 evaluation.
+
+    Returns:
+        Relative reciprocity residual (dimensionless).
+
+    Reference:
+        Part IV, Art. 856: Reciprocity of mutual inductance.
+    """
+    M_12 = neumann_mutual_inductance(R1, R2, d, n_segments_12)
+    M_21 = neumann_mutual_inductance(R2, R1, d, n_segments_21)
+    scale = max(abs(M_12), abs(M_21), 1e-30)
+    return abs(M_12 - M_21) / scale
+
+
+@maxwell_cite(
+    857,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="maxwell_original",
+    description="Far-field dipole limit of Neumann's mutual inductance",
+)
+def neumann_far_field_residual(
+    R1: float = 1.0,
+    R2: float = 1.0,
+    d: float = 20.0,
+    n_segments: int = 240,
+) -> float:
+    """
+    Far-field residual of the mutual inductance.
+
+    Art. 857 (computed consequence): when the separation d is large
+    compared with both radii, each loop sees the other as a magnetic
+    dipole and the Neumann integral reduces to
+
+        M -> 2 π² R1² R2² / d³   (CGS-EMU).
+
+    This function returns the relative residual of the quadrature
+    against that dipole limit, which vanishes as (R/d)².
+
+    Args:
+        R1, R2: Loop radii (cm).
+        d: Axial separation (cm), should satisfy d >> R1 + R2.
+        n_segments: Quadrature segments per loop.
+
+    Returns:
+        Relative residual against the far-field limit.
+
+    Reference:
+        Part IV, Art. 857: Distant-circuit limit.
+    """
+    M_quad = neumann_mutual_inductance(R1, R2, d, n_segments)
+    M_far = 2.0 * np.pi**2 * R1**2 * R2**2 / d**3
+    return abs(M_quad - M_far) / abs(M_far)
+
+
+@maxwell_cite(
+    858,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="maxwell_original",
+    description="Motional EMF of a moving secondary circuit from dM/dt",
+)
+def motional_emf_coaxial(
+    R1: float,
+    R2: float,
+    d: float,
+    current: float,
+    velocity: float,
+    n_segments: int = 240,
+    dd: float | None = None,
+) -> float:
+    """
+    Motional EMF induced by axial motion of the secondary circuit.
+
+    Art. 858 (computed consequence): with steady primary current I and
+    relative axial velocity v = dd/dt, the induced EMF in the secondary
+    is
+
+        EMF = -d(M I)/dt = -I v (dM/dd),
+
+    with dM/dd evaluated by central differences of the Neumann
+    quadrature.  The sign encodes Lenz's law.
+
+    Args:
+        R1, R2: Loop radii (cm).
+        d: Instantaneous axial separation (cm).
+        current: Primary current I (abamperes).
+        velocity: Relative axial velocity v = dd/dt (cm/s); positive v
+            increases the separation.
+        n_segments: Quadrature segments per loop.
+        dd: Central-difference step (cm); default d/1000.
+
+    Returns:
+        Induced EMF (abvolts).
+
+    Reference:
+        Part IV, Art. 858: Induction by relative motion.
+    """
+    if d <= 0:
+        raise ValueError("Separation must be positive")
+    step = d / 1000.0 if dd is None else dd
+    M_plus = neumann_mutual_inductance(R1, R2, d + step, n_segments)
+    M_minus = neumann_mutual_inductance(R1, R2, d - step, n_segments)
+    dM_dd = (M_plus - M_minus) / (2.0 * step)
+    return -current * velocity * dM_dd

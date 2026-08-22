@@ -24,10 +24,24 @@ where:
     φ = amplitude (radians)
     n = characteristic (for third kind)
 
+Parameter convention (m = k²):
+    Since the 2026-08-21 math-spine hardening this module also provides
+    ``calc_complete_elliptic_k_parameter`` / ``calc_complete_elliptic_e_parameter``
+    which evaluate K(m), E(m) on the full real domain m < 1 — including
+    NEGATIVE parameter (imaginary modulus) — by the arithmetic-geometric
+    mean (DLMF §19.8) combined with the imaginary-modulus transformation
+    (DLMF §19.7).  The AGM iteration is the classical descending-Landen
+    process of Treatise Arts. 700-701 in its quadratically convergent
+    Gauss form.  Accuracy: full double precision (~1e-15 relative) for
+    every m < 1; the previous scipy pass-through was restricted to
+    0 ≤ m ≤ 1 by the public wrappers.
+
 Category: A (maxwell_original) — Maxwell's elliptic integral methods.
 
 References:
     Part IV, Arts. 696-705: Elliptic integrals in electromagnetism.
+    DLMF §§19.2, 19.7, 19.8: complete elliptic integrals, Landen and
+    imaginary-modulus transformations, arithmetic-geometric mean.
 """
 
 from __future__ import annotations
@@ -36,7 +50,7 @@ from dataclasses import dataclass
 
 import numpy as np
 from scipy.integrate import trapezoid
-from scipy.special import ellipe, ellipj, ellipk
+from scipy.special import ellipj, ellipk
 
 from maxwell.config.constants import CONST
 from maxwell.meta.citation import maxwell_cite
@@ -90,8 +104,8 @@ class EllipticIntegral:
         k = self.modulus
 
         if amplitude == np.pi / 2:
-            # Complete elliptic integral
-            return float(ellipk(k**2))
+            # Complete elliptic integral (hardened AGM evaluation)
+            return calc_complete_elliptic_k_parameter(k**2)
 
         # Incomplete integral via numerical integration
         def integrand(theta):
@@ -134,8 +148,8 @@ class EllipticIntegral:
         k = self.modulus
 
         if amplitude == np.pi / 2:
-            # Complete elliptic integral
-            return float(ellipe(k**2))
+            # Complete elliptic integral (hardened AGM evaluation)
+            return calc_complete_elliptic_e_parameter(k**2)
 
         # Incomplete integral via numerical integration
         def integrand(theta):
@@ -290,26 +304,186 @@ class EllipticIntegral:
         k = self.modulus
         return np.sqrt(1 - k**2)
 
-    @maxwell_cite(
-        702,
-        part=4,
-        chapter="Elliptic Integrals",
-        theory_class="maxwell_original",
-        description="Calculate parameter m = k²",
-    )
     def parameter(self) -> float:
         """
         Calculate the parameter m = k².
 
-        Art. 702: Many formulas use m = k² instead of k directly.
+        Bare convention helper (defect D-39 remediation): the m = k²
+        parameter convention itself is carried — with its Art. 702
+        citation — by ``calc_complete_elliptic_k_parameter`` and
+        ``calc_complete_elliptic_e_parameter`` below.  This trivial
+        accessor deliberately cites no article so that it cannot
+        hijack Art. 702 coverage.
 
         Returns:
             Parameter m.
-
-        Reference:
-            Part IV, Art. 702: Parameter definition.
         """
         return self.modulus**2
+
+
+# ── Hardened complete integrals, parameter convention m = k² ──────────────
+#
+# K(m), E(m) on the FULL real domain m < 1, including negative parameter
+# (imaginary modulus).  Primary algorithm: arithmetic-geometric mean
+# (DLMF §19.8; Gauss), i.e. the quadratically convergent form of the
+# descending Landen iteration of Treatise Arts. 700-701.  For m < 0 the
+# imaginary-modulus transformation (DLMF §19.7) maps into (0, 1):
+#
+#     K(m) = K(m₁) / sqrt(1 - m),      E(m) = sqrt(1 - m) · E(m₁),
+#     m₁ = m / (m - 1) ∈ (0, 1)        (m < 0).
+#
+# This is a pure-Python port of the AGM kernel in maxwell/jax/_elliptic.py
+# (deliberately no JAX import in non-JAX code).  Verified against the
+# Carlson-form values of scipy.special.ellipk/ellipe at ~1e-15 relative
+# for m ∈ [-10, 1 - 1e-15] (see tests/test_articles_math_spine_691_706.py).
+
+
+def _elliptic_agm_k_e(m: float) -> tuple[float, float]:
+    """(K(m), E(m)) for 0 ≤ m < 1 by the arithmetic-geometric mean.
+
+    DLMF §19.8(i).  With a₀ = 1, b₀ = sqrt(1 - m), c₀ = sqrt(m):
+
+        K(m) = π / (2 M),   M = AGM(1, sqrt(1 - m)) = lim aₙ,
+        E(m) = K(m) · (1 − Σₙ₌₀^∞ 2ⁿ⁻¹ cₙ²)
+
+    where aₙ₊₁ = (aₙ + bₙ)/2, bₙ₊₁ = sqrt(aₙ bₙ), cₙ₊₁ = (aₙ − bₙ)/2.
+    Convergence is quadratic: ≤ 7 iterations give full double precision
+    for every 0 ≤ m < 1 (more only absurdly close to m = 1).
+
+    Args:
+        m: Parameter m = k² with 0 ≤ m < 1.
+
+    Returns:
+        Tuple (K(m), E(m)).
+    """
+    if m == 0.0:
+        half_pi = float(np.pi / 2.0)
+        return half_pi, half_pi
+    a = 1.0
+    b = float(np.sqrt(1.0 - m))
+    # n = 0 term of the E-sum: 2^{-1} c₀² with c₀² = m.  (The public
+    # wrappers map m < 0 into (0, 1) before calling this helper, so here
+    # 0 ≤ m < 1 and the sum is non-negative.)
+    s_sum = 0.5 * m
+    eps = float(np.finfo(float).eps)
+    for n in range(1, 64):
+        a_next = 0.5 * (a + b)
+        c = 0.5 * (a - b)
+        b = float(np.sqrt(a * b))
+        a = a_next
+        # Terminate the moment c is indistinguishable from 0 at double
+        # precision.  Do NOT keep summing after this point: the computed c
+        # stalls at ~ulp(a) (rounding noise) while the weight 2^{n-1}
+        # keeps doubling, which would pollute the sum.  Every genuine
+        # remaining term is below the rounding level of s_sum because the
+        # true c_n decays quadratically.
+        if abs(c) <= 4.0 * eps * a:
+            break
+        s_sum += 2.0 ** (n - 1) * c * c
+    K = float(np.pi / (2.0 * a))
+    E = K * (1.0 - s_sum)
+    return K, E
+
+
+def _imaginary_modulus_map(m: float) -> float:
+    """Map a negative parameter m < 0 to m₁ = m/(m−1) ∈ (0, 1).
+
+    DLMF §19.7 (imaginary-modulus transformation): the complete
+    integrals at imaginary modulus k = i·κ (parameter m = −κ²) reduce
+    to complete integrals at the real parameter m₁ = m/(m − 1).
+    """
+    return m / (m - 1.0)
+
+
+@maxwell_cite(
+    696,
+    702,
+    part=4,
+    chapter="Elliptic Integrals",
+    theory_class="maxwell_original",
+    description="Hardened complete K(m), parameter convention, all m < 1",
+)
+def calc_complete_elliptic_k_parameter(m: float) -> float:
+    """Complete elliptic integral of the first kind K(m), parameter m = k².
+
+    Art. 696 (definition) and Art. 702 (parameter convention):
+
+        K(m) = ∫₀^(π/2) dθ / sqrt(1 − m sin²θ),   m < 1.
+
+    Valid on the full real domain m ∈ (−∞, 1), INCLUDING negative m:
+      * m ≥ 0: arithmetic-geometric mean, K = π / (2·AGM(1, √(1−m)))
+        (DLMF §19.8);
+      * m < 0: imaginary-modulus transformation (DLMF §19.7)
+        K(m) = K(m/(m−1)) / √(1−m).
+    Special values: K(0) = π/2; K(m) → +∞ logarithmically as m → 1⁻.
+
+    Accuracy: ~1e-15 relative across the whole domain (AGM converges
+    quadratically; cross-checked against scipy's Carlson-form values).
+
+    Args:
+        m: Parameter m = k² (any real m < 1).
+
+    Returns:
+        K(m) value (float; math.inf at m = 1).
+
+    Raises:
+        ValueError: If m ≥ 1 (K is complex/undefined on the real axis,
+            except for the logarithmic divergence returned at m = 1).
+    """
+    if m > 1.0:
+        raise ValueError(f"Parameter m must be < 1 for real K(m), got {m}")
+    if m == 1.0:
+        return float("inf")
+    if m < 0.0:
+        m1 = _imaginary_modulus_map(m)
+        K1, _ = _elliptic_agm_k_e(m1)
+        return K1 / float(np.sqrt(1.0 - m))
+    K, _ = _elliptic_agm_k_e(m)
+    return K
+
+
+@maxwell_cite(
+    697,
+    702,
+    part=4,
+    chapter="Elliptic Integrals",
+    theory_class="maxwell_original",
+    description="Hardened complete E(m), parameter convention, all m < 1",
+)
+def calc_complete_elliptic_e_parameter(m: float) -> float:
+    """Complete elliptic integral of the second kind E(m), parameter m = k².
+
+    Art. 697 (definition) and Art. 702 (parameter convention):
+
+        E(m) = ∫₀^(π/2) sqrt(1 − m sin²θ) dθ,   m < 1.
+
+    Valid on the full real domain m ∈ (−∞, 1), INCLUDING negative m:
+      * m ≥ 0: AGM evaluation E = K·(1 − Σ 2ⁿ⁻¹cₙ²) (DLMF §19.8(i));
+      * m < 0: imaginary-modulus transformation (DLMF §19.7)
+        E(m) = √(1−m) · E(m/(m−1)).
+    Special values: E(0) = π/2; E(1) = 1.
+
+    Accuracy: ~1e-15 relative across the whole domain.
+
+    Args:
+        m: Parameter m = k² (any real m < 1).
+
+    Returns:
+        E(m) value (float).
+
+    Raises:
+        ValueError: If m > 1 (E is complex on the real axis there).
+    """
+    if m > 1.0:
+        raise ValueError(f"Parameter m must be ≤ 1 for real E(m), got {m}")
+    if m == 1.0:
+        return 1.0
+    if m < 0.0:
+        m1 = _imaginary_modulus_map(m)
+        _, E1 = _elliptic_agm_k_e(m1)
+        return float(np.sqrt(1.0 - m)) * E1
+    _, E = _elliptic_agm_k_e(m)
+    return E
 
 
 @maxwell_cite(
@@ -325,11 +499,15 @@ def calc_complete_elliptic_integral_first_kind(modulus: float) -> float:
 
     Art. 696: K(k) = ∫₀^(π/2) dθ / sqrt(1 - k² sin² θ)
 
+    Delegates to the hardened parameter-convention evaluator
+    ``calc_complete_elliptic_k_parameter(k²)`` (AGM; DLMF §19.8), so the
+    value is exact to double precision right up to k → 1.
+
     Args:
         modulus: Modulus k (0 ≤ k ≤ 1).
 
     Returns:
-        K(k) value.
+        K(k) value (math.inf at k = 1).
 
     Reference:
         Part IV, Art. 696: Complete first kind integral.
@@ -340,7 +518,7 @@ def calc_complete_elliptic_integral_first_kind(modulus: float) -> float:
     """
     if not 0 <= modulus <= 1:
         raise ValueError(f"Modulus must be in [0, 1]")
-    return float(ellipk(modulus**2))
+    return calc_complete_elliptic_k_parameter(modulus**2)
 
 
 @maxwell_cite(
@@ -356,6 +534,9 @@ def calc_complete_elliptic_integral_second_kind(modulus: float) -> float:
 
     Art. 697: E(k) = ∫₀^(π/2) sqrt(1 - k² sin² θ) dθ
 
+    Delegates to the hardened parameter-convention evaluator
+    ``calc_complete_elliptic_e_parameter(k²)`` (AGM; DLMF §19.8(i)).
+
     Args:
         modulus: Modulus k (0 ≤ k ≤ 1).
 
@@ -367,7 +548,7 @@ def calc_complete_elliptic_integral_second_kind(modulus: float) -> float:
     """
     if not 0 <= modulus <= 1:
         raise ValueError(f"Modulus must be in [0, 1]")
-    return float(ellipe(modulus**2))
+    return calc_complete_elliptic_e_parameter(modulus**2)
 
 
 @maxwell_cite(

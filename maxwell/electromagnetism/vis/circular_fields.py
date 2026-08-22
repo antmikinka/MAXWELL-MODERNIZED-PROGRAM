@@ -41,6 +41,10 @@ from maxwell.electromagnetism.components.circular_coils import (
     calc_coil_off_axis,
     calc_coil_on_axis,
 )
+from maxwell.math.elliptic_integrals import (
+    calc_complete_elliptic_integral_first_kind,
+    calc_complete_elliptic_integral_second_kind,
+)
 from maxwell.meta.citation import maxwell_cite
 
 
@@ -50,27 +54,42 @@ def _vector_potential_azimuthal(
     rho: float,
     z: float,
 ) -> float:
-    """Calculate azimuthal component of vector potential for circular coil."""
+    """Calculate azimuthal component of vector potential for circular coil.
+
+    Art. 702: For a circular loop of radius a carrying current I, the
+    vector potential is A = (I/c) oint dl'/|r - r'|. By symmetry only the
+    azimuthal component survives; evaluating the integral gives the
+    standard elliptic-integral form (cf. Jackson 5.37, Gaussian units):
+
+        A_phi(rho, z) = (I/c) * (alpha/rho) * [(2 - k^2) K(k^2) - 2 E(k^2)]
+
+    with alpha^2 = (a + rho)^2 + z^2 and k^2 = 4*a*rho/alpha^2, where
+    K and E are complete elliptic integrals (parameter convention m = k^2).
+    Equivalently A_phi = (2*I*alpha/(c*rho)) * [(1 - k^2/2) K - E].
+
+    Near the axis A_phi -> pi*I*rho/(c*a) (at z = 0), so the stream
+    function psi = rho * A_phi scales as rho^2 as required, and the
+    on-axis field B_z = (1/rho) d(rho*A_phi)/d rho -> 2*pi*I/(c*a).
+    """
     a = coil_radius
 
     if rho < 1e-15:
         return 0.0
 
-    # k^2 parameter
+    # k^2 (parameter m) of the elliptic integrals
     alpha_sq = (a + rho) ** 2 + z**2
     k_sq = 4.0 * a * rho / alpha_sq
     k_sq = min(max(k_sq, 0), 1 - 1e-15)
 
-    # Elliptic integrals
-    K = (np.pi / 2) * (1 + k_sq / 4 + 9 * k_sq**2 / 64)
-    E = (np.pi / 2) * (1 - k_sq / 4 - 3 * k_sq**2 / 64)
+    # Complete elliptic integrals K(k), E(k) with modulus k = sqrt(k_sq)
+    K = calc_complete_elliptic_integral_first_kind(np.sqrt(k_sq))
+    E = calc_complete_elliptic_integral_second_kind(np.sqrt(k_sq))
 
     # A_phi formula
-    prefactor = current / (CONST.C * np.pi)
     A_phi = (
-        prefactor
-        * np.sqrt(a / rho)
-        * ((2 - k_sq) * K / np.sqrt(alpha_sq) - 2 * E / np.sqrt(alpha_sq))
+        (current / CONST.C)
+        * (np.sqrt(alpha_sq) / rho)
+        * ((2 - k_sq) * K - 2 * E)
     )
 
     return A_phi

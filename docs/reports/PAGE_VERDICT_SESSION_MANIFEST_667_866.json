@@ -1,0 +1,6189 @@
+{
+  "manifest_version": 1,
+  "generated_at": "2026-08-22T06:17:48Z",
+  "generator": "ARCHITECTUS (wave 8d) - derived read-only from OCR/TOC/chapter evidence; no verdicts invented",
+  "purpose": "Turnkey human page-verdict session pack for G4 (100% page verdicts, Arts 667-866)",
+  "scope": {
+    "volume": 2,
+    "article_lo": 667,
+    "article_hi": 866,
+    "treatise_part": "IV (Electromagnetism), chapters XII-XXIII (Part-IV-local numbering per Vol II TOC)",
+    "page_range_body": [
+      326,
+      519
+    ],
+    "boundary_page": 520
+  },
+  "verdict_schema": {
+    "store_path": "page_verifier/data/verdicts.json",
+    "writer_policy": "HUMAN ONLY (Stage-5: humans adjudicate verdict sessions); agents must never write verdicts",
+    "top_level": {
+      "schema_version": 1,
+      "product": "MAXWELL-MODERNIZED-PROGRAM",
+      "updated_at": "UTC ISO-8601 Z",
+      "count": "int",
+      "verdicts": "dict page_id -> verdict object"
+    },
+    "verdict_fields": {
+      "page_id": "v{volume}-p{page:03d} e.g. v2-p326",
+      "volume": "2 for all entries in this session",
+      "page_number": "integer PDF page number within the volume (326..520)",
+      "verdict": "'yes' | 'no' | 'unset'  (yes = product math matches the rendered page; no = incorrect/mismatch)",
+      "note": "free text; required wherever verdict=no or mapping was flagged for visual confirmation",
+      "article_numbers": "list[int]: articles whose START appears on the page (copy from starts_here)",
+      "image_path": "page photo path (pre-filled per page entry)",
+      "updated_at": "UTC ISO-8601 Z, set at write time"
+    }
+  },
+  "evidence_sources": [
+    {
+      "id": "E1",
+      "source": "page_verifier/treatise.py TREATISE table",
+      "gave": "Part IV = Arts 475-866, primary volume 2; Vol II = Parts III+IV (544 OCR pages); article numbers are the stable join key"
+    },
+    {
+      "id": "E2",
+      "source": "maxwell_em_processor/MAXWELL_VOLUME_2_MASTER_OUTPUT/volume_2_direct_result.json via page_verifier.catalog.build_catalog((2,))",
+      "gave": "144 Vol II pages with in-range article markers (regex (\\d{1,4})[a-z]?\\.\\s*]); all images resolved"
+    },
+    {
+      "id": "E3",
+      "source": "maxwell-latex-books Third Edition VOLUME_2_PRELIM_TOC.JSON (Vol II printed TOC)",
+      "gave": "printed start page for 168/200 articles; constant printed->PDF offset +27 verified at 14+ control points; placed the 6 marker-missing articles; zero TOC-vs-marker disagreements"
+    },
+    {
+      "id": "E4",
+      "source": "MAXWELL_VOLUME_2_MASTER_OUTPUT/VOLUME_2_PART_4_CHAPTERS/*.JSON",
+      "gave": "chapter extents (Ch XII 647-681 pp313-341 ... Ch XXIII 846-866 pp507-520); corrupted marker '83:.]' = Art 832 on p498 (first article of Ch XXII)"
+    },
+    {
+      "id": "E5",
+      "source": "maxwell-latex-books/Third Edition/15774-A Treatise On Electricity And Magnetism Vol-ii_images/VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES/page_NNN.png",
+      "gave": "image path convention; all 195 session pages resolved to existing files"
+    }
+  ],
+  "toc_offset_printed_to_pdf": 27,
+  "chapter_map": [
+    {
+      "chapter": "XII Current Sheets",
+      "articles_chapter": "647-681",
+      "articles_in_scope": "667-681",
+      "pages": "326-341 (chapter pp 313-341)"
+    },
+    {
+      "chapter": "XIII Parallel Currents",
+      "articles_chapter": "682-693",
+      "articles_in_scope": "682-693",
+      "pages": "342-357"
+    },
+    {
+      "chapter": "XIV Circular Currents",
+      "articles_chapter": "694-706",
+      "articles_in_scope": "694-706",
+      "pages": "358-377"
+    },
+    {
+      "chapter": "XV Electromagnetic Instruments",
+      "articles_chapter": "707-729",
+      "articles_in_scope": "707-729",
+      "pages": "378-400"
+    },
+    {
+      "chapter": "XVI Electromagnetic Observations",
+      "articles_chapter": "730-751",
+      "articles_in_scope": "730-751",
+      "pages": "401-418"
+    },
+    {
+      "chapter": "XVII Comparison of Coils",
+      "articles_chapter": "752-757",
+      "articles_in_scope": "752-757",
+      "pages": "419-428"
+    },
+    {
+      "chapter": "XVIII Electromagnetic Unit of Resistance",
+      "articles_chapter": "758-767",
+      "articles_in_scope": "758-767",
+      "pages": "429-439"
+    },
+    {
+      "chapter": "XIX Comparison of the Electrostatic with the Electromagnetic Units",
+      "articles_chapter": "768-780",
+      "articles_in_scope": "768-780",
+      "pages": "440-457"
+    },
+    {
+      "chapter": "XX Electromagnetic Theory of Light",
+      "articles_chapter": "781-805",
+      "articles_in_scope": "781-805",
+      "pages": "458-477"
+    },
+    {
+      "chapter": "XXI Magnetic Action on Light",
+      "articles_chapter": "806-831",
+      "articles_in_scope": "806-831",
+      "pages": "478-497"
+    },
+    {
+      "chapter": "XXII Ferromagnetism and Diamagnetism Explained by Molecular Currents",
+      "articles_chapter": "832-845",
+      "articles_in_scope": "832-845",
+      "pages": "498-506"
+    },
+    {
+      "chapter": "XXIII Theories of Action at a Distance",
+      "articles_chapter": "846-866",
+      "articles_in_scope": "846-866",
+      "pages": "507-520"
+    }
+  ],
+  "articles": {
+    "667": {
+      "start_page": 326,
+      "start_source": "marker",
+      "toc_printed_page": 299,
+      "toc_title": "Case of motion near the edge of the sheet",
+      "span": [
+        326,
+        326
+      ]
+    },
+    "668": {
+      "start_page": 327,
+      "start_source": "marker",
+      "toc_printed_page": 300,
+      "toc_title": "Theory of Arago's rotating disk",
+      "span": [
+        327,
+        329
+      ]
+    },
+    "669": {
+      "start_page": 330,
+      "start_source": "marker",
+      "toc_printed_page": 303,
+      "toc_title": "Trail of images in the form of a helix",
+      "span": [
+        330,
+        330
+      ]
+    },
+    "670": {
+      "start_page": 331,
+      "start_source": "marker",
+      "toc_printed_page": 304,
+      "toc_title": "Spherical current-sheets",
+      "span": [
+        331,
+        331
+      ]
+    },
+    "671": {
+      "start_page": 332,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        332,
+        332
+      ]
+    },
+    "672": {
+      "start_page": 333,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        333,
+        333
+      ]
+    },
+    "673": {
+      "start_page": 333,
+      "start_source": "marker",
+      "toc_printed_page": 306,
+      "toc_title": "To produce a constant force on a suspended coil",
+      "span": [
+        333,
+        333
+      ]
+    },
+    "674": {
+      "start_page": 334,
+      "start_source": "marker",
+      "toc_printed_page": 307,
+      "toc_title": "Currents parallel to a plane",
+      "span": [
+        334,
+        334
+      ]
+    },
+    "675": {
+      "start_page": 335,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        335,
+        335
+      ]
+    },
+    "676": {
+      "start_page": 336,
+      "start_source": "marker",
+      "toc_printed_page": 309,
+      "toc_title": "A solenoid",
+      "span": [
+        336,
+        336
+      ]
+    },
+    "677": {
+      "start_page": 337,
+      "start_source": "marker",
+      "toc_printed_page": 310,
+      "toc_title": "A long solenoid",
+      "span": [
+        337,
+        337
+      ]
+    },
+    "678": {
+      "start_page": 338,
+      "start_source": "marker",
+      "toc_printed_page": 311,
+      "toc_title": "Force near the ends",
+      "span": [
+        338,
+        338
+      ]
+    },
+    "679": {
+      "start_page": 338,
+      "start_source": "marker",
+      "toc_printed_page": 311,
+      "toc_title": "A pair of induction coils",
+      "span": [
+        338,
+        338
+      ]
+    },
+    "680": {
+      "start_page": 339,
+      "start_source": "marker",
+      "toc_printed_page": 312,
+      "toc_title": "Proper thickness of wire",
+      "span": [
+        339,
+        339
+      ]
+    },
+    "681": {
+      "start_page": 340,
+      "start_source": "marker",
+      "toc_printed_page": 313,
+      "toc_title": "An endless solenoid",
+      "span": [
+        340,
+        341
+      ]
+    },
+    "682": {
+      "start_page": 342,
+      "start_source": "marker",
+      "toc_printed_page": 315,
+      "toc_title": "Cylindrical conductors",
+      "span": [
+        342,
+        342
+      ]
+    },
+    "683": {
+      "start_page": 343,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        343,
+        343
+      ]
+    },
+    "684": {
+      "start_page": 344,
+      "start_source": "marker",
+      "toc_printed_page": 317,
+      "toc_title": "The vector-potential",
+      "span": [
+        344,
+        344
+      ]
+    },
+    "685": {
+      "start_page": 344,
+      "start_source": "marker",
+      "toc_printed_page": 317,
+      "toc_title": "Kinetic energy of the current",
+      "span": [
+        344,
+        344
+      ]
+    },
+    "686": {
+      "start_page": 345,
+      "start_source": "marker",
+      "toc_printed_page": 318,
+      "toc_title": "Repulsion between the direct and the return current",
+      "span": [
+        345,
+        345
+      ]
+    },
+    "687": {
+      "start_page": 345,
+      "start_source": "marker",
+      "toc_printed_page": 318,
+      "toc_title": "Tension of the wires. Ampere's experiment",
+      "span": [
+        345,
+        346
+      ]
+    },
+    "688": {
+      "start_page": 347,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        347,
+        347
+      ]
+    },
+    "689": {
+      "start_page": 347,
+      "start_source": "marker",
+      "toc_printed_page": 320,
+      "toc_title": "Currents of varying intensity in a cylindric wire",
+      "span": [
+        347,
+        348
+      ]
+    },
+    "690": {
+      "start_page": 349,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        349,
+        350
+      ]
+    },
+    "691": {
+      "start_page": 351,
+      "start_source": "toc",
+      "toc_printed_page": 324,
+      "toc_title": "Geometrical mean distance of two figures in a plane",
+      "span": [
+        351,
+        352
+      ]
+    },
+    "692": {
+      "start_page": 353,
+      "start_source": "toc",
+      "toc_printed_page": 326,
+      "toc_title": "Particular cases",
+      "span": [
+        353,
+        354
+      ]
+    },
+    "693": {
+      "start_page": 355,
+      "start_source": "marker",
+      "toc_printed_page": 328,
+      "toc_title": "Application of the method to a coil of insulated wires",
+      "span": [
+        355,
+        357
+      ]
+    },
+    "694": {
+      "start_page": 358,
+      "start_source": "marker",
+      "toc_printed_page": 331,
+      "toc_title": "Potential due to a spherical bowl",
+      "span": [
+        358,
+        359
+      ]
+    },
+    "695": {
+      "start_page": 360,
+      "start_source": "marker",
+      "toc_printed_page": 333,
+      "toc_title": "Solid angle subtended by a circle at any point",
+      "span": [
+        360,
+        360
+      ]
+    },
+    "696": {
+      "start_page": 361,
+      "start_source": "marker",
+      "toc_printed_page": 334,
+      "toc_title": "Potential energy of two circular currents",
+      "span": [
+        361,
+        361
+      ]
+    },
+    "697": {
+      "start_page": 362,
+      "start_source": "marker",
+      "toc_printed_page": 335,
+      "toc_title": "Moment of the couple acting between two coils",
+      "span": [
+        362,
+        362
+      ]
+    },
+    "698": {
+      "start_page": 363,
+      "start_source": "marker",
+      "toc_printed_page": 336,
+      "toc_title": "Values of $P_{i}^{\\prime}$",
+      "span": [
+        363,
+        363
+      ]
+    },
+    "699": {
+      "start_page": 363,
+      "start_source": "marker",
+      "toc_printed_page": 336,
+      "toc_title": "Attraction between two parallel circular currents",
+      "span": [
+        363,
+        363
+      ]
+    },
+    "700": {
+      "start_page": 364,
+      "start_source": "marker",
+      "toc_printed_page": 337,
+      "toc_title": "Calculation of the coefficients for a coil of finite section",
+      "span": [
+        364,
+        364
+      ]
+    },
+    "701": {
+      "start_page": 365,
+      "start_source": "marker",
+      "toc_printed_page": 338,
+      "toc_title": "Potential of two parallel circles expressed by elliptic integrals",
+      "span": [
+        365,
+        366
+      ]
+    },
+    "702": {
+      "start_page": 367,
+      "start_source": "marker",
+      "toc_printed_page": 340,
+      "toc_title": "Lines of force round a circular current. (Fig. XVIII)",
+      "span": [
+        367,
+        367
+      ]
+    },
+    "703": {
+      "start_page": 368,
+      "start_source": "marker",
+      "toc_printed_page": 341,
+      "toc_title": "Differential equation of the potential of two circles",
+      "span": [
+        368,
+        368
+      ]
+    },
+    "704": {
+      "start_page": 369,
+      "start_source": "marker",
+      "toc_printed_page": 342,
+      "toc_title": "Approximation when the circles are very near one another",
+      "span": [
+        369,
+        369
+      ]
+    },
+    "705": {
+      "start_page": 370,
+      "start_source": "marker",
+      "toc_printed_page": 343,
+      "toc_title": "Further approximation",
+      "span": [
+        370,
+        371
+      ]
+    },
+    "706": {
+      "start_page": 372,
+      "start_source": "marker",
+      "toc_printed_page": 345,
+      "toc_title": "Coil of maximum self-induction",
+      "span": [
+        372,
+        377
+      ]
+    },
+    "707": {
+      "start_page": 378,
+      "start_source": "marker",
+      "toc_printed_page": 351,
+      "toc_title": "Standard galvanometers and sensitive galvanometers",
+      "span": [
+        378,
+        378
+      ]
+    },
+    "708": {
+      "start_page": 379,
+      "start_source": "marker",
+      "toc_printed_page": 352,
+      "toc_title": "Construction of a standard coil",
+      "span": [
+        379,
+        379
+      ]
+    },
+    "709": {
+      "start_page": 380,
+      "start_source": "marker",
+      "toc_printed_page": 353,
+      "toc_title": "Mathematical theory of the galvanometer",
+      "span": [
+        380,
+        380
+      ]
+    },
+    "710": {
+      "start_page": 381,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        381,
+        381
+      ]
+    },
+    "711": {
+      "start_page": 381,
+      "start_source": "marker",
+      "toc_printed_page": 354,
+      "toc_title": "Galvanometer with a single coil",
+      "span": [
+        381,
+        382
+      ]
+    },
+    "712": {
+      "start_page": 383,
+      "start_source": "marker",
+      "toc_printed_page": 356,
+      "toc_title": "Gaugain's eccentric suspension",
+      "span": [
+        383,
+        383
+      ]
+    },
+    "713": {
+      "start_page": 383,
+      "start_source": "marker",
+      "toc_printed_page": 356,
+      "toc_title": "Helmholtz's double coil. (Fig. XIX)",
+      "span": [
+        383,
+        383
+      ]
+    },
+    "714": {
+      "start_page": 384,
+      "start_source": "marker",
+      "toc_printed_page": 357,
+      "toc_title": "Galvanometer with four coils",
+      "span": [
+        384,
+        384
+      ]
+    },
+    "715": {
+      "start_page": 385,
+      "start_source": "marker",
+      "toc_printed_page": 358,
+      "toc_title": "Galvanometer with three coils",
+      "span": [
+        385,
+        385
+      ]
+    },
+    "716": {
+      "start_page": 386,
+      "start_source": "marker",
+      "toc_printed_page": 359,
+      "toc_title": "Proper thickness of the wire of a galvanometer",
+      "span": [
+        386,
+        386
+      ]
+    },
+    "717": {
+      "start_page": 387,
+      "start_source": "marker",
+      "toc_printed_page": 360,
+      "toc_title": "Sensitive galvanometers",
+      "span": [
+        387,
+        387
+      ]
+    },
+    "718": {
+      "start_page": 387,
+      "start_source": "marker",
+      "toc_printed_page": 360,
+      "toc_title": "Theory of the galvanometer of greatest sensibility",
+      "span": [
+        387,
+        387
+      ]
+    },
+    "719": {
+      "start_page": 388,
+      "start_source": "marker",
+      "toc_printed_page": 361,
+      "toc_title": "Law of thickness of the wire",
+      "span": [
+        388,
+        390
+      ]
+    },
+    "720": {
+      "start_page": 391,
+      "start_source": "marker",
+      "toc_printed_page": 364,
+      "toc_title": "Galvanometer with wire of uniform thickness",
+      "span": [
+        391,
+        391
+      ]
+    },
+    "721": {
+      "start_page": 391,
+      "start_source": "marker",
+      "toc_printed_page": 364,
+      "toc_title": "Suspended coils. Mode of suspension",
+      "span": [
+        391,
+        391
+      ]
+    },
+    "722": {
+      "start_page": 392,
+      "start_source": "marker",
+      "toc_printed_page": 365,
+      "toc_title": "Thomson's sensitive coil",
+      "span": [
+        392,
+        392
+      ]
+    },
+    "723": {
+      "start_page": 393,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        393,
+        393
+      ]
+    },
+    "724": {
+      "start_page": 393,
+      "start_source": "marker",
+      "toc_printed_page": 366,
+      "toc_title": "Thomson's suspended coil and galvanometer combined",
+      "span": [
+        393,
+        393
+      ]
+    },
+    "725": {
+      "start_page": 394,
+      "start_source": "marker",
+      "toc_printed_page": 367,
+      "toc_title": "Weber's electrodynamometer",
+      "span": [
+        394,
+        397
+      ]
+    },
+    "726": {
+      "start_page": 398,
+      "start_source": "marker",
+      "toc_printed_page": 371,
+      "toc_title": "Joule's current-weigher",
+      "span": [
+        398,
+        398
+      ]
+    },
+    "727": {
+      "start_page": 399,
+      "start_source": "marker",
+      "toc_printed_page": 372,
+      "toc_title": "Suction of solenoids",
+      "span": [
+        399,
+        399
+      ]
+    },
+    "728": {
+      "start_page": 399,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        399,
+        399
+      ]
+    },
+    "729": {
+      "start_page": 400,
+      "start_source": "marker",
+      "toc_printed_page": 373,
+      "toc_title": "Electrodynamometer with torsion-arm",
+      "span": [
+        400,
+        400
+      ]
+    },
+    "730": {
+      "start_page": 401,
+      "start_source": "marker",
+      "toc_printed_page": 374,
+      "toc_title": "Observation of vibrations",
+      "span": [
+        401,
+        401
+      ]
+    },
+    "731": {
+      "start_page": 402,
+      "start_source": "marker",
+      "toc_printed_page": 375,
+      "toc_title": "Motion in a logarithmic spiral",
+      "span": [
+        402,
+        402
+      ]
+    },
+    "732": {
+      "start_page": 403,
+      "start_source": "marker",
+      "toc_printed_page": 376,
+      "toc_title": "Rectilinear oscillations in a resisting medium",
+      "span": [
+        403,
+        403
+      ]
+    },
+    "733": {
+      "start_page": 404,
+      "start_source": "marker",
+      "toc_printed_page": 377,
+      "toc_title": "Values of successive elongations",
+      "span": [
+        404,
+        404
+      ]
+    },
+    "734": {
+      "start_page": 404,
+      "start_source": "marker",
+      "toc_printed_page": 377,
+      "toc_title": "Data and quæsita",
+      "span": [
+        404,
+        404
+      ]
+    },
+    "735": {
+      "start_page": 404,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        404,
+        404
+      ]
+    },
+    "736": {
+      "start_page": 405,
+      "start_source": "marker",
+      "toc_printed_page": 378,
+      "toc_title": "Determination of the logarithmic decrement",
+      "span": [
+        405,
+        405
+      ]
+    },
+    "737": {
+      "start_page": 405,
+      "start_source": "marker",
+      "toc_printed_page": 378,
+      "toc_title": "When to stop the experiment",
+      "span": [
+        405,
+        405
+      ]
+    },
+    "738": {
+      "start_page": 406,
+      "start_source": "marker",
+      "toc_printed_page": 379,
+      "toc_title": "Determination of the time of vibration from three transits",
+      "span": [
+        406,
+        406
+      ]
+    },
+    "739": {
+      "start_page": 406,
+      "start_source": "marker",
+      "toc_printed_page": 379,
+      "toc_title": "Two series of observations",
+      "span": [
+        406,
+        406
+      ]
+    },
+    "740": {
+      "start_page": 407,
+      "start_source": "marker",
+      "toc_printed_page": 380,
+      "toc_title": "Correction for amplitude and for damping",
+      "span": [
+        407,
+        407
+      ]
+    },
+    "741": {
+      "start_page": 408,
+      "start_source": "marker",
+      "toc_printed_page": 381,
+      "toc_title": "Dead beat galvanometer",
+      "span": [
+        408,
+        408
+      ]
+    },
+    "742": {
+      "start_page": 409,
+      "start_source": "marker",
+      "toc_printed_page": 382,
+      "toc_title": "To measure a constant current with the galvanometer",
+      "span": [
+        409,
+        409
+      ]
+    },
+    "743": {
+      "start_page": 409,
+      "start_source": "marker",
+      "toc_printed_page": 382,
+      "toc_title": "Best angle of deflexion of a tangent galvanometer",
+      "span": [
+        409,
+        409
+      ]
+    },
+    "744": {
+      "start_page": 410,
+      "start_source": "marker",
+      "toc_printed_page": 383,
+      "toc_title": "Best method of introducing the current",
+      "span": [
+        410,
+        410
+      ]
+    },
+    "745": {
+      "start_page": 411,
+      "start_source": "marker",
+      "toc_printed_page": 384,
+      "toc_title": "Measurement of a current by the first elongation",
+      "span": [
+        411,
+        411
+      ]
+    },
+    "746": {
+      "start_page": 411,
+      "start_source": "marker",
+      "toc_printed_page": 384,
+      "toc_title": "To make a series of observations on a constant current",
+      "span": [
+        411,
+        411
+      ]
+    },
+    "747": {
+      "start_page": 412,
+      "start_source": "marker",
+      "toc_printed_page": 385,
+      "toc_title": "Method of multiplication for feeble currents",
+      "span": [
+        412,
+        412
+      ]
+    },
+    "748": {
+      "start_page": 413,
+      "start_source": "marker",
+      "toc_printed_page": 386,
+      "toc_title": "Measuremen! of a transient current by first elongation",
+      "span": [
+        413,
+        413
+      ]
+    },
+    "749": {
+      "start_page": 414,
+      "start_source": "marker",
+      "toc_printed_page": 387,
+      "toc_title": "Correction for damping",
+      "span": [
+        414,
+        414
+      ]
+    },
+    "750": {
+      "start_page": 415,
+      "start_source": "marker",
+      "toc_printed_page": 388,
+      "toc_title": "Series of observations. Zurückwerfungsmethode",
+      "span": [
+        415,
+        416
+      ]
+    },
+    "751": {
+      "start_page": 417,
+      "start_source": "marker",
+      "toc_printed_page": 390,
+      "toc_title": "Method of multiplication",
+      "span": [
+        417,
+        418
+      ]
+    },
+    "752": {
+      "start_page": 419,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        419,
+        419
+      ]
+    },
+    "753": {
+      "start_page": 420,
+      "start_source": "marker",
+      "toc_printed_page": 393,
+      "toc_title": "Determination of $G_{1}$",
+      "span": [
+        420,
+        420
+      ]
+    },
+    "754": {
+      "start_page": 421,
+      "start_source": "marker",
+      "toc_printed_page": 394,
+      "toc_title": "Determination of $g_{1}$",
+      "span": [
+        421,
+        421
+      ]
+    },
+    "755": {
+      "start_page": 422,
+      "start_source": "marker",
+      "toc_printed_page": 395,
+      "toc_title": "Determination of the mutual induction of two coils",
+      "span": [
+        422,
+        423
+      ]
+    },
+    "756": {
+      "start_page": 424,
+      "start_source": "marker",
+      "toc_printed_page": 397,
+      "toc_title": "Determination of the self-induction of a coil",
+      "span": [
+        424,
+        424
+      ]
+    },
+    "757": {
+      "start_page": 425,
+      "start_source": "marker",
+      "toc_printed_page": 398,
+      "toc_title": "Comparison of the self-induction of two coils",
+      "span": [
+        425,
+        428
+      ]
+    },
+    "758": {
+      "start_page": 429,
+      "start_source": "marker",
+      "toc_printed_page": 402,
+      "toc_title": "Definition of resistance",
+      "span": [
+        429,
+        429
+      ]
+    },
+    "759": {
+      "start_page": 429,
+      "start_source": "marker",
+      "toc_printed_page": 402,
+      "toc_title": "Kirchhoff's method",
+      "span": [
+        429,
+        430
+      ]
+    },
+    "760": {
+      "start_page": 431,
+      "start_source": "marker",
+      "toc_printed_page": 404,
+      "toc_title": "Weber's method by transient currents",
+      "span": [
+        431,
+        431
+      ]
+    },
+    "761": {
+      "start_page": 432,
+      "start_source": "marker",
+      "toc_printed_page": 405,
+      "toc_title": "His method of observation",
+      "span": [
+        432,
+        432
+      ]
+    },
+    "762": {
+      "start_page": 432,
+      "start_source": "marker",
+      "toc_printed_page": 405,
+      "toc_title": "Weber's method by damping",
+      "span": [
+        432,
+        434
+      ]
+    },
+    "763": {
+      "start_page": 435,
+      "start_source": "marker",
+      "toc_printed_page": 408,
+      "toc_title": "Thomson's method by a revolving coil",
+      "span": [
+        435,
+        435
+      ]
+    },
+    "764": {
+      "start_page": 436,
+      "start_source": "toc",
+      "toc_printed_page": 409,
+      "toc_title": "Mathematical theory of the revolving coil",
+      "span": [
+        436,
+        436
+      ]
+    },
+    "765": {
+      "start_page": 437,
+      "start_source": "marker",
+      "toc_printed_page": 410,
+      "toc_title": "Calculation of the resistance",
+      "span": [
+        437,
+        437
+      ]
+    },
+    "766": {
+      "start_page": 438,
+      "start_source": "marker",
+      "toc_printed_page": 411,
+      "toc_title": "Corrections",
+      "span": [
+        438,
+        438
+      ]
+    },
+    "767": {
+      "start_page": 438,
+      "start_source": "marker",
+      "toc_printed_page": 411,
+      "toc_title": "Joule's calorimetric method",
+      "span": [
+        438,
+        439
+      ]
+    },
+    "768": {
+      "start_page": 440,
+      "start_source": "marker",
+      "toc_printed_page": 413,
+      "toc_title": "Nature and importance of the investigation",
+      "span": [
+        440,
+        440
+      ]
+    },
+    "769": {
+      "start_page": 441,
+      "start_source": "marker",
+      "toc_printed_page": 414,
+      "toc_title": "The ratio of the units is a velocity",
+      "span": [
+        441,
+        441
+      ]
+    },
+    "770": {
+      "start_page": 442,
+      "start_source": "marker",
+      "toc_printed_page": 415,
+      "toc_title": "Current by convection",
+      "span": [
+        442,
+        442
+      ]
+    },
+    "771": {
+      "start_page": 443,
+      "start_source": "marker",
+      "toc_printed_page": 416,
+      "toc_title": "Weber and Kohlrausch's method",
+      "span": [
+        443,
+        443
+      ]
+    },
+    "772": {
+      "start_page": 444,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        444,
+        444
+      ]
+    },
+    "773": {
+      "start_page": 445,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        445,
+        445
+      ]
+    },
+    "774": {
+      "start_page": 446,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        446,
+        446
+      ]
+    },
+    "775": {
+      "start_page": 447,
+      "start_source": "marker",
+      "toc_printed_page": 420,
+      "toc_title": "Method by an intermittent current",
+      "span": [
+        447,
+        447
+      ]
+    },
+    "776": {
+      "start_page": 448,
+      "start_source": "marker",
+      "toc_printed_page": 421,
+      "toc_title": "Condenser and Wippe as an arm of Wheatstone's bridge",
+      "span": [
+        448,
+        449
+      ]
+    },
+    "777": {
+      "start_page": 450,
+      "start_source": "marker",
+      "toc_printed_page": 423,
+      "toc_title": "Correction when the action is too rapid",
+      "span": [
+        450,
+        451
+      ]
+    },
+    "778": {
+      "start_page": 452,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        452,
+        453
+      ]
+    },
+    "779": {
+      "start_page": 454,
+      "start_source": "marker",
+      "toc_printed_page": 427,
+      "toc_title": "Coil and condenser combined",
+      "span": [
+        454,
+        456
+      ]
+    },
+    "780": {
+      "start_page": 457,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        457,
+        457
+      ]
+    },
+    "781": {
+      "start_page": 458,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        458,
+        458
+      ]
+    },
+    "782": {
+      "start_page": 459,
+      "start_source": "marker",
+      "toc_printed_page": 432,
+      "toc_title": "Energy of light during its propagation",
+      "span": [
+        459,
+        459
+      ]
+    },
+    "783": {
+      "start_page": 460,
+      "start_source": "marker",
+      "toc_printed_page": 433,
+      "toc_title": "Equation of propagation of an electromagnetic disturbance",
+      "span": [
+        460,
+        460
+      ]
+    },
+    "784": {
+      "start_page": 461,
+      "start_source": "marker",
+      "toc_printed_page": 434,
+      "toc_title": "Solution when the medium is a non-conductor",
+      "span": [
+        461,
+        461
+      ]
+    },
+    "785": {
+      "start_page": 462,
+      "start_source": "marker",
+      "toc_printed_page": 435,
+      "toc_title": "Characteristics of wave-propagation",
+      "span": [
+        462,
+        462
+      ]
+    },
+    "786": {
+      "start_page": 462,
+      "start_source": "marker",
+      "toc_printed_page": 435,
+      "toc_title": "Velocity of propagation of electromagnetic disturbances",
+      "span": [
+        462,
+        462
+      ]
+    },
+    "787": {
+      "start_page": 463,
+      "start_source": "marker",
+      "toc_printed_page": 436,
+      "toc_title": "Comparison of this velocity with that of light",
+      "span": [
+        463,
+        463
+      ]
+    },
+    "788": {
+      "start_page": 464,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        464,
+        464
+      ]
+    },
+    "789": {
+      "start_page": 464,
+      "start_source": "marker",
+      "toc_printed_page": 437,
+      "toc_title": "Comparison of these quantities in the case of paraffin",
+      "span": [
+        464,
+        464
+      ]
+    },
+    "790": {
+      "start_page": 465,
+      "start_source": "marker",
+      "toc_printed_page": 438,
+      "toc_title": "Theory of plane waves",
+      "span": [
+        465,
+        465
+      ]
+    },
+    "791": {
+      "start_page": 466,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        466,
+        466
+      ]
+    },
+    "792": {
+      "start_page": 467,
+      "start_source": "marker",
+      "toc_printed_page": 440,
+      "toc_title": "Energy and stress during radiation",
+      "span": [
+        467,
+        467
+      ]
+    },
+    "793": {
+      "start_page": 468,
+      "start_source": "marker",
+      "toc_printed_page": 441,
+      "toc_title": "Pressure exerted by light",
+      "span": [
+        468,
+        468
+      ]
+    },
+    "794": {
+      "start_page": 469,
+      "start_source": "marker",
+      "toc_printed_page": 442,
+      "toc_title": "Equations of motion in a crystallized medium",
+      "span": [
+        469,
+        470
+      ]
+    },
+    "795": {
+      "start_page": 471,
+      "start_source": "marker",
+      "toc_printed_page": 444,
+      "toc_title": "Propagation of plane waves",
+      "span": [
+        471,
+        471
+      ]
+    },
+    "796": {
+      "start_page": 471,
+      "start_source": "marker",
+      "toc_printed_page": 444,
+      "toc_title": "Only two waves are propagated",
+      "span": [
+        471,
+        471
+      ]
+    },
+    "797": {
+      "start_page": 472,
+      "start_source": "marker",
+      "toc_printed_page": 445,
+      "toc_title": "The theory agrees with that of Fresnel",
+      "span": [
+        472,
+        472
+      ]
+    },
+    "798": {
+      "start_page": 472,
+      "start_source": "marker",
+      "toc_printed_page": 445,
+      "toc_title": "Relation bew een electric conductivity and opacity",
+      "span": [
+        472,
+        472
+      ]
+    },
+    "799": {
+      "start_page": 473,
+      "start_source": "marker",
+      "toc_printed_page": 446,
+      "toc_title": "Comparison with facts",
+      "span": [
+        473,
+        473
+      ]
+    },
+    "800": {
+      "start_page": 473,
+      "start_source": "marker",
+      "toc_printed_page": 446,
+      "toc_title": "Transparent metals",
+      "span": [
+        473,
+        473
+      ]
+    },
+    "801": {
+      "start_page": 474,
+      "start_source": "marker",
+      "toc_printed_page": 447,
+      "toc_title": "Solution of the equations when the medium is a conductor",
+      "span": [
+        474,
+        474
+      ]
+    },
+    "802": {
+      "start_page": 474,
+      "start_source": "marker",
+      "toc_printed_page": 447,
+      "toc_title": "Case of an infinite medium, the initial state being given",
+      "span": [
+        474,
+        474
+      ]
+    },
+    "803": {
+      "start_page": 475,
+      "start_source": "marker",
+      "toc_printed_page": 448,
+      "toc_title": "Characteristics of diffusion",
+      "span": [
+        475,
+        475
+      ]
+    },
+    "804": {
+      "start_page": 475,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        475,
+        475
+      ]
+    },
+    "805": {
+      "start_page": 476,
+      "start_source": "marker",
+      "toc_printed_page": 449,
+      "toc_title": "Rapid approximation to an ultimate state",
+      "span": [
+        476,
+        477
+      ]
+    },
+    "806": {
+      "start_page": 478,
+      "start_source": "marker",
+      "toc_printed_page": 451,
+      "toc_title": "Possible forms of the relation between magnetism and light",
+      "span": [
+        478,
+        478
+      ]
+    },
+    "807": {
+      "start_page": 479,
+      "start_source": "marker",
+      "toc_printed_page": 452,
+      "toc_title": "The rotation of the plane of polarization by magnetic action",
+      "span": [
+        479,
+        479
+      ]
+    },
+    "808": {
+      "start_page": 479,
+      "start_source": "marker",
+      "toc_printed_page": 452,
+      "toc_title": "The laws of the phenomena",
+      "span": [
+        479,
+        479
+      ]
+    },
+    "809": {
+      "start_page": 480,
+      "start_source": "marker",
+      "toc_printed_page": 453,
+      "toc_title": "Verdet's discovery of negative rotation in ferromagnetic media",
+      "span": [
+        480,
+        480
+      ]
+    },
+    "810": {
+      "start_page": 480,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        480,
+        480
+      ]
+    },
+    "811": {
+      "start_page": 481,
+      "start_source": "marker",
+      "toc_printed_page": 454,
+      "toc_title": "Kinematical analysis of the phenomena",
+      "span": [
+        481,
+        481
+      ]
+    },
+    "812": {
+      "start_page": 482,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        482,
+        482
+      ]
+    },
+    "813": {
+      "start_page": 482,
+      "start_source": "marker",
+      "toc_printed_page": 455,
+      "toc_title": "Right and left-handed rays",
+      "span": [
+        482,
+        482
+      ]
+    },
+    "814": {
+      "start_page": 483,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        483,
+        483
+      ]
+    },
+    "815": {
+      "start_page": 483,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        483,
+        483
+      ]
+    },
+    "816": {
+      "start_page": 484,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        484,
+        484
+      ]
+    },
+    "817": {
+      "start_page": 484,
+      "start_source": "marker",
+      "toc_printed_page": 457,
+      "toc_title": "Kinematic equations of circularly-polarized light",
+      "span": [
+        484,
+        484
+      ]
+    },
+    "818": {
+      "start_page": 485,
+      "start_source": "marker",
+      "toc_printed_page": 458,
+      "toc_title": "Kinetic and potential energy of the medium",
+      "span": [
+        485,
+        485
+      ]
+    },
+    "819": {
+      "start_page": 486,
+      "start_source": "marker",
+      "toc_printed_page": 459,
+      "toc_title": "Condition of wave-propagation",
+      "span": [
+        486,
+        486
+      ]
+    },
+    "820": {
+      "start_page": 486,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        486,
+        486
+      ]
+    },
+    "821": {
+      "start_page": 487,
+      "start_source": "marker",
+      "toc_printed_page": 460,
+      "toc_title": "Statement of the results of the analysis of the phenomenon",
+      "span": [
+        487,
+        487
+      ]
+    },
+    "822": {
+      "start_page": 488,
+      "start_source": "marker",
+      "toc_printed_page": 461,
+      "toc_title": "Hypothesis of molecular vortices",
+      "span": [
+        488,
+        488
+      ]
+    },
+    "823": {
+      "start_page": 489,
+      "start_source": "marker",
+      "toc_printed_page": 462,
+      "toc_title": "Variation of the vortices according to Helmholtz's law",
+      "span": [
+        489,
+        489
+      ]
+    },
+    "824": {
+      "start_page": 489,
+      "start_source": "marker",
+      "toc_printed_page": 462,
+      "toc_title": "Variation of the kinetic energy in the disturbed medium",
+      "span": [
+        489,
+        489
+      ]
+    },
+    "825": {
+      "start_page": 490,
+      "start_source": "marker",
+      "toc_printed_page": 463,
+      "toc_title": "Expression in terms of the current and the velocity",
+      "span": [
+        490,
+        490
+      ]
+    },
+    "826": {
+      "start_page": 490,
+      "start_source": "marker",
+      "toc_printed_page": 463,
+      "toc_title": "The kinetic energy in the case of plane waves",
+      "span": [
+        490,
+        490
+      ]
+    },
+    "827": {
+      "start_page": 491,
+      "start_source": "marker",
+      "toc_printed_page": 464,
+      "toc_title": "The equations of motion",
+      "span": [
+        491,
+        491
+      ]
+    },
+    "828": {
+      "start_page": 491,
+      "start_source": "marker",
+      "toc_printed_page": 464,
+      "toc_title": "Velocity of a circularly-polarized ray",
+      "span": [
+        491,
+        491
+      ]
+    },
+    "829": {
+      "start_page": 492,
+      "start_source": "toc",
+      "toc_printed_page": 465,
+      "toc_title": "The magnetic rotation",
+      "span": [
+        492,
+        492
+      ]
+    },
+    "830": {
+      "start_page": 493,
+      "start_source": "marker",
+      "toc_printed_page": 466,
+      "toc_title": "Researches of Verdet",
+      "span": [
+        493,
+        494
+      ]
+    },
+    "831": {
+      "start_page": 495,
+      "start_source": "toc",
+      "toc_printed_page": 468,
+      "toc_title": "Note on a mechanical theory of molecular vortices",
+      "span": [
+        495,
+        497
+      ]
+    },
+    "832": {
+      "start_page": 498,
+      "start_source": "toc",
+      "toc_printed_page": 471,
+      "toc_title": "Magnetism is a phenomenon of molecules",
+      "span": [
+        498,
+        498
+      ]
+    },
+    "833": {
+      "start_page": 499,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        499,
+        499
+      ]
+    },
+    "834": {
+      "start_page": 499,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        499,
+        499
+      ]
+    },
+    "835": {
+      "start_page": 500,
+      "start_source": "marker",
+      "toc_printed_page": 473,
+      "toc_title": "Simplicity of the electric theory",
+      "span": [
+        500,
+        500
+      ]
+    },
+    "836": {
+      "start_page": 501,
+      "start_source": "marker",
+      "toc_printed_page": 474,
+      "toc_title": "Theory of a current in a perfectly conducting circuit",
+      "span": [
+        501,
+        501
+      ]
+    },
+    "837": {
+      "start_page": 501,
+      "start_source": "marker",
+      "toc_printed_page": 474,
+      "toc_title": "Case in which the current is entirely due to induction",
+      "span": [
+        501,
+        501
+      ]
+    },
+    "838": {
+      "start_page": 502,
+      "start_source": "marker",
+      "toc_printed_page": 475,
+      "toc_title": "Weber's theory of diamagnetism",
+      "span": [
+        502,
+        502
+      ]
+    },
+    "839": {
+      "start_page": 502,
+      "start_source": "marker",
+      "toc_printed_page": 475,
+      "toc_title": "Magnecrystallic induction",
+      "span": [
+        502,
+        502
+      ]
+    },
+    "840": {
+      "start_page": 503,
+      "start_source": "marker",
+      "toc_printed_page": 476,
+      "toc_title": "Theory of a perfect conductor",
+      "span": [
+        503,
+        503
+      ]
+    },
+    "841": {
+      "start_page": 503,
+      "start_source": "marker",
+      "toc_printed_page": 476,
+      "toc_title": "A medium containing perfectly conducting spherical molecules",
+      "span": [
+        503,
+        503
+      ]
+    },
+    "842": {
+      "start_page": 504,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        504,
+        504
+      ]
+    },
+    "843": {
+      "start_page": 504,
+      "start_source": "marker",
+      "toc_printed_page": 477,
+      "toc_title": "Theory of a molecule with a primitive current",
+      "span": [
+        504,
+        504
+      ]
+    },
+    "844": {
+      "start_page": 505,
+      "start_source": "marker",
+      "toc_printed_page": 478,
+      "toc_title": "Modifications of Weber's theory",
+      "span": [
+        505,
+        505
+      ]
+    },
+    "845": {
+      "start_page": 506,
+      "start_source": "marker",
+      "toc_printed_page": 479,
+      "toc_title": "Consequences of the theory",
+      "span": [
+        506,
+        506
+      ]
+    },
+    "846": {
+      "start_page": 507,
+      "start_source": "marker",
+      "toc_printed_page": 480,
+      "toc_title": "Quantities which enter into Ampère's formula",
+      "span": [
+        507,
+        507
+      ]
+    },
+    "847": {
+      "start_page": 507,
+      "start_source": "marker",
+      "toc_printed_page": 480,
+      "toc_title": "Relative motion of two electric particles",
+      "span": [
+        507,
+        507
+      ]
+    },
+    "848": {
+      "start_page": 508,
+      "start_source": "marker",
+      "toc_printed_page": 481,
+      "toc_title": "Relative inotion of four electric particles. Fechner's theory",
+      "span": [
+        508,
+        508
+      ]
+    },
+    "849": {
+      "start_page": 509,
+      "start_source": "marker",
+      "toc_printed_page": 482,
+      "toc_title": "Two new forms of Ampère's formula",
+      "span": [
+        509,
+        509
+      ]
+    },
+    "850": {
+      "start_page": 509,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        509,
+        509
+      ]
+    },
+    "851": {
+      "start_page": 510,
+      "start_source": "marker",
+      "toc_printed_page": 483,
+      "toc_title": "These are due to Gauss and to Weber respectively",
+      "span": [
+        510,
+        510
+      ]
+    },
+    "852": {
+      "start_page": 510,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        510,
+        510
+      ]
+    },
+    "853": {
+      "start_page": 511,
+      "start_source": "marker",
+      "toc_printed_page": null,
+      "toc_title": "",
+      "span": [
+        511,
+        511
+      ]
+    },
+    "854": {
+      "start_page": 511,
+      "start_source": "marker",
+      "toc_printed_page": 484,
+      "toc_title": "Helmboltz's deductions from Weber's formula",
+      "span": [
+        511,
+        511
+      ]
+    },
+    "855": {
+      "start_page": 512,
+      "start_source": "marker",
+      "toc_printed_page": 485,
+      "toc_title": "Potential of two currents",
+      "span": [
+        512,
+        512
+      ]
+    },
+    "856": {
+      "start_page": 513,
+      "start_source": "marker",
+      "toc_printed_page": 486,
+      "toc_title": "Weber's theory of the induction of electric currents",
+      "span": [
+        513,
+        513
+      ]
+    },
+    "857": {
+      "start_page": 514,
+      "start_source": "marker",
+      "toc_printed_page": 487,
+      "toc_title": "Segregating force in a conductor",
+      "span": [
+        514,
+        514
+      ]
+    },
+    "858": {
+      "start_page": 515,
+      "start_source": "marker",
+      "toc_printed_page": 488,
+      "toc_title": "Case of moving conductors",
+      "span": [
+        515,
+        515
+      ]
+    },
+    "859": {
+      "start_page": 516,
+      "start_source": "marker",
+      "toc_printed_page": 489,
+      "toc_title": "The formula of Gauss leads to an erroneous result",
+      "span": [
+        516,
+        516
+      ]
+    },
+    "860": {
+      "start_page": 516,
+      "start_source": "marker",
+      "toc_printed_page": 489,
+      "toc_title": "That of Weber agrees with the phenomena",
+      "span": [
+        516,
+        516
+      ]
+    },
+    "861": {
+      "start_page": 516,
+      "start_source": "marker",
+      "toc_printed_page": 489,
+      "toc_title": "Letter of Gauss to Weber",
+      "span": [
+        516,
+        516
+      ]
+    },
+    "862": {
+      "start_page": 517,
+      "start_source": "marker",
+      "toc_printed_page": 490,
+      "toc_title": "Theory of Riemann",
+      "span": [
+        517,
+        517
+      ]
+    },
+    "863": {
+      "start_page": 517,
+      "start_source": "marker",
+      "toc_printed_page": 490,
+      "toc_title": "Theory of C. Neumann",
+      "span": [
+        517,
+        517
+      ]
+    },
+    "864": {
+      "start_page": 518,
+      "start_source": "marker",
+      "toc_printed_page": 491,
+      "toc_title": "Theory of Betti",
+      "span": [
+        518,
+        518
+      ]
+    },
+    "865": {
+      "start_page": 519,
+      "start_source": "marker",
+      "toc_printed_page": 492,
+      "toc_title": "Repugnance to the idea of a medium",
+      "span": [
+        519,
+        519
+      ]
+    },
+    "866": {
+      "start_page": 519,
+      "start_source": "marker",
+      "toc_printed_page": 492,
+      "toc_title": "The idea of a medium cannot be got rid of",
+      "span": [
+        519,
+        520
+      ]
+    }
+  },
+  "toc_line_extraction_failures_placed_by_marker": [
+    671,
+    672,
+    675,
+    683,
+    688,
+    690,
+    710,
+    723,
+    728,
+    735,
+    752,
+    772,
+    773,
+    774,
+    778,
+    780,
+    781,
+    788,
+    791,
+    804,
+    810,
+    812,
+    814,
+    815,
+    816,
+    820,
+    833,
+    834,
+    842,
+    850,
+    852,
+    853
+  ],
+  "pages": [
+    {
+      "page_id": "v2-p326",
+      "volume": 2,
+      "page_number": 326,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_326.png",
+      "status": "M",
+      "articles_carried": [
+        667
+      ],
+      "articles_carried_str": "667",
+      "starts_here": [
+        667
+      ],
+      "starts_here_str": "667",
+      "evidence": "E2: OCR markers [667] detected on page; out-of-scope markers also present: [666]",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p327",
+      "volume": 2,
+      "page_number": 327,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_327.png",
+      "status": "M",
+      "articles_carried": [
+        668
+      ],
+      "articles_carried_str": "668",
+      "starts_here": [
+        668
+      ],
+      "starts_here_str": "668",
+      "evidence": "E2: OCR markers [668] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p328",
+      "volume": 2,
+      "page_number": 328,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_328.png",
+      "status": "C",
+      "articles_carried": [
+        668
+      ],
+      "articles_carried_str": "668",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 668 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p329",
+      "volume": 2,
+      "page_number": 329,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_329.png",
+      "status": "C",
+      "articles_carried": [
+        668
+      ],
+      "articles_carried_str": "668",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 668 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p330",
+      "volume": 2,
+      "page_number": 330,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_330.png",
+      "status": "M",
+      "articles_carried": [
+        669
+      ],
+      "articles_carried_str": "669",
+      "starts_here": [
+        669
+      ],
+      "starts_here_str": "669",
+      "evidence": "E2: OCR markers [669] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p331",
+      "volume": 2,
+      "page_number": 331,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_331.png",
+      "status": "M",
+      "articles_carried": [
+        670
+      ],
+      "articles_carried_str": "670",
+      "starts_here": [
+        670
+      ],
+      "starts_here_str": "670",
+      "evidence": "E2: OCR markers [670] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p332",
+      "volume": 2,
+      "page_number": 332,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_332.png",
+      "status": "M",
+      "articles_carried": [
+        671
+      ],
+      "articles_carried_str": "671",
+      "starts_here": [
+        671
+      ],
+      "starts_here_str": "671",
+      "evidence": "E2: OCR markers [671] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p333",
+      "volume": 2,
+      "page_number": 333,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_333.png",
+      "status": "M",
+      "articles_carried": [
+        672,
+        673
+      ],
+      "articles_carried_str": "672-673",
+      "starts_here": [
+        672,
+        673
+      ],
+      "starts_here_str": "672-673",
+      "evidence": "E2: OCR markers [672, 673] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p334",
+      "volume": 2,
+      "page_number": 334,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_334.png",
+      "status": "M",
+      "articles_carried": [
+        674
+      ],
+      "articles_carried_str": "674",
+      "starts_here": [
+        674
+      ],
+      "starts_here_str": "674",
+      "evidence": "E2: OCR markers [674] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p335",
+      "volume": 2,
+      "page_number": 335,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_335.png",
+      "status": "M",
+      "articles_carried": [
+        675
+      ],
+      "articles_carried_str": "675",
+      "starts_here": [
+        675
+      ],
+      "starts_here_str": "675",
+      "evidence": "E2: OCR markers [675] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p336",
+      "volume": 2,
+      "page_number": 336,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_336.png",
+      "status": "M",
+      "articles_carried": [
+        676
+      ],
+      "articles_carried_str": "676",
+      "starts_here": [
+        676
+      ],
+      "starts_here_str": "676",
+      "evidence": "E2: OCR markers [676] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p337",
+      "volume": 2,
+      "page_number": 337,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_337.png",
+      "status": "M",
+      "articles_carried": [
+        677
+      ],
+      "articles_carried_str": "677",
+      "starts_here": [
+        677
+      ],
+      "starts_here_str": "677",
+      "evidence": "E2: OCR markers [677] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p338",
+      "volume": 2,
+      "page_number": 338,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_338.png",
+      "status": "M",
+      "articles_carried": [
+        678,
+        679
+      ],
+      "articles_carried_str": "678-679",
+      "starts_here": [
+        678,
+        679
+      ],
+      "starts_here_str": "678-679",
+      "evidence": "E2: OCR markers [678, 679] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p339",
+      "volume": 2,
+      "page_number": 339,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_339.png",
+      "status": "M",
+      "articles_carried": [
+        680
+      ],
+      "articles_carried_str": "680",
+      "starts_here": [
+        680
+      ],
+      "starts_here_str": "680",
+      "evidence": "E2: OCR markers [680] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p340",
+      "volume": 2,
+      "page_number": 340,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_340.png",
+      "status": "M",
+      "articles_carried": [
+        681
+      ],
+      "articles_carried_str": "681",
+      "starts_here": [
+        681
+      ],
+      "starts_here_str": "681",
+      "evidence": "E2: OCR markers [681] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p341",
+      "volume": 2,
+      "page_number": 341,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_341.png",
+      "status": "C",
+      "articles_carried": [
+        681
+      ],
+      "articles_carried_str": "681",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 681 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p342",
+      "volume": 2,
+      "page_number": 342,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_342.png",
+      "status": "M",
+      "articles_carried": [
+        682
+      ],
+      "articles_carried_str": "682",
+      "starts_here": [
+        682
+      ],
+      "starts_here_str": "682",
+      "evidence": "E2: OCR markers [682] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p343",
+      "volume": 2,
+      "page_number": 343,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_343.png",
+      "status": "M",
+      "articles_carried": [
+        683
+      ],
+      "articles_carried_str": "683",
+      "starts_here": [
+        683
+      ],
+      "starts_here_str": "683",
+      "evidence": "E2: OCR markers [683] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p344",
+      "volume": 2,
+      "page_number": 344,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_344.png",
+      "status": "M",
+      "articles_carried": [
+        684,
+        685
+      ],
+      "articles_carried_str": "684-685",
+      "starts_here": [
+        684,
+        685
+      ],
+      "starts_here_str": "684-685",
+      "evidence": "E2: OCR markers [684, 685] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p345",
+      "volume": 2,
+      "page_number": 345,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_345.png",
+      "status": "M",
+      "articles_carried": [
+        686,
+        687
+      ],
+      "articles_carried_str": "686-687",
+      "starts_here": [
+        686,
+        687
+      ],
+      "starts_here_str": "686-687",
+      "evidence": "E2: OCR markers [686, 687] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p346",
+      "volume": 2,
+      "page_number": 346,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_346.png",
+      "status": "C",
+      "articles_carried": [
+        687
+      ],
+      "articles_carried_str": "687",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 687 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p347",
+      "volume": 2,
+      "page_number": 347,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_347.png",
+      "status": "M",
+      "articles_carried": [
+        688,
+        689
+      ],
+      "articles_carried_str": "688-689",
+      "starts_here": [
+        688,
+        689
+      ],
+      "starts_here_str": "688-689",
+      "evidence": "E2: OCR markers [688, 689] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p348",
+      "volume": 2,
+      "page_number": 348,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_348.png",
+      "status": "C",
+      "articles_carried": [
+        689
+      ],
+      "articles_carried_str": "689",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 689 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p349",
+      "volume": 2,
+      "page_number": 349,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_349.png",
+      "status": "M",
+      "articles_carried": [
+        690
+      ],
+      "articles_carried_str": "690",
+      "starts_here": [
+        690
+      ],
+      "starts_here_str": "690",
+      "evidence": "E2: OCR markers [690] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p350",
+      "volume": 2,
+      "page_number": 350,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_350.png",
+      "status": "C",
+      "articles_carried": [
+        690
+      ],
+      "articles_carried_str": "690",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 690 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p351",
+      "volume": 2,
+      "page_number": 351,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_351.png",
+      "status": "R",
+      "articles_carried": [
+        691
+      ],
+      "articles_carried_str": "691",
+      "starts_here": [
+        691
+      ],
+      "starts_here_str": "691",
+      "evidence": "E3: TOC p324+27=351; E2-trace: OCR text shows '691.$]$' (bracket mangled into math mode, catalog regex misses it)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p352",
+      "volume": 2,
+      "page_number": 352,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_352.png",
+      "status": "C",
+      "articles_carried": [
+        691
+      ],
+      "articles_carried_str": "691",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 691 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p353",
+      "volume": 2,
+      "page_number": 353,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_353.png",
+      "status": "R",
+      "articles_carried": [
+        692
+      ],
+      "articles_carried_str": "692",
+      "starts_here": [
+        692
+      ],
+      "starts_here_str": "692",
+      "evidence": "E3: TOC p326+27=353 (title 'Particular cases'); no legible marker in OCR text - confirm visually in session",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p354",
+      "volume": 2,
+      "page_number": 354,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_354.png",
+      "status": "C",
+      "articles_carried": [
+        692
+      ],
+      "articles_carried_str": "692",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 692 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p355",
+      "volume": 2,
+      "page_number": 355,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_355.png",
+      "status": "M",
+      "articles_carried": [
+        693
+      ],
+      "articles_carried_str": "693",
+      "starts_here": [
+        693
+      ],
+      "starts_here_str": "693",
+      "evidence": "E2: OCR markers [693] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p356",
+      "volume": 2,
+      "page_number": 356,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_356.png",
+      "status": "C",
+      "articles_carried": [
+        693
+      ],
+      "articles_carried_str": "693",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 693 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p357",
+      "volume": 2,
+      "page_number": 357,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_357.png",
+      "status": "C",
+      "articles_carried": [
+        693
+      ],
+      "articles_carried_str": "693",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 693 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p358",
+      "volume": 2,
+      "page_number": 358,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_358.png",
+      "status": "M",
+      "articles_carried": [
+        694
+      ],
+      "articles_carried_str": "694",
+      "starts_here": [
+        694
+      ],
+      "starts_here_str": "694",
+      "evidence": "E2: OCR markers [694] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p359",
+      "volume": 2,
+      "page_number": 359,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_359.png",
+      "status": "C",
+      "articles_carried": [
+        694
+      ],
+      "articles_carried_str": "694",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 694 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p360",
+      "volume": 2,
+      "page_number": 360,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_360.png",
+      "status": "M",
+      "articles_carried": [
+        695
+      ],
+      "articles_carried_str": "695",
+      "starts_here": [
+        695
+      ],
+      "starts_here_str": "695",
+      "evidence": "E2: OCR markers [695] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p361",
+      "volume": 2,
+      "page_number": 361,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_361.png",
+      "status": "M",
+      "articles_carried": [
+        696
+      ],
+      "articles_carried_str": "696",
+      "starts_here": [
+        696
+      ],
+      "starts_here_str": "696",
+      "evidence": "E2: OCR markers [696] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p362",
+      "volume": 2,
+      "page_number": 362,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_362.png",
+      "status": "M",
+      "articles_carried": [
+        697
+      ],
+      "articles_carried_str": "697",
+      "starts_here": [
+        697
+      ],
+      "starts_here_str": "697",
+      "evidence": "E2: OCR markers [697] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p363",
+      "volume": 2,
+      "page_number": 363,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_363.png",
+      "status": "M",
+      "articles_carried": [
+        698,
+        699
+      ],
+      "articles_carried_str": "698-699",
+      "starts_here": [
+        698,
+        699
+      ],
+      "starts_here_str": "698-699",
+      "evidence": "E2: OCR markers [698, 699] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p364",
+      "volume": 2,
+      "page_number": 364,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_364.png",
+      "status": "M",
+      "articles_carried": [
+        700
+      ],
+      "articles_carried_str": "700",
+      "starts_here": [
+        700
+      ],
+      "starts_here_str": "700",
+      "evidence": "E2: OCR markers [700] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p365",
+      "volume": 2,
+      "page_number": 365,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_365.png",
+      "status": "M",
+      "articles_carried": [
+        701
+      ],
+      "articles_carried_str": "701",
+      "starts_here": [
+        701
+      ],
+      "starts_here_str": "701",
+      "evidence": "E2: OCR markers [701] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p366",
+      "volume": 2,
+      "page_number": 366,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_366.png",
+      "status": "C",
+      "articles_carried": [
+        701
+      ],
+      "articles_carried_str": "701",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 701 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p367",
+      "volume": 2,
+      "page_number": 367,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_367.png",
+      "status": "M",
+      "articles_carried": [
+        702
+      ],
+      "articles_carried_str": "702",
+      "starts_here": [
+        702
+      ],
+      "starts_here_str": "702",
+      "evidence": "E2: OCR markers [702] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p368",
+      "volume": 2,
+      "page_number": 368,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_368.png",
+      "status": "M",
+      "articles_carried": [
+        703
+      ],
+      "articles_carried_str": "703",
+      "starts_here": [
+        703
+      ],
+      "starts_here_str": "703",
+      "evidence": "E2: OCR markers [703] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p369",
+      "volume": 2,
+      "page_number": 369,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_369.png",
+      "status": "M",
+      "articles_carried": [
+        704
+      ],
+      "articles_carried_str": "704",
+      "starts_here": [
+        704
+      ],
+      "starts_here_str": "704",
+      "evidence": "E2: OCR markers [704] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p370",
+      "volume": 2,
+      "page_number": 370,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_370.png",
+      "status": "M",
+      "articles_carried": [
+        705
+      ],
+      "articles_carried_str": "705",
+      "starts_here": [
+        705
+      ],
+      "starts_here_str": "705",
+      "evidence": "E2: OCR markers [705] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p371",
+      "volume": 2,
+      "page_number": 371,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_371.png",
+      "status": "C",
+      "articles_carried": [
+        705
+      ],
+      "articles_carried_str": "705",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 705 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p372",
+      "volume": 2,
+      "page_number": 372,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_372.png",
+      "status": "M",
+      "articles_carried": [
+        706
+      ],
+      "articles_carried_str": "706",
+      "starts_here": [
+        706
+      ],
+      "starts_here_str": "706",
+      "evidence": "E2: OCR markers [706] detected on page; out-of-scope markers also present: [75]",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p373",
+      "volume": 2,
+      "page_number": 373,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_373.png",
+      "status": "C",
+      "articles_carried": [
+        706
+      ],
+      "articles_carried_str": "706",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 706 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p374",
+      "volume": 2,
+      "page_number": 374,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_374.png",
+      "status": "C",
+      "articles_carried": [
+        706
+      ],
+      "articles_carried_str": "706",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 706 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p375",
+      "volume": 2,
+      "page_number": 375,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_375.png",
+      "status": "C",
+      "articles_carried": [
+        706
+      ],
+      "articles_carried_str": "706",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 706 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p376",
+      "volume": 2,
+      "page_number": 376,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_376.png",
+      "status": "C",
+      "articles_carried": [
+        706
+      ],
+      "articles_carried_str": "706",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 706 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p377",
+      "volume": 2,
+      "page_number": 377,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_377.png",
+      "status": "C",
+      "articles_carried": [
+        706
+      ],
+      "articles_carried_str": "706",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 706 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p378",
+      "volume": 2,
+      "page_number": 378,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_378.png",
+      "status": "M",
+      "articles_carried": [
+        707
+      ],
+      "articles_carried_str": "707",
+      "starts_here": [
+        707
+      ],
+      "starts_here_str": "707",
+      "evidence": "E2: OCR markers [707] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p379",
+      "volume": 2,
+      "page_number": 379,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_379.png",
+      "status": "M",
+      "articles_carried": [
+        708
+      ],
+      "articles_carried_str": "708",
+      "starts_here": [
+        708
+      ],
+      "starts_here_str": "708",
+      "evidence": "E2: OCR markers [708] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p380",
+      "volume": 2,
+      "page_number": 380,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_380.png",
+      "status": "M",
+      "articles_carried": [
+        709
+      ],
+      "articles_carried_str": "709",
+      "starts_here": [
+        709
+      ],
+      "starts_here_str": "709",
+      "evidence": "E2: OCR markers [709] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p381",
+      "volume": 2,
+      "page_number": 381,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_381.png",
+      "status": "M",
+      "articles_carried": [
+        710,
+        711
+      ],
+      "articles_carried_str": "710-711",
+      "starts_here": [
+        710,
+        711
+      ],
+      "starts_here_str": "710-711",
+      "evidence": "E2: OCR markers [710, 711] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p382",
+      "volume": 2,
+      "page_number": 382,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_382.png",
+      "status": "C",
+      "articles_carried": [
+        711
+      ],
+      "articles_carried_str": "711",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 711 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p383",
+      "volume": 2,
+      "page_number": 383,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_383.png",
+      "status": "M",
+      "articles_carried": [
+        712,
+        713
+      ],
+      "articles_carried_str": "712-713",
+      "starts_here": [
+        712,
+        713
+      ],
+      "starts_here_str": "712-713",
+      "evidence": "E2: OCR markers [712, 713] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p384",
+      "volume": 2,
+      "page_number": 384,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_384.png",
+      "status": "M",
+      "articles_carried": [
+        714
+      ],
+      "articles_carried_str": "714",
+      "starts_here": [
+        714
+      ],
+      "starts_here_str": "714",
+      "evidence": "E2: OCR markers [714] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p385",
+      "volume": 2,
+      "page_number": 385,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_385.png",
+      "status": "M",
+      "articles_carried": [
+        715
+      ],
+      "articles_carried_str": "715",
+      "starts_here": [
+        715
+      ],
+      "starts_here_str": "715",
+      "evidence": "E2: OCR markers [715] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p386",
+      "volume": 2,
+      "page_number": 386,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_386.png",
+      "status": "M",
+      "articles_carried": [
+        716
+      ],
+      "articles_carried_str": "716",
+      "starts_here": [
+        716
+      ],
+      "starts_here_str": "716",
+      "evidence": "E2: OCR markers [716] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p387",
+      "volume": 2,
+      "page_number": 387,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_387.png",
+      "status": "M",
+      "articles_carried": [
+        717,
+        718
+      ],
+      "articles_carried_str": "717-718",
+      "starts_here": [
+        717,
+        718
+      ],
+      "starts_here_str": "717-718",
+      "evidence": "E2: OCR markers [717, 718] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p388",
+      "volume": 2,
+      "page_number": 388,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_388.png",
+      "status": "M",
+      "articles_carried": [
+        719
+      ],
+      "articles_carried_str": "719",
+      "starts_here": [
+        719
+      ],
+      "starts_here_str": "719",
+      "evidence": "E2: OCR markers [719] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p389",
+      "volume": 2,
+      "page_number": 389,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_389.png",
+      "status": "C",
+      "articles_carried": [
+        719
+      ],
+      "articles_carried_str": "719",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 719 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p390",
+      "volume": 2,
+      "page_number": 390,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_390.png",
+      "status": "C",
+      "articles_carried": [
+        719
+      ],
+      "articles_carried_str": "719",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 719 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p391",
+      "volume": 2,
+      "page_number": 391,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_391.png",
+      "status": "M",
+      "articles_carried": [
+        720,
+        721
+      ],
+      "articles_carried_str": "720-721",
+      "starts_here": [
+        720,
+        721
+      ],
+      "starts_here_str": "720-721",
+      "evidence": "E2: OCR markers [720, 721] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p392",
+      "volume": 2,
+      "page_number": 392,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_392.png",
+      "status": "M",
+      "articles_carried": [
+        722
+      ],
+      "articles_carried_str": "722",
+      "starts_here": [
+        722
+      ],
+      "starts_here_str": "722",
+      "evidence": "E2: OCR markers [722] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p393",
+      "volume": 2,
+      "page_number": 393,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_393.png",
+      "status": "M",
+      "articles_carried": [
+        723,
+        724
+      ],
+      "articles_carried_str": "723-724",
+      "starts_here": [
+        723,
+        724
+      ],
+      "starts_here_str": "723-724",
+      "evidence": "E2: OCR markers [723, 724] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p394",
+      "volume": 2,
+      "page_number": 394,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_394.png",
+      "status": "M",
+      "articles_carried": [
+        725
+      ],
+      "articles_carried_str": "725",
+      "starts_here": [
+        725
+      ],
+      "starts_here_str": "725",
+      "evidence": "E2: OCR markers [725] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p395",
+      "volume": 2,
+      "page_number": 395,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_395.png",
+      "status": "C",
+      "articles_carried": [
+        725
+      ],
+      "articles_carried_str": "725",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 725 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p396",
+      "volume": 2,
+      "page_number": 396,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_396.png",
+      "status": "C",
+      "articles_carried": [
+        725
+      ],
+      "articles_carried_str": "725",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 725 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p397",
+      "volume": 2,
+      "page_number": 397,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_397.png",
+      "status": "C",
+      "articles_carried": [
+        725
+      ],
+      "articles_carried_str": "725",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 725 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p398",
+      "volume": 2,
+      "page_number": 398,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_398.png",
+      "status": "M",
+      "articles_carried": [
+        726
+      ],
+      "articles_carried_str": "726",
+      "starts_here": [
+        726
+      ],
+      "starts_here_str": "726",
+      "evidence": "E2: OCR markers [726] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p399",
+      "volume": 2,
+      "page_number": 399,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_399.png",
+      "status": "M",
+      "articles_carried": [
+        727,
+        728
+      ],
+      "articles_carried_str": "727-728",
+      "starts_here": [
+        727,
+        728
+      ],
+      "starts_here_str": "727-728",
+      "evidence": "E2: OCR markers [727, 728] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p400",
+      "volume": 2,
+      "page_number": 400,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_400.png",
+      "status": "M",
+      "articles_carried": [
+        729
+      ],
+      "articles_carried_str": "729",
+      "starts_here": [
+        729
+      ],
+      "starts_here_str": "729",
+      "evidence": "E2: OCR markers [729] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p401",
+      "volume": 2,
+      "page_number": 401,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_401.png",
+      "status": "M",
+      "articles_carried": [
+        730
+      ],
+      "articles_carried_str": "730",
+      "starts_here": [
+        730
+      ],
+      "starts_here_str": "730",
+      "evidence": "E2: OCR markers [730] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p402",
+      "volume": 2,
+      "page_number": 402,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_402.png",
+      "status": "M",
+      "articles_carried": [
+        731
+      ],
+      "articles_carried_str": "731",
+      "starts_here": [
+        731
+      ],
+      "starts_here_str": "731",
+      "evidence": "E2: OCR markers [731] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p403",
+      "volume": 2,
+      "page_number": 403,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_403.png",
+      "status": "M",
+      "articles_carried": [
+        732
+      ],
+      "articles_carried_str": "732",
+      "starts_here": [
+        732
+      ],
+      "starts_here_str": "732",
+      "evidence": "E2: OCR markers [732] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p404",
+      "volume": 2,
+      "page_number": 404,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_404.png",
+      "status": "M",
+      "articles_carried": [
+        733,
+        734,
+        735
+      ],
+      "articles_carried_str": "733-735",
+      "starts_here": [
+        733,
+        734,
+        735
+      ],
+      "starts_here_str": "733-735",
+      "evidence": "E2: OCR markers [733, 734, 735] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p405",
+      "volume": 2,
+      "page_number": 405,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_405.png",
+      "status": "M",
+      "articles_carried": [
+        736,
+        737
+      ],
+      "articles_carried_str": "736-737",
+      "starts_here": [
+        736,
+        737
+      ],
+      "starts_here_str": "736-737",
+      "evidence": "E2: OCR markers [736, 737] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p406",
+      "volume": 2,
+      "page_number": 406,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_406.png",
+      "status": "M",
+      "articles_carried": [
+        738,
+        739
+      ],
+      "articles_carried_str": "738-739",
+      "starts_here": [
+        738,
+        739
+      ],
+      "starts_here_str": "738-739",
+      "evidence": "E2: OCR markers [738, 739] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p407",
+      "volume": 2,
+      "page_number": 407,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_407.png",
+      "status": "M",
+      "articles_carried": [
+        740
+      ],
+      "articles_carried_str": "740",
+      "starts_here": [
+        740
+      ],
+      "starts_here_str": "740",
+      "evidence": "E2: OCR markers [740] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p408",
+      "volume": 2,
+      "page_number": 408,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_408.png",
+      "status": "M",
+      "articles_carried": [
+        741
+      ],
+      "articles_carried_str": "741",
+      "starts_here": [
+        741
+      ],
+      "starts_here_str": "741",
+      "evidence": "E2: OCR markers [741] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p409",
+      "volume": 2,
+      "page_number": 409,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_409.png",
+      "status": "M",
+      "articles_carried": [
+        742,
+        743
+      ],
+      "articles_carried_str": "742-743",
+      "starts_here": [
+        742,
+        743
+      ],
+      "starts_here_str": "742-743",
+      "evidence": "E2: OCR markers [742, 743] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p410",
+      "volume": 2,
+      "page_number": 410,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_410.png",
+      "status": "M",
+      "articles_carried": [
+        744
+      ],
+      "articles_carried_str": "744",
+      "starts_here": [
+        744
+      ],
+      "starts_here_str": "744",
+      "evidence": "E2: OCR markers [744] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p411",
+      "volume": 2,
+      "page_number": 411,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_411.png",
+      "status": "M",
+      "articles_carried": [
+        745,
+        746
+      ],
+      "articles_carried_str": "745-746",
+      "starts_here": [
+        745,
+        746
+      ],
+      "starts_here_str": "745-746",
+      "evidence": "E2: OCR markers [745, 746] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p412",
+      "volume": 2,
+      "page_number": 412,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_412.png",
+      "status": "M",
+      "articles_carried": [
+        747
+      ],
+      "articles_carried_str": "747",
+      "starts_here": [
+        747
+      ],
+      "starts_here_str": "747",
+      "evidence": "E2: OCR markers [747] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p413",
+      "volume": 2,
+      "page_number": 413,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_413.png",
+      "status": "M",
+      "articles_carried": [
+        748
+      ],
+      "articles_carried_str": "748",
+      "starts_here": [
+        748
+      ],
+      "starts_here_str": "748",
+      "evidence": "E2: OCR markers [748] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p414",
+      "volume": 2,
+      "page_number": 414,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_414.png",
+      "status": "M",
+      "articles_carried": [
+        749
+      ],
+      "articles_carried_str": "749",
+      "starts_here": [
+        749
+      ],
+      "starts_here_str": "749",
+      "evidence": "E2: OCR markers [749] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p415",
+      "volume": 2,
+      "page_number": 415,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_415.png",
+      "status": "M",
+      "articles_carried": [
+        750
+      ],
+      "articles_carried_str": "750",
+      "starts_here": [
+        750
+      ],
+      "starts_here_str": "750",
+      "evidence": "E2: OCR markers [750] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p416",
+      "volume": 2,
+      "page_number": 416,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_416.png",
+      "status": "C",
+      "articles_carried": [
+        750
+      ],
+      "articles_carried_str": "750",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 750 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p417",
+      "volume": 2,
+      "page_number": 417,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_417.png",
+      "status": "M",
+      "articles_carried": [
+        751
+      ],
+      "articles_carried_str": "751",
+      "starts_here": [
+        751
+      ],
+      "starts_here_str": "751",
+      "evidence": "E2: OCR markers [751] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p418",
+      "volume": 2,
+      "page_number": 418,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_418.png",
+      "status": "C",
+      "articles_carried": [
+        751
+      ],
+      "articles_carried_str": "751",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 751 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p419",
+      "volume": 2,
+      "page_number": 419,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_419.png",
+      "status": "M",
+      "articles_carried": [
+        752
+      ],
+      "articles_carried_str": "752",
+      "starts_here": [
+        752
+      ],
+      "starts_here_str": "752",
+      "evidence": "E2: OCR markers [752] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p420",
+      "volume": 2,
+      "page_number": 420,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_420.png",
+      "status": "M",
+      "articles_carried": [
+        753
+      ],
+      "articles_carried_str": "753",
+      "starts_here": [
+        753
+      ],
+      "starts_here_str": "753",
+      "evidence": "E2: OCR markers [753] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p421",
+      "volume": 2,
+      "page_number": 421,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_421.png",
+      "status": "M",
+      "articles_carried": [
+        754
+      ],
+      "articles_carried_str": "754",
+      "starts_here": [
+        754
+      ],
+      "starts_here_str": "754",
+      "evidence": "E2: OCR markers [754] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p422",
+      "volume": 2,
+      "page_number": 422,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_422.png",
+      "status": "M",
+      "articles_carried": [
+        755
+      ],
+      "articles_carried_str": "755",
+      "starts_here": [
+        755
+      ],
+      "starts_here_str": "755",
+      "evidence": "E2: OCR markers [755] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p423",
+      "volume": 2,
+      "page_number": 423,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_423.png",
+      "status": "C",
+      "articles_carried": [
+        755
+      ],
+      "articles_carried_str": "755",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 755 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p424",
+      "volume": 2,
+      "page_number": 424,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_424.png",
+      "status": "M",
+      "articles_carried": [
+        756
+      ],
+      "articles_carried_str": "756",
+      "starts_here": [
+        756
+      ],
+      "starts_here_str": "756",
+      "evidence": "E2: OCR markers [756] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p425",
+      "volume": 2,
+      "page_number": 425,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_425.png",
+      "status": "M",
+      "articles_carried": [
+        757
+      ],
+      "articles_carried_str": "757",
+      "starts_here": [
+        757
+      ],
+      "starts_here_str": "757",
+      "evidence": "E2: OCR markers [757] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p426",
+      "volume": 2,
+      "page_number": 426,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_426.png",
+      "status": "C",
+      "articles_carried": [
+        757
+      ],
+      "articles_carried_str": "757",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 757 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p427",
+      "volume": 2,
+      "page_number": 427,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_427.png",
+      "status": "C",
+      "articles_carried": [
+        757
+      ],
+      "articles_carried_str": "757",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 757 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p428",
+      "volume": 2,
+      "page_number": 428,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_428.png",
+      "status": "C",
+      "articles_carried": [
+        757
+      ],
+      "articles_carried_str": "757",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 757 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p429",
+      "volume": 2,
+      "page_number": 429,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_429.png",
+      "status": "M",
+      "articles_carried": [
+        758,
+        759
+      ],
+      "articles_carried_str": "758-759",
+      "starts_here": [
+        758,
+        759
+      ],
+      "starts_here_str": "758-759",
+      "evidence": "E2: OCR markers [758, 759] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p430",
+      "volume": 2,
+      "page_number": 430,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_430.png",
+      "status": "C",
+      "articles_carried": [
+        759
+      ],
+      "articles_carried_str": "759",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 759 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p431",
+      "volume": 2,
+      "page_number": 431,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_431.png",
+      "status": "M",
+      "articles_carried": [
+        760
+      ],
+      "articles_carried_str": "760",
+      "starts_here": [
+        760
+      ],
+      "starts_here_str": "760",
+      "evidence": "E2: OCR markers [760] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p432",
+      "volume": 2,
+      "page_number": 432,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_432.png",
+      "status": "M",
+      "articles_carried": [
+        761,
+        762
+      ],
+      "articles_carried_str": "761-762",
+      "starts_here": [
+        761,
+        762
+      ],
+      "starts_here_str": "761-762",
+      "evidence": "E2: OCR markers [761, 762] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p433",
+      "volume": 2,
+      "page_number": 433,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_433.png",
+      "status": "C",
+      "articles_carried": [
+        762
+      ],
+      "articles_carried_str": "762",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 762 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p434",
+      "volume": 2,
+      "page_number": 434,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_434.png",
+      "status": "C",
+      "articles_carried": [
+        762
+      ],
+      "articles_carried_str": "762",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 762 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p435",
+      "volume": 2,
+      "page_number": 435,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_435.png",
+      "status": "M",
+      "articles_carried": [
+        763
+      ],
+      "articles_carried_str": "763",
+      "starts_here": [
+        763
+      ],
+      "starts_here_str": "763",
+      "evidence": "E2: OCR markers [763] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p436",
+      "volume": 2,
+      "page_number": 436,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_436.png",
+      "status": "R",
+      "articles_carried": [
+        764
+      ],
+      "articles_carried_str": "764",
+      "starts_here": [
+        764
+      ],
+      "starts_here_str": "764",
+      "evidence": "E3: TOC p409+27=436; E2-trace: OCR text shows '764. Let $H$ ...' (closing bracket dropped)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p437",
+      "volume": 2,
+      "page_number": 437,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_437.png",
+      "status": "M",
+      "articles_carried": [
+        765
+      ],
+      "articles_carried_str": "765",
+      "starts_here": [
+        765
+      ],
+      "starts_here_str": "765",
+      "evidence": "E2: OCR markers [765] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p438",
+      "volume": 2,
+      "page_number": 438,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_438.png",
+      "status": "M",
+      "articles_carried": [
+        766,
+        767
+      ],
+      "articles_carried_str": "766-767",
+      "starts_here": [
+        766,
+        767
+      ],
+      "starts_here_str": "766-767",
+      "evidence": "E2: OCR markers [766, 767] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p439",
+      "volume": 2,
+      "page_number": 439,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_439.png",
+      "status": "C",
+      "articles_carried": [
+        767
+      ],
+      "articles_carried_str": "767",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 767 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p440",
+      "volume": 2,
+      "page_number": 440,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_440.png",
+      "status": "M",
+      "articles_carried": [
+        768
+      ],
+      "articles_carried_str": "768",
+      "starts_here": [
+        768
+      ],
+      "starts_here_str": "768",
+      "evidence": "E2: OCR markers [768] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p441",
+      "volume": 2,
+      "page_number": 441,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_441.png",
+      "status": "M",
+      "articles_carried": [
+        769
+      ],
+      "articles_carried_str": "769",
+      "starts_here": [
+        769
+      ],
+      "starts_here_str": "769",
+      "evidence": "E2: OCR markers [769] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p442",
+      "volume": 2,
+      "page_number": 442,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_442.png",
+      "status": "M",
+      "articles_carried": [
+        770
+      ],
+      "articles_carried_str": "770",
+      "starts_here": [
+        770
+      ],
+      "starts_here_str": "770",
+      "evidence": "E2: OCR markers [770] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p443",
+      "volume": 2,
+      "page_number": 443,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_443.png",
+      "status": "M",
+      "articles_carried": [
+        771
+      ],
+      "articles_carried_str": "771",
+      "starts_here": [
+        771
+      ],
+      "starts_here_str": "771",
+      "evidence": "E2: OCR markers [771] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p444",
+      "volume": 2,
+      "page_number": 444,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_444.png",
+      "status": "M",
+      "articles_carried": [
+        772
+      ],
+      "articles_carried_str": "772",
+      "starts_here": [
+        772
+      ],
+      "starts_here_str": "772",
+      "evidence": "E2: OCR markers [772] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p445",
+      "volume": 2,
+      "page_number": 445,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_445.png",
+      "status": "M",
+      "articles_carried": [
+        773
+      ],
+      "articles_carried_str": "773",
+      "starts_here": [
+        773
+      ],
+      "starts_here_str": "773",
+      "evidence": "E2: OCR markers [773] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p446",
+      "volume": 2,
+      "page_number": 446,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_446.png",
+      "status": "M",
+      "articles_carried": [
+        774
+      ],
+      "articles_carried_str": "774",
+      "starts_here": [
+        774
+      ],
+      "starts_here_str": "774",
+      "evidence": "E2: OCR markers [774] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p447",
+      "volume": 2,
+      "page_number": 447,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_447.png",
+      "status": "M",
+      "articles_carried": [
+        775
+      ],
+      "articles_carried_str": "775",
+      "starts_here": [
+        775
+      ],
+      "starts_here_str": "775",
+      "evidence": "E2: OCR markers [775] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p448",
+      "volume": 2,
+      "page_number": 448,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_448.png",
+      "status": "M",
+      "articles_carried": [
+        776
+      ],
+      "articles_carried_str": "776",
+      "starts_here": [
+        776
+      ],
+      "starts_here_str": "776",
+      "evidence": "E2: OCR markers [776] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p449",
+      "volume": 2,
+      "page_number": 449,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_449.png",
+      "status": "C",
+      "articles_carried": [
+        776
+      ],
+      "articles_carried_str": "776",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 776 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p450",
+      "volume": 2,
+      "page_number": 450,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_450.png",
+      "status": "M",
+      "articles_carried": [
+        777
+      ],
+      "articles_carried_str": "777",
+      "starts_here": [
+        777
+      ],
+      "starts_here_str": "777",
+      "evidence": "E2: OCR markers [777] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p451",
+      "volume": 2,
+      "page_number": 451,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_451.png",
+      "status": "C",
+      "articles_carried": [
+        777
+      ],
+      "articles_carried_str": "777",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 777 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p452",
+      "volume": 2,
+      "page_number": 452,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_452.png",
+      "status": "M",
+      "articles_carried": [
+        778
+      ],
+      "articles_carried_str": "778",
+      "starts_here": [
+        778
+      ],
+      "starts_here_str": "778",
+      "evidence": "E2: OCR markers [778] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p453",
+      "volume": 2,
+      "page_number": 453,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_453.png",
+      "status": "C",
+      "articles_carried": [
+        778
+      ],
+      "articles_carried_str": "778",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 778 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p454",
+      "volume": 2,
+      "page_number": 454,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_454.png",
+      "status": "M",
+      "articles_carried": [
+        779
+      ],
+      "articles_carried_str": "779",
+      "starts_here": [
+        779
+      ],
+      "starts_here_str": "779",
+      "evidence": "E2: OCR markers [779] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p455",
+      "volume": 2,
+      "page_number": 455,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_455.png",
+      "status": "C",
+      "articles_carried": [
+        779
+      ],
+      "articles_carried_str": "779",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 779 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p456",
+      "volume": 2,
+      "page_number": 456,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_456.png",
+      "status": "C",
+      "articles_carried": [
+        779
+      ],
+      "articles_carried_str": "779",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 779 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p457",
+      "volume": 2,
+      "page_number": 457,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_457.png",
+      "status": "M",
+      "articles_carried": [
+        780
+      ],
+      "articles_carried_str": "780",
+      "starts_here": [
+        780
+      ],
+      "starts_here_str": "780",
+      "evidence": "E2: OCR markers [780] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p458",
+      "volume": 2,
+      "page_number": 458,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_458.png",
+      "status": "M",
+      "articles_carried": [
+        781
+      ],
+      "articles_carried_str": "781",
+      "starts_here": [
+        781
+      ],
+      "starts_here_str": "781",
+      "evidence": "E2: OCR markers [781] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p459",
+      "volume": 2,
+      "page_number": 459,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_459.png",
+      "status": "M",
+      "articles_carried": [
+        782
+      ],
+      "articles_carried_str": "782",
+      "starts_here": [
+        782
+      ],
+      "starts_here_str": "782",
+      "evidence": "E2: OCR markers [782] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p460",
+      "volume": 2,
+      "page_number": 460,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_460.png",
+      "status": "M",
+      "articles_carried": [
+        783
+      ],
+      "articles_carried_str": "783",
+      "starts_here": [
+        783
+      ],
+      "starts_here_str": "783",
+      "evidence": "E2: OCR markers [783] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p461",
+      "volume": 2,
+      "page_number": 461,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_461.png",
+      "status": "M",
+      "articles_carried": [
+        784
+      ],
+      "articles_carried_str": "784",
+      "starts_here": [
+        784
+      ],
+      "starts_here_str": "784",
+      "evidence": "E2: OCR markers [784] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p462",
+      "volume": 2,
+      "page_number": 462,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_462.png",
+      "status": "M",
+      "articles_carried": [
+        785,
+        786
+      ],
+      "articles_carried_str": "785-786",
+      "starts_here": [
+        785,
+        786
+      ],
+      "starts_here_str": "785-786",
+      "evidence": "E2: OCR markers [785, 786] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p463",
+      "volume": 2,
+      "page_number": 463,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_463.png",
+      "status": "M",
+      "articles_carried": [
+        787
+      ],
+      "articles_carried_str": "787",
+      "starts_here": [
+        787
+      ],
+      "starts_here_str": "787",
+      "evidence": "E2: OCR markers [787] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p464",
+      "volume": 2,
+      "page_number": 464,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_464.png",
+      "status": "M",
+      "articles_carried": [
+        788,
+        789
+      ],
+      "articles_carried_str": "788-789",
+      "starts_here": [
+        788,
+        789
+      ],
+      "starts_here_str": "788-789",
+      "evidence": "E2: OCR markers [788, 789] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p465",
+      "volume": 2,
+      "page_number": 465,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_465.png",
+      "status": "M",
+      "articles_carried": [
+        790
+      ],
+      "articles_carried_str": "790",
+      "starts_here": [
+        790
+      ],
+      "starts_here_str": "790",
+      "evidence": "E2: OCR markers [790] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p466",
+      "volume": 2,
+      "page_number": 466,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_466.png",
+      "status": "M",
+      "articles_carried": [
+        791
+      ],
+      "articles_carried_str": "791",
+      "starts_here": [
+        791
+      ],
+      "starts_here_str": "791",
+      "evidence": "E2: OCR markers [791] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p467",
+      "volume": 2,
+      "page_number": 467,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_467.png",
+      "status": "M",
+      "articles_carried": [
+        792
+      ],
+      "articles_carried_str": "792",
+      "starts_here": [
+        792
+      ],
+      "starts_here_str": "792",
+      "evidence": "E2: OCR markers [792] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p468",
+      "volume": 2,
+      "page_number": 468,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_468.png",
+      "status": "M",
+      "articles_carried": [
+        793
+      ],
+      "articles_carried_str": "793",
+      "starts_here": [
+        793
+      ],
+      "starts_here_str": "793",
+      "evidence": "E2: OCR markers [793] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p469",
+      "volume": 2,
+      "page_number": 469,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_469.png",
+      "status": "M",
+      "articles_carried": [
+        794
+      ],
+      "articles_carried_str": "794",
+      "starts_here": [
+        794
+      ],
+      "starts_here_str": "794",
+      "evidence": "E2: OCR markers [794] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p470",
+      "volume": 2,
+      "page_number": 470,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_470.png",
+      "status": "C",
+      "articles_carried": [
+        794
+      ],
+      "articles_carried_str": "794",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 794 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p471",
+      "volume": 2,
+      "page_number": 471,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_471.png",
+      "status": "M",
+      "articles_carried": [
+        795,
+        796
+      ],
+      "articles_carried_str": "795-796",
+      "starts_here": [
+        795,
+        796
+      ],
+      "starts_here_str": "795-796",
+      "evidence": "E2: OCR markers [795, 796] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p472",
+      "volume": 2,
+      "page_number": 472,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_472.png",
+      "status": "M",
+      "articles_carried": [
+        797,
+        798
+      ],
+      "articles_carried_str": "797-798",
+      "starts_here": [
+        797,
+        798
+      ],
+      "starts_here_str": "797-798",
+      "evidence": "E2: OCR markers [797, 798] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p473",
+      "volume": 2,
+      "page_number": 473,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_473.png",
+      "status": "M",
+      "articles_carried": [
+        799,
+        800
+      ],
+      "articles_carried_str": "799-800",
+      "starts_here": [
+        799,
+        800
+      ],
+      "starts_here_str": "799-800",
+      "evidence": "E2: OCR markers [799, 800] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p474",
+      "volume": 2,
+      "page_number": 474,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_474.png",
+      "status": "M",
+      "articles_carried": [
+        801,
+        802
+      ],
+      "articles_carried_str": "801-802",
+      "starts_here": [
+        801,
+        802
+      ],
+      "starts_here_str": "801-802",
+      "evidence": "E2: OCR markers [801, 802] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p475",
+      "volume": 2,
+      "page_number": 475,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_475.png",
+      "status": "M",
+      "articles_carried": [
+        803,
+        804
+      ],
+      "articles_carried_str": "803-804",
+      "starts_here": [
+        803,
+        804
+      ],
+      "starts_here_str": "803-804",
+      "evidence": "E2: OCR markers [803, 804] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p476",
+      "volume": 2,
+      "page_number": 476,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_476.png",
+      "status": "M",
+      "articles_carried": [
+        805
+      ],
+      "articles_carried_str": "805",
+      "starts_here": [
+        805
+      ],
+      "starts_here_str": "805",
+      "evidence": "E2: OCR markers [805] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p477",
+      "volume": 2,
+      "page_number": 477,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_477.png",
+      "status": "C",
+      "articles_carried": [
+        805
+      ],
+      "articles_carried_str": "805",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 805 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p478",
+      "volume": 2,
+      "page_number": 478,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_478.png",
+      "status": "M",
+      "articles_carried": [
+        806
+      ],
+      "articles_carried_str": "806",
+      "starts_here": [
+        806
+      ],
+      "starts_here_str": "806",
+      "evidence": "E2: OCR markers [806] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p479",
+      "volume": 2,
+      "page_number": 479,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_479.png",
+      "status": "M",
+      "articles_carried": [
+        807,
+        808
+      ],
+      "articles_carried_str": "807-808",
+      "starts_here": [
+        807,
+        808
+      ],
+      "starts_here_str": "807-808",
+      "evidence": "E2: OCR markers [807, 808] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p480",
+      "volume": 2,
+      "page_number": 480,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_480.png",
+      "status": "M",
+      "articles_carried": [
+        809,
+        810
+      ],
+      "articles_carried_str": "809-810",
+      "starts_here": [
+        809,
+        810
+      ],
+      "starts_here_str": "809-810",
+      "evidence": "E2: OCR markers [809, 810] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p481",
+      "volume": 2,
+      "page_number": 481,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_481.png",
+      "status": "M",
+      "articles_carried": [
+        811
+      ],
+      "articles_carried_str": "811",
+      "starts_here": [
+        811
+      ],
+      "starts_here_str": "811",
+      "evidence": "E2: OCR markers [811] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p482",
+      "volume": 2,
+      "page_number": 482,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_482.png",
+      "status": "M",
+      "articles_carried": [
+        812,
+        813
+      ],
+      "articles_carried_str": "812-813",
+      "starts_here": [
+        812,
+        813
+      ],
+      "starts_here_str": "812-813",
+      "evidence": "E2: OCR markers [812, 813] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p483",
+      "volume": 2,
+      "page_number": 483,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_483.png",
+      "status": "M",
+      "articles_carried": [
+        814,
+        815
+      ],
+      "articles_carried_str": "814-815",
+      "starts_here": [
+        814,
+        815
+      ],
+      "starts_here_str": "814-815",
+      "evidence": "E2: OCR markers [814, 815] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p484",
+      "volume": 2,
+      "page_number": 484,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_484.png",
+      "status": "M",
+      "articles_carried": [
+        816,
+        817
+      ],
+      "articles_carried_str": "816-817",
+      "starts_here": [
+        816,
+        817
+      ],
+      "starts_here_str": "816-817",
+      "evidence": "E2: OCR markers [816, 817] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p485",
+      "volume": 2,
+      "page_number": 485,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_485.png",
+      "status": "M",
+      "articles_carried": [
+        818
+      ],
+      "articles_carried_str": "818",
+      "starts_here": [
+        818
+      ],
+      "starts_here_str": "818",
+      "evidence": "E2: OCR markers [818] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p486",
+      "volume": 2,
+      "page_number": 486,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_486.png",
+      "status": "M",
+      "articles_carried": [
+        819,
+        820
+      ],
+      "articles_carried_str": "819-820",
+      "starts_here": [
+        819,
+        820
+      ],
+      "starts_here_str": "819-820",
+      "evidence": "E2: OCR markers [819, 820] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p487",
+      "volume": 2,
+      "page_number": 487,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_487.png",
+      "status": "M",
+      "articles_carried": [
+        821
+      ],
+      "articles_carried_str": "821",
+      "starts_here": [
+        821
+      ],
+      "starts_here_str": "821",
+      "evidence": "E2: OCR markers [821] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p488",
+      "volume": 2,
+      "page_number": 488,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_488.png",
+      "status": "M",
+      "articles_carried": [
+        822
+      ],
+      "articles_carried_str": "822",
+      "starts_here": [
+        822
+      ],
+      "starts_here_str": "822",
+      "evidence": "E2: OCR markers [822] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p489",
+      "volume": 2,
+      "page_number": 489,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_489.png",
+      "status": "M",
+      "articles_carried": [
+        823,
+        824
+      ],
+      "articles_carried_str": "823-824",
+      "starts_here": [
+        823,
+        824
+      ],
+      "starts_here_str": "823-824",
+      "evidence": "E2: OCR markers [823, 824] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p490",
+      "volume": 2,
+      "page_number": 490,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_490.png",
+      "status": "M",
+      "articles_carried": [
+        825,
+        826
+      ],
+      "articles_carried_str": "825-826",
+      "starts_here": [
+        825,
+        826
+      ],
+      "starts_here_str": "825-826",
+      "evidence": "E2: OCR markers [825, 826] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p491",
+      "volume": 2,
+      "page_number": 491,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_491.png",
+      "status": "M",
+      "articles_carried": [
+        827,
+        828
+      ],
+      "articles_carried_str": "827-828",
+      "starts_here": [
+        827,
+        828
+      ],
+      "starts_here_str": "827-828",
+      "evidence": "E2: OCR markers [827, 828] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p492",
+      "volume": 2,
+      "page_number": 492,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_492.png",
+      "status": "R",
+      "articles_carried": [
+        829
+      ],
+      "articles_carried_str": "829",
+      "starts_here": [
+        829
+      ],
+      "starts_here_str": "829",
+      "evidence": "E3: TOC p465+27=492; E2-trace: OCR text shows '829. If lambda ...' (closing bracket dropped)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p493",
+      "volume": 2,
+      "page_number": 493,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_493.png",
+      "status": "M",
+      "articles_carried": [
+        830
+      ],
+      "articles_carried_str": "830",
+      "starts_here": [
+        830
+      ],
+      "starts_here_str": "830",
+      "evidence": "E2: OCR markers [830] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p494",
+      "volume": 2,
+      "page_number": 494,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_494.png",
+      "status": "C",
+      "articles_carried": [
+        830
+      ],
+      "articles_carried_str": "830",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 830 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p495",
+      "volume": 2,
+      "page_number": 495,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_495.png",
+      "status": "R",
+      "articles_carried": [
+        831
+      ],
+      "articles_carried_str": "831",
+      "starts_here": [
+        831
+      ],
+      "starts_here_str": "831",
+      "evidence": "E3: TOC p468+27=495 (title 'Note on a mechanical theory of molecular vortices'); no legible marker - confirm visually in session",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p496",
+      "volume": 2,
+      "page_number": 496,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_496.png",
+      "status": "C",
+      "articles_carried": [
+        831
+      ],
+      "articles_carried_str": "831",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 831 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p497",
+      "volume": 2,
+      "page_number": 497,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_497.png",
+      "status": "C",
+      "articles_carried": [
+        831
+      ],
+      "articles_carried_str": "831",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E3-span: continuation of 831 (no article starts on this page)",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p498",
+      "volume": 2,
+      "page_number": 498,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_498.png",
+      "status": "R",
+      "articles_carried": [
+        832
+      ],
+      "articles_carried_str": "832",
+      "starts_here": [
+        832
+      ],
+      "starts_here_str": "832",
+      "evidence": "E3: TOC p471+27=498; E4: OCR shows corrupted marker '83:.]' immediately after the CHAPTER XXII heading - Art 832 is the FIRST article of Ch XXII",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p499",
+      "volume": 2,
+      "page_number": 499,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_499.png",
+      "status": "M",
+      "articles_carried": [
+        833,
+        834
+      ],
+      "articles_carried_str": "833-834",
+      "starts_here": [
+        833,
+        834
+      ],
+      "starts_here_str": "833-834",
+      "evidence": "E2: OCR markers [833, 834] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p500",
+      "volume": 2,
+      "page_number": 500,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_500.png",
+      "status": "M",
+      "articles_carried": [
+        835
+      ],
+      "articles_carried_str": "835",
+      "starts_here": [
+        835
+      ],
+      "starts_here_str": "835",
+      "evidence": "E2: OCR markers [835] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p501",
+      "volume": 2,
+      "page_number": 501,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_501.png",
+      "status": "M",
+      "articles_carried": [
+        836,
+        837
+      ],
+      "articles_carried_str": "836-837",
+      "starts_here": [
+        836,
+        837
+      ],
+      "starts_here_str": "836-837",
+      "evidence": "E2: OCR markers [836, 837] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p502",
+      "volume": 2,
+      "page_number": 502,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_502.png",
+      "status": "M",
+      "articles_carried": [
+        838,
+        839
+      ],
+      "articles_carried_str": "838-839",
+      "starts_here": [
+        838,
+        839
+      ],
+      "starts_here_str": "838-839",
+      "evidence": "E2: OCR markers [838, 839] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p503",
+      "volume": 2,
+      "page_number": 503,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_503.png",
+      "status": "M",
+      "articles_carried": [
+        840,
+        841
+      ],
+      "articles_carried_str": "840-841",
+      "starts_here": [
+        840,
+        841
+      ],
+      "starts_here_str": "840-841",
+      "evidence": "E2: OCR markers [840, 841] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p504",
+      "volume": 2,
+      "page_number": 504,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_504.png",
+      "status": "M",
+      "articles_carried": [
+        842,
+        843
+      ],
+      "articles_carried_str": "842-843",
+      "starts_here": [
+        842,
+        843
+      ],
+      "starts_here_str": "842-843",
+      "evidence": "E2: OCR markers [842, 843] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p505",
+      "volume": 2,
+      "page_number": 505,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_505.png",
+      "status": "M",
+      "articles_carried": [
+        844
+      ],
+      "articles_carried_str": "844",
+      "starts_here": [
+        844
+      ],
+      "starts_here_str": "844",
+      "evidence": "E2: OCR markers [844] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p506",
+      "volume": 2,
+      "page_number": 506,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_506.png",
+      "status": "M",
+      "articles_carried": [
+        845
+      ],
+      "articles_carried_str": "845",
+      "starts_here": [
+        845
+      ],
+      "starts_here_str": "845",
+      "evidence": "E2: OCR markers [845] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p507",
+      "volume": 2,
+      "page_number": 507,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_507.png",
+      "status": "M",
+      "articles_carried": [
+        846,
+        847
+      ],
+      "articles_carried_str": "846-847",
+      "starts_here": [
+        846,
+        847
+      ],
+      "starts_here_str": "846-847",
+      "evidence": "E2: OCR markers [846, 847] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p508",
+      "volume": 2,
+      "page_number": 508,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_508.png",
+      "status": "M",
+      "articles_carried": [
+        848
+      ],
+      "articles_carried_str": "848",
+      "starts_here": [
+        848
+      ],
+      "starts_here_str": "848",
+      "evidence": "E2: OCR markers [848] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p509",
+      "volume": 2,
+      "page_number": 509,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_509.png",
+      "status": "M",
+      "articles_carried": [
+        849,
+        850
+      ],
+      "articles_carried_str": "849-850",
+      "starts_here": [
+        849,
+        850
+      ],
+      "starts_here_str": "849-850",
+      "evidence": "E2: OCR markers [849, 850] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p510",
+      "volume": 2,
+      "page_number": 510,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_510.png",
+      "status": "M",
+      "articles_carried": [
+        851,
+        852
+      ],
+      "articles_carried_str": "851-852",
+      "starts_here": [
+        851,
+        852
+      ],
+      "starts_here_str": "851-852",
+      "evidence": "E2: OCR markers [851, 852] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p511",
+      "volume": 2,
+      "page_number": 511,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_511.png",
+      "status": "M",
+      "articles_carried": [
+        853,
+        854
+      ],
+      "articles_carried_str": "853-854",
+      "starts_here": [
+        853,
+        854
+      ],
+      "starts_here_str": "853-854",
+      "evidence": "E2: OCR markers [853, 854] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p512",
+      "volume": 2,
+      "page_number": 512,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_512.png",
+      "status": "M",
+      "articles_carried": [
+        855
+      ],
+      "articles_carried_str": "855",
+      "starts_here": [
+        855
+      ],
+      "starts_here_str": "855",
+      "evidence": "E2: OCR markers [855] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p513",
+      "volume": 2,
+      "page_number": 513,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_513.png",
+      "status": "M",
+      "articles_carried": [
+        856
+      ],
+      "articles_carried_str": "856",
+      "starts_here": [
+        856
+      ],
+      "starts_here_str": "856",
+      "evidence": "E2: OCR markers [856] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p514",
+      "volume": 2,
+      "page_number": 514,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_514.png",
+      "status": "M",
+      "articles_carried": [
+        857
+      ],
+      "articles_carried_str": "857",
+      "starts_here": [
+        857
+      ],
+      "starts_here_str": "857",
+      "evidence": "E2: OCR markers [857] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p515",
+      "volume": 2,
+      "page_number": 515,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_515.png",
+      "status": "M",
+      "articles_carried": [
+        858
+      ],
+      "articles_carried_str": "858",
+      "starts_here": [
+        858
+      ],
+      "starts_here_str": "858",
+      "evidence": "E2: OCR markers [858] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p516",
+      "volume": 2,
+      "page_number": 516,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_516.png",
+      "status": "M",
+      "articles_carried": [
+        859,
+        860,
+        861
+      ],
+      "articles_carried_str": "859-861",
+      "starts_here": [
+        859,
+        860,
+        861
+      ],
+      "starts_here_str": "859-861",
+      "evidence": "E2: OCR markers [859, 860, 861] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p517",
+      "volume": 2,
+      "page_number": 517,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_517.png",
+      "status": "M",
+      "articles_carried": [
+        862,
+        863
+      ],
+      "articles_carried_str": "862-863",
+      "starts_here": [
+        862,
+        863
+      ],
+      "starts_here_str": "862-863",
+      "evidence": "E2: OCR markers [862, 863] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p518",
+      "volume": 2,
+      "page_number": 518,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_518.png",
+      "status": "M",
+      "articles_carried": [
+        864
+      ],
+      "articles_carried_str": "864",
+      "starts_here": [
+        864
+      ],
+      "starts_here_str": "864",
+      "evidence": "E2: OCR markers [864] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p519",
+      "volume": 2,
+      "page_number": 519,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_519.png",
+      "status": "M",
+      "articles_carried": [
+        865,
+        866
+      ],
+      "articles_carried_str": "865-866",
+      "starts_here": [
+        865,
+        866
+      ],
+      "starts_here_str": "865-866",
+      "evidence": "E2: OCR markers [865, 866] detected on page",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    },
+    {
+      "page_id": "v2-p520",
+      "volume": 2,
+      "page_number": 520,
+      "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\15774-A Treatise On Electricity And Magnetism Vol-ii_images\\VOLUME_2_PART_4_ELECTROMAGNETISM_IMAGES\\page_520.png",
+      "status": "B",
+      "articles_carried": [
+        866
+      ],
+      "articles_carried_str": "866",
+      "starts_here": [],
+      "starts_here_str": "-",
+      "evidence": "E4: Ch XXIII chapter file spans pp507-520; OCR text on p520 is the concluding passage of Art 866 ('...this has been my constant aim in this treatise.') - end of Part IV / Treatise body",
+      "verdict_slot": {
+        "verdict": "unset",
+        "note": ""
+      }
+    }
+  ],
+  "integrity": {
+    "existing_store": {
+      "path": "page_verifier/data/verdicts.json",
+      "schema_version": 1,
+      "updated_at": "2026-08-18T04:18:20Z",
+      "count": 7
+    },
+    "existing_verdicts": [
+      {
+        "page_id": "v1-p001",
+        "volume": 1,
+        "page_number": 1,
+        "verdict": "no",
+        "note": "NOT THAT IMP, BUT IS WRONG",
+        "article_numbers": [],
+        "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\VOLUME_1_PRELIM_TOC_IMAGES\\page_001.png",
+        "updated_at": "2026-08-18T04:18:10Z"
+      },
+      {
+        "page_id": "v1-p002",
+        "volume": 1,
+        "page_number": 2,
+        "verdict": "no",
+        "note": "I MEAN NOT THAT IMP BTUT IS WRONG",
+        "article_numbers": [],
+        "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\VOLUME_1_PRELIM_TOC_IMAGES\\page_002.png",
+        "updated_at": "2026-08-18T04:18:01Z"
+      },
+      {
+        "page_id": "v1-p003",
+        "volume": 1,
+        "page_number": 3,
+        "verdict": "yes",
+        "note": "Y`",
+        "article_numbers": [],
+        "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\VOLUME_1_PRELIM_TOC_IMAGES\\page_003.png",
+        "updated_at": "2026-08-18T04:18:17Z"
+      },
+      {
+        "page_id": "v1-p004",
+        "volume": 1,
+        "page_number": 4,
+        "verdict": "no",
+        "note": "A TREATISE OF ELECTICITY AND MAGNETISM IS MISSING",
+        "article_numbers": [],
+        "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\VOLUME_1_PRELIM_TOC_IMAGES\\page_004.png",
+        "updated_at": "2026-08-18T04:18:19Z"
+      },
+      {
+        "page_id": "v1-p005",
+        "volume": 1,
+        "page_number": 5,
+        "verdict": "yes",
+        "note": "",
+        "article_numbers": [],
+        "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\VOLUME_1_PRELIM_TOC_IMAGES\\page_005.png",
+        "updated_at": "2026-08-18T04:18:20Z"
+      },
+      {
+        "page_id": "v1-p036",
+        "volume": 1,
+        "page_number": 36,
+        "verdict": "yes",
+        "note": "smoke test",
+        "article_numbers": [
+          1,
+          2
+        ],
+        "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\VOLUME_1_PRELIM_TOC_IMAGES\\page_036.png",
+        "updated_at": "2026-08-10T03:56:13Z"
+      },
+      {
+        "page_id": "v1-p409",
+        "volume": 1,
+        "page_number": 409,
+        "verdict": "yes",
+        "note": "",
+        "article_numbers": [
+          254
+        ],
+        "image_path": "C:\\Users\\antmi\\maxwell-latex-books\\Third Edition\\VOLUME_1_PART_2_ELECTROKINEMATICS_IMAGES\\page_409.png",
+        "updated_at": "2026-08-10T18:37:17Z"
+      }
+    ],
+    "volume_ii_verdicts": 0,
+    "in_scope_verdicts": 0,
+    "statement": "7 Vol I smoke-test verdicts exist; ZERO Vol II verdicts; this session is the sole human-blocked G4 input. No verdict was fabricated in producing this manifest."
+  },
+  "summary": {
+    "vol2_total_ocr_pages": 544,
+    "total_session_pages": 195,
+    "body_pages": 194,
+    "boundary_pages": 1,
+    "status_M_marker_confirmed": 144,
+    "status_R_recovered_article_start": 6,
+    "status_C_continuation": 44,
+    "status_B_boundary": 1,
+    "articles_covered": 200,
+    "union_equals_667_866": true,
+    "images_missing": 0
+  }
+}

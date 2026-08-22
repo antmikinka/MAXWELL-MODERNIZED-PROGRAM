@@ -1,0 +1,928 @@
+{
+ "range": [
+  667,
+  866
+ ],
+ "generated": "2026-08-22T16:04:35.696322+00:00",
+ "articles_covered": 200,
+ "total_marked_tests": 501,
+ "articles_missing": [],
+ "gate_G3": "PASS",
+ "evidence": {
+  "667": [
+   "tests/test_articles_boundary_conditions_667_669.py::test_art667_normal_B_continuity_hand_decomposition",
+   "tests/test_articles_boundary_conditions_667_669.py::test_art667_normal_B_pillbox_limit_first_order_convergence",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_surface_current_jump]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_normal_B_continuous]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_surface_current_jump]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_normal_B_continuous]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_surface_current_jump]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_normal_B_continuous]"
+  ],
+  "668": [
+   "tests/test_articles_boundary_conditions_667_669.py::test_art668_normal_D_jump_gauss_sheet_oracle",
+   "tests/test_articles_boundary_conditions_667_669.py::test_art669_charged_dielectric_interface_full_solution",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_solenoid_inductance_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_solenoid_inductance_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_solenoid_inductance_structure]"
+  ],
+  "669": [
+   "tests/test_articles_boundary_conditions_667_669.py::test_art669_charged_dielectric_interface_full_solution",
+   "tests/test_articles_boundary_conditions_667_669.py::test_art669_uncharged_dielectric_refraction_identity",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_sheet_potential_discontinuity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_sheet_potential_discontinuity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_sheet_potential_discontinuity]"
+  ],
+  "670": [
+   "tests/test_articles_math_spine_691_706.py::test_on_axis_formula_center_and_dipole",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_cylindrical_sheet_field]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_cylindrical_sheet_field]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_cylindrical_sheet_field]"
+  ],
+  "671": [
+   "tests/test_articles_math_spine_691_706.py::test_on_axis_formula_center_and_dipole",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_sheet_toroidal_zero_exterior]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_sheet_toroidal_zero_exterior]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_sheet_toroidal_zero_exterior]"
+  ],
+  "672": [
+   "tests/test_articles_math_spine_691_706.py::test_on_axis_formula_center_and_dipole"
+  ],
+  "673": [
+   "tests/test_articles_math_spine_691_706.py::test_off_axis_matches_biot_savart_oracle",
+   "tests/test_articles_math_spine_691_706.py::test_off_axis_reduces_to_on_axis_continuously"
+  ],
+  "674": [
+   "tests/test_articles_math_spine_691_706.py::test_off_axis_matches_biot_savart_oracle",
+   "tests/test_articles_math_spine_691_706.py::test_off_axis_far_field_dipole_pattern"
+  ],
+  "675": [
+   "tests/test_articles_math_spine_691_706.py::test_off_axis_matches_biot_savart_oracle",
+   "tests/test_articles_math_spine_691_706.py::test_off_axis_far_field_dipole_pattern",
+   "tests/test_articles_math_spine_691_706.py::test_spherical_harmonics_citation_split_keeps_part4_winning",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_legendre_value_at_one]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_legendre_parity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_legendre_recurrence]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_legendre_orthogonality]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_legendre_value_at_one]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_legendre_parity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_legendre_recurrence]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_legendre_orthogonality]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_legendre_value_at_one]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_legendre_parity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_legendre_recurrence]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_legendre_orthogonality]"
+  ],
+  "676": [
+   "tests/test_articles_math_spine_691_706.py::test_helmholtz_superposition_and_uniformity",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_legendre_generating_function]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_addition_theorem_p1]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_Y00_normalization]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_legendre_generating_function]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_addition_theorem_p1]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_Y00_normalization]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_legendre_generating_function]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_addition_theorem_p1]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_Y00_normalization]"
+  ],
+  "677": [
+   "tests/test_articles_math_spine_691_706.py::test_helmholtz_superposition_and_uniformity",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_zonal_harmonic_laplace]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_legendre_differential_equation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_zonal_harmonic_laplace]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_legendre_differential_equation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_zonal_harmonic_laplace]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_legendre_differential_equation]"
+  ],
+  "678": [
+   "tests/test_articles_math_spine_691_706.py::test_coaxial_pair_antisymmetry"
+  ],
+  "679": [
+   "tests/test_articles_math_spine_691_706.py::test_coaxial_pair_antisymmetry"
+  ],
+  "680": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art680_solid_cylinder_exterior_vs_volume_biot_savart",
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art680_helmholtz_center_coefficient"
+  ],
+  "681": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art681_inside_field_surface_invariant_and_continuity"
+  ],
+  "682": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art682_hollow_cylinder_cavity_zero_and_wall_oracle",
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art682_helmholtz_uniformity_profile_vs_quadrature"
+  ],
+  "683": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art683_hollow_exterior_and_ampere_wall_values",
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art683_helmholtz_axial_uniformity_fourth_order"
+  ],
+  "684": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art684_wire_inductance_from_flux_and_energy_quadrature"
+  ],
+  "685": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art685_spherical_harmonic_vs_closed_forms",
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art685_wire_inductance_radius_independence"
+  ],
+  "686": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art686_real_harmonics_vs_closed_forms",
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art686_vector_potential_matches_ampere_field_integral"
+  ],
+  "687": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art687_intensity_closed_form_and_phi_independence"
+  ],
+  "688": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art688_normalization_theorem_and_code_band"
+  ],
+  "689": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art689_associated_legendre_closed_forms_and_goldens",
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art689_associated_legendre_orthogonality_integrals"
+  ],
+  "690": [
+   "tests/test_articles_cylinders_harmonics_680_690.py::test_art690_zonal_multipole_expansion_closed_forms"
+  ],
+  "691": [
+   "tests/test_articles_math_spine_691_706.py::test_self_gmd_circle_exact"
+  ],
+  "692": [
+   "tests/test_articles_math_spine_691_706.py::test_self_gmd_rectangle_square_and_thin_strip",
+   "tests/test_articles_math_spine_691_706.py::test_gmd_coaxial_rings_closed_form"
+  ],
+  "693": [
+   "tests/test_articles_math_spine_691_706.py::test_gmd_parallel_wires_disjoint_sections_exact",
+   "tests/test_articles_math_spine_691_706.py::test_gmd_parallel_wires_overlap_vs_tensor_quadrature",
+   "tests/test_articles_math_spine_691_706.py::test_gmd_coaxial_rings_closed_form",
+   "tests/test_articles_math_spine_691_706.py::test_inductance_gmd_correction_self_consistent"
+  ],
+  "694": [
+   "tests/test_articles_c1_meta_closure.py::test_art694_vector_potential_series_vs_independent_oracles",
+   "tests/test_articles_c1_meta_closure.py::test_art694_vector_potential_citation_and_domain_guard",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_circular_current_center_field]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_loop_axial_field_integral]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_loop_far_field_dipole_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_mutual_inductance_neumann_symmetry]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_circular_current_center_field]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_loop_axial_field_integral]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_loop_far_field_dipole_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_mutual_inductance_neumann_symmetry]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_circular_current_center_field]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_loop_axial_field_integral]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_loop_far_field_dipole_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_mutual_inductance_neumann_symmetry]"
+  ],
+  "695": [
+   "tests/test_articles_c1_meta_closure.py::test_art695_magnetic_shell_potential_vs_independent_oracles",
+   "tests/test_articles_c1_meta_closure.py::test_art695_shell_potential_citation_and_domain_guard"
+  ],
+  "696": [
+   "tests/test_articles_math_spine_691_706.py::test_K_E_golden_values_tight",
+   "tests/test_articles_math_spine_691_706.py::test_K_E_cross_check_carlson_grid",
+   "tests/test_articles_math_spine_691_706.py::test_legendre_relation",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_elliptic_K_AGM_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_vector_potential_loop_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_elliptic_K_AGM_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_vector_potential_loop_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_elliptic_K_AGM_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_vector_potential_loop_structure]"
+  ],
+  "697": [
+   "tests/test_articles_math_spine_691_706.py::test_K_E_golden_values_tight",
+   "tests/test_articles_math_spine_691_706.py::test_K_E_cross_check_carlson_grid",
+   "tests/test_articles_math_spine_691_706.py::test_legendre_relation"
+  ],
+  "698": [
+   "tests/test_articles_math_spine_691_706.py::test_third_kind_reduces_to_first_kind"
+  ],
+  "699": [
+   "tests/test_articles_math_spine_691_706.py::test_jacobian_identities"
+  ],
+  "700": [
+   "tests/test_articles_math_spine_691_706.py::test_landen_identity_full_loop"
+  ],
+  "701": [
+   "tests/test_articles_math_spine_691_706.py::test_complementary_modulus_and_parameter_convention"
+  ],
+  "702": [
+   "tests/test_articles_math_spine_691_706.py::test_negative_parameter_imaginary_modulus_transform",
+   "tests/test_articles_math_spine_691_706.py::test_complementary_modulus_and_parameter_convention",
+   "tests/test_defects_s1.py::test_regression_D02_art702_near_axis_psi_and_curl"
+  ],
+  "703": [
+   "tests/test_articles_math_spine_691_706.py::test_verify_and_analyze_elliptic_relations",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_elliptic_legendre_relation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_elliptic_K_small_k_series]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_elliptic_E_small_k_series]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_elliptic_legendre_relation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_elliptic_K_small_k_series]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_elliptic_E_small_k_series]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_elliptic_legendre_relation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_elliptic_K_small_k_series]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_elliptic_E_small_k_series]"
+  ],
+  "704": [
+   "tests/test_articles_math_spine_691_706.py::test_verify_and_analyze_elliptic_relations",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_elliptic_K_derivative_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_elliptic_E_derivative_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_elliptic_K_derivative_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_elliptic_E_derivative_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_elliptic_K_derivative_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_elliptic_E_derivative_identity]"
+  ],
+  "705": [
+   "tests/test_articles_math_spine_691_706.py::test_verify_and_analyze_elliptic_relations",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_elliptic_landen_descent]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_elliptic_landen_descent]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_elliptic_landen_descent]"
+  ],
+  "706": [
+   "tests/test_article_706_coil_design.py::test_art_706_gauss_optimal_coil_golden",
+   "tests/test_article_706_coil_design.py::test_art_706_optimal_winding_proportion_golden",
+   "tests/test_article_706_coil_design.py::test_art_706_disk_self_gmd_golden",
+   "tests/test_article_706_coil_design.py::test_art_706_fd_stationarity_of_inductance",
+   "tests/test_article_706_coil_design.py::test_art_706_max_inductance_design_and_identity",
+   "tests/test_article_706_coil_design.py::test_art_706_square_channel_matches_quadrature_and_printed_ratio"
+  ],
+  "707": [
+   "tests/test_articles_instruments_707_729.py::test_art_707_coil_constant_golden_and_limit",
+   "tests/test_articles_instruments_707_729.py::test_art_707_709_center_field_matches_biot_savart_oracle"
+  ],
+  "708": [
+   "tests/test_articles_instruments_707_729.py::test_art_708_design_standard_coil_self_consistent"
+  ],
+  "709": [
+   "tests/test_articles_instruments_707_729.py::test_art_707_709_center_field_matches_biot_savart_oracle",
+   "tests/test_articles_instruments_707_729.py::test_art_709_tangent_law_zero_torsion",
+   "tests/test_articles_instruments_707_729.py::test_art_709_torsion_balance_residual_and_independent_root"
+  ],
+  "710": [
+   "tests/test_articles_instruments_707_729.py::test_art_710_tangent_sine_equivalence_at_zero"
+  ],
+  "711": [
+   "tests/test_articles_instruments_707_729.py::test_art_711_single_coil_tangent_measurement"
+  ],
+  "712": [
+   "tests/test_articles_instruments_707_729.py::test_art_712_gaugain_offset_and_field_oracle"
+  ],
+  "713": [
+   "tests/test_articles_instruments_707_729.py::test_art_713_helmholtz_center_field_golden_and_oracle",
+   "tests/test_articles_instruments_707_729.py::test_art_713_helmholtz_uniformity_condition_spacing_equals_radius",
+   "tests/test_articles_instruments_707_729.py::test_art_713_helmholtz_field_flatness_over_center_region",
+   "tests/test_articles_instruments_707_729.py::test_art_713_helmholtz_far_field_dipole_limit"
+  ],
+  "714": [
+   "tests/test_articles_instruments_707_729.py::test_art_714_four_coil_constant_is_sum_and_oracle"
+  ],
+  "715": [
+   "tests/test_articles_instruments_707_729.py::test_art_715_three_coil_constant_is_sum"
+  ],
+  "716": [
+   "tests/test_articles_instruments_707_729.py::test_art_716_wire_dimensions_match_prescribed_resistance",
+   "tests/test_articles_instruments_707_729.py::test_art_716_gaussian_agreement_galvanometers_vs_circular_coils"
+  ],
+  "717": [
+   "tests/test_articles_instruments_707_729.py::test_art_717_sensitive_design_uses_full_wire_and_reports_merit"
+  ],
+  "718": [
+   "tests/test_articles_instruments_707_729.py::test_art_718_greatest_sensibility_at_matched_resistance"
+  ],
+  "719": [
+   "tests/test_articles_instruments_707_729.py::test_art_719_wire_thickness_grows_with_radius"
+  ],
+  "720": [
+   "tests/test_articles_instruments_707_729.py::test_art_720_uniform_wire_sensitivity_is_g_over_h"
+  ],
+  "721": [
+   "tests/test_articles_instruments_707_729.py::test_art_721_suspended_coil_moment_and_torque_balance"
+  ],
+  "722": [
+   "tests/test_articles_instruments_707_729.py::test_art_722_thomson_sensitive_coil_sensitivity_and_round_trip"
+  ],
+  "723": [
+   "tests/test_articles_instruments_707_729.py::test_art_723_determine_magnetic_force_from_deflection"
+  ],
+  "724": [
+   "tests/test_articles_instruments_707_729.py::test_art_724_combined_instrument_two_readings_agree"
+  ],
+  "725": [
+   "tests/test_articles_instruments_707_729.py::test_art_725_weber_dynamometer_square_law_and_equilibrium"
+  ],
+  "726": [
+   "tests/test_articles_instruments_707_729.py::test_art_726_joule_weigher_force_and_balancing_mass"
+  ],
+  "727": [
+   "tests/test_articles_instruments_707_729.py::test_art_727_solenoid_suction_golden_and_work_identity"
+  ],
+  "728": [
+   "tests/test_articles_instruments_707_729.py::test_art_728_uniform_field_max_torque_matches_coil_torque"
+  ],
+  "729": [
+   "tests/test_articles_instruments_707_729.py::test_art_729_torsion_dynamometer_angle_and_inversion"
+  ],
+  "730": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_730_signal_velocity"
+  ],
+  "731": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_731_characteristic_impedance"
+  ],
+  "732": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_732_attenuation_constant"
+  ],
+  "733": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_733_phase_constant"
+  ],
+  "734": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_734_signal_delay"
+  ],
+  "735": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_735_voltage_at_distance"
+  ],
+  "736": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_736_tangent_current_from_deflection"
+  ],
+  "737": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_737_tangent_deflection_from_current"
+  ],
+  "738": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_738_coil_field_at_center"
+  ],
+  "739": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_739_sine_galvanometer"
+  ],
+  "740": [
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_740_vibration_time_amplitude_law",
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_740_small_arc_time_golden_and_sum_oracle",
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_740_limits_zero_kappa_and_undamped"
+  ],
+  "741": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_741_helmholtz_field_and_uniformity"
+  ],
+  "742": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_742_helmholtz_factor"
+  ],
+  "743": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_743_helmholtz_current_from_deflection"
+  ],
+  "744": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_744_wattmeter_true_power"
+  ],
+  "745": [
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_745_first_swing_golden",
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_745_damped_oscillator_rk4_oracle",
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_745_undamped_limit_is_midpoint"
+  ],
+  "746": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_746_wattmeter_reactive_and_phase"
+  ],
+  "747": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_747_electrodynamometer_torque"
+  ],
+  "748": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_748_equilibrium_deflection"
+  ],
+  "749": [
+   "tests/test_articles_ch16_observations_730_750.py::test_art_749_series_square_law_and_product_invariance"
+  ],
+  "750": [
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_750_elongation_chain_rational_goldens",
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_750_recoil_coefficient_forms_and_limits",
+   "tests/test_articles_ch16_wave7_740_745_750.py::test_art_750_kicked_oscillator_ode_oracle"
+  ],
+  "751": [
+   "tests/test_defects_s1.py::test_regression_D05_art751_force_equals_I2_dMdx"
+  ],
+  "752": [
+   "tests/test_articles_coil_comparison_752_757.py::test_752_standard_coil_g1_matches_independent_section_quadrature",
+   "tests/test_articles_coil_comparison_752_757.py::test_752_thin_ring_limit_matches_biot_savart_line_integral",
+   "tests/test_articles_coil_comparison_752_757.py::test_752_comparison_advantage_computed_from_errors",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_coil_comparison_modulus]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_coil_comparison_modulus]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_coil_comparison_modulus]"
+  ],
+  "753": [
+   "tests/test_articles_coil_comparison_752_757.py::test_753_null_determination_golden",
+   "tests/test_articles_coil_comparison_752_757.py::test_753_shunt_determination_golden",
+   "tests/test_articles_coil_comparison_752_757.py::test_753_deflection_equation_residual"
+  ],
+  "754": [
+   "tests/test_articles_coil_comparison_752_757.py::test_754_axis_series_reproduces_exact_loop_field",
+   "tests/test_articles_coil_comparison_752_757.py::test_754_g3_of_thin_loop_golden",
+   "tests/test_articles_coil_comparison_752_757.py::test_754_moment_inversion_is_exact_for_truncated_series",
+   "tests/test_articles_coil_comparison_752_757.py::test_754_end_to_end_null_against_exact_loop_field"
+  ],
+  "755": [
+   "tests/test_articles_coil_comparison_752_757.py::test_755_standard_pair_matches_independent_neumann_quadrature",
+   "tests/test_articles_coil_comparison_752_757.py::test_755_asymmetric_pair_and_reciprocity",
+   "tests/test_articles_coil_comparison_752_757.py::test_755_far_field_dipole_asymptotic",
+   "tests/test_articles_coil_comparison_752_757.py::test_755_integral_induction_current_golden_and_null",
+   "tests/test_articles_coil_comparison_752_757.py::test_755_null_ratio_and_full_null_condition",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_mutual_inductance_far_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_dM_dd_dipole_relation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_mutual_inductance_far_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_dM_dd_dipole_relation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_mutual_inductance_far_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_dM_dd_dipole_relation]"
+  ],
+  "756": [
+   "tests/test_articles_coil_comparison_752_757.py::test_756_self_induction_from_mutual_golden",
+   "tests/test_articles_coil_comparison_752_757.py::test_756_third_method_with_shunt_w_golden",
+   "tests/test_articles_coil_comparison_752_757.py::test_756_steady_balance_residual"
+  ],
+  "757": [
+   "tests/test_articles_coil_comparison_752_757.py::test_757_double_balance_residuals_and_ratio",
+   "tests/test_articles_coil_comparison_752_757.py::test_757_off_balance_residuals_hand_computed"
+  ],
+  "758": [
+   "tests/test_articles_absolute_resistance_758_764.py::test_art758_recoil_resistance_hand_golden",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art758_recoil_velocity_dimension_exponents_measured",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art758_recoil_identity_with_art766_decrement",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_wheatstone_balance]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_wheatstone_balance]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_wheatstone_balance]"
+  ],
+  "759": [
+   "tests/test_lint_remediation_last200.py::TestAbsoluteResistanceIndependence::test_no_heat_reports_cross_check_not_performed",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_rc_discharge_ode]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_rc_time_constant]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_capacitor_energy]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_rc_discharge_ode]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_rc_time_constant]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_capacitor_energy]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_rc_discharge_ode]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_rc_time_constant]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_capacitor_energy]"
+  ],
+  "760": [
+   "tests/test_articles_absolute_resistance_758_764.py::test_art760_lenz_resistance_hand_golden",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art760_lenz_resistance_from_independent_faraday_emf",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_ballistic_throw_charge]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_ballistic_throw_charge]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_ballistic_throw_charge]"
+  ],
+  "761": [
+   "tests/test_articles_absolute_resistance_758_764.py::test_art761_rotating_coil_resistance_hand_golden",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art761_rotating_coil_matches_independent_faraday_oracle",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art761_rotating_coil_known_series_subtraction",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_recoil_method_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_recoil_method_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_recoil_method_structure]"
+  ],
+  "762": [
+   "tests/test_lint_remediation_last200.py::TestAbsoluteResistanceIndependence::test_verify_absolute_resistance_independence",
+   "tests/test_lint_remediation_last200.py::TestAbsoluteResistanceIndependence::test_calorimetric_cross_check_consistent_heat_passes",
+   "tests/test_lint_remediation_last200.py::TestAbsoluteResistanceIndependence::test_known_bad_heat_flips_verdict",
+   "tests/test_lint_remediation_last200.py::TestAnalyzeAbsoluteResistanceHonesty::test_no_heat_average_uses_existing_determinations_only",
+   "tests/test_lint_remediation_last200.py::TestAnalyzeAbsoluteResistanceHonesty::test_independent_heat_enters_average"
+  ],
+  "763": [
+   "tests/test_articles_absolute_resistance_758_764.py::test_art763_copper_temperature_correction_hand_golden",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art763_german_silver_coil_material_table_golden",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art763_affine_law_identities_hand_derived",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_resistance_emu_velocity_dimension]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_resistance_emu_velocity_dimension]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_resistance_emu_velocity_dimension]"
+  ],
+  "764": [
+   "tests/test_articles_absolute_resistance_758_764.py::test_art764_solenoid_inductance_hand_golden",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art764_oracle_self_check_ring_mutual_limits",
+   "tests/test_articles_absolute_resistance_758_764.py::test_art764_solenoid_inductance_neumann_sheet_oracle"
+  ],
+  "765": [
+   "tests/test_articles_c1_meta_closure.py::test_art765_capacitor_discharge_resistance_vs_ode_oracle",
+   "tests/test_articles_c1_meta_closure.py::test_art765_capacitor_discharge_citation_and_guards"
+  ],
+  "766": [
+   "tests/test_articles_c1_meta_closure.py::test_art766_recoil_damping_correction_vs_oscillator_oracle",
+   "tests/test_articles_c1_meta_closure.py::test_art766_recoil_damping_correction_citation_and_guards"
+  ],
+  "767": [
+   "tests/test_lint_remediation_last200.py::TestVelocityDimensionCheck::test_velocity_dimensions_exponents_computed",
+   "tests/test_lint_remediation_last200.py::TestVelocityDimensionCheck::test_degenerate_measurement_fails_dimension_check"
+  ],
+  "768": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_768_motivation_quantitative_anchor"
+  ],
+  "769": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_769_dimensional_derivation_from_force_laws",
+   "tests/test_articles_ratio_v_768_780.py::test_art_769_sympy_symbolic_derivation",
+   "tests/test_articles_ratio_v_768_780.py::test_art_769_unit_ratio_experiment_all_quantities",
+   "tests/test_articles_ratio_v_768_780.py::test_art_769_dimensional_check_v_cm_s"
+  ],
+  "770": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_770_convection_current_geometry_and_field"
+  ],
+  "771": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_771_weber_kohlrausch_reduction",
+   "tests/test_articles_ratio_v_768_780.py::test_art_771_series_parallel_identities_both_systems",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art771-weber-kohlrausch]"
+  ],
+  "772": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_772_thomson_emf_ratio",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art772-thomson]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_esu_emu_charge_ratio_c]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_esu_emu_charge_ratio_c]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_esu_emu_charge_ratio_c]"
+  ],
+  "773": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_773_maxwell_combined_cross_routes",
+   "tests/test_articles_ratio_v_768_780.py::test_art_773_cross_method_agreement",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art773-maxwell-combined]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_esu_emu_resistance_ratio_c2]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_esu_emu_resistance_ratio_c2]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_esu_emu_resistance_ratio_c2]"
+  ],
+  "774": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_774_jenkin_intermittent_discharge",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art774-jenkin]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_capacitance_esu_length_dimension]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_capacitance_esu_length_dimension]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_capacitance_esu_length_dimension]"
+  ],
+  "775": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_775_intermittent_current",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art775-intermittent-current]"
+  ],
+  "776": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_776_condenser_wippe_balance",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art776-condenser-wippe]"
+  ],
+  "777": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_777_rapid_action_correction_contract",
+   "tests/test_defects_s1.py::test_regression_D03_art777_correction_halves_v"
+  ],
+  "778": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_778_lc_resonance_velocity",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art778-lc-resonance]"
+  ],
+  "779": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_779_coil_condenser_period",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art779-coil-condenser]"
+  ],
+  "780": [
+   "tests/test_articles_ratio_v_768_780.py::test_art_780_resistance_ratio_direction",
+   "tests/test_articles_ratio_v_768_780.py::test_ch19_v_anchor_maxwell_parameters[art780-resistance]"
+  ],
+  "781": [
+   "tests/test_articles_optics_781_805.py::TestWaveEquation781to785::test_781_vacuum_dispersion_relation"
+  ],
+  "782": [
+   "tests/test_articles_optics_781_805.py::TestWaveEquation781to785::test_782_wave_satisfies_maxwell_equations"
+  ],
+  "783": [
+   "tests/test_articles_optics_781_805.py::TestWaveEquation781to785::test_783_vacuum_speed_identity_from_emu_constants",
+   "tests/test_articles_optics_781_805.py::TestWaveEquation781to785::test_783_vacuum_wave_speed_equals_c",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_medium_wave_velocity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_medium_wave_velocity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_medium_wave_velocity]"
+  ],
+  "784": [
+   "tests/test_articles_optics_781_805.py::TestWaveEquation781to785::test_784_medium_wave_speed",
+   "tests/test_articles_optics_781_805.py::TestWaveEquation781to785::test_784_dispersionless_vacuum_and_medium"
+  ],
+  "785": [
+   "tests/test_articles_optics_781_805.py::TestWaveEquation781to785::test_785_plane_wave_fields_golden",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_plane_wave_E_cB]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_wave_transversality]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_plane_wave_E_cB]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_wave_transversality]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_plane_wave_E_cB]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_wave_transversality]"
+  ],
+  "786": [
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_786_transversality_k_dot_E",
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_786_transversality_full_wave"
+  ],
+  "787": [
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_787_E_over_B_equals_c",
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_787_E_B_ratio_in_medium",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_plane_wave_dalembert]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_dispersion_relation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_plane_wave_dalembert]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_dispersion_relation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_plane_wave_dalembert]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_dispersion_relation]"
+  ],
+  "788": [
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_788_poynting_vector_golden",
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_788_intensity_golden",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_plane_wave_poynting]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_plane_wave_poynting]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_plane_wave_poynting]"
+  ],
+  "789": [
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_789_energy_density_golden"
+  ],
+  "790": [
+   "tests/test_articles_optics_781_805.py::TestPlaneWaveProperties786to790::test_790_wavelength_frequency_relations"
+  ],
+  "791": [
+   "tests/test_articles_optics_781_805.py::TestPolarization791to795::test_791_linear_polarization_malus",
+   "tests/test_articles_optics_781_805.py::TestRadiationPressure791to794::test_791_radiation_pressure_absorber_golden"
+  ],
+  "792": [
+   "tests/test_articles_optics_781_805.py::TestPolarization791to795::test_792_circular_polarization_stokes",
+   "tests/test_articles_optics_781_805.py::TestRadiationPressure791to794::test_792_radiation_pressure_reflector_golden"
+  ],
+  "793": [
+   "tests/test_articles_optics_781_805.py::TestPolarization791to795::test_793_elliptical_polarization_stokes_identity",
+   "tests/test_articles_optics_781_805.py::TestRadiationPressure791to794::test_793_radiation_pressure_oblique_golden"
+  ],
+  "794": [
+   "tests/test_articles_optics_781_805.py::TestPolarization791to795::test_794_half_wave_plate_flips_polarization",
+   "tests/test_articles_optics_781_805.py::TestPolarization791to795::test_794_snell_refraction_golden",
+   "tests/test_articles_optics_781_805.py::TestRadiationPressure791to794::test_794_radiation_force_and_momentum_golden"
+  ],
+  "795": [
+   "tests/test_articles_optics_781_805.py::TestPolarization791to795::test_795_quarter_wave_plate_makes_circular"
+  ],
+  "796": [
+   "tests/test_articles_optics_781_805.py::TestMetalOptics795to800::test_796_fresnel_normal_incidence_equality"
+  ],
+  "797": [
+   "tests/test_articles_optics_781_805.py::TestMetalOptics795to800::test_797_normal_reflectance_golden"
+  ],
+  "798": [
+   "tests/test_articles_optics_781_805.py::TestMetalOptics795to800::test_798_skin_depth_conductivity_golden",
+   "tests/test_articles_optics_781_805.py::TestMetalOptics795to800::test_798_skin_depth_limit_behavior"
+  ],
+  "799": [
+   "tests/test_articles_optics_781_805.py::TestMetalOptics795to800::test_799_absorption_coefficient_identities"
+  ],
+  "800": [
+   "tests/test_articles_optics_781_805.py::TestMetalOptics795to800::test_800_hagen_rubens_against_fresnel_oracle",
+   "tests/test_articles_optics_781_805.py::TestMetalOptics795to800::test_800_hagen_rubens_limit_behavior"
+  ],
+  "801": [
+   "tests/test_articles_optics_781_805.py::TestPolarizationStates801to803::test_801_polarization_classification",
+   "tests/test_defects_s1.py::test_regression_D01_art801_diffusion_time_copper_and_roundtrip"
+  ],
+  "802": [
+   "tests/test_articles_optics_781_805.py::TestPolarizationStates801to803::test_802_polarization_ellipse_limits",
+   "tests/test_defects_s1.py::test_regression_D01_art801_diffusion_time_copper_and_roundtrip"
+  ],
+  "803": [
+   "tests/test_articles_optics_781_805.py::TestPolarizationStates801to803::test_803_stokes_completeness_identity",
+   "tests/test_articles_optics_781_805.py::TestPolarizationStates801to803::test_803_interference_limits_and_visibility"
+  ],
+  "804": [
+   "tests/test_articles_optics_781_805.py::TestCrystalOptics804to805::test_804_ordinary_extraordinary_velocities",
+   "tests/test_articles_optics_781_805.py::TestCrystalOptics804to805::test_804_wave_plate_thickness_round_trip"
+  ],
+  "805": [
+   "tests/test_articles_optics_781_805.py::TestCrystalOptics804to805::test_805_uniaxial_index_identities",
+   "tests/test_articles_optics_781_805.py::TestCrystalOptics804to805::test_805_fresnel_normal_equation",
+   "tests/test_articles_optics_781_805.py::TestCrystalOptics804to805::test_805_crystal_sign_and_velocity_ordering"
+  ],
+  "806": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art806_rotation_measured_by_analyser_difference"
+  ],
+  "807": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art807_theta_equals_VBL_and_inversion"
+  ],
+  "808": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art808_rotation_follows_resolved_part_of_force",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_circular_birefringence_rotation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_circular_birefringence_rotation]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_circular_birefringence_rotation]"
+  ],
+  "809": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art809_ferromagnetic_rotation_is_negative_of_diamagnetic",
+   "tests/test_articles_magneto_optics_vortex.py::test_art809_verdet_table_units_and_ratios"
+  ],
+  "810": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art810_biot_law_and_round_trip_reciprocity"
+  ],
+  "811": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art811_rotation_is_half_phase_difference",
+   "tests/test_articles_magneto_optics_vortex.py::test_art812_index_split_and_closed_loop_with_811"
+  ],
+  "812": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art812_index_split_and_closed_loop_with_811",
+   "tests/test_articles_magneto_optics_vortex.py::test_art815_magnetic_split_consistent_with_art812",
+   "tests/test_defects_s1.py::test_regression_D04_art812_delta_n_identity"
+  ],
+  "813": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art813_circular_ray_constant_magnitude_transverse",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_verdet_path_linearity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_verdet_path_linearity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_verdet_path_linearity]"
+  ],
+  "814": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art814_natural_split_delta_v_formula"
+  ],
+  "815": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art815_magnetic_split_consistent_with_art812"
+  ],
+  "816": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art816_light_vector_is_transverse_projection"
+  ],
+  "817": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art817_kinematics_equations_and_conventions"
+  ],
+  "818": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art818_energy_labels_potential_electric_kinetic_magnetic"
+  ],
+  "819": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art819_quadratic_roots_and_coupling_eq8",
+   "tests/test_articles_magneto_optics_vortex.py::test_art819_medium_propagation_condition_and_split"
+  ],
+  "820": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art820_round_trip_discriminant_detects_real_rotation"
+  ],
+  "821": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art821_summary_is_fully_derived_and_consistent"
+  ],
+  "822": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art822_vortex_energy_momentum_and_gear_condition"
+  ],
+  "823": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art823_helmholtz_variation_and_strength_ratio"
+  ],
+  "824": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art824_angular_velocity_is_half_curl_and_coupling_term",
+   "tests/test_defect_d22_dimensional_consistency.py::test_d22_art824_coupling_term_has_energy_density_dimensions"
+  ],
+  "825": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art825_coupling_in_terms_of_current_and_velocity",
+   "tests/test_defect_d22_dimensional_consistency.py::test_d22_art825_current_velocity_term_has_energy_density_dimensions"
+  ],
+  "826": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art826_plane_wave_energy_reduces_to_art828_eq15",
+   "tests/test_defect_d22_dimensional_consistency.py::test_d22_plane_wave_energy_density_has_energy_density_dimensions",
+   "tests/test_defect_d22_dimensional_consistency.py::test_d22_circular_ray_energy_phase_independent_identity"
+  ],
+  "827": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art827_equation_of_motion_residual_vanishes_at_roots"
+  ],
+  "828": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art826_plane_wave_energy_reduces_to_art828_eq15",
+   "tests/test_articles_magneto_optics_vortex.py::test_art828_circular_velocities_and_vieta_identities"
+  ],
+  "829": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art829_rotation_formula_eq26_and_denominator"
+  ],
+  "830": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art830_verdet_table_golden_and_laws",
+   "tests/test_articles_magneto_optics_vortex.py::test_art830_inverse_square_laws_from_verdet_data"
+  ],
+  "831": [
+   "tests/test_articles_magneto_optics_vortex.py::test_art831_mechanical_theory_summary_computed"
+  ],
+  "832": [
+   "tests/test_articles_molecular_832_866.py::test_art832_molecular_moment_is_ia_over_c"
+  ],
+  "833": [
+   "tests/test_articles_molecular_832_866.py::test_art833_dipole_field_matches_biot_savart_on_axis",
+   "tests/test_articles_molecular_832_866.py::test_art833_dipole_field_equator",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_div_B_dipole_zero]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_dipole_vector_potential]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_div_B_dipole_zero]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_dipole_vector_potential]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_div_B_dipole_zero]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_dipole_vector_potential]"
+  ],
+  "834": [
+   "tests/test_articles_molecular_832_866.py::test_art834_loop_equals_dipole_off_axis"
+  ],
+  "835": [
+   "tests/test_articles_molecular_832_866.py::test_art835_magnetization_density_golden"
+  ],
+  "836": [
+   "tests/test_articles_molecular_832_866.py::test_art836_curie_law_codata_golden",
+   "tests/test_articles_molecular_832_866.py::test_art836_curie_halving_and_field_independence"
+  ],
+  "837": [
+   "tests/test_articles_molecular_832_866.py::test_art837_uniform_magnetization_has_no_bound_current",
+   "tests/test_articles_molecular_832_866.py::test_art837_bound_current_is_c_curl_M_golden"
+  ],
+  "838": [
+   "tests/test_articles_molecular_832_866.py::test_art838_total_moment_uniform_golden",
+   "tests/test_articles_molecular_832_866.py::test_art838_total_moment_linear_field_golden"
+  ],
+  "839": [
+   "tests/test_articles_molecular_832_866.py::test_art839_surface_current_golden_cross_product"
+  ],
+  "840": [
+   "tests/test_articles_molecular_832_866.py::test_art840_sphere_center_field_rings_golden",
+   "tests/test_articles_molecular_832_866.py::test_art840_sphere_interior_field_biot_savart_golden"
+  ],
+  "841": [
+   "tests/test_articles_molecular_832_866.py::test_art841_weber_static_limit_is_coulomb",
+   "tests/test_articles_molecular_832_866.py::test_art841_acceleration_term_golden"
+  ],
+  "842": [
+   "tests/test_articles_molecular_832_866.py::test_art842_weber_potential_golden"
+  ],
+  "843": [
+   "tests/test_articles_molecular_832_866.py::test_art843_coulomb_limit_residual_is_zero"
+  ],
+  "844": [
+   "tests/test_articles_molecular_832_866.py::test_art844_velocity_factor_golden_at_point_one_c"
+  ],
+  "845": [
+   "tests/test_articles_molecular_832_866.py::test_art845_acceleration_factor_golden",
+   "tests/test_defect_d12_weber_pin.py::test_d12_velocity_squared_coefficient_pin",
+   "tests/test_defect_d12_weber_pin.py::test_d12_acceleration_coefficient_pin",
+   "tests/test_defect_d12_weber_pin.py::test_d12_both_implementation_sites_one_convention",
+   "tests/test_defect_d12_weber_pin.py::test_d12_equivalence_with_weber_1846_c_w_form"
+  ],
+  "846": [
+   "tests/test_articles_molecular_832_866.py::test_art846_wire_force_vs_finite_closed_form",
+   "tests/test_articles_molecular_832_866.py::test_art846_antiparallel_currents_repel",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_weber_coulomb_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_weber_velocity_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_weber_coulomb_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_weber_velocity_structure]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_weber_coulomb_limit]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_weber_velocity_structure]"
+  ],
+  "847": [
+   "tests/test_articles_molecular_832_866.py::test_art847_induced_emf_goldens_and_lenz_sign",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_weber_potential_energy_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_weber_potential_energy_identity]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_weber_potential_energy_identity]"
+  ],
+  "848": [
+   "tests/test_articles_molecular_832_866.py::test_art848_weber_constant_is_sqrt2_c"
+  ],
+  "849": [
+   "tests/test_articles_molecular_832_866.py::test_art849_critical_velocity_and_force_sign_flip"
+  ],
+  "850": [
+   "tests/test_articles_molecular_832_866.py::test_art850_weber_energy_conservation_residual"
+  ],
+  "851": [
+   "tests/test_articles_molecular_832_866.py::test_art851_vector_potential_axisymmetry_and_far_dipole",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_ampere_force_symmetry]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_ampere_parallel_attraction]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_ampere_force_symmetry]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_ampere_parallel_attraction]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_ampere_force_symmetry]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_ampere_parallel_attraction]"
+  ],
+  "852": [
+   "tests/test_articles_molecular_832_866.py::test_art852_flux_equals_MI",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_verdict_passes[verify_ampere_newton_third_law]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_result_contract[verify_ampere_newton_third_law]",
+   "tests/test_sympy_spine_wave8.py::TestWave8VerifiersPass::test_citation_matches_marker[verify_ampere_newton_third_law]"
+  ],
+  "853": [
+   "tests/test_articles_molecular_832_866.py::test_art853_neumann_quadrature_matches_elliptic_closed_form"
+  ],
+  "854": [
+   "tests/test_articles_molecular_832_866.py::test_art854_self_inductance_golden_formula"
+  ],
+  "855": [
+   "tests/test_articles_molecular_832_866.py::test_art855_induced_emf_neumann_sign_and_golden"
+  ],
+  "856": [
+   "tests/test_articles_molecular_832_866.py::test_art856_reciprocity_with_unequal_discretizations"
+  ],
+  "857": [
+   "tests/test_articles_molecular_832_866.py::test_art857_far_field_dipole_limit"
+  ],
+  "858": [
+   "tests/test_articles_molecular_832_866.py::test_art858_motional_emf_matches_dipole_oracle"
+  ],
+  "859": [
+   "tests/test_articles_molecular_832_866.py::test_art859_compare_theories_structure_and_required_flags"
+  ],
+  "860": [
+   "tests/test_articles_molecular_832_866.py::test_art860_residuals_are_finite_small_and_honest",
+   "tests/test_articles_molecular_832_866.py::test_art860_dipole_residual_independently_zero"
+  ],
+  "861": [
+   "tests/test_articles_molecular_832_866.py::test_art861_checks_are_boolean_and_self_consistent",
+   "tests/test_articles_molecular_832_866.py::test_art861_weber_checks_include_critical_velocity_sign_flip"
+  ],
+  "862": [
+   "tests/test_articles_molecular_832_866.py::test_art862_compare_all_and_synthesis_best_theory"
+  ],
+  "863": [
+   "tests/test_articles_molecular_832_866.py::test_art863_verify_theory_consistency_computed_for_all_theories"
+  ],
+  "864": [
+   "tests/test_articles_molecular_832_866.py::test_art864_differences_and_cross_comparison_computed"
+  ],
+  "865": [
+   "tests/test_articles_molecular_832_866.py::test_art865_wave_speed_and_impedance_goldens",
+   "tests/test_articles_molecular_832_866.py::test_art865_reflection_coefficient_golden"
+  ],
+  "866": [
+   "tests/test_articles_molecular_832_866.py::test_art866_default_dataset_verifies_with_provenance",
+   "tests/test_articles_molecular_832_866.py::test_art866_honesty_wrong_water_datum_flips_the_verdict",
+   "tests/test_articles_molecular_832_866.py::test_art866_wave_speed_check_and_completeness_are_computed"
+  ]
+ },
+ "partial": false,
+ "invocation": {
+  "argv": [
+   "C:\\Users\\antmi\\miniforge3\\Lib\\site-packages\\pytest\\__main__.py",
+   "tests",
+   "-q"
+  ],
+  "args": [
+   "tests"
+  ],
+  "keyword": null,
+  "markexpr": null,
+  "cwd": "C:\\Users\\antmi\\Downloads\\MAXWELL-MODERNIZED-PROGRAM"
+ }
+}

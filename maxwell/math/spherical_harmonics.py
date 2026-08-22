@@ -1475,13 +1475,20 @@ class LegendrePolynomial:
         if self.degree < 0:
             raise ValueError(f"Degree must be non-negative")
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        128,
         675,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate Legendre polynomial",
+    )
+    @maxwell_cite(
+        128,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: Legendre coefficients (Art. 128)",
     )
     def evaluate(self, x: float) -> float:
         """
@@ -1502,13 +1509,20 @@ class LegendrePolynomial:
         """
         return float(legendre(self.degree)(x))
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        129,
         676,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate derivative of Legendre polynomial",
+    )
+    @maxwell_cite(
+        129,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: differentiation of harmonics (Art. 129)",
     )
     def derivative(self, x: float) -> float:
         """
@@ -1545,13 +1559,20 @@ class LegendrePolynomial:
             / 2
         )
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        130,
         677,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate Rodrigues formula",
+    )
+    @maxwell_cite(
+        130,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: Rodrigues-type construction (Art. 130)",
     )
     def rodrigues_formula(self, x: float) -> float:
         """
@@ -1573,13 +1594,20 @@ class LegendrePolynomial:
         # For verification, use the standard evaluation
         return self.evaluate(x)
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        131,
         678,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Check orthogonality",
+    )
+    @maxwell_cite(
+        131,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: orthogonality of harmonics (Art. 131)",
     )
     def orthogonality_check(self, other_degree: int, tolerance: float = 1e-10) -> float:
         """
@@ -1633,13 +1661,20 @@ class SphericalHarmonic:
         if abs(self.m) > self.l:
             raise ValueError(f"|m| must be ≤ l")
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        132,
         685,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Evaluate spherical harmonic",
+    )
+    @maxwell_cite(
+        132,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: solid spherical harmonics (Art. 132)",
     )
     def evaluate(self, theta: float, phi: float) -> complex:
         """
@@ -1666,13 +1701,20 @@ class SphericalHarmonic:
         result = _sph_harm(self.m, self.l, phi, theta)
         return complex(result)
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        133,
         686,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate real spherical harmonic",
+    )
+    @maxwell_cite(
+        133,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: real harmonic forms (Art. 133)",
     )
     def evaluate_real(self, theta: float, phi: float) -> float:
         """
@@ -1701,13 +1743,20 @@ class SphericalHarmonic:
         else:
             return Y.imag * np.sqrt(2)
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        134,
         687,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate intensity",
+    )
+    @maxwell_cite(
+        134,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: harmonic intensity/norm (Art. 134)",
     )
     def intensity(self, theta: float, phi: float) -> float:
         """
@@ -1732,15 +1781,22 @@ class SphericalHarmonic:
         Y = self.evaluate(theta, phi)
         return abs(Y) ** 2
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        135,
         688,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Check normalization",
     )
-    def normalization_check(self, tolerance: float = 1e-10) -> float:
+    @maxwell_cite(
+        135,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: normalization of harmonics (Art. 135)",
+    )
+    def normalization_check(self, tolerance: float = 1e-10) -> dict[str, float | bool]:
         """
         Check normalization of spherical harmonic.
 
@@ -1750,42 +1806,81 @@ class SphericalHarmonic:
 
         where dΩ = sin θ dθ dφ is the solid angle element.
 
+        Quadrature (fixed 2026-08-22, G3 recommendation R3):
+          * θ: Gauss-Legendre quadrature in u = cos θ ∈ [-1, 1]
+            (sin θ dθ = -du), exact for the polynomial-in-u integrand
+            |Yₗᵐ(arccos u)|² of degree 2l whenever l < n_theta.
+          * φ: uniform grid with endpoint EXCLUDED
+            (φ_j = 2πj/n_phi, weight 2π/n_phi).  The integrand is
+            2π-periodic in φ, so the endpoint-excluded rectangle rule
+            is the periodic trapezoid rule — exact for the trig
+            polynomial |e^{imφ}|² = 1.  The pre-fix grid used
+            linspace(0, 2π, n_phi) with weight 2π/(n_phi - 1), which
+            double-counted the identical physical points φ = 0 ≡ 2π
+            and inflated the integral by the exact factor
+            n_phi/(n_phi - 1) = 50/49 ≈ 1.0204.
+          * The ``tolerance`` argument gates the pass/fail decision:
+            ``normalized`` is True iff |integral - 1| < tolerance.
+
         Args:
-            tolerance: Integration tolerance.
+            tolerance: Absolute tolerance for the pass/fail decision
+                on |integral - 1| (default 1e-10).
 
         Returns:
-            Integral value (should be 1).
+            Dictionary with:
+                integral: Computed value of ∫ |Yₗᵐ|² dΩ.
+                expected: Exact normalization (1).
+                absolute_error: |integral - 1|.
+                tolerance: The tolerance used for the decision.
+                normalized: True iff absolute_error < tolerance.
 
         Reference:
             Part IV, Art. 688: Normalization.
         """
-        # Numerical integration over sphere
+        # Numerical integration over sphere (same 50 x 50 budget as the
+        # pre-fix implementation, but with a convergent quadrature).
         n_theta = 50
         n_phi = 50
 
-        theta_vals = np.linspace(0, np.pi, n_theta)
-        phi_vals = np.linspace(0, 2 * np.pi, n_phi)
+        # Gauss-Legendre nodes/weights in u = cos(theta); the solid
+        # angle element sin(theta) d theta is exactly du.
+        u_nodes, u_weights = np.polynomial.legendre.leggauss(n_theta)
+        theta_vals = np.arccos(u_nodes)
 
-        dtheta = np.pi / (n_theta - 1)
-        dphi = 2 * np.pi / (n_phi - 1)
+        # Periodic phi grid, endpoint excluded: phi = 0 and phi = 2 pi
+        # are the SAME physical point and must be counted once.
+        phi_vals = np.linspace(0.0, 2.0 * np.pi, n_phi, endpoint=False)
+        dphi = 2.0 * np.pi / n_phi
 
         integral = 0.0
-        for theta in theta_vals:
+        for theta, w_u in zip(theta_vals, u_weights):
             for phi in phi_vals:
-                weight = np.sin(theta)  # Solid angle element
-                integral += self.intensity(theta, phi) * weight
+                integral += self.intensity(theta, phi) * w_u * dphi
 
-        integral *= dtheta * dphi
+        absolute_error = abs(integral - 1.0)
 
-        return integral
+        return {
+            "integral": integral,
+            "expected": 1.0,
+            "absolute_error": absolute_error,
+            "tolerance": tolerance,
+            "normalized": bool(absolute_error < tolerance),
+        }
 
+    # PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
     @maxwell_cite(
-        136,
         689,
         part=4,
         chapter="Spherical Harmonics",
         theory_class="maxwell_original",
         description="Calculate associated Legendre function",
+    )
+    @maxwell_cite(
+        136,
+        part=1,
+        chapter="Spherical Harmonics",
+        theory_class="maxwell_original",
+        description="Part I origin: associated (tesseral) functions (Art. 136)",
     )
     def associated_legendre(self, theta: float) -> float:
         """
@@ -1808,15 +1903,22 @@ class SphericalHarmonic:
         return float(lpmv(abs(self.m), self.l, x))
 
 
+# PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
-    137,
-    138,
     675,
     676,
     part=4,
     chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate Legendre polynomial Pₗ(x)",
+)
+@maxwell_cite(
+    137,
+    138,
+    part=1,
+    chapter="Spherical Harmonics",
+    theory_class="maxwell_original",
+    description="Part I origin: zonal harmonic series (Arts. 137-138)",
 )
 def calc_legendre_polynomial(l: int, x: float) -> float:
     """
@@ -1842,13 +1944,20 @@ def calc_legendre_polynomial(l: int, x: float) -> float:
     return lp.evaluate(x)
 
 
+# PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
-    139,
     689,
     part=4,
     chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate associated Legendre function Pₗᵐ(x)",
+)
+@maxwell_cite(
+    139,
+    part=1,
+    chapter="Spherical Harmonics",
+    theory_class="maxwell_original",
+    description="Part I origin: associated functions (Art. 139)",
 )
 def calc_associated_legendre(l: int, m: int, x: float) -> float:
     """
@@ -1872,13 +1981,20 @@ def calc_associated_legendre(l: int, m: int, x: float) -> float:
     return float(lpmv(abs(m), l, x))
 
 
+# PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
-    140,
     685,
     part=4,
     chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate spherical harmonic Yₗᵐ(θ, φ)",
+)
+@maxwell_cite(
+    140,
+    part=1,
+    chapter="Spherical Harmonics",
+    theory_class="maxwell_original",
+    description="Part I origin: expansion in surface harmonics (Art. 140)",
 )
 def calc_spherical_harmonic(l: int, m: int, theta: float, phi: float) -> complex:
     """
@@ -1906,9 +2022,8 @@ def calc_spherical_harmonic(l: int, m: int, theta: float, phi: float) -> complex
     return sh.evaluate(theta, phi)
 
 
+# PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
-    141,
-    142,
     690,
     691,
     692,
@@ -1916,6 +2031,14 @@ def calc_spherical_harmonic(l: int, m: int, theta: float, phi: float) -> complex
     chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Calculate multipole expansion of potential",
+)
+@maxwell_cite(
+    141,
+    142,
+    part=1,
+    chapter="Spherical Harmonics",
+    theory_class="maxwell_original",
+    description="Part I origin: potential expansions in harmonics (Arts. 141-142)",
 )
 def calc_multipole_expansion(
     observation_r: float,
@@ -1970,11 +2093,183 @@ def calc_multipole_expansion(
     return potential
 
 
+# ── Arts. 694-695: circular-current capstone of the harmonic development ──
+#
+# Maxwell closes the spherical-harmonic apparatus by applying it to the
+# circular current (Part IV, Ch. XIV).  The two results below are the
+# complementary vector-harmonic solutions of one and the same source:
+#
+#   * Art. 694 — the VECTOR potential A_φ expanded in zonal vector
+#     harmonics (associated functions P_l^1),
+#   * Art. 695 — the SCALAR potential of the equivalent magnetic shell,
+#     ψ = I Ω, with Ω the solid angle the current boundary subtends,
+#     expanded in zonal harmonics P_l.
+#
+# Outside the current they describe the same field: B = ∇ × A = −∇ψ.
+# Both series are exterior expansions (r > a) built from the module's
+# associated-Legendre machinery (scipy lpmv, Condon-Shortley phase),
+# i.e. from the Arts. 675-693 machinery they cap.
+
+
 @maxwell_cite(
-    143,
-    144,
-    145,
-    146,
+    694,
+    part=4,
+    chapter="Circular Currents",
+    theory_class="maxwell_original",
+    description="Vector potential of a circular current by zonal vector harmonics",
+)
+def calc_vector_potential_circular_current(
+    observation_r: float,
+    observation_theta: float,
+    loop_radius: float,
+    current: float,
+    l_max: int = 30,
+) -> float:
+    """
+    Calculate A_φ of a circular current by a zonal vector-harmonic series.
+
+    Art. 694: For a circular current of radius a carrying I abamperes in
+    the plane θ = π/2, the (azimuthal) vector potential outside the loop
+    (r > a) expands in associated Legendre functions as
+
+        A_φ(r, θ) = 2π I a Σ_{l odd ≥ 1} (a^l / r^(l+1))
+                    · P_l¹(0) P_l¹(cos θ) / [l (l + 1)]
+
+    with P_l¹ in the Condon-Shortley convention.  Only odd degrees
+    contribute because P_l¹(0) = 0 for even l.  The leading term
+    (l = 1, P_1¹(0) = −1, P_1¹(cos θ) = −sin θ) is the dipole vector
+    potential A_φ = π I a² sin θ / r² = m sin θ / r² of the magnetic
+    moment m = I π a² (EMU: A_φ in abamperes, lengths in cm).
+
+    Args:
+        observation_r: Radial distance r (cm); must exceed loop_radius.
+        observation_theta: Polar angle θ (radians).
+        loop_radius: Loop radius a (cm).
+        current: Current I (abamperes).
+        l_max: Highest degree retained in the series (odd l ≤ l_max).
+
+    Returns:
+        Vector potential A_φ (abamperes, CGS-EMU).
+
+    Raises:
+        ValueError: If r ≤ a (outside the exterior-expansion domain) or
+            if the geometry is degenerate.
+
+    Reference:
+        Part IV, Art. 694: Vector potential of a circular current
+        expanded in spherical harmonics.
+    """
+    if loop_radius <= 0:
+        raise ValueError("Loop radius must be positive")
+    if observation_r <= loop_radius:
+        raise ValueError(
+            "Exterior expansion requires observation_r > loop_radius"
+        )
+
+    x = np.cos(observation_theta)
+    a = loop_radius
+    a_over_r = a / observation_r
+
+    # Refold the documented series as
+    #   A_phi = 2 pi I sum_{l odd} (a/r)^(l+1) P_l^1(0) P_l^1(cos th)/(l(l+1))
+    # since 2 pi I a * a^l / r^(l+1) = 2 pi I (a/r)^(l+1).
+    series = 0.0
+    a_power = a_over_r  # becomes (a/r)^(l+1) after the in-loop multiply
+    for l in range(1, l_max + 1):
+        a_power *= a_over_r
+        if l % 2 == 0:
+            continue
+        # P_l^1(0) and P_l^1(cos theta), Condon-Shortley convention
+        # (scipy lpmv), exactly the associated functions of Art. 689.
+        p_l1_at_0 = float(lpmv(1, l, 0.0))
+        p_l1_at_x = float(lpmv(1, l, x))
+        series += a_power * p_l1_at_0 * p_l1_at_x / (l * (l + 1))
+
+    return float(2.0 * np.pi * current * series)
+
+
+@maxwell_cite(
+    695,
+    part=4,
+    chapter="Circular Currents",
+    theory_class="maxwell_original",
+    description="Magnetic-shell (solid-angle) scalar potential of a circular current",
+)
+def calc_magnetic_shell_potential_circular_current(
+    observation_r: float,
+    observation_theta: float,
+    loop_radius: float,
+    current: float,
+    l_max: int = 30,
+) -> float:
+    """
+    Calculate the magnetic-shell potential ψ = I Ω of a circular current.
+
+    Art. 695: The field of a closed current outside the wire equals that
+    of a magnetic shell spanning the loop (strength I).  Its scalar
+    potential is ψ = I Ω, where Ω is the solid angle the loop boundary
+    subtends, and the exterior (r > a) zonal-harmonic expansion is
+
+        ψ(r, θ) = −2π I a Σ_{l odd ≥ 1} (a^l / r^(l+1))
+                  · P_l¹(0) P_l(cos θ) / (l + 1)
+
+    so that Ω = ψ / I is dimensionless (steradians).  Only odd degrees
+    contribute.  The leading term (l = 1, P_1¹(0) = −1, P_1(cos θ) =
+    cos θ) is ψ = π I a² cos θ / r² = m cos θ / r², the dipole scalar
+    potential of m = I π a² (EMU: ψ in abamperes ≡ gilberts/4π… the
+    EMU magnetomotive-force unit; lengths in cm).  This is the scalar
+    companion of the Art. 694 vector potential: outside the source
+    B = ∇ × A = −∇ψ.
+
+    Args:
+        observation_r: Radial distance r (cm); must exceed loop_radius.
+        observation_theta: Polar angle θ (radians).
+        loop_radius: Loop radius a (cm).
+        current: Current I (abamperes).
+        l_max: Highest degree retained in the series (odd l ≤ l_max).
+
+    Returns:
+        Magnetic-shell scalar potential ψ = I Ω (abamperes, CGS-EMU).
+
+    Raises:
+        ValueError: If r ≤ a (outside the exterior-expansion domain) or
+            if the geometry is degenerate.
+
+    Reference:
+        Part IV, Art. 695: Magnetic shell equivalent to a circular
+        current; solid angle expanded in spherical harmonics.
+    """
+    if loop_radius <= 0:
+        raise ValueError("Loop radius must be positive")
+    if observation_r <= loop_radius:
+        raise ValueError(
+            "Exterior expansion requires observation_r > loop_radius"
+        )
+
+    x = np.cos(observation_theta)
+    a = loop_radius
+    a_over_r = a / observation_r
+
+    # Refold the documented series as
+    #   psi = -2 pi I sum_{l odd} (a/r)^(l+1) P_l^1(0) P_l(cos th)/(l+1)
+    # since 2 pi I a * a^l / r^(l+1) = 2 pi I (a/r)^(l+1).
+    series = 0.0
+    a_power = a_over_r  # becomes (a/r)^(l+1) after the in-loop multiply
+    for l in range(1, l_max + 1):
+        a_power *= a_over_r
+        if l % 2 == 0:
+            continue
+        # P_l^1(0) (Art. 689 machinery) times the zonal harmonic
+        # P_l(cos theta) (Art. 675 machinery).
+        p_l1_at_0 = float(lpmv(1, l, 0.0))
+        p_l_at_x = float(legendre(l)(x))
+        series += a_power * p_l1_at_0 * p_l_at_x / (l + 1)
+
+    return float(-2.0 * np.pi * current * series)
+
+
+# PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
+@maxwell_cite(
     675,
     685,
     686,
@@ -1985,12 +2280,20 @@ def calc_multipole_expansion(
     691,
     692,
     693,
-    694,
-    695,
     part=4,
     chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Verify spherical harmonic relations",
+)
+@maxwell_cite(
+    143,
+    144,
+    145,
+    146,
+    part=1,
+    chapter="Spherical Harmonics",
+    theory_class="maxwell_original",
+    description="Part I origin: addition theorem and conjugates (Arts. 143-146)",
 )
 def verify_spherical_harmonics(
     l: int = 2,
@@ -2000,7 +2303,7 @@ def verify_spherical_harmonics(
     """
     Verify spherical harmonic relations.
 
-    Art. 675-695: This function verifies:
+    Art. 675-693: This function verifies:
     1. Legendre polynomial orthogonality
     2. Spherical harmonic normalization
     3. Associated Legendre function properties
@@ -2015,7 +2318,10 @@ def verify_spherical_harmonics(
         Dictionary with verification results.
 
     Reference:
-        Part IV, Arts. 675-695: Spherical harmonic verification.
+        Part IV, Arts. 675-693: Spherical harmonic verification.
+        (Arts. 694-695 are computed by the dedicated circular-current
+        functions ``calc_vector_potential_circular_current`` and
+        ``calc_magnetic_shell_potential_circular_current``.)
     """
     # Test Legendre polynomial
     lp = LegendrePolynomial(degree=l)
@@ -2030,7 +2336,7 @@ def verify_spherical_harmonics(
     # Test spherical harmonic normalization
     sh = SphericalHarmonic(l=l, m=m)
     norm_check = sh.normalization_check()
-    norm_error = abs(norm_check - 1.0)
+    norm_error = norm_check["absolute_error"]
 
     # Test associated Legendre
     P_lm = sh.associated_legendre(np.pi / 3)
@@ -2046,7 +2352,7 @@ def verify_spherical_harmonics(
         "orthogonality_same_l": ortho_same,
         "expected_ortho_same": expected_ortho_same,
         "orthogonality_error": ortho_error,
-        "normalization_integral": norm_check,
+        "normalization_integral": norm_check["integral"],
         "normalization_error": norm_error,
         "P_lm_at_pi/3": P_lm,
         "m_valid": m_valid,
@@ -2054,11 +2360,8 @@ def verify_spherical_harmonics(
     }
 
 
+# PARKING-LOT: Arts 128-146 (Part I, Ch. IX) are shared spherical-harmonic machinery cross-references, deliberately retained; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
-    143,
-    144,
-    145,
-    146,
     675,
     685,
     686,
@@ -2069,12 +2372,20 @@ def verify_spherical_harmonics(
     691,
     692,
     693,
-    694,
-    695,
     part=4,
     chapter="Spherical Harmonics",
     theory_class="maxwell_original",
     description="Complete spherical harmonic analysis",
+)
+@maxwell_cite(
+    143,
+    144,
+    145,
+    146,
+    part=1,
+    chapter="Spherical Harmonics",
+    theory_class="maxwell_original",
+    description="Part I origin: addition theorem and conjugates (Arts. 143-146)",
 )
 def analyze_spherical_harmonics(
     l_max: int = 4,
@@ -2127,7 +2438,7 @@ def analyze_spherical_harmonics(
         for m in range(-l, l + 1):
             sh = SphericalHarmonic(l=l, m=m)
             norm = sh.normalization_check()
-            normalization_checks[f"Y_{l}^{m}"] = norm
+            normalization_checks[f"Y_{l}^{m}"] = norm["integral"]
 
     return {
         "l_max": l_max,

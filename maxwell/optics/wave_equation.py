@@ -10,9 +10,9 @@ Implements the electromagnetic wave equation as described by Maxwell in Articles
 - Plane wave solution: E = E₀ exp[i(k·r - ωt)] (Art. 785)
 - Dispersion relation: ω = ck (in vacuum) (Art. 785)
 - Transversality: k·E = 0, k·B = 0 (no longitudinal waves) (Art. 786)
-- E and B relationship: |E| = |B| in vacuum (CGS) (Art. 787)
-- Poynting vector: S = (c/4π) E × B (energy flux) (Art. 788)
-- Energy density: u = (1/8π)(E² + B²) (Art. 789)
+- E and B relationship: |E|/|B_stored| = v in a medium (Art. 787)
+- Poynting vector: S = (c/4π) E × B_gauss (energy flux) (Art. 788)
+- Energy density: u = (1/8π)(E² + B_gauss²) (Art. 789)
 - Wavelength: λ = 2π/k, Frequency: ν = ω/(2π), c = λν (Art. 790)
 
 Maxwell's CGS (Gaussian) formulation:
@@ -23,6 +23,16 @@ Maxwell's CGS (Gaussian) formulation:
     Poynting vector: S = (c/4π) E × B (erg/cm²/s)
     Energy density: u = (1/8π)(E² + B²) (erg/cm³)
     Intensity: I = (c/8π) E₀² (erg/cm²/s)
+
+Convention note (field normalization):
+    Wave objects in this module store the magnetic amplitude from
+    B_stored = (1/ω) k × E, so that |E|/|B_stored| = v = c/√(με)
+    (Art. 787).  The physical Gaussian magnetic field (gauss), for which
+    |E| = |B_gauss| in vacuum, is B_gauss = c · B_stored.  Energy
+    densities and Poynting fluxes computed from stored fields below apply
+    this conversion so that all energetics are the standard Gaussian-CGS
+    values: for a vacuum plane wave u_peak = E₀²/(4π), I = (c/8π)E₀²,
+    and I = c·<u>.
 
 where:
     E = electric field intensity (statvolts/cm)
@@ -404,10 +414,12 @@ class ElectromagneticWave:
         Calculate electromagnetic energy density.
 
         Art. 789: The energy density in an electromagnetic wave is:
-            u = (1/8π)(E² + B²)  (erg/cm³)
+            u = (1/8π)(E² + B_gauss²)  (erg/cm³)
 
-        For a plane wave in vacuum, |E| = |B|, so:
-            u = (1/4π) E²
+        where B_gauss = c · B_stored is the physical Gaussian magnetic
+        field (see module convention note).  For a plane wave in vacuum,
+        |E| = |B_gauss|, so at the field maximum:
+            u = (1/4π) E₀²
 
         Args:
             position: Optional position (cm) — uses amplitude if not provided.
@@ -430,7 +442,8 @@ class ElectromagneticWave:
             B_field = self.amplitude_B
 
         E_sq = np.dot(E_field, E_field)
-        B_sq = np.dot(B_field, B_field)
+        # Physical Gaussian magnetic field: B_gauss = c * B_stored
+        B_sq = CONST.C**2 * np.dot(B_field, B_field)
 
         return (1.0 / (8.0 * np.pi)) * (E_sq + B_sq)
 
@@ -448,10 +461,13 @@ class ElectromagneticWave:
         Calculate Poynting vector (energy flux density).
 
         Art. 788: The Poynting vector gives the energy flux:
-            S = (c/4π) E × B  (erg/cm²/s)
+            S = (c/4π) E × B_gauss  (erg/cm²/s)
 
-        For a plane wave, S points in the k direction (propagation direction)
-        and its magnitude is the intensity.
+        with B_gauss = c · B_stored (see module convention note), i.e.
+            S = (c²/4π) E × B_stored
+
+        For a plane wave, S points in the k direction (propagation
+        direction); its time average is the intensity I = (c/8π)E₀².
 
         Args:
             position: Optional position (cm) — uses amplitude if not provided.
@@ -473,7 +489,8 @@ class ElectromagneticWave:
             E_field = self.amplitude_E
             B_field = self.amplitude_B
 
-        return (CONST.C / (4.0 * np.pi)) * np.cross(E_field, B_field)
+        # S = (c/4pi) E x B_gauss = (c^2/4pi) E x B_stored
+        return (CONST.C**2 / (4.0 * np.pi)) * np.cross(E_field, B_field)
 
     @maxwell_cite(
         788,
@@ -662,7 +679,8 @@ class PlaneWave:
         """
         Calculate electromagnetic energy density.
 
-        Art. 789: u = (1/8π)(E² + B²)  (erg/cm³)
+        Art. 789: u = (1/8π)(E² + B_gauss²)  (erg/cm³), with the physical
+        Gaussian field B_gauss = c · B_stored (see module convention note).
 
         Args:
             position: Optional position (cm) — uses E0 if not provided.
@@ -685,7 +703,8 @@ class PlaneWave:
                 B_field = np.zeros(3)
 
         E_sq = np.dot(E_field, E_field)
-        B_sq = np.dot(B_field, B_field)
+        # Physical Gaussian magnetic field: B_gauss = c * B_stored
+        B_sq = CONST.C**2 * np.dot(B_field, B_field)
 
         return (1.0 / (8.0 * np.pi)) * (E_sq + B_sq)
 
@@ -702,7 +721,8 @@ class PlaneWave:
         """
         Calculate Poynting vector (energy flux).
 
-        Art. 788: S = (c/4π) E × B  (erg/cm²/s)
+        Art. 788: S = (c/4π) E × B_gauss = (c²/4π) E × B_stored
+        (erg/cm²/s), with B_gauss = c · B_stored (module convention note).
 
         Args:
             position: Optional position (cm).
@@ -723,7 +743,8 @@ class PlaneWave:
             else:
                 B_field = np.zeros(3)
 
-        return (CONST.C / (4.0 * np.pi)) * np.cross(E_field, B_field)
+        # S = (c/4pi) E x B_gauss = (c^2/4pi) E x B_stored
+        return (CONST.C**2 / (4.0 * np.pi)) * np.cross(E_field, B_field)
 
     @maxwell_cite(
         788,

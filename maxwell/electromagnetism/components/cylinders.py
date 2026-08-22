@@ -21,10 +21,20 @@ Maxwell's CGS formulation (Arts. 680-688):
         L' = 1/2 + 2*ln(d/a)  (CGS-EMU, per cm)
 
 where:
-    I = current (abamperes)
+    I = current (statamperes, Gaussian CGS)
     a = conductor radius (cm)
     r = radial distance (cm)
     B = magnetic field (gauss)
+
+Unit convention (Gaussian-CGS, explicit-c; defect D-16 class):
+    The 1/c factors in the field and vector-potential formulas are
+    divisions by CONST.C in code: the explicit speed of light of the
+    Gaussian-CGS Ampere law (Treatise Arts. 680-687), NOT a conversion
+    applied to the current argument.  Currents are therefore read in
+    statamperes (ESU); an EMU current in abamperes enters via
+    I = CONST.C * I_emu (1 abampere = CONST.C statamperes), cancelling
+    the 1/c.  The self-inductance formula L' = 1/2 + 2 ln(d/a) is the
+    EMU per-cm form and carries no c.
 
 Category: A (maxwell_original) — Maxwell's cylindrical conductor theory.
 
@@ -69,7 +79,8 @@ def calc_cylindrical_field(
     The field is azimuthal (circulating around the wire).
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         conductor_radius: Wire radius (cm).
         radial_distance: Distance from center (cm).
 
@@ -115,7 +126,8 @@ def calc_hollow_cylinder_field(
         B(r) = 2*I/(c*r) for r >= b
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         inner_radius: Inner radius (cm).
         outer_radius: Outer radius (cm).
         radial_distance: Distance from center (cm).
@@ -202,7 +214,8 @@ def calc_cylinder_vector_potential(
         A_z(r) = -I/c * (1 + 2*ln(r/a))  for r >= a
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         conductor_radius: Wire radius (cm).
         radial_distance: Distance from center (cm).
 
@@ -229,7 +242,8 @@ class CylindricalConductor:
     Art. 680-688: Handles solid and hollow cylindrical conductors.
 
     Attributes:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         radius: Conductor radius (cm).
         inner_radius: Inner radius for hollow conductors (0 for solid).
     """
@@ -292,7 +306,8 @@ def verify_cylindrical_field(
     4. Hollow cylinder B = 0 inside
 
     Args:
-        current: Test current (abamperes).
+        current: Test current (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         radius: Test conductor radius (cm).
         tolerance: Numerical tolerance.
 
@@ -370,7 +385,8 @@ def analyze_cylindrical_conductor(
     4. Hollow vs solid comparison
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         radius: Conductor radius (cm).
         inner_radius: Inner radius for hollow (0 for solid).
 

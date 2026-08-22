@@ -323,14 +323,8 @@ class PolarizationState:
         if abs(self.E1) < 1e-10 and abs(self.E2) < 1e-10:
             psi = 0.0
         else:
-            tan_2psi = (2 * self.E1 * self.E2 * np.cos(self.delta)) / (
-                self.E1**2 - self.E2**2
-            )
-            psi = 0.5 * np.arctan2(
-                tan_2psi * (self.E1**2 - self.E2**2),
-                2 * self.E1 * self.E2 * np.cos(self.delta),
-            )
-            # Alternative formula
+            # tan(2psi) = 2 E1 E2 cos(delta) / (E1^2 - E2^2);
+            # arctan2 resolves the quadrant of the orientation angle.
             psi = 0.5 * np.arctan2(
                 2 * self.E1 * self.E2 * np.cos(self.delta), self.E1**2 - self.E2**2
             )

@@ -13,6 +13,7 @@ REM   --citation-only  Run only citation checks
 REM   --cgs-only       Run only CGS unit tests
 REM   --physics-only   Run only physics formula tests
 REM   --verification   Run equation verification pipeline
+REM   --anti-theater-only  Run only the anti-theater lint (Stage-3 section 5.3)
 REM   --all            Run all checks (default)
 REM   --verbose        Show detailed output
 REM   --help           Show this help message
@@ -29,7 +30,10 @@ REM Configuration
 set "PROJECT_DIR=%~dp0"
 set "MAXWELL_DIR=%PROJECT_DIR%maxwell"
 set "TESTS_DIR=%PROJECT_DIR%tests"
-set "PYTHON=%PYTHON:-python%"
+REM Default PYTHON to `python` on PATH unless the caller supplied one.
+REM (The former `%PYTHON:-python%` modifier expanded to the literal text
+REM `-python` when PYTHON was unset, which blocked the fallback and made
+REM `where %PYTHON%` fail before any check could run.)
 if "%PYTHON%"=="" set "PYTHON=python"
 set "VERBOSE=false"
 set "MODE=all"
@@ -48,6 +52,11 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "COLOR_BLUE=%%b[34m"
   set "COLOR_RESET=%%b[0m"
 )
+
+REM Jump to the entry point. Without this guard execution falls through into
+REM :log_info below and hits its `goto :eof`, so no checks ever ran.
+call :main %*
+exit /b %ERRORLEVEL%
 
 REM =============================================================================
 REM Utility Functions
@@ -303,6 +312,30 @@ if exist "%TESTS_DIR%\run_quality_checks.py" (
 goto :eof
 
 REM =============================================================================
+REM Check 7: Anti-Theater Lint (Stage-3 section 5.3)
+REM =============================================================================
+
+:run_anti_theater_lint
+call :log_header "PHASE 7: Anti-Theater Lint (Stage-3 section 5.3)"
+
+if exist "%PROJECT_DIR%scripts\anti_theater_lint.py" (
+    set /a TOTAL_TESTS+=1
+    echo [INFO] Scanning maxwell/ and tests/ for theater patterns ^(R1-R6^)...
+
+    %PYTHON% "%PROJECT_DIR%scripts\anti_theater_lint.py"
+    if errorlevel 1 (
+        call :record_fail
+        call :log_error "Anti-theater lint found HIGH-severity theater patterns"
+    ) else (
+        call :record_pass
+        call :log_success "Anti-theater lint passed (no HIGH findings)"
+    )
+) else (
+    call :log_info "No anti-theater lint script found. Skipping."
+)
+goto :eof
+
+REM =============================================================================
 REM Help Display
 REM =============================================================================
 
@@ -318,6 +351,7 @@ echo   --citation-only  Run only citation checks
 echo   --cgs-only       Run only CGS unit tests
 echo   --physics-only   Run only physics formula tests
 echo   --verification   Run equation verification pipeline
+echo   --anti-theater-only  Run only the anti-theater lint (Stage-3 section 5.3)
 echo   --all            Run all checks ^(default^)
 echo   --verbose        Show detailed output
 echo   --help           Show this help message
@@ -346,6 +380,7 @@ if /i "%~1"=="--citation-only" set "MODE=citation" & shift & goto :parse_args
 if /i "%~1"=="--cgs-only" set "MODE=cgs" & shift & goto :parse_args
 if /i "%~1"=="--physics-only" set "MODE=physics" & shift & goto :parse_args
 if /i "%~1"=="--verification" set "MODE=verification" & shift & goto :parse_args
+if /i "%~1"=="--anti-theater-only" set "MODE=anti_theater" & shift & goto :parse_args
 if /i "%~1"=="--all" set "MODE=all" & shift & goto :parse_args
 if /i "%~1"=="--verbose" set "VERBOSE=true" & shift & goto :parse_args
 if /i "%~1"=="--help" call :show_help & exit /b 0
@@ -378,6 +413,7 @@ if "%MODE%"=="citation" call :run_citation_tests & goto :print_summary_and_exit
 if "%MODE%"=="cgs" call :run_cgs_tests & goto :print_summary_and_exit
 if "%MODE%"=="physics" call :run_physics_tests & goto :print_summary_and_exit
 if "%MODE%"=="verification" call :run_verification_pipeline & goto :print_summary_and_exit
+if "%MODE%"=="anti_theater" call :run_anti_theater_lint & goto :print_summary_and_exit
 if "%MODE%"=="all" (
     call :run_import_tests || true
     call :run_citation_tests || true
@@ -385,6 +421,7 @@ if "%MODE%"=="all" (
     call :run_physics_tests || true
     call :run_verification_pipeline || true
     call :run_custom_quality_checks || true
+    call :run_anti_theater_lint || true
 )
 
 :print_summary_and_exit

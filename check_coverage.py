@@ -86,7 +86,7 @@ PARTS = {
             ("Ch XIV: Circular Currents", 694, 706),
             ("Ch XV: Electromagnetic Instruments", 707, 729),
             ("Ch XVI: Observations", 730, 751),
-            ("Ch XVII: Coil Comparison", 752, 761),
+            ("Ch XVII: Coil Comparison", 752, 757),
             ("Ch XVIII: Resistance Unit", 758, 767),
             ("Ch XIX: ESU vs EMU", 768, 780),
             ("Ch XX: EM Theory of Light", 781, 805),
@@ -98,10 +98,13 @@ PARTS = {
 }
 
 
-def scan_articles(root_dir: str) -> dict[int, list[str]]:
+def scan_articles(root_dir: str, base_dir: str) -> dict[int, list[str]]:
     """Scan Python files for @maxwell_cite decorators.
 
-    Returns dict mapping article number -> list of source file paths.
+    Returns dict mapping article number -> list of repo-relative source
+    file paths (e.g. "maxwell/optics/wave_equation.py").  Keying on the
+    relative path avoids collisions between same-basename files in
+    different packages.
     """
     articles: dict[int, list[str]] = {}
     cite_re = re.compile(r"@maxwell_cite\(\s*([\d,\s]+)")
@@ -111,13 +114,14 @@ def scan_articles(root_dir: str) -> dict[int, list[str]]:
             if not fname.endswith(".py"):
                 continue
             fpath = os.path.join(dirpath, fname)
+            relpath = os.path.relpath(fpath, base_dir).replace(os.sep, "/")
             try:
                 with open(fpath, "r", encoding="utf-8") as f:
                     content = f.read()
                 for m in cite_re.finditer(content):
                     nums = [int(x) for x in re.findall(r"\d+", m.group(1))]
                     for n in nums:
-                        articles.setdefault(n, []).append(fname)
+                        articles.setdefault(n, []).append(relpath)
             except Exception:
                 pass
     return articles
@@ -131,7 +135,7 @@ def main():
         print(f"ERROR: maxwell/ directory not found at {maxwell_dir}")
         sys.exit(1)
 
-    articles = scan_articles(maxwell_dir)
+    articles = scan_articles(maxwell_dir, base)
     all_covered = set(articles.keys())
 
     print("=" * 70)
@@ -178,8 +182,8 @@ def main():
         for f in files:
             file_counts.setdefault(f, set()).add(art)
 
-    for fname, arts in sorted(file_counts.items(), key=lambda x: -len(x[1])):
-        print(f"  {fname}: {len(arts)} articles")
+    for fpath, arts in sorted(file_counts.items(), key=lambda x: -len(x[1])):
+        print(f"  {fpath}: {len(arts)} articles")
 
 
 if __name__ == "__main__":

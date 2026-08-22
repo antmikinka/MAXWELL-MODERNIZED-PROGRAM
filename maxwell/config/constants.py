@@ -30,6 +30,9 @@ class UniversalConstants:
     #: Speed of light in vacuum, approximate (cm/s) — Maxwell's value ~3e10
     C_APPROX: float = 3.0e10
 
+    #: Standard gravitational acceleration g0 (cm/s^2); defined standard 9.80665 m/s^2
+    G_STANDARD: float = 980.665
+
     # ── CGS electromagnetic units ────────────────────────────────
     #: Vacuum permeability (EMU, dimensionless in CGS-EMU)
     MU0_EMU: float = 1.0

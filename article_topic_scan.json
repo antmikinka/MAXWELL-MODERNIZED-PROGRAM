@@ -1,0 +1,2306 @@
+{
+ "670": [
+  [
+   "maxwell/verification/sympy_verify.py",
+   2706,
+   "(Art. 670)."
+  ],
+  [
+   "maxwell/electromagnetism/components/circular_coils.py",
+   90,
+   "Art. 670-672: On the axis of a circular loop:"
+  ],
+  [
+   "maxwell/electromagnetism/components/circular_coils.py",
+   327,
+   "Art. 670-690: Provides methods for calculating the magnetic field"
+  ],
+  [
+   "maxwell/electromagnetism/components/circular_coils.py",
+   397,
+   "Art. 670-672: This function verifies:"
+  ],
+  [
+   "maxwell/electromagnetism/components/circular_coils.py",
+   534,
+   "Art. 670-677: Comprehensive analysis including:"
+  ],
+  [
+   "maxwell/electromagnetism/current_sheets/boundary_conditions.py",
+   9,
+   "- Tangential H discontinuity (Art. 670-671)"
+  ]
+ ],
+ "671": [
+  [
+   "maxwell/verification/sympy_verify.py",
+   2750,
+   "\"\"\"Verify the toroidal current sheet (Art. 671)."
+  ]
+ ],
+ "672": [
+  [
+   "maxwell/electromagnetism/current_sheets/boundary_conditions.py",
+   10,
+   "- Moving media boundaries (Art. 672-673)"
+  ],
+  [
+   "maxwell/electromagnetism/current_sheets/boundary_conditions.py",
+   711,
+   "Art. 672-673: When the boundary between media moves with velocity v,"
+  ]
+ ],
+ "673": [
+  [
+   "maxwell/electromagnetism/components/circular_coils.py",
+   154,
+   "Art. 673-675: For a coil in the xy-plane centered at origin,"
+  ]
+ ],
+ "674": [
+  [
+   "maxwell/electromagnetism/current_sheets/boundary_conditions.py",
+   11,
+   "- Energy flux at boundaries (Art. 674)"
+  ],
+  [
+   "maxwell/electromagnetism/current_sheets/boundary_conditions.py",
+   793,
+   "Art. 674: The energy flux (Poynting vector) at a boundary determines"
+  ],
+  [
+   "maxwell/electromagnetism/current_sheets/boundary_conditions.py",
+   820,
+   "Part IV, Art. 674: Energy flux at boundaries."
+  ]
+ ],
+ "675": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1464,
+   "Art. 675-685: Maxwell's use of Legendre polynomials in"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1497,
+   "Art. 675: Legendre polynomials satisfy:"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1508,
+   "Part IV, Art. 675: Legendre polynomial definition."
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1927,
+   "Art. 675-676: Legendre polynomials for solving Laplace's equation."
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2263,
+   "# P_l(cos theta) (Art. 675 machinery)."
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2306,
+   "Art. 675-693: This function verifies:"
+  ]
+ ],
+ "676": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1531,
+   "Art. 676: The derivative satisfies:"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1542,
+   "Part IV, Art. 676: Legendre polynomial derivative."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   2214,
+   "\"\"\"Verify (1 - 2xt + t^2)^{-1/2} = sum_l P_l(x) t^l (Art. 676)."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   2263,
+   "(Art. 676)."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   2354,
+   "\"\"\"Verify int |Y_00|^2 dOmega = 1 with Y_00 = 1/sqrt(4 pi) (Art. 676)."
+  ],
+  [
+   "maxwell/electromagnetism/components/circular_coils.py",
+   244,
+   "Art. 676-677: For Helmholtz configuration, coil_separation = coil_radius."
+  ]
+ ],
+ "677": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1581,
+   "Art. 677: Rodrigues' formula:"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1592,
+   "Part IV, Art. 677: Rodrigues' formula."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   2402,
+   "r^-(l+1) P_l(cos theta) for l = 1..4 (Art. 677)."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   2459,
+   "\"\"\"Verify (1-x^2)P_l'' - 2xP_l' + l(l+1)P_l = 0 for l = 0..5 (Art. 677)."
+  ],
+  [
+   "maxwell/electromagnetism/components/solenoids.py",
+   124,
+   "Art. 677-678: For an infinitely long solenoid:"
+  ]
+ ],
+ "678": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1616,
+   "Art. 678: Orthogonality relation:"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1628,
+   "Part IV, Art. 678: Orthogonality relation."
+  ],
+  [
+   "maxwell/electromagnetism/components/circular_coils.py",
+   295,
+   "Art. 678-679: General coaxial coil pair configuration."
+  ]
+ ],
+ "679": [
+  [
+   "maxwell/electromagnetism/components/solenoids.py",
+   158,
+   "Art. 679-681: For Helmholtz coils (separation = radius):"
+  ]
+ ],
+ "682": [
+  [
+   "maxwell/electromagnetism/components/cylinders.py",
+   121,
+   "Art. 682-683: For a hollow cylinder with inner radius a and"
+  ],
+  [
+   "maxwell/electromagnetism/components/solenoids.py",
+   196,
+   "Art. 682-683: The Helmholtz configuration provides uniform field"
+  ]
+ ],
+ "686": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1723,
+   "Art. 686: Real form for physical applications:"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1737,
+   "Part IV, Art. 686: Real spherical harmonics."
+  ],
+  [
+   "maxwell/electromagnetism/components/cylinders.py",
+   211,
+   "Art. 686-687: For a cylindrical conductor:"
+  ]
+ ],
+ "687": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1765,
+   "Art. 687: The intensity is:"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   1779,
+   "Part IV, Art. 687: Spherical harmonic intensity."
+  ]
+ ],
+ "693": [
+  [
+   "maxwell/electromagnetism/optimization/coil_design.py",
+   7,
+   "greatest. With the self-inductance of a circular coil (Art. 693),"
+  ],
+  [
+   "maxwell/electromagnetism/optimization/coil_design.py",
+   66,
+   "Maxwell's formula (Art. 693, applied throughout Art. 706): the"
+  ]
+ ],
+ "694": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2102,
+   "#   * Art. 694 \u2014 the VECTOR potential A_\u03c6 expanded in zonal vector"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2131,
+   "Art. 694: For a circular current of radius a carrying I abamperes in"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2159,
+   "Part IV, Art. 694: Vector potential of a circular current"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2221,
+   "companion of the Art. 694 vector potential: outside the source"
+  ]
+ ],
+ "695": [
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2104,
+   "#   * Art. 695 \u2014 the SCALAR potential of the equivalent magnetic shell,"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2208,
+   "Art. 695: The field of a closed current outside the wire equals that"
+  ],
+  [
+   "maxwell/math/spherical_harmonics.py",
+   2239,
+   "Part IV, Art. 695: Magnetic shell equivalent to a circular"
+  ]
+ ],
+ "698": [
+  [
+   "maxwell/math/elliptic_integrals.py",
+   179,
+   "Art. 698: The incomplete elliptic integral:"
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   191,
+   "Part IV, Art. 698: Third kind elliptic integral."
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   623,
+   "Art. 698: \u03a0(n; \u03c6, k) = \u222b\u2080^\u03c6 d\u03b8 / (1 + n sin\u00b2 \u03b8) sqrt(1 - k\u00b2 sin\u00b2 \u03b8)"
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   634,
+   "Part IV, Art. 698: Third kind elliptic integral."
+  ],
+  [
+   "maxwell/electromagnetism/forces/coil_forces.py",
+   124,
+   "Art. 698-699: The torque is:"
+  ]
+ ],
+ "699": [
+  [
+   "maxwell/math/elliptic_integrals.py",
+   218,
+   "Art. 699: Jacobian elliptic functions are inverses of"
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   232,
+   "Part IV, Art. 699: Jacobian elliptic functions."
+  ]
+ ],
+ "700": [
+  [
+   "maxwell/math/elliptic_integrals.py",
+   252,
+   "Art. 700: The Landen transformation relates elliptic"
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   266,
+   "Part IV, Art. 700: Landen transformation."
+  ],
+  [
+   "maxwell/electromagnetism/coil_comparison/coil_comparison.py",
+   96,
+   "Art. 700: definition of G1."
+  ],
+  [
+   "maxwell/electromagnetism/coil_comparison/coil_comparison.py",
+   330,
+   "Art. 754, eq. (6) (with the Art. 700 expansion): when the small"
+  ],
+  [
+   "maxwell/electromagnetism/coil_comparison/coil_comparison.py",
+   336,
+   "where g_n are the Art. 700 coefficients of the small coil (g1 its"
+  ],
+  [
+   "maxwell/electromagnetism/coil_comparison/coil_comparison.py",
+   376,
+   "Art. 754 (value quoted from Art. 700): for a small coil of mean"
+  ]
+ ],
+ "701": [
+  [
+   "maxwell/math/elliptic_integrals.py",
+   291,
+   "Art. 701: The complementary modulus:"
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   302,
+   "Part IV, Art. 701: Complementary modulus."
+  ]
+ ],
+ "702": [
+  [
+   "maxwell/math/elliptic_integrals.py",
+   312,
+   "parameter convention itself is carried \u2014 with its Art. 702"
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   316,
+   "hijack Art. 702 coverage."
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   409,
+   "Art. 696 (definition) and Art. 702 (parameter convention):"
+  ],
+  [
+   "maxwell/math/elliptic_integrals.py",
+   456,
+   "Art. 697 (definition) and Art. 702 (parameter convention):"
+  ],
+  [
+   "maxwell/electromagnetism/vis/circular_fields.py",
+   1,
+   "\"\"\"maxwell.electromagnetism.vis.circular_fields \u2014 Circular field visualization (Art. 702)."
+  ],
+  [
+   "maxwell/electromagnetism/vis/circular_fields.py",
+   6,
+   "Maxwell's CGS formulation (Art. 702):"
+  ]
+ ],
+ "703": [
+  [
+   "maxwell/verification/sympy_verify.py",
+   1205,
+   "\"\"\"Verify K(k) = (pi/2) sum_n [((2n-1)!!/(2n)!!)^2 k^{2n}] (Art. 703)."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   1259,
+   "term by term (Art. 703)."
+  ]
+ ],
+ "704": [
+  [
+   "maxwell/verification/sympy_verify.py",
+   1306,
+   "\"\"\"Verify dK/dm = (E(m) - (1-m)K(m))/(2 m (1-m)) (Art. 704)."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   1378,
+   "\"\"\"Verify dE/dm = (E(m) - K(m))/(2m) (Art. 704)."
+  ]
+ ],
+ "705": [
+  [
+   "maxwell/verification/sympy_verify.py",
+   1447,
+   "\"\"\"Verify the Landen descending transformation of K (Art. 705):"
+  ]
+ ],
+ "708": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   136,
+   "1. Mean radius: wind at the largest available radius. Art. 708 requires"
+  ]
+ ],
+ "709": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   114,
+   "neglected at this tier (they are the subject of the Art. 709"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   185,
+   "# Art. 709: Mathematical theory of the galvanometer"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   202,
+   "\"\"\"Calculate needle deflection angle for a given current (Art. 709)."
+  ]
+ ],
+ "710": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   290,
+   "# Art. 710: Tangent and sine galvanometer principles"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   296,
+   "\"\"\"Tangent galvanometer (Art. 710)."
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   352,
+   "\"\"\"Sine galvanometer (Art. 710)."
+  ]
+ ],
+ "711": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   395,
+   "# Art. 711: Single-coil galvanometer"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   401,
+   "\"\"\"Galvanometer with a single circular coil (Art. 711)."
+  ]
+ ],
+ "714": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   498,
+   "# Art. 714: Four-coil galvanometer"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   504,
+   "\"\"\"Galvanometer with four coils (Art. 714)."
+  ]
+ ],
+ "715": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   562,
+   "# Art. 715: Three-coil galvanometer"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   568,
+   "\"\"\"Galvanometer with three coils (Art. 715)."
+  ]
+ ],
+ "716": [
+  [
+   "maxwell/instruments/optimization/sensitivity.py",
+   40,
+   "\"\"\"Optimize wire dimensions for galvanometer sensitivity (Art. 716)."
+  ]
+ ],
+ "717": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   618,
+   "# Art. 717: Design of a sensitive galvanometer"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   634,
+   "\"\"\"Design a sensitive galvanometer from a given length of wire (Art. 717)."
+  ]
+ ],
+ "718": [
+  [
+   "maxwell/instruments/optimization/sensitivity.py",
+   95,
+   "\"\"\"Sensibility figure of merit g(R) = sqrt(R)/(R + R_ext) (Art. 718)."
+  ],
+  [
+   "maxwell/instruments/optimization/sensitivity.py",
+   131,
+   "\"\"\"Theory of greatest sensibility (Art. 718)."
+  ]
+ ],
+ "719": [
+  [
+   "maxwell/instruments/optimization/sensitivity.py",
+   204,
+   "\"\"\"Apply the law of wire thickness for sensibility (Art. 719)."
+  ]
+ ],
+ "720": [
+  [
+   "maxwell/instruments/galvanometers.py",
+   694,
+   "# Art. 720: Uniform-wire galvanometer and zero-deflection sensitivity"
+  ],
+  [
+   "maxwell/instruments/galvanometers.py",
+   728,
+   "\"\"\"Galvanometer with uniform thickness wire (Art. 720)."
+  ],
+  [
+   "maxwell/instruments/optimization/sensitivity.py",
+   4,
+   "(the uniform-wire instrument of Art. 720 lives in"
+  ]
+ ],
+ "721": [],
+ "722": [
+  [
+   "maxwell/instruments/suspended_coil.py",
+   150,
+   "\"\"\"Thomson's sensitive suspended coil (Art. 722)."
+  ]
+ ],
+ "723": [],
+ "724": [
+  [
+   "maxwell/instruments/suspended_coil.py",
+   225,
+   "\"\"\"Thomson's combined suspended coil and galvanometer (Art. 724)."
+  ]
+ ],
+ "725": [
+  [
+   "maxwell/instruments/dynamometers.py",
+   37,
+   "\"\"\"Weber's electrodynamometer (Art. 725)."
+  ]
+ ],
+ "728": [],
+ "729": [
+  [
+   "maxwell/instruments/dynamometers.py",
+   283,
+   "\"\"\"Electrodynamometer with torsion arm (Art. 729)."
+  ]
+ ],
+ "730": [
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   109,
+   "Art. 730: For a lossless or high-frequency line:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   117,
+   "Part IV, Art. 730: Signal velocity."
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   423,
+   "Art. 730: For a transmission line:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   435,
+   "Part IV, Art. 730: Signal velocity formula."
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   575,
+   "Art. 730-735: This function verifies:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   664,
+   "Art. 730-735: Comprehensive analysis including:"
+  ]
+ ],
+ "731": [
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   134,
+   "Art. 731: For a lossless line:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   144,
+   "Part IV, Art. 731: Characteristic impedance."
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   457,
+   "Art. 731: For a lossless line:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   469,
+   "Part IV, Art. 731: Characteristic impedance."
+  ]
+ ],
+ "732": [
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   161,
+   "Art. 732: For a transmission line:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   178,
+   "Part IV, Art. 732: Attenuation constant."
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   494,
+   "Art. 732-733: The propagation constant is:"
+  ]
+ ],
+ "733": [
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   200,
+   "Art. 733: The phase constant determines wave phase shift:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   214,
+   "Part IV, Art. 733: Phase constant."
+  ]
+ ],
+ "734": [
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   235,
+   "Art. 734: The delay is:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   243,
+   "Part IV, Art. 734: Signal delay."
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   532,
+   "Art. 734: The delay is:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   545,
+   "Part IV, Art. 734: Signal delay."
+  ]
+ ],
+ "735": [
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   262,
+   "Art. 735: For a forward-traveling wave:"
+  ],
+  [
+   "maxwell/signal_processing/telegraphy.py",
+   277,
+   "Part IV, Art. 735: Voltage along line."
+  ]
+ ],
+ "736": [
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   139,
+   "Art. 736-737: For a tangent galvanometer:"
+  ],
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   166,
+   "Art. 736-737: Rearranging the tangent formula:"
+  ],
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   196,
+   "Art. 736-738: The field at the center of a circular coil:"
+  ]
+ ],
+ "737": [],
+ "738": [],
+ "739": [
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   7,
+   "- Sine galvanometer (Art. 739)"
+  ],
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   305,
+   "Art. 739: The sine galvanometer differs from the tangent"
+  ],
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   356,
+   "Art. 739: For a sine galvanometer:"
+  ],
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   379,
+   "Art. 739: Rearranging the sine formula:"
+  ],
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   416,
+   "Art. 739: Complete analysis of a sine galvanometer:"
+  ],
+  [
+   "maxwell/electromagnetism/measurements/galvanometers_extended.py",
+   439,
+   "Part IV, Art. 739: Sine galvanometer."
+  ]
+ ],
+ "741": [],
+ "742": [],
+ "743": [],
+ "744": [],
+ "746": [],
+ "747": [],
+ "748": [],
+ "749": [],
+ "759": [
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   137,
+   "Art. 759-760: From the induced EMF and current:"
+  ],
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   396,
+   "Art. 759-760: R = EMF / I"
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   3200,
+   "\"\"\"Verify the capacitor discharge law (Art. 759)."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   3239,
+   "\"\"\"Verify the meaning of the RC time constant (Art. 759)."
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   3492,
+   "\"\"\"Verify the capacitor energy U = Q^2/(2C) (Art. 759)."
+  ]
+ ],
+ "765": [
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   30,
+   "Capacitor-discharge (leak) method (Art. 765):"
+  ],
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   587,
+   "Art. 765: A capacitor of (independently known) capacitance C is"
+  ],
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   617,
+   "Part IV, Art. 765: Capacitor-discharge determination of"
+  ]
+ ],
+ "766": [
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   34,
+   "Recoil damping correction (Art. 766):"
+  ],
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   646,
+   "Art. 766: The recoil determination (Art. 758) reads the transient"
+  ],
+  [
+   "maxwell/calibration/absolute_resistance.py",
+   675,
+   "Part IV, Art. 766: Corrections of the recoil method."
+  ]
+ ],
+ "769": [
+  [
+   "maxwell/experiments/ratio_v/theory.py",
+   147,
+   "Art. 769: the ratio of the electrostatic to the electromagnetic unit"
+  ],
+  [
+   "maxwell/experiments/ratio_v/theory.py",
+   268,
+   "Art. 769: ``[q_ESU]/[q_EMU] = L T^-1`` (and analogues for the other"
+  ],
+  [
+   "maxwell/experiments/ratio_v/theory.py",
+   303,
+   "The derivation (Art. 769) fixes only the *dimensions* of the ratio;"
+  ]
+ ],
+ "770": [
+  [
+   "maxwell/experiments/ratio_v/theory.py",
+   337,
+   "Art. 770: a moving charged body is an electric current.  For a ring"
+  ],
+  [
+   "maxwell/experiments/ratio_v/theory.py",
+   400,
+   "Art. 770: with ``H = q omega / (v a)`` the measured centre field of"
+  ]
+ ],
+ "771": [
+  [
+   "maxwell/core/units/dimensions.py",
+   315,
+   "The key insight (Art. 771-781): the ratio ESU/EMU for any quantity equals"
+  ],
+  [
+   "maxwell/core/units/dimensions.py",
+   626,
+   "Art. 771-773: Maxwell's fundamental discovery \u2014 the ratio of ESU to EMU"
+  ],
+  [
+   "maxwell/core/units/dimensions.py",
+   729,
+   "Art. 771-781: This is Maxwell's crowning achievement \u2014 demonstrating that"
+  ],
+  [
+   "maxwell/core/units/dimensions.py",
+   905,
+   "Art. 771-773: Maxwell provided tables for converting between practical"
+  ],
+  [
+   "maxwell/experiments/ratio_v/condensers.py",
+   6,
+   "* Weber and Kohlrausch's method (Art. 771)"
+  ],
+  [
+   "maxwell/experiments/ratio_v/condensers.py",
+   60,
+   "Art. 771 programme: the ESU capacitance is obtained by geometric"
+  ]
+ ],
+ "772": [
+  [
+   "maxwell/verification/sympy_verify.py",
+   3864,
+   "\"\"\"Verify the charge-unit ratio is c (Art. 772)."
+  ],
+  [
+   "maxwell/experiments/ratio_v/condensers.py",
+   7,
+   "* Thomson's electrometer method (Art. 772)"
+  ]
+ ],
+ "774": [
+  [
+   "maxwell/verification/sympy_verify.py",
+   3965,
+   "\"\"\"Verify the ESU capacitance dimension is length (Art. 774)."
+  ],
+  [
+   "maxwell/experiments/ratio_v/condensers.py",
+   9,
+   "* Jenkin's method by intermittent condenser discharge (Art. 774)"
+  ]
+ ],
+ "775": [
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   7,
+   "* Intermittent-current method (Art. 775)"
+  ],
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   134,
+   "Art. 775: a condenser is charged and discharged ``frequency`` times"
+  ]
+ ],
+ "776": [
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   8,
+   "* Condenser and wippe in a Wheatstone bridge (Art. 776)"
+  ],
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   185,
+   "Art. 776: a condenser in a bridge arm is charged and discharged"
+  ]
+ ],
+ "778": [
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   10,
+   "* Capacity compared with self-induction (Art. 778)"
+  ],
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   317,
+   "Art. 778: an LC circuit oscillates with ``omega = 1/sqrt(L C)`` when"
+  ]
+ ],
+ "779": [
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   11,
+   "* Coil and condenser combined (Art. 779)"
+  ],
+  [
+   "maxwell/experiments/ratio_v/combined.py",
+   364,
+   "Art. 779: a coil of known EMU inductance ``L`` (cm) and a condenser"
+  ]
+ ],
+ "780": [
+  [
+   "maxwell/experiments/ratio_v/theory.py",
+   433,
+   "Art. 780: for one and the same conductor the numeric readings obey"
+  ]
+ ],
+ "781": [
+  [
+   "maxwell/optics/wave_equation.py",
+   73,
+   "Art. 781-791: This dataclass encapsulates the complete state of an"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   1536,
+   "Art. 781-791: This class provides a unified interface for all"
+  ],
+  [
+   "maxwell/core/units/dimensions.py",
+   751,
+   "Part IV, Art. 781: Numerical value of the ratio."
+  ],
+  [
+   "maxwell/core/units/dimensions.py",
+   1124,
+   "print(\"\\n--- Speed of Light Relationship Verification (Art. 781) ---\")"
+  ],
+  [
+   "maxwell/electromagnetism/waves/wave_equation.py",
+   6,
+   "- Wave equation derivation from field equations (Art. 781)"
+  ],
+  [
+   "maxwell/electromagnetism/waves/wave_equation.py",
+   55,
+   "Art. 781-785: An electromagnetic wave is characterized by:"
+  ]
+ ],
+ "782": [
+  [
+   "maxwell/config/constants.py",
+   22,
+   "- Speed of light: Part IV, Ch. XX (EM theory of light), Art. 782"
+  ],
+  [
+   "maxwell/config/constants.py",
+   27,
+   "#: Speed of light in vacuum (cm/s) \u2014 Art. 782"
+  ],
+  [
+   "maxwell/electromagnetism/waves/wave_equation.py",
+   7,
+   "- Electromagnetic nature of light (Art. 782)"
+  ]
+ ],
+ "783": [
+  [
+   "maxwell/optics/wave_equation.py",
+   6,
+   "- Derivation from Maxwell's equations in vacuum (Art. 783)"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   7,
+   "- Wave equation for E: \u2207\u00b2E = (\u03bc\u03b5/c\u00b2) \u00b7 \u2202\u00b2E/\u2202t\u00b2 (Art. 783)"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   8,
+   "- Wave equation for B: \u2207\u00b2B = (\u03bc\u03b5/c\u00b2) \u00b7 \u2202\u00b2B/\u2202t\u00b2 (Art. 783)"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   535,
+   "Art. 783-791: This class provides methods for evaluating plane wave"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   591,
+   "Art. 783-785: The plane wave solution is:"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   784,
+   "Art. 783: Maxwell's equations in vacuum (\u03c1=0, J=0):"
+  ]
+ ],
+ "784": [
+  [
+   "maxwell/optics/wave_equation.py",
+   9,
+   "- Wave speed: v = c/\u221a(\u03bc\u03b5) \u2014 in vacuum with \u03bc=1, \u03b5=1: v = c (Art. 784)"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   156,
+   "Part IV, Art. 784: Wave speed relation."
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   188,
+   "Part IV, Art. 784: Wave speed formula."
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   853,
+   "Art. 784: The speed of electromagnetic waves in a medium with"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   880,
+   "Part IV, Art. 784: Wave speed formula."
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   1599,
+   "Art. 784: v = c/\u221a(\u03bc\u03b5)"
+  ]
+ ],
+ "786": [
+  [
+   "maxwell/optics/velocity.py",
+   47,
+   "Art. 786-787: Maxwell showed that electromagnetic waves propagate"
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   78,
+   "Art. 786-787: The velocity is:"
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   101,
+   "Art. 786: The refractive index is:"
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   109,
+   "Part IV, Art. 786: Refractive index."
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   124,
+   "Art. 786: \u03bb = v / \u03bd"
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   133,
+   "Part IV, Art. 786: Wavelength in medium."
+  ]
+ ],
+ "787": [
+  [
+   "maxwell/optics/velocity.py",
+   150,
+   "Art. 787: k = 2\u03c0 / \u03bb = \u03c9 / v"
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   159,
+   "Part IV, Art. 787: Wave number."
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   404,
+   "Art. 787: The wave number is:"
+  ],
+  [
+   "maxwell/optics/velocity.py",
+   418,
+   "Part IV, Art. 787: Wave number formula."
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   13,
+   "- E and B relationship: |E|/|B_stored| = v in a medium (Art. 787)"
+  ],
+  [
+   "maxwell/optics/wave_equation.py",
+   30,
+   "(Art. 787).  The physical Gaussian magnetic field (gauss), for which"
+  ]
+ ],
+ "790": [
+  [
+   "maxwell/optics/constants.py",
+   338,
+   "Art. 790: \u03bb = \u03bb_0 / n"
+  ],
+  [
+   "maxwell/optics/constants.py",
+   347,
+   "Part IV, Art. 790: Wavelength in medium."
+  ],
+  [
+   "maxwell/optics/constants.py",
+   532,
+   "Art. 790: The frequency is:"
+  ],
+  [
+   "maxwell/optics/constants.py",
+   545,
+   "Part IV, Art. 790: Frequency-wavelength relation."
+  ],
+  [
+   "maxwell/optics/constants.py",
+   572,
+   "Art. 790: The wavelength in a medium is:"
+  ],
+  [
+   "maxwell/optics/constants.py",
+   588,
+   "Part IV, Art. 790: Wavelength from frequency."
+  ]
+ ],
+ "795": [
+  [
+   "maxwell/optics/metals.py",
+   89,
+   "Art. 795-800: Maxwell's theory of metallic reflection treats metals"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   125,
+   "Art. 795: For s-polarization (E perpendicular to plane of incidence):"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   138,
+   "Part IV, Art. 795: Fresnel reflection (perpendicular)."
+  ],
+  [
+   "maxwell/optics/metals.py",
+   351,
+   "Art. 795: Lookup table of complex refractive indices for"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   367,
+   "Part IV, Art. 795: Metal optical constants."
+  ],
+  [
+   "maxwell/optics/metals.py",
+   404,
+   "Art. 795-796: For a metal with complex refractive index \u00f1 = n + i\u03ba:"
+  ]
+ ],
+ "796": [
+  [
+   "maxwell/optics/metals.py",
+   170,
+   "Art. 796: For p-polarization (E parallel to plane of incidence):"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   181,
+   "Part IV, Art. 796: Fresnel reflection (parallel)."
+  ]
+ ],
+ "798": [
+  [
+   "maxwell/optics/metals.py",
+   250,
+   "Art. 798: The skin depth is:"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   263,
+   "Part IV, Art. 798: Skin depth."
+  ],
+  [
+   "maxwell/optics/metals.py",
+   504,
+   "Art. 798: The skin depth is the penetration depth at which"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   520,
+   "Part IV, Art. 798: Skin depth formula."
+  ],
+  [
+   "maxwell/optics/metals.py",
+   757,
+   "Art. 798: For a good conductor, the skin depth is:"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   771,
+   "Part IV, Art. 798: Skin depth in conductor."
+  ]
+ ],
+ "799": [
+  [
+   "maxwell/optics/metals.py",
+   283,
+   "Art. 799: The absorption coefficient is:"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   296,
+   "Part IV, Art. 799: Absorption coefficient."
+  ],
+  [
+   "maxwell/optics/metals.py",
+   550,
+   "Art. 799: The absorption coefficient \u03b1 determines intensity decay:"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   569,
+   "Part IV, Art. 799: Absorption coefficient."
+  ],
+  [
+   "maxwell/optics/metals.py",
+   797,
+   "Art. 799: The absorption coefficient is the inverse of skin depth:"
+  ],
+  [
+   "maxwell/optics/metals.py",
+   808,
+   "Part IV, Art. 799: Absorption coefficient."
+  ]
+ ],
+ "804": [
+  [
+   "maxwell/optics/crystals.py",
+   83,
+   "Art. 804-805: Maxwell's theory of light in anisotropic crystals,"
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   138,
+   "Art. 804: The ordinary ray has refractive index n_o and"
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   147,
+   "Part IV, Art. 804: Ordinary ray velocity."
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   187,
+   "Art. 804-805: The phase retardation after passing through"
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   220,
+   "Art. 804: The path difference is:"
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   231,
+   "Part IV, Art. 804: Path difference."
+  ]
+ ],
+ "805": [
+  [
+   "maxwell/optics/crystals.py",
+   162,
+   "Art. 805: The extraordinary ray has refractive index n_e"
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   171,
+   "Part IV, Art. 805: Extraordinary ray velocity."
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   250,
+   "Art. 805: For the extraordinary ray propagating at angle \u03b8"
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   262,
+   "Part IV, Art. 805: Angle-dependent refractive index."
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   724,
+   "Art. 805: For extraordinary ray propagating at angle theta"
+  ],
+  [
+   "maxwell/optics/crystals.py",
+   741,
+   "Part IV, Art. 805: Effective refractive index."
+  ]
+ ],
+ "806": [
+  [
+   "maxwell/magneto_optics/rotation.py",
+   49,
+   "\"re-extinguish the ray (Faraday's observation, Art. 806-807).\","
+  ]
+ ],
+ "807": [
+  [
+   "maxwell/magneto_optics/rotation.py",
+   57,
+   "Maxwell 1873, Art. 807: a ray of plane-polarized light is transmitted"
+  ]
+ ],
+ "808": [
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   90,
+   "From Faraday's law theta = V B L (Art. 808) and the kinematic"
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   344,
+   "rotation_per_length: V B (rad/cm, Art. 808)."
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   85,
+   "polarization rotates by an angle (Maxwell 1873, Art. 808):"
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   121,
+   "B = theta / (V * L)  \u2014 inversion of Verdet's law (Art. 808)."
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   136,
+   "description=\"Computed form of the three laws of Art. 808: rotation \""
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   146,
+   "\"\"\"Compute the laws of Faraday rotation (Art. 808)."
+  ]
+ ],
+ "809": [
+  [
+   "maxwell/magneto_optics/rotation.py",
+   195,
+   "\"\"\"Apply Verdet's sign rule for the rotation (Art. 809)."
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   197,
+   "Maxwell 1873, Art. 809: \"In diamagnetic substances, the direction in"
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   223,
+   "# produce the field (Art. 809)."
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   301,
+   "\"\"\"Collection of Verdet constants for various materials (Art. 809)."
+  ]
+ ],
+ "810": [
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   271,
+   "round trips (cf. Art. 810): a reciprocal (natural) rotation cancels"
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   283,
+   "rotation is non-reciprocal, Art. 810)."
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   237,
+   "\"\"\"Model natural optical rotation (quartz, turpentine) (Art. 810)."
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   239,
+   "Maxwell 1873, Art. 810: \"There are other substances, which,"
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   267,
+   "\"rotation, cancelled for natural rotation (Art. 810).\","
+  ],
+  [
+   "maxwell/magneto_optics/rotation.py",
+   272,
+   "Maxwell 1873, Art. 810: \"if the ray of light, after passing through"
+  ]
+ ],
+ "811": [
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   15,
+   "the two circular components (Art. 811).  This convention is pinned by"
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   43,
+   "\"\"\"Kinematical analysis of the two circular components (Art. 811)."
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   91,
+   "identity theta = (k_R - k_L) L / 2 (Art. 811) one obtains"
+  ]
+ ],
+ "813": [
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   121,
+   "\"\"\"Right or left-handed circularly polarized ray (Art. 813)."
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   125,
+   "propagation axis at constant magnitude (Art. 813: the tip of the"
+  ],
+  [
+   "maxwell/verification/sympy_verify.py",
+   3139,
+   "\"\"\"Verify Verdet's law of linear accumulation (Art. 813)."
+  ]
+ ],
+ "814": [
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   200,
+   "\"\"\"Velocity split in a naturally rotatory medium (Art. 814)."
+  ]
+ ],
+ "815": [
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   238,
+   "\"\"\"Velocity split induced by a magnetic force along the ray (Art. 815)."
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   240,
+   "Maxwell 1873, Art. 815: the helix which represents a given ray has"
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   152,
+   "# Delta k = 2 V B; Delta v = v^2 Delta k / omega (Art. 815 form)"
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   346,
+   "velocity_split: v_phase^2 (2 V B) / omega (cm/s, Art. 815)."
+  ]
+ ],
+ "816": [
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   289,
+   "\"\"\"Transverse vector disturbance of light (Art. 816)."
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   291,
+   "Maxwell 1873, Art. 816: \"The disturbance which constitutes light,"
+  ]
+ ],
+ "817": [
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   17,
+   "* Art. 817 parametrisation (used by :func:`derive_circular_kinematics`):"
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   133,
+   "sense in the Art. 817 convention)."
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   340,
+   "\"\"\"Kinematic equations of a circularly polarized ray (Art. 817)."
+  ],
+  [
+   "maxwell/magneto_optics/circular_polarization.py",
+   342,
+   "Maxwell 1873, Art. 817, equations (1)-(4):"
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   138,
+   "v_right is the accelerated component (Art. 817: \"that"
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   179,
+   "corresponding phase velocities are v = n/q (Art. 817).  By Vieta's"
+  ]
+ ],
+ "818": [
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   52,
+   "\"\"\"Potential and kinetic energy of the medium (Art. 818)."
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   54,
+   "Maxwell 1873, Art. 818: \"The potential energy, V, of the system"
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   74,
+   "(the two keys carry the same value, per Art. 818)."
+  ]
+ ],
+ "820": [
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   259,
+   "\"\"\"Compute the argument that a real rotation is required (Art. 820)."
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   261,
+   "Maxwell 1873, Art. 820: every term of the kinetic energy T is \"of two"
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   290,
+   "angular velocity in the medium (eqs. (7)-(8), Art. 820)."
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   348,
+   "round-trip discriminant of Art. 820."
+  ]
+ ],
+ "821": [
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   319,
+   "\"\"\"Computed summary of the magneto-optic results (Art. 821)."
+  ],
+  [
+   "maxwell/magneto_optics/energy_analysis.py",
+   321,
+   "Maxwell 1873, Art. 821 restates the conclusions of Arts. 806-820"
+  ]
+ ],
+ "823": [
+  [
+   "maxwell/vortex_engine/helmholtz_law.py",
+   1,
+   "\"\"\"maxwell.vortex_engine.helmholtz_law \u2014 Vortex variation (Art. 823)."
+  ],
+  [
+   "maxwell/vortex_engine/helmholtz_law.py",
+   4,
+   "vortices (Maxwell 1873, Part IV, Ch. XXI, Art. 823, citing Helmholtz,"
+  ],
+  [
+   "maxwell/vortex_engine/helmholtz_law.py",
+   27,
+   "\"\"\"Vortex variation under a distortion of the medium (Art. 823)."
+  ],
+  [
+   "maxwell/vortex_engine/helmholtz_law.py",
+   29,
+   "Maxwell 1873, Art. 823: if the axis of a vortex is turned from PQ to"
+  ],
+  [
+   "maxwell/vortex_engine/helmholtz_law.py",
+   70,
+   "\"\"\"Stretching factor of a vortex axis under distortion (Art. 823)."
+  ],
+  [
+   "maxwell/vortex_engine/__init__.py",
+   38,
+   "# Helmholtz law (Art. 823)"
+  ]
+ ],
+ "827": [
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   4,
+   "of Art. 826 by Lagrange's equations (Art. 827), and their solution for a"
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   63,
+   "\"\"\"Equations of motion for a plane circular wave (Art. 827)."
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   65,
+   "Maxwell 1873, Art. 827: the components of the impressed force per"
+  ]
+ ],
+ "828": [
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   6,
+   "left-circular components (Art. 828)."
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   43,
+   "\"\"\"Q(q) = A_0 q^2 - A_1 q^4 (Art. 828 eq. (16))."
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   82,
+   "propagation (Art. 828 eq. (18))."
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   117,
+   "\"\"\"Solve the free-propagation condition for n (Art. 828, eq. 18)."
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   175,
+   "\"\"\"Velocities of the circular components in the vortex medium (Art. 828)."
+  ],
+  [
+   "maxwell/vortex_engine/equations_of_motion.py",
+   177,
+   "Maxwell 1873, Art. 828: the quadratic (18) has two roots n, one for"
+  ]
+ ],
+ "829": [
+  [
+   "maxwell/vortex_engine/magnetic_rotation.py",
+   4,
+   "from the vortex theory (Art. 829, equations (21)-(26)) and its"
+  ],
+  [
+   "maxwell/vortex_engine/magnetic_rotation.py",
+   27,
+   "#: exactly Art. 829 eq. (26).  Fraunhofer wavelengths in cm: C (red)"
+  ],
+  [
+   "maxwell/vortex_engine/magnetic_rotation.py",
+   58,
+   "\"\"\"Coefficient of magnetic rotation of the medium (Art. 829, eq. 25)."
+  ],
+  [
+   "maxwell/vortex_engine/magnetic_rotation.py",
+   60,
+   "Maxwell 1873, Art. 829: \"Writing 4 pi^2 C / (v rho) = m (25) we may"
+  ],
+  [
+   "maxwell/vortex_engine/magnetic_rotation.py",
+   98,
+   "Maxwell 1873, Art. 829.  With lambda the wave-length in air, v the"
+  ]
+ ],
+ "831": [
+  [
+   "maxwell/vortex_engine/vortex_lattice.py",
+   6,
+   "\"Molecular Vortices\", Arts. 822-824; Note, Art. 831)."
+  ],
+  [
+   "maxwell/vortex_engine/vortex_lattice.py",
+   198,
+   "\"\"\"Computed summary of the mechanical theory of vortices (Art. 831)."
+  ],
+  [
+   "maxwell/vortex_engine/vortex_lattice.py",
+   200,
+   "Maxwell 1873, Art. 831 (Note): the whole chapter expands Sir William"
+  ]
+ ],
+ "832": [
+  [
+   "maxwell/molecular/amperes_theory.py",
+   30,
+   "Gaussian-CGS theory carries c: m = I*A/CONST.C (Art. 832),"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   57,
+   "Art. 832-840: Ampere's hypothesis that magnetic phenomena arise"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   99,
+   "Art. 832: The magnetic moment is:"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   109,
+   "Part IV, Art. 832: Magnetic moment formula."
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   203,
+   "Art. 832-840: Maxwell's analysis of Ampere's hypothesis that"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   386,
+   "Art. 832: m = I * A / c"
+  ]
+ ],
+ "833": [
+  [
+   "maxwell/molecular/amperes_theory.py",
+   124,
+   "Art. 833: For a dipole (small current loop):"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   137,
+   "Part IV, Art. 833: Dipole field."
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   421,
+   "Art. 833: For a dipole field:"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   435,
+   "Part IV, Art. 833: Dipole field components."
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   79,
+   "* dipole field on axis:        B = +2m/r^3        (Art. 833)"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   80,
+   "* dipole field at equator:     B = -m/r^3         (Art. 833)"
+  ]
+ ],
+ "834": [
+  [
+   "maxwell/molecular/amperes_theory.py",
+   168,
+   "Art. 834: For a magnetic dipole:"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   179,
+   "Part IV, Art. 834: Vector potential."
+  ]
+ ],
+ "835": [
+  [
+   "maxwell/molecular/amperes_theory.py",
+   225,
+   "Art. 835: The magnetization is:"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   241,
+   "Part IV, Art. 835: Magnetization formula."
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   81,
+   "* magnetization:               M = N m f          (Art. 835)"
+  ]
+ ],
+ "837": [
+  [
+   "maxwell/molecular/amperes_theory.py",
+   31,
+   "J_b = CONST.C (curl M) (Art. 837), K_b = CONST.C (M x n_hat)"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   306,
+   "Art. 837: The bound (molecular) current density in the interior of"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   328,
+   "J_b = CONST.C curl M per Art. 837)."
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   331,
+   "Part IV, Art. 837: Bound current density."
+  ]
+ ],
+ "838": [
+  [
+   "maxwell/molecular/amperes_theory.py",
+   623,
+   "Art. 838: The magnetic moment of a finite magnet is the integral of"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   639,
+   "Part IV, Art. 838: Magnetic moment of a magnetized body."
+  ]
+ ],
+ "839": [
+  [
+   "maxwell/molecular/amperes_theory.py",
+   32,
+   "(Art. 839).  Currents and current densities are therefore read in"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   682,
+   "Art. 839: The molecular currents of a magnetized body are equivalent"
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   696,
+   "K_b = CONST.C (M x n_hat) per Art. 839)."
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   699,
+   "Part IV, Art. 839: Equivalent surface current of a magnet."
+  ],
+  [
+   "maxwell/molecular/amperes_theory.py",
+   729,
+   "current K_b = c (M x n_hat) (Art. 839).  Its field is computed here"
+  ]
+ ],
+ "842": [
+  [
+   "maxwell/molecular/webers_theory.py",
+   148,
+   "Art. 842: The potential energy is:"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   156,
+   "Part IV, Art. 842: Weber potential."
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   485,
+   "Art. 842: V = (q\u2081q\u2082 / r) * [1 - (\u1e59\u00b2/2c\u00b2)]"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   497,
+   "Part IV, Art. 842: Weber potential energy."
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   766,
+   "Art. 842: V = (q\u2081q\u2082 / r) * [1 - (\u1e59\u00b2/2c\u00b2)]"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   778,
+   "Part IV, Art. 842: Weber potential energy."
+  ]
+ ],
+ "843": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   117,
+   "* Coulomb limit (v = a = 0): F = q1 q2 / r^2           (Art. 843)"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   181,
+   "Art. 843: When v = 0 and a = 0, Weber's law reduces to:"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   189,
+   "Part IV, Art. 843: Coulomb limit."
+  ]
+ ],
+ "846": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   118,
+   "* wire-force closed form for finite wires               (Art. 846)"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   120,
+   "* action-reaction pairwise equality of element forces   (Art. 846)"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   277,
+   "Art. 846: Summing Weber's force law over the charge carriers of"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   297,
+   "Part IV, Art. 846: Force between current elements."
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   814,
+   "Art. 846 (computed consequence): Weber's law, summed over the charge"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   847,
+   "Part IV, Art. 846: Weber's law reproduces Ampere's force."
+  ]
+ ],
+ "849": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   494,
+   "(e.g. the critical velocity of Art. 849), the computation lives in"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   510,
+   "\"Art. 849: the force changes sign at the critical velocity \""
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   95,
+   "ESU/EMU ratio of Art. 849; Art. 853, eq. (20) gives the matching"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   925,
+   "Art. 849 (computed consequence): with r\u0308 = 0 the Weber force factor"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   939,
+   "Part IV, Art. 849: Limits of Weber's law."
+  ],
+  [
+   "maxwell/theories/failure_modes.py",
+   86,
+   "ESU/EMU ratio, Art. 849); equivalently Weber 1846's original form"
+  ]
+ ],
+ "850": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   119,
+   "* conservation of the Weber energy integral             (Art. 850)"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   513,
+   "\"Art. 850: the potential energy of two particles depends on \""
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   7,
+   "Weber's force law between two charges (Treatise 3rd ed., Art. 850,"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   89,
+   "3rd-edition text is authoritative: Art. 850, eq. (19) (Vol. II,"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   964,
+   "Art. 850 (computed consequence): Weber's force"
+  ],
+  [
+   "maxwell/molecular/webers_theory.py",
+   997,
+   "Part IV, Art. 850: Energy of Weber's theory."
+  ]
+ ],
+ "851": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   929,
+   "Art. 851-858: descriptive commentary together with residuals"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   50,
+   "Art. 851-858: Neumann's formulation of electromagnetic interactions"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   82,
+   "Art. 851: The vector potential is:"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   94,
+   "Part IV, Art. 851: Vector potential formula."
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   173,
+   "Art. 851-858: Maxwell's analysis of Neumann's potential-based"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   490,
+   "Art. 851: The potential from a current element is:"
+  ]
+ ],
+ "852": [
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   134,
+   "Art. 852: The flux is:"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   146,
+   "Part IV, Art. 852: Magnetic flux."
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   405,
+   "Art. 852: The potential energy is:"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   418,
+   "Part IV, Art. 852: Mutual potential energy."
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   785,
+   "Art. 852: The potential energy is:"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   798,
+   "Part IV, Art. 852: Mutual potential energy."
+  ]
+ ],
+ "853": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   163,
+   "* Maxwell's elliptic closed form for coaxial loops (Art. 853)"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   201,
+   "Art. 853: Neumann's formula:"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   221,
+   "Part IV, Art. 853: Neumann's mutual inductance formula."
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   366,
+   "Art. 853: Using Neumann's formula for coaxial loops."
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   378,
+   "Part IV, Art. 853: Mutual inductance formula."
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   439,
+   "Art. 853: Using Neumann's formula for coaxial loops:"
+  ]
+ ],
+ "856": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   162,
+   "* reciprocity M12 = M21                            (Art. 856)"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   833,
+   "the two is the Art. 856-857 verification below."
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   876,
+   "Art. 856 (computed consequence): Neumann's double integral is"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   896,
+   "Part IV, Art. 856: Reciprocity of mutual inductance."
+  ]
+ ],
+ "857": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   164,
+   "* far-field dipole limit M -> 2 pi^2 R1^2 R2^2/d^3 (Art. 857)"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   920,
+   "Art. 857 (computed consequence): when the separation d is large"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   938,
+   "Part IV, Art. 857: Distant-circuit limit."
+  ],
+  [
+   "maxwell/theories/failure_modes.py",
+   143,
+   "Art. 857-858: Action-at-distance theories predict:"
+  ],
+  [
+   "maxwell/theories/failure_modes.py",
+   197,
+   "Art. 857-858: Weber's force includes velocity-dependent terms"
+  ],
+  [
+   "maxwell/theories/failure_modes.py",
+   297,
+   "Art. 857-859: Systematic comparison showing:"
+  ]
+ ],
+ "858": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   165,
+   "* Lenz sign of the motional EMF                    (Art. 858)"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   964,
+   "Art. 858 (computed consequence): with steady primary current I and"
+  ],
+  [
+   "maxwell/molecular/neumanns_theory.py",
+   986,
+   "Part IV, Art. 858: Induction by relative motion."
+  ],
+  [
+   "maxwell/theories/failure_modes.py",
+   248,
+   "Art. 858-859: Mechanical models of the ether require:"
+  ]
+ ],
+ "859": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   271,
+   "Art. 859-866: Maxwell's framework for comparing different"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   297,
+   "Art. 859: Each theory is characterized by its fundamental"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   305,
+   "Part IV, Art. 859: Theory characteristics."
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   417,
+   "Art. 859-866: Maxwell's systematic comparison of all"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   555,
+   "Art. 859-860: Systematic comparison of competing theories through"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   723,
+   "Art. 859-866: all theories compared on computed residuals, with the"
+  ]
+ ],
+ "860": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   325,
+   "Art. 860 (compute-or-delete): replaces the former literal"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   339,
+   "Part IV, Art. 860: Comparison with the facts."
+  ]
+ ],
+ "861": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   355,
+   "Art. 861 (compute-or-delete): replaces hardcoded consistency"
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   366,
+   "Part IV, Art. 861: Internal consistency."
+  ],
+  [
+   "maxwell/molecular/competing_theories.py",
+   608,
+   "Art. 861-862: conceptual differences (descriptive characteristics),"
+  ]
+ ],
+ "863": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   678,
+   "Art. 863-864: every boolean below is derived by thresholding a"
+  ]
+ ],
+ "864": [],
+ "865": [
+  [
+   "maxwell/molecular/competing_theories.py",
+   971,
+   "Art. 865-866: descriptive commentary together with the one"
+  ],
+  [
+   "maxwell/philosophy/medium_check.py",
+   141,
+   "Art. 865-866: From the medium's K and mu, all wave"
+  ],
+  [
+   "maxwell/philosophy/medium_check.py",
+   184,
+   "Art. 865: Reflection follows from boundary conditions."
+  ],
+  [
+   "maxwell/philosophy/medium_check.py",
+   294,
+   "Art. 865-866: For non-magnetic media, the square of the"
+  ],
+  [
+   "maxwell/philosophy/medium_check.py",
+   370,
+   "Art. 865-866: The key prediction of Maxwell's theory is that"
+  ],
+  [
+   "maxwell/philosophy/medium_check.py",
+   435,
+   "Art. 865-866: Maxwell's final conclusion that the"
+  ]
+ ]
+}

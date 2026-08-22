@@ -430,15 +430,16 @@ def verify_units_and_dimensions() -> list[VerificationResult]:
         )
     )
 
-    # Speed of light constant
+    # Speed of light constant — expected derived independently from the
+    # SI definition (c = 299792458 m/s exactly), converted to cm/s.
     results.append(
         _make(
             "maxwell.config.constants",
             (782,),
-            "c = 2.9979e10 cm/s",
-            expected=2.9979e10,
+            "c = 299792458 m/s (SI-defined) expressed in cm/s",
+            expected=299792458 * 100,
             actual=C,
-            tol=1e-4,
+            tol=1e-12,
         )
     )
 
