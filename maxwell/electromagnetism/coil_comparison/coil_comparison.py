@@ -36,7 +36,6 @@ from maxwell.math.elliptic_integrals import (
 )
 from maxwell.meta.citation import maxwell_cite
 
-
 # ── Art. 752 — the standard coil; electrical vs direct measurement ─────────
 
 
@@ -497,8 +496,11 @@ def standard_pair_mutual_inductance(
     k = math.sqrt(k_sq)
     big_k = calc_complete_elliptic_k_parameter(k_sq)
     big_e = calc_complete_elliptic_e_parameter(k_sq)
-    return 4.0 * math.pi * math.sqrt(radius1 * radius2) * (
-        (2.0 / k - k) * big_k - (2.0 / k) * big_e
+    return (
+        4.0
+        * math.pi
+        * math.sqrt(radius1 * radius2)
+        * ((2.0 / k - k) * big_k - (2.0 / k) * big_e)
     )
 
 
@@ -680,9 +682,7 @@ def self_induction_from_mutual(
     if p < 0.0 or q <= 0.0:
         raise ValueError("P must be non-negative and Q positive")
     if m >= 0.0:
-        raise ValueError(
-            "M must be negative (opposite currents); L = -(1 + P/Q) M > 0"
-        )
+        raise ValueError("M must be negative (opposite currents); L = -(1 + P/Q) M > 0")
     return -(1.0 + p / q) * m
 
 

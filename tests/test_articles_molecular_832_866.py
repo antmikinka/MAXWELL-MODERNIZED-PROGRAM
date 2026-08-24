@@ -49,6 +49,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.config.constants import CONST
 from maxwell.molecular.amperes_theory import (
@@ -96,8 +97,6 @@ from maxwell.philosophy.medium_check import (
     verify_maxwell_relation,
     verify_wave_speed,
 )
-
-from articles import ref_value, tolerance_of
 
 C = CONST.C
 K_B = CONST.K_BOLTZMANN
@@ -315,7 +314,9 @@ def test_art838_total_moment_linear_field_golden():
     linear integrands.
     """
     bounds = ((0.0, 1.0), (0.0, 1.0), (0.0, 1.0))
-    moment = total_magnetic_moment(lambda p: np.array([p[0], 0.0, 0.0]), bounds, n_per_axis=32)
+    moment = total_magnetic_moment(
+        lambda p: np.array([p[0], 0.0, 0.0]), bounds, n_per_axis=32
+    )
     assert moment == pytest.approx(np.array([0.5, 0.0, 0.0]), abs=1e-9)
 
 
@@ -330,7 +331,9 @@ def test_art839_surface_current_golden_cross_product():
     K = bound_surface_current(M, n)
     assert np.allclose(K, C * np.array([0.0, 10.0, 0.0]), rtol=1e-12)
     # parallel M and normal carry no surface current
-    assert np.allclose(bound_surface_current(M, np.array([0.0, 0.0, 1.0])), 0.0, atol=1e-20)
+    assert np.allclose(
+        bound_surface_current(M, np.array([0.0, 0.0, 1.0])), 0.0, atol=1e-20
+    )
 
 
 # ── Art. 840 — interior field of a magnetized sphere ────────────────────────
@@ -360,7 +363,9 @@ def test_art840_sphere_interior_field_biot_savart_golden():
     for radius in (1.0, 5.0):
         B = sphere_interior_field(M, radius, n_theta=96, n_phi=192)
         # quadrature tolerance looser than the golden's 1e-8 store bound
-        assert np.allclose(B, ref_value(840, "sphere_center_field_factor") * M, rtol=1e-6)
+        assert np.allclose(
+            B, ref_value(840, "sphere_center_field_factor") * M, rtol=1e-6
+        )
 
 
 # ── Art. 841 — Weber's force law, Coulomb limit ─────────────────────────────
@@ -463,7 +468,9 @@ def test_art846_wire_force_vs_finite_closed_form():
     result = ampere_wire_force_recovery(i1, i2, d, L, n_segments=2000)
     closed_finite = -i1 * i2 * (np.sqrt(4.0 * L**2 + d**2) - d) / (L * d)
     assert result["F_per_length_dynes_cm"] == pytest.approx(closed_finite, rel=2e-4)
-    assert result["expected_infinite_wire_dynes_cm"] == pytest.approx(-2 * i1 * i2 / d, rel=1e-12)
+    assert result["expected_infinite_wire_dynes_cm"] == pytest.approx(
+        -2 * i1 * i2 / d, rel=1e-12
+    )
     assert result["attractive"] is True
 
 
@@ -556,9 +563,10 @@ def test_art851_vector_potential_axisymmetry_and_far_dipole():
     Oracle: analytic dipole potential written in this test.
     """
     current, radius = 2.0, 1.0
-    pot = NeumannPotential(current=current, circuit_shape=lambda t: np.array(
-        [radius * np.cos(t), radius * np.sin(t), 0.0]
-    ))
+    pot = NeumannPotential(
+        current=current,
+        circuit_shape=lambda t: np.array([radius * np.cos(t), radius * np.sin(t), 0.0]),
+    )
     # axial symmetry: rotating the observation point rotates A
     n_seg = 400
     A1 = pot.vector_potential_at(np.array([3.0, 0.0, 1.0]), n_segments=n_seg)
@@ -580,7 +588,9 @@ def test_art851_vector_potential_axisymmetry_and_far_dipole():
     # the quadrature (~ dt/2) sits well below the dipole truncation
     A_far = pot.vector_potential_at(r_obs, n_segments=20000)
     rn = np.linalg.norm(r_obs)
-    A_dip = np.cross(np.array([0.0, 0.0, current * np.pi * radius**2]), r_obs / rn) / rn**2
+    A_dip = (
+        np.cross(np.array([0.0, 0.0, current * np.pi * radius**2]), r_obs / rn) / rn**2
+    )
     # O((R/r)^2) = 1e-4 correction to the leading dipole term
     assert np.linalg.norm(A_far - A_dip) / np.linalg.norm(A_dip) == pytest.approx(
         0.0, abs=1e-3
@@ -664,7 +674,9 @@ def test_art855_induced_emf_neumann_sign_and_golden():
 def test_art856_reciprocity_with_unequal_discretizations():
     """Art. 856: the Neumann integral is symmetric under 1 <-> 2 even when
     the two circuits are discretized with different segment counts."""
-    residual = neumann_reciprocity_residual(R1=1.0, R2=3.0, d=2.0, n_segments_12=180, n_segments_21=140)
+    residual = neumann_reciprocity_residual(
+        R1=1.0, R2=3.0, d=2.0, n_segments_12=180, n_segments_21=140
+    )
     assert residual < 1.0e-6
 
 
@@ -683,9 +695,9 @@ def test_art857_far_field_dipole_limit():
     M_dipole = 2.0 * np.pi**2 * R1**2 * R2**2 / d**3
     rel = abs(M_quad - M_dipole) / M_dipole
     assert 0.0 < rel < 0.02
-    assert neumann_far_field_residual(R1=R1, R2=R2, d=d, n_segments=400) == pytest.approx(
-        rel, rel=1e-6
-    )
+    assert neumann_far_field_residual(
+        R1=R1, R2=R2, d=d, n_segments=400
+    ) == pytest.approx(rel, rel=1e-6)
 
 
 # ── Art. 858 — motional EMF of separating circuits ──────────────────────────
@@ -753,7 +765,9 @@ def test_art860_residuals_are_finite_small_and_honest():
             assert np.isfinite(value), (name, key)
             assert value >= 0.0, (name, key)
         assert theory["max_residual"] < 0.05, name
-        assert theory["max_residual"] == pytest.approx(max(residuals.values()), rel=1e-12)
+        assert theory["max_residual"] == pytest.approx(
+            max(residuals.values()), rel=1e-12
+        )
 
 
 @pytest.mark.article(860)
@@ -897,7 +911,9 @@ def test_art865_reflection_coefficient_golden():
     # total internal reflection beyond the critical angle
     dense = MediumProperties("glass", 2.25, 1.0)
     rare = MediumProperties("air", 1.0, 1.0)
-    assert calc_reflection_coefficient(dense, rare, angle_incidence=1.0) == pytest.approx(1.0)
+    assert calc_reflection_coefficient(
+        dense, rare, angle_incidence=1.0
+    ) == pytest.approx(1.0)
 
 
 # ── Art. 866 — honest verification of n^2 = K ───────────────────────────────
@@ -914,7 +930,9 @@ def test_art866_default_dataset_verifies_with_provenance():
     for name, entry in r["media"].items():
         assert entry["agrees"] is True, name
         assert entry["provenance"], name
-        assert entry["n_predicted"] == pytest.approx(np.sqrt(entry["K_measured"]), rel=1e-12)
+        assert entry["n_predicted"] == pytest.approx(
+            np.sqrt(entry["K_measured"]), rel=1e-12
+        )
     excluded_names = [e["name"] for e in r["excluded_media"]]
     assert "water_static" in excluded_names
     for e in r["excluded_media"]:
@@ -942,7 +960,9 @@ def test_art866_wave_speed_check_and_completeness_are_computed():
     sub-checks; analyze_theory_completeness combines computed verdicts."""
     ws = verify_wave_speed()
     assert ws["verified"] == (
-        ws["historical_agreement"] and ws["modern_agreement"] and ws["water_speed_correct"]
+        ws["historical_agreement"]
+        and ws["modern_agreement"]
+        and ws["water_speed_correct"]
     )
     assert ws["verified"] is True
     complete = analyze_theory_completeness()

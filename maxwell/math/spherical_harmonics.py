@@ -2162,9 +2162,7 @@ def calc_vector_potential_circular_current(
     if loop_radius <= 0:
         raise ValueError("Loop radius must be positive")
     if observation_r <= loop_radius:
-        raise ValueError(
-            "Exterior expansion requires observation_r > loop_radius"
-        )
+        raise ValueError("Exterior expansion requires observation_r > loop_radius")
 
     x = np.cos(observation_theta)
     a = loop_radius
@@ -2242,9 +2240,7 @@ def calc_magnetic_shell_potential_circular_current(
     if loop_radius <= 0:
         raise ValueError("Loop radius must be positive")
     if observation_r <= loop_radius:
-        raise ValueError(
-            "Exterior expansion requires observation_r > loop_radius"
-        )
+        raise ValueError("Exterior expansion requires observation_r > loop_radius")
 
     x = np.cos(observation_theta)
     a = loop_radius

@@ -133,7 +133,9 @@ def _gamma_oracle(R: float, L: float, C: float, G: float, omega: float) -> compl
     return _csqrt_polar(complex(R, omega * L) * complex(G, omega * C))
 
 
-def _time_avg_power(v_peak: float, i_peak: float, phase_rad: float, npts: int = 4097) -> float:
+def _time_avg_power(
+    v_peak: float, i_peak: float, phase_rad: float, npts: int = 4097
+) -> float:
     """One-period time average of v(t) i(t) by composite Simpson.
 
     Provenance: v = Vp cos(wt), i = Ip cos(wt - phi);
@@ -145,8 +147,10 @@ def _time_avg_power(v_peak: float, i_peak: float, phase_rad: float, npts: int = 
     # composite Simpson (npts odd -> even number of panels)
     h = 2.0 * np.pi / (npts - 1)
     y = vi
-    return (h / 3.0) * (y[0] + y[-1] + 4.0 * y[1:-1:2].sum() + 2.0 * y[2:-2:2].sum()) / (
-        2.0 * np.pi
+    return (
+        (h / 3.0)
+        * (y[0] + y[-1] + 4.0 * y[1:-1:2].sum() + 2.0 * y[2:-2:2].sum())
+        / (2.0 * np.pi)
     )
 
 
@@ -186,9 +190,9 @@ def test_art_730_signal_velocity():
         beta_oracle = _OMEGA * math.sqrt(L * C)  # hand-derived lossless beta
         v_oracle = _OMEGA / beta_oracle
         v = line.signal_velocity()
-        assert math.isclose(v, v_oracle, rel_tol=TIGHT), (
-            f"Art. 730: v={v} vs oracle {v_oracle}"
-        )
+        assert math.isclose(
+            v, v_oracle, rel_tol=TIGHT
+        ), f"Art. 730: v={v} vs oracle {v_oracle}"
     v1 = TelegraphLine(R=0.0, L=10.0, C=1e-10, G=0.0).signal_velocity()
     v2 = TelegraphLine(R=0.0, L=10.0, C=0.25e-10, G=0.0).signal_velocity()
     assert math.isclose(v2 / v1, 2.0, rel_tol=TIGHT), "Art. 730: scaling v ~ 1/sqrt(C)"
@@ -230,9 +234,9 @@ def test_art_732_attenuation_constant():
     line = TelegraphLine(**_LINE)
     gamma_o = _gamma_oracle(_LINE["R"], _LINE["L"], _LINE["C"], _LINE["G"], _OMEGA)
     alpha = line.attenuation_constant(_OMEGA)
-    assert math.isclose(alpha, gamma_o.real, rel_tol=NUMERIC), (
-        f"Art. 732: alpha={alpha} vs polar-csqrt oracle {gamma_o.real}"
-    )
+    assert math.isclose(
+        alpha, gamma_o.real, rel_tol=NUMERIC
+    ), f"Art. 732: alpha={alpha} vs polar-csqrt oracle {gamma_o.real}"
     # module-level propagation constant agrees with the same oracle
     gamma_mod = calc_propagation_constant(
         _LINE["R"], _LINE["L"], _LINE["C"], _LINE["G"], _OMEGA
@@ -242,9 +246,9 @@ def test_art_732_attenuation_constant():
     alpha_asym = (_LINE["R"] / 2.0) * math.sqrt(_LINE["C"] / _LINE["L"]) + (
         _LINE["G"] / 2.0
     ) * math.sqrt(_LINE["L"] / _LINE["C"])
-    assert math.isclose(alpha, alpha_asym, rel_tol=NUMERIC), (
-        f"Art. 732: alpha={alpha} vs low-loss asymptotic {alpha_asym}"
-    )
+    assert math.isclose(
+        alpha, alpha_asym, rel_tol=NUMERIC
+    ), f"Art. 732: alpha={alpha} vs low-loss asymptotic {alpha_asym}"
 
 
 @pytest.mark.article(733)
@@ -296,7 +300,9 @@ def test_art_735_voltage_at_distance():
     V = line.voltage_at_distance(V0, x, _OMEGA)
     assert math.isclose(abs(V), V0 * math.exp(-gamma_o.real * x), rel_tol=TIGHT)
     assert math.isclose(np.angle(V), -gamma_o.imag * x, rel_tol=TIGHT)
-    assert math.isclose(abs(line.voltage_at_distance(V0, 0.0, _OMEGA)), V0, rel_tol=TIGHT)
+    assert math.isclose(
+        abs(line.voltage_at_distance(V0, 0.0, _OMEGA)), V0, rel_tol=TIGHT
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -313,7 +319,10 @@ def _tg_target_current(ratio_bh: float) -> float:
     =>  I = ratio * H * c * r / (2 pi n).
     """
     return (
-        ratio_bh * _TG["earth_field"] * CONST.C * _TG["coil_radius"]
+        ratio_bh
+        * _TG["earth_field"]
+        * CONST.C
+        * _TG["coil_radius"]
         / (2.0 * math.pi * _TG["num_turns"])
     )
 
@@ -332,12 +341,15 @@ def test_art_736_tangent_current_from_deflection():
     bq = _biot_savart_axis_stat(I0, _TG["coil_radius"], 0.0, n_turns=_TG["num_turns"])
     theta_deg = math.degrees(math.atan2(bq, _TG["earth_field"]))
     tg = TangentGalvanometer(**_TG)
-    assert math.isclose(tg.current_from_deflection(theta_deg), I0, rel_tol=NUMERIC), (
-        f"Art. 736: recovered {tg.current_from_deflection(theta_deg)} vs oracle {I0}"
-    )
+    assert math.isclose(
+        tg.current_from_deflection(theta_deg), I0, rel_tol=NUMERIC
+    ), f"Art. 736: recovered {tg.current_from_deflection(theta_deg)} vs oracle {I0}"
     # galvanometer constant: I(45 deg) = K = c r H/(2 pi n) (hand-derived)
     k_oracle = (
-        CONST.C * _TG["coil_radius"] * _TG["earth_field"] / (2.0 * math.pi * _TG["num_turns"])
+        CONST.C
+        * _TG["coil_radius"]
+        * _TG["earth_field"]
+        / (2.0 * math.pi * _TG["num_turns"])
     )
     assert math.isclose(tg.current_from_deflection(45.0), k_oracle, rel_tol=TIGHT)
 
@@ -372,9 +384,9 @@ def test_art_738_coil_field_at_center():
     for radius, turns in ((15.0, 10), (7.5, 3)):
         bq = _biot_savart_axis_stat(I0, radius, 0.0, n_turns=turns)
         tg = TangentGalvanometer(coil_radius=radius, num_turns=turns)
-        assert math.isclose(tg.coil_field_at_center(I0), bq, rel_tol=NUMERIC), (
-            f"Art. 738: r={radius}, n={turns}: {tg.coil_field_at_center(I0)} vs {bq}"
-        )
+        assert math.isclose(
+            tg.coil_field_at_center(I0), bq, rel_tol=NUMERIC
+        ), f"Art. 738: r={radius}, n={turns}: {tg.coil_field_at_center(I0)} vs {bq}"
 
 
 # ---------------------------------------------------------------------------
@@ -393,10 +405,16 @@ def test_art_739_sine_galvanometer():
     """
     sg_params = dict(coil_radius=12.0, num_turns=8, earth_field=0.2)
     ratio = 0.5
-    I0 = ratio * sg_params["earth_field"] * CONST.C * sg_params["coil_radius"] / (
-        2.0 * math.pi * sg_params["num_turns"]
+    I0 = (
+        ratio
+        * sg_params["earth_field"]
+        * CONST.C
+        * sg_params["coil_radius"]
+        / (2.0 * math.pi * sg_params["num_turns"])
     )
-    bq = _biot_savart_axis_stat(I0, sg_params["coil_radius"], 0.0, n_turns=sg_params["num_turns"])
+    bq = _biot_savart_axis_stat(
+        I0, sg_params["coil_radius"], 0.0, n_turns=sg_params["num_turns"]
+    )
     theta_oracle = math.degrees(math.asin(bq / sg_params["earth_field"]))
     sg = SineGalvanometer(**sg_params)
     assert math.isclose(theta_oracle, 30.0, abs_tol=1e-9)  # quadrature sanity
@@ -482,10 +500,14 @@ def test_art_742_helmholtz_factor():
     ratio_oracle = b_pair / b_single
     hz = HelmholtzGalvanometer(**_HZ)
     assert math.isclose(hz.helmholtz_factor, ratio_oracle, rel_tol=NUMERIC)
-    assert math.isclose(hz.helmholtz_factor, 16.0 / (5.0 * math.sqrt(5.0)), rel_tol=TIGHT)
+    assert math.isclose(
+        hz.helmholtz_factor, 16.0 / (5.0 * math.sqrt(5.0)), rel_tol=TIGHT
+    )
     # general branch at d = 2r: each coil seen from distance r
     b_2r = 2.0 * _biot_savart_axis_stat(I0, r, 0.0, z_plane=r, n_turns=n)
-    hz2 = HelmholtzGalvanometer(coil_radius=r, num_turns_per_coil=n, coil_separation=2.0 * r)
+    hz2 = HelmholtzGalvanometer(
+        coil_radius=r, num_turns_per_coil=n, coil_separation=2.0 * r
+    )
     assert math.isclose(hz2.helmholtz_factor, b_2r / b_single, rel_tol=NUMERIC)
     assert math.isclose(hz2.helmholtz_factor, 1.0 / math.sqrt(2.0), rel_tol=TIGHT)
 
@@ -534,9 +556,9 @@ def test_art_744_wattmeter_true_power():
     p_oracle = _time_avg_power(math.sqrt(2.0) * vrms, math.sqrt(2.0) * irms, phi)
     assert math.isclose(p_oracle, 250.0, rel_tol=NUMERIC)  # quadrature sanity
     res = wattmeter(voltage=vrms, current=irms, power_factor=math.cos(phi))
-    assert math.isclose(res["power"], p_oracle, rel_tol=NUMERIC), (
-        f"Art. 744: power {res['power']} vs quadrature {p_oracle}"
-    )
+    assert math.isclose(
+        res["power"], p_oracle, rel_tol=NUMERIC
+    ), f"Art. 744: power {res['power']} vs quadrature {p_oracle}"
     assert math.isclose(res["apparent_power"], vrms * irms, rel_tol=TIGHT)
     # pf = 1 limit: all power real
     res1 = wattmeter(voltage=vrms, current=irms, power_factor=1.0)
@@ -558,7 +580,9 @@ def test_art_746_wattmeter_reactive_and_phase():
     assert math.isclose(res["apparent_power"], 500.0, rel_tol=TIGHT)
     assert math.isclose(res["reactive_power"], 400.0, rel_tol=TIGHT)  # 3-4-5
     # deflection follows power through the wattmeter constant (hand arithmetic)
-    res_k = wattmeter(voltage=100.0, current=5.0, power_factor=0.6, wattmeter_constant=2.5)
+    res_k = wattmeter(
+        voltage=100.0, current=5.0, power_factor=0.6, wattmeter_constant=2.5
+    )
     assert math.isclose(res_k["deflection"], 120.0, rel_tol=TIGHT)
     # special angles: pf = 0.5 -> 60 deg ; pf = sqrt(3)/2 -> 30 deg
     for pf, deg in ((0.5, 60.0), (math.sqrt(3.0) / 2.0, 30.0)):
@@ -607,11 +631,13 @@ def test_art_747_electrodynamometer_torque():
     I1, I2 = 0.3, 0.7
     for theta in (math.pi / 6.0, math.pi / 4.0, math.pi / 3.0, math.pi / 2.0):
         t_oracle = I1 * I2 * g_oracle * math.sin(theta)
-        assert math.isclose(ed.torque(I1, I2, theta), t_oracle, rel_tol=1e-3), (
-            f"Art. 747: theta={theta}: {ed.torque(I1, I2, theta)} vs {t_oracle}"
-        )
+        assert math.isclose(
+            ed.torque(I1, I2, theta), t_oracle, rel_tol=1e-3
+        ), f"Art. 747: theta={theta}: {ed.torque(I1, I2, theta)} vs {t_oracle}"
     # module-level analysis reports the same max torque (theta = 90 deg)
-    res = electrodynamometer(I1, I2, mutual_inductance_gradient=g_oracle, spring_constant=1.0)
+    res = electrodynamometer(
+        I1, I2, mutual_inductance_gradient=g_oracle, spring_constant=1.0
+    )
     assert math.isclose(res["max_torque"], I1 * I2 * g_oracle, rel_tol=1e-3)
 
 
@@ -635,7 +661,8 @@ def test_art_748_equilibrium_deflection():
     # restoring-constant scaling: theta(k=2) = theta(k=1)/2 (hand-derived)
     ed2 = Electrodynamometer(mutual_inductance_gradient=g, spring_constant=2.0 * k)
     assert math.isclose(
-        ed2.equilibrium_deflection(I1, I2), ed.equilibrium_deflection(I1, I2) / 2.0,
+        ed2.equilibrium_deflection(I1, I2),
+        ed.equilibrium_deflection(I1, I2) / 2.0,
         rel_tol=TIGHT,
     )
 

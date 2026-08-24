@@ -37,6 +37,7 @@ import math
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.electromagnetism.optimization.coil_design import (
     calc_gauss_optimal_coil,
@@ -47,8 +48,6 @@ from maxwell.electromagnetism.optimization.coil_design import (
     calc_square_channel_optimal_coil,
 )
 from maxwell.math.geometry.gmd import calc_self_gmd_circle, calc_self_gmd_rectangle
-
-from articles import ref_value, tolerance_of
 
 TIGHT = 1e-10
 STANDARD = 1e-8

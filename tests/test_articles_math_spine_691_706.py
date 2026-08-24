@@ -45,6 +45,12 @@ import math
 
 import numpy as np
 import pytest
+
+# ── DLMF-provenance golden values ────────────────────────────────────────────
+# Harvested into the central reference store (tests/articles/
+# reference_values.json, Stage-4 C3); provenance recorded there per entry
+# (DLMF 19.2; Gamma-oracle; converged tensor Gauss-Legendre oracle O8).
+from articles import ref_value, tolerance_of  # noqa: E402
 from scipy.integrate import quad
 from scipy.special import ellipe, ellipj, ellipk, gamma
 
@@ -71,12 +77,6 @@ from maxwell.math.geometry.gmd import (
     calc_self_gmd_circle,
     calc_self_gmd_rectangle,
 )
-
-# ── DLMF-provenance golden values ────────────────────────────────────────────
-# Harvested into the central reference store (tests/articles/
-# reference_values.json, Stage-4 C3); provenance recorded there per entry
-# (DLMF 19.2; Gamma-oracle; converged tensor Gauss-Legendre oracle O8).
-from articles import ref_value, tolerance_of  # noqa: E402
 
 K_HALF_GOLDEN = ref_value(696, "K_parameter_half")
 E_HALF_GOLDEN = ref_value(697, "E_parameter_half")
@@ -247,9 +247,7 @@ def test_complementary_modulus_and_parameter_convention():
     """
     ei = EllipticIntegral(modulus=0.6)
     assert ei.complementary_modulus() == pytest.approx(0.8, rel=1e-14)
-    assert EllipticIntegral(modulus=0.5).parameter() == pytest.approx(
-        0.25, rel=1e-14
-    )
+    assert EllipticIntegral(modulus=0.5).parameter() == pytest.approx(0.25, rel=1e-14)
     for k in [0.0, 0.3, 0.7, 0.999999]:
         assert calc_complete_elliptic_k_parameter(k**2) == pytest.approx(
             calc_complete_elliptic_integral_first_kind(k), rel=1e-14
@@ -312,8 +310,9 @@ def test_verify_and_analyze_elliptic_relations():
 # ═══════════════════════════════════════════════════════════════════════════
 
 
-def _biot_savart_loop_B(current: float, a: float, rho: float, z: float,
-                        npts: int = 8192) -> tuple[float, float]:
+def _biot_savart_loop_B(
+    current: float, a: float, rho: float, z: float, npts: int = 8192
+) -> tuple[float, float]:
     """Independent oracle: direct Biot-Savart quadrature of the loop.
 
     B(r) = (I/c) oint dl x (r - r') / |r - r'|^3 in Gaussian CGS,
@@ -439,8 +438,13 @@ def test_coaxial_pair_antisymmetry():
     """
     I, a, sep, rho = 1.0, 10.0, 6.0, 3.0
     B = calc_coaxial_coil_pair(
-        I, a, a, np.array([rho, 0.0, 0.0]), sep,
-        current1_dir=1, current2_dir=-1,
+        I,
+        a,
+        a,
+        np.array([rho, 0.0, 0.0]),
+        sep,
+        current1_dir=1,
+        current2_dir=-1,
     )
     B_single = calc_coil_off_axis(I, a, np.array([rho, 0.0, sep / 2.0]))
     assert B[2] == pytest.approx(0.0, abs=1e-18)  # exact antisymmetry
@@ -495,8 +499,9 @@ def _gmd_disk_oracle(a1: float, a2: float, d: float) -> float:
     return math.exp(val / A1A2)
 
 
-def _gmd_tensor_gl_oracle(a1: float, a2: float, d: float,
-                          nr: int, ntheta: int) -> float:
+def _gmd_tensor_gl_oracle(
+    a1: float, a2: float, d: float, nr: int, ntheta: int
+) -> float:
     """Independent oracle: tensor Gauss-Legendre on the defining integral.
 
     ln GMD = (A1 A2)^-1 int_{D1} int_{D2} ln|r1 - r2| dA1 dA2 evaluated
@@ -510,7 +515,7 @@ def _gmd_tensor_gl_oracle(a1: float, a2: float, d: float,
     wr1 = r1 * (0.5 * a1 * w)  # r dr on [0, a1]
     r2 = 0.5 * a2 * (x + 1.0)
     wr2 = r2 * (0.5 * a2 * w)
-    th = math.pi * (t + 1.0)   # [0, 2 pi]
+    th = math.pi * (t + 1.0)  # [0, 2 pi]
     wth = math.pi * v
     p1 = np.stack(
         [r1[:, None] * np.cos(th)[None, :], r1[:, None] * np.sin(th)[None, :]],
@@ -528,8 +533,11 @@ def _gmd_tensor_gl_oracle(a1: float, a2: float, d: float,
     total, step = 0.0, 400
     for i in range(0, len(p1), step):
         dp = p1[i : i + step, None, :] - p2[None, :, :]
-        total += float(np.sum(w1[i : i + step, None] * w2[None, :] *
-                              np.log(np.sqrt((dp**2).sum(-1)))))
+        total += float(
+            np.sum(
+                w1[i : i + step, None] * w2[None, :] * np.log(np.sqrt((dp**2).sum(-1)))
+            )
+        )
     return math.exp(total / A1A2)
 
 
@@ -544,9 +552,7 @@ def test_self_gmd_circle_exact():
     for a in [0.5, 1.0, 3.7]:
         oracle = _gmd_disk_oracle(a, a, 0.0)
         assert calc_self_gmd_circle(a) == pytest.approx(oracle, rel=1e-8)
-    assert calc_self_gmd_circle(1.0) == pytest.approx(
-        math.exp(-0.25), rel=1e-15
-    )
+    assert calc_self_gmd_circle(1.0) == pytest.approx(math.exp(-0.25), rel=1e-15)
     assert math.exp(-0.25) == pytest.approx(
         ref_value(691, "self_gmd_circle_coefficient"),
         **tolerance_of(691, "self_gmd_circle_coefficient"),
@@ -598,12 +604,15 @@ def test_gmd_parallel_wires_disjoint_sections_exact():
         )
         assert code == pytest.approx(d, rel=1e-15)  # exact, no correction
     # regression guard: the old spurious correction sat ~8e-3 away at d=1
-    assert abs(
-        calc_gmd_parallel_wires(
-            np.array([0.0, 0.0, 0.0]), np.array([1.0, 0.0, 0.0]), a1, a2
+    assert (
+        abs(
+            calc_gmd_parallel_wires(
+                np.array([0.0, 0.0, 0.0]), np.array([1.0, 0.0, 0.0]), a1, a2
+            )
+            - 1.0
         )
-        - 1.0
-    ) < 1e-12
+        < 1e-12
+    )
     # continuity at contact
     touch = calc_gmd_parallel_wires(
         np.array([0.0, 0.0, 0.0]), np.array([a1 + a2, 0.0, 0.0]), a1, a2
@@ -718,12 +727,12 @@ def test_spherical_harmonics_citation_split_keeps_part4_winning():
         cit = get_citation(func)
         assert cit is not None, f"{name} lost its citation in the split"
         assert cit.part == 4, f"{name}: Part IV citation must win, got part={cit.part}"
-        assert set(cit.articles) == expected_arts, (
-            f"{name}: expected Part IV arts {expected_arts}, got {cit.articles}"
-        )
-        assert not any(128 <= a <= 146 for a in cit.articles), (
-            f"{name}: Part I article leaked into the Part IV citation"
-        )
+        assert (
+            set(cit.articles) == expected_arts
+        ), f"{name}: expected Part IV arts {expected_arts}, got {cit.articles}"
+        assert not any(
+            128 <= a <= 146 for a in cit.articles
+        ), f"{name}: Part I article leaked into the Part IV citation"
     cit_v = get_citation(verify_spherical_harmonics)
     assert cit_v.part == 4
     assert all(675 <= a <= 695 for a in cit_v.articles)

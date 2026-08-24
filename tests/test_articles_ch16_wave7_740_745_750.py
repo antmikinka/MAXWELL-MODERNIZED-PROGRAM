@@ -35,6 +35,7 @@ import math
 from fractions import Fraction
 
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.signal_processing.observation_methods import (
     KAPPA_MAGNETIC_NEEDLE,
@@ -47,8 +48,6 @@ from maxwell.signal_processing.observation_methods import (
     calc_small_arc_vibration_time,
     calc_vibration_time_at_amplitude,
 )
-
-from articles import ref_value, tolerance_of
 
 TIGHT = 1e-10
 STANDARD = 1e-8
@@ -67,6 +66,7 @@ def _rk4_damped(beta, omega0, theta0, v0, t_end, dt=1e-3, equilibrium=0.0):
     Global error O(dt^4) ~ 1e-12 per unit time at dt = 1e-3, far below
     the NUMERIC tolerance used against it.
     """
+
     def deriv(t, y):
         th, v = y
         return (v, -2.0 * beta * v - omega0**2 * (th - equilibrium))
@@ -108,9 +108,7 @@ def test_art_740_vibration_time_amplitude_law() -> None:
     """
     t1, c = 2.0, 0.2
     expected = 2.0 * (1.0 + (1.0 / 64.0) * 0.04)
-    assert calc_vibration_time_at_amplitude(t1, c) == pytest.approx(
-        expected, rel=TIGHT
-    )
+    assert calc_vibration_time_at_amplitude(t1, c) == pytest.approx(expected, rel=TIGHT)
     assert KAPPA_MAGNETIC_NEEDLE == pytest.approx(1.0 / 64.0, rel=TIGHT)
     # quadratic scaling of the excess over the small-arc time
     excess_c = calc_vibration_time_at_amplitude(t1, c) - t1
@@ -140,7 +138,7 @@ def test_art_740_small_arc_time_golden_and_sum_oracle() -> None:
     )
 
     # independent forward oracle: direct summation of the series
-    amplitudes = [c1 * rho ** -k for k in range(n)]
+    amplitudes = [c1 * rho**-k for k in range(n)]
     total = sum(t1 * (1.0 + kappa * c**2) for c in amplitudes)
     assert total == pytest.approx(n * t_mean, rel=1e-12)
 
@@ -213,9 +211,7 @@ def test_art_745_damped_oscillator_rk4_oracle() -> None:
     omega1 = math.sqrt(omega0**2 - beta**2)
     phi_true, theta0 = 0.4, 0.05
     t_end = 20.0
-    ts, ths, vs = _rk4_damped(
-        beta, omega0, theta0, 0.0, t_end, equilibrium=phi_true
-    )
+    ts, ths, vs = _rk4_damped(beta, omega0, theta0, 0.0, t_end, equilibrium=phi_true)
 
     # first turning point: first sign change of the velocity after t = 0
     idx = next(i for i in range(1, len(vs)) if vs[i - 1] > 0.0 >= vs[i])

@@ -194,13 +194,11 @@ def verify_nabla_quaternion_parts(tolerance: float = 1e-8) -> dict:
     q0 = nabla_of_vector(A_solenoidal, point)
     q1 = nabla_of_vector(A_unconstrained, point)
 
-    solenoidal_ok = (
-        abs(q0.S) <= tolerance
-        and bool(np.allclose(q0.V, (0.0, 0.0, 2.0), atol=tolerance))
+    solenoidal_ok = abs(q0.S) <= tolerance and bool(
+        np.allclose(q0.V, (0.0, 0.0, 2.0), atol=tolerance)
     )
-    unconstrained_ok = (
-        abs(q1.S + 1.0) <= tolerance
-        and bool(np.allclose(q1.V, (0.0, 0.0, 0.0), atol=tolerance))
+    unconstrained_ok = abs(q1.S + 1.0) <= tolerance and bool(
+        np.allclose(q1.V, (0.0, 0.0, 0.0), atol=tolerance)
     )
     return {
         "solenoidal": {

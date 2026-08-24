@@ -9,10 +9,12 @@ agents, and this file is their measurement instrument).
 
 Run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_anti_theater_lint.py
 """
+
 from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -181,22 +183,22 @@ def verify_cross_method(m, period, emf, current):
     return {"verified": error < 1e-6}
 '''
 
-R5_BAD = '''
+R5_BAD = """
 def test_field_identity():
     assert calc_field(1.0) == calc_field(1.0)
-'''
+"""
 
-R5_BAD_APPROX = '''
+R5_BAD_APPROX = """
 def test_energy_identity():
     assert calc_energy(2.0) == pytest.approx(calc_energy(2.0))
-'''
+"""
 
-R5_GOOD = '''
+R5_GOOD = """
 def test_field_value():
     expected = 2.5
     assert calc_field(1.0) == expected
     assert calc_field(1.0) == calc_field(2.0)
-'''
+"""
 
 R6_BAD = '''
 from maxwell.meta.citation import maxwell_cite
@@ -373,18 +375,18 @@ def historical_anchor():
     return {"v_cm_s": 3.107e10}
 '''
 
-R7_TESTS_PROVENANCED = '''
+R7_TESTS_PROVENANCED = """
 def test_v_anchor():
     # provenance: Weber-Kohlrausch measurement quoted in Treatise Art. 775
     v = 3.0e10
     assert compute_v() > 0.5 * v
-'''
+"""
 
-R7_TESTS_UNPROVENANCED = '''
+R7_TESTS_UNPROVENANCED = """
 def test_v_anchor_no_provenance():
     v = 3.0e10
     assert compute_v() > 0.5 * v
-'''
+"""
 
 R8_BAD = '''
 from maxwell.meta.citation import maxwell_cite
@@ -533,9 +535,7 @@ def test_r7_ignores_const_references_and_historical_anchors():
 
 
 def test_r7_provenance_exempts_tests_tree_only():
-    assert (
-        _findings(R7_TESTS_PROVENANCED, filename="tests/test_sample.py") == []
-    )
+    assert _findings(R7_TESTS_PROVENANCED, filename="tests/test_sample.py") == []
     findings = _findings(R7_TESTS_UNPROVENANCED, filename="tests/test_sample.py")
     assert len(findings) == 1
     assert findings[0].rule == "R7"
@@ -624,6 +624,7 @@ def _run_cli(args):
         [sys.executable, str(LINT_PATH), *args],
         capture_output=True,
         text=True,
+        encoding="utf-8",
         cwd=str(REPO_ROOT),
     )
 
@@ -637,6 +638,14 @@ def test_cli_exit_codes_and_json_output(tmp_path):
 
     proc_bad = _run_cli([str(bad), "--json"])
     assert proc_bad.returncode == 1, proc_bad.stdout + proc_bad.stderr
+    # An empty stdout with rc=1 means the child crashed BEFORE printing the
+    # JSON payload (e.g. an uncaught ValueError from os.path.relpath on
+    # cross-drive paths -- the Windows GitHub Actions layout).  Surface the
+    # child's stderr instead of a bare JSONDecodeError at char 0.
+    assert proc_bad.stdout.strip(), (
+        "lint CLI produced no stdout; child stderr tail: "
+        f"{proc_bad.stderr[-2000:]!r}"
+    )
     payload = json.loads(proc_bad.stdout)
     assert payload["high_findings"] >= 1
     assert payload["findings"][0]["rule"] == "R1"
@@ -677,3 +686,33 @@ def test_full_repo_scan_completes_with_structured_results():
         assert finding.file
         assert finding.line >= 1
         assert finding.message
+
+
+# ── regression: cross-drive paths must not crash the scanner ──────
+
+
+def test_scan_file_survives_cross_drive_relpath_failure(monkeypatch, tmp_path):
+    """Regression for the Windows GitHub Actions layout.
+
+    On the runner the checkout lives on ``D:\\a\\...`` while pytest's
+    ``tmp_path`` lives on ``C:\\...``; ``os.path.relpath`` then raises
+    ``ValueError: path is on mount 'C:', start on mount 'D:'``.  The scanner
+    must degrade to absolute-path findings, never crash (which previously
+    emptied the CLI's stdout and broke ``--json`` consumers).
+    """
+    bad = tmp_path / "maxwell" / "bad_verifier.py"
+    bad.parent.mkdir(parents=True, exist_ok=True)
+    bad.write_text(R1_BAD, encoding="utf-8")
+
+    def exploding_relpath(path, start=None):
+        raise ValueError("path is on mount 'C:', start on mount 'D:'")
+
+    monkeypatch.setattr(os.path, "relpath", exploding_relpath)
+    findings = lint.scan_file(str(bad))
+
+    assert findings, "scan_file must still return findings on foreign mounts"
+    assert all(f.rule == "R1" for f in findings)
+    assert all(f.severity == lint.HIGH for f in findings)
+    # Location must remain usable even when relpath is unavailable.
+    assert all(f.file for f in findings)
+    assert all(f.line >= 1 for f in findings)

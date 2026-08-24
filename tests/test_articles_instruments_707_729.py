@@ -43,6 +43,7 @@ import math
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.config.constants import CONST
 from maxwell.electromagnetism.components.circular_coils import calc_coil_on_axis
@@ -83,8 +84,6 @@ from maxwell.instruments.suspended_coil import (
     calc_uniform_normal_force,
     determine_magnetic_force,
 )
-
-from articles import ref_value, tolerance_of
 
 # Tolerance classes (Stage 4 §2.5)
 TIGHT = 1e-10
@@ -240,13 +239,9 @@ def test_art_708_design_standard_coil_self_consistent() -> None:
     )
     assert design["mean_radius"] == pytest.approx(8.0, rel=TIGHT)
     n_from_geometry = target * CONST.C * 8.0 / (2.0 * math.pi)
-    assert design["n_turns"] == pytest.approx(
-        math.ceil(n_from_geometry), rel=TIGHT
-    )
+    assert design["n_turns"] == pytest.approx(math.ceil(n_from_geometry), rel=TIGHT)
     # achieved constant reconstructs from geometry and covers the target
-    g_achieved = (
-        2.0 * math.pi * design["n_turns"] / (CONST.C * design["mean_radius"])
-    )
+    g_achieved = 2.0 * math.pi * design["n_turns"] / (CONST.C * design["mean_radius"])
     assert design["coil_constant"] == pytest.approx(g_achieved, rel=TIGHT)
     assert g_achieved >= target
     assert design["coil_depth"] > 0.0
@@ -275,8 +270,11 @@ def test_art_709_tangent_law_zero_torsion() -> None:
     assert theta == pytest.approx(math.atan(g * current / h), rel=STANDARD)
     # small-current analytic limit theta -> GI/H
     tiny = calc_galvanometer_response(
-        current=1e-9, coil_constant=g, horizontal_field=h,
-        magnetic_moment=m, torsion_constant=0.0,
+        current=1e-9,
+        coil_constant=g,
+        horizontal_field=h,
+        magnetic_moment=m,
+        torsion_constant=0.0,
     )
     assert tiny == pytest.approx(g * 1e-9 / h, rel=NUMERIC)
 
@@ -292,15 +290,14 @@ def test_art_709_torsion_balance_residual_and_independent_root() -> None:
     """
     g, h, m, tau, current = 12.0, 0.25, 2.0, 0.4, 0.02
     theta = calc_galvanometer_response(
-        current=current, coil_constant=g, horizontal_field=h,
-        magnetic_moment=m, torsion_constant=tau,
+        current=current,
+        coil_constant=g,
+        horizontal_field=h,
+        magnetic_moment=m,
+        torsion_constant=tau,
     )
     # (a) residual of the torque balance vanishes
-    residual = (
-        m * g * current * math.cos(theta)
-        - m * h * math.sin(theta)
-        - tau * theta
-    )
+    residual = m * g * current * math.cos(theta) - m * h * math.sin(theta) - tau * theta
     assert residual == pytest.approx(0.0, abs=1e-9)
 
     # (b) independent Newton solution of the same equation
@@ -315,8 +312,11 @@ def test_art_709_torsion_balance_residual_and_independent_root() -> None:
 
     # torsion opposes deflection: with torsion the angle is smaller
     theta_free = calc_galvanometer_response(
-        current=current, coil_constant=g, horizontal_field=h,
-        magnetic_moment=m, torsion_constant=0.0,
+        current=current,
+        coil_constant=g,
+        horizontal_field=h,
+        magnetic_moment=m,
+        torsion_constant=0.0,
     )
     assert theta < theta_free
 
@@ -401,9 +401,9 @@ def test_art_712_gaugain_offset_and_field_oracle() -> None:
 
     z = gaugain_offset(radius)
     analytic = apply_gaugain_suspension(radius, z, n, current)
-    expected = (
-        2.0 * math.pi * n * current / (CONST.C * radius)
-    ) * ref_value(712, "gaugain_field_factor")
+    expected = (2.0 * math.pi * n * current / (CONST.C * radius)) * ref_value(
+        712, "gaugain_field_factor"
+    )
     assert analytic == pytest.approx(expected, rel=TIGHT)
 
     oracle = n * _biot_savart_axis_stat(current, radius, z)
@@ -540,26 +540,26 @@ def test_art_714_four_coil_constant_is_sum_and_oracle() -> None:
     n_in, n_out = 40, 60
     h_field = 0.2
     four = FourCoilGalvanometer(
-        inner_radius=inner_r, outer_radius=outer_r,
-        n_turns_inner=n_in, n_turns_outer=n_out, horizontal_field=h_field,
+        inner_radius=inner_r,
+        outer_radius=outer_r,
+        n_turns_inner=n_in,
+        n_turns_outer=n_out,
+        horizontal_field=h_field,
     )
     g_expected = 2 * math.pi * (n_in / inner_r + n_out / outer_r) / CONST.C
     assert four.combined_coil_constant() == pytest.approx(g_expected, rel=TIGHT)
 
     current = 1.0
     field_module = four.combined_coil_constant() * current
-    field_oracle = (
-        n_in * _biot_savart_axis_stat(current, inner_r, 0.0)
-        + n_out * _biot_savart_axis_stat(current, outer_r, 0.0)
-    )
+    field_oracle = n_in * _biot_savart_axis_stat(
+        current, inner_r, 0.0
+    ) + n_out * _biot_savart_axis_stat(current, outer_r, 0.0)
     assert field_module == pytest.approx(field_oracle, rel=NUMERIC)
 
     # tangent-law measurement round trip
     theta = 0.25
     measured = four.measure_current(theta)
-    assert measured == pytest.approx(
-        h_field / g_expected * math.tan(theta), rel=TIGHT
-    )
+    assert measured == pytest.approx(h_field / g_expected * math.tan(theta), rel=TIGHT)
 
 
 @pytest.mark.article(715)
@@ -568,12 +568,8 @@ def test_art_715_three_coil_constant_is_sum() -> None:
     radii = (4.0, 6.0, 8.0)
     turns = (30, 20, 10)
     h_field = 0.18
-    three = ThreeCoilGalvanometer(
-        radii=radii, n_turns=turns, horizontal_field=h_field
-    )
-    g_expected = sum(
-        2 * math.pi * n / (CONST.C * r) for n, r in zip(turns, radii)
-    )
+    three = ThreeCoilGalvanometer(radii=radii, n_turns=turns, horizontal_field=h_field)
+    g_expected = sum(2 * math.pi * n / (CONST.C * r) for n, r in zip(turns, radii))
     assert three.combined_coil_constant() == pytest.approx(g_expected, rel=TIGHT)
     theta = 0.2
     assert three.measure_current(theta) == pytest.approx(
@@ -620,8 +616,10 @@ def test_art_717_sensitive_design_uses_full_wire_and_reports_merit() -> None:
     """
     length, rho_l, r_ext, radius = 1000.0, 0.05, 40.0, 5.0
     out = design_sensitive_galvanometer(
-        wire_length=length, wire_resistance=rho_l,
-        target_resistance=r_ext, mean_radius=radius,
+        wire_length=length,
+        wire_resistance=rho_l,
+        target_resistance=r_ext,
+        mean_radius=radius,
     )
     n_expected = int(length // (2.0 * math.pi * radius))
     assert out["n_turns"] == n_expected
@@ -658,8 +656,11 @@ def test_art_718_greatest_sensibility_at_matched_resistance() -> None:
 
     # the optimizer drives the coil resistance to the external resistance
     out = optimize_galvanometer_sensitivity(
-        wire_length=2000.0, wire_radius=0.05, wire_resistivity=1.6e-5,
-        external_resistance=r_ext, coil_radius=5.0,
+        wire_length=2000.0,
+        wire_radius=0.05,
+        wire_resistivity=1.6e-5,
+        external_resistance=r_ext,
+        coil_radius=5.0,
     )
     assert out["optimal_resistance"] == pytest.approx(r_ext, rel=STANDARD)
     assert out["sensitivity_gain"] >= 1.0 - NUMERIC
@@ -695,9 +696,7 @@ def test_art_720_uniform_wire_sensitivity_is_g_over_h() -> None:
     """
     n, radius, h = 100, 10.0, 0.2
     sens = calc_uniform_wire_sensitivity(n, radius, h)
-    assert sens == pytest.approx(
-        2 * math.pi * n / (CONST.C * radius) / h, rel=TIGHT
-    )
+    assert sens == pytest.approx(2 * math.pi * n / (CONST.C * radius) / h, rel=TIGHT)
 
     coil = UniformWireGalvanometer(
         n_turns=n, radius=radius, wire_gauge=0.05, horizontal_field=h
@@ -724,9 +723,7 @@ def test_art_721_suspended_coil_moment_and_torque_balance() -> None:
     hold (analytic limit theta -> 0).
     """
     n, area, k, h = 200, 4.0, 1.0, 0.15
-    coil = SuspendedCoil(
-        n_turns=n, area=area, torsion_constant=k, horizontal_field=h
-    )
+    coil = SuspendedCoil(n_turns=n, area=area, torsion_constant=k, horizontal_field=h)
     current = 0.01
     assert coil.magnetic_moment(current) == pytest.approx(n * current * area, rel=TIGHT)
 
@@ -751,8 +748,11 @@ def test_art_722_thomson_sensitive_coil_sensitivity_and_round_trip() -> None:
     """
     n, length, width, field, k = 300, 4.0, 1.0, 0.2, 0.5
     thomson = ThomsonSensitiveCoil(
-        n_turns=n, coil_length=length, coil_width=width,
-        field_strength=field, torsion_constant=k,
+        n_turns=n,
+        coil_length=length,
+        coil_width=width,
+        field_strength=field,
+        torsion_constant=k,
     )
     assert thomson.area == pytest.approx(length * width, rel=TIGHT)
     assert thomson.sensitivity() == pytest.approx(
@@ -852,7 +852,9 @@ def test_art_725_weber_dynamometer_square_law_and_equilibrium() -> None:
     current = 0.3
     assert weber.torque(current) == pytest.approx(current**2 * dm, rel=TIGHT)
     # square law: doubling current quadruples torque
-    assert weber.torque(2 * current) == pytest.approx(4 * weber.torque(current), rel=TIGHT)
+    assert weber.torque(2 * current) == pytest.approx(
+        4 * weber.torque(current), rel=TIGHT
+    )
     assert weber.verify_force_proportional_to_I_squared() is True
 
     theta = weber.equilibrium_deflection(current)
@@ -868,8 +870,10 @@ def test_art_726_joule_weigher_force_and_balancing_mass() -> None:
     """
     dmdx = 1.2
     weigher = JouleCurrentWeigher(
-        fixed_coil_turns=100, moving_coil_turns=50,
-        coil_separation=2.0, force_constant=dmdx,
+        fixed_coil_turns=100,
+        moving_coil_turns=50,
+        coil_separation=2.0,
+        force_constant=dmdx,
     )
     current = 0.4
     force = weigher.force(current)

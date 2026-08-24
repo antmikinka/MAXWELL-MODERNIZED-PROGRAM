@@ -295,9 +295,7 @@ def calc_recoil_coefficient(
         raise ValueError("lam must be non-negative")
 
     if lam == 0.0:
-        return (
-            galvanometer_constant / horizontal_field * math.pi / t_vibration
-        )
+        return galvanometer_constant / horizontal_field * math.pi / t_vibration
     damping = math.exp(-(lam / math.pi) * math.atan(math.pi / lam))
     return (
         galvanometer_constant

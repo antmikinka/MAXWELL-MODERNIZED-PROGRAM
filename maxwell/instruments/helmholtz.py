@@ -101,9 +101,14 @@ class HelmholtzCoil:
         """
         a = self.radius
         s = a if spacing is None else spacing
-        return 4.0 * PI * self.n_turns * self.current * a**2 / (
-            a**2 + (0.5 * s) ** 2
-        ) ** 1.5
+        return (
+            4.0
+            * PI
+            * self.n_turns
+            * self.current
+            * a**2
+            / (a**2 + (0.5 * s) ** 2) ** 1.5
+        )
 
     @maxwell_cite(
         713,

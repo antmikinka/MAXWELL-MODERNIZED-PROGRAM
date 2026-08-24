@@ -32,14 +32,15 @@ the expected exponents are goldens in ``tests/articles/reference_values.json``
 
 Run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_defect_d22_dimensional_consistency.py -q
 """
+
 from __future__ import annotations
 
 import math
 
 import numpy as np
 import pytest
-
 from articles import ref_value, tolerance_of
+
 from maxwell.vortex_engine.kinetic_energy import (
     calc_disturbed_vortex_energy,
     calc_plane_wave_vortex_energy,
@@ -231,9 +232,7 @@ def test_d22_circular_ray_energy_phase_independent_identity():
     r, n, q = 1.7, 4.0, 2.3
     theta = 0.8  # generic phase nt - qz
 
-    velocity = np.array(
-        [-r * n * math.sin(theta), r * n * math.cos(theta), 0.0]
-    )
+    velocity = np.array([-r * n * math.sin(theta), r * n * math.cos(theta), 0.0])
     curvature = np.array(
         [-r * q * q * math.cos(theta), -r * q * q * math.sin(theta), 0.0]
     )

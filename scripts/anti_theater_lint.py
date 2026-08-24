@@ -1268,10 +1268,25 @@ def lint_source(source: str, filename: str = "<string>", rules=None) -> list[Fin
     return findings
 
 
+def _repo_relative(path: str) -> str:
+    """Repo-relative forward-slash path, tolerant of foreign mounts.
+
+    On Windows ``os.path.relpath`` raises ``ValueError`` when ``path``
+    and ``REPO_ROOT`` live on different drives (e.g. a pytest tmp_path
+    on ``C:`` while the checkout is on ``D:`` -- the GitHub Actions
+    layout).  Scanning must never crash on that: fall back to the
+    normalized absolute path so findings still carry a usable location.
+    """
+    try:
+        return os.path.relpath(path, REPO_ROOT).replace(os.sep, "/")
+    except ValueError:
+        return os.path.abspath(path).replace(os.sep, "/")
+
+
 def scan_file(path: str, relpath: str | None = None, rules=None) -> list[Finding]:
     """Lint one file.  Unparseable files warn on stderr and yield []."""
     if relpath is None:
-        relpath = os.path.relpath(path, REPO_ROOT).replace(os.sep, "/")
+        relpath = _repo_relative(path)
     try:
         with open(path, "r", encoding="utf-8", errors="replace") as handle:
             source = handle.read()

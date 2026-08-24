@@ -860,8 +860,7 @@ def maxwell_mutual_inductance_closed_form(
     part=4,
     chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
-    description="Computed reciprocity residual M12 - M21 of Neumann's "
-    "formula",
+    description="Computed reciprocity residual M12 - M21 of Neumann's " "formula",
 )
 def neumann_reciprocity_residual(
     R1: float = 1.0,

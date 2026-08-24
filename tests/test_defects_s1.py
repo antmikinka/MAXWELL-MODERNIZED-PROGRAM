@@ -41,6 +41,7 @@ import math
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 from scipy.special import ellipe, ellipk
 
 from maxwell.config.constants import CONST
@@ -54,8 +55,6 @@ from maxwell.magneto_optics.circular_polarization import (
     perform_kinematic_analysis,
 )
 from maxwell.optics.diffusion import calc_diffusion_length, calc_diffusion_time
-
-from articles import ref_value, tolerance_of
 
 # Standard gravity (cm/s^2). Stage 4 §4.1 references ``CONST.G_STANDARD`` but
 # no such attribute exists in maxwell/config/constants.py; the value is pinned
@@ -172,9 +171,7 @@ def test_regression_D04_art812_delta_n_identity():
     expected_dv = c * expected_dn / n**2
     assert dv == pytest.approx(expected_dv, rel=1e-12)  # pre-fix code was 2x off
     # closed loop: rotation per length = half the wavenumber difference
-    ka = perform_kinematic_analysis(
-        1.0, k_right=2.0e5 * 0.999, k_left=2.0e5 * 1.001
-    )
+    ka = perform_kinematic_analysis(1.0, k_right=2.0e5 * 0.999, k_left=2.0e5 * 1.001)
     assert ka["rotation_per_length"] == pytest.approx(
         ref_value(812, "rotation_per_length_closed_loop"),
         **tolerance_of(812, "rotation_per_length_closed_loop"),
@@ -250,8 +247,10 @@ def test_regression_D02_art702_near_axis_psi_and_curl():
 
     B_rho_curl = -(A_phi(rho0, z0 + h) - A_phi(rho0, z0 - h)) / (2.0 * h)
     B_z_curl = (
-        (rho0 + h) * A_phi(rho0 + h, z0) - (rho0 - h) * A_phi(rho0 - h, z0)
-    ) / (2.0 * h) / rho0
+        ((rho0 + h) * A_phi(rho0 + h, z0) - (rho0 - h) * A_phi(rho0 - h, z0))
+        / (2.0 * h)
+        / rho0
+    )
     B_rho_ref, B_z_ref = _biot_savart_loop_B(1.0, a, rho0, z0)
     # rel 1e-3 accommodates the finite-difference curl (spec: 1e-5 vs the
     # analytic oracle); today both components are ~1e3 off.
@@ -283,6 +282,4 @@ def test_regression_D05_art751_force_equals_I2_dMdx():
     assert abs(res["force"]) == pytest.approx(
         I * I * abs(dMdx), rel=2e-3
     )  # EMU: no c^2 — pre-fix code gave ~1e-23 dyn instead of ~1.24 dyn
-    assert res["equivalent_mass"] == pytest.approx(
-        res["force"] / G_STANDARD, rel=1e-12
-    )
+    assert res["equivalent_mass"] == pytest.approx(res["force"] / G_STANDARD, rel=1e-12)

@@ -90,9 +90,7 @@ class Quaternion:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Quaternion):
             return NotImplemented
-        return float(self.S) == float(other.S) and bool(
-            np.array_equal(self.V, other.V)
-        )
+        return float(self.S) == float(other.S) and bool(np.array_equal(self.V, other.V))
 
 
 def _xyz(point: PointLike) -> tuple[float, float, float]:
@@ -179,9 +177,7 @@ def vector_nabla(A: VectorField, point: PointLike, h: float = 1e-6) -> np.ndarra
     theory_class="maxwell_original",
     description="Nabla applied to a vector returns one quaternion, not a pre-split div/curl pair.",
 )
-def nabla_of_vector(
-    A: VectorField, point: PointLike, h: float = 1e-6
-) -> Quaternion:
+def nabla_of_vector(A: VectorField, point: PointLike, h: float = 1e-6) -> Quaternion:
     """∇A as one quaternion. The scalar part is never discarded.
 
     ∇ = S∇ + V∇ with S∇A = −div A and V∇A = curl A.

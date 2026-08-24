@@ -86,11 +86,7 @@ def _vector_potential_azimuthal(
     E = calc_complete_elliptic_integral_second_kind(np.sqrt(k_sq))
 
     # A_phi formula
-    A_phi = (
-        (current / CONST.C)
-        * (np.sqrt(alpha_sq) / rho)
-        * ((2 - k_sq) * K - 2 * E)
-    )
+    A_phi = (current / CONST.C) * (np.sqrt(alpha_sq) / rho) * ((2 - k_sq) * K - 2 * E)
 
     return A_phi
 

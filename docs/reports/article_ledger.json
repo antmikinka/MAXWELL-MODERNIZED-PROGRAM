@@ -25930,7 +25930,7 @@
         "function": "analyze_neumanns_theory"
       },
       {
-        "description": "Computed reciprocity residual M12 - M21 of Neumann",
+        "description": "Computed reciprocity residual M12 - M21 of Neumann's formula",
         "file": "maxwell/molecular/neumanns_theory.py",
         "function": "neumann_reciprocity_residual"
       },
@@ -26024,7 +26024,7 @@
     "chapter_title": "Ch XXIII: Action at Distance",
     "citations": [
       {
-        "description": "Ampere",
+        "description": "Ampere's theory: descriptive commentary plus computed checks",
         "file": "maxwell/molecular/competing_theories.py",
         "function": "analyze_amperes_theory"
       },
@@ -26039,7 +26039,7 @@
         "function": "compare_electromagnetic_theories"
       },
       {
-        "description": "Compare all electromagnetic theories via computed ",
+        "description": "Compare all electromagnetic theories via computed residuals",
         "file": "maxwell/molecular/competing_theories.py",
         "function": "compare_theories"
       },
@@ -26072,7 +26072,7 @@
     "chapter_title": "Ch XXIII: Action at Distance",
     "citations": [
       {
-        "description": "Ampere",
+        "description": "Ampere's theory: descriptive commentary plus computed checks",
         "file": "maxwell/molecular/competing_theories.py",
         "function": "analyze_amperes_theory"
       },
@@ -26082,7 +26082,7 @@
         "function": "compare_electromagnetic_theories"
       },
       {
-        "description": "Compare all electromagnetic theories via computed ",
+        "description": "Compare all electromagnetic theories via computed residuals",
         "file": "maxwell/molecular/competing_theories.py",
         "function": "compare_theories"
       },
@@ -26110,7 +26110,7 @@
         "function": "analyze_theory_differences"
       },
       {
-        "description": "Compare all electromagnetic theories via computed ",
+        "description": "Compare all electromagnetic theories via computed residuals",
         "file": "maxwell/molecular/competing_theories.py",
         "function": "compare_theories"
       },
@@ -26143,7 +26143,7 @@
         "function": "compare_all"
       },
       {
-        "description": "Compare all electromagnetic theories via computed ",
+        "description": "Compare all electromagnetic theories via computed residuals",
         "file": "maxwell/molecular/competing_theories.py",
         "function": "compare_theories"
       },

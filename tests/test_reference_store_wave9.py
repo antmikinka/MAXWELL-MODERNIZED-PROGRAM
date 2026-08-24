@@ -29,11 +29,10 @@ import math
 
 import numpy as np
 import pytest
-
 from articles import (
     entry,
-    reference_values,
     ref_value,
+    reference_values,
     tolerance_of,
     validate_store,
 )

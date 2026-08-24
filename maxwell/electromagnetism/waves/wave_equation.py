@@ -580,9 +580,9 @@ def verify_wave_equation(
 
         # Ampere-Maxwell: ∇ × B - (εμ/c) ∂E/∂t = 0
         # (vacuum: εμ = 1; in a medium D = εE, B = μH)
-        ampere_residual = curl_B - (
-            wave.permittivity * wave.permeability / CONST.C
-        ) * dE_dt
+        ampere_residual = (
+            curl_B - (wave.permittivity * wave.permeability / CONST.C) * dE_dt
+        )
         max_ampere = max(max_ampere, np.linalg.norm(ampere_residual))
 
     # Check tolerances: each residual is compared against the natural

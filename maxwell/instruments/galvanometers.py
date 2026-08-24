@@ -247,8 +247,11 @@ def calc_galvanometer_response(
     gi = coil_constant * abs(current)
 
     def balance(theta: float) -> float:
-        return m * gi * np.cos(theta) - m * horizontal_field * np.sin(theta) \
+        return (
+            m * gi * np.cos(theta)
+            - m * horizontal_field * np.sin(theta)
             - torsion_constant * theta
+        )
 
     # balance(0) = m*gi >= 0 and balance(pi/2) = -m*H - tau*pi/2 < 0, and
     # balance'(theta) = -m*gi*sin - m*H*cos - tau < 0 on (0, pi/2), so the
@@ -685,8 +688,9 @@ def design_sensitive_galvanometer(
         "coil_resistance": coil_resistance,
         "galvanometer_constant": galvanometer_constant,
         "sensitivity_merit": merit,
-        "matched": bool(abs(coil_resistance - target_resistance)
-                        <= 0.01 * target_resistance),
+        "matched": bool(
+            abs(coil_resistance - target_resistance) <= 0.01 * target_resistance
+        ),
     }
 
 

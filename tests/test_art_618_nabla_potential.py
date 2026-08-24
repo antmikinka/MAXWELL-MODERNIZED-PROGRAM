@@ -51,7 +51,9 @@ class TestNablaAsOneQuaternion:
         S = scalar_part_of_potential(_A_solenoidal, point)
         assert_vectors_close(B, q.vector, cgs_tolerance)
         assert_cgs_close(S, q.scalar, cgs_tolerance)
-        assert_vectors_close(magnetic_induction_from_potential(q), q.vector, cgs_tolerance)
+        assert_vectors_close(
+            magnetic_induction_from_potential(q), q.vector, cgs_tolerance
+        )
         assert_cgs_close(scalar_part_of_potential(q), q.scalar, cgs_tolerance)
 
     def test_nonzero_scalar_part_is_constructible(

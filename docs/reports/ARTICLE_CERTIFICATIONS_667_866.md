@@ -323,7 +323,7 @@ Scanner note — `math/spherical_harmonics.py::<unknown>` entries are the ledger
 
 ## Appendix A — Qualifying tests per article (verbatim from `article_evidence_report.json`)
 
-Artifact `generated: 2026-08-22T15:15:23.968575+00:00` (authoritative full-suite emission; source: `article_evidence_report.json`; the G3-era revision is G3 gate review §1.2/§7.3). 501 marked-test entries over 200 articles; 481 distinct test nodeids (tests may qualify several articles when marked for each).
+Artifact `generated: 2026-08-22T16:04:35.696322+00:00` (authoritative full-suite emission; source: `article_evidence_report.json`; the G3-era revision is G3 gate review §1.2/§7.3). 501 marked-test entries over 200 articles; 481 distinct test nodeids (tests may qualify several articles when marked for each).
 
 ### IV.XII Ch XII: Current-Sheets
 
@@ -1102,7 +1102,7 @@ These records were authored by **SCRIBA** from machine evidence only (ledger, ev
 | Artifact | Role | Internal timestamp/identifier |
 |----------|------|-------------------------------|
 | `docs/reports/article_ledger.json` (+ `article_ledger_summary.md`) | REQ-F citations module::function, chapter map, cite counts | Regenerated post-Wave-9 by `scripts/build_article_ledger.py` (2026-08-22, G4-pre audit finding F1 remediation); the G3-era revision was independently rebuilt by the G3 examiner (G3 §1.3) |
-| `docs/reports/article_evidence_report.json` | REQ-T qualifying tests | `generated: 2026-08-22T15:15:23.968575+00:00`, `gate_G3: PASS` (G3 examiner run 2, §1.2/§7.3). Source used: `article_evidence_report.json` (live report is re-emitted per pytest run and can be a partial-run product, G3 §7.3; the frozen G3 baseline preserves the authoritative full-suite artifact) |
+| `docs/reports/article_evidence_report.json` | REQ-T qualifying tests | `generated: 2026-08-22T16:04:35.696322+00:00`, `gate_G3: PASS` (G3 examiner run 2, §1.2/§7.3). Source used: `article_evidence_report.json` (live report is re-emitted per pytest run and can be a partial-run product, G3 §7.3; the frozen G3 baseline preserves the authoritative full-suite artifact) |
 | `tests/articles/reference_values.json` | REQ-V reference values | 202 article keys / 256 values / 0 empty provenance (`validate_store()` green; G3 §4; Wave-9 expansion 71→200 in-scope; G4-pre §2 W9a) |
 | `python check_coverage.py` (re-run by SCRIBA 2026-08-22) | chapter boundaries, 866/866 total | Ch XVII 752–757 (6), Ch XVIII 758–767 (10); P0 boundary fix holds |
 | `docs/reports/G3_GATE_REVIEW_2026-08-21.md` | certified baseline: suite 2312/0/0/0, S2 closures, S3 rulings, theater scan | Independent fresh-context examiner, verdict PASS |

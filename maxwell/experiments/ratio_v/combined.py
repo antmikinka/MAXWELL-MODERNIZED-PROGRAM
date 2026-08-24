@@ -106,9 +106,7 @@ def method_maxwell_combined(
         "v_from_resistance": v_from_resistance,
         "v_from_capacitance": v_from_capacitance,
         "mean_v": mean_v,
-        "disagreement_pct": abs(v_from_resistance - v_from_capacitance)
-        / mean_v
-        * 100,
+        "disagreement_pct": abs(v_from_resistance - v_from_capacitance) / mean_v * 100,
         "rc_time_constant_emu_s": rc_emu,
         "rc_time_constant_esu_s": rc_esu,
         "rc_invariance_rel_diff": abs(rc_emu - rc_esu) / rc_esu,
@@ -217,8 +215,9 @@ def method_condenser_wippe(
             f"rho={bridge_ratio}, C={condenser_capacity}, "
             f"R={known_resistance}, f={frequency}"
         )
-    return float(np.sqrt(known_resistance * condenser_capacity * frequency
-                         / bridge_ratio))
+    return float(
+        np.sqrt(known_resistance * condenser_capacity * frequency / bridge_ratio)
+    )
 
 
 @maxwell_cite(
@@ -389,5 +388,6 @@ def combine_coil_condenser(
             "all inputs must be positive, got "
             f"L={coil_inductance}, C={condenser_capacity}, T={measured_period}"
         )
-    return float(2.0 * PI * np.sqrt(coil_inductance * condenser_capacity)
-                 / measured_period)
+    return float(
+        2.0 * PI * np.sqrt(coil_inductance * condenser_capacity) / measured_period
+    )

@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.config.constants import CONST
 from maxwell.electromagnetism.waves import plane_wave as em_pw
@@ -33,8 +34,6 @@ from maxwell.optics import plane_waves as optics_pw
 from maxwell.optics import radiation_pressure as optics_rp
 from maxwell.optics import velocity as optics_vel
 from maxwell.optics import wave_equation as optics_we
-
-from articles import ref_value, tolerance_of
 
 # Tolerance classes (LAST200 Stage 4 sec. 2.5)
 TIGHT = 1e-10
@@ -171,8 +170,11 @@ class TestWaveEquation781to785:
         E0 = np.array([1.0, 0.0, 0.0])
 
         E = optics_we.calc_plane_wave_E(
-            np.array([0.0, 0.0, lambda_cm / 8.0]), 0.0, np.array([0.0, 0.0, kz]),
-            omega, E0,
+            np.array([0.0, 0.0, lambda_cm / 8.0]),
+            0.0,
+            np.array([0.0, 0.0, kz]),
+            omega,
+            E0,
         )
         assert E[0] == pytest.approx(
             ref_value(785, "plane_wave_E_x_phase_pi4"),
@@ -263,7 +265,9 @@ class TestPlaneWaveProperties786to790:
         """
         ratio = optics_vel.calc_E_B_ratio(4.0, 1.0)
         assert ratio == pytest.approx(CONST.C / 2.0, rel=TIGHT)
-        assert optics_vel.calc_refractive_index(4.0, 1.0) == pytest.approx(2.0, rel=TIGHT)
+        assert optics_vel.calc_refractive_index(4.0, 1.0) == pytest.approx(
+            2.0, rel=TIGHT
+        )
 
     @pytest.mark.article(788)
     def test_788_poynting_vector_golden(self) -> None:
@@ -330,9 +334,7 @@ class TestPlaneWaveProperties786to790:
 
         # Art. 788-789 consistency: energy flows at speed c, so the
         # cycle-averaged density <u> = u_peak/2 obeys I = c <u>.
-        assert wave.intensity() == pytest.approx(
-            CONST.C * 0.5 * u_peak, rel=STANDARD
-        )
+        assert wave.intensity() == pytest.approx(CONST.C * 0.5 * u_peak, rel=STANDARD)
 
     @pytest.mark.article(790)
     def test_790_wavelength_frequency_relations(self) -> None:
@@ -735,8 +737,9 @@ class TestRadiationPressure791to794:
         # Consistency with the pressure calculator dataclass route
         rp = optics_rp.RadiationPressure()
         u = optics_rp.calc_energy_density_from_intensity(I)
-        assert rp.force_on_area(optics_rp.calc_radiation_pressure_reflection(u), A) \
-            == pytest.approx(F_refl, rel=TIGHT)
+        assert rp.force_on_area(
+            optics_rp.calc_radiation_pressure_reflection(u), A
+        ) == pytest.approx(F_refl, rel=TIGHT)
 
 
 # =============================================================================
@@ -849,7 +852,9 @@ class TestPolarizationStates801to803:
         assert optics_pw.calc_wave_interference(1.0, 1.0, np.pi) == pytest.approx(
             0.0, abs=1e-12
         )
-        assert optics_pw.calc_fringe_visibility(4.0, 0.0) == pytest.approx(1.0, rel=TIGHT)
+        assert optics_pw.calc_fringe_visibility(4.0, 0.0) == pytest.approx(
+            1.0, rel=TIGHT
+        )
 
 
 # =============================================================================
@@ -880,9 +885,7 @@ class TestCrystalOptics804to805:
         assert co.path_difference(d) == pytest.approx(abs(n_e - n_o) * d, rel=TIGHT)
         lam = optics_crystals.SODIUM_D_LINE_CM
         Gamma = co.retardation(d, lam)
-        assert Gamma == pytest.approx(
-            2.0 * np.pi * abs(n_e - n_o) * d / lam, rel=TIGHT
-        )
+        assert Gamma == pytest.approx(2.0 * np.pi * abs(n_e - n_o) * d / lam, rel=TIGHT)
 
     @pytest.mark.article(804)
     def test_804_wave_plate_thickness_round_trip(self) -> None:
@@ -969,9 +972,7 @@ class TestCrystalOptics804to805:
         # v_o - v_e < 0 for a negative crystal (e-ray is faster)
         assert v_o_cal < 0
 
-        v_o_qtz = optics_crystals.calc_velocity_difference(
-            quartz["n_o"], quartz["n_e"]
-        )
+        v_o_qtz = optics_crystals.calc_velocity_difference(quartz["n_o"], quartz["n_e"])
         assert v_o_qtz > 0
 
         # Magnitude oracle for calcite: c(1/n_o - 1/n_e), hand formula

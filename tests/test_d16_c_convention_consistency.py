@@ -128,12 +128,12 @@ class TestD16IndependentOracle:
         g_field = calc_field_at_center(current, n_turns, radius)
         cc_field = calc_coil_on_axis(current, radius, 0.0, n_turns=n_turns)
 
-        assert g_field == pytest.approx(oracle, rel=1e-6), (
-            "galvanometers.py disagrees with the Gaussian Biot-Savart integral"
-        )
-        assert cc_field == pytest.approx(oracle, rel=1e-6), (
-            "circular_coils.py disagrees with the Gaussian Biot-Savart integral"
-        )
+        assert g_field == pytest.approx(
+            oracle, rel=1e-6
+        ), "galvanometers.py disagrees with the Gaussian Biot-Savart integral"
+        assert cc_field == pytest.approx(
+            oracle, rel=1e-6
+        ), "circular_coils.py disagrees with the Gaussian Biot-Savart integral"
 
     def test_standard_galvanometer_constant_is_gaussian(self) -> None:
         """G = 2.pi.n/(c.R): galvanometer constant in gauss per statampere.

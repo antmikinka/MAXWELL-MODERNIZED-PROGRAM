@@ -67,13 +67,19 @@ def optimize_galvanometer_wire(
     Raises:
         ValueError: for non-positive inputs.
     """
-    if min(external_resistance, wire_resistivity, available_volume,
-           coil_inner_radius, coil_outer_radius) <= 0.0:
+    if (
+        min(
+            external_resistance,
+            wire_resistivity,
+            available_volume,
+            coil_inner_radius,
+            coil_outer_radius,
+        )
+        <= 0.0
+    ):
         raise ValueError("all inputs must be positive")
 
-    optimal_length = np.sqrt(
-        external_resistance * available_volume / wire_resistivity
-    )
+    optimal_length = np.sqrt(external_resistance * available_volume / wire_resistivity)
     wire_area = available_volume / optimal_length
     wire_radius = np.sqrt(wire_area / PI)
 
@@ -161,8 +167,12 @@ def optimize_galvanometer_sensitivity(
     Raises:
         ValueError: for non-positive inputs.
     """
-    if min(wire_length, wire_radius, wire_resistivity, external_resistance,
-           coil_radius) <= 0.0:
+    if (
+        min(
+            wire_length, wire_radius, wire_resistivity, external_resistance, coil_radius
+        )
+        <= 0.0
+    ):
         raise ValueError("all inputs must be positive")
 
     volume = PI * wire_radius**2 * wire_length
@@ -242,7 +252,10 @@ def apply_sensitivity_wire_law(
         raise ValueError("position_in_coil must lie within the winding space")
 
     kappa = np.sqrt(
-        PI * wire_resistivity * depth
-        * (inner_r**-2 - outer_r**-2) / external_resistance
+        PI
+        * wire_resistivity
+        * depth
+        * (inner_r**-2 - outer_r**-2)
+        / external_resistance
     )
     return position_in_coil * np.sqrt(kappa / PI)

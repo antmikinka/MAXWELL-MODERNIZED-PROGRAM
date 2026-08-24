@@ -253,8 +253,15 @@ def test_terminal_summary_full_run_writes_canonical_with_pass(
     assert data["range"] == [667, 866]
     assert "invocation" in data
     # Pre-R6 key set preserved for downstream consumers.
-    for key in ("range", "generated", "articles_covered", "total_marked_tests",
-                "articles_missing", "gate_G3", "evidence"):
+    for key in (
+        "range",
+        "generated",
+        "articles_covered",
+        "total_marked_tests",
+        "articles_missing",
+        "gate_G3",
+        "evidence",
+    ):
         assert key in data
 
 
@@ -265,9 +272,7 @@ def test_terminal_summary_full_run_with_missing_article_still_fails(
     the guard must never mask a genuine regression as 'partial'."""
     canonical = tmp_path / "article_evidence_report.json"
     monkeypatch.setattr(_conftest, "_ARTICLE_REPORT", canonical)
-    monkeypatch.setattr(
-        _conftest, "_ARTICLE_REPORT_PARTIAL", tmp_path / "partial.json"
-    )
+    monkeypatch.setattr(_conftest, "_ARTICLE_REPORT_PARTIAL", tmp_path / "partial.json")
 
     cfg = _fake_config(args=[str(_TESTS_DIR)])
     cfg._article_map = {n: [f"t.py::t{n}"] for n in range(667, 866)}  # 866 gone
@@ -343,9 +348,9 @@ def test_subset_subprocess_run_does_not_clobber_canonical_report(
         text=True,
         timeout=600,
     )
-    assert proc.returncode == 0, (
-        f"subset run failed (rc={proc.returncode}):\n{proc.stdout}\n{proc.stderr}"
-    )
+    assert (
+        proc.returncode == 0
+    ), f"subset run failed (rc={proc.returncode}):\n{proc.stdout}\n{proc.stderr}"
 
     canonical = _conftest._ARTICLE_REPORT
     after = canonical.read_bytes() if canonical.exists() else None

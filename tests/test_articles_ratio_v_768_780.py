@@ -39,6 +39,7 @@ from __future__ import annotations
 import math
 
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.config.constants import CONST
 from maxwell.core.units.dimensions import convert_esu_to_emu
@@ -72,8 +73,6 @@ from maxwell.experiments.ratio_v.theory import (
     prove_ratio_is_velocity,
     v_from_convection_field,
 )
-
-from articles import ref_value, tolerance_of
 
 # ── Constants and tolerance classes (Stage 4 §2.5) ──────────────────────
 
@@ -293,9 +292,7 @@ def test_art_769_dimensional_check_v_cm_s():
         "jenkin": _dim_div(_DIM["current_esu"], _DIM["current_emu"]),
         # wippe: sqrt(R_EMU C_ESU f)
         "wippe": _dim_sqrt(
-            _dim_mul(
-                _DIM["resistance_emu"], _DIM["capacitance_esu"], _DIM["frequency"]
-            )
+            _dim_mul(_DIM["resistance_emu"], _DIM["capacitance_esu"], _DIM["frequency"])
         ),
         # LC resonance: omega sqrt(L_EMU C_ESU)
         "lc_resonance": _dim_mul(
@@ -528,9 +525,7 @@ def test_art_773_cross_method_agreement():
     """
     c_esu, v_esu, r_emu, l_emu, f = 5.0e5, 2.0, 1.0e15, 1.0e8, 1.0
     v_wk = method_weber_kohlrausch(c_esu, c_esu / C_LIGHT**2)
-    v_th = method_thomson_electrometer(
-        v_esu, 0.1, C_LIGHT * v_esu / 0.1
-    )
+    v_th = method_thomson_electrometer(v_esu, 0.1, C_LIGHT * v_esu / 0.1)
     v_je = method_jenkin(c_esu, v_esu, f, c_esu * v_esu * f / C_LIGHT)
     v_ic = method_intermittent_current(c_esu, v_esu, f, c_esu * v_esu * f / C_LIGHT)
     v_wi = method_condenser_wippe(1.0, c_esu, C_LIGHT**2 / (c_esu * f), f)
@@ -586,7 +581,9 @@ def test_art_776_condenser_wippe_balance():
     assert v == pytest.approx(C_LIGHT, rel=STANDARD)
     assert v == pytest.approx(V_HIST, rel=EMPIRICAL)
     # dimensional oracle: R_EMU C_ESU f is L^2 T^-2 (its square root cm/s)
-    assert _dim_mul(_DIM["resistance_emu"], _DIM["capacitance_esu"], _DIM["frequency"]) == (
+    assert _dim_mul(
+        _DIM["resistance_emu"], _DIM["capacitance_esu"], _DIM["frequency"]
+    ) == (
         0,
         4,
         -4,
@@ -636,13 +633,11 @@ def test_art_777_rapid_action_correction_contract():
     v_fast_circuit = apply_rapid_action_correction(1.0, 1.0, 0.05)
     assert v_slow_circuit < v_fast_circuit < 1.0
     # equivalently, faster switching (smaller half-period) shrinks more
-    assert apply_rapid_action_correction(1.0, 10.0, 0.5) < apply_rapid_action_correction(
-        1.0, 1.0, 0.5
-    )
+    assert apply_rapid_action_correction(
+        1.0, 10.0, 0.5
+    ) < apply_rapid_action_correction(1.0, 1.0, 0.5)
     # slow limit: charge fraction -> 1, correction -> identity
-    assert apply_rapid_action_correction(1.0, 1e-6, 1.0) == pytest.approx(
-        1.0, rel=1e-9
-    )
+    assert apply_rapid_action_correction(1.0, 1e-6, 1.0) == pytest.approx(1.0, rel=1e-9)
 
 
 @pytest.mark.article(778)
@@ -781,9 +776,9 @@ def _anchor_cases():
             id="art772-thomson",
         ),
         pytest.param(
-            lambda: method_maxwell_combined(
-                rd["R_esu"], r_emu, c_esu, rd["C_emu"]
-            )["mean_v"],
+            lambda: method_maxwell_combined(rd["R_esu"], r_emu, c_esu, rd["C_emu"])[
+                "mean_v"
+            ],
             marks=[pytest.mark.article(773)],
             id="art773-maxwell-combined",
         ),

@@ -25,6 +25,7 @@ import math
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.config.constants import CONST
 from maxwell.magneto_optics.circular_polarization import (
@@ -81,8 +82,6 @@ from maxwell.vortex_engine.vortex_lattice import (
     append_mechanical_theory_notes,
 )
 
-from articles import ref_value, tolerance_of
-
 TIGHT = 1e-10
 STANDARD = 1e-8
 NUMERIC = 1e-6
@@ -109,9 +108,9 @@ def test_art806_rotation_measured_by_analyser_difference():
     )
     # invariance under a common offset of both analyser readings
     offset = 0.7321
-    assert measure_rotation_by_analyser(
-        0.4 + offset, 1.15 + offset
-    ) == pytest.approx(0.75, abs=TIGHT)
+    assert measure_rotation_by_analyser(0.4 + offset, 1.15 + offset) == pytest.approx(
+        0.75, abs=TIGHT
+    )
 
 
 # ── Art. 807 — Verdet's law theta = V B L ───────────────────────────────────
@@ -201,9 +200,7 @@ def test_art809_verdet_table_units_and_ratios():
     ratio = table.compare_materials("carbon_disulfide", "water")
     assert ratio == pytest.approx(0.0424 / 0.0131, rel=TIGHT)
     # unit independence: the same ratio from the radian values
-    ratio_rad = table.get_verdet_rad("carbon_disulfide") / table.get_verdet_rad(
-        "water"
-    )
+    ratio_rad = table.get_verdet_rad("carbon_disulfide") / table.get_verdet_rad("water")
     assert ratio_rad == pytest.approx(ratio, rel=TIGHT)
 
 
@@ -429,17 +426,13 @@ def test_art818_energy_labels_potential_electric_kinetic_magnetic():
     """
     medium = MagnetoOpticMedium(permittivity=1.0, permeability=1.0, verdet_constant=0.0)
     vol = 8.0 * math.pi
-    E_case = medium.calc_medium_energy(
-        np.array([1.0, 0.0, 0.0]), np.zeros(3), vol
-    )
+    E_case = medium.calc_medium_energy(np.array([1.0, 0.0, 0.0]), np.zeros(3), vol)
     assert E_case["electric_energy"] == pytest.approx(1.0, rel=TIGHT)
     assert E_case["potential_energy"] == pytest.approx(1.0, rel=TIGHT)
     assert E_case["magnetic_energy"] == pytest.approx(0.0, abs=TIGHT)
     assert E_case["kinetic_energy"] == pytest.approx(0.0, abs=TIGHT)
     assert E_case["total_energy"] == pytest.approx(1.0, rel=TIGHT)
-    B_case = medium.calc_medium_energy(
-        np.zeros(3), np.array([0.0, 1.0, 0.0]), vol
-    )
+    B_case = medium.calc_medium_energy(np.zeros(3), np.array([0.0, 1.0, 0.0]), vol)
     assert B_case["kinetic_energy"] == pytest.approx(1.0, rel=TIGHT)
     assert B_case["magnetic_energy"] == pytest.approx(1.0, rel=TIGHT)
     assert B_case["potential_energy"] == pytest.approx(0.0, abs=TIGHT)
@@ -771,9 +764,7 @@ def test_art828_circular_velocities_and_vieta_identities():
     assert res["velocity_split"] == pytest.approx(
         (res["n_plus"] - res["n_minus"]) / q, rel=TIGHT
     )
-    assert res["n_plus"] + res["n_minus"] == pytest.approx(
-        res["sum_roots"], rel=TIGHT
-    )
+    assert res["n_plus"] + res["n_minus"] == pytest.approx(res["sum_roots"], rel=TIGHT)
     assert res["sum_roots"] == pytest.approx(2.0 * C * gamma * q**2 / rho, rel=TIGHT)
     assert res["n_plus"] * res["n_minus"] == pytest.approx(
         res["product_roots"], rel=STANDARD
@@ -801,9 +792,7 @@ def test_art829_rotation_formula_eq26_and_denominator():
     m = 4.0 * math.pi**2 * C / (CONST.C * rho)
     assert rotation_coefficient(C, rho) == pytest.approx(m, rel=TIGHT)
     expected = m * L * gamma * (i**2 / lam**2) * (i - lam * slope)
-    theta = derive_magnetic_rotation(
-        C, rho, L, gamma, i, lam, dispersion_slope=slope
-    )
+    theta = derive_magnetic_rotation(C, rho, L, gamma, i, lam, dispersion_slope=slope)
     assert theta == pytest.approx(expected, rel=TIGHT)
     # no dispersion slope: the (i - lambda di/dlambda) factor is just i
     theta0 = derive_magnetic_rotation(C, rho, L, gamma, i, lam)
@@ -878,9 +867,7 @@ def test_art830_inverse_square_laws_from_verdet_data():
     x = [1.0 / l**2 for l in lam]
     k_oracle = sum(t * xi for t, xi in zip(theta, x)) / sum(xi * xi for xi in x)
     assert res["best_fit_k"] == pytest.approx(k_oracle, rel=STANDARD)
-    frac = [
-        (k_oracle * xi - t) / t for t, xi in zip(theta, x)
-    ]
+    frac = [(k_oracle * xi - t) / t for t, xi in zip(theta, x)]
     rms_oracle = math.sqrt(sum(f * f for f in frac) / len(frac))
     assert res["rms_fractional_residual"] == pytest.approx(rms_oracle, rel=STANDARD)
     assert res["obeys_inverse_square_within_threshold"] is True

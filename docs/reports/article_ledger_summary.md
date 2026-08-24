@@ -1,6 +1,6 @@
 # Article Ledger Summary
 
-Generated: 2026-08-22 (11:56:01)
+Generated: 2026-08-24 (17:01:16)
 Source: `scripts/build_article_ledger.py` scanning `maxwell/**/*.py` for `@maxwell_cite` decorators.
 
 ## Totals

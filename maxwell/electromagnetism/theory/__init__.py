@@ -22,14 +22,6 @@ from maxwell.electromagnetism.theory.dynamical_model import (
     calc_field_momentum,
     calc_poynting_vector,
 )
-from maxwell.electromagnetism.theory.quaternion_expressions import (
-    Quaternion,
-    impose_s_nabla_A_zero,
-    magnetic_induction_from_potential,
-    nabla_of_vector,
-    scalar_part_of_potential,
-    verify_nabla_quaternion_parts,
-)
 from maxwell.electromagnetism.theory.general_equations import (
     ElectromagneticField,
     GeneralEquationsCalculator,
@@ -47,6 +39,14 @@ from maxwell.electromagnetism.theory.general_equations import (
     numerical_curl,
     numerical_divergence,
     verify_maxwell_equations,
+)
+from maxwell.electromagnetism.theory.quaternion_expressions import (
+    Quaternion,
+    impose_s_nabla_A_zero,
+    magnetic_induction_from_potential,
+    nabla_of_vector,
+    scalar_part_of_potential,
+    verify_nabla_quaternion_parts,
 )
 
 __all__ = [

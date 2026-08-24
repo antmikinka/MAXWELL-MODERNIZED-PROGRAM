@@ -366,7 +366,9 @@ def pytest_collection_modifyitems(config, items):
     for item in items:
         for mark in item.iter_markers(name="article"):
             if not mark.args:
-                errors.append(f"{item.nodeid}: article marker needs an article number N")
+                errors.append(
+                    f"{item.nodeid}: article marker needs an article number N"
+                )
                 continue
             n = mark.args[0]
             if (
@@ -378,10 +380,9 @@ def pytest_collection_modifyitems(config, items):
                     f"{item.nodeid}: bad article number {n!r} (must be an int in 1..866)"
                 )
                 continue
-            if (
-                n in _ARTICLE_RANGE
-                and "quarantine" not in [m.name for m in item.iter_markers()]
-            ):
+            if n in _ARTICLE_RANGE and "quarantine" not in [
+                m.name for m in item.iter_markers()
+            ]:
                 amap.setdefault(n, []).append(item.nodeid)
     if errors:
         # Collected across all items above, then raised once (Stage 4 §2.2

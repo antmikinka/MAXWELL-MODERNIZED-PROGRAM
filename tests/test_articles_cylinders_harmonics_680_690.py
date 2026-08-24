@@ -52,6 +52,7 @@ import math
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of  # noqa: E402
 from scipy.integrate import quad
 from scipy.special import ellipe, ellipk, lpmv
 
@@ -80,9 +81,6 @@ from maxwell.math.spherical_harmonics import (
     calc_multipole_expansion,
     calc_spherical_harmonic,
 )
-
-from articles import ref_value, tolerance_of  # noqa: E402
-
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Independent oracles (never re-derive the code under test)
@@ -233,16 +231,16 @@ def _Y_closed(l: int, m: int, theta: float, phi: float) -> complex:
         amp = math.sqrt(3.0 / (8.0 * math.pi)) * s1  # Y_1^{-1} = -conj(Y_1^1)
         return amp * complex(math.cos(phi), -math.sin(phi))
     if (l, m) == (2, 0):
-        return complex(math.sqrt(5.0 / (4.0 * math.pi)) * 0.5 * (3.0 * c1**2 - 1.0), 0.0)
+        return complex(
+            math.sqrt(5.0 / (4.0 * math.pi)) * 0.5 * (3.0 * c1**2 - 1.0), 0.0
+        )
     if (l, m) == (2, 1):
         amp = -math.sqrt(15.0 / (8.0 * math.pi)) * c1 * s1
         return amp * complex(math.cos(phi), math.sin(phi))
     raise KeyError((l, m))
 
 
-def _zonal_multipole_oracle(
-    r: float, theta: float, moments: dict[int, float]
-) -> float:
+def _zonal_multipole_oracle(r: float, theta: float, moments: dict[int, float]) -> float:
     """O6: independent zonal series Phi = sum_l q_l N_l P_l(cos th)/r^{l+1}.
 
     N_l = sqrt((2l+1)/(4 pi)); P_l are the hand-coded Legendre polynomials.
@@ -466,9 +464,7 @@ def test_art682_hollow_cylinder_cavity_zero_and_wall_oracle():
     lo = _annulus_Bphi_filaments(I, a, b, r_mid, ns=128)
     hi = _annulus_Bphi_filaments(I, a, b, r_mid, ns=256)
     assert lo == pytest.approx(hi, rel=5e-4)  # oracle converging
-    assert calc_hollow_cylinder_field(I, a, b, r_mid) == pytest.approx(
-        hi, rel=5e-5
-    )
+    assert calc_hollow_cylinder_field(I, a, b, r_mid) == pytest.approx(hi, rel=5e-5)
 
 
 @pytest.mark.article(682)
@@ -635,7 +631,9 @@ def test_art686_real_harmonics_vs_closed_forms():
         want = -math.sqrt(3.0 / (4.0 * math.pi)) * math.sin(theta) * math.sin(phi)
         assert got == pytest.approx(want, rel=1e-13)
         got = SphericalHarmonic(l=2, m=0).evaluate_real(theta, phi)
-        want = math.sqrt(5.0 / (4.0 * math.pi)) * 0.5 * (3.0 * math.cos(theta) ** 2 - 1.0)
+        want = (
+            math.sqrt(5.0 / (4.0 * math.pi)) * 0.5 * (3.0 * math.cos(theta) ** 2 - 1.0)
+        )
         assert got == pytest.approx(want, rel=1e-13)
 
 
@@ -689,8 +687,7 @@ def test_art687_intensity_closed_form_and_phi_independence():
             (3.0 / (8.0 * math.pi)) * math.sin(theta) ** 2, rel=1e-13
         )
         assert sh20.intensity(theta, 0.3) == pytest.approx(
-            (5.0 / (4.0 * math.pi))
-            * (0.5 * (3.0 * math.cos(theta) ** 2 - 1.0)) ** 2,
+            (5.0 / (4.0 * math.pi)) * (0.5 * (3.0 * math.cos(theta) ** 2 - 1.0)) ** 2,
             rel=1e-13,
         )
     base = sh11.intensity(1.1, 0.0)
@@ -759,9 +756,10 @@ def test_art688_normalization_theorem_and_code_band():
         # while tolerance=0.0 (demanding exact floating-point equality)
         # flips the decision to False
         assert check["normalized"] is True
-        assert SphericalHarmonic(l=l, m=m).normalization_check(tolerance=0.0)[
-            "normalized"
-        ] is False
+        assert (
+            SphericalHarmonic(l=l, m=m).normalization_check(tolerance=0.0)["normalized"]
+            is False
+        )
 
 
 @pytest.mark.article(689)
@@ -809,8 +807,7 @@ def test_art689_associated_legendre_orthogonality_integrals():
     (rel 1e-8).
     """
     cross, _ = quad(
-        lambda x: calc_associated_legendre(2, 1, x)
-        * calc_associated_legendre(3, 1, x),
+        lambda x: calc_associated_legendre(2, 1, x) * calc_associated_legendre(3, 1, x),
         -1.0,
         1.0,
         limit=200,

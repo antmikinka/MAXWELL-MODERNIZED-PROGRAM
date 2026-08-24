@@ -30,7 +30,6 @@ from maxwell.meta.citation import get_citation
 from maxwell.verification.framework import VerificationResult
 from maxwell.verification.sympy_verify import (
     ALL_SYMBOLIC_VERIFIERS,
-    verify_Y00_normalization,
     verify_addition_theorem_p1,
     verify_ampere_force_symmetry,
     verify_ampere_newton_third_law,
@@ -42,10 +41,10 @@ from maxwell.verification.sympy_verify import (
     verify_circular_current_center_field,
     verify_coil_comparison_modulus,
     verify_cylindrical_sheet_field,
-    verify_dM_dd_dipole_relation,
     verify_dipole_vector_potential,
     verify_dispersion_relation,
     verify_div_B_dipole_zero,
+    verify_dM_dd_dipole_relation,
     verify_elliptic_E_derivative_identity,
     verify_elliptic_E_small_k_series,
     verify_elliptic_K_AGM_identity,
@@ -67,8 +66,8 @@ from maxwell.verification.sympy_verify import (
     verify_mutual_inductance_far_limit,
     verify_mutual_inductance_neumann_symmetry,
     verify_normal_B_continuous,
-    verify_plane_wave_E_cB,
     verify_plane_wave_dalembert,
+    verify_plane_wave_E_cB,
     verify_plane_wave_poynting,
     verify_rc_discharge_ode,
     verify_rc_time_constant,
@@ -85,6 +84,7 @@ from maxwell.verification.sympy_verify import (
     verify_weber_potential_energy_identity,
     verify_weber_velocity_structure,
     verify_wheatstone_balance,
+    verify_Y00_normalization,
     verify_zonal_harmonic_laplace,
 )
 
@@ -199,9 +199,9 @@ class TestWave8VerifiersPass:
 
     def test_verdict_passes(self, verifier, article):
         result = verifier()
-        assert result.passed is True, (
-            f"{verifier.__name__} (Art. {article}) failed: {result.details}"
-        )
+        assert (
+            result.passed is True
+        ), f"{verifier.__name__} (Art. {article}) failed: {result.details}"
         # Numeric pin: a passing verifier reports a negligible residual.
         assert result.relative_error < 1e-6
 

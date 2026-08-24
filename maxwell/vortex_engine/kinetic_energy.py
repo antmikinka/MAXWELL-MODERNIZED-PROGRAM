@@ -178,7 +178,7 @@ def calc_plane_wave_vortex_energy(
     v = np.asarray(velocity, dtype=float)
     curv = np.asarray(curvature, dtype=float)
     translational = 0.5 * density * float(np.dot(v, v))
-    coupling = coupling_constant * magnetic_force_gamma * (
-        curv[0] * v[1] - curv[1] * v[0]
+    coupling = (
+        coupling_constant * magnetic_force_gamma * (curv[0] * v[1] - curv[1] * v[0])
     )
     return translational + coupling

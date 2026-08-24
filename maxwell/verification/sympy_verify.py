@@ -1170,7 +1170,9 @@ def verify_elliptic_legendre_relation() -> VerificationResult:
         for k_str in ("0.3", "0.7"):
             kk = mpmath.mpf(k_str)
             kp = mpmath.sqrt(1 - kk**2)
-            combo = K_def(kk) * E_def(kp) + K_def(kp) * E_def(kk) - K_def(kk) * K_def(kp)
+            combo = (
+                K_def(kk) * E_def(kp) + K_def(kp) * E_def(kk) - K_def(kk) * K_def(kp)
+            )
             rel = abs(combo - mpmath.pi / 2) / (mpmath.pi / 2)
             worst = max(worst, float(rel))
     finally:
@@ -1342,9 +1344,7 @@ def verify_elliptic_K_derivative_identity() -> VerificationResult:
             )
 
         num_deriv = float(mpmath.diff(K_int, mpmath.mpf("0.3")))
-        closed_at = float(
-            sympy.N(rhs.subs(m, Rational(3, 10)), 30)
-        )
+        closed_at = float(sympy.N(rhs.subs(m, Rational(3, 10)), 30))
         worst = max(worst, abs(num_deriv - closed_at) / abs(closed_at))
     finally:
         mpmath.mp.dps = old_dps
@@ -1867,7 +1867,9 @@ def verify_mutual_inductance_neumann_symmetry() -> VerificationResult:
         beta = 2 * a1m * a2m
         m_par = 2 * beta / (alpha + beta)
         kernel = (2 - m_par) * mpmath.ellipk(m_par) - 2 * mpmath.ellipe(m_par)
-        m_exact = 2 * mpmath.pi * a1m * a2m * 2 * mpmath.sqrt(alpha + beta) / beta * kernel
+        m_exact = (
+            2 * mpmath.pi * a1m * a2m * 2 * mpmath.sqrt(alpha + beta) / beta * kernel
+        )
         coax_resid = abs(mpmath.mpf(m_coax) - m_exact) / abs(m_exact)
     finally:
         mpmath.mp.dps = old_dps
@@ -1932,7 +1934,14 @@ def verify_mutual_inductance_far_limit() -> VerificationResult:
             m_par = 2 * beta / (alpha + beta)
             kernel = (2 - m_par) * mpmath.ellipk(m_par) - 2 * mpmath.ellipe(m_par)
             m_exact = (
-                2 * mpmath.pi * a1m * a2m * 2 * mpmath.sqrt(alpha + beta) / beta * kernel
+                2
+                * mpmath.pi
+                * a1m
+                * a2m
+                * 2
+                * mpmath.sqrt(alpha + beta)
+                / beta
+                * kernel
             )
             m_far = 2 * mpmath.pi**2 * a1m**2 * a2m**2 / dm**3
             ratios.append(float(m_exact / m_far))
@@ -1987,7 +1996,11 @@ def verify_dM_dd_dipole_relation() -> VerificationResult:
     beta = 2 * a1 * a2
     m_par = 2 * beta / (alpha + beta)
     m_exact = (
-        2 * pi * a1 * a2 * (2 * sqrt(alpha + beta) / beta)
+        2
+        * pi
+        * a1
+        * a2
+        * (2 * sqrt(alpha + beta) / beta)
         * ((2 - m_par) * sympy.elliptic_k(m_par) - 2 * sympy.elliptic_e(m_par))
     )
     dm_dd = diff(m_exact, d)
@@ -2368,9 +2381,7 @@ def verify_Y00_normalization() -> VerificationResult:
     norm_eq = integrate(cc**2 * sin(th), (th, 0, pi), (ph, 0, 2 * pi)) - 1
     sols = solve(norm_eq, cc)
     c_pos = min(sols, key=lambda s: float(s))  # positive root 1/(2 sqrt(pi))
-    norm_sq = integrate(
-        c_pos**2 * sin(th), (th, 0, pi), (ph, 0, 2 * pi)
-    )
+    norm_sq = integrate(c_pos**2 * sin(th), (th, 0, pi), (ph, 0, 2 * pi))
     resid = abs(float(norm_sq) - 1.0)
     tol = 1e-12
     passed = resid < tol
@@ -2488,8 +2499,7 @@ def verify_legendre_differential_equation() -> VerificationResult:
         tolerance=tol,
         passed=passed,
         details=(
-            "(1-x^2)P_l'' - 2xP_l' + l(l+1)P_l is the zero polynomial for "
-            "l=0..5."
+            "(1-x^2)P_l'' - 2xP_l' + l(l+1)P_l is the zero polynomial for " "l=0..5."
         ),
     )
 
@@ -2624,9 +2634,9 @@ def verify_solenoid_inductance_structure() -> VerificationResult:
     n_sym, i_sym, vol = symbols("n I V", positive=True)
     b_field = 4 * pi * n_sym * i_sym
     energy = b_field**2 * vol / (8 * pi)
-    l_from_energy = solve(energy - sympy.Symbol("L") * i_sym**2 / 2, sympy.Symbol("L"))[
-        0
-    ]
+    l_from_energy = solve(
+        energy - sympy.Symbol("L") * i_sym**2 / 2, sympy.Symbol("L")
+    )[0]
     resid = abs(complex(sympy.simplify(l_from_energy - 4 * pi * n_sym**2 * vol)))
     tol = 1e-12
     passed = resid < tol
@@ -2827,8 +2837,7 @@ def verify_plane_wave_dalembert() -> VerificationResult:
         tolerance=tol,
         passed=passed,
         details=(
-            "d^2E/dz^2 - v^-2 d^2E/dt^2 reduces to zero after imposing "
-            "omega = k v."
+            "d^2E/dz^2 - v^-2 d^2E/dt^2 reduces to zero after imposing " "omega = k v."
         ),
     )
 
@@ -2856,18 +2865,14 @@ def verify_plane_wave_E_cB() -> VerificationResult:
     if not _HAS_SYMPY:
         return _disabled_result(name, mod, arts)
 
-    zz, tt, k, omega, v, e_amp, b_amp = symbols(
-        "z t k omega v E0 B0", positive=True
-    )
+    zz, tt, k, omega, v, e_amp, b_amp = symbols("z t k omega v E0 B0", positive=True)
     e_x = e_amp * sin(k * zz - omega * tt)
     b_y = b_amp * sin(k * zz - omega * tt)
     faraday = diff(e_x, zz) + diff(b_y, tt)  # dE/dz = -dB/dt in EMU
     b0_sols = solve(faraday / cos(k * zz - omega * tt), b_amp)
     b0 = b0_sols[0]
     ratio_sym = sympy.simplify(e_amp / b0)  # = omega/k = v
-    ratio_num = float(ratio_sym.subs({omega: k * CONST.C, v: CONST.C})) / float(
-        CONST.C
-    )
+    ratio_num = float(ratio_sym.subs({omega: k * CONST.C, v: CONST.C})) / float(CONST.C)
     resid = abs(ratio_num - 1.0)
     tol = 1e-10
     passed = resid < tol
@@ -3022,8 +3027,7 @@ def verify_medium_wave_velocity() -> VerificationResult:
         tolerance=tol,
         passed=passed,
         details=(
-            "d^2f/dz^2 - mu eps d^2f/dt^2 = 0 for f = cos(k(z - t/sqrt(mu "
-            "eps)))."
+            "d^2f/dz^2 - mu eps d^2f/dt^2 = 0 for f = cos(k(z - t/sqrt(mu " "eps)))."
         ),
     )
 
@@ -3051,9 +3055,7 @@ def verify_plane_wave_poynting() -> VerificationResult:
 
     zz, tt, k, omega, e_amp, b_amp = symbols("z t k omega E0 B0", positive=True)
     period = 2 * pi / omega
-    sin_sq_int = integrate(
-        sin(k * zz - omega * tt) ** 2, (tt, 0, period)
-    )
+    sin_sq_int = integrate(sin(k * zz - omega * tt) ** 2, (tt, 0, period))
     mean_sin_sq = sympy.simplify(sin_sq_int / period)
     flux_avg = sympy.simplify(e_amp * b_amp / (4 * pi) * mean_sin_sq)
     resid = abs(complex(sympy.simplify(flux_avg - e_amp * b_amp / (8 * pi))))
@@ -3158,15 +3160,19 @@ def verify_verdet_path_linearity() -> VerificationResult:
     def theta(bb, dd):
         return omega * dd * alpha * bb / (2 * c_sym)
 
-    resid_add = abs(complex(sympy.simplify(
-        theta(b_field, d1 + d2) - theta(b_field, d1) - theta(b_field, d2)
-    )))
-    resid_b = abs(complex(sympy.simplify(
-        theta(2 * b_field, d1) - 2 * theta(b_field, d1)
-    )))
-    resid_d = abs(complex(sympy.simplify(
-        theta(b_field, 2 * d1) - 2 * theta(b_field, d1)
-    )))
+    resid_add = abs(
+        complex(
+            sympy.simplify(
+                theta(b_field, d1 + d2) - theta(b_field, d1) - theta(b_field, d2)
+            )
+        )
+    )
+    resid_b = abs(
+        complex(sympy.simplify(theta(2 * b_field, d1) - 2 * theta(b_field, d1)))
+    )
+    resid_d = abs(
+        complex(sympy.simplify(theta(b_field, 2 * d1) - 2 * theta(b_field, d1)))
+    )
     resid = max(resid_add, resid_b, resid_d)
     tol = 1e-12
     passed = resid < tol
@@ -3252,9 +3258,7 @@ def verify_rc_time_constant() -> VerificationResult:
     t, r_res, c_cap, q0 = symbols("t R C Q0", positive=True)
     charge = q0 * exp(-t / (r_res * c_cap))
     tau_frac = sympy.simplify(charge.subs(t, r_res * c_cap) / q0 - 1 / E)
-    slope = sympy.simplify(
-        -diff(charge, t).subs(t, 0) * r_res * c_cap / q0 - 1
-    )
+    slope = sympy.simplify(-diff(charge, t).subs(t, 0) * r_res * c_cap / q0 - 1)
     resid = max(abs(complex(tau_frac)), abs(complex(slope)))
     tol = 1e-12
     passed = resid < tol
@@ -3398,9 +3402,7 @@ def verify_resistance_emu_velocity_dimension() -> VerificationResult:
     b_field_dim = (m_exp * l_exp / t_exp**2) / (sympy.Symbol("Icur") * l_exp)
     emf_dim = b_field_dim * l_exp**2 / t_exp  # Phi/t, Phi = B L^2
     resistance_dim = sympy.simplify(
-        (emf_dim / sympy.Symbol("Icur")).subs(
-            sympy.Symbol("Icur") ** 2, current_sq
-        )
+        (emf_dim / sympy.Symbol("Icur")).subs(sympy.Symbol("Icur") ** 2, current_sq)
     )
     target = l_exp / t_exp
     ratio = sympy.simplify(resistance_dim / target)
@@ -3459,9 +3461,7 @@ def verify_wheatstone_balance() -> VerificationResult:
     i_g_expr = sol[i_g]
     numer = sympy.factor(sympy.fraction(i_g_expr)[0])
     resid_balance = abs(complex(sympy.simplify(i_g_expr.subs(r4, r2 * r3 / r1))))
-    resid_struct = abs(
-        complex(sympy.simplify(numer - emf * (r2 * r3 - r1 * r4)))
-    )
+    resid_struct = abs(complex(sympy.simplify(numer - emf * (r2 * r3 - r1 * r4))))
     resid = max(resid_balance, resid_struct)
     tol = 1e-12
     passed = resid < tol
@@ -3504,11 +3504,7 @@ def verify_capacitor_energy() -> VerificationResult:
     q_var, q_tot, c_cap = symbols("q Q C", positive=True)
     energy = integrate(q_var / c_cap, (q_var, 0, q_tot))
     resid_closed = abs(complex(sympy.simplify(energy - q_tot**2 / (2 * c_cap))))
-    resid_half_qv = abs(
-        complex(
-            sympy.simplify(energy - q_tot * (q_tot / c_cap) / 2)
-        )
-    )
+    resid_half_qv = abs(complex(sympy.simplify(energy - q_tot * (q_tot / c_cap) / 2)))
     resid = max(resid_closed, resid_half_qv)
     tol = 1e-12
     passed = resid < tol
@@ -3551,21 +3547,10 @@ def verify_weber_coulomb_limit() -> VerificationResult:
     if not _HAS_SYMPY:
         return _disabled_result(name, mod, arts)
 
-    r, e1, e2, rdot, rddot, c_sym = symbols(
-        "r e1 e2 rdot rddot c", positive=True
-    )
-    f_weber = (
-        e1
-        * e2
-        / r**2
-        * (1 - rdot**2 / c_sym**2 + 2 * r * rddot / c_sym**2)
-    )
+    r, e1, e2, rdot, rddot, c_sym = symbols("r e1 e2 rdot rddot c", positive=True)
+    f_weber = e1 * e2 / r**2 * (1 - rdot**2 / c_sym**2 + 2 * r * rddot / c_sym**2)
     f_coulomb = e1 * e2 / r**2
-    resid = abs(
-        complex(
-            sympy.simplify(f_weber.subs({rdot: 0, rddot: 0}) - f_coulomb)
-        )
-    )
+    resid = abs(complex(sympy.simplify(f_weber.subs({rdot: 0, rddot: 0}) - f_coulomb)))
     tol = 1e-12
     passed = resid < tol
     return VerificationResult(
@@ -3603,15 +3588,8 @@ def verify_weber_velocity_structure() -> VerificationResult:
     if not _HAS_SYMPY:
         return _disabled_result(name, mod, arts)
 
-    r, e1, e2, rdot, rddot, c_sym = symbols(
-        "r e1 e2 rdot rddot c", positive=True
-    )
-    f_weber = (
-        e1
-        * e2
-        / r**2
-        * (1 - rdot**2 / c_sym**2 + 2 * r * rddot / c_sym**2)
-    )
+    r, e1, e2, rdot, rddot, c_sym = symbols("r e1 e2 rdot rddot c", positive=True)
+    f_weber = e1 * e2 / r**2 * (1 - rdot**2 / c_sym**2 + 2 * r * rddot / c_sym**2)
     f_coulomb = e1 * e2 / r**2
     resid_trans = abs(
         complex(
@@ -3620,9 +3598,9 @@ def verify_weber_velocity_structure() -> VerificationResult:
             )
         )
     )
-    coeff_rdot_sq = sympy.Poly(sympy.expand(f_weber * r**2 * c_sym**2), rdot).coeff_monomial(
-        rdot**2
-    )
+    coeff_rdot_sq = sympy.Poly(
+        sympy.expand(f_weber * r**2 * c_sym**2), rdot
+    ).coeff_monomial(rdot**2)
     resid_coeff = abs(complex(sympy.simplify(coeff_rdot_sq + e1 * e2)))
     resid = max(resid_trans, resid_coeff)
     tol = 1e-12
@@ -3666,15 +3644,8 @@ def verify_weber_potential_energy_identity() -> VerificationResult:
     if not _HAS_SYMPY:
         return _disabled_result(name, mod, arts)
 
-    r, e1, e2, rdot, rddot, c_sym = symbols(
-        "r e1 e2 rdot rddot c", positive=True
-    )
-    f_weber = (
-        e1
-        * e2
-        / r**2
-        * (1 - rdot**2 / c_sym**2 + 2 * r * rddot / c_sym**2)
-    )
+    r, e1, e2, rdot, rddot, c_sym = symbols("r e1 e2 rdot rddot c", positive=True)
+    f_weber = e1 * e2 / r**2 * (1 - rdot**2 / c_sym**2 + 2 * r * rddot / c_sym**2)
     u_weber = e1 * e2 / r * (1 - rdot**2 / c_sym**2)
     du_dt = diff(u_weber, r) * rdot + diff(u_weber, rdot) * rddot
     resid = abs(complex(sympy.simplify(f_weber * rdot + du_dt)))
@@ -3777,9 +3748,7 @@ def verify_ampere_parallel_attraction() -> VerificationResult:
 
     k_side = kernel_of([0, dd, 0])
     k_collinear = kernel_of([dd, 0, 0])
-    resid = max(
-        abs(complex(k_side - 1)), abs(complex(k_collinear + Rational(1, 2)))
-    )
+    resid = max(abs(complex(k_side - 1)), abs(complex(k_collinear + Rational(1, 2))))
     tol = 1e-12
     passed = resid < tol
     return VerificationResult(

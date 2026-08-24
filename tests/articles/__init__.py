@@ -30,6 +30,7 @@ Note on importability: ``tests/`` has no ``__init__.py``, so pytest's
 prepend import mode puts ``tests/`` itself on ``sys.path``; this package is
 therefore importable as ``articles`` from every test module.
 """
+
 from __future__ import annotations
 
 import json
@@ -157,9 +158,7 @@ def validate_store() -> list[str]:
                 problems.append(f"{loc}: 'units' must be a non-empty string")
             tol = val.get("tolerance")
             if not isinstance(tol, dict) or set(tol) not in ({"rel"}, {"abs"}):
-                problems.append(
-                    f"{loc}: 'tolerance' must be exactly one of rel/abs"
-                )
+                problems.append(f"{loc}: 'tolerance' must be exactly one of rel/abs")
             else:
                 (bound,) = tol.values()
                 if isinstance(bound, bool) or not isinstance(bound, (int, float)):
@@ -168,7 +167,5 @@ def validate_store() -> list[str]:
                     problems.append(f"{loc}: tolerance bound must be >= 0")
             prov = val.get("provenance")
             if not isinstance(prov, str) or not prov.strip():
-                problems.append(
-                    f"{loc}: 'provenance' must be a non-empty string"
-                )
+                problems.append(f"{loc}: 'provenance' must be a non-empty string")
     return problems

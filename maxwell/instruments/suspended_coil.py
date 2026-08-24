@@ -137,7 +137,9 @@ class SuspendedCoil:
         mu = self.magnetic_moment(abs(current))
 
         def balance(theta: float) -> float:
-            return self.torsion_constant * theta - mu * self.horizontal_field * np.cos(theta)
+            return self.torsion_constant * theta - mu * self.horizontal_field * np.cos(
+                theta
+            )
 
         # balance(0) = -mu.H <= 0 and balance(pi/2) = k.pi/2 > 0, with a
         # strictly increasing balance function, so the root is unique.
@@ -211,12 +213,7 @@ class ThomsonSensitiveCoil:
         return (
             theta
             * self.torsion_constant
-            / (
-                self.n_turns
-                * self.area
-                * self.field_strength
-                * np.cos(theta)
-            )
+            / (self.n_turns * self.area * self.field_strength * np.cos(theta))
         )
 
 

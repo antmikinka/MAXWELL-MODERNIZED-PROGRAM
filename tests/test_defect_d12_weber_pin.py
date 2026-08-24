@@ -29,12 +29,11 @@ files are checked against each other and against Weber's original c_W form.
 from __future__ import annotations
 
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.config.constants import CONST
 from maxwell.molecular.webers_theory import WeberForce, weber_constant
 from maxwell.theories.failure_modes import _weber_force
-
-from articles import ref_value, tolerance_of
 
 C = CONST.C
 
@@ -54,8 +53,11 @@ def test_d12_velocity_squared_coefficient_pin():
     """
     r_dot = 0.1 * C
     force = WeberForce(
-        q1=Q1, q2=Q2, separation=R_SEP,
-        relative_velocity=r_dot, relative_acceleration=0.0,
+        q1=Q1,
+        q2=Q2,
+        separation=R_SEP,
+        relative_velocity=r_dot,
+        relative_acceleration=0.0,
     ).force()
     kappa = (F_COULOMB - force) * C**2 / (F_COULOMB * r_dot**2)
     assert kappa == pytest.approx(
@@ -70,8 +72,11 @@ def test_d12_acceleration_coefficient_pin():
     coefficient of r*r_ddot/c^2 must equal the adjudicated 1."""
     r_ddot = 1.0e16
     force = WeberForce(
-        q1=Q1, q2=Q2, separation=R_SEP,
-        relative_velocity=0.0, relative_acceleration=r_ddot,
+        q1=Q1,
+        q2=Q2,
+        separation=R_SEP,
+        relative_velocity=0.0,
+        relative_acceleration=r_ddot,
     ).force()
     kappa_a = (force - F_COULOMB) * C**2 / (F_COULOMB * R_SEP * r_ddot)
     assert kappa_a == pytest.approx(
@@ -92,8 +97,11 @@ def test_d12_both_implementation_sites_one_convention():
     ]
     for r_dot, r_ddot in kinematics:
         molecular = WeberForce(
-            q1=Q1, q2=Q2, separation=R_SEP,
-            relative_velocity=r_dot, relative_acceleration=r_ddot,
+            q1=Q1,
+            q2=Q2,
+            separation=R_SEP,
+            relative_velocity=r_dot,
+            relative_acceleration=r_ddot,
         ).force()
         failure = _weber_force(R_SEP, r_dot, r_ddot, Q1, Q2)
         assert failure == pytest.approx(molecular, rel=1e-14)
@@ -109,7 +117,10 @@ def test_d12_equivalence_with_weber_1846_c_w_form():
         1.0 - r_dot**2 / c_w**2 + 2.0 * R_SEP * r_ddot / c_w**2
     )
     adjudicated = WeberForce(
-        q1=Q1, q2=Q2, separation=R_SEP,
-        relative_velocity=r_dot, relative_acceleration=r_ddot,
+        q1=Q1,
+        q2=Q2,
+        separation=R_SEP,
+        relative_velocity=r_dot,
+        relative_acceleration=r_ddot,
     ).force()
     assert original_form == pytest.approx(adjudicated, rel=1e-13)

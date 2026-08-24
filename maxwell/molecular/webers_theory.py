@@ -872,13 +872,9 @@ def ampere_wire_force_recovery(
         "F_per_length_dynes_cm": F_per_length,
         "expected_finite_wire_dynes_cm": float(expected_finite),
         "expected_infinite_wire_dynes_cm": float(expected_infinite),
-        "relative_residual_vs_finite_closed_form": abs(
-            F_per_length - expected_finite
-        )
+        "relative_residual_vs_finite_closed_form": abs(F_per_length - expected_finite)
         / abs(expected_finite),
-        "relative_residual_vs_infinite_limit": abs(
-            F_per_length - expected_infinite
-        )
+        "relative_residual_vs_infinite_limit": abs(F_per_length - expected_infinite)
         / abs(expected_infinite),
         "attractive": bool(F_per_length < 0),
     }

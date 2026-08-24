@@ -6,10 +6,10 @@ guarantee the schema holds so migrated test files can rely on
 
 Run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/articles/test_reference_store.py
 """
+
 from __future__ import annotations
 
 import pytest
-
 from articles import (
     entry,
     provenance,
@@ -42,9 +42,9 @@ def test_every_entry_has_provenance_with_substance() -> None:
     for art, art_entry in reference_values().items():
         for key, val in art_entry["values"].items():
             text = val["provenance"]
-            assert len(text) >= 20, (
-                f"article {art}.{key}: provenance too thin: {text!r}"
-            )
+            assert (
+                len(text) >= 20
+            ), f"article {art}.{key}: provenance too thin: {text!r}"
 
 
 def test_accessors_agree_and_raise_on_missing() -> None:

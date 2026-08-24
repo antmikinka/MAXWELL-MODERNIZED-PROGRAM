@@ -23,12 +23,13 @@ adjudication; defect D-34 parked) are untouched by this bundle.
 
 Run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_articles_boundary_conditions_667_669.py -q
 """
+
 from __future__ import annotations
 
 import numpy as np
 import pytest
-
 from articles import ref_value, tolerance_of
+
 from maxwell.electromagnetism.current_sheets.boundary_conditions import (
     BoundaryConditionAnalyzer,
     ElectromagneticBoundary,
@@ -140,9 +141,7 @@ def test_art668_normal_D_jump_gauss_sheet_oracle():
         ref_value(668, "normal_D_jump_gauss_sheet"),
         **tolerance_of(668, "normal_D_jump_gauss_sheet"),
     )
-    assert result["expected_jump"] == pytest.approx(
-        4.0 * np.pi * sigma, rel=TIGHT
-    )
+    assert result["expected_jump"] == pytest.approx(4.0 * np.pi * sigma, rel=TIGHT)
     assert result["inferred_charge"] == pytest.approx(
         ref_value(668, "gauss_sheet_inferred_charge"),
         **tolerance_of(668, "gauss_sheet_inferred_charge"),
@@ -215,12 +214,8 @@ def test_art669_uncharged_dielectric_refraction_identity():
     result = verify_boundary_conditions(boundary, E1, B, E2, B)
     # D normal: 2*3 = 3*2 = 6 on both sides, jump zero.
     assert result["normal_D"]["difference"] == pytest.approx(0.0, abs=1e-12)
-    assert result["normal_D"]["D1_normal_magnitude"] == pytest.approx(
-        6.0, rel=TIGHT
-    )
-    assert result["normal_D"]["D2_normal_magnitude"] == pytest.approx(
-        6.0, rel=TIGHT
-    )
+    assert result["normal_D"]["D1_normal_magnitude"] == pytest.approx(6.0, rel=TIGHT)
+    assert result["normal_D"]["D2_normal_magnitude"] == pytest.approx(6.0, rel=TIGHT)
     assert bool(result["normal_D"]["gauss_satisfied"]) is True
     assert result["tangential_E"]["discontinuity_magnitude"] == pytest.approx(
         0.0, abs=1e-12

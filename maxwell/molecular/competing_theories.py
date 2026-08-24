@@ -59,13 +59,12 @@ from maxwell.molecular.neumanns_theory import (
     neumann_reciprocity_residual,
 )
 from maxwell.molecular.webers_theory import (
+    WebersTheory,
     ampere_wire_force_recovery,
     calc_weber_force,
     critical_velocity,
     weber_energy_conservation_residual,
-    WebersTheory,
 )
-
 
 # =============================================================================
 # COMPUTED RESIDUALS PER THEORY (all values are computations, not literals)
@@ -98,8 +97,7 @@ def _ampere_computed_residuals() -> Dict[str, float]:
     B_sphere = sphere_center_field_rings(M_vec, 1.0)
     expected_sphere = (8.0 * np.pi / 3.0) * M_vec
     sphere_residual = float(
-        np.linalg.norm(B_sphere - expected_sphere)
-        / np.linalg.norm(expected_sphere)
+        np.linalg.norm(B_sphere - expected_sphere) / np.linalg.norm(expected_sphere)
     )
 
     return {
@@ -199,9 +197,7 @@ def _maxwell_computed_residuals() -> Dict[str, float]:
     c_em = 3.1e10
     c_light = 3.15e10
     return {
-        "historical_wave_speed_residual": float(
-            abs(c_em - c_light) / c_light
-        ),
+        "historical_wave_speed_residual": float(abs(c_em - c_light) / c_light),
     }
 
 
@@ -234,9 +230,7 @@ def _computed_checks(theory_name: str) -> Dict[str, bool]:
             "matches_elliptic_closed_form": bool(
                 res["elliptic_closed_form_residual"] < 1e-2
             ),
-            "correct_far_field_limit": bool(
-                res["far_field_dipole_residual"] < 5e-2
-            ),
+            "correct_far_field_limit": bool(res["far_field_dipole_residual"] < 5e-2),
             "lenz_sign": bool(res["motional_emf_lenz_sign_residual"] == 0.0),
         }
     if theory_name == "Ampere":
@@ -244,9 +238,7 @@ def _computed_checks(theory_name: str) -> Dict[str, bool]:
         return {
             "dipole_field_axis": bool(res["dipole_axis_residual"] < 1e-10),
             "dipole_field_equator": bool(res["dipole_equator_residual"] < 1e-10),
-            "sphere_interior_field": bool(
-                res["sphere_interior_field_residual"] < 1e-6
-            ),
+            "sphere_interior_field": bool(res["sphere_interior_field_residual"] < 1e-6),
         }
     if theory_name == "Maxwell":
         res = _maxwell_computed_residuals()
@@ -400,9 +392,9 @@ class CompetingTheory:
                 "characteristics": self.characteristics(),
                 "computed_residuals": residuals,
                 "computed_checks": checks,
-                "max_residual": float(max(residuals.values()))
-                if residuals
-                else float("inf"),
+                "max_residual": (
+                    float(max(residuals.values())) if residuals else float("inf")
+                ),
                 "n_residuals": len(residuals),
                 "n_checks_passed": int(sum(checks.values())),
             }
@@ -700,9 +692,7 @@ def verify_theory_consistency(
     return {
         "theory": theory_name,
         "computed_checks": checks,
-        "consistency_fraction": passed_count / total_count
-        if total_count
-        else 0.0,
+        "consistency_fraction": passed_count / total_count if total_count else 0.0,
         "fully_consistent": bool(all_passed),
         "verified": bool(all_passed),
     }
@@ -786,8 +776,7 @@ def synthesize_theory_comparison() -> Dict[str, object]:
     part=4,
     chapter="Ch XXIII: Action at Distance",
     theory_class="standard_math",
-    description="Compare all electromagnetic theories via computed "
-    "residuals",
+    description="Compare all electromagnetic theories via computed " "residuals",
 )
 def compare_theories() -> Dict[str, Dict]:
     """
@@ -825,8 +814,7 @@ def compare_theories() -> Dict[str, Dict]:
     part=4,
     chapter="Ch XXIII: Action at Distance",
     theory_class="standard_math",
-    description="Ampere's theory: descriptive commentary plus computed "
-    "checks",
+    description="Ampere's theory: descriptive commentary plus computed " "checks",
 )
 def analyze_amperes_theory() -> Dict[str, object]:
     """

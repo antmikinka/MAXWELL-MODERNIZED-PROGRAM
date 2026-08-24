@@ -150,7 +150,9 @@ class MagnetoOpticMedium:
             delta_n = self.verdet_constant * magnetic_field * wavelength / PI
             omega = 2.0 * PI * c / wavelength
             # Delta k = 2 V B; Delta v = v^2 Delta k / omega (Art. 815 form)
-            velocity_split = v_phase**2 * (2.0 * self.verdet_constant * magnetic_field) / omega
+            velocity_split = (
+                v_phase**2 * (2.0 * self.verdet_constant * magnetic_field) / omega
+            )
 
         return {
             "refractive_index": n,

@@ -110,9 +110,11 @@ def test_art694_vector_potential_series_vs_independent_oracles():
         dist_sq = OBS_R**2 + LOOP_A**2 - 2.0 * LOOP_A * rho * math.cos(phi_prime)
         return math.cos(phi_prime) / math.sqrt(dist_sq)
 
-    A_quad = CURRENT_I * LOOP_A * quad(
-        kernel, 0.0, 2.0 * math.pi, epsabs=1e-13, epsrel=1e-13, limit=200
-    )[0]
+    A_quad = (
+        CURRENT_I
+        * LOOP_A
+        * quad(kernel, 0.0, 2.0 * math.pi, epsabs=1e-13, epsrel=1e-13, limit=200)[0]
+    )
     # provenance: O1 — Gauss-Kronrod quadrature of the closed kernel,
     # algorithmically independent of the lpmv series under test.
     assert A_series == pytest.approx(A_quad, rel=1e-10)
@@ -136,7 +138,9 @@ def test_art694_vector_potential_series_vs_independent_oracles():
     A_far = calc_vector_potential_circular_current(
         r_far, OBS_THETA, LOOP_A, CURRENT_I, l_max=40
     )
-    dipole_ratio = A_far * r_far**2 / (CURRENT_I * math.pi * LOOP_A**2 * math.sin(OBS_THETA))
+    dipole_ratio = (
+        A_far * r_far**2 / (CURRENT_I * math.pi * LOOP_A**2 * math.sin(OBS_THETA))
+    )
     # provenance: O3 — exact magnetic-moment limit of the Treatise.
     assert abs(dipole_ratio - 1.0) < 1e-4
 
@@ -181,8 +185,8 @@ def test_art695_magnetic_shell_potential_vs_independent_oracles():
     psi_axis = calc_magnetic_shell_potential_circular_current(
         OBS_R, 0.0, LOOP_A, CURRENT_I, l_max=40
     )
-    psi_exact_axis = CURRENT_I * 2.0 * math.pi * (
-        1.0 - OBS_R / math.sqrt(OBS_R**2 + LOOP_A**2)
+    psi_exact_axis = (
+        CURRENT_I * 2.0 * math.pi * (1.0 - OBS_R / math.sqrt(OBS_R**2 + LOOP_A**2))
     )
     # provenance: O4 — elementary exact integral of dΩ on the symmetry axis.
     assert psi_axis == pytest.approx(psi_exact_axis, rel=1e-12)
@@ -216,7 +220,9 @@ def test_art695_magnetic_shell_potential_vs_independent_oracles():
     psi_far = calc_magnetic_shell_potential_circular_current(
         r_far, OBS_THETA, LOOP_A, CURRENT_I, l_max=40
     )
-    dipole_ratio = psi_far * r_far**2 / (CURRENT_I * math.pi * LOOP_A**2 * math.cos(OBS_THETA))
+    dipole_ratio = (
+        psi_far * r_far**2 / (CURRENT_I * math.pi * LOOP_A**2 * math.cos(OBS_THETA))
+    )
     # provenance: O6 — exact magnetic-moment limit of the Treatise.
     assert abs(dipole_ratio - 1.0) < 1e-4
 

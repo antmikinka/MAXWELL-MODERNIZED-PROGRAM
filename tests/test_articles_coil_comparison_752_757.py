@@ -26,6 +26,7 @@ import math
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 
 from maxwell.electromagnetism.coil_comparison import (
     axis_field_series,
@@ -47,9 +48,6 @@ from maxwell.electromagnetism.coil_comparison import (
     steady_balance_residual,
 )
 
-from articles import ref_value, tolerance_of
-
-
 # ── independent oracles written for this file ───────────────────────────────
 
 
@@ -69,9 +67,7 @@ def _neumann_double_integral(a: float, b: float, z: float, n: int = 256) -> floa
     w_phi = math.pi * weights
     d_phi = phi[:, None] - phi[None, :]
     cos_d = np.cos(d_phi)
-    integrand = a * b * cos_d / np.sqrt(
-        a * a + b * b - 2.0 * a * b * cos_d + z * z
-    )
+    integrand = a * b * cos_d / np.sqrt(a * a + b * b - 2.0 * a * b * cos_d + z * z)
     return float((w_phi[:, None] * integrand * w_phi[None, :]).sum())
 
 
@@ -195,16 +191,24 @@ def test_753_deflection_equation_residual():
     """Eq. (1): residual H tan delta - (G1' gamma' - G1 gamma) is the
     hand-computed -1.0 when unbalanced and 0 at an exact balance."""
     unbalanced = deflection_residual(
-        h_field=0.2, delta=math.atan(0.5),
-        g1_standard=1.0, gamma=0.4, g1_prime=1.5, gamma_prime=1.0,
+        h_field=0.2,
+        delta=math.atan(0.5),
+        g1_standard=1.0,
+        gamma=0.4,
+        g1_prime=1.5,
+        gamma_prime=1.0,
     )
     assert unbalanced == pytest.approx(
         ref_value(753, "deflection_residual_unbalanced"),
         **tolerance_of(753, "deflection_residual_unbalanced"),
     )
     balanced = deflection_residual(
-        h_field=0.18, delta=0.0,
-        g1_standard=2.0, gamma=0.75, g1_prime=1.5, gamma_prime=1.0,
+        h_field=0.18,
+        delta=0.0,
+        g1_standard=2.0,
+        gamma=0.75,
+        g1_prime=1.5,
+        gamma_prime=1.0,
     )
     assert balanced == pytest.approx(0.0, abs=1e-15)
 
@@ -273,9 +277,7 @@ def test_754_end_to_end_null_against_exact_loop_field():
     assert err_corrected < 0.05
     assert err_corrected < err_uncorrected / 4.0
     # sanity of the hand-derived null geometry against the exact field
-    assert _exact_loop_axis_field(1.0, r_null) == pytest.approx(
-        g1_standard, rel=1e-13
-    )
+    assert _exact_loop_axis_field(1.0, r_null) == pytest.approx(g1_standard, rel=1e-13)
 
 
 # ── Art. 755 — comparison of coefficients of mutual induction ──────────────

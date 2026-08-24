@@ -54,7 +54,9 @@ C_CGS = CONST.C
     theory_class="standard_math",
     description="ESU capacitance of an isolated sphere from its geometry",
 )
-def sphere_capacity_esu(radius_cm: float, specific_inductive_capacity: float = 1.0) -> float:
+def sphere_capacity_esu(
+    radius_cm: float, specific_inductive_capacity: float = 1.0
+) -> float:
     """Capacitance of an isolated sphere in electrostatic measure.
 
     Art. 771 programme: the ESU capacitance is obtained by geometric
@@ -199,9 +201,7 @@ def method_thomson_electrometer(
         ValueError: If the ESU voltage is not positive.
     """
     if voltage_esu_statvolt <= 0:
-        raise ValueError(
-            f"ESU voltage must be positive, got {voltage_esu_statvolt}"
-        )
+        raise ValueError(f"ESU voltage must be positive, got {voltage_esu_statvolt}")
     voltage_emu_abvolt = current_emu_abampere * resistance_emu_abohm
     return float(voltage_emu_abvolt / voltage_esu_statvolt)
 
@@ -249,8 +249,15 @@ def method_jenkin(
     Raises:
         ValueError: If any input is not positive.
     """
-    if min(capacity_esu_cm, voltage_esu_statvolt, discharge_frequency_hz,
-           measured_current_emu_abampere) <= 0:
+    if (
+        min(
+            capacity_esu_cm,
+            voltage_esu_statvolt,
+            discharge_frequency_hz,
+            measured_current_emu_abampere,
+        )
+        <= 0
+    ):
         raise ValueError(
             "all inputs must be positive, got "
             f"C={capacity_esu_cm}, V={voltage_esu_statvolt}, "

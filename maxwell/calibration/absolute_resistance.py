@@ -782,15 +782,12 @@ def verify_absolute_resistance(
     R_length = ar.recoil_method(
         scale * mutual_inductance, period, deflection_ratio, 1.0
     )
-    R_time = ar.recoil_method(
-        mutual_inductance, scale * period, deflection_ratio, 1.0
-    )
+    R_time = ar.recoil_method(mutual_inductance, scale * period, deflection_ratio, 1.0)
     if R_recoil > 0.0 and R_length > 0.0 and R_time > 0.0:
         exponent_length = math.log(R_length / R_recoil) / math.log(scale)
         exponent_time = math.log(R_time / R_recoil) / math.log(scale)
         velocity_check = bool(
-            abs(exponent_length - 1.0) < 1e-9
-            and abs(exponent_time - (-1.0)) < 1e-9
+            abs(exponent_length - 1.0) < 1e-9 and abs(exponent_time - (-1.0)) < 1e-9
         )
     else:
         exponent_length = float("nan")

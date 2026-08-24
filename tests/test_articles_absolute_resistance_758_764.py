@@ -31,15 +31,16 @@ provenance.
 
 Run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_articles_absolute_resistance_758_764.py -q
 """
+
 from __future__ import annotations
 
 import math
 
 import numpy as np
 import pytest
+from articles import ref_value, tolerance_of
 from scipy.integrate import quad
 
-from articles import ref_value, tolerance_of
 from maxwell.calibration.absolute_resistance import (
     AbsoluteResistance,
     StandardResistanceCoil,
@@ -379,8 +380,12 @@ def test_art764_solenoid_inductance_neumann_sheet_oracle():
     # Monotone convergence to the long-solenoid formula.
     ratio_short = _sheet_solenoid_inductance(
         n_turns, radius, 12.5
-    ) / calc_solenoid_self_inductance(n_turns, radius, 12.5)  # l/r = 25
+    ) / calc_solenoid_self_inductance(
+        n_turns, radius, 12.5
+    )  # l/r = 25
     ratio_long = _sheet_solenoid_inductance(
         n_turns, radius, 100.0
-    ) / calc_solenoid_self_inductance(n_turns, radius, 100.0)  # l/r = 200
+    ) / calc_solenoid_self_inductance(
+        n_turns, radius, 100.0
+    )  # l/r = 200
     assert ratio_short < ratio < ratio_long < 1.0

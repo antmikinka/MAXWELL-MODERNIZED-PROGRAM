@@ -281,9 +281,7 @@ class AmperesTheory:
         # Curie constant: C_curie = N m^2 / (3 k_B), with the Boltzmann
         # constant taken from the project constants table (CODATA 2018
         # exact value 1.380649e-16 erg/K).
-        C = (self.number_density * molecular_moment**2) / (
-            3.0 * CONST.K_BOLTZMANN
-        )
+        C = (self.number_density * molecular_moment**2) / (3.0 * CONST.K_BOLTZMANN)
 
         return C / temperature
 
@@ -340,11 +338,7 @@ class AmperesTheory:
                 )
             return np.zeros(3)
 
-        r0 = (
-            np.zeros(3)
-            if point is None
-            else np.asarray(point, dtype=np.float64)
-        )
+        r0 = np.zeros(3) if point is None else np.asarray(point, dtype=np.float64)
 
         # Central-difference curl: (curl M)_i = eps_ijk d_j M_k.
         M = magnetization_field

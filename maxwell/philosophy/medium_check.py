@@ -458,6 +458,8 @@ def analyze_theory_completeness() -> dict[str, dict | bool]:
         "transverse_waves": props.is_transverse,
         "reflection_coefficient_air_glass": R,
         "theory_complete": bool(
-            speed_check["verified"] and relation_check["verified"] and props.is_transverse
+            speed_check["verified"]
+            and relation_check["verified"]
+            and props.is_transverse
         ),
     }

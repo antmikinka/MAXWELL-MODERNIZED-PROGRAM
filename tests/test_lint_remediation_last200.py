@@ -23,14 +23,15 @@ assertions.
 
 Run: PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest tests/test_lint_remediation_last200.py
 """
+
 from __future__ import annotations
 
 import math
 
 import numpy as np
 import pytest
-
 from articles import ref_value, tolerance_of
+
 from maxwell.calibration.absolute_resistance import (
     analyze_absolute_resistance,
     verify_absolute_resistance,
@@ -124,9 +125,7 @@ class TestAbsoluteResistanceIndependence:
     def test_no_heat_reports_cross_check_not_performed(self) -> None:
         """Without an independent calorimetric measurement the function
         reports honestly instead of fabricating a comparison."""
-        result = verify_absolute_resistance(
-            induced_emf=EMF, induced_current=CURRENT
-        )
+        result = verify_absolute_resistance(induced_emf=EMF, induced_current=CURRENT)
 
         assert result["calorimetric_cross_check"] is False
         assert math.isnan(result["R_energy"])

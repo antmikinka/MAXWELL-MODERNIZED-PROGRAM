@@ -238,9 +238,7 @@ def derive_unit_ratio_dimension(quantity: str = "charge") -> dict[str, object]:
         f"ratio dimensions = {_dims_to_string(*ratio_dims)}",
     ]
     if is_velocity_power:
-        derivation.append(
-            f"ratio = (L T^-1)^{velocity_power}: a power of a velocity"
-        )
+        derivation.append(f"ratio = (L T^-1)^{velocity_power}: a power of a velocity")
 
     return {
         "quantity": quantity,
