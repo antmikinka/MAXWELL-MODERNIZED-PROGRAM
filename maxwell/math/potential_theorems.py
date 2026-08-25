@@ -50,6 +50,7 @@ from typing import Callable, Optional, Tuple, Union
 import numpy as np
 from numpy.typing import ArrayLike
 
+from maxwell.config.constants import CONST
 from maxwell.meta.citation import maxwell_cite
 
 # Type aliases
@@ -729,7 +730,7 @@ def current_definition(
     from scipy import constants as sci_const
 
     # Speed of light for unit conversion (cm/s)
-    c_cgs = 2.99792458e10  # cm/s
+    c_cgs = CONST.C  # cm/s
 
     if current_magnitude is not None:
         # Constant current case
@@ -1030,7 +1031,7 @@ def current_effects(
 
         # Convert to emu if necessary
         if current_unit == "esu":
-            c_cgs = 2.99792458e10
+            c_cgs = CONST.C
             I_emu = current / c_cgs
         else:
             I_emu = current
@@ -1072,7 +1073,7 @@ def current_effects(
         Q_total = current * time  # statcoulomb-seconds if current in esu/s
 
         # Convert to emu (abcoulombs)
-        c_cgs = 2.99792458e10
+        c_cgs = CONST.C
         Q_emu = Q_total / c_cgs
 
         # Mass deposited
@@ -1201,7 +1202,7 @@ def emf_definition(
 
     # Convert to electromagnetic units (abvolts)
     # 1 statvolt = c abvolts where c = speed of light in cm/s
-    c_cgs = 2.99792458e10  # cm/s
+    c_cgs = CONST.C  # cm/s
     emf_emu = emf * c_cgs  # abvolts
 
     # Open circuit voltage equals EMF
@@ -1394,7 +1395,7 @@ def emf_measurement(
 
     # Convert to practical units
     results["emf_volts"] = measured_emf * 299.792458
-    results["emf_abvolts"] = measured_emf * 2.99792458e10
+    results["emf_abvolts"] = measured_emf * CONST.C
 
     return results
 

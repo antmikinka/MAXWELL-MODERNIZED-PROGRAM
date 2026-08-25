@@ -1028,7 +1028,7 @@ def verify_divergence_theorem(
     77,
     401,
     402,
-    part=1,
+    part=3,
     chapter="On the Potential",
     theory_class="standard_math",
     description="Verify Stokes' Theorem numerically",

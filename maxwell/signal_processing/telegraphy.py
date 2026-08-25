@@ -1,9 +1,24 @@
-"""maxwell.signal_processing — Signal transmission and telegraphy (Arts. 730-757).
+"""maxwell.signal_processing — Telegraph line relations (Arts. 730-735).
 
-Implements Maxwell's treatment of electromagnetic signal transmission,
-including the theory of telegraphy and signal propagation.
+Implements the transmission-line relations used in Maxwell's treatment of
+electromagnetic signal transmission (Treatise Part IV, Ch XVI: Observations,
+Arts. 730-735 as mapped by this program's chapter table).
 
-Maxwell's CGS formulation (Arts. 730-757):
+D-24 ADJUDICATION (2026-08-21, closing G2 condition C6 / decision D-06):
+the former Arts. 740/745/750 attributions of the ``SignalTransmission``
+rise-time / bandwidth / signaling-rate heuristics were ANACHRONISMS.
+Arts. 740, 745 and 750 are genuine, equation-dense articles of Ch XVI
+(3rd-edition Vol. II pp. 407, 411, 415-416; provenance recorded in
+``docs/reports/D24_ADJUDICATION_2026-08-21.md``) within the
+observations/measurement cluster; none of them states the 20th-century
+signal-integrity rules ``t_r ≈ 2.2 RC``, ``BW ≈ 0.35/t_r`` or
+``f_max ≈ 1/(2 t_r)``.  Those three methods are therefore reclassified
+``theory_class="standard_math"`` with no article numbers; see
+``docs/reports/D24_ADJUDICATION_2026-08-21.md``.  Maxwell's genuine
+telegraph/cable diffusion work (the ell^2 dependence) belongs to the
+electrokinematics of Part II, not to Arts. 740-750.
+
+Maxwell's CGS formulation (Arts. 730-735):
     Telegraph equation for signal propagation:
         ∂²V/∂x² = RC * ∂V/∂t + LC * ∂²V/∂t²
 
@@ -30,10 +45,12 @@ where:
     C = shunt capacitance per unit length (cm⁻¹)
     G = shunt conductance per unit length (s/cm)
 
-Category: A (maxwell_original) — Maxwell's signal transmission theory.
+Category: A (maxwell_original) for the Arts. 730-735 line relations;
+Category: B (standard_math) for the reclassified ``SignalTransmission``
+signal-integrity heuristics.
 
 References:
-    Part IV, Arts. 730-757: Signal transmission and telegraphy.
+    Part IV, Ch XVI: Observations, Arts. 730-735 (telegraph line relations).
 """
 
 from __future__ import annotations
@@ -51,9 +68,9 @@ class TelegraphLine:
     """
     Telegraph line signal transmission calculator.
 
-    Art. 730-757: Maxwell's theory of signal transmission along
-    telegraph lines, including the effects of resistance, inductance,
-    capacitance, and leakage.
+    Arts. 730-735 (Part IV, Ch XVI: Observations): telegraph line
+    relations for signal transmission along telegraph lines, including
+    the effects of resistance, inductance, capacitance, and leakage.
 
     Attributes:
         R: Series resistance per unit length (abohms/cm).
@@ -81,7 +98,7 @@ class TelegraphLine:
     @maxwell_cite(
         730,
         part=4,
-        chapter="Signal Transmission",
+        chapter="Ch XVI: Observations",
         theory_class="maxwell_original",
         description="Calculate signal propagation velocity",
     )
@@ -106,7 +123,7 @@ class TelegraphLine:
     @maxwell_cite(
         731,
         part=4,
-        chapter="Signal Transmission",
+        chapter="Ch XVI: Observations",
         theory_class="maxwell_original",
         description="Calculate characteristic impedance",
     )
@@ -133,7 +150,7 @@ class TelegraphLine:
     @maxwell_cite(
         732,
         part=4,
-        chapter="Signal Transmission",
+        chapter="Ch XVI: Observations",
         theory_class="maxwell_original",
         description="Calculate attenuation constant",
     )
@@ -172,7 +189,7 @@ class TelegraphLine:
     @maxwell_cite(
         733,
         part=4,
-        chapter="Signal Transmission",
+        chapter="Ch XVI: Observations",
         theory_class="maxwell_original",
         description="Calculate phase constant",
     )
@@ -207,7 +224,7 @@ class TelegraphLine:
     @maxwell_cite(
         734,
         part=4,
-        chapter="Signal Transmission",
+        chapter="Ch XVI: Observations",
         theory_class="maxwell_original",
         description="Calculate signal delay per unit length",
     )
@@ -232,7 +249,7 @@ class TelegraphLine:
     @maxwell_cite(
         735,
         part=4,
-        chapter="Signal Transmission",
+        chapter="Ch XVI: Observations",
         theory_class="maxwell_original",
         description="Calculate voltage at distance x",
     )
@@ -273,8 +290,12 @@ class SignalTransmission:
     """
     Signal transmission analysis for telegraphy.
 
-    Art. 730-757: Complete analysis of electromagnetic signal
-    transmission including rise time, bandwidth, and distortion.
+    Signal-integrity estimates layered on the Treatise line parameters of
+    Arts. 730-735.  D-24 adjudication (2026-08-21): the rise-time,
+    bandwidth, and maximum-signaling-rate estimates in this class are
+    modern (20th-century) heuristics, reclassified ``standard_math`` with
+    no Treatise article numbers; they are NOT content of Arts. 740, 745
+    or 750.  See docs/reports/D24_ADJUDICATION_2026-08-21.md.
 
     Attributes:
         line: TelegraphLine object.
@@ -282,88 +303,105 @@ class SignalTransmission:
 
     line: TelegraphLine
 
+    # D-24 adjudication (2026-08-21): the "2.2 RC" rise-time rule is a
+    # 20th-century signal-integrity heuristic (2.2 = ln 9, the 10-90 % step
+    # response of a first-order RC section), NOT content of Treatise Art. 740
+    # (Ch XVI: Observations; 3rd-edition Vol. II p. 407).  Reclassified
+    # standard_math with no article numbers per program decision D-06; the
+    # genuine Treatise content of Art. 740 remains a Wave-7 gap.
     @maxwell_cite(
-        740,
         part=4,
-        chapter="Signal Transmission",
-        theory_class="maxwell_original",
-        description="Calculate signal rise time",
+        chapter="",
+        theory_class="standard_math",
+        description="Modern RC rise-time heuristic (post-Treatise)",
     )
     def rise_time(self, line_length: float) -> float:
         """
         Calculate signal rise time due to line dispersion.
 
-        Art. 740: The rise time for a step input is approximately:
+        Modern standard heuristic (NOT a Treatise result; see D-24 note
+        above): for an RC-dominated line the 10-90 % step rise time is
 
-            t_r ≈ 2.2 * R * C * L_line  (for RC-dominated line)
+            t_r ≈ 2.2 * R * C * ell**2
+
+        with the ell^2 dependence of a distributed RC line (total series
+        resistance R*ell charging total shunt capacitance C*ell); 2.2 is
+        ln(9), the 10-90 % factor of a first-order section.
 
         Args:
-            line_length: Line length (cm).
+            line_length: Line length ell (cm).
 
         Returns:
             Rise time (s).
-
-        Reference:
-            Part IV, Art. 740: Signal rise time.
         """
         if line_length <= 0:
             return 0.0
         return 2.2 * self.line.R * self.line.C * line_length**2
 
+    # D-24 adjudication (2026-08-21): BW ≈ 0.35/t_r is the mid-20th-century
+    # rise-time/bandwidth product of a first-order low-pass (exactly
+    # ln(9)/(2 pi) ≈ 0.3487), NOT content of Treatise Art. 745 (Ch XVI:
+    # Observations; 3rd-edition Vol. II p. 411).  Reclassified standard_math
+    # with no article numbers per decision D-06; Art. 745's genuine content
+    # remains a Wave-7 gap.
     @maxwell_cite(
-        745,
         part=4,
-        chapter="Signal Transmission",
-        theory_class="maxwell_original",
-        description="Calculate bandwidth limitation",
+        chapter="",
+        theory_class="standard_math",
+        description="Modern rise-time/bandwidth product (post-Treatise)",
     )
     def bandwidth_limit(self, line_length: float) -> float:
         """
         Calculate bandwidth limitation due to line dispersion.
 
-        Art. 745: The approximate bandwidth is:
+        Modern standard heuristic (NOT a Treatise result; see D-24 note
+        above): for a first-order response the -3 dB bandwidth is
 
             BW ≈ 0.35 / t_r
+
+        where 0.35 ≈ ln(9)/(2 pi) is the exact rise-time/bandwidth product
+        of a single-pole low-pass.
 
         Args:
             line_length: Line length (cm).
 
         Returns:
             Bandwidth (Hz).
-
-        Reference:
-            Part IV, Art. 745: Bandwidth limitation.
         """
         t_r = self.rise_time(line_length)
         if t_r <= 0:
             return float("inf")
         return 0.35 / t_r
 
+    # D-24 adjudication (2026-08-21): f_max ≈ 1/(2 t_r) is a Nyquist-style
+    # inter-symbol-interference thumb rule of modern data transmission, NOT
+    # content of Treatise Art. 750 (Ch XVI: Observations; 3rd-edition
+    # Vol. II pp. 415-416).  Reclassified standard_math with no article
+    # numbers per decision D-06; Art. 750's genuine content remains a
+    # Wave-7 gap.
     @maxwell_cite(
-        750,
         part=4,
-        chapter="Signal Transmission",
-        theory_class="maxwell_original",
-        description="Calculate maximum signaling rate",
+        chapter="",
+        theory_class="standard_math",
+        description="Modern ISI-limited signaling thumb rule (post-Treatise)",
     )
     def max_signaling_rate(self, line_length: float) -> float:
         """
         Calculate maximum practical signaling rate.
 
-        Art. 750: The maximum rate is limited by rise time:
+        Modern thumb rule (NOT a Treatise result; see D-24 note above):
+        the maximum rate is limited by rise time as
 
             f_max ≈ 1 / (2 * t_r)
 
-        This ensures pulses don't overlap excessively.
+        so that successive pulses do not overlap excessively (a
+        Nyquist-style inter-symbol-interference argument).
 
         Args:
             line_length: Line length (cm).
 
         Returns:
             Maximum signaling rate (symbols/s).
-
-        Reference:
-            Part IV, Art. 750: Maximum signaling rate.
         """
         t_r = self.rise_time(line_length)
         if t_r <= 0:
@@ -374,7 +412,7 @@ class SignalTransmission:
 @maxwell_cite(
     730,
     part=4,
-    chapter="Signal Transmission",
+    chapter="Ch XVI: Observations",
     theory_class="maxwell_original",
     description="Calculate signal velocity: v = 1/sqrt(LC)",
 )
@@ -408,7 +446,7 @@ def calc_signal_velocity(L: float, C: float) -> float:
 @maxwell_cite(
     731,
     part=4,
-    chapter="Signal Transmission",
+    chapter="Ch XVI: Observations",
     theory_class="maxwell_original",
     description="Calculate characteristic impedance: Z₀ = sqrt(L/C)",
 )
@@ -439,7 +477,7 @@ def calc_characteristic_impedance(L: float, C: float) -> float:
     732,
     733,
     part=4,
-    chapter="Signal Transmission",
+    chapter="Ch XVI: Observations",
     theory_class="maxwell_original",
     description="Calculate propagation constant",
 )
@@ -483,7 +521,7 @@ def calc_propagation_constant(
 @maxwell_cite(
     734,
     part=4,
-    chapter="Signal Transmission",
+    chapter="Ch XVI: Observations",
     theory_class="maxwell_original",
     description="Calculate signal delay",
 )
@@ -519,7 +557,7 @@ def calc_signal_delay(L: float, C: float, length: float) -> float:
     734,
     735,
     part=4,
-    chapter="Signal Transmission",
+    chapter="Ch XVI: Observations",
     theory_class="maxwell_original",
     description="Verify telegraph line relations",
 )
@@ -608,7 +646,7 @@ def verify_telegraph_line(
     734,
     735,
     part=4,
-    chapter="Signal Transmission",
+    chapter="Ch XVI: Observations",
     theory_class="maxwell_original",
     description="Complete telegraph line analysis",
 )
@@ -629,6 +667,11 @@ def analyze_telegraph_line(
     3. Attenuation and phase constants
     4. Signal delay
     5. Voltage at distance
+
+    The ``rise_time_s`` / ``bandwidth_Hz`` /
+    ``max_signaling_rate_symbols_s`` keys additionally report the modern
+    ``standard_math`` signal-integrity heuristics of ``SignalTransmission``
+    (D-24 reclassification; not Treatise content).
 
     Args:
         R: Series resistance (abohms/cm).

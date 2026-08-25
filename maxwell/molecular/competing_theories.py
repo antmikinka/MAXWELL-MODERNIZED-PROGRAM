@@ -1,40 +1,258 @@
-"""maxwell.molecular.competing_theories — Comparison of electromagnetic theories (Arts. 859-866).
+"""maxwell.molecular.competing_theories — Comparison of electromagnetic
+theories (Arts. 841-866).
 
-Implements Maxwell's critical comparison of competing electromagnetic
-theories including his own field theory, Weber's action-at-a-distance,
-and Neumann's potential formulation.
+Implements Maxwell's critical comparison of the competing
+electromagnetic theories — Ampere's molecular currents, Weber's
+action-at-a-distance force law, Neumann's potential formulation —
+against Maxwell's own field theory.
 
-Maxwell's CGS formulation (Arts. 859-866):
-    Theory comparison criteria:
-    1. Agreement with experiment
-    2. Internal consistency
-    3. Predictive power
-    4. Mathematical elegance
+COMPUTE-OR-DELETE REMEDIATION (Stage 3 defects D-09 / D-11):
+    The previous version of this module carried invented "agreement
+    scores" (0.95, 0.9, 0.85, ...) and hardcoded consistency booleans
+    that were not computed from anything.  Every such literal has been
+    deleted.  All quantitative entries now returned by this module are
+    RESIDUALS computed from the theories' own formulas as implemented
+    in ``maxwell.molecular.amperes_theory``, ``webers_theory``, and
+    ``neumanns_theory``:
 
-    Energy propagation:
-    - Maxwell: Energy flows through field (Poynting vector)
-    - Weber: Energy stored in particle interactions
-    - Neumann: Energy in circuit coupling
+        residual = |computed_value - reference_value| / |reference|
 
-where:
-    Competing theories are evaluated on equal footing
-    using Maxwell's analytical framework
+    where the reference is an independent analytic result (elliptic
+    closed form, far-field dipole limit, Ampere's wire force, energy
+    integral, ...).  A residual of 0 means exact agreement; larger
+    means worse.  Qualitative strengths/limitations are retained ONLY
+    as labeled commentary (dict entries under keys marked
+    ``*_commentary`` or inside ``critiques`` lists), never as numbers.
 
-Category: A (maxwell_original) — Theory comparison and synthesis.
+    Residual keys deliberately avoid the words "agreement", "score",
+    and "confidence" so that anti-theater lint can verify no literal
+    verdicts remain.
+
+Categories:
+    A (maxwell_original) — the comparison framework of Arts. 859-866.
+    C (standard_math) — the numerical residual computations.
 
 References:
-    Part IV, Arts. 859-866: Comparison of electromagnetic theories.
+    Part IV, Ch. XXII (Arts. 832-845), Ch. XXIII (Arts. 846-866).
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 
 import numpy as np
 
 from maxwell.config.constants import CONST
 from maxwell.meta.citation import maxwell_cite
+from maxwell.molecular.amperes_theory import (
+    AmperesTheory,
+    calc_molecular_field,
+    calc_molecular_moment,
+    sphere_center_field_rings,
+)
+from maxwell.molecular.neumanns_theory import (
+    maxwell_mutual_inductance_closed_form,
+    motional_emf_coaxial,
+    neumann_far_field_residual,
+    neumann_mutual_inductance,
+    neumann_reciprocity_residual,
+)
+from maxwell.molecular.webers_theory import (
+    WebersTheory,
+    ampere_wire_force_recovery,
+    calc_weber_force,
+    critical_velocity,
+    weber_energy_conservation_residual,
+)
+
+# =============================================================================
+# COMPUTED RESIDUALS PER THEORY (all values are computations, not literals)
+# =============================================================================
+
+
+def _ampere_computed_residuals() -> Dict[str, float]:
+    """Residuals computed from Ampere's molecular-current formulas.
+
+    References used (independent analytic results):
+      * dipole field on axis:        B = +2m/r^3        (Art. 833)
+      * dipole field at equator:     B = -m/r^3         (Art. 833)
+      * magnetization:               M = N m f          (Art. 835)
+      * sphere interior field:       B = (8 pi/3) M     (Art. 840)
+    """
+    m = calc_molecular_moment(1e-6, 1e-16)
+    r = 1e-6
+
+    B_axis, _ = calc_molecular_field(m, r, 0.0)
+    axis_residual = abs(B_axis - 2.0 * m / r**3) / abs(2.0 * m / r**3)
+
+    _, B_eq = calc_molecular_field(m, r, np.pi / 2)
+    equator_residual = abs(B_eq + m / r**3) / abs(m / r**3)
+
+    at = AmperesTheory(number_density=1e23, alignment_factor=0.5)
+    M = at.magnetization(m)
+    magnetization_residual = abs(M - 1e23 * m * 0.5) / abs(1e23 * m * 0.5)
+
+    M_vec = np.array([0.0, 0.0, 50.0])
+    B_sphere = sphere_center_field_rings(M_vec, 1.0)
+    expected_sphere = (8.0 * np.pi / 3.0) * M_vec
+    sphere_residual = float(
+        np.linalg.norm(B_sphere - expected_sphere) / np.linalg.norm(expected_sphere)
+    )
+
+    return {
+        "dipole_axis_residual": float(axis_residual),
+        "dipole_equator_residual": float(equator_residual),
+        "magnetization_residual": float(magnetization_residual),
+        "sphere_interior_field_residual": sphere_residual,
+    }
+
+
+def _weber_computed_residuals() -> Dict[str, float]:
+    """Residuals computed from Weber's force law.
+
+    References used:
+      * Coulomb limit (v = a = 0): F = q1 q2 / r^2           (Art. 843)
+      * wire-force closed form for finite wires               (Art. 846)
+      * conservation of the Weber energy integral             (Art. 850)
+      * action-reaction pairwise equality of element forces   (Art. 846)
+    """
+    # 1. Coulomb limit of the force law (identity at v = a = 0).
+    q1 = q2 = 1.0
+    r_sep = 2.0
+    F_static = calc_weber_force(q1, q2, r_sep, 0.0, 0.0)
+    F_coulomb = q1 * q2 / r_sep**2
+    coulomb_residual = abs(F_static - F_coulomb) / abs(F_coulomb)
+
+    # 2. Recovery of the Ampere parallel-wire force (finite-length
+    #    closed form isolates quadrature error from truncation).
+    wire = ampere_wire_force_recovery(1.0, 1.0, 1.0, 50.0, n_segments=400)
+    wire_residual = wire["relative_residual_vs_finite_closed_form"]
+    wire_infinite_residual = wire["relative_residual_vs_infinite_limit"]
+
+    # 3. Conservation of the Weber energy integral along an RK4
+    #    trajectory of the implicit force law.
+    energy_residual = weber_energy_conservation_residual(n_steps=2000)
+
+    # 4. Action-reaction: element force on (1,2) plus the force on
+    #    (2,1) with reversed separation must cancel.
+    wt = WebersTheory()
+    dl1 = np.array([0.1, 0.0, 0.0])
+    dl2 = np.array([0.0, 0.05, 0.1])
+    r_vec = np.array([0.3, 0.2, 0.5])
+    F12 = wt.force_between_current_elements(1.0, 2.0, dl1, dl2, r_vec)
+    F21 = wt.force_between_current_elements(2.0, 1.0, dl2, dl1, -r_vec)
+    action_reaction_residual = abs(F12 + F21) / max(abs(F12), 1e-30)
+
+    return {
+        "coulomb_limit_residual": float(coulomb_residual),
+        "ampere_wire_recovery_residual": float(wire_residual),
+        "ampere_wire_infinite_limit_residual": float(wire_infinite_residual),
+        "energy_integral_residual": float(energy_residual),
+        "action_reaction_residual": float(action_reaction_residual),
+    }
+
+
+def _neumann_computed_residuals() -> Dict[str, float]:
+    """Residuals computed from Neumann's mutual-inductance formula.
+
+    References used:
+      * reciprocity M12 = M21                            (Art. 856)
+      * Maxwell's elliptic closed form for coaxial loops (Art. 853)
+      * far-field dipole limit M -> 2 pi^2 R1^2 R2^2/d^3 (Art. 857)
+      * Lenz sign of the motional EMF                    (Art. 858)
+    """
+    reciprocity = neumann_reciprocity_residual(
+        R1=1.0, R2=2.0, d=3.0, n_segments_12=160, n_segments_21=120
+    )
+
+    M_quad = neumann_mutual_inductance(1.0, 2.0, 3.0, n_segments=240)
+    M_closed = maxwell_mutual_inductance_closed_form(1.0, 2.0, 3.0)
+    closed_form_residual = abs(M_quad - M_closed) / abs(M_closed)
+
+    far_field = neumann_far_field_residual(R1=1.0, R2=1.0, d=20.0)
+
+    # Lenz sign: pulling the loops apart (v > 0) with I > 0 must induce
+    # an EMF whose sign drives a current supporting the decreasing flux,
+    # i.e. EMF has the sign of I * v because dM/dd < 0.
+    emf = motional_emf_coaxial(1.0, 1.0, 5.0, current=1.0, velocity=10.0)
+    lenz_sign_residual = 0.0 if emf > 0 else 1.0
+
+    return {
+        "reciprocity_residual": float(reciprocity),
+        "elliptic_closed_form_residual": float(closed_form_residual),
+        "far_field_dipole_residual": float(far_field),
+        "motional_emf_lenz_sign_residual": float(lenz_sign_residual),
+    }
+
+
+def _maxwell_computed_residuals() -> Dict[str, float]:
+    """Residual computed for Maxwell's own theory.
+
+    Reference: the ratio of the electromagnetic unit velocity
+    (Weber-Kohlrausch, 3.1e10 cm/s) to Fizeau's measured speed of light
+    (3.15e10 cm/s) as recorded by Maxwell — the numerical anchor of the
+    electromagnetic theory of light.
+    """
+    c_em = 3.1e10
+    c_light = 3.15e10
+    return {
+        "historical_wave_speed_residual": float(abs(c_em - c_light) / c_light),
+    }
+
+
+_RESIDUAL_BUILDERS: Dict[str, Callable[[], Dict[str, float]]] = {
+    "Ampere": _ampere_computed_residuals,
+    "Weber": _weber_computed_residuals,
+    "Neumann": _neumann_computed_residuals,
+    "Maxwell": _maxwell_computed_residuals,
+}
+
+
+def _computed_checks(theory_name: str) -> Dict[str, bool]:
+    """Boolean consistency checks derived from the computed residuals.
+
+    Every value below is thresholded numerical evidence, not assertion.
+    """
+    if theory_name == "Weber":
+        res = _weber_computed_residuals()
+        v_crit = critical_velocity()
+        return {
+            "energy_conservation": bool(res["energy_integral_residual"] < 1e-8),
+            "action_reaction": bool(res["action_reaction_residual"] < 1e-10),
+            "coulomb_limit_exact": bool(res["coulomb_limit_residual"] < 1e-12),
+            "critical_velocity_exceeds_light": bool(v_crit > CONST.C),
+        }
+    if theory_name == "Neumann":
+        res = _neumann_computed_residuals()
+        return {
+            "reciprocity": bool(res["reciprocity_residual"] < 1e-6),
+            "matches_elliptic_closed_form": bool(
+                res["elliptic_closed_form_residual"] < 1e-2
+            ),
+            "correct_far_field_limit": bool(res["far_field_dipole_residual"] < 5e-2),
+            "lenz_sign": bool(res["motional_emf_lenz_sign_residual"] == 0.0),
+        }
+    if theory_name == "Ampere":
+        res = _ampere_computed_residuals()
+        return {
+            "dipole_field_axis": bool(res["dipole_axis_residual"] < 1e-10),
+            "dipole_field_equator": bool(res["dipole_equator_residual"] < 1e-10),
+            "sphere_interior_field": bool(res["sphere_interior_field_residual"] < 1e-6),
+        }
+    if theory_name == "Maxwell":
+        res = _maxwell_computed_residuals()
+        return {
+            "wave_speed_matches_light": bool(
+                res["historical_wave_speed_residual"] < 0.1
+            ),
+        }
+    return {}
+
+
+# =============================================================================
+# THEORY DATA MODEL
+# =============================================================================
 
 
 @dataclass
@@ -47,9 +265,9 @@ class CompetingTheory:
 
     Attributes:
         name: Theory name (e.g., "Maxwell", "Weber", "Neumann").
-        fundamental_entity: Primary theoretical entity.
-        action_type: "field" or "action_at_distance".
-        energy_localization: Where energy is stored.
+        fundamental_entity: Primary theoretical entity (descriptive).
+        action_type: "field" or "action_at_distance" (descriptive).
+        energy_localization: Where energy is stored (descriptive).
     """
 
     name: str = "Unknown"
@@ -60,7 +278,7 @@ class CompetingTheory:
     @maxwell_cite(
         859,
         part=4,
-        chapter="Competing Theories",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Get theory characteristics",
     )
@@ -68,10 +286,9 @@ class CompetingTheory:
         """
         Get the key characteristics of this theory.
 
-        Art. 859: Each theory is characterized by:
-        1. Fundamental entity (field, charge, potential)
-        2. Type of action (local vs action-at-distance)
-        3. Energy localization
+        Art. 859: Each theory is characterized by its fundamental
+        entity, type of action, and energy localization.  These are
+        descriptive classifications, not scores.
 
         Returns:
             Dictionary of theory characteristics.
@@ -89,181 +306,99 @@ class CompetingTheory:
     @maxwell_cite(
         860,
         part=4,
-        chapter="Competing Theories",
-        theory_class="maxwell_original",
-        description="Evaluate theory against experimental facts",
+        chapter="Ch XXIII: Action at Distance",
+        theory_class="standard_math",
+        description="Compute theory residuals against analytic references",
     )
-    def experimental_agreement(self, phenomena: List[str]) -> Dict[str, float]:
+    def computed_residuals(self) -> Dict[str, float]:
         """
-        Evaluate the theory's agreement with experimental phenomena.
+        Compute the theory's residuals against analytic references.
 
-        Art. 860: Maxwell evaluates each theory's ability to explain:
-        1. Electrostatic attraction
-        2. Magnetic induction
-        3. Electromagnetic waves
-        4. Light propagation
+        Art. 860 (compute-or-delete): replaces the former literal
+        "agreement scores".  Each entry is
 
-        Args:
-            phenomena: List of phenomena to evaluate.
+            |computed - reference| / |reference|
+
+        evaluated from the theory's own formulas (see the per-theory
+        builders at module level).  0 = exact agreement.  Theories with
+        no registered computable checks yield an empty dict — an honest
+        admission that nothing was computed.
 
         Returns:
-            Dictionary of agreement scores (0 to 1).
+            Dictionary of residual magnitudes (dimensionless).
 
         Reference:
-            Part IV, Art. 860: Experimental agreement.
+            Part IV, Art. 860: Comparison with the facts.
         """
-        # Maxwell's theory agrees with all known phenomena
-        maxwell_phenomena = {
-            "electrostatics": 1.0,
-            "magnetostatics": 1.0,
-            "induction": 1.0,
-            "electromagnetic_waves": 1.0,
-            "light_propagation": 1.0,
-            "reflection_refraction": 1.0,
-            "polarization": 1.0,
-        }
-
-        # Weber's theory limitations
-        weber_phenomena = {
-            "electrostatics": 1.0,
-            "magnetostatics": 0.9,
-            "induction": 0.8,
-            "electromagnetic_waves": 0.0,  # Cannot explain wave propagation
-            "light_propagation": 0.0,
-            "reflection_refraction": 0.0,
-            "polarization": 0.0,
-        }
-
-        # Neumann's theory
-        neumann_phenomena = {
-            "electrostatics": 0.9,
-            "magnetostatics": 0.8,
-            "induction": 1.0,
-            "electromagnetic_waves": 0.0,
-            "light_propagation": 0.0,
-            "reflection_refraction": 0.5,
-            "polarization": 0.0,
-        }
-
-        theory_map = {
-            "Maxwell": maxwell_phenomena,
-            "Weber": weber_phenomena,
-            "Neumann": neumann_phenomena,
-        }
-
-        scores = theory_map.get(self.name, {})
-        return {p: scores.get(p, 0.5) for p in phenomena}
+        builder = _RESIDUAL_BUILDERS.get(self.name)
+        return builder() if builder is not None else {}
 
     @maxwell_cite(
         861,
         part=4,
-        chapter="Competing Theories",
-        theory_class="maxwell_original",
-        description="Check internal consistency",
+        chapter="Ch XXIII: Action at Distance",
+        theory_class="standard_math",
+        description="Computed consistency checks (thresholded residuals)",
     )
-    def internal_consistency(self) -> Dict[str, bool]:
+    def computed_checks(self) -> Dict[str, bool]:
         """
-        Evaluate the internal consistency of the theory.
+        Computed consistency checks for the theory.
 
-        Art. 861: Maxwell checks:
-        1. Conservation of energy
-        2. Conservation of momentum
-        3. Action-reaction equality
-        4. Causality
+        Art. 861 (compute-or-delete): replaces hardcoded consistency
+        booleans.  Each check is a thresholded residual computed from
+        the theory's own formulas.  Checks that are not numerically
+        decidable (e.g. historical objections about causality) are NOT
+        listed here; they appear as labeled commentary in
+        :func:`maxwell_critiques`.
 
         Returns:
-            Dictionary of consistency checks.
+            Dictionary of computed boolean checks.
 
         Reference:
             Part IV, Art. 861: Internal consistency.
         """
-        maxwell_consistency = {
-            "energy_conservation": True,
-            "momentum_conservation": True,
-            "action_reaction": True,
-            "causality": True,
-            "mathematical_rigor": True,
-        }
-
-        weber_consistency = {
-            "energy_conservation": True,
-            "momentum_conservation": False,  # Violated in some configurations
-            "action_reaction": True,
-            "causality": False,  # Depends on future states
-            "mathematical_rigor": True,
-        }
-
-        neumann_consistency = {
-            "energy_conservation": True,
-            "momentum_conservation": True,
-            "action_reaction": True,
-            "causality": True,
-            "mathematical_rigor": True,
-        }
-
-        theory_map = {
-            "Maxwell": maxwell_consistency,
-            "Weber": weber_consistency,
-            "Neumann": neumann_consistency,
-        }
-
-        return theory_map.get(self.name, {})
+        return _computed_checks(self.name)
 
     @maxwell_cite(
         862,
         part=4,
-        chapter="Competing Theories",
-        theory_class="maxwell_original",
-        description="Compare theories across all criteria",
+        chapter="Ch XXIII: Action at Distance",
+        theory_class="standard_math",
+        description="Full computed comparison entry for one theory",
     )
     def compare_all(self, phenomena: Optional[List[str]] = None) -> Dict[str, Dict]:
         """
-        Compare all theories across evaluation criteria.
+        Compare this theory across all computable criteria.
 
-        Art. 862: Comprehensive comparison including:
-        1. Experimental agreement
-        2. Internal consistency
-        3. Predictive scope
-        4. Mathematical elegance
+        Art. 862: the returned entry contains characteristics
+        (descriptive), computed residuals, computed checks, and the
+        summary statistics max_residual / n_residuals — all derived
+        from actual computations.
 
         Args:
-            phenomena: Phenomena to test (default: standard set).
+            phenomena: Unused (retained for API compatibility); kept
+                so older callers do not break.
 
         Returns:
-            Nested dictionary with comparison results.
+            Nested dictionary with the computed comparison entry.
 
         Reference:
             Part IV, Art. 862: Full theory comparison.
         """
-        if phenomena is None:
-            phenomena = [
-                "electrostatics",
-                "magnetostatics",
-                "induction",
-                "electromagnetic_waves",
-                "light_propagation",
-            ]
-
+        residuals = self.computed_residuals()
+        checks = self.computed_checks()
         return {
             self.name: {
                 "characteristics": self.characteristics(),
-                "experimental_agreement": self.experimental_agreement(phenomena),
-                "internal_consistency": self.internal_consistency(),
-                "overall_score": self._calculate_overall_score(phenomena),
+                "computed_residuals": residuals,
+                "computed_checks": checks,
+                "max_residual": (
+                    float(max(residuals.values())) if residuals else float("inf")
+                ),
+                "n_residuals": len(residuals),
+                "n_checks_passed": int(sum(checks.values())),
             }
         }
-
-    def _calculate_overall_score(self, phenomena: List[str]) -> float:
-        """Calculate overall score for this theory."""
-        exp_scores = list(self.experimental_agreement(phenomena).values())
-        consistency = list(self.internal_consistency().values())
-
-        exp_avg = np.mean(exp_scores) if exp_scores else 0.5
-        consistency_avg = (
-            sum(1 for c in consistency if c) / len(consistency) if consistency else 0.5
-        )
-
-        return 0.6 * exp_avg + 0.4 * consistency_avg
 
 
 @dataclass
@@ -307,73 +442,100 @@ class TheoryComparison:
     @maxwell_cite(
         862,
         part=4,
-        chapter="Competing Theories",
-        theory_class="maxwell_original",
-        description="Compare theories across all criteria",
+        chapter="Ch XXIII: Action at Distance",
+        theory_class="standard_math",
+        description="Compare all theories across computed criteria",
     )
     def compare_all(self, phenomena: Optional[List[str]] = None) -> Dict[str, Dict]:
         """
-        Compare all theories across evaluation criteria.
+        Compare all theories across the computable criteria.
 
-        Art. 862: Comprehensive comparison including:
-        1. Experimental agreement
-        2. Internal consistency
-        3. Predictive scope
-        4. Mathematical elegance
+        Art. 862: each entry contains characteristics, computed
+        residuals, computed checks, and summary statistics.  No literal
+        scores remain: every number is computed from a theory formula.
 
         Args:
-            phenomena: Phenomena to test (default: standard set).
+            phenomena: Unused (retained for API compatibility).
 
         Returns:
-            Nested dictionary with comparison results.
+            Nested dictionary with computed comparison results.
 
         Reference:
             Part IV, Art. 862: Full theory comparison.
         """
-        if phenomena is None:
-            phenomena = [
-                "electrostatics",
-                "magnetostatics",
-                "induction",
-                "electromagnetic_waves",
-                "light_propagation",
-            ]
-
         comparison = {}
         for theory in self.theories:
-            comparison[theory.name] = {
-                "characteristics": theory.characteristics(),
-                "experimental_agreement": theory.experimental_agreement(phenomena),
-                "internal_consistency": theory.internal_consistency(),
-                "overall_score": self._calculate_overall_score(theory, phenomena),
-            }
-
+            entry = theory.compare_all(phenomena)[theory.name]
+            comparison[theory.name] = entry
         return comparison
 
-    def _calculate_overall_score(
-        self,
-        theory: CompetingTheory,
-        phenomena: List[str],
-    ) -> float:
-        """Calculate overall score for a theory."""
-        exp_scores = list(theory.experimental_agreement(phenomena).values())
-        consistency = list(theory.internal_consistency().values())
 
-        exp_avg = np.mean(exp_scores) if exp_scores else 0.5
-        consistency_avg = (
-            sum(1 for c in consistency if c) / len(consistency) if consistency else 0.5
-        )
+# =============================================================================
+# HISTORICAL COMMENTARY (clearly labeled, never scored)
+# =============================================================================
 
-        return 0.6 * exp_avg + 0.4 * consistency_avg
+
+def maxwell_critiques() -> Dict[str, List[str]]:
+    """
+    Maxwell's recorded objections, as labeled commentary.
+
+    These are historical statements from the Treatise, preserved as
+    strings with attribution.  They are deliberately NOT converted into
+    numbers: causality and interpretive objections are not computable
+    from the force law.  Where a critique has a computable counterpart
+    (e.g. the critical velocity of Art. 849), the computation lives in
+    ``webers_theory`` and is surfaced via the computed checks.
+
+    This function carries no ``@maxwell_cite`` decorator on purpose: it
+    records commentary rather than implementing an article's computation,
+    so citing the articles here would overstate what the code does.
+    Provenance is kept in the reference below instead.
+
+    Returns:
+        Dictionary mapping theory name to a list of recorded critiques.
+
+    Reference:
+        Part IV, Arts. 848-850: Maxwell's objections to Weber's theory.
+    """
+    return {
+        "Weber": [
+            "Art. 849: the force changes sign at the critical velocity "
+            "sqrt(2) c, which exceeds the speed of light (computed in "
+            "webers_theory.critical_velocity).",
+            "Art. 850: the potential energy of two particles depends on "
+            "their relative velocity, contrary to the ordinary notion of "
+            "potential energy (the energy integral is nevertheless "
+            "conserved; see weber_energy_conservation_residual).",
+            "Weber's law contains the acceleration of the particles, so "
+            "the force is not determined by the instantaneous state of "
+            "position and velocity alone.",
+        ],
+        "Neumann": [
+            "Neumann's potential is confined to closed circuits and does "
+            "not provide a local account of the field between them.",
+            "The theory gives no mechanism for the propagation of "
+            "disturbances at finite speed.",
+        ],
+        "Ampere": [
+            "Ampere's molecular currents describe the statics of "
+            "magnetized bodies but not the propagation of electromagnetic "
+            "disturbances.",
+        ],
+    }
+
+
+# =============================================================================
+# MODULE-LEVEL COMPARISON FUNCTIONS
+# =============================================================================
 
 
 @maxwell_cite(
     859,
     860,
     part=4,
-    chapter="Competing Theories",
-    theory_class="maxwell_original",
-    description="Compare electromagnetic theories",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Compare electromagnetic theories via computed residuals",
 )
 def compare_electromagnetic_theories(
     theory_names: Optional[List[str]] = None,
@@ -382,14 +544,15 @@ def compare_electromagnetic_theories(
     """
     Compare electromagnetic theories.
 
-    Art. 859-860: Systematic comparison of competing theories.
+    Art. 859-860: Systematic comparison of competing theories through
+    computed residuals against analytic references.
 
     Args:
         theory_names: Names of theories to compare.
-        phenomena: Phenomena to evaluate against.
+        phenomena: Unused (retained for API compatibility).
 
     Returns:
-        Dictionary with comparison results.
+        Dictionary with computed comparison results.
 
     Reference:
         Part IV, Arts. 859-860: Theory comparison.
@@ -397,7 +560,7 @@ def compare_electromagnetic_theories(
     Example:
         >>> result = compare_electromagnetic_theories()
         >>> for theory, data in result.items():
-        ...     print(f"{theory}: score = {data['overall_score']:.2f}")
+        ...     print(f"{theory}: max residual = {data['max_residual']:.2e}")
     """
     if theory_names is None:
         theory_names = ["Maxwell", "Weber", "Neumann"]
@@ -407,6 +570,7 @@ def compare_electromagnetic_theories(
         "Maxwell": ("electromagnetic_field", "field", "field"),
         "Weber": ("moving_charge", "action_at_distance", "particle_interaction"),
         "Neumann": ("vector_potential", "potential", "circuit_coupling"),
+        "Ampere": ("molecular_current", "near_action", "molecular_currents"),
     }
 
     for name in theory_names:
@@ -422,21 +586,20 @@ def compare_electromagnetic_theories(
     861,
     862,
     part=4,
-    chapter="Competing Theories",
-    theory_class="maxwell_original",
-    description="Analyze differences between theories",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Analyze computed differences between two theories",
 )
 def analyze_theory_differences(
     theory1: str = "Maxwell",
     theory2: str = "Weber",
-) -> Dict[str, str | float]:
+) -> Dict[str, object]:
     """
     Analyze key differences between two theories.
 
-    Art. 861-862: Detailed comparison highlighting:
-    1. Conceptual differences
-    2. Predictive differences
-    3. Domain of validity
+    Art. 861-862: conceptual differences (descriptive characteristics),
+    residual differences on shared computed checks, and a computed
+    verdict on which theory has the smaller total residual.
 
     Args:
         theory1: First theory name.
@@ -454,31 +617,38 @@ def analyze_theory_differences(
     chars1 = t1.characteristics()
     chars2 = t2.characteristics()
 
-    phenomena = ["electromagnetic_waves", "light_propagation", "induction"]
-    exp1 = t1.experimental_agreement(phenomena)
-    exp2 = t2.experimental_agreement(phenomena)
-
-    # Calculate differences
     conceptual_diffs = []
     for key in chars1:
         if chars1.get(key) != chars2.get(key):
             conceptual_diffs.append(f"{key}: {chars1.get(key)} vs {chars2.get(key)}")
 
-    predictive_diffs = {}
-    for p in phenomena:
-        predictive_diffs[p] = exp1.get(p, 0) - exp2.get(p, 0)
+    res1 = t1.computed_residuals()
+    res2 = t2.computed_residuals()
+    shared = sorted(set(res1) & set(res2))
+    residual_differences = {k: res1[k] - res2[k] for k in shared}
+
+    total1 = float(sum(res1.values())) if res1 else float("inf")
+    total2 = float(sum(res2.values())) if res2 else float("inf")
+    if not res1 and not res2:
+        verdict = "inconclusive (no computed residuals on either side)"
+    elif total1 < total2:
+        verdict = theory1
+    elif total2 < total1:
+        verdict = theory2
+    else:
+        verdict = "tie"
 
     return {
         "theory1": theory1,
         "theory2": theory2,
         "conceptual_differences": conceptual_diffs,
-        "predictive_differences": predictive_diffs,
+        "shared_residual_differences": residual_differences,
+        "total_residual_theory1": total1,
+        "total_residual_theory2": total2,
         "key_distinction": chars1.get("action_type")
         + " vs "
         + chars2.get("action_type"),
-        "experimental_advantage": (
-            theory1 if sum(exp1.values()) > sum(exp2.values()) else theory2
-        ),
+        "computed_lower_residual_theory": verdict,
     }
 
 
@@ -486,76 +656,63 @@ def analyze_theory_differences(
     863,
     864,
     part=4,
-    chapter="Competing Theories",
-    theory_class="maxwell_original",
-    description="Verify consistency between theories",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Verify computed consistency of a theory",
 )
 def verify_theory_consistency(
     theory_name: str = "Maxwell",
     tolerance: float = 1e-10,
-) -> Dict[str, float | bool]:
+) -> Dict[str, object]:
     """
-    Verify internal consistency of a theory.
+    Verify internal consistency of a theory from computed checks.
 
-    Art. 863-864: Maxwell's verification of theoretical consistency:
-    1. Energy conservation
-    2. Momentum conservation
-    3. Mathematical self-consistency
+    Art. 863-864: every boolean below is derived by thresholding a
+    residual computed from the theory's own formulas.  The tolerance
+    parameter is retained for API compatibility; the thresholds used
+    are documented in :func:`_computed_checks`.
 
     Args:
         theory_name: Name of theory to verify.
-        tolerance: Numerical tolerance.
+        tolerance: Retained for API compatibility (unused).
 
     Returns:
-        Dictionary with verification results.
+        Dictionary with computed verification results.
 
     Reference:
         Part IV, Arts. 863-864: Theory consistency verification.
     """
     theory = CompetingTheory(name=theory_name)
-    consistency = theory.internal_consistency()
+    checks = theory.computed_checks()
 
-    # Check all consistency criteria
-    all_passed = all(consistency.values())
-    passed_count = sum(1 for v in consistency.values() if v)
-    total_count = len(consistency)
+    passed_count = sum(1 for v in checks.values() if v)
+    total_count = len(checks)
+    all_passed = total_count > 0 and passed_count == total_count
 
     return {
         "theory": theory_name,
-        "energy_conservation": consistency.get("energy_conservation", False),
-        "momentum_conservation": consistency.get("momentum_conservation", False),
-        "action_reaction": consistency.get("action_reaction", False),
-        "causality": consistency.get("causality", False),
-        "mathematical_rigor": consistency.get("mathematical_rigor", False),
-        "consistency_score": passed_count / total_count if total_count > 0 else 0,
-        "fully_consistent": all_passed,
-        "verified": all_passed,
+        "computed_checks": checks,
+        "consistency_fraction": passed_count / total_count if total_count else 0.0,
+        "fully_consistent": bool(all_passed),
+        "verified": bool(all_passed),
     }
 
 
 @maxwell_cite(
-    859,
-    860,
-    861,
     862,
-    863,
-    864,
-    865,
     866,
     part=4,
-    chapter="Competing Theories",
-    theory_class="maxwell_original",
-    description="Synthesize comparison of all theories",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Synthesize the computed comparison of all theories",
 )
-def synthesize_theory_comparison() -> Dict[str, Dict | str]:
+def synthesize_theory_comparison() -> Dict[str, object]:
     """
     Complete synthesis of electromagnetic theory comparison.
 
-    Art. 859-866: Maxwell's comprehensive synthesis including:
-    1. All theories compared
-    2. Experimental agreement analysis
-    3. Consistency evaluation
-    4. Final recommendation
+    Art. 859-866: all theories compared on computed residuals, with the
+    best-supported theory selected by smallest maximum residual (a
+    computed verdict, not an assertion).
 
     Returns:
         Dictionary with complete synthesis.
@@ -565,36 +722,44 @@ def synthesize_theory_comparison() -> Dict[str, Dict | str]:
 
     Example:
         >>> synthesis = synthesize_theory_comparison()
-        >>> print(f"Recommended theory: {synthesis['recommendation']}")
+        >>> print(f"Lowest-residual theory: {synthesis['best_theory']}")
     """
-    # Compare all theories
     comparison = compare_electromagnetic_theories()
 
-    # Find best theory
-    best_theory = max(comparison.keys(), key=lambda t: comparison[t]["overall_score"])
+    finite_entries = {
+        name: data
+        for name, data in comparison.items()
+        if np.isfinite(data["max_residual"])
+    }
+    best_theory = (
+        min(finite_entries, key=lambda t: finite_entries[t]["max_residual"])
+        if finite_entries
+        else "none"
+    )
 
-    # Analyze pairwise differences
     differences = {}
     theory_names = list(comparison.keys())
     for i, t1 in enumerate(theory_names):
         for t2 in theory_names[i + 1 :]:
-            diff = analyze_theory_differences(t1, t2)
-            differences[f"{t1}_vs_{t2}"] = diff
+            differences[f"{t1}_vs_{t2}"] = analyze_theory_differences(t1, t2)
 
-    # Consistency verification
-    consistency_checks = {}
-    for name in theory_names:
-        consistency_checks[name] = verify_theory_consistency(name)
+    consistency_checks = {
+        name: verify_theory_consistency(name) for name in theory_names
+    }
 
     return {
         "comparison_results": comparison,
         "pairwise_differences": differences,
         "consistency_checks": consistency_checks,
         "best_theory": best_theory,
-        "recommendation": f"Maxwell's field theory is recommended due to complete "
-        f"experimental agreement and internal consistency.",
-        "key_insight": "Field theory provides local energy propagation and "
-        "predicts electromagnetic waves, unlike action-at-distance theories.",
+        "selection_rule": "smallest maximum computed residual",
+        "maxwell_critiques": maxwell_critiques(),
+        "key_insight_commentary": (
+            "Commentary (Maxwell 1873, Arts. 865-866): the field theory "
+            "localizes energy and propagates disturbances at finite "
+            "speed; action-at-distance theories reproduce the same "
+            "circuit-level facts but offer no local mechanism."
+        ),
     }
 
 
@@ -608,60 +773,56 @@ def synthesize_theory_comparison() -> Dict[str, Dict | str]:
     860,
     861,
     862,
-    863,
-    864,
-    865,
-    866,
     part=4,
-    chapter="Competing Theories",
-    theory_class="maxwell_original",
-    description="Compare all electromagnetic theories",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Compare all electromagnetic theories via computed " "residuals",
 )
 def compare_theories() -> Dict[str, Dict]:
     """
     Compare all electromagnetic theories.
 
-    Art. 859-866: Comprehensive comparison of Ampere's, Weber's,
-    and Neumann's theories against Maxwell's field theory.
+    Art. 859-862 (compute-or-delete): entries for Ampere's, Weber's,
+    and Neumann's theories, each populated with residuals computed from
+    that theory's own formulas (no literal scores anywhere).
 
     Returns:
-        Dictionary with comparison results for each theory.
+        Dictionary with computed comparison results for each theory.
 
     Reference:
-        Part IV, Arts. 859-866: Theory comparison.
+        Part IV, Arts. 859-862: Theory comparison.
 
     Example:
         >>> result = compare_theories()
         >>> for name, data in result.items():
-        ...     print(f"{name}: score = {data['overall_score']:.2f}")
+        ...     print(f"{name}: max residual = {data['max_residual']:.2e}")
     """
-    comparison = compare_electromagnetic_theories()
+    comparison = compare_electromagnetic_theories(
+        theory_names=["Ampere", "Weber", "Neumann"]
+    )
 
-    # Reformat keys to match test expectations
-    result = {
-        "amperes_theory": comparison.get(
-            "Maxwell", {}
-        ),  # Ampere's theory is the molecular current basis
+    return {
+        "amperes_theory": comparison.get("Ampere", {}),
         "webers_theory": comparison.get("Weber", {}),
         "neumanns_theory": comparison.get("Neumann", {}),
     }
-    return result
 
 
 @maxwell_cite(
     859,
     860,
     part=4,
-    chapter="Competing Theories",
-    theory_class="maxwell_original",
-    description="Analyze Ampere's theory characteristics",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Ampere's theory: descriptive commentary plus computed " "checks",
 )
-def analyze_amperes_theory() -> Dict[str, str | list]:
+def analyze_amperes_theory() -> Dict[str, object]:
     """
     Analyze Ampere's molecular current theory.
 
-    Art. 859-860: Maxwell's analysis of Ampere's hypothesis that
-    all magnetic phenomena arise from molecular-scale current loops.
+    Art. 859-860: descriptive commentary (strings and labeled lists)
+    together with residuals computed from the amperes_theory module.
+    The former invented agreement scores have been deleted.
 
     Returns:
         Dictionary with analysis of Ampere's theory.
@@ -673,46 +834,38 @@ def analyze_amperes_theory() -> Dict[str, str | list]:
         "molecular_currents": "Magnetic phenomena arise from molecular current loops",
         "fundamental_entity": "Current loop",
         "action_type": "Near action through medium",
-        "strengths": [
+        "strengths_commentary": [
             "Explains magnetism through known electrical phenomena",
             "Provides mechanical model for magnetic moments",
-            "Consistent with conservation of energy",
         ],
         "limitations": [
-            "Cannot explain electromagnetic wave propagation",
-            "Limited to static and quasi-static phenomena",
-            "Does not predict displacement current",
+            "Describes static and quasi-static magnetism only",
+            "Contains no displacement current and no wave propagation",
         ],
-        "experimental_agreement": {
-            "magnetostatics": 0.95,
-            "induction": 0.85,
-            "electromagnetic_waves": 0.0,
-        },
+        "computed_checks": _ampere_computed_residuals(),
     }
 
 
 @maxwell_cite(
-    841,
-    842,
     843,
-    844,
-    845,
     846,
-    847,
-    848,
     849,
     850,
     part=4,
-    chapter="Weber's Theory",
-    theory_class="maxwell_original",
-    description="Analyze Weber's theory characteristics",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Weber's theory: descriptive commentary plus computed "
+    "checks from the force law itself",
 )
-def analyze_webers_theory() -> Dict[str, str | list]:
+def analyze_webers_theory() -> Dict[str, object]:
     """
     Analyze Weber's velocity-dependent force theory.
 
-    Art. 841-850: Maxwell's critical analysis of Weber's theory
-    based on action-at-a-distance with velocity-dependent forces.
+    Art. 841-850: descriptive commentary together with residuals
+    computed from Weber's own force law: Coulomb limit, recovery of the
+    Ampere wire force, energy-integral conservation, and the critical
+    velocity sign reversal (Maxwell's objection, now a computation).
+    The former invented agreement scores have been deleted.
 
     Returns:
         Dictionary with analysis of Weber's theory.
@@ -720,50 +873,52 @@ def analyze_webers_theory() -> Dict[str, str | list]:
     Reference:
         Part IV, Arts. 841-850: Weber's theory analysis.
     """
+    weber_res = _weber_computed_residuals()
+    v_crit = critical_velocity()
+    below = calc_weber_force(1.0, 1.0, 1.0, 0.9 * v_crit, 0.0)
+    above = calc_weber_force(1.0, 1.0, 1.0, 1.1 * v_crit, 0.0)
+    weber_res["critical_velocity_sign_flip"] = float(
+        1.0 if (below > 0 and above < 0) else 0.0
+    )
+
     return {
         "velocity_dependent": "Force depends on relative velocity of charges",
         "action_at_distance": "Direct interaction without intermediary field",
         "fundamental_entity": "Moving charge",
-        "strengths": [
+        "strengths_commentary": [
             "Unifies electrostatic and electromagnetic phenomena",
             "Derives Ampere's force law from charge interactions",
-            "Mathematically elegant formulation",
         ],
         "limitations": [
-            "Violates energy conservation in some configurations",
-            "Cannot explain light propagation",
-            "Depends on future states (violates causality)",
-            "No field concept for energy localization",
+            "Force reverses sign beyond the critical velocity sqrt(2) c "
+            "(computed below)",
+            "Energy integral depends on relative velocity",
+            "No field concept for local energy storage",
         ],
-        "experimental_agreement": {
-            "electrostatics": 1.0,
-            "magnetostatics": 0.9,
-            "induction": 0.8,
-            "electromagnetic_waves": 0.0,
-        },
+        "computed_checks": weber_res,
+        "maxwell_critiques": maxwell_critiques()["Weber"],
     }
 
 
 @maxwell_cite(
-    851,
-    852,
     853,
-    854,
-    855,
     856,
     857,
-    858,
     part=4,
-    chapter="Neumann's Theory",
-    theory_class="maxwell_original",
-    description="Analyze Neumann's theory characteristics",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Neumann's theory: descriptive commentary plus computed "
+    "checks from the Neumann integral",
 )
-def analyze_neumanns_theory() -> Dict[str, str | list]:
+def analyze_neumanns_theory() -> Dict[str, object]:
     """
     Analyze Neumann's potential-based theory.
 
-    Art. 851-858: Maxwell's treatment of Neumann's theory
-    of electromagnetic induction through vector potential.
+    Art. 851-858: descriptive commentary together with residuals
+    computed from Neumann's formula: reciprocity, comparison with
+    Maxwell's elliptic closed form, far-field dipole limit, and the
+    Lenz sign of the motional EMF.  The former invented agreement
+    scores have been deleted.
 
     Returns:
         Dictionary with analysis of Neumann's theory.
@@ -775,90 +930,67 @@ def analyze_neumanns_theory() -> Dict[str, str | list]:
         "potential_based": "Uses vector potential as fundamental quantity",
         "induction_focus": "Primary focus on electromagnetic induction",
         "fundamental_entity": "Vector potential",
-        "strengths": [
+        "strengths_commentary": [
             "Elegant mathematical formulation of induction",
-            "Correctly predicts mutual inductance",
-            "Consistent with energy conservation",
-            "Provides computational framework",
+            "Reciprocity and energy expressions follow directly",
         ],
         "limitations": [
-            "Limited to circuit phenomena",
-            "Cannot explain wave propagation",
-            "Does not predict displacement current",
+            "Limited to closed-circuit phenomena",
+            "No wave propagation or displacement current",
             "No local energy transport mechanism",
         ],
-        "experimental_agreement": {
-            "electrostatics": 0.9,
-            "magnetostatics": 0.8,
-            "induction": 1.0,
-            "electromagnetic_waves": 0.0,
-        },
+        "computed_checks": _neumann_computed_residuals(),
     }
 
 
 @maxwell_cite(
-    859,
-    860,
-    861,
-    862,
-    863,
-    864,
     865,
     866,
     part=4,
-    chapter="Competing Theories",
-    theory_class="maxwell_original",
-    description="Maxwell's field theory advantages",
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="standard_math",
+    description="Maxwell's field theory: commentary plus the computed "
+    "wave-speed check",
 )
-def maxwell_advantages() -> Dict[str, str | list]:
+def maxwell_advantages() -> Dict[str, object]:
     """
-    Describe Maxwell's field theory advantages over competing theories.
+    Describe Maxwell's field theory relative to competing theories.
 
-    Art. 859-866: Maxwell's synthesis showing why his field theory
-    provides the most complete description of electromagnetic phenomena.
+    Art. 865-866: descriptive commentary together with the one
+    quantitative anchor Maxwell himself used — the agreement of the
+    electromagnetic unit velocity with the measured speed of light,
+    computed here from the historical numbers (3.1e10 vs 3.15e10 cm/s).
+    The former all-1.0 "agreement" dict has been deleted.
 
     Returns:
-        Dictionary with Maxwell's theory advantages.
+        Dictionary with Maxwell's theory description.
 
     Reference:
-        Part IV, Arts. 859-866: Maxwell's theory advantages.
+        Part IV, Arts. 865-866: Maxwell's theory assessment.
     """
     return {
         "field_concept": "Electromagnetic field as physical entity",
         "displacement_current": "Time-varying electric field produces magnetic field",
         "fundamental_entity": "Electromagnetic field",
-        "strengths": [
-            "Complete experimental agreement across all phenomena",
-            "Predicts electromagnetic wave propagation",
-            "Explains light as electromagnetic phenomenon",
-            "Local energy conservation via Poynting vector",
+        "strengths_commentary": [
+            "Local energy conservation via the Poynting vector",
             "Causal propagation at finite speed",
-            "Unified framework for all electromagnetic phenomena",
+            "Predicts electromagnetic waves",
         ],
-        "advantages_over_competitors": {
+        "advantages_over_competitors_commentary": {
             "vs_weber": [
-                "No action-at-distance violations",
-                "Explains wave propagation",
-                "Local energy storage in field",
+                "No superluminal critical velocity",
+                "Local energy storage in the field",
             ],
             "vs_neumann": [
-                "Generalizes beyond circuits",
-                "Predicts displacement current",
-                "Explains electromagnetic waves",
+                "Generalizes beyond closed circuits",
+                "Displacement current completes the dynamics",
             ],
             "vs_ampere": [
-                "Includes time-varying phenomena",
-                "Predicts wave propagation",
-                "Complete dynamical theory",
+                "Includes time-varying phenomena and wave propagation",
             ],
         },
-        "experimental_agreement": {
-            "electrostatics": 1.0,
-            "magnetostatics": 1.0,
-            "induction": 1.0,
-            "electromagnetic_waves": 1.0,
-            "light_propagation": 1.0,
-        },
+        "computed_checks": _maxwell_computed_residuals(),
     }
 
 
@@ -866,36 +998,41 @@ def maxwell_advantages() -> Dict[str, str | list]:
     859,
     860,
     part=4,
-    chapter="Competing Theories",
+    chapter="Ch XXIII: Action at Distance",
     theory_class="maxwell_original",
-    description="Calculate diamagnetic response",
+    description="Induced magnetization of a diamagnetic body",
 )
 def diamagnetic_response(
     applied_field: float,
     material_constant: float = -1e-5,
 ) -> float:
     """
-    Calculate diamagnetic susceptibility response.
+    Calculate the induced magnetization of a diamagnetic body.
 
-    Art. 859-860: Maxwell's treatment of diamagnetism as induced
-    molecular currents opposing the applied field.
+    Art. 859-860 (compute-or-delete, defect D-18): the former version
+    returned the input ``material_constant`` unchanged.  The function
+    now COMPUTES the induced magnetization
 
-    Diamagnetic materials have negative susceptibility because
-    induced currents oppose the applied field (Lenz's law).
+        M_ind = chi · H
+
+    from the susceptibility chi (``material_constant``) and the applied
+    field H.  Diamagnetic susceptibilities are negative because the
+    induced molecular currents oppose the applied field (Lenz's law),
+    so M_ind is negative for positive applied field.
 
     Args:
-        applied_field: Applied magnetic field (gauss).
-        material_constant: Material-specific susceptibility.
+        applied_field: Applied magnetic field H (gauss).
+        material_constant: Susceptibility chi (dimensionless, negative
+            for diamagnets; default is the order of magnitude of
+            bismuth-free weak diamagnets).
 
     Returns:
-        Magnetic susceptibility chi (dimensionless, negative for diamagnets).
+        Induced magnetization M_ind = chi H (gauss).
 
     Reference:
         Part IV, Arts. 859-860: Diamagnetic response.
     """
-    # Diamagnetic materials have negative susceptibility
-    # The induced molecular currents oppose the applied field
-    return material_constant
+    return material_constant * applied_field
 
 
 # Alias for backwards compatibility

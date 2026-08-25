@@ -20,6 +20,15 @@ CGS Units:
     B = magnetic flux density (gauss)
     D = electric displacement (statcoulombs/cm²)
     H = magnetic field intensity (oersted)
+    i = surface current density (statamperes/cm, Gaussian CGS)
+
+Unit convention (Gaussian-CGS, explicit-c; defect D-16 class):
+    The boundary jump conditions carry CONST.C explicitly, e.g.
+    n x (H2 - H1) = (4 pi / CONST.C) i (Arts. 670-671) and the
+    Faraday term -(1/CONST.C) dB/dt (Arts. 663-665).  Surface currents
+    are therefore read in statamperes/cm (ESU); an EMU surface current
+    in abamperes/cm enters via i = CONST.C * i_emu (1 abampere =
+    CONST.C statamperes), cancelling the 1/c.
 
 Category: A (maxwell_original) — Maxwell's electromagnetic boundary conditions.
 
@@ -61,7 +70,8 @@ class ElectromagneticBoundary:
         mu1: Permeability of medium 1.
         mu2: Permeability of medium 2.
         sigma_s: Surface charge density (statcoulombs/cm²).
-        current_s: Surface current density (abamperes/cm).
+        current_s: Surface current density (statamperes/cm; Gaussian-CGS
+            explicit-c convention, see the module docstring).
     """
 
     normal: np.ndarray = field(default_factory=lambda: np.array([0.0, 0.0, 1.0]))
@@ -89,6 +99,7 @@ class ElectromagneticBoundary:
         self.current_s = np.asarray(self.current_s, dtype=np.float64)
 
     @classmethod
+    # PARKING-LOT: Arts 663-666 are the adjacent general field-boundary articles immediately below the last-200 fence; shared boundary math (Wave-6 adjudication, 2026-08-21; see also defect D-34).
     @maxwell_cite(
         663,
         664,
@@ -170,7 +181,9 @@ class ElectromagneticBoundary:
 
         Args:
             epsilon: Permittivity of exterior medium.
-            surface_current: Surface current density (abamperes/cm).
+            surface_current: Surface current density (statamperes/cm;
+                Gaussian-CGS explicit-c convention, see the module
+                docstring).
             normal: Unit normal pointing into conductor.
 
         Returns:
@@ -285,6 +298,7 @@ def calc_tangential_E_discontinuity(
     }
 
 
+# PARKING-LOT: Arts 663-666 are the adjacent general field-boundary articles immediately below the last-200 fence; shared boundary math (Wave-6 adjudication, 2026-08-21; see also defect D-34).
 @maxwell_cite(
     666,
     667,
@@ -495,7 +509,9 @@ def calc_tangential_H_discontinuity(
         H1: Magnetic field in medium 1 (oersted).
         H2: Magnetic field in medium 2 (oersted).
         normal: Unit normal from medium 1 to 2.
-        surface_current: Surface current density i (abamperes/cm).
+        surface_current: Surface current density i (statamperes/cm;
+            Gaussian-CGS explicit-c convention, see the module
+            docstring).
 
     Returns:
         Dictionary with:
@@ -513,7 +529,7 @@ def calc_tangential_H_discontinuity(
         >>> H1 = np.array([0, 0, 100])
         >>> H2 = np.array([0, 50, 100])
         >>> n = np.array([0, 0, 1])
-        >>> i = np.array([100, 0])  # abamperes/cm
+        >>> i = np.array([100, 0])  # statamperes/cm (Gaussian CGS)
         >>> result = calc_tangential_H_discontinuity(H1, H2, n, i)
         >>> print(f"Boundary satisfied: {result['boundary_satisfied']}")
     """
@@ -572,6 +588,7 @@ def calc_tangential_H_discontinuity(
     }
 
 
+# PARKING-LOT: Arts 663-666 are the adjacent general field-boundary articles immediately below the last-200 fence; shared boundary math (Wave-6 adjudication, 2026-08-21; see also defect D-34).
 @maxwell_cite(
     663,
     664,
@@ -868,6 +885,7 @@ class BoundaryConditionAnalyzer:
         """Check tangential electric field continuity."""
         return calc_tangential_E_discontinuity(E1, E2, self.boundary.normal)
 
+    # PARKING-LOT: Arts 663-666 are the adjacent general field-boundary articles immediately below the last-200 fence; shared boundary math (Wave-6 adjudication, 2026-08-21; see also defect D-34).
     @maxwell_cite(
         666,
         667,
@@ -908,6 +926,7 @@ class BoundaryConditionAnalyzer:
             H1, H2, self.boundary.normal, self.boundary.current_s
         )
 
+    # PARKING-LOT: Arts 663-666 are the adjacent general field-boundary articles immediately below the last-200 fence; shared boundary math (Wave-6 adjudication, 2026-08-21; see also defect D-34).
     @maxwell_cite(
         663,
         664,

@@ -8,21 +8,46 @@ Maxwell's CGS formulation (Arts. 670-690):
 
         B_z = 2*pi*I*a^2 / (c * (a^2 + z^2)^(3/2))
 
-    Off-axis, the field involves elliptic integrals:
+    Off-axis (standard elliptic-integral form; Treatise Arts. 699-702 via
+    the vector potential of a circular current, cf. Smythe §7.10): with
 
-        B_rho = (2*I*z/(c*rho^2)) * [E(k^2)*(1 + k^2*alpha^2)/beta - K(k^2)]
-        B_z = (2*I/(c*rho^2)) * [E(k^2)*(a^2 - r^2)/gamma + K(k^2)]
+        alpha^2 = (a + rho)^2 + z^2,   m = k^2 = 4*a*rho / alpha^2,
 
-    where k^2 = 4*a*rho / ((a + rho)^2 + z^2)
+        B_z   = (2*n*I/(c*alpha)) * [K(m) + (a^2 - rho^2 - z^2)/((a-rho)^2 + z^2) * E(m)]
+        B_rho = (2*n*I/(c*alpha)) * (z/rho) * [(a^2 + rho^2 + z^2)/((a-rho)^2 + z^2) * E(m) - K(m)]
+
+    K, E are the complete elliptic integrals in parameter convention,
+    evaluated by the rigorous AGM in maxwell.math.elliptic_integrals.
+    Consistency: as rho -> 0 one recovers EXACTLY the on-axis formula
+    above (K(0) = E(0) = pi/2), which the pre-2026-08-21 implementation
+    failed to do: it carried a dimensionally wrong prefactor
+    2*n*I/(c*alpha^2) (field ~ I/(c*length^2), one power of length short)
+    and a truncated 4-term elliptic series that broke down for m -> 1.
+    The corrected prefactor 2*n*I/(c*alpha) was verified against an
+    independent Biot-Savart quadrature to machine precision
+    (tests/test_articles_math_spine_691_706.py).
 
     For Helmholtz coils (two identical coils, separation = radius):
         The field at the center is nearly uniform.
 
 where:
-    I = current (abamperes)
+    I = current (statamperes, Gaussian CGS)
     a = coil radius (cm)
     z = axial distance (cm)
     B = magnetic field (gauss)
+
+Unit convention (Gaussian-CGS, explicit-c; defect D-16 class):
+    Every formula in this module divides by CONST.C.  That factor is
+    the explicit speed of light c of the Gaussian-CGS Biot-Savart /
+    Ampere law (Treatise Arts. 670-675), NOT a unit conversion applied
+    to the current argument: the current is read in statamperes (ESU),
+    and the resulting field is in gauss.  An EMU current I_emu given
+    in abamperes must be converted before use via the ESU<->EMU bridge
+    I = CONST.C * I_emu statamperes (1 abampere = CONST.C statamperes),
+    which then cancels the 1/c and recovers the equivalent EMU forms.
+    The convention is pinned numerically by
+    tests/test_d16_c_convention_consistency.py against an independent
+    statampere Biot-Savart quadrature.
 
 Category: A (maxwell_original) — Maxwell's circular coil theory.
 
@@ -37,6 +62,10 @@ from dataclasses import dataclass
 import numpy as np
 
 from maxwell.config.constants import CONST
+from maxwell.math.elliptic_integrals import (
+    calc_complete_elliptic_e_parameter,
+    calc_complete_elliptic_k_parameter,
+)
 from maxwell.meta.citation import maxwell_cite
 
 
@@ -66,7 +95,8 @@ def calc_coil_on_axis(
         B_z = 2*pi*n*I / (c * a)
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         coil_radius: Coil radius (cm).
         axial_distance: Distance from center along axis (cm).
         n_turns: Number of turns (default 1).
@@ -84,28 +114,23 @@ def calc_coil_on_axis(
     return 2.0 * np.pi * n_turns * current * a**2 / (CONST.C * denom)
 
 
-def _elliptic_K(m: float) -> float:
-    """Complete elliptic integral of the first kind (approximation)."""
-    if m < 0:
-        return np.pi / 2
-    if m >= 1.0:
-        m = 1.0 - 1e-15
-    # Series approximation
-    m2 = m * m
-    m3 = m2 * m
-    return (np.pi / 2) * (1 + m / 4 + 9 * m2 / 64 + 25 * m3 / 256)
-
-
-def _elliptic_E(m: float) -> float:
-    """Complete elliptic integral of the second kind (approximation)."""
-    if m < 0:
-        return np.pi / 2
-    if m >= 1.0:
-        m = 1.0 - 1e-15
-    # Series approximation
-    m2 = m * m
-    m3 = m2 * m
-    return (np.pi / 2) * (1 - m / 4 - 3 * m2 / 64 - 5 * m3 / 256)
+# Rigorous complete elliptic integrals, parameter convention m = k².
+#
+# REPLACED 2026-08-21 (math-spine uplift; defect register D-14/D-29/D-30).
+# The previous private approximants ``_elliptic_K``/``_elliptic_E`` were a
+# truncated hypergeometric series
+#     K ≈ (π/2)(1 + m/4 + 9m²/64 + 25m³/256),
+#     E ≈ (π/2)(1 − m/4 − 3m²/64 − 5m³/256),
+# which (i) returned π/2 for ALL m < 0 (D-29; true K(−1) = 1.31102877...),
+# (ii) missed the logarithmic divergence K(m) ~ ln(4/√(1−m)) as m → 1
+# (returning ≈ 2.34 instead), and (iii) degraded to ~1% already at
+# m ≈ 0.5 and to tens of percent for m ≥ 0.9 (coil points near the
+# winding; D-14).  Per the Stage-3 register the approximants were DELETED
+# ENTIRELY: every elliptic evaluation below routes through the Landen/AGM
+# evaluator of maxwell.math.elliptic_integrals (DLMF §19.8), exact to
+# ~1e-15 relative for all m < 1.  No series is retained, so no error
+# bound need be quoted.  Comparison tests vs scipy at k² = 0.5, 0.9,
+# 0.99, 0.9999 live in tests/test_articles_cylinders_harmonics_680_690.py.
 
 
 @maxwell_cite(
@@ -130,10 +155,15 @@ def calc_coil_off_axis(
     the field at position (rho, z) uses elliptic integrals:
 
         k^2 = 4*a*rho / ((a + rho)^2 + z^2)
-        B_z and B_rho from K(k^2) and E(k^2)
+        B_z and B_rho from K(k^2) and E(k^2)  (see module docstring for
+        the exact standard form; K, E evaluated rigorously by AGM)
+
+    The off-axis expression reduces EXACTLY to ``calc_coil_on_axis`` in
+    the limit rho -> 0 (checked continuously, not just by branch).
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         coil_radius: Coil radius (cm).
         position: Position (cm), coil is in xy-plane.
         n_turns: Number of turns.
@@ -160,12 +190,16 @@ def calc_coil_off_axis(
     k_sq = 4.0 * a * rho / ((a + rho) ** 2 + z**2)
     k_sq = min(max(k_sq, 0), 1 - 1e-15)
 
-    K = _elliptic_K(k_sq)
-    E = _elliptic_E(k_sq)
+    K = calc_complete_elliptic_k_parameter(k_sq)
+    E = calc_complete_elliptic_e_parameter(k_sq)
 
     # Field components in cylindrical coordinates
     alpha_sq = (a + rho) ** 2 + z**2
-    prefactor = 2.0 * n_turns * current / (CONST.C * alpha_sq)
+    # Rigorous prefactor 2*n*I/(c*alpha) with alpha = sqrt(alpha_sq).
+    # (The pre-2026-08-21 code divided by alpha_sq — dimensionally wrong,
+    # one power of length short — and failed to reduce to the on-axis
+    # formula as rho -> 0.  See module docstring derivation.)
+    prefactor = 2.0 * n_turns * current / (CONST.C * np.sqrt(alpha_sq))
 
     # B_z component
     B_z = prefactor * (
@@ -211,7 +245,8 @@ def calc_double_coil_field(
     The field is the superposition of two single-coil fields.
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         coil_radius: Coil radius (cm).
         position: Position (cm).
         coil_separation: Distance between coils (cm, default = radius for Helmholtz).
@@ -260,7 +295,8 @@ def calc_coaxial_coil_pair(
     Art. 678-679: General coaxial coil pair configuration.
 
     Args:
-        current: Current magnitude (abamperes).
+        current: Current magnitude (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         coil1_radius: First coil radius (cm).
         coil2_radius: Second coil radius (cm).
         position: Position (cm).
@@ -292,7 +328,8 @@ class CircularCoil:
     produced by circular current loops in various configurations.
 
     Attributes:
-        current: Coil current (abamperes).
+        current: Coil current (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         radius: Coil radius (cm).
         n_turns: Number of turns.
         position: Coil center position (cm).
@@ -363,7 +400,8 @@ def verify_coil_field(
     3. Field decreases as 1/z^3 for z >> a (dipole)
 
     Args:
-        current: Test current (abamperes).
+        current: Test current (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         coil_radius: Test coil radius (cm).
         tolerance: Numerical tolerance.
 
@@ -433,7 +471,8 @@ def verify_helmholtz_uniformity(
     the field at the center should be uniform to second order.
 
     Args:
-        current: Test current (abamperes).
+        current: Test current (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         coil_radius: Test coil radius (cm).
         tolerance: Uniformity tolerance (fractional variation).
 
@@ -499,7 +538,8 @@ def analyze_circular_coil(
     4. Dipole approximation comparison
 
     Args:
-        current: Coil current (abamperes).
+        current: Coil current (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         coil_radius: Coil radius (cm).
         n_turns: Number of turns.
         test_positions: Positions for field evaluation.

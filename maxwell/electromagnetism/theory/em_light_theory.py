@@ -558,12 +558,17 @@ def verify_poynting_theorem(
     via Poynting's theorem for several test cases:
 
     1. Plane wave: Energy flux equals energy density times c
-    2. Capacitor charging: Energy flow into capacitor
+    2. Capacitor charging: the Poynting identity
+       du/dt + div S = -J.E is evaluated numerically on the charging
+       capacitor's own field solution using independent central
+       finite-difference derivatives; the verdict is computed from the
+       maximum residual.
     3. Resistor: Energy dissipation matches I^2 R
 
     Args:
         case: Test case ('plane_wave', 'capacitor', 'resistor').
-        tolerance: Numerical tolerance.
+        tolerance: Numerical tolerance (relative for the capacitor
+            identity residual, absolute relative-error for plane_wave).
 
     Returns:
         Dictionary with verification results.
@@ -605,17 +610,70 @@ def verify_poynting_theorem(
         }
 
     elif case == "capacitor":
-        # Parallel plate capacitor being charged
-        # E field between plates, H field circles around
-        # Energy flows radially inward during charging
+        # Parallel-plate capacitor charged by a constant current.
+        # Between the plates (J = 0) the field pair is
+        #   E(r, t) = (E0 + g t) z_hat    (surface charge grows linearly)
+        #   B(r, t) = (r g / 2c) phi_hat  (from curl B = (1/c) dE/dt)
+        # The Poynting identity (Arts. 623-625),
+        #   du/dt + div S = -J.E = 0,
+        # with u = (E^2 + B^2)/(8 pi) and S = (c/4 pi) E x B, holds exactly
+        # for this pair, and energy flows radially inward while charging.
+        # The verdict below is COMPUTED from the actual residuals of that
+        # identity, evaluated with independent central finite-difference
+        # derivatives on an (r, t) grid.  The profiles are quadratic in t
+        # and r, which central differences reproduce exactly, so any
+        # appreciable residual signals a genuine violation of the identity.
+        E0 = 1000.0  # statvolt/cm at t = 0
+        g = 100.0  # statvolt/(cm*s), constant charging rate
+        r_max = 10.0  # cm
+        t_span = 1.0  # s
+        n_r = 21
+        n_t = 21
 
-        # Simplified: just verify the formula structure
-        E = np.array([0, 0, 1000])  # E between plates
-        H = np.array([0.1, 0, 0])  # H circles around
+        r = np.linspace(r_max / n_r, r_max, n_r)  # exclude the r = 0 axis
+        t = np.linspace(0.0, t_span, n_t)
+        R, T = np.meshgrid(r, t, indexing="ij")
 
-        result = poynting_theorem(E, H)
+        E_grid = E0 + g * T  # E_z on the grid
+        B_grid = R * g / (2.0 * CONST.C)  # B_phi on the grid (t-independent)
 
-        # S should point radially (E x H = z x x = y)
+        u_grid = (E_grid**2 + B_grid**2) / (8.0 * np.pi)
+        # E x B = z_hat x phi_hat = -r_hat: flux is radially inward
+        S_r_grid = -(CONST.C / (4.0 * np.pi)) * E_grid * B_grid
+
+        dr = r[1] - r[0]
+        dt = t[1] - t[0]
+
+        # Independent finite-difference derivatives (interior points only).
+        # Axis 0 is r, axis 1 is t (meshgrid indexing="ij").
+        du_dt = (u_grid[:, 2:] - u_grid[:, :-2]) / (2.0 * dt)
+        div_S = (
+            (R[2:, :] * S_r_grid[2:, :] - R[:-2, :] * S_r_grid[:-2, :])
+            / (2.0 * dr)
+            / R[1:-1, :]
+        )
+        work_rate_density = 0.0  # J = 0 between the plates
+
+        # Common interior region (r and t both away from the grid boundary).
+        du_dt_interior = du_dt[1:-1, :]
+        div_S_interior = div_S[:, 1:-1]
+        residual = du_dt_interior + div_S_interior + work_rate_density
+
+        # Relative residual: normalized by the natural magnitude of the two
+        # cancelling terms (MATERIA's wave_equation.py convention).
+        residual_scale = max(
+            float(np.max(np.abs(du_dt_interior))),
+            float(np.max(np.abs(div_S_interior))),
+            1e-300,
+        )
+        max_residual = float(np.max(np.abs(residual)))
+        verified = bool(max_residual < tolerance * residual_scale)
+
+        # Representative-point fields through the shared theorem calculator
+        # (B sampled along +y_hat, i.e. the local phi_hat direction).
+        E_mid = np.array([0.0, 0.0, float(E_grid[n_r // 2, n_t // 2])])
+        B_mid = np.array([0.0, float(B_grid[n_r // 2, n_t // 2]), 0.0])
+        result = poynting_theorem(E_mid, B_mid)
         S_direction = result["poynting_vector"] / result["energy_flux_magnitude"]
 
         return {
@@ -623,7 +681,10 @@ def verify_poynting_theorem(
             "poynting_vector": result["poynting_vector"],
             "energy_density": result["energy_density"],
             "energy_flow_direction": S_direction,
-            "verified": True,  # Structure verified
+            "poynting_residual": max_residual,
+            "residual_scale": residual_scale,
+            "grid_points": int(residual.size),
+            "verified": verified,
         }
 
     elif case == "resistor":

@@ -483,9 +483,17 @@ def verify_wave_equation(
     For a plane wave E = E₀ cos(k·r - ωt), B = B₀ cos(k·r - ωt):
     - ∇ · E = -k·E₀ sin(k·r - ωt) = 0 if k ⊥ E₀ (transverse)
     - ∇ · B = -k·B₀ sin(k·r - ωt) = 0 if k ⊥ B₀ (transverse)
-    - ∇ × E = k × E₀ sin(k·r - ωt)
+    - ∇ × E = -k × E₀ sin(k·r - ωt)
     - ∂B/∂t = ω B₀ sin(k·r - ωt)
     - Faraday: k × E₀ = (ω/c) B₀ ✓
+    - Ampere-Maxwell (medium): k × B₀ = -(εμ ω/c) E₀ ✓
+
+    Note:
+        The wave object stores the reduced magnetic amplitude B = E₀/v.
+        The physical Gaussian-CGS amplitude (gauss) is B_gauss = n·E₀ with
+        n = √(εμ), related by B_gauss = c·B.  The Maxwell residuals below
+        are evaluated with B_gauss so that the Gaussian-CGS field equations
+        are checked in their standard form.
 
     Args:
         wave: ElectromagneticWave object.
@@ -522,28 +530,29 @@ def verify_wave_equation(
     b_hat = np.cross(k_hat, p_hat)
     b_hat = b_hat / np.linalg.norm(b_hat)
 
-    # E₀ and B₀ vectors
+    # E₀ and B₀ vectors.
+    # The wave stores the reduced amplitude B = E₀/v; the physical
+    # Gaussian-CGS field is B_gauss = c·B = n·E₀ (gauss), which is the
+    # amplitude that enters the standard Gaussian curl equations.
     E0_vec = wave.E_amplitude * p_hat
-    B0_vec = wave.B_amplitude * b_hat
+    B0_vec = wave.B_amplitude * CONST.C * b_hat
 
-    # Test at random points
+    # Test at a deterministic grid of spacetime points spanning one
+    # wavelength and one period (fixed phases 2*pi*m/test_points, so the
+    # check is reproducible and still samples a full range of phases).
     max_div_E = 0.0
     max_div_B = 0.0
     max_faraday = 0.0
     max_ampere = 0.0
 
     for i in range(test_points):
-        # Random position and time
-        r = np.random.uniform(-wave.wavelength, wave.wavelength, 3)
-        t = np.random.uniform(0, 1.0 / wave.frequency)
+        s_r = i / test_points
+        s_t = ((2 * i) % test_points) / test_points
+        r = s_r * wave.wavelength * k_hat
+        t = s_t / wave.frequency
 
         phase = np.dot(k, r) - omega * t
         sin_phase = np.sin(phase)
-        cos_phase = np.cos(phase)
-
-        # Fields
-        E = E0_vec * cos_phase
-        B = B0_vec * cos_phase
 
         # ∇ · E = -k·E₀ sin(phase) = 0 for transverse wave
         div_E = -np.dot(k, E0_vec) * sin_phase
@@ -553,34 +562,39 @@ def verify_wave_equation(
         div_B = -np.dot(k, B0_vec) * sin_phase
         max_div_B = max(max_div_B, abs(div_B))
 
-        # ∇ × E = k × E₀ sin(phase)
-        curl_E = np.cross(k, E0_vec) * sin_phase
+        # ∇ × E = ∇cos(phase) × E₀ = -k × E₀ sin(phase)
+        curl_E = -np.cross(k, E0_vec) * sin_phase
 
-        # ∂B/∂t = ω B₀ sin(phase)
+        # ∂B/∂t = ω B₀ sin(phase)  [d/dt cos(k·r - ωt) = ω sin(k·r - ωt)]
         dB_dt = omega * B0_vec * sin_phase
 
         # Faraday: ∇ × E + (1/c) ∂B/∂t = 0
         faraday_residual = curl_E + (1.0 / CONST.C) * dB_dt
         max_faraday = max(max_faraday, np.linalg.norm(faraday_residual))
 
-        # ∇ × B = k × B₀ sin(phase)
-        curl_B = np.cross(k, B0_vec) * sin_phase
+        # ∇ × B = -k × B₀ sin(phase)
+        curl_B = -np.cross(k, B0_vec) * sin_phase
 
         # ∂E/∂t = ω E₀ sin(phase)
         dE_dt = omega * E0_vec * sin_phase
 
-        # Ampere-Maxwell: ∇ × B - (1/c) ∂E/∂t = 0 (vacuum)
-        ampere_residual = curl_B - (1.0 / CONST.C) * dE_dt
+        # Ampere-Maxwell: ∇ × B - (εμ/c) ∂E/∂t = 0
+        # (vacuum: εμ = 1; in a medium D = εE, B = μH)
+        ampere_residual = (
+            curl_B - (wave.permittivity * wave.permeability / CONST.C) * dE_dt
+        )
         max_ampere = max(max_ampere, np.linalg.norm(ampere_residual))
 
-    # Check tolerances
-    E0_scale = wave.E_amplitude * k_mag
-    B0_scale = wave.B_amplitude * k_mag
+    # Check tolerances: each residual is compared against the natural
+    # magnitude of its terms (E₀|k| or B₀|k|), so `tolerance` acts as a
+    # relative tolerance on the cancellation.
+    E0_scale = max(wave.E_amplitude * k_mag, 1.0)
+    B0_scale = max(wave.B_amplitude * CONST.C * k_mag, 1.0)
 
     div_E_ok = max_div_E < tolerance * E0_scale
     div_B_ok = max_div_B < tolerance * B0_scale
-    faraday_ok = max_faraday < tolerance * E0_scale * k_mag
-    ampere_ok = max_ampere < tolerance * B0_scale * k_mag
+    faraday_ok = max_faraday < tolerance * E0_scale
+    ampere_ok = max_ampere < tolerance * B0_scale
 
     results["divergence_E"] = {"verified": div_E_ok, "max_residual": max_div_E}
     results["divergence_B"] = {"verified": div_B_ok, "max_residual": max_div_B}

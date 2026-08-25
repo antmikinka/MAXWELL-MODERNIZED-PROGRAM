@@ -22,12 +22,6 @@ Maxwell's CGS formulation (Arts. 791-794):
     Maxwell showed that light exerts a mechanical force, predicting
     phenomena later confirmed by Lebedev (1900) and Nichols-Hull (1901).
 
-where:
-    P = radiation pressure (dyne/cm²)
-    I = wave intensity (erg/cm²/s)
-    c = speed of light in vacuum (cm/s)
-    u = electromagnetic energy density (erg/cm³)
-
 Category: A (maxwell_original) — Maxwell's radiation pressure theory.
 
 References:
@@ -286,7 +280,7 @@ def calc_radiation_pressure_oblique(
         >>> print(f"P = {P:.2e} dyne/cm²")
     """
     if intensity < 0:
-        raise ValueError(f"Intensity must be non-negative")
+        raise ValueError(f"Intensity must be non-negative, got {intensity}")
 
     cos_sq = np.cos(angle) ** 2
 
@@ -337,7 +331,7 @@ def calc_radiation_force(
         >>> print(f"F = {F:.2e} dynes = {F/1e5:.2e} N")
     """
     if intensity < 0:
-        raise ValueError(f"Intensity must be non-negative")
+        raise ValueError(f"Intensity must be non-negative, got {intensity}")
     if area <= 0:
         raise ValueError(f"Area must be positive, got {area}")
 
@@ -489,10 +483,10 @@ def verify_radiation_pressure(
     Verify radiation pressure relationships.
 
     Art. 791-794: This function verifies:
-    1. P = I / c for absorbing surface
-    2. P = 2I / c for reflecting surface
+    1. P = u = I / c for absorbing surface
+    2. P = 2u = 2I / c for reflecting surface
     3. u = I / c (energy density)
-    4. p = E / c (momentum)
+    4. p = E / c (momentum carried by radiation)
 
     Args:
         intensity: Test intensity (erg/cm²/s).
@@ -504,10 +498,18 @@ def verify_radiation_pressure(
     Reference:
         Part IV, Arts. 791-794: Radiation pressure verification.
     """
-    # Calculate quantities
-    P_absorb = calc_radiation_pressure(intensity, reflecting=False)
-    P_reflect = calc_radiation_pressure(intensity, reflecting=True)
+    if intensity < 0:
+        raise ValueError(f"Intensity must be non-negative, got {intensity}")
+
+    # Energy density carried by the wave: u = I / c  (Art. 791)
     u = calc_energy_density_from_intensity(intensity)
+
+    # Pressure equals energy density (absorber) / twice it (reflector)
+    P_absorb = calc_radiation_pressure(u)
+    P_reflect = calc_radiation_pressure_reflection(u)
+
+    # Momentum carried by 1 erg of radiation: p = E / c  (Arts. 791-794)
+    p_momentum = calc_radiation_momentum(1.0)
 
     # Verify P_absorb = I/c
     P_absorb_expected = intensity / CONST.C
@@ -529,6 +531,10 @@ def verify_radiation_pressure(
     u_expected = intensity / CONST.C
     energy_density_error = abs(u - u_expected) / u_expected if u_expected > 0 else 0
 
+    # Verify p = E/c for E = 1 erg
+    p_expected = 1.0 / CONST.C
+    momentum_error = abs(p_momentum - p_expected) / p_expected
+
     # Verify reflecting = 2 * absorbing
     ratio = P_reflect / P_absorb if P_absorb > 0 else 0
     ratio_error = abs(ratio - 2.0)
@@ -538,11 +544,14 @@ def verify_radiation_pressure(
         "P_absorbing": P_absorb,
         "P_reflecting": P_reflect,
         "energy_density": u,
+        "radiation_momentum": p_momentum,
         "P_absorb_expected": P_absorb_expected,
         "P_reflect_expected": P_reflect_expected,
+        "momentum_expected": p_expected,
         "absorb_error": absorb_error,
         "reflect_error": reflect_error,
         "energy_density_error": energy_density_error,
+        "momentum_error": momentum_error,
         "reflect_absorb_ratio": ratio,
         "ratio_error": ratio_error,
         "verified": all(
@@ -550,6 +559,7 @@ def verify_radiation_pressure(
                 absorb_error < tolerance,
                 reflect_error < tolerance,
                 energy_density_error < tolerance,
+                momentum_error < tolerance,
                 ratio_error < tolerance,
             ]
         ),
@@ -595,15 +605,28 @@ def analyze_radiation_pressure(
     Example:
         >>> # Analyze solar radiation pressure
         >>> result = analyze_radiation_pressure(1.4e6, 1e4)
-        >>> print(f"P = {result['pressure_absorbing']:.2e} dyne/cm²")
-        >>> print(f"F = {result['force_absorbing']:.2e} dynes")
+        >>> print(f"P = {result['pressure_absorbing_normal']:.2e} dyne/cm²")
+        >>> print(f"F = {result['force_absorbing_normal']:.2e} dynes")
     """
-    rp = RadiationPressure(intensity)
+    if intensity < 0:
+        raise ValueError(f"Intensity must be non-negative, got {intensity}")
+    if area <= 0:
+        raise ValueError(f"Area must be positive, got {area}")
 
-    P_absorb_normal = rp.pressure_absorbing()
-    P_reflect_normal = rp.pressure_reflecting()
-    P_absorb_oblique = rp.pressure_oblique(angle, reflecting=False)
-    P_reflect_oblique = rp.pressure_oblique(angle, reflecting=True)
+    rp = RadiationPressure()
+
+    # Energy density u = I / c; pressure P = u (absorber), 2u (reflector)
+    u = calc_energy_density_from_intensity(intensity)
+    P_absorb_normal = rp.pressure_absorption(u)
+    P_reflect_normal = rp.pressure_reflection(u)
+
+    # Oblique incidence: cos²(θ) reduction factor (Art. 793)
+    P_absorb_oblique = calc_radiation_pressure_oblique(
+        intensity, angle, reflecting=False
+    )
+    P_reflect_oblique = calc_radiation_pressure_oblique(
+        intensity, angle, reflecting=True
+    )
 
     result = {
         "intensity": intensity,
@@ -614,10 +637,15 @@ def analyze_radiation_pressure(
         "pressure_reflecting_normal": P_reflect_normal,
         "pressure_absorbing_oblique": P_absorb_oblique,
         "pressure_reflecting_oblique": P_reflect_oblique,
-        "energy_density": rp.momentum_flux(),
-        "momentum_flux": rp.momentum_flux(),
-        "force_absorbing_normal": rp.force_on_surface(area, reflecting=False),
-        "force_reflecting_normal": rp.force_on_surface(area, reflecting=True),
+        "energy_density": u,
+        # Momentum flux equals the pressure u = I/c (Arts. 791-794)
+        "momentum_flux": P_absorb_normal,
+        "force_absorbing_normal": calc_radiation_force(
+            intensity, area, reflecting=False, angle=0.0
+        ),
+        "force_reflecting_normal": calc_radiation_force(
+            intensity, area, reflecting=True, angle=0.0
+        ),
         "force_absorbing_oblique": calc_radiation_force(
             intensity, area, reflecting=False, angle=angle
         ),

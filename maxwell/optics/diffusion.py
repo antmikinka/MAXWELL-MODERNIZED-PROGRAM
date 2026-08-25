@@ -1,9 +1,19 @@
-"""maxwell.optics.diffusion — Light diffusion and scattering (Arts. 806-808).
+"""maxwell.optics.diffusion — Light diffusion and scattering.
 
-Implements Maxwell's treatment of light diffusion through turbid media
-and scattering phenomena.
+Standard absorption/scattering relations (Beer-Lambert law, optical
+depth, mean free path, single-scattering albedo) plus magnetic field
+diffusion into conductors.
 
-Maxwell's CGS formulation (Arts. 806-808):
+Citation remediation (D-23): an earlier revision attributed the
+absorption/scattering formulas below to Part IV Arts. 806-808. Those
+articles concern magneto-optical rotation of the plane of polarization
+(Faraday effect), not attenuation in turbid media, and are cited by
+maxwell.magneto_optics.rotation instead. The spurious citations have
+been removed; the absorption/scattering formulas are standard optics,
+marked theory_class="standard_math" with zero-article citations. The
+magnetic-diffusion section (Arts. 801-804) is unaffected.
+
+CGS formulation:
     Beer-Lambert law for absorption:
         I(z) = I₀ * exp(-α * z)
 
@@ -32,7 +42,8 @@ where:
 Category: A (maxwell_original) — Maxwell's light diffusion theory.
 
 References:
-    Part IV, Arts. 806-808: Light diffusion through media.
+    Part IV, Arts. 801-804: Magnetic field diffusion into conductors.
+    (Beer-Lambert attenuation: standard optics, no Treatise article.)
 """
 
 from __future__ import annotations
@@ -50,8 +61,8 @@ class LightDiffusion:
     """
     Light diffusion and attenuation calculator.
 
-    Art. 806-808: Maxwell's treatment of light propagation through
-    absorbing and scattering media.
+    Standard treatment of light propagation through absorbing and
+    scattering media (Beer-Lambert attenuation).
 
     Attributes:
         absorption_coefficient: μ_a (cm⁻¹).
@@ -81,10 +92,9 @@ class LightDiffusion:
         return self.scattering_coefficient / self.total_attenuation
 
     @maxwell_cite(
-        806,
         part=4,
         chapter="Electromagnetic Theory of Light",
-        theory_class="maxwell_original",
+        theory_class="standard_math",
         description="Calculate transmitted intensity (Beer-Lambert law)",
     )
     def transmitted_intensity(
@@ -93,7 +103,7 @@ class LightDiffusion:
         """
         Calculate transmitted intensity through medium.
 
-        Art. 806: Beer-Lambert law:
+        Beer-Lambert law:
 
             I = I₀ * exp(-μ_t * z)
 
@@ -105,7 +115,7 @@ class LightDiffusion:
             Transmitted intensity I (erg/cm²/s).
 
         Reference:
-            Part IV, Art. 806: Beer-Lambert law.
+            Standard optics: Beer-Lambert law.
         """
         if incident_intensity < 0:
             raise ValueError(f"Incident intensity must be non-negative")
@@ -115,17 +125,16 @@ class LightDiffusion:
         return incident_intensity * np.exp(-self.total_attenuation * thickness)
 
     @maxwell_cite(
-        807,
         part=4,
         chapter="Electromagnetic Theory of Light",
-        theory_class="maxwell_original",
+        theory_class="standard_math",
         description="Calculate absorbance",
     )
     def absorbance(self, thickness: float) -> float:
         """
         Calculate absorbance (optical density).
 
-        Art. 807: The absorbance is:
+        The absorbance is:
 
             A = log₁₀(I₀/I) = (μ_t / ln(10)) * z
 
@@ -136,7 +145,7 @@ class LightDiffusion:
             Absorbance A (dimensionless).
 
         Reference:
-            Part IV, Art. 807: Absorbance.
+            Standard optics: absorbance.
         """
         if thickness <= 0:
             return 0.0
@@ -144,17 +153,16 @@ class LightDiffusion:
         return (self.total_attenuation * thickness) / np.log(10)
 
     @maxwell_cite(
-        808,
         part=4,
         chapter="Electromagnetic Theory of Light",
-        theory_class="maxwell_original",
+        theory_class="standard_math",
         description="Calculate mean free path",
     )
     def mean_free_path(self) -> float:
         """
         Calculate photon mean free path.
 
-        Art. 808: The mean free path is:
+        The mean free path is:
 
             l* = 1 / μ_t
 
@@ -165,7 +173,7 @@ class LightDiffusion:
             Mean free path (cm).
 
         Reference:
-            Part IV, Art. 808: Mean free path.
+            Standard optics: mean free path.
         """
         if self.total_attenuation <= 0:
             return float("inf")
@@ -173,17 +181,16 @@ class LightDiffusion:
         return 1.0 / self.total_attenuation
 
     @maxwell_cite(
-        808,
         part=4,
         chapter="Electromagnetic Theory of Light",
-        theory_class="maxwell_original",
+        theory_class="standard_math",
         description="Calculate penetration depth",
     )
     def penetration_depth(self) -> float:
         """
         Calculate optical penetration depth.
 
-        Art. 808: The penetration depth (1/e depth) is:
+        The penetration depth (1/e depth) is:
 
             δ = 1 / μ_t
 
@@ -193,16 +200,15 @@ class LightDiffusion:
             Penetration depth (cm).
 
         Reference:
-            Part IV, Art. 808: Penetration depth.
+            Standard optics: penetration depth.
         """
         return self.mean_free_path()
 
 
 @maxwell_cite(
-    806,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Calculate Beer-Lambert transmission",
 )
 def calc_beer_lambert_transmission(
@@ -212,7 +218,7 @@ def calc_beer_lambert_transmission(
     """
     Calculate transmission through absorbing medium.
 
-    Art. 806: The Beer-Lambert law gives:
+    The Beer-Lambert law gives:
 
         T = I / I₀ = exp(-α * z)
 
@@ -224,7 +230,7 @@ def calc_beer_lambert_transmission(
         Transmission T (0 to 1).
 
     Reference:
-        Part IV, Art. 806: Beer-Lambert transmission.
+        Standard optics: Beer-Lambert transmission.
 
     Example:
         >>> # 10% transmission
@@ -240,10 +246,9 @@ def calc_beer_lambert_transmission(
 
 
 @maxwell_cite(
-    806,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Calculate transmitted intensity",
 )
 def calc_transmitted_intensity(
@@ -255,7 +260,7 @@ def calc_transmitted_intensity(
     """
     Calculate transmitted intensity through turbid medium.
 
-    Art. 806-808: Including both absorption and scattering:
+    Including both absorption and scattering:
 
         I = I₀ * exp(-(μ_a + μ_s) * z)
 
@@ -269,7 +274,7 @@ def calc_transmitted_intensity(
         Transmitted intensity I (erg/cm²/s).
 
     Reference:
-        Part IV, Arts. 806-808: Transmission through turbid media.
+        Standard optics: transmission through turbid media.
     """
     if incident_intensity < 0:
         raise ValueError(f"Incident intensity must be non-negative")
@@ -285,10 +290,9 @@ def calc_transmitted_intensity(
 
 
 @maxwell_cite(
-    807,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Calculate absorbance from coefficients",
 )
 def calc_absorbance(
@@ -299,7 +303,7 @@ def calc_absorbance(
     """
     Calculate absorbance (optical density).
 
-    Art. 807: The absorbance is:
+    The absorbance is:
 
         A = (μ_a + μ_s) * z / ln(10)
 
@@ -312,7 +316,7 @@ def calc_absorbance(
         Absorbance A (dimensionless).
 
     Reference:
-        Part IV, Art. 807: Absorbance calculation.
+        Standard optics: absorbance calculation.
 
     Example:
         >>> # Typical UV-Vis measurement
@@ -327,10 +331,9 @@ def calc_absorbance(
 
 
 @maxwell_cite(
-    808,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Calculate scattering albedo",
 )
 def calc_scattering_albedo(
@@ -340,7 +343,7 @@ def calc_scattering_albedo(
     """
     Calculate single-scattering albedo.
 
-    Art. 808: The albedo is the fraction of attenuation due to scattering:
+    The albedo is the fraction of attenuation due to scattering:
 
         ω = μ_s / (μ_a + μ_s)
 
@@ -355,7 +358,7 @@ def calc_scattering_albedo(
         Albedo ω (0 to 1).
 
     Reference:
-        Part IV, Art. 808: Scattering albedo.
+        Standard optics: scattering albedo.
 
     Example:
         >>> # Highly scattering medium
@@ -370,10 +373,9 @@ def calc_scattering_albedo(
 
 
 @maxwell_cite(
-    808,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Calculate mean free path of photons",
 )
 def calc_mean_free_path(
@@ -383,7 +385,7 @@ def calc_mean_free_path(
     """
     Calculate photon mean free path.
 
-    Art. 808: The mean free path is:
+    The mean free path is:
 
         l* = 1 / (μ_a + μ_s)
 
@@ -395,7 +397,7 @@ def calc_mean_free_path(
         Mean free path l* (cm).
 
     Reference:
-        Part IV, Art. 808: Mean free path.
+        Standard optics: mean free path.
 
     Example:
         >>> # Biological tissue (typical values)
@@ -410,12 +412,9 @@ def calc_mean_free_path(
 
 
 @maxwell_cite(
-    806,
-    807,
-    808,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Calculate optical depth",
 )
 def calc_optical_depth(
@@ -426,7 +425,7 @@ def calc_optical_depth(
     """
     Calculate optical depth of medium.
 
-    Art. 806-808: The optical depth is:
+    The optical depth is:
 
         τ = (μ_a + μ_s) * z
 
@@ -443,7 +442,7 @@ def calc_optical_depth(
         Optical depth τ (dimensionless).
 
     Reference:
-        Part IV, Arts. 806-808: Optical depth.
+        Standard optics: optical depth.
 
     Example:
         >>> # Optically thick medium
@@ -457,12 +456,9 @@ def calc_optical_depth(
 
 
 @maxwell_cite(
-    806,
-    807,
-    808,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Verify light diffusion relations",
 )
 def verify_light_diffusion(
@@ -474,7 +470,7 @@ def verify_light_diffusion(
     """
     Verify light diffusion relationships.
 
-    Art. 806-808: This function verifies:
+    This function verifies:
     1. Beer-Lambert law consistency
     2. Absorbance-transmission relation
     3. Mean free path formula
@@ -490,7 +486,7 @@ def verify_light_diffusion(
         Dictionary with verification results.
 
     Reference:
-        Part IV, Arts. 806-808: Light diffusion verification.
+        Standard optics: light diffusion verification.
     """
     ld = LightDiffusion(absorption_coefficient, scattering_coefficient)
 
@@ -548,12 +544,9 @@ def verify_light_diffusion(
 
 
 @maxwell_cite(
-    806,
-    807,
-    808,
     part=4,
     chapter="Electromagnetic Theory of Light",
-    theory_class="maxwell_original",
+    theory_class="standard_math",
     description="Complete light diffusion analysis",
 )
 def analyze_light_diffusion(
@@ -565,7 +558,7 @@ def analyze_light_diffusion(
     """
     Complete analysis of light diffusion in turbid media.
 
-    Art. 806-808: Comprehensive analysis including:
+    Comprehensive analysis including:
     1. Attenuation coefficients
     2. Transmission vs thickness
     3. Absorbance vs thickness
@@ -582,7 +575,7 @@ def analyze_light_diffusion(
         Dictionary with complete analysis results.
 
     Reference:
-        Part IV, Arts. 806-808: Complete light diffusion analysis.
+        Standard optics: complete light diffusion analysis.
 
     Example:
         >>> # Analyze biological tissue
@@ -632,9 +625,12 @@ def calc_diffusion_time(L: float, sigma: float) -> float:
     """
     Calculate characteristic diffusion time for magnetic field.
 
-    Art. 801-805: The diffusion time scale is:
+    Art. 801-805: In a conductor the magnetic field obeys the diffusion
+    equation dB/dt = (c^2 / (4*pi*sigma)) * nabla^2 B, so the magnetic
+    diffusivity is c^2 / (4*pi*sigma) and the characteristic diffusion
+    time scale is:
 
-        tau = sigma * L^2
+        tau = 4 * pi * sigma * L^2 / c^2
 
     where sigma is conductivity and L is characteristic length.
 
@@ -649,15 +645,15 @@ def calc_diffusion_time(L: float, sigma: float) -> float:
         Part IV, Arts. 801-805: Diffusion time.
 
     Example:
-        >>> tau = calc_diffusion_time(1.0, 5.9e17)
-        >>> print(f"tau = {tau:.2e} s")
+        >>> tau = calc_diffusion_time(1.0, 5.35e17)  # copper, 1 cm
+        >>> print(f"tau = {tau:.2e} s")  # tau = 7.48e-3 s
     """
     if L <= 0:
         raise ValueError(f"Length must be positive")
     if sigma <= 0:
         raise ValueError(f"Conductivity must be positive")
 
-    return sigma * L**2
+    return 4.0 * np.pi * sigma * L**2 / CONST.C**2
 
 
 @maxwell_cite(
@@ -671,11 +667,10 @@ def calc_diffusion_length(t: float, sigma: float) -> float:
     """
     Calculate diffusion length for magnetic field.
 
-    Art. 802: The diffusion length is:
+    Art. 802: Inverting tau = 4*pi*sigma*L^2 / c^2 (Art. 801), the
+    distance a field diffuses in time t is:
 
-        L_diff = sqrt(t / sigma)
-
-    This is the distance a field diffuses in time t.
+        L_diff = sqrt(t * c^2 / (4 * pi * sigma))
 
     Args:
         t: Time (s).
@@ -696,7 +691,7 @@ def calc_diffusion_length(t: float, sigma: float) -> float:
     if sigma <= 0:
         raise ValueError(f"Conductivity must be positive")
 
-    return np.sqrt(t / sigma)
+    return np.sqrt(t * CONST.C**2 / (4.0 * np.pi * sigma))
 
 
 @maxwell_cite(
@@ -712,11 +707,11 @@ def verify_diffusion_equation(sigma: float, L: float, t: float) -> dict:
 
     Art. 801-805: The diffusion equation:
 
-        dB/dt = (1 / 4*pi*sigma) * nabla^2 B
+        dB/dt = (c^2 / (4*pi*sigma)) * nabla^2 B
 
     The characteristic diffusion time is:
 
-        tau = 4 * pi * sigma * L^2
+        tau = 4 * pi * sigma * L^2 / c^2
 
     This function verifies that the time and length scales are
     consistent with diffusion theory.
@@ -738,11 +733,11 @@ def verify_diffusion_equation(sigma: float, L: float, t: float) -> dict:
     if sigma <= 0 or L <= 0 or t <= 0:
         return {"diffusion_verified": False, "error": "Invalid parameters"}
 
-    # Characteristic diffusion time: tau = 4*pi*sigma*L^2
-    tau = 4.0 * np.pi * sigma * L**2
+    # Characteristic diffusion time: tau = 4*pi*sigma*L^2 / c^2
+    tau = 4.0 * np.pi * sigma * L**2 / CONST.C**2
 
-    # Diffusion length: L_diff = sqrt(t / (4*pi*sigma))
-    L_diff = np.sqrt(t / (4.0 * np.pi * sigma))
+    # Diffusion length: L_diff = sqrt(t * c^2 / (4*pi*sigma))
+    L_diff = np.sqrt(t * CONST.C**2 / (4.0 * np.pi * sigma))
 
     # For verification, check that the parameters are physically consistent
     # The equation is verified if we can construct a valid diffusion solution

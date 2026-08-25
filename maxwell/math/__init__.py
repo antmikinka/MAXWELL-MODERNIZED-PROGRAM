@@ -10,6 +10,7 @@ Coverage:
     - Part IV (Arts. 696-705): Elliptic integrals
     - Vector operators (Arts. 71-110): Vector calculus
     - Conjugate functions (Arts. 182-206): 2D electrostatics
+    - Quaternion nabla object (Part IV, Arts. 618-619): unsplit ∇A
 """
 
 from maxwell.math.calculus_calculator import (
@@ -37,6 +38,12 @@ from maxwell.math.elliptic_integrals import (
     calc_elliptic_integral_second_kind,
     calc_elliptic_integral_third_kind,
     verify_elliptic_integrals,
+)
+from maxwell.math.quaternion import (
+    Quaternion,
+    nabla_of_vector,
+    scalar_nabla,
+    vector_nabla,
 )
 from maxwell.math.spherical_harmonics import (  # Part I, Chapter IX (Arts. 128-146) — Core spherical harmonics; Part IV (Arts. 675-695) — Multipole expansions
     LaplaceSpherical,
@@ -111,4 +118,9 @@ __all__ = [
     "verify_greens_theorem",
     # Calculator class
     "CalculusCalculator",
+    # Part IV, Arts. 618-619 — nabla as one quaternion (not Art. 522 algebra)
+    "Quaternion",
+    "nabla_of_vector",
+    "scalar_nabla",
+    "vector_nabla",
 ]

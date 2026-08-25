@@ -127,5 +127,24 @@ coverage_baseline.json
 # ============================================================
 examples/output/
 
-# Native TeX raster cache for page verifier pane 2
-page_verifier/data/latex_cache/
+# Page-verdict tooling and session artifacts are intentionally local-only
+# (stripped from the remote 2026-08-24; recoverable from git history).
+page_verifier/
+run_page_verifier.py
+docs/reports/PAGE_VERDICT_SESSION_MANIFEST_667_866.*
+
+# Internal planning/process scaffolding is intentionally local-only
+# (stripped from the remote 2026-08-24; recoverable from git history).
+docs/MASTER_PLAN.md
+docs/TASK_MASTER.md
+docs/CYCLE7-PLAN.md
+docs/PHASE2_EXECUTION_PLAN.md
+docs/PIPELINE_SUMMARY.md
+docs/NEXT-BRANCH-CHARTER.md
+docs/JOSS_PAPER_PLAN.md
+docs/VISUALIZATION_AUDIT.md
+docs/ARCHITECTURE_ANALYSIS_REPORT.md
+
+# Partial-run quarantine artifact: rewritten by every subset pytest run
+# (tests/conftest.py G3-R6); canonical report is article_evidence_report.json.
+docs/reports/article_evidence_report_partial.json

@@ -13,6 +13,7 @@
 #   --cgs-only       Run only CGS unit tests
 #   --physics-only   Run only physics formula tests
 #   --verification   Run equation verification pipeline
+#   --anti-theater-only  Run only the anti-theater lint (Stage-3 section 5.3)
 #   --all            Run all checks (default)
 #   --verbose        Show detailed output
 #   --help           Show this help message
@@ -26,7 +27,9 @@ set -euo pipefail
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+# This script lives at the repository root, so the project dir is SCRIPT_DIR
+# itself (dirname pointed above the repo, making every phase exit 2).
+PROJECT_DIR="$SCRIPT_DIR"
 MAXWELL_DIR="$PROJECT_DIR/maxwell"
 TESTS_DIR="$PROJECT_DIR/tests"
 PYTHON="${PYTHON:-python}"
@@ -282,6 +285,31 @@ run_custom_quality_checks() {
     fi
 }
 
+# ── Check 7: Anti-Theater Lint (Stage-3 section 5.3) ─────────────
+
+run_anti_theater_lint() {
+    log_header "PHASE 7: Anti-Theater Lint (Stage-3 section 5.3)"
+
+    # Anti-theater verification lint: detects theatrical verification
+    # patterns (R1-R6) in maxwell/ and tests/.
+    local lint_script="$SCRIPT_DIR/scripts/anti_theater_lint.py"
+
+    if [ -f "$lint_script" ]; then
+        increment_test
+        log_info "Scanning maxwell/ and tests/ for theater patterns (R1-R6)..."
+
+        if $PYTHON "$lint_script" 2>&1; then
+            record_pass
+            log_success "Anti-theater lint passed (no HIGH findings)"
+        else
+            record_fail
+            log_error "Anti-theater lint found HIGH-severity theater patterns"
+        fi
+    else
+        log_info "No anti-theater lint script found. Skipping."
+    fi
+}
+
 # ── Main Execution ────────────────────────────────────────────────
 
 show_help() {
@@ -297,6 +325,7 @@ Options:
   --cgs-only       Run only CGS unit tests
   --physics-only   Run only physics formula tests
   --verification   Run equation verification pipeline
+  --anti-theater-only  Run only the anti-theater lint (Stage-3 section 5.3)
   --all            Run all checks (default)
   --verbose        Show detailed output
   --help           Show this help message
@@ -337,6 +366,10 @@ main() {
                 ;;
             --verification)
                 mode="verification"
+                shift
+                ;;
+            --anti-theater-only)
+                mode="anti_theater"
                 shift
                 ;;
             --all)
@@ -393,6 +426,9 @@ main() {
         verification)
             run_verification_pipeline
             ;;
+        anti_theater)
+            run_anti_theater_lint
+            ;;
         all)
             run_import_tests || true
             run_citation_tests || true
@@ -400,6 +436,7 @@ main() {
             run_physics_tests || true
             run_verification_pipeline || true
             run_custom_quality_checks || true
+            run_anti_theater_lint || true
             ;;
     esac
 

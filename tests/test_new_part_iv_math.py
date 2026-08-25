@@ -226,16 +226,20 @@ class TestSphericalHarmonic:
     ) -> None:
         """Verify normalization integral = 1.
 
-        Art. 688: Integral of |Y_l^m|^2 over sphere = 1.
+        Art. 688: Integral of |Y_l^m|^2 over sphere = 1.  Since the
+        2026-08-22 G3-R3 quadrature fix (Gauss-Legendre in cos theta,
+        endpoint-excluded periodic phi grid) the checker converges to 1
+        to ~1e-14, so a 1e-10 band is honest; the old 5% band merely
+        absorbed the removed 50/49 phi-endpoint overcount.
         """
         from maxwell.math.spherical_harmonics import SphericalHarmonic
 
         sh = SphericalHarmonic(l=1, m=0)
 
-        integral = sh.normalization_check()
+        check = sh.normalization_check()
 
-        # Allow larger tolerance for numerical integration
-        assert_cgs_close(integral, 1.0, 0.05)  # 5% tolerance for numerical
+        assert check["normalized"] is True
+        assert_cgs_close(check["integral"], 1.0, 1e-10)
 
     def test_spherical_harmonic_associated_legendre(
         self, cgs_tolerance, assert_cgs_close
@@ -787,12 +791,13 @@ class TestSphericalHarmonicOrthogonality:
         sh1 = SphericalHarmonic(l=1, m=0)
         sh2 = SphericalHarmonic(l=2, m=0)
 
-        # Each should normalize to 1 independently
+        # Each should normalize to 1 independently (post-2026-08-22
+        # G3-R3 quadrature fix: convergent to ~1e-14, so 1e-10 band)
         norm1 = sh1.normalization_check()
         norm2 = sh2.normalization_check()
 
-        assert abs(norm1 - 1.0) < 0.05
-        assert abs(norm2 - 1.0) < 0.05
+        assert abs(norm1["integral"] - 1.0) < 1e-10
+        assert abs(norm2["integral"] - 1.0) < 1e-10
 
 
 # =============================================================================

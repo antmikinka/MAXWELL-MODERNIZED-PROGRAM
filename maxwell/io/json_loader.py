@@ -30,7 +30,7 @@ from maxwell.meta.citation import maxwell_cite
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Load article-level JSON array from Mathpix OCR output",
@@ -88,7 +88,7 @@ def load_article_json(filepath: str | os.PathLike) -> list[dict[str, Any]]:
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Load chapter-level JSON object from Mathpix OCR output",
@@ -142,7 +142,7 @@ def load_chapter_json(filepath: str | os.PathLike) -> dict[str, str]:
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Lazy load volume result JSON for large OCR files",
@@ -255,7 +255,7 @@ def load_volume_result(
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Scan directory for available article JSON files",
@@ -291,7 +291,7 @@ def list_available_articles(
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Batch load multiple article JSON files from a directory",
@@ -357,7 +357,7 @@ def batch_load_articles(
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract article number from filename",

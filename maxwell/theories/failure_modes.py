@@ -75,6 +75,19 @@ def _weber_force(r: float, r_dot: float, r_ddot: float, q1: float, q2: float) ->
 
     F = (q1*q2/r^2) * [1 + (r*r_ddot)/c^2 - (r_dot)^2/(2*c^2)]
 
+    Coefficient adjudication (defect D-12, Wave 7): this is the single
+    convention used across the codebase, identical to
+    maxwell.molecular.webers_theory.WeberForce.force.  Source: Treatise
+    3rd ed., Art. 850, eq. (19) (Vol. II, p. 483),
+
+        F = (ee'/r^2) [1 + (1/c^2)(r d^2r/dt^2 - (1/2)(dr/dt)^2)] ,
+
+    coefficient 1/2 on r_dot^2 and 1 on r*r_ddot with c = CONST.C (the
+    ESU/EMU ratio, Art. 849); equivalently Weber 1846's original form
+    with his electrodynamic constant c_W = sqrt(2) c (Arts. 848/855),
+    F = (ee'/r^2)[1 - r_dot^2/c_W^2 + 2 r r_ddot/c_W^2].  Pinned by
+    tests/test_defect_d12_weber_pin.py.
+
     Args:
         r: Separation.
         r_dot: Radial velocity.

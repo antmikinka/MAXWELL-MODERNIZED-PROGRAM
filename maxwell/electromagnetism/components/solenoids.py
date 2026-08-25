@@ -13,13 +13,21 @@ Maxwell's CGS formulation (Arts. 675-685):
 
     where theta1, theta2 are the angles from z to the two ends.
 
-    For Helmholtz coils (separation = radius):
-        B_center = (8/sqrt(125)) * 4*pi*n*I / c
+    For Helmholtz coils (two n-turn coils of radius a, separation = a):
+        B_center = (8/sqrt(125)) * 4*pi*n*I / (c*a)
         The field is uniform to second order.
+
+Unit convention (Gaussian-CGS, explicit-c; defect D-16 class):
+    The 1/c factors above are divisions by CONST.C in code: the
+    explicit speed of light of the Gaussian-CGS solenoid field law
+    (Treatise Arts. 675-678), NOT a conversion applied to the current
+    argument.  Currents are therefore read in statamperes (ESU); an
+    EMU current in abamperes enters via I = CONST.C * I_emu
+    (1 abampere = CONST.C statamperes), cancelling the 1/c.
 
 where:
     n = turns per unit length (cm^-1)
-    I = current (abamperes)
+    I = current (statamperes, Gaussian CGS)
     B = magnetic field (gauss)
 
 Category: A (maxwell_original) — Maxwell's solenoid theory.
@@ -67,7 +75,8 @@ def calc_solenoid_field(
         B = 4*pi*n*I/c
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         turns_per_cm: Turns per unit length.
         solenoid_length: Total length (cm).
         solenoid_radius: Radius (cm).
@@ -119,7 +128,8 @@ def calc_infinite_solenoid_field(
     This is the ideal limit.
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         turns_per_cm: Turns per unit length.
 
     Returns:
@@ -147,11 +157,12 @@ def calc_helmholtz_center(
 
     Art. 679-681: For Helmholtz coils (separation = radius):
 
-        B_center = (8 / sqrt(125)) * 4*pi*n*I / c
-                 = 0.7155 * 4*pi*n*I / c
+        B_center = (8 / sqrt(125)) * 4*pi*n*I / (c*a)
+                 = 0.7155 * 4*pi*n*I / (c*a)
 
     Args:
-        current: Current per coil (abamperes).
+        current: Current per coil (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         coil_radius: Coil radius (cm).
         n_turns: Turns per coil.
 
@@ -186,7 +197,8 @@ def calc_helmholtz_uniformity(
     to second order near the center.
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         coil_radius: Coil radius (cm).
         n_turns: Turns per coil.
         max_offset: Maximum offset to test (cm, default 0.1*radius).
@@ -235,7 +247,8 @@ class Solenoid:
     and Helmholtz coil pairs.
 
     Attributes:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         turns_per_cm: Turns per unit length.
         length: Solenoid length (cm).
         radius: Solenoid radius (cm).
@@ -310,7 +323,8 @@ def verify_solenoid_field(
     3. End field = half of center
 
     Args:
-        current: Test current (abamperes).
+        current: Test current (statamperes; Gaussian-CGS explicit-c
+            convention, see the module docstring Unit convention block).
         turns_per_cm: Test turns per cm.
         radius: Test solenoid radius (cm).
         tolerance: Numerical tolerance.
@@ -374,7 +388,8 @@ def analyze_solenoid(
     4. Helmholtz uniformity
 
     Args:
-        current: Current (abamperes).
+        current: Current (statamperes; Gaussian-CGS explicit-c convention,
+            see the module docstring Unit convention block).
         turns_per_cm: Turns per unit length.
         length: Solenoid length (cm).
         radius: Solenoid radius (cm).

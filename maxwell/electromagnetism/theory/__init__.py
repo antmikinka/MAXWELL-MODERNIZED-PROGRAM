@@ -1,7 +1,12 @@
 """maxwell.electromagnetism.theory — General equations and theory of the electromagnetic field.
 
-Maxwell's general equations (Arts. 594-603) and related theory including
-energy conservation, dynamical models, and force law comparisons.
+Maxwell's general equations in two representations:
+
+- ``general_equations.py`` — Arts. 594-603, Heaviside/Gibbs split form
+- ``quaternion_expressions.py`` — Arts. 618-619, unsplit ∇A = S∇A + V∇A
+
+Related theory includes energy conservation, dynamical models, and
+force law comparisons.
 """
 
 from maxwell.electromagnetism.theory.comparisons import (
@@ -35,6 +40,14 @@ from maxwell.electromagnetism.theory.general_equations import (
     numerical_divergence,
     verify_maxwell_equations,
 )
+from maxwell.electromagnetism.theory.quaternion_expressions import (
+    Quaternion,
+    impose_s_nabla_A_zero,
+    magnetic_induction_from_potential,
+    nabla_of_vector,
+    scalar_part_of_potential,
+    verify_nabla_quaternion_parts,
+)
 
 __all__ = [
     # General equations (Arts. 594-603)
@@ -54,6 +67,13 @@ __all__ = [
     "numerical_curl",
     "verify_maxwell_equations",
     "analyze_complete_field",
+    # Quaternion nabla (Arts. 618-619) — unsplit object; S not assumed zero
+    "Quaternion",
+    "nabla_of_vector",
+    "magnetic_induction_from_potential",
+    "scalar_part_of_potential",
+    "impose_s_nabla_A_zero",
+    "verify_nabla_quaternion_parts",
     # Force comparisons (Arts. 526-527)
     "compare_force_laws",
     "verify_action_reaction",

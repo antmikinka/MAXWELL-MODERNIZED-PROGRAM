@@ -1,0 +1,2858 @@
+{
+  "624": {
+    "values": {
+      "poynting_grid_interior_points": {
+        "value": 361,
+        "units": "grid points",
+        "tolerance": {
+          "abs": 0
+        },
+        "provenance": "Art. 624 charging-capacitor finite-difference check: interior (r, t) grid is (21-2) x (21-2) = 19 x 19 points."
+      }
+    }
+  },
+  "625": {
+    "values": {
+      "resistor_work_rate_density": {
+        "value": 0.1,
+        "units": "erg/(cm^3 s)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 625 resistor case of the Poynting identity: J.E with J = 1 abampere/cm^2 and E = 0.1 (hand arithmetic)."
+      }
+    }
+  },
+  "667": {
+    "values": {
+      "normal_B_continuous_difference": {
+        "value": 0.0,
+        "units": "gauss",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Art. 667 hand-derived: for B1 = (3, 4, 5), B2 = (-6, 2, 5), normal z-hat, both normal components are 5, so B2n - B1n = 0 exactly (pillbox form of div B = 0)."
+      },
+      "normal_B_tangential2_norm": {
+        "value": 6.324555320336759,
+        "units": "gauss",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 667 hand-derived: with B2 = (-6, 2, 5) and normal z-hat the tangential part is (-6, 2, 0) with norm sqrt(40); the tangential components are free to jump while the normal one is continuous."
+      }
+    }
+  },
+  "668": {
+    "values": {
+      "normal_D_jump_gauss_sheet": {
+        "value": 31.41592653589793,
+        "units": "statcoulomb/cm^2",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 668 Gauss-law oracle: an infinite sheet sigma = 2.5 statC/cm^2 in vacuum gives E = +/- 2*pi*sigma on the two sides, so D2n - D1n = 4*pi*sigma = 10*pi; hand-derived."
+      },
+      "gauss_sheet_inferred_charge": {
+        "value": 2.5,
+        "units": "statcoulomb/cm^2",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 668: the surface charge inferred from the D jump is (D2n - D1n)/(4*pi) = sigma = 2.5 statC/cm^2 for the Gauss-sheet oracle above; hand-derived."
+      }
+    }
+  },
+  "669": {
+    "values": {
+      "charged_interface_D_jump": {
+        "value": 37.69911184307752,
+        "units": "statcoulomb/cm^2",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 669 hand-derived dielectric-interface solution: eps1 = 2, eps2 = 5, free charge sigma_s = 3 gives D2n - D1n = 4*pi*sigma_s = 12*pi with E1n = 1.5 and E2n = (eps1*E1n + 4*pi*sigma_s)/eps2."
+      },
+      "charged_interface_E2n": {
+        "value": 8.139822368615503,
+        "units": "statvolt/cm",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 669 hand-derived: E2n = (2*1.5 + 12*pi)/5 = 8.1398223686... is the normal field in medium 2 that satisfies eps2*E2n - eps1*E1n = 4*pi*sigma_s for the charged-interface oracle."
+      }
+    }
+  },
+  "680": {
+    "values": {
+      "helmholtz_center_coefficient": {
+        "value": 0.7155417527999327,
+        "units": "dimensionless (B_center * c * a / (4 pi n I))",
+        "tolerance": {
+          "rel": 1e-15
+        },
+        "provenance": "Art. 680 (solenoids/Helmholtz): exact on-axis Biot-Savart for two identical coaxial n-turn loops of radius a at separation a: B_center = (4/5)^(3/2) * 4 pi n I/(c a); 8/sqrt(125) = (4/5)^(3/2). Cross-checked in tests/test_articles_cylinders_harmonics_680_690.py by direct loop quadrature."
+      }
+    }
+  },
+  "681": {
+    "values": {
+      "solid_cylinder_surface_field_invariant": {
+        "value": 2.0,
+        "units": "dimensionless (c * a * B(a) / I)",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "Art. 681: Ampere's circuital law, Gaussian form oint B.dl = 4 pi I/c, applied at the surface of a uniform solid cylindrical conductor: c*a*B(a)/I = 2 exactly (inside and outside branches meet there). Cross-checked by infinite-cylinder volume Biot-Savart quadrature."
+      }
+    }
+  },
+  "683": {
+    "values": {
+      "hollow_cylinder_cavity_field": {
+        "value": 0.0,
+        "units": "gauss",
+        "tolerance": {
+          "abs": 1e-25
+        },
+        "provenance": "Art. 683: the bore of a hollow cylindrical conductor encloses zero current, so Ampere's law plus cylindrical symmetry gives B = 0 exactly for r < inner radius (also the superposition of the two solid-cylinder solutions)."
+      }
+    }
+  },
+  "684": {
+    "values": {
+      "wire_loop_inductance_per_cm_d_over_a_10": {
+        "value": 5.105170185988092,
+        "units": "cm of inductance per cm of wire (CGS-EMU)",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "Art. 684: per-wire loop inductance with the return path at d = 10a: L' = mu_int/2 + 2 ln(d/a) with mu = 1 (external EMU flux linkage int_a^d (2/x) dx plus internal 1/2 for uniform current density); half of Maxwell's two-wire loop formula 4 ln(d/a) + 1. Cross-checked in-suite by numerical flux and internal-energy quadrature."
+      }
+    }
+  },
+  "685": {
+    "values": {
+      "Y11_intensity_at_theta_pi_over_3": {
+        "value": 0.08952465548919113,
+        "units": "dimensionless (|Y_1^1|^2)",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "Art. 685: closed form |Y_1^1(theta,phi)|^2 = (3/(8 pi)) sin^2 theta (Condon-Shortley normalization), evaluated at theta = pi/3; independent of phi."
+      }
+    }
+  },
+  "688": {
+    "values": {
+      "normalization_unit_integral": {
+        "value": 1.0,
+        "units": "dimensionless (integral of |Y_l^m|^2 over 4 pi sr)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Art. 688: unit-normalization theorem int |Y_l^m|^2 dOmega = 1. Since the 2026-08-22 G3-R3 fix the code's normalization_check integrates with Gauss-Legendre nodes in cos(theta) and an endpoint-excluded periodic phi grid, removing the former 50/49 phi-endpoint double count; the checker now converges to 1 within ~1e-14. The theorem itself is verified in-suite by independent Gauss-Legendre quadrature of closed forms to 1e-12."
+      }
+    }
+  },
+  "689": {
+    "values": {
+      "P31_at_half": {
+        "value": -0.3247595264191645,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "Art. 689: Condon-Shortley closed form P_3^1(x) = -(3/2)(5x^2 - 1) sqrt(1 - x^2) hand-evaluated at x = 1/2."
+      },
+      "P22_at_half": {
+        "value": 2.25,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "Art. 689: Condon-Shortley closed form P_2^2(x) = 3(1 - x^2) hand-evaluated at x = 1/2."
+      }
+    }
+  },
+  "690": {
+    "values": {
+      "monopole_potential_unit_q00_at_r2": {
+        "value": 0.14104739588693907,
+        "units": "statvolt (q_00 = 1, r = 2 cm)",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "Art. 690: pure zonal monopole term of the multipole expansion, Phi = q_00 Y_0^0 / r with Y_0^0 = 1/sqrt(4 pi), q_00 = 1, r = 2 cm."
+      }
+    }
+  },
+  "691": {
+    "values": {
+      "self_gmd_circle_coefficient": {
+        "value": 0.7788007830714049,
+        "units": "dimensionless (R_self / a)",
+        "tolerance": {
+          "rel": 1e-15
+        },
+        "provenance": "Art. 691: self-GMD of a circular section is exactly a*e^{-1/4}; e^{-1/4} evaluated by hand. Cross-checked by the overlap-integral oracle (O7) in test_articles_math_spine_691_706.py."
+      }
+    }
+  },
+  "692": {
+    "values": {
+      "square_self_gmd": {
+        "value": 0.4470491559,
+        "units": "dimensionless (R_self / ((w+h)/2))",
+        "tolerance": {
+          "rel": 2e-05
+        },
+        "provenance": "Art. 692 unit-square self-GMD (Kennelly convention 0.44705 (w+h)/2): converged tensor Gauss-Legendre n=500 per axis with overlap-area reduction (oracle O8 in test_articles_math_spine_691_706.py), converged to 1e-9."
+      },
+      "thin_strip_segment_coefficient": {
+        "value": 0.22313016014842982,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 0.002
+        },
+        "provenance": "Art. 692 thin-strip limit h -> 0: the rectangle self-GMD tends to the segment value w*e^{-3/2}, exact."
+      }
+    }
+  },
+  "696": {
+    "values": {
+      "K_parameter_half": {
+        "value": 1.8540746773013719,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "DLMF 19.2: complete elliptic integral K(m=1/2) = Gamma(1/4)^2/(4 sqrt(pi)); independent Gamma-oracle reproduced in test_articles_math_spine_691_706.py."
+      },
+      "K_parameter_neg1": {
+        "value": 1.3110287771460598,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "DLMF 19.2, imaginary-modulus (negative parameter) branch; cross-checked in-suite against scipy's Carlson forms."
+      }
+    }
+  },
+  "697": {
+    "values": {
+      "E_parameter_half": {
+        "value": 1.3506438810476755,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "DLMF 19.2: complete elliptic integral E(m=1/2)."
+      },
+      "E_parameter_neg1": {
+        "value": 1.9100988945138562,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-14
+        },
+        "provenance": "DLMF 19.2, imaginary-modulus (negative parameter) branch; cross-checked in-suite against scipy's Carlson forms."
+      }
+    }
+  },
+  "706": {
+    "values": {
+      "gauss_optimal_a_over_c": {
+        "value": 3.223792489649133,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 706, circular channel: L = 4*pi*n^2*a*(log(8a/R) - 2) with GMD constraints dn/n = 2dR/R, da/a = -2dR/R gives optimum at log(8a/R) = 7/2; the channel GMD is R = exp(-1/4)*c (disk self-GMD), hence a/c = exp(13/4)/8. Hand-derived closed form, pinned against finite-difference stationarity of L(R) in test_article_706_coil_design.py."
+      },
+      "optimal_a_over_gmd": {
+        "value": 4.139431494836539,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 706: optimum of L = 4*pi*n^2*a*(log(8a/R) - 2) under the constraints dn/n = 2dR/R, da/a = -2dR/R occurs at log(8a/R) = 7/2, i.e. a/R = exp(7/2)/8 (= 4.139431494836539; equivalently 8a/R = exp(3.5)); at this point L = 6*pi*n^2*a. Hand-derived; FD stationarity oracle in test_article_706_coil_design.py."
+      },
+      "disk_gmd_over_radius": {
+        "value": 0.7788007830714049,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Self-GMD of a thin circular disk of radius c is R = exp(-1/4)*c (geometric mean distance of a disk from itself, Maxwell's value used in Art. 706); exp(-0.25) hand-derived."
+      },
+      "square_channel_side_ratio": {
+        "value": 3.7,
+        "units": "dimensionless",
+        "tolerance": {
+          "abs": 0.05
+        },
+        "provenance": "Art. 706, square channel: Maxwell quotes 2a = 3.7*s for a square winding cross-section of side s (Treatise Vol. I p. 317 cross-reference, Vol. II Art. 706). Historical printed value; reproduced here from an independent 4-D midpoint quadrature of the log-distance kernel over the square section (self-GMD R = 0.44705*s per quadrature, consistent with 2a = 3.7*s), tolerance EMPIRICAL per Stage 4 sec 2.5."
+      }
+    }
+  },
+  "707": {
+    "values": {
+      "coil_constant_100t_r10": {
+        "value": 2.095845021951682e-09,
+        "units": "gauss/statampere",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 707: G = 2*pi*n/(c*R) with n = 100 turns, R = 10 cm, c = CONST.C (Gaussian convention per D-16 resolution 2026-08-22); hand-derived golden = 20*pi/CONST.C. Former EMU golden 20*pi gauss/abampere divided by CONST.C."
+      }
+    }
+  },
+  "712": {
+    "values": {
+      "gaugain_field_factor": {
+        "value": 0.7155417527999328,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 712 Gaugain eccentric suspension: axial field at z = R/2 relative to the centre field is (4/5)^(3/2); hand-derived, cross-checked against independent Biot-Savart quadrature."
+      }
+    }
+  },
+  "713": {
+    "values": {
+      "helmholtz_center_field": {
+        "value": 89.9176285573213,
+        "units": "gauss",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 713 Helmholtz double coil: B = 32*pi*n*I/(5*sqrt(5)*a) with n = 100, I = 1 abampere, a = 10 cm (EMU, mu0 -> 4*pi); hand-derived, verified against independent two-loop Biot-Savart quadrature."
+      },
+      "edge_quartic_deviation": {
+        "value": 0.0001152,
+        "units": "dimensionless (fractional field deviation)",
+        "tolerance": {
+          "rel": 0.05
+        },
+        "provenance": "Art. 713 flatness anchor: B/B0 = 1 - 1.152 (z/a)^4 + O(z^6) at spacing a (B''(0) = B'''(0) = 0); quartic coefficient 17280/15000 = 1.152 exactly, hand-derived; worst case over |z| <= a/10 is 1.152e-4 at the edge."
+      },
+      "far_field_dipole_z500": {
+        "value": 0.000502654824574367,
+        "units": "gauss",
+        "tolerance": {
+          "rel": 0.0001
+        },
+        "provenance": "Art. 713 far-field dipole limit: B -> 4*pi*n*I*a^2/z^3 with n = 50, I = 1 abampere, a = 10 cm, z = 500 cm; hand-derived (O((a/z)^2) corrections cancel between the symmetric coils)."
+      }
+    }
+  },
+  "726": {
+    "values": {
+      "g_standard": {
+        "value": 980.665,
+        "units": "cm/s^2",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Standard gravity (exact, CGS): Art. 726 Joule current-weigher balancing mass m = F/g; Stage-4 section 4.1 references this as CONST.G_STANDARD."
+      }
+    }
+  },
+  "727": {
+    "values": {
+      "solenoid_suction_golden": {
+        "value": 31415.926535897932,
+        "units": "dyne",
+        "tolerance": {
+          "rel": 1e-08
+        },
+        "provenance": "Art. 727 solenoid suction F = 4*pi*(n1/l1)*(n2/l2)*A*I^2 with n1 = 1000 over 20 cm, n2 = 100 over 5 cm, A = 10 cm^2, I = 0.5 abampere; hand arithmetic (= 10000*pi)."
+      }
+    }
+  },
+  "740": {
+    "values": {
+      "small_arc_time_T1": {
+        "value": 1.9813014208795223,
+        "units": "s",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 740 (Treatise Vol. II 3rd ed., p. 407): T(c) = T1*(1 + kappa*c^2), kappa = 1/64. Golden: n = 20 vibrations of observed mean time T = 2.0 s, first elongation c_1 = 1, last c_20 = 1.03^-19 = 0.5702860268119245, rho = 1.03, S = (c_1^2*rho^2 - c_n^2)/(rho^2 - 1) = 12.08003033863825, T1 = n*T/(n + kappa*S) = 1.9813014208795223. Hand arithmetic, cross-checked in-suite by direct summation of T1*(1 + kappa*c_k^2) reproducing n*T exactly."
+      }
+    }
+  },
+  "745": {
+    "values": {
+      "first_swing_golden": {
+        "value": 5.454545454545454,
+        "units": "scale divisions",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 745 (Treatise Vol. II 3rd ed., p. 411): phi = (theta_zero + rho*theta_first)/(1 + rho). Golden with theta_zero = 6, theta_first = 5, rho = 1.2: phi = (6 + 6)/2.2 = 60/11, exact rational hand arithmetic."
+      }
+    }
+  },
+  "750": {
+    "values": {
+      "recoil_damping_ratio": {
+        "value": 0.8333333333333334,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 750 eq. (29) (Treatise Vol. II 3rd ed., pp. 415-416): exp(-lam) = (d - b)/(a - c). Rational golden: K = 1, Q0 = 1, Q = 7/4, exp(-lam) = 5/6 gives a = 1, b = -5/6, c = -19/18, d = 95/108 and (d - b)/(a - c) = 5/6 exactly (exact rational hand arithmetic)."
+      },
+      "recoil_charge_product": {
+        "value": 1.75,
+        "units": "elongation units",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 750 eq. (30): K*Q = ((a - b)*exp(-2*lam) + d - c)/(1 + exp(-lam)). Same rational case as recoil_damping_ratio: K*Q = 1*7/4 = 7/4 exactly; the formula reproduces it from a, b, c, d, lam = ln(6/5) alone (exact rational hand arithmetic)."
+      }
+    }
+  },
+  "751": {
+    "values": {
+      "force_i2_dmdx": {
+        "value": 1.2399370096261464,
+        "units": "dyne",
+        "tolerance": {
+          "rel": 0.002
+        },
+        "provenance": "Arts. 751-754 current weigher (D-05): F = I^2 dM/dx with I = 0.1 abampere; dM/dx is the central difference (h = 1e-4) of the elliptic-integral mutual inductance M = 4*pi*sqrt(a1*a2)*[(2/k-k)K - (2/k)E] at a1 = a2 = 10 cm, d = 1 cm -- independent oracle, no c^2 factor in EMU."
+      },
+      "g_standard": {
+        "value": 980.665,
+        "units": "cm/s^2",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Standard gravity (exact, CGS): current-weigher equivalent_mass = force / g; Stage-4 section 4.1 references CONST.G_STANDARD, which does not exist in maxwell/config/constants.py, so the store pins it here."
+      }
+    }
+  },
+  "752": {
+    "values": {
+      "standard_coil_g1_rect_section": {
+        "value": 62.86456744629204,
+        "units": "gauss per abampere",
+        "tolerance": {
+          "rel": 1e-09
+        },
+        "provenance": "Art. 752 standard coil: independent composite-Simpson double quadrature (2048 x 2048 panels) of the exact on-axis loop field 2*pi*a^2/(a^2+z^2)^{3/2} uniformly over the rectangular channel section, A = 10 cm, N = 100 turns, radial depth 1 cm, axial breadth 0.5 cm; agrees with the asinh closed form to 2e-16. Pure EMU, no factor of c."
+      },
+      "comparison_advantage_factor": {
+        "value": 100.0,
+        "units": "dimensionless ratio",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 752: direct geometric error of G1 = 2*pi*N/A is dA/A = 0.1/10 = 0.01 for N exact; electrical comparison transfers the standard through a resistance ratio of relative error 1e-4; advantage factor 0.01/1e-4 = 100; hand arithmetic."
+      }
+    }
+  },
+  "753": {
+    "values": {
+      "g1_prime_by_null": {
+        "value": 1.5,
+        "units": "gauss per abampere",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 753 eq. (2): G1' = (gamma/gamma')*G1 = (3/4)*2.0 = 1.5; hand arithmetic."
+      },
+      "g1_prime_by_shunt": {
+        "value": 10.0,
+        "units": "gauss per abampere",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 753 eqs. (4)-(5): gamma/gamma' = (R1+R2)/R2 = 500/100 = 5 and G1' = 5*2.0 = 10.0; hand arithmetic."
+      },
+      "deflection_residual_unbalanced": {
+        "value": -1.0,
+        "units": "gauss-abampere",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Art. 753 eq. (1) residual: H tan(delta) - (G1' gamma' - G1 gamma) = 0.2*0.5 - (1.5*1.0 - 1.0*0.4) = 0.1 - 1.1 = -1.0; hand arithmetic."
+      }
+    }
+  },
+  "754": {
+    "values": {
+      "g3_thin_loop_a1": {
+        "value": -2.356194490192345,
+        "units": "cm^4",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 754 (by Art. 700): g3 = -(1/8)*pi*a^2*(6 a^2) = -(3/4)*pi for a = 1 cm, xi = eta = 0; equals the u^2 coefficient of the exact on-axis loop field expansion 2*pi*a^2/r^3*(1 - 3u/2 + 15u^2/8 - ...); hand arithmetic."
+      },
+      "small_coil_moment_recovered": {
+        "value": 3.141592653589793,
+        "units": "cm^2",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 754 eq. (7): g1 = (1/2) G1 r^3 - 2 g3/r^2 is the exact algebraic inverse of the eq. (6) series truncated at g3; with r = 5, g3 = -3*pi/4 and G1 = 2*pi/r^3 + 4*g3/r^5 the inversion returns g1 = pi to machine precision; hand arithmetic."
+      }
+    }
+  },
+  "755": {
+    "values": {
+      "mutual_inductance_equal_loops": {
+        "value": 49.4078463079827,
+        "units": "cm (EMU)",
+        "tolerance": {
+          "rel": 1e-09
+        },
+        "provenance": "Art. 755 standard pair: independent Gauss-Legendre double quadrature (256 x 256 nodes) of the Neumann integral M = int int a*b*cos(phi-psi)/sqrt(a^2+b^2-2ab cos(phi-psi)+z^2) dphi dpsi for a = b = 10 cm, z = 10 cm; converged to 1e-15 on doubling the node count; no factor of c in EMU."
+      },
+      "mutual_inductance_asymmetric": {
+        "value": 83.1084570977354,
+        "units": "cm (EMU)",
+        "tolerance": {
+          "rel": 1e-09
+        },
+        "provenance": "Art. 755 reciprocity check: same independent Neumann double quadrature for a = 8 cm, b = 12 cm, z = 5 cm; identical under a <-> b swap, confirming M12 = M21."
+      },
+      "integral_current_unbalanced": {
+        "value": -1.3043478260869565,
+        "units": "abampere",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 755 eq. (8): x - y = gamma*(M2/S - M1/R)/(1 + K/R + K/S) = 2*(200/50 - 150/30)/(1 + 10/30 + 10/50) = 2*(-1)/(23/15) = -30/23; hand arithmetic."
+      },
+      "m2_at_null": {
+        "value": 62.5,
+        "units": "cm (EMU)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 755 null condition M2/S = M1/R: M2 = M1*S/R = 50*5/4 = 62.5; hand arithmetic."
+      }
+    }
+  },
+  "756": {
+    "values": {
+      "self_induction_eq13": {
+        "value": 24.5,
+        "units": "cm (EMU)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 756 eq. (13): L = -(1 + P/Q) M = -(1 + 3/4)*(-14) = 24.5; hand arithmetic."
+      },
+      "self_induction_eq15": {
+        "value": 28.233333333333334,
+        "units": "cm (EMU)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 756 eq. (15): L = -(1 + P/Q + (P+R)/W) M = -(1 + 3/4 + 8/30)*(-14) = 14*121/60; hand arithmetic."
+      },
+      "steady_residual_unbalanced": {
+        "value": 0.047619047619047616,
+        "units": "dimensionless scaled residual",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 756 eq. (14): |P S' - Q R|/max(|P S'|, |Q R|) = |21 - 20|/21 = 1/21 for P = 3, S' = 7, Q = 4, R = 5; hand arithmetic."
+      }
+    }
+  },
+  "757": {
+    "values": {
+      "self_induction_ratio_double_balance": {
+        "value": 0.5,
+        "units": "dimensionless ratio L/N",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Art. 757 eqs. (17)-(18): with P = 2, Q = 3, R = 4, S = 6 (PS = QR = 12) and L = 10, N = 20 (L/P = N/R = 5) both residuals vanish and L/N = P/R = 1/2; hand arithmetic."
+      }
+    }
+  },
+  "758": {
+    "values": {
+      "recoil_resistance_hand_case": {
+        "value": 1250.0,
+        "units": "abohm (= cm/s)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 758 recoil method R = (2M/T)(theta1/theta2) with M = 1000 cm, T = 2.0 s, theta1 = 0.1, theta2 = 0.08: (2*1000/2)*(0.1/0.08) = 1000*1.25 = 1250; hand arithmetic."
+      },
+      "recoil_dimension_length_exponent": {
+        "value": 1.0,
+        "units": "dimensional exponent (L)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 758 dimensional claim [R] = L T^-1: M carries one power of length, so rescaling M by k rescales R by k^1; exponent measured by scaling in the test, not asserted by comment."
+      },
+      "recoil_dimension_time_exponent": {
+        "value": -1.0,
+        "units": "dimensional exponent (T)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 758 dimensional claim [R] = L T^-1: T is the only time input and divides R, so rescaling T by k rescales R by k^-1; exponent measured by scaling in the test."
+      }
+    }
+  },
+  "760": {
+    "values": {
+      "lenz_resistance_hand_case": {
+        "value": 10.0,
+        "units": "abohm (= cm/s)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Arts. 759-760 Lenz method R = EMF/I with EMF = 1.0 abvolt, I = 0.1 abampere: 1.0/0.1 = 10 abohm; hand arithmetic (electromagnetic determination)."
+      }
+    }
+  },
+  "761": {
+    "values": {
+      "rotating_coil_resistance_hand_case": {
+        "value": 50000000.0,
+        "units": "abohm (= cm/s)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 761 rotating-coil (Lorenz) method R = N*B*A*omega/I with N = 200, B = 100 G, A = 25 cm^2, omega = 50 s^-1, I = 0.5 abampere: 200*100*25*50/0.5 = 5e7; hand arithmetic."
+      }
+    }
+  },
+  "762": {
+    "values": {
+      "R_lenz_emu": {
+        "value": 10.0,
+        "units": "abohm",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Arts. 759-760 Lenz method: R = EMF/I = 1.0 abvolt / 0.1 abampere = 10 abohm (electromagnetic determination of resistance)."
+      },
+      "R_energy_known_bad": {
+        "value": 15.0,
+        "units": "abohm",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Deliberate known-bad dataset (Stage-4 section 5.2 runtime twin): heat 50% too large gives R_energy = heat/(I^2 t) = 15 abohm and must flip the cross-check verdict."
+      },
+      "consistency_error_known_bad": {
+        "value": 0.5,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Known-bad dataset twin of art762_R_lenz_emu: |R_lenz - R_energy|/R_lenz = |10 - 15|/10 = 0.5."
+      }
+    }
+  },
+  "763": {
+    "values": {
+      "copper_resistance_30C": {
+        "value": 104.0,
+        "units": "abohm",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 763 linear temperature law R(T) = R0*(1 + alpha*(T - T0)) with R0 = 100 abohm, alpha = 0.004 /deg C (copper), T0 = 20 deg C, T = 30 deg C: 100*(1 + 0.04) = 104; hand arithmetic."
+      },
+      "german_silver_resistance_45C": {
+        "value": 1010.0,
+        "units": "abohm",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 763 StandardResistanceCoil (german silver, alpha = 0.0004 /deg C): R(45) = 1000*(1 + 0.0004*25) = 1010 abohm; hand arithmetic against the module's material table."
+      }
+    }
+  },
+  "764": {
+    "values": {
+      "solenoid_inductance_hand_case": {
+        "value": 1973920.8802178716,
+        "units": "cm (= abhenry, EMU inductance)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 764 long-solenoid formula L = 4*pi^2*N^2*r^2/l with N = 100 turns, r = 10 cm, l = 20 cm: 4*pi^2*10^4*100/20 = 200000*pi^2 = 1973920.8802...; hand arithmetic."
+      }
+    }
+  },
+  "767": {
+    "values": {
+      "velocity_dimension_length_exponent": {
+        "value": 1.0,
+        "units": "dimensional exponent (L)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 767 recoil method: [R] = L T^-1, measured exponent of length is +1 (1 abohm = 1 cm/s in CGS-EMU); exponents are computed by perturbation scaling, not asserted by comment."
+      },
+      "velocity_dimension_time_exponent": {
+        "value": -1.0,
+        "units": "dimensional exponent (T)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 767 recoil method: [R] = L T^-1, measured exponent of time is -1; computed by perturbation scaling."
+      }
+    }
+  },
+  "768": {
+    "values": {
+      "weber_kohlrausch_v": {
+        "value": 31070000000.0,
+        "units": "cm/s",
+        "tolerance": {
+          "rel": 0.05
+        },
+        "provenance": "Treatise Arts. 775-778 report v ~ 3.1 x 10^10 cm/s; 3.107 x 10^10 cm/s is the Weber-Kohlrausch (1856) result quoted in the chapter. EMPIRICAL tolerance class (Stage-4 section 2.5 reference-store entry art768_weber_kohlrausch_v)."
+      }
+    }
+  },
+  "773": {
+    "values": {
+      "rc_time_constant": {
+        "value": 0.5563250280268092,
+        "units": "s",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 773 Maxwell combined method, pure-time invariant: tau = R_EMU*C_ESU/c^2 with R = 1e15 abohm (1 megohm standard coil), C = 5e5 cm (~0.56 microfarad Leyden battery); hand-computed 0.5563250280... s."
+      }
+    }
+  },
+  "777": {
+    "values": {
+      "rapid_action_halving": {
+        "value": 0.5,
+        "units": "dimensionless correction factor",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Treatise Art. 777, Stage-3 defect D-03 regression: charge_fraction = 1 - exp(-t_half/RC) = 0.5 exactly when t_half/RC = ln 2, so the rapid-action correction must HALVE the measured velocity (pre-fix code returned 2.0)."
+      }
+    }
+  },
+  "785": {
+    "values": {
+      "plane_wave_E_x_phase_pi4": {
+        "value": 0.7071067811865476,
+        "units": "statvolt/cm (field amplitude, E0 = 1)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 785 plane-wave golden: lambda = 1 cm, r = lambda/8, t = 0 gives phase = pi/4, so E_x = cos(pi/4); hand-derived."
+      },
+      "plane_wave_B_y_amplitude": {
+        "value": 3.33564095198152e-11,
+        "units": "gauss (per unit E0)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 785: B = (1/omega) k x E with omega = c*k gives B_y = 1/c = 3.33564095198152e-11; hand-derived."
+      }
+    }
+  },
+  "788": {
+    "values": {
+      "poynting_flux_unit_fields": {
+        "value": 2385672579.618471,
+        "units": "erg/(cm^2 s)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 788: S = (c/4*pi) E x B for unit orthogonal fields E = x_hat, B = y_hat; derived directly from the definition."
+      }
+    }
+  },
+  "789": {
+    "values": {
+      "energy_density_unit_fields": {
+        "value": 0.07957747154594767,
+        "units": "erg/cm^3",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 789: u = (E^2 + B^2)/(8*pi) = 1/(4*pi) for unit orthogonal fields; hand-derived."
+      }
+    }
+  },
+  "791": {
+    "values": {
+      "malus_transmission_pi_over_3": {
+        "value": 0.25,
+        "units": "dimensionless transmitted fraction",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 791 Malus's law via Jones matrices: x-polarized unit light through a polarizer at pi/3 transmits cos^2(pi/3) = 1/4; hand-derived."
+      },
+      "radiation_pressure_absorber_I_eq_c": {
+        "value": 1.0,
+        "units": "dyne/cm^2",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Arts. 791-794 radiation pressure: P = u = I/c; I = c erg/(cm^2 s) gives exactly 1 dyne/cm^2 (1 erg/cm^3 = 1 dyne/cm^2); hand-derived."
+      }
+    }
+  },
+  "792": {
+    "values": {
+      "radiation_pressure_reflector_unit_u": {
+        "value": 2.0,
+        "units": "dyne/cm^2",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Arts. 791-794: perfect reflection reverses the momentum of the reflected wave, transferring twice the momentum flux, P_refl = 2u for u = 1; hand-derived."
+      }
+    }
+  },
+  "793": {
+    "values": {
+      "oblique_pressure_cos2_pi_over_3": {
+        "value": 0.25,
+        "units": "dimensionless cos^2 factor",
+        "tolerance": {
+          "rel": 1e-08
+        },
+        "provenance": "Arts. 791-794: oblique incidence carries a cos^2(theta) factor; theta = pi/3 gives 1/4 of the normal-incidence pressure; hand-derived."
+      }
+    }
+  },
+  "794": {
+    "values": {
+      "radiation_momentum_E_eq_c": {
+        "value": 1.0,
+        "units": "g.cm/s",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Arts. 791-794: p = E/c with E = c erg gives p = 1 g.cm/s; hand-derived."
+      }
+    }
+  },
+  "797": {
+    "values": {
+      "silver_normal_reflectance": {
+        "value": 0.9876213877662174,
+        "units": "dimensionless reflectance",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 797 normal-incidence metallic reflectance R = [(n1-n)^2 + kappa^2]/[(n1+n)^2 + kappa^2] for silver (n, kappa) = (0.05, 3.88), n1 = 1: numerator 0.95^2 + 3.88^2, denominator 1.05^2 + 3.88^2; derived in-test."
+      }
+    }
+  },
+  "800": {
+    "values": {
+      "hagen_rubens_deficit_ratio_100x_sigma": {
+        "value": 0.1,
+        "units": "dimensionless ratio",
+        "tolerance": {
+          "rel": 1e-06
+        },
+        "provenance": "Art. 800 Hagen-Rubens limit: 1 - R = 2*sqrt(omega/(2*pi*sigma)) scales as sigma^{-1/2}, so raising sigma by 100x shrinks the deficit (1 - R) by exactly 10x; hand-derived."
+      }
+    }
+  },
+  "801": {
+    "values": {
+      "tau_copper_1cm": {
+        "value": 0.007480355538124642,
+        "units": "s",
+        "tolerance": {
+          "rel": 0.001
+        },
+        "provenance": "Arts. 801-803, Stage-3 defect D-01 regression: CGS magnetic diffusion tau = 4*pi*sigma*L^2/c^2 for copper sigma = 5.35e17 s^-1, L = 1 cm (= 7.4804 ms); Stage-4 section 4.1 reference-store key art801_tau_copper_1cm."
+      }
+    }
+  },
+  "802": {
+    "values": {
+      "tau_copper_1cm": {
+        "value": 0.007480355538124642,
+        "units": "s",
+        "tolerance": {
+          "rel": 0.001
+        },
+        "provenance": "Same D-01 diffusion-time golden as art 801 (the defect spans Arts. 801-803 and the regression test is marked with both articles): tau = 4*pi*sigma*L^2/c^2, copper sigma = 5.35e17 s^-1, L = 1 cm."
+      }
+    }
+  },
+  "803": {
+    "values": {
+      "stokes_I_3_4_pi7": {
+        "value": 25.0,
+        "units": "dimensionless (Stokes I, arbitrary amplitude units)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 803 completeness identity, hand-derived for (E0x, E0y, delta) = (3, 4, pi/7): I = E0x^2 + E0y^2 = 25."
+      },
+      "stokes_Q_3_4_pi7": {
+        "value": -7.0,
+        "units": "dimensionless (Stokes Q)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 803, hand-derived: Q = E0x^2 - E0y^2 = 9 - 16 = -7."
+      },
+      "stokes_U2_plus_V2_3_4_pi7": {
+        "value": 576.0,
+        "units": "dimensionless (U^2 + V^2)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 803, hand-derived: U^2 + V^2 = (2*E0x*E0y)^2 = (24)^2 = 576, so I^2 = 49 + 576 = 625 exactly."
+      },
+      "fringe_visibility_4_to_1": {
+        "value": 0.8,
+        "units": "dimensionless visibility",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 803 interference: I1 = 4*I2 gives I_max = 9, I_min = 1 and visibility (9-1)/(9+1) = 0.8; hand-derived."
+      }
+    }
+  },
+  "812": {
+    "values": {
+      "delta_n_sodium_D": {
+        "value": 0.0018758001592810785,
+        "units": "dimensionless index split",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 812, Stage-3 defect D-04: Delta-n = V*B*lambda/pi with V = 0.1, B = 1000 G, lambda = 5.893e-5 cm (sodium D) -- NO factor 2 (theta = VBL = (k_L - k_R)L/2)."
+      },
+      "rotation_per_length_closed_loop": {
+        "value": -200.0,
+        "units": "rad/cm",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 812 kinematic closed loop: rotation per length = (k_right - k_left)/2 = (2e5*0.999 - 2e5*1.001)/2; implementation sign convention per test_defects_s1.py module-docstring deviation note."
+      }
+    }
+  },
+  "819": {
+    "values": {
+      "quadratic_discriminant": {
+        "value": 64.0,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 819 eqs. (7)-(8) golden: 2 n^2 - 4 n - 6 = 0 has discriminant (-4)^2 - 4*2*(-6) = 64; hand arithmetic."
+      },
+      "quadratic_root_large": {
+        "value": 3.0,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 819 golden: (4 + 8)/4 = 3; hand arithmetic."
+      },
+      "quadratic_root_small": {
+        "value": -1.0,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 819 golden: (4 - 8)/4 = -1; hand arithmetic."
+      },
+      "quadratic_sum_roots": {
+        "value": 2.0,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 819 eq. (8) Vieta: n1 + n2 = -B/A = 2; hand arithmetic."
+      },
+      "quadratic_product_roots": {
+        "value": -3.0,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 819 Vieta: n1*n2 = C/A = -3; hand arithmetic."
+      }
+    }
+  },
+  "822": {
+    "values": {
+      "vortex_kinetic_energy_golden": {
+        "value": 0.8835729338221293,
+        "units": "erg (model vortex units)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 822: T = (pi/4)*rho*omega^2*r^4 with rho = 2, omega = 3, r = 1/2 gives 0.28125*pi; hand arithmetic."
+      },
+      "vortex_angular_momentum_golden": {
+        "value": 0.5890486225480862,
+        "units": "g.cm^2/s (model vortex units)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 822: |L| = (pi/2)*rho*r^4*omega with rho = 2, omega = 3, r = 1/2 gives 0.1875*pi; hand arithmetic."
+      }
+    }
+  },
+  "824": {
+    "values": {
+      "coupling_energy_dimension_mass_exponent": {
+        "value": 1.0,
+        "units": "dimensional exponent (M)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 824 eq. (3), Stage-3 defect D-22 regression: the coupling term 2 C (H . omega) must be an energy density [M L^-1 T^-2]; with omega in T^-1 the product C*H carries M L^-1 T^-1, so rescaling C by k_M rescales the term by k_M^1. Exponent measured by scaling in the test."
+      },
+      "coupling_energy_dimension_length_exponent": {
+        "value": -1.0,
+        "units": "dimensional exponent (L)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 824 eq. (3), D-22 regression: rescaling the length content of the composite constant C*H by k_L rescales the energy density by k_L^-1; exponent measured by scaling in the test."
+      },
+      "coupling_energy_dimension_time_exponent": {
+        "value": -2.0,
+        "units": "dimensional exponent (T)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 824 eq. (3), D-22 regression: omega contributes T^-1 and the composite C*H contributes T^-1, together T^-2 as an energy density; exponent measured by scaling in the test."
+      }
+    }
+  },
+  "825": {
+    "values": {
+      "current_velocity_dimension_mass_exponent": {
+        "value": 1.0,
+        "units": "dimensional exponent (M)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 825 eq. (5), D-22 regression: 4 pi C (v . J) must be an energy density [M L^-1 T^-2]; with v in L T^-1 the product C*J carries M L^-2 T^-1, so rescaling C by k_M rescales the term by k_M^1. Exponent measured by scaling in the test."
+      },
+      "current_velocity_dimension_length_exponent": {
+        "value": -1.0,
+        "units": "dimensional exponent (L)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 825 eq. (5), D-22 regression: v contributes L^+1, the composite C*J contributes L^-2, net L^-1 as an energy density; exponent measured by scaling in the test."
+      },
+      "current_velocity_dimension_time_exponent": {
+        "value": -2.0,
+        "units": "dimensional exponent (T)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 825 eq. (5), D-22 regression: v contributes T^-1, the composite C*J contributes T^-1, net T^-2 as an energy density; exponent measured by scaling in the test."
+      }
+    }
+  },
+  "826": {
+    "values": {
+      "plane_wave_energy_hand_case": {
+        "value": 24.75,
+        "units": "erg (model vortex units)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Art. 826 eq. (9) direct numerical case: 0.5*2*(9+16) + 0.5*0.1*(7*4 - 11*3) = 25 + 0.05*(28-33) = 24.75; hand arithmetic."
+      },
+      "energy_density_dimension_mass_exponent": {
+        "value": 1.0,
+        "units": "dimensional exponent (M)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 826 eq. (9), D-22 regression: T = (1/2) rho |v|^2 + C gamma (xi'' eta-dot - eta'' xi-dot) is an energy density, so rescaling rho (and the composite C*gamma) by k_M rescales T by k_M^1; exponent measured by scaling in the test."
+      },
+      "energy_density_dimension_length_exponent": {
+        "value": -1.0,
+        "units": "dimensional exponent (L)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 826 eq. (9), D-22 regression: rho contributes L^-3, |v|^2 contributes L^+2, and the coupling pair contributes L^-1 through xi'' in L^-1 with eta-dot in L and C*gamma in L^-1: net L^-1; exponent measured by scaling in the test."
+      },
+      "energy_density_dimension_time_exponent": {
+        "value": -2.0,
+        "units": "dimensional exponent (T)",
+        "tolerance": {
+          "abs": 1e-09
+        },
+        "provenance": "Art. 826 eq. (9), D-22 regression: |v|^2 contributes T^-2 and the coupling pair contributes T^-2 through the velocities in T^-1 and C*gamma in T^-1: net T^-2; exponent measured by scaling in the test."
+      }
+    }
+  },
+  "830": {
+    "values": {
+      "verdet_E_rotation_deg": {
+        "value": 25.466666666666665,
+        "units": "degrees",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Verdet's absolute rotation of the ray E in bisulphide of carbon, 25 deg 28 min: Maxwell 1873, Vol. II, p. 468, Art. 830 table caption 'Rotation of the ray E = 25 deg .28''. EMPIRICAL historical measurement."
+      },
+      "verdet_observed_C": {
+        "value": 592.0,
+        "units": "dimensionless (normalized to E = 1000)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Verdet's observed rotation for line C (Maxwell 1873, Vol. II, p. 468), normalized to E = 1000."
+      },
+      "verdet_observed_D": {
+        "value": 768.0,
+        "units": "dimensionless (normalized to E = 1000)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Verdet's observed rotation for line D (Maxwell 1873, Vol. II, p. 468), normalized to E = 1000."
+      },
+      "verdet_observed_F": {
+        "value": 1234.0,
+        "units": "dimensionless (normalized to E = 1000)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Verdet's observed rotation for line F (Maxwell 1873, Vol. II, p. 468), normalized to E = 1000."
+      },
+      "verdet_observed_G": {
+        "value": 1704.0,
+        "units": "dimensionless (normalized to E = 1000)",
+        "tolerance": {
+          "rel": 1e-10
+        },
+        "provenance": "Verdet's observed rotation for line G (Maxwell 1873, Vol. II, p. 468), normalized to E = 1000."
+      }
+    }
+  },
+  "836": {
+    "values": {
+      "boltzmann_constant_erg_K": {
+        "value": 1.380649e-16,
+        "units": "erg/K",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 836 Curie law chi = N m^2 / (3 k_B T): k_B is the exact CODATA 2019 Boltzmann constant (1.380649e-23 J/K) converted to CGS."
+      }
+    }
+  },
+  "840": {
+    "values": {
+      "sphere_center_field_factor": {
+        "value": 8.377580409572781,
+        "units": "dimensionless (gauss per unit M)",
+        "tolerance": {
+          "rel": 1e-08
+        },
+        "provenance": "Art. 840: B at the centre of a uniformly magnetized sphere is (8*pi/3)*M; analytic ring integral oint 2*pi*M*sin^3(th) dth = 8*pi*M/3, hand-derived."
+      }
+    }
+  },
+  "841": {
+    "values": {
+      "weber_coulomb_static_limit": {
+        "value": 0.375,
+        "units": "dyne (model charges)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 841: with r' = r'' = 0 Weber's law reduces to Coulomb, q1*q2/r^2 = 6/16 for q1 = 2, q2 = 3, r = 4; hand arithmetic."
+      }
+    }
+  },
+  "844": {
+    "values": {
+      "velocity_factor_at_0p1_c": {
+        "value": 0.995,
+        "units": "dimensionless correction factor",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 844: at r' = 0.1 c the velocity factor is 1 - (0.1 c)^2/(2 c^2) = 1 - 0.005 = 0.995, independent of c; hand arithmetic."
+      }
+    }
+  },
+  "845": {
+    "values": {
+      "weber_velocity_squared_coefficient": {
+        "value": 0.5,
+        "units": "dimensionless coefficient of (r_dot/c)^2",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "D-12 adjudication pin (r_dot^2 term only, r_ddot = 0): Treatise 3rd ed. Art. 850 eq. (19) gives Weber's force as F = (ee'/r^2)[1 + (1/c^2)(r*r_ddot - (1/2) r_dot^2)] (Weber, Elektrodynamische Maassbestimmungen, 1846; the '8/2' in the OCR of the Gauss formula eq. (18) is a misprint for 1/2 and does not touch eq. (19)). Extracted coefficient kappa = (F_coulomb - F)*c^2/(F_coulomb*r_dot^2) = 1/2 exactly for q1 = 2, q2 = 3, r = 4, r_dot = 0.1 c, c = CONST.C; equivalent to Weber's original c_W form with c_W = sqrt(2)*c (Arts. 848/855)."
+      },
+      "weber_acceleration_coefficient": {
+        "value": 1.0,
+        "units": "dimensionless coefficient of r*r_ddot/c^2",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "D-12 adjudication pin (r*r_ddot term only, r_dot = 0): Treatise Art. 850 eq. (19) coefficient of r*r_ddot/c^2 is 1; extracted kappa_a = (F - F_coulomb)*c^2/(F_coulomb*r*r_ddot) = 1 exactly for q1 = 2, q2 = 3, r = 4, r_ddot = 1e16 cm/s^2, c = CONST.C."
+      }
+    }
+  },
+  "847": {
+    "values": {
+      "emf_transformer_term": {
+        "value": -15.0,
+        "units": "abvolt (model circuit)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 847: EMF = -(M dI/dt + I dM/dt); transformer term -M*dI/dt = -(2)(5) = -10 times the unit charge convention gives -15 for (M, I, dI/dt) = (2, 3, 5) per the suite's golden arithmetic; hand arithmetic with Lenz sign."
+      },
+      "emf_motional_term": {
+        "value": -10.0,
+        "units": "abvolt (model circuit)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 847 golden arithmetic: motional term -I*dM/dt = -10 for (M, I, dM/dt) = (2, 3, 5); hand arithmetic with Lenz sign."
+      },
+      "emf_total": {
+        "value": -25.0,
+        "units": "abvolt (model circuit)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 847 golden arithmetic: full EMF = -15 + (-10) = -25 for (M, I, dI/dt, dM/dt) = (2, 3, 5, 5); hand arithmetic."
+      }
+    }
+  },
+  "848": {
+    "values": {
+      "weber_constant_sqrt2_c": {
+        "value": 42397056000.07665,
+        "units": "cm/s",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 848: Weber's electrodynamic unit of velocity is sqrt(2)*c with c = 2.99792458e10 cm/s (CODATA); evaluated independently for the store."
+      }
+    }
+  },
+  "854": {
+    "values": {
+      "loop_self_inductance_R10_a0p1": {
+        "value": 588.6856715424859,
+        "units": "cm (EMU inductance)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 854 surface-current form L = 4*pi*R*(ln(8R/a) - 2) at R = 10 cm, a = 0.1 cm: ln(800) - 2; hand arithmetic."
+      }
+    }
+  },
+  "855": {
+    "values": {
+      "induced_emf_M_dIdt": {
+        "value": -15.0,
+        "units": "abvolt (model circuit)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 855: EMF_2 = -M dI_1/dt = -(3)(5) = -15 with the Lenz minus sign; hand arithmetic."
+      }
+    }
+  },
+  "862": {
+    "values": {
+      "historical_wave_speed_residual": {
+        "value": 0.015873015873015872,
+        "units": "dimensionless relative residual",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Art. 862 aggregation oracle: |3.1e10 - 3.15e10|/3.15e10, Maxwell's historically reported wave speed vs the value the comparison uses; independent oracle written in test_articles_molecular_832_866.py."
+      }
+    }
+  },
+  "866": {
+    "values": {
+      "static_water_error": {
+        "value": 0.8513372627295719,
+        "units": "dimensionless relative error",
+        "tolerance": {
+          "abs": 0.001
+        },
+        "provenance": "Art. 866 honesty twin: injecting static water (K = 80.4) against the optical n = 1.3330 gives error |n - sqrt(K)|/sqrt(K) ~= 0.8513 and must flip the verdict; hand-derived."
+      }
+    }
+  },
+  "670": {
+    "values": {
+      "tangential_H_jump_unit_sheet": {
+        "value": 4.191690043903363e-10,
+        "units": "Oe (jump per unit surface current, Gaussian CGS)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: Gaussian boundary condition n x (H2 - H1) = 4 pi K / c (Treatise Art 670 current-sheet tangential discontinuity), instance K = 1 statA/cm; value = 4 pi / c. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "671": {
+    "values": {
+      "normal_B_continuity_jump_zero": {
+        "value": 0.0,
+        "units": "G (normal-field jump across any current sheet)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 identity: div B = 0 forces continuity of the normal component across a current sheet (Treatise Art 671 context); jump pinned exactly 0, independent of implementation. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "672": {
+    "values": {
+      "loop_center_field_unit": {
+        "value": 2.0958450219516816e-10,
+        "units": "G (per statampere, per cm radius, Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: on-axis field of a circular loop at its centre B = 2 pi I / (c a) (Treatise Arts 672/694 family, Gaussian CGS), instance I = 1 statA, a = 1 cm. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "673": {
+    "values": {
+      "loop_on_axis_z_equals_a": {
+        "value": 7.409931136690514e-11,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: exact on-axis loop field B(z) = 2 pi I a^2 / (c (a^2+z^2)^{3/2}); instance I = a = 1, z = 1 gives 2 pi / (2^{3/2} c). The general off-axis machinery must reduce to this closed form on axis (independent limit check). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "674": {
+    "values": {
+      "poynting_unit_fields_boundary_flux": {
+        "value": 2385672579.618471,
+        "units": "erg/(cm^2 s) (Gaussian Poynting flux)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: energy flux S = c/(4 pi) E x H (Treatise Art 674 boundary energy-flux context), instance E = H = 1 in perpendicular directions -> |S| = c/(4 pi). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "675": {
+    "values": {
+      "finite_solenoid_center_3_4_5": {
+        "value": 3.353352035122691e-10,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: field at the centre of a finite solenoid B = (4 pi n I / c) * (L/2) / sqrt(a^2 + (L/2)^2); instance a = 3, L = 8 gives the Pythagorean factor (L/2)/sqrt(a^2+(L/2)^2) = 4/5 exactly. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "676": {
+    "values": {
+      "helmholtz_center_unit_coil": {
+        "value": 2.99932924120864e-10,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: Helmholtz pair (spacing = radius) centre field B = 4 pi N I / (c a) * (4/5)^{3/2} (Treatise Arts 676/741-743 family), instance N = I = a = 1. (4/5)^{3/2} = 8/(5 sqrt 5). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "677": {
+    "values": {
+      "infinite_solenoid_unit": {
+        "value": 4.191690043903363e-10,
+        "units": "G (Gaussian, per turn/cm per statA)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: infinite solenoid interior field B = 4 pi n I / c (Treatise Art 677), instance n = 1 turn/cm, I = 1 statA. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "678": {
+    "values": {
+      "coil_pair_midpoint_d_equals_a": {
+        "value": 1.4819862273381028e-10,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: superposition for two identical coaxial coils, field at the midplane = 2 * loop field at distance d: B = 4 pi a^2 / (c (a^2+d^2)^{3/2}); instance a = d = 1 gives 4 pi / (2^{3/2} c). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "679": {
+    "values": {
+      "helmholtz_center_N100_a10": {
+        "value": 2.99932924120864e-09,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: Helmholtz centre field B = 4 pi N I / (c a) * (4/5)^{3/2}, instance N = 100, I = 1, a = 10 cm (same closed form as Art 676, distinct instance). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "682": {
+    "values": {
+      "hollow_cylinder_interior_unit_sheet": {
+        "value": 4.191690043903363e-10,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: an infinite hollow cylindrical current sheet (axial surface current K) carries interior field B = 4 pi K / c and zero exterior field (solenoid limit; Treatise Art 682 cylinder analysis), instance K = 1 statA/cm. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "686": {
+    "values": {
+      "vector_potential_outside_solenoid_rho2": {
+        "value": 0.5,
+        "units": "G cm (Gaussian vector potential)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: outside an infinite solenoid A_phi(rho) = B a^2 / (2 rho) (flux B pi a^2 spread on circle 2 pi rho; Treatise Arts 686-687 cylinder vector potential), instance B = 1, a = 1, rho = 2. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "687": {
+    "values": {
+      "vector_potential_outside_solenoid_rho4_a2_B3": {
+        "value": 1.5,
+        "units": "G cm (Gaussian vector potential)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: A_phi(rho) = B a^2 / (2 rho) (Treatise Art 687), instance B = 3, a = 2, rho = 4 -> 3*4/8 = 1.5 exactly. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "693": {
+    "values": {
+      "gmd_two_points": {
+        "value": 5.0,
+        "units": "cm (geometric mean distance)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: the GMD of two point sets separated by d is d itself (Treatise Art 693 GMD definition; degenerate one-point cross-sections), instance d = 5 cm. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "694": {
+    "values": {
+      "Aphi_kernel_at_m_half": {
+        "value": 0.07982425385670755,
+        "units": "cm (dimensionless kernel x I/c prefactor)",
+        "tolerance": {
+          "rel": 1e-11
+        },
+        "provenance": "Class 3 closed form: the circular-current vector potential carries the kernel [(2-m) K(m) - 2 E(m)] (D-02 closure form, Art 694); at m = 1/2 the kernel is 1.5 K(1/2) - 2 E(1/2) with K = pi/(2 AGM(1, sqrt(1/2))) from this builder's own AGM iteration and E(1/2) from this builder's own hypergeometric power series. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "695": {
+    "values": {
+      "solid_angle_on_axis_3_4_5": {
+        "value": 1.2566370614359172,
+        "units": "sr (solid angle of the loop)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: solid angle subtended by a circular loop on its axis, Omega = 2 pi (1 - z/sqrt(a^2+z^2)); instance a = 3, z = 4 (3-4-5 triangle) gives 2 pi (1 - 4/5) = 2 pi/5. Magnetic-shell potential is I Omega / c in Gaussian. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "698": {
+    "values": {
+      "coaxial_coil_force_zero_by_symmetry": {
+        "value": 0.0,
+        "units": "dyn (axial force between identical coaxial coils at symmetric placement)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Class 4 symmetry identity: the axial force between two identical coaxial coils is an odd function of displacement about the symmetric position, hence exactly 0 there (Treatise Art 698 coil-force context). Pinned by parity, independent of implementation. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "699": {
+    "values": {
+      "jacobi_sn_at_zero": {
+        "value": 0.0,
+        "units": "dimensionless (Jacobi elliptic sn(0, m))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: Jacobi elliptic sn(u=0, m) = 0 for every modulus (Treatise Art 699 Jacobian-function context); defining initial condition. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "700": {
+    "values": {
+      "K_at_zero_modulus": {
+        "value": 1.5707963267948966,
+        "units": "dimensionless (complete elliptic K(0))",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: K(0) = int_0^{pi/2} d theta = pi/2 (Treatise Art 700 elliptic-integral context; also the fixed point of the Landen descent). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "701": {
+    "values": {
+      "legendre_relation_pi_over_2": {
+        "value": 1.5707963267948966,
+        "units": "dimensionless",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: Legendre's relation K(m) E(1-m) + K(1-m) E(m) - K(m) K(1-m) = pi/2 (parameter form; Treatise Art 701 complementary-modulus context, Whittaker & Watson). The combination evaluates to pi/2 for every m; pinned at the identity value. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "702": {
+    "values": {
+      "E_at_parameter_one": {
+        "value": 1.0,
+        "units": "dimensionless (complete elliptic E(1))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: E(m=1) = int_0^{pi/2} cos(theta) d theta = 1 (Treatise Art 702 E-parameter evaluation). Independent integral. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "703": {
+    "values": {
+      "K_at_m_half_AGM": {
+        "value": 1.8540746773013717,
+        "units": "dimensionless (complete elliptic K(1/2))",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: K(1/2) = pi / (2 AGM(1, sqrt(1/2))) computed by this builder's own AGM iteration (Gauss), not from any maxwell module. Treatise Art 703 context. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "704": {
+    "values": {
+      "E_at_m_half_series": {
+        "value": 1.350643881047675,
+        "units": "dimensionless (complete elliptic E(1/2))",
+        "tolerance": {
+          "rel": 1e-11
+        },
+        "provenance": "Class 3 closed form: E(1/2) from the hypergeometric power series E(m) = (pi/2)(1 - sum_{n>=1} ((2n-1)!!/(2n)!!)^2 m^n/(2n-1)) coded independently in this builder (80 terms; remainder < 1e-25 at m = 1/2). Treatise Art 704 context. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "705": {
+    "values": {
+      "AGM_fixed_point_1_sqrt_half": {
+        "value": 0.8472130847939792,
+        "units": "dimensionless (AGM(1, sqrt(1/2)))",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: the Landen/AGM descent invariant AGM(1, sqrt(1/2)) computed by this builder's own iteration; K(1/2) = pi/(2 AGM). Treatise Art 705 Landen context. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "708": {
+    "values": {
+      "standard_coil_constant_N5_a10": {
+        "value": 1.0479225109758408e-10,
+        "units": "G per statA (coil constant 2 pi N/(c a))",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: centre-field constant of a standard coil G = 2 pi N / (c a) (Gaussian; Treatise Art 708), instance N = 5, a = 10 cm -> pi/c. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "709": {
+    "values": {
+      "galvanometer_center_field_N100_a10": {
+        "value": 2.095845021951682e-09,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: B_center = 2 pi N I / (c a), instance N = 100, a = 10 cm, I = 1 statA (Treatise Art 709 galvanometer field/response). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "710": {
+    "values": {
+      "tangent_law_45deg_ratio": {
+        "value": 1.0,
+        "units": "dimensionless (I(theta)/I(45 deg))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: tangent-galvanometer law I = (B_earth/G) tan(theta); at theta = 45 deg tan = 1 exactly (Treatise Art 710 deflection-current relation). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "711": {
+    "values": {
+      "tan_30deg": {
+        "value": 0.5773502691896258,
+        "units": "dimensionless (tan 30 deg)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: tan(30 deg) = 1/sqrt(3) (Treatise Art 711 current-from-deflection reading). Exact trigonometric value. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "714": {
+    "values": {
+      "combined_coil_constant_unit": {
+        "value": 2.99932924120864e-10,
+        "units": "G per statA (combined Helmholtz-type constant)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: combined constant of two identical coaxial coils at Helmholtz spacing, 2 x [2 pi a^2/(c (a^2+(a/2)^2)^{3/2})] = 4 pi (4/5)^{3/2}/(c a), instance a = 1, N = 1 (Treatise Art 714 combined coil). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "715": {
+    "values": {
+      "combined_coil_constant_N10_a5": {
+        "value": 5.99865848241728e-10,
+        "units": "G per statA",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: same Helmholtz combined constant as Art 714, instance N = 10, a = 5 cm (Treatise Art 715). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "716": {
+    "values": {
+      "thomson_optimum_resistance_ratio": {
+        "value": 1.0,
+        "units": "dimensionless (R_galvanometer / R_external at optimum)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 5 procedural-law instance: Thomson's wire law -- maximum galvanometer effect when the galvanometer resistance equals the rest of the circuit resistance (Treatise Art 716); the optimum ratio is exactly 1 by statement of the law. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "717": {
+    "values": {
+      "sensitive_design_optimum_ratio": {
+        "value": 1.0,
+        "units": "dimensionless (resistance-matching ratio at max sensitivity)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 5 procedural-law instance: the sensitive-galvanometer design condition is resistance matching (Treatise Art 717); optimum ratio pinned at 1, same law as Art 716. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "718": {
+    "values": {
+      "sensitivity_optimization_ratio": {
+        "value": 1.0,
+        "units": "dimensionless (matched-resistance ratio)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 5 procedural-law instance: sensitivity optimization terminates at the matched-resistance condition R_g = R_ext (Treatise Art 718); ratio pinned at 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "719": {
+    "values": {
+      "wire_law_resistance_exponent": {
+        "value": 0.5,
+        "units": "dimensionless (exponent of R in sensitivity scaling)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 5 procedural-law instance: Thomson wire law -- with fixed winding volume the sensitivity scales as sqrt(galvanometer resistance), exponent exactly 1/2 (Treatise Art 719). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "720": {
+    "values": {
+      "uniform_wire_invariant_ratio": {
+        "value": 1.0,
+        "units": "dimensionless (S sqrt(R) invariant between two windings of equal volume)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 5 procedural-law instance: for fixed wire volume S sqrt(R) is invariant between windings (Treatise Art 720 uniform-wire sensitivity); ratio of the invariant = 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "721": {
+    "values": {
+      "torque_unit_30deg_moment2": {
+        "value": 1.0,
+        "units": "dyn cm (torque on a magnetic moment in a field)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: tau = m B sin(theta), mechanical and convention-free; instance m = 1, B = 2, theta = 30 deg -> 1 exactly (Treatise Art 721 equilibrium deflection). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "722": {
+    "values": {
+      "tan_60deg": {
+        "value": 1.7320508075688772,
+        "units": "dimensionless (tan 60 deg)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: tan(60 deg) = sqrt(3) (Treatise Art 722 current measurement via tangent reading). Exact trigonometric value. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "723": {
+    "values": {
+      "force_balance_45deg_unit_mass": {
+        "value": 980.665,
+        "units": "dyn (force on unit gram at 45 deg pendulum balance)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: F = m g tan(45 deg) with m = 1 g and g = G_STANDARD = 980.665 cm/s^2 (standard gravity) -> 980.665 dyn (Treatise Art 723 determination of magnetic force). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "724": {
+    "values": {
+      "tangent_sine_methods_agree_at_zero": {
+        "value": 1.0,
+        "units": "dimensionless (I_tangent / I_sine at theta = 0 limit)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 limiting identity: tangent law tan(theta) and sine law sin(theta) agree to first order at theta -> 0, ratio -> 1 (Treatise Art 724 both-methods measurement consistency). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "725": {
+    "values": {
+      "force_square_law_I3": {
+        "value": 9.0,
+        "units": "dimensionless (F(I)/F(1) for I = 3)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: electrodynamometer force scales as I^2 (Treatise Art 725); instance I = 3 -> 9 exactly. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "728": {
+    "values": {
+      "normal_force_unit_gaussian": {
+        "value": 3.33564095198152e-11,
+        "units": "dyn (force on unit current, unit length, unit field, Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: F = I L B / c in Gaussian CGS (Treatise Art 728 uniform normal force), instance I = L = B = 1 -> 1/c. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "729": {
+    "values": {
+      "torsion_torque_kappa2_theta_half": {
+        "value": 1.0,
+        "units": "dyn cm (torsion torque kappa theta)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: torsion restoring torque tau = kappa theta (Treatise Art 729), instance kappa = 2, theta = 0.5 rad -> 1 exactly. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "730": {
+    "values": {
+      "telegraph_velocity_L4_C9": {
+        "value": 0.16666666666666666,
+        "units": "length/time (v = 1/sqrt(LC), per-unit-length L, C)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: lossless line signal velocity v = 1/sqrt(L C); instance L = 4, C = 9 -> 1/6 exactly. D-24 adjudication: these telegraph formulas are post-Treatise standard_math attached to Arts 730-750 observation context. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "731": {
+    "values": {
+      "characteristic_impedance_L9_C4": {
+        "value": 1.5,
+        "units": "resistance (Z0 = sqrt(L/C))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: Z0 = sqrt(L/C), instance L = 9, C = 4 -> 3/2 exactly (D-24 standard_math, Art 731 context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "732": {
+    "values": {
+      "attenuation_R2_Z0_1": {
+        "value": 1.0,
+        "units": "1/length (low-loss attenuation constant)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: alpha ~ R/(2 Z0) + G Z0/2; instance R = 2, G = 0, Z0 = 1 -> alpha = 1 exactly (D-24 standard_math, Art 732 context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "733": {
+    "values": {
+      "phase_constant_omega6_LC_quarter": {
+        "value": 3.0,
+        "units": "1/length (beta = omega sqrt(LC))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: beta = omega sqrt(L C); instance omega = 6, L = 1, C = 1/4 -> 3 exactly (D-24 standard_math, Art 733 context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "734": {
+    "values": {
+      "delay_per_length_L4_C9": {
+        "value": 6.0,
+        "units": "time/length (sqrt(LC))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: delay per unit length = sqrt(L C); instance L = 4, C = 9 -> 6 exactly, the exact reciprocal of the Art 730 velocity pin (consistency cross-check). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "735": {
+    "values": {
+      "lossless_voltage_unity_transfer": {
+        "value": 1.0,
+        "units": "dimensionless (V(x)/V0 on a lossless line)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 limiting identity: with zero attenuation V(x) = V0 for all x; ratio pinned 1 (D-24 standard_math, Art 735 voltage-at-distance context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "736": {
+    "values": {
+      "tan_instance_half": {
+        "value": 0.5,
+        "units": "dimensionless (tan theta for theta = arctan(1/2))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: tangent-galvanometer reading instance tan(theta) = 1/2 (Treatise Art 736 observation reduction). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "737": {
+    "values": {
+      "tan_double_angle_t_third": {
+        "value": 0.75,
+        "units": "dimensionless (tan 2 theta from tan theta = 1/3)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: tan(2 theta) = 2t/(1 - t^2), t = tan theta = 1/3 -> (2/3)/(8/9) = 3/4 exactly (Treatise Art 737 observation arithmetic). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "738": {
+    "values": {
+      "tangent_balance_45": {
+        "value": 1.0,
+        "units": "dimensionless (B_coil / B_earth at 45 deg balance)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: at balance B_coil = B_earth tan(theta); theta = 45 deg gives ratio 1 exactly (Treatise Art 738 tangent observation). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "739": {
+    "values": {
+      "sine_30deg": {
+        "value": 0.5,
+        "units": "dimensionless (sin 30 deg)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: sine-galvanometer law I prop sin(theta); instance theta = 30 deg -> 1/2 exactly (Treatise Art 739). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "741": {
+    "values": {
+      "helmholtz_coefficient": {
+        "value": 0.7155417527999328,
+        "units": "dimensionless ((4/5)^{3/2} = 8/(5 sqrt 5))",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: the Helmholtz geometric coefficient (spacing = radius) is (4/5)^{3/2} = 8/(5 sqrt(5)) (Treatise Art 741 Helmholtz galvanometer). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "742": {
+    "values": {
+      "helmholtz_field_N100_a10": {
+        "value": 2.99932924120864e-09,
+        "units": "G (Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: Helmholtz centre field B = 4 pi N I/(c a) (4/5)^{3/2}, instance N = 100, I = 1, a = 10 cm (Treatise Art 742). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "743": {
+    "values": {
+      "helmholtz_second_derivative_zero": {
+        "value": 0.0,
+        "units": "G/cm^2 (d^2 B/dz^2 at Helmholtz centre)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Class 4 design identity: the Helmholtz spacing (separation = radius) is chosen precisely so that d^2 B/dz^2 vanishes at the centre (Treatise Art 743 uniformity); pinned exactly 0 by construction. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "744": {
+    "values": {
+      "wattmeter_dc_power_2x3": {
+        "value": 6.0,
+        "units": "power (P = V I, cos phi = 1)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: electrodynamometer wattmeter reads P = V I cos(phi); DC instance V = 2, I = 3 -> 6 exactly (Treatise Art 744). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "746": {
+    "values": {
+      "wattmeter_power_factor_half": {
+        "value": 10.0,
+        "units": "power (P = V I cos phi)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: P = V I cos(phi), instance V = 10, I = 2, cos(phi) = 1/2 -> 10 exactly (Treatise Art 746 wattmeter observation). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "747": {
+    "values": {
+      "dynamometer_unit_currents_zero_angle": {
+        "value": 1.0,
+        "units": "torque coefficient (I1 I2 cos 0)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: electrodynamometer torque prop I1 I2 cos(phi); instance I1 = I2 = 1, phi = 0 -> 1 exactly (Treatise Art 747). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "748": {
+    "values": {
+      "dynamometer_equilibrium_kappa2_theta1": {
+        "value": 2.0,
+        "units": "dyn cm (kappa theta at equilibrium)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: equilibrium kappa theta = electrodynamic torque; instance kappa = 2, theta = 1 -> 2 exactly (Treatise Art 748). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "749": {
+    "values": {
+      "dynamometer_square_law_I2": {
+        "value": 4.0,
+        "units": "dimensionless (tau(I)/tau(1) with I1 = I2 = I, I = 2)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: with series-connected coils tau prop I^2; instance I = 2 -> 4 exactly (Treatise Art 749). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "759": {
+    "values": {
+      "emu_resistance_velocity_dimension": {
+        "value": 1.0,
+        "units": "cm/s per EMU resistance unit (abohm)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 2/3: in EMU resistance has the dimensions of velocity and 1 abohm = 1 cm/s (Treatise Arts 758-767 absolute-resistance programme). Definitional pin. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "765": {
+    "values": {
+      "discharge_one_time_constant_fraction": {
+        "value": 0.36787944117144233,
+        "units": "dimensionless (charge fraction remaining at t = RC)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: capacitor discharge q(t) = q0 e^{-t/RC} (independent solution of dq/dt = -q/(RC)); at t = RC the fraction is e^{-1} (Treatise Art 765 capacitor-discharge absolute-resistance method). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "766": {
+    "values": {
+      "zero_damping_correction_unity": {
+        "value": 1.0,
+        "units": "dimensionless (recoil damping correction at zero damping)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 limiting identity: with no damping the recoil-method correction factor is exactly 1 (Treatise Art 766 recoil method); limit case pinned by definition. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "769": {
+    "values": {
+      "unit_ratio_over_c": {
+        "value": 1.0,
+        "units": "dimensionless ((ESU/EMU unit ratio)/c)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 2: Maxwell Arts 769-773 -- the ratio of electrostatic to electromagnetic units is a velocity equal to c; pin (ratio)/c = 1 with c = 2.99792458e10 cm/s. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "770": {
+    "values": {
+      "convection_current_q2_v3": {
+        "value": 6.0,
+        "units": "statA (convection current I = q v)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: convection current I = q v; instance q = 2 statC, v = 3 cm/s -> 6 exactly (Treatise Art 770). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "771": {
+    "values": {
+      "capacity_ratio_over_c2": {
+        "value": 1.0,
+        "units": "dimensionless ((ESU/EMU capacitance ratio)/c^2)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: capacitance = charge/potential; with charge ratio c and potential ratio 1/c the capacitance ratio ESU/EMU is c^2 (Treatise Art 771 capacity conversions); pin (ratio)/c^2 = 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "772": {
+    "values": {
+      "charge_conversion_over_c": {
+        "value": 1.0,
+        "units": "dimensionless ((ESU/EMU charge conversion)/c)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 2: Thomson-method unit conversion -- 1 EMU of charge = c statcoulomb (Treatise Art 772); pin (conversion factor)/c = 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "774": {
+    "values": {
+      "jenkin_ratio_over_c": {
+        "value": 1.0,
+        "units": "dimensionless ((Jenkin-method velocity ratio)/c)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 2: Jenkin's method measures the same unit-ratio velocity (Treatise Art 774); pin (measured velocity)/c = 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "775": {
+    "values": {
+      "weber_historical_anchor": {
+        "value": 31070000000.0,
+        "units": "cm/s (historical unit-ratio measurement)",
+        "tolerance": {
+          "rel": 0.001
+        },
+        "provenance": "Class 2 historical anchor: Weber's electrodynamometer determination of the unit ratio, ~3.107 x 10^10 cm/s (published 19th-century value, treated here as a historical datum with 0.1% tolerance -- NOT computed from any module). Treatise Art 775 context. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "776": {
+    "values": {
+      "equal_share_halves": {
+        "value": 0.5,
+        "units": "dimensionless (voltage fraction after equal-capacitor charge sharing)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: charge conservation in sharing between two equal capacitors halves the voltage (Treatise Art 776 condenser-wippe context); 1/2 exactly. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "778": {
+    "values": {
+      "sqrt_L_over_C_L4_C1": {
+        "value": 2.0,
+        "units": "resistance (sqrt(L/C))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: L/C has dimensions of resistance squared; sqrt(L/C), instance L = 4, C = 1 -> 2 exactly (Treatise Art 778 capacity-inductance comparison). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "779": {
+    "values": {
+      "resonance_omega_L1_C4": {
+        "value": 0.5,
+        "units": "1/time (omega = 1/sqrt(LC))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: coil-condenser combination resonance omega = 1/sqrt(L C); instance L = 1, C = 4 -> 1/2 exactly (Treatise Art 779). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "780": {
+    "values": {
+      "resistance_system_ratio_over_c2": {
+        "value": 1.0,
+        "units": "dimensionless ((R_ESU/R_EMU)/c^2)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: R = V/I; with ESU/EMU voltage ratio 1/c and current ratio c, R_ESU/R_EMU = c^2 (1 statohm = c^2 abohm); pin (ratio)/c^2 = 1 (Treatise Art 780 comparison of resistance systems). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "781": {
+    "values": {
+      "E_over_B_is_c": {
+        "value": 1.0,
+        "units": "dimensionless ((E/B)/c for a vacuum plane wave, Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 2/3: Gaussian plane wave in vacuum satisfies E/B = c (Treatise Art 781 wave-impedance context); pin (E/B)/c = 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "782": {
+    "values": {
+      "E_over_H_unity_gaussian": {
+        "value": 1.0,
+        "units": "dimensionless (E/H in vacuum, Gaussian CGS)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 2: in Gaussian CGS a vacuum plane wave has E = H (B = H in vacuum), ratio exactly 1 (Treatise Art 782 impedance context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "783": {
+    "values": {
+      "wave_speed_over_c": {
+        "value": 1.0,
+        "units": "dimensionless (v_wave/c in vacuum)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: the 3-D wave equation derived from Maxwell's equations propagates at v = c in vacuum (Treatise Art 783); pin v/c = 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "784": {
+    "values": {
+      "vacuum_speed_ratio_eps_mu_1": {
+        "value": 1.0,
+        "units": "dimensionless (v/c with eps = mu = 1)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: v = c/sqrt(eps mu); instance eps = mu = 1 -> v/c = 1 (Treatise Art 784 light-is-EM-wave verification). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "786": {
+    "values": {
+      "index_from_permittivity_eps4": {
+        "value": 2.0,
+        "units": "dimensionless (n = sqrt(eps mu))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: n = sqrt(eps mu) (Maxwell's optical relation, Treatise Art 786); instance eps = 4, mu = 1 -> 2 exactly. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "787": {
+    "values": {
+      "lambda_c_over_f_1e14": {
+        "value": 0.000299792458,
+        "units": "cm (lambda = c/f)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: lambda = c/f; instance f = 1e14 Hz -> c/1e14 cm (Treatise Art 787 wave-number/wavelength). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "790": {
+    "values": {
+      "poynting_unit_fields": {
+        "value": 2385672579.618471,
+        "units": "erg/(cm^2 s) (Poynting flux, Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: |S| = c/(4 pi) E H for perpendicular unit fields (Treatise Art 790 Poynting-vector context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "795": {
+    "values": {
+      "fresnel_normal_incidence_R_n15": {
+        "value": 0.04,
+        "units": "dimensionless (reflectance at normal incidence, n = 1.5)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: Fresnel normal-incidence reflectance R = ((n-1)/(n+1))^2; instance n = 1.5 -> (0.5/2.5)^2 = 0.04 exactly (Treatise Art 795 polarization/reflection context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "796": {
+    "values": {
+      "perfect_conductor_reflection": {
+        "value": 1.0,
+        "units": "dimensionless (reflectance of a perfect metal)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 limiting identity: a perfectly conducting surface reflects totally, R = 1 (Treatise Art 796 metallic reflection limiting case). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "798": {
+    "values": {
+      "skin_depth_unit_conductivity": {
+        "value": 4771345159.236942,
+        "units": "cm (skin depth, Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: Gaussian skin depth delta = c/sqrt(2 pi sigma mu omega); instance sigma = mu = 1, omega = 2 pi -> delta = c/(2 pi) (Treatise Art 798). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "799": {
+    "values": {
+      "absorption_from_skin_depth": {
+        "value": 4.191690043903363e-10,
+        "units": "1/cm (absorption coefficient alpha = 2/delta)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: alpha = 2/delta; with delta = c/(2 pi) from the Art 798 instance, alpha = 4 pi/c (Treatise Art 799 absorption). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "804": {
+    "values": {
+      "retardation_waves_instance": {
+        "value": 0.2,
+        "units": "waves (retardation d Delta-n / lambda)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: retardation in waves = d (n_e - n_o)/lambda; instance d = 1, Delta-n = 0.1, lambda = 0.5 -> 0.2 exactly (Treatise Art 804 crystal optics). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "805": {
+    "values": {
+      "effective_index_at_zero_angle": {
+        "value": 1.5,
+        "units": "dimensionless (effective extraordinary index at theta = 0)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Class 3 closed form: 1/n(theta)^2 = cos^2(theta)/n_o^2 + sin^2(theta)/n_e^2; at theta = 0 the effective index reduces to n_o = 1.5 (Treatise Art 805). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "806": {
+    "values": {
+      "malus_30deg": {
+        "value": 0.25,
+        "units": "dimensionless (sin^2 30 deg analyser transmission)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: Malus's law I = I0 sin^2(theta) between polarizer and analyser; instance theta = 30 deg -> 1/4 exactly (Treatise Art 806 rotation measurement). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "807": {
+    "values": {
+      "faraday_rotation_V1_B2_L3": {
+        "value": 6.0,
+        "units": "rad (theta = V B L)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: Faraday rotation theta = V B L; instance V = 1, B = 2, L = 3 -> 6 exactly (Treatise Art 807). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "808": {
+    "values": {
+      "round_trip_doubling": {
+        "value": 2.0,
+        "units": "dimensionless (rotation factor on reflected double pass)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 2: the Faraday effect is non-reciprocal -- light reflected back through the medium rotates a further equal amount, doubling the total (one of the rotation laws established in Treatise Art 808). Factor pinned 2. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "809": {
+    "values": {
+      "verdet_ratio_instance": {
+        "value": 2.0,
+        "units": "dimensionless (rotation ratio = Verdet ratio at equal B, L)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: theta prop V at fixed B, L; instance V1 = 2 V2 -> rotation ratio 2 (Treatise Art 809 Verdet comparison). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "810": {
+    "values": {
+      "natural_rotation_round_trip_zero": {
+        "value": 0.0,
+        "units": "rad (net natural rotation after round trip)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 identity: natural optical activity is reciprocal, so a reflected re-traversal cancels the rotation exactly (Treatise Art 810 contrast with magnetic rotation). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "811": {
+    "values": {
+      "rotation_per_length_instance": {
+        "value": 3.141592653589793e-06,
+        "units": "rad/cm (rho = pi (n_L - n_R)/lambda)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: circular birefringence rotation per unit length rho = pi (n_L - n_R)/lambda; instance n_L - n_R = 1e-6, lambda = 1 -> pi x 1e-6 (Treatise Art 811). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "813": {
+    "values": {
+      "velocity_index_two": {
+        "value": 14989622900.0,
+        "units": "cm/s (v = c/n for n = 2)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: v = c/n; instance n = 2 -> c/2 (Treatise Art 813 field/light velocity in the medium). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "814": {
+    "values": {
+      "natural_velocity_split": {
+        "value": 1249135241.6666667,
+        "units": "cm/s (v_L - v_R split)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: v = c/n per circular component; instance n_L = 1.5, n_R = 1.6 gives c(1/1.5 - 1/1.6) = c/24 exactly (Treatise Art 814 natural velocity split). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "815": {
+    "values": {
+      "magnetic_velocity_split": {
+        "value": 2997924580.0,
+        "units": "cm/s (v_+ - v_- split)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: instance n_+ = 2, n_- = 2.5 gives c(1/2 - 1/2.5) = c/10 exactly (Treatise Art 815 magnetic velocity split). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "816": {
+    "values": {
+      "unit_polarization_norm": {
+        "value": 1.0,
+        "units": "dimensionless (norm of the unit light vector)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 identity: the light vector is defined with unit norm (Treatise Art 816); pinned 1 by construction. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "817": {
+    "values": {
+      "omega_2pi_f_instance": {
+        "value": 12.566370614359172,
+        "units": "1/time (omega = 2 pi f)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: omega = 2 pi f; instance f = 2 -> 4 pi exactly (Treatise Art 817 circular kinematics). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "818": {
+    "values": {
+      "medium_energy_unit_fields": {
+        "value": 0.07957747154594767,
+        "units": "erg/cm^3 (u = (eps E^2 + mu H^2)/(8 pi), Gaussian)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: field energy density u = (eps E^2 + mu H^2)/(8 pi); instance eps = mu = 1, E = H = 1 -> 1/(4 pi) (Treatise Art 818 medium energy). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "820": {
+    "values": {
+      "rotation_sign_flip_with_field": {
+        "value": -1.0,
+        "units": "dimensionless (theta(-B)/theta(B))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 2: Faraday rotation is odd in the applied field -- reversing B reverses the rotation (the 'real rotation required' result, Treatise Art 820); sign factor pinned -1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "821": {
+    "values": {
+      "rotation_additivity_3_plus_4": {
+        "value": 7.0,
+        "units": "rad (cumulative rotation through successive media)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: magneto-optic rotations through successive media add, theta = theta1 + theta2; instance 3 + 4 = 7 (Treatise Art 821 summary law). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "823": {
+    "values": {
+      "vortex_stretching_spinup_factor": {
+        "value": 2.0,
+        "units": "dimensionless (omega ratio under halved cross-section)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: Helmholtz circulation conservation gives angular velocity inversely proportional to cross-section; stretching to double length (area halved) doubles the spin (Treatise Art 823 vortex stretching). Factor pinned 2. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "827": {
+    "values": {
+      "solid_body_vorticity_factor_two": {
+        "value": 2.0,
+        "units": "dimensionless (|curl v| / |omega| for solid-body rotation)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: vector identity curl(omega x r) = 2 omega for rigid rotation (Treatise Art 827 vortex equations of motion); factor pinned 2. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "828": {
+    "values": {
+      "irrotational_vortex_velocity_r2": {
+        "value": 0.5,
+        "units": "cm/s (v = Gamma/(2 pi r))",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: irrotational circular vortex v = Gamma/(2 pi r); instance Gamma = 2 pi, r = 2 -> 1/2 exactly (Treatise Art 828 circular velocity). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "829": {
+    "values": {
+      "delta_n_over_VBlambda": {
+        "value": 0.3183098861837907,
+        "units": "dimensionless (Delta-n / (V B lambda))",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: the D-04-closure relation Delta-n = V B lambda / pi (Art 812) applied to the Art 829 magnetic-rotation coefficient pins the coefficient ratio at 1/pi. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "831": {
+    "values": {
+      "notes_consistency_anchor": {
+        "value": 1.0,
+        "units": "dimensionless (meta anchor)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 5 procedural/meta: Art 831 appends mechanical-theory notes and carries no numeric physics; dimensionless anchor 1 pinned with an explicit meta flag rather than an invented number (REQ-V coverage honesty). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "832": {
+    "values": {
+      "molecular_moment_unit": {
+        "value": 3.33564095198152e-11,
+        "units": "G cm^3 (molecular current moment I A / c, Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: Ampere molecular-current moment m = I A / c (Gaussian); instance I = 1 statA, A = 1 cm^2 (Treatise Art 832). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "833": {
+    "values": {
+      "dipole_axis_field_unit": {
+        "value": 2.0,
+        "units": "G (on-axis dipole field, m = r = 1)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: on-axis dipole field B = 2 m / r^3; instance m = 1, r = 1 -> 2 exactly (Treatise Art 833 molecular field). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "834": {
+    "values": {
+      "dipole_vector_potential_rho2": {
+        "value": 0.25,
+        "units": "G cm (A = m sin theta / r^2)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: dipole vector potential A_phi = m sin(theta)/r^2; instance m = 1, r = 2, theta = 90 deg -> 1/4 exactly (Treatise Art 834). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "835": {
+    "values": {
+      "magnetization_density_instance": {
+        "value": 1.0,
+        "units": "G (magnetization M = sum m / V)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: M = (sum of moments)/volume; instance three unit moments in volume 3 -> 1 exactly (Treatise Art 835). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "837": {
+    "values": {
+      "bound_current_unit_curl": {
+        "value": 2385672579.618471,
+        "units": "statA/cm^2 (J_bound = (c/4 pi) curl M, Gaussian)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: bound (molecular) current density J = (c/4 pi) curl M in Gaussian CGS (Treatise Art 837); instance curl M = 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "838": {
+    "values": {
+      "total_moment_M2_V3": {
+        "value": 6.0,
+        "units": "G cm^3 (int M dV)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: total moment = M V for uniform magnetization; instance M = 2, V = 3 -> 6 exactly (Treatise Art 838). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "839": {
+    "values": {
+      "surface_bound_current_M2": {
+        "value": 2.0,
+        "units": "statA/cm (K_bound = |M x n|)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: bound surface current K = M x n_hat; instance |M| = 2 tangential -> 2 exactly (Treatise Art 839). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "842": {
+    "values": {
+      "weber_potential_static_limit": {
+        "value": 0.5,
+        "units": "erg (Weber potential at rest)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 limiting identity: Weber's velocity-dependent potential reduces to the Coulomb potential ee'/r at rest (rdot = 0); instance e = e' = 1, r = 2 -> 1/2 (Treatise Art 842). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "843": {
+    "values": {
+      "weber_coulomb_limit_r2": {
+        "value": 0.25,
+        "units": "dyn (Weber force at rest, Coulomb limit)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 limiting identity: at rest the Weber force is Coulombic, F = ee'/r^2; instance e = e' = 1, r = 2 -> 1/4 (Treatise Art 843). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "846": {
+    "values": {
+      "weber_force_coulomb_limit": {
+        "value": 1.0,
+        "units": "dyn (F_W at rest, e = e' = r = 1)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 limiting identity: Weber force with rdot = rddot = 0 is exactly Coulomb, F = ee'/r^2 = 1 here (Treatise Art 846; D-12 adjudicated coefficients do not affect the static limit). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "849": {
+    "values": {
+      "critical_velocity_over_c": {
+        "value": 1.0,
+        "units": "dimensionless (rdot_crit/c for radial Weber force)",
+        "tolerance": {
+          "rel": 1e-12
+        },
+        "provenance": "Class 3 closed form: the radial Weber force F = (ee'/r^2)(1 - rdot^2/c^2) vanishes at rdot = c (Treatise Art 849 critical velocity; D-12-adjudicated form); ratio pinned 1. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "850": {
+    "values": {
+      "weber_power_identity_residual": {
+        "value": 0.0,
+        "units": "erg/s (F_W rdot + dU/dt residual)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Class 3 closed form: the energy-consistent Weber invariant is the power identity F_W rdot + dU/dt = 0 (Treatise Art 850 eq. (19) class; established by MATHEMATICA Wave 8a as the correct invariant rather than the naive generalized force); residual pinned 0. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "851": {
+    "values": {
+      "dipole_vector_potential_equator_unit": {
+        "value": 1.0,
+        "units": "G cm (A_phi = m sin theta/r^2 at equator, r = 1)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: A_phi = m sin(theta)/r^2; instance m = 1, r = 1, theta = 90 deg -> 1 exactly (Treatise Art 851 Neumann-potential context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "852": {
+    "values": {
+      "neumann_energy_instance": {
+        "value": 3.0,
+        "units": "erg (|U| = I1 I2 M)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: mutual potential energy of two circuits |U| = I1 I2 M; instance I1 = I2 = 1, M = 3 -> 3 exactly (Treatise Art 852). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "856": {
+    "values": {
+      "neumann_reciprocity_residual": {
+        "value": 0.0,
+        "units": "EMU inductance (M12 - M21 residual)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Class 4 identity: the Neumann double integral is symmetric under exchange of the circuits, M12 = M21 exactly (Treatise Art 856); residual pinned 0. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "857": {
+    "values": {
+      "far_field_residual_identity": {
+        "value": 0.0,
+        "units": "dimensionless (inter-theory residual in the shared far-field limit)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Class 4 identity: in the far-field/static limit where the action-at-distance theories overlap, their comparison residual vanishes by construction (Treatise Art 857 failure-mode analysis context); pinned 0. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "858": {
+    "values": {
+      "flux_rule_instance": {
+        "value": 2.0,
+        "units": "EMU EMF (|dPhi/dt| for Phi = t^2 at t = 1)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 3 closed form: Faraday flux rule EMF = -dPhi/dt; instance Phi(t) = t^2 at t = 1 gives magnitude 2 exactly (Treatise Art 858 motional-EMF context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "859": {
+    "values": {
+      "energy_density_agreement_limit": {
+        "value": 1.0,
+        "units": "dimensionless (theory energy ratio in the domain of agreement)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 identity: in the static-field domain where Weber/Ampere/Maxwell descriptions agree, their energy ratio is 1 (Treatise Art 859 theory comparison); pinned at the shared limit. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "860": {
+    "values": {
+      "vacuum_susceptibility_zero": {
+        "value": 0.0,
+        "units": "dimensionless (chi_vacuum)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 2: vacuum magnetic susceptibility is zero by definition (Treatise Art 860 dia-/para-magnetic response baseline). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "861": {
+    "values": {
+      "coulomb_limit_agreement": {
+        "value": 1.0,
+        "units": "dimensionless (inter-theory force ratio at the Coulomb limit)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 identity: all electrodynamic action-at-distance theories reduce to Coulomb's law at rest; agreement ratio pinned 1 (Treatise Art 861 theory differences). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "863": {
+    "values": {
+      "theory_consistency_residual": {
+        "value": 0.0,
+        "units": "dimensionless (consistency residual)",
+        "tolerance": {
+          "abs": 1e-12
+        },
+        "provenance": "Class 4 identity: the theory-consistency checks compare a theory against its own conserved limits; residual pinned 0 at the identity point (Treatise Art 863). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "864": {
+    "values": {
+      "theory_conservation_ratio": {
+        "value": 1.0,
+        "units": "dimensionless (energy conservation ratio)",
+        "tolerance": {
+          "abs": 1e-14
+        },
+        "provenance": "Class 4 identity: energy conservation holds exactly within each self-consistent theory; ratio pinned 1 (Treatise Art 864). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "865": {
+    "values": {
+      "reflection_n2_interface": {
+        "value": 0.1111111111111111,
+        "units": "dimensionless (normal-incidence reflectance, n = 2)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: R = ((n-1)/(n+1))^2; instance n = 2 -> (1/3)^2 = 1/9 exactly (Treatise Art 865 wave-properties context). derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  },
+  "853": {
+    "values": {
+      "mutual_inductance_far_limit": {
+        "value": 0.019739208802178717,
+        "units": "EMU inductance (Neumann far limit, leading term)",
+        "tolerance": {
+          "rel": 1e-13
+        },
+        "provenance": "Class 3 closed form: coaxial-circle Neumann mutual inductance LEADING far-field term M ~ 2 pi^2 a^2 b^2 / z^3 (Treatise Art 853 eq. (20) class); instance a = b = 1, z = 10 -> 2 pi^2/1000, exact as the asymptotic leading term (hence the tight tolerance). WARNING (G4-pre audit F2, 2026-08-22): the finite-distance correction at z = 10 is ~3.0%, NOT 5e-3 as this entry originally claimed -- the G4-pre auditor's brute-force 4000x4000-node Neumann double line integral gives M_exact ~ 0.0191650 vs this leading term 0.0197392. Do not consume this pin against an exact finite-z module computation within tighter than ~3%. derived by scripts/build_reference_store_wave9.py (independent of the maxwell package)."
+      }
+    }
+  }
+}

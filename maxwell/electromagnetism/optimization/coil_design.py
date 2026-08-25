@@ -1,32 +1,35 @@
-"""maxwell.electromagnetism.optimization.coil_design — Coil optimization (Art. 706).
+"""maxwell.electromagnetism.optimization.coil_design — Coil of maximum self-inductance (Art. 706).
 
-Implements Maxwell's analysis of optimal coil design for maximum
-field uniformity and strength.
+Genuine Treatise content (Part IV, Ch. XIV "Circular Currents", Art. 706):
+with a given length of wire to be wound into a coil whose winding
+cross-section has a given geometric mean distance R of itself, find the
+form of the channel (mean radius a) for which the self-inductance is
+greatest. With the self-inductance of a circular coil (Art. 693),
 
-Maxwell's CGS formulation (Art. 706):
-    For a coil of given wire length and radius, the design parameters are:
-    - Coil radius a
-    - Number of turns n
-    - Coil length L (for solenoids)
+    L = 4.pi.n^2.a.(log(8a/R) - 2),
 
-    Optimal designs maximize:
-    - Field at center: B = 2*pi*n*I/(c*a)
-    - Field uniformity: minimize dB/dz
-    - Efficiency: B per unit power
+and the constraints of fixed wire and similar channel figures,
+dn/n = 2 dR/R and da/a = -2 dR/R, the optimum satisfies
 
-    Maxwell showed that the Helmholtz configuration (separation = radius)
-    gives the most uniform field for two identical coils.
+    log(8a/R) = 7/2,      i.e.   8a/R = e^(7/2),
 
-where:
-    a = coil radius (cm)
-    n = number of turns
-    I = current (abamperes)
-    B = magnetic field (gauss)
+and at the optimum L = 6.pi.n^2.a. For a circular channel of radius c
+the self-GMD is R = e^(-1/4).c (Art. 691), giving Gauss's result
+a = e^(13/4).c/8 ~= 3.2238 c; for a square channel of side s,
+R = 0.44705 s and the Treatise quotes 2a = 3.7 s.
 
-Category: A (maxwell_original) — Maxwell's coil optimization theory.
+Legacy content: the six functions below (field-per-resistance
+efficiency, single-coil/Helmholtz wire-budget optima, random-point
+uniformity figure of merit) are modern coil-optimization heuristics.
+They formerly carried a fabricated Art. 706 / chapter "Coil Design"
+attribution; no chapter of that name exists in the Treatise and Art. 706
+treats the coil of maximum self-inductance. Per the D-24 precedent
+(re-decorate, do not delete working math) they are reclassified
+``standard_math`` with no article numbers; their formulas are unchanged.
 
-References:
-    Part IV, Art. 706: Coil design optimization.
+Unit convention: electromagnetic quantities in EMU for consistency with
+``maxwell.math.geometry.gmd`` and the inductance machinery (inductance
+in centimeters); no factor of c appears in L.
 """
 
 from __future__ import annotations
@@ -34,20 +37,244 @@ from __future__ import annotations
 import numpy as np
 from scipy.optimize import minimize_scalar
 
-from maxwell.config.constants import CONST
 from maxwell.electromagnetism.components.circular_coils import (
     calc_coil_on_axis,
     calc_double_coil_field,
 )
+from maxwell.math.geometry.gmd import calc_self_gmd_circle, calc_self_gmd_rectangle
 from maxwell.meta.citation import maxwell_cite
+
+# ---------------------------------------------------------------------------
+# Art. 706: coil of maximum self-inductance (genuine Treatise content)
+# ---------------------------------------------------------------------------
 
 
 @maxwell_cite(
     706,
     part=4,
-    chapter="Coil Design",
+    chapter="Ch XIV: Circular Currents",
     theory_class="maxwell_original",
-    description="Calculate coil field efficiency",
+    description="Self-inductance L = 4.pi.n^2.a.(log(8a/R) - 2) of a circular coil",
+)
+def calc_self_inductance_circular_coil(
+    n_turns: float,
+    mean_radius: float,
+    gmd_self: float,
+) -> float:
+    """Self-inductance of a circular coil from its self-GMD (Art. 706).
+
+    Maxwell's formula (Art. 693, applied throughout Art. 706): the
+    self-inductance of a coil of n turns wound in a channel whose mean
+    radius is a and whose winding cross-section has geometric mean
+    distance R from itself is
+
+        L = 4.pi.n^2.a.(log(8.a/R) - 2)
+
+    (EMU: L in centimeters). All finite-thickness effects of the winding
+    enter through R alone.
+
+    Args:
+        n_turns: Number of turns n.
+        mean_radius: Mean radius of the coil a (cm).
+        gmd_self: Self geometric mean distance R of the winding
+            cross-section (cm); see ``maxwell.math.geometry.gmd``.
+
+    Returns:
+        Self-inductance L (cm, EMU).
+
+    Raises:
+        ValueError: for non-positive arguments.
+    """
+    if n_turns <= 0.0 or mean_radius <= 0.0 or gmd_self <= 0.0:
+        raise ValueError("n_turns, mean_radius and gmd_self must be positive")
+    return (
+        4.0
+        * np.pi
+        * n_turns**2
+        * mean_radius
+        * (np.log(8.0 * mean_radius / gmd_self) - 2.0)
+    )
+
+
+@maxwell_cite(
+    706,
+    part=4,
+    chapter="Ch XIV: Circular Currents",
+    theory_class="maxwell_original",
+    description="Optimum winding proportions log(8a/R) = 7/2 of Art. 706",
+)
+def calc_optimal_mean_radius_to_gmd_ratio() -> float:
+    """Optimal ratio a/R for a coil of maximum self-inductance (Art. 706).
+
+    With fixed wire and similar channel figures the variations obey
+    dn/n = 2 dR/R and da/a = -2 dR/R; differentiating
+    L = 4.pi.n^2.a.(log(8a/R) - 2) with respect to R then gives the
+    stationarity condition log(8a/R) = 7/2, i.e.
+
+        a/R = e^(7/2)/8.
+
+    Returns:
+        Optimal ratio a/R = e^(7/2)/8 (dimensionless, ~4.1394).
+    """
+    return np.exp(3.5) / 8.0
+
+
+@maxwell_cite(
+    706,
+    part=4,
+    chapter="Ch XIV: Circular Currents",
+    theory_class="maxwell_original",
+    description="Mean radius of the maximum-inductance coil for a given channel GMD",
+)
+def calc_optimal_coil_mean_radius(gmd_self: float) -> float:
+    """Mean radius a of the maximum-inductance coil (Art. 706).
+
+    Inverts the optimum log(8a/R) = 7/2 for a channel whose winding
+    cross-section has self-GMD R:
+
+        a = e^(7/2).R/8.
+
+    At this radius the inductance reaches L = 6.pi.n^2.a.
+
+    Args:
+        gmd_self: Self-GMD R of the winding cross-section (cm).
+
+    Returns:
+        Optimal mean radius a (cm).
+
+    Raises:
+        ValueError: for non-positive gmd_self.
+    """
+    if gmd_self <= 0.0:
+        raise ValueError("gmd_self must be positive")
+    return calc_optimal_mean_radius_to_gmd_ratio() * gmd_self
+
+
+@maxwell_cite(
+    706,
+    part=4,
+    chapter="Ch XIV: Circular Currents",
+    theory_class="maxwell_original",
+    description="Gauss's result a = e^(13/4).c/8 for a circular channel",
+)
+def calc_gauss_optimal_coil(channel_radius: float) -> float:
+    """Maximum-inductance coil on a circular channel (Art. 706, Gauss).
+
+    For a circular channel of radius c the self-GMD of the cross-section
+    is R = e^(-1/4).c (Art. 691), so the optimum mean radius is
+
+        a = e^(7/2).e^(-1/4).c/8 = e^(13/4).c/8 ~= 3.2238 c.
+
+    Args:
+        channel_radius: Radius c of the circular channel (cm).
+
+    Returns:
+        Optimal mean radius a (cm).
+
+    Raises:
+        ValueError: for non-positive channel_radius.
+    """
+    if channel_radius <= 0.0:
+        raise ValueError("channel_radius must be positive")
+    return calc_optimal_coil_mean_radius(calc_self_gmd_circle(channel_radius))
+
+
+@maxwell_cite(
+    706,
+    part=4,
+    chapter="Ch XIV: Circular Currents",
+    theory_class="maxwell_original",
+    description="Complete maximum-inductance design for a given wire and channel",
+)
+def calc_max_inductance_design(
+    wire_length: float,
+    channel_radius: float,
+) -> dict[str, float]:
+    """Design the coil of greatest self-inductance (Art. 706).
+
+    Winds the whole wire of length l at the optimal mean radius
+    a = e^(13/4).c/8 on a circular channel of radius c, with
+    n = l/(2.pi.a) turns; the achieved inductance equals the optimum
+    identity L = 6.pi.n^2.a because log(8a/R) = 7/2 by construction.
+
+    Args:
+        wire_length: Total length of wire l (cm).
+        channel_radius: Radius c of the circular channel (cm).
+
+    Returns:
+        Dict with mean_radius a, n_turns n, gmd_self R, inductance L
+        and the optimum-identity value 6.pi.n^2.a (equal to L).
+
+    Raises:
+        ValueError: for non-positive inputs.
+    """
+    if wire_length <= 0.0:
+        raise ValueError("wire_length must be positive")
+
+    a = calc_gauss_optimal_coil(channel_radius)
+    n_turns = wire_length / (2.0 * np.pi * a)
+    r_gmd = calc_self_gmd_circle(channel_radius)
+    inductance = calc_self_inductance_circular_coil(n_turns, a, r_gmd)
+    return {
+        "mean_radius": a,
+        "n_turns": n_turns,
+        "gmd_self": r_gmd,
+        "inductance": inductance,
+        "inductance_optimum_identity": 6.0 * np.pi * n_turns**2 * a,
+    }
+
+
+@maxwell_cite(
+    706,
+    part=4,
+    chapter="Ch XIV: Circular Currents",
+    theory_class="maxwell_original",
+    description="Square channel optimum 2a = 3.7 s quoted by Maxwell",
+)
+def calc_square_channel_optimal_coil(side: float) -> dict[str, float]:
+    """Maximum-inductance coil on a square channel (Art. 706).
+
+    For a square winding cross-section of side s the self-GMD is
+    R = 0.44705 s (``maxwell.math.geometry.gmd.calc_self_gmd_rectangle``),
+    giving the optimum mean radius a = e^(7/2).R/8 and the Treatise's
+    quoted proportion 2a = 3.7 s.
+
+    Args:
+        side: Side s of the square channel (cm).
+
+    Returns:
+        Dict with gmd_self R, mean_radius a and the diameter ratio 2a/s.
+
+    Raises:
+        ValueError: for non-positive side.
+    """
+    if side <= 0.0:
+        raise ValueError("side must be positive")
+    r_gmd = calc_self_gmd_rectangle(side, side)
+    a = calc_optimal_coil_mean_radius(r_gmd)
+    return {
+        "gmd_self": r_gmd,
+        "mean_radius": a,
+        "diameter_to_side_ratio": 2.0 * a / side,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Legacy modern heuristics — reclassified standard_math (D-24 precedent,
+# Wave 7 2026-08-22). Formerly attributed to a fabricated Art. 706 chapter
+# "Coil Design"; no such chapter exists in the Treatise and the genuine
+# Art. 706 content (coil of maximum self-inductance) is implemented above.
+# Formulas unchanged; only the decoration is corrected.
+# ---------------------------------------------------------------------------
+
+
+# D-24-style reclassification: modern wire-budget field heuristic
+# (post-Treatise), no Treatise article number.
+@maxwell_cite(
+    part=4,
+    chapter="",
+    theory_class="standard_math",
+    description="Modern field-per-resistance efficiency heuristic (post-Treatise)",
 )
 def calc_coil_efficiency(
     current: float,
@@ -58,7 +285,10 @@ def calc_coil_efficiency(
     """
     Calculate coil field efficiency.
 
-    Art. 706: For a given wire length and gauge, the efficiency is:
+    Modern heuristic (no Treatise article; former Art. 706 attribution
+    removed per the D-24 precedent — the genuine Art. 706 content is
+    :func:`calc_max_inductance_design`). For a given wire length and
+    gauge, the efficiency is:
 
         eta = B_center / (I * sqrt(R))
 
@@ -99,12 +329,13 @@ def calc_coil_efficiency(
     }
 
 
+# D-24-style reclassification: modern field-maximizing radius search
+# (post-Treatise), no Treatise article number.
 @maxwell_cite(
-    706,
     part=4,
-    chapter="Coil Design",
-    theory_class="maxwell_original",
-    description="Calculate optimal coil radius for given wire",
+    chapter="",
+    theory_class="standard_math",
+    description="Modern wire-budget optimal-radius search (post-Treatise)",
 )
 def calc_optimal_coil_radius(
     wire_length: float,
@@ -114,9 +345,10 @@ def calc_optimal_coil_radius(
     """
     Calculate optimal coil radius for maximum field at target position.
 
-    Art. 706: For a given wire length, the optimal radius balances
-    the number of turns (favors small radius) against field strength
-    per turn (favors large radius).
+    Modern heuristic (no Treatise article; former Art. 706 attribution
+    removed per the D-24 precedent). For a given wire length, the
+    optimal radius balances the number of turns (favors small radius)
+    against field strength per turn (favors large radius).
 
     Args:
         wire_length: Total wire length (cm).
@@ -142,12 +374,13 @@ def calc_optimal_coil_radius(
     return result.x
 
 
+# D-24-style reclassification: modern Helmholtz wire-budget optimum
+# (post-Treatise), no Treatise article number.
 @maxwell_cite(
-    706,
     part=4,
-    chapter="Coil Design",
-    theory_class="maxwell_original",
-    description="Calculate optimal Helmholtz configuration",
+    chapter="",
+    theory_class="standard_math",
+    description="Modern Helmholtz wire-budget optimum (post-Treatise)",
 )
 def calc_optimal_helmholtz(
     wire_length: float,
@@ -156,8 +389,10 @@ def calc_optimal_helmholtz(
     """
     Calculate optimal Helmholtz coil configuration.
 
-    Art. 706: For a given wire length split equally between two coils,
-    find the radius that maximizes uniform field at center.
+    Modern heuristic (no Treatise article; former Art. 706 attribution
+    removed per the D-24 precedent). For a given wire length split
+    equally between two coils, find the radius that maximizes uniform
+    field at center.
 
     Args:
         wire_length: Total wire length for both coils (cm).
@@ -202,12 +437,13 @@ def calc_optimal_helmholtz(
     }
 
 
+# D-24-style reclassification: modern random-sampling uniformity metric
+# (post-Treatise), no Treatise article number.
 @maxwell_cite(
-    706,
     part=4,
-    chapter="Coil Design",
-    theory_class="maxwell_original",
-    description="Calculate coil uniformity figure of merit",
+    chapter="",
+    theory_class="standard_math",
+    description="Modern random-sampling uniformity figure of merit (post-Treatise)",
 )
 def calc_uniformity_fom(
     coil_radius: float,
@@ -218,8 +454,9 @@ def calc_uniformity_fom(
     """
     Calculate coil configuration uniformity figure of merit.
 
-    Art. 706: The uniformity is measured by the field variation
-    over a spherical region of interest.
+    Modern heuristic (no Treatise article; former Art. 706 attribution
+    removed per the D-24 precedent). The uniformity is measured by the
+    field variation over a spherical region of interest.
 
     Args:
         coil_radius: Coil radius (cm).
@@ -283,12 +520,13 @@ def calc_uniformity_fom(
     }
 
 
+# D-24-style reclassification: modern verification harness over the above
+# heuristics (post-Treatise), no Treatise article number.
 @maxwell_cite(
-    706,
     part=4,
-    chapter="Coil Design",
-    theory_class="maxwell_original",
-    description="Verify optimal coil design",
+    chapter="",
+    theory_class="standard_math",
+    description="Modern coil-design verification harness (post-Treatise)",
 )
 def verify_coil_design(
     wire_length: float = 100.0,
@@ -298,7 +536,8 @@ def verify_coil_design(
     """
     Verify coil design optimization.
 
-    Art. 706: This function verifies:
+    Modern harness (no Treatise article; former Art. 706 attribution
+    removed per the D-24 precedent). Verifies:
     1. Optimal radius produces higher field than arbitrary choices
     2. Helmholtz configuration has better uniformity than other separations
 
@@ -351,12 +590,13 @@ def verify_coil_design(
     }
 
 
+# D-24-style reclassification: modern analysis aggregate over the above
+# heuristics (post-Treatise), no Treatise article number.
 @maxwell_cite(
-    706,
     part=4,
-    chapter="Coil Design",
-    theory_class="maxwell_original",
-    description="Complete coil design analysis",
+    chapter="",
+    theory_class="standard_math",
+    description="Modern coil-design analysis aggregate (post-Treatise)",
 )
 def analyze_coil_design(
     wire_length: float,
@@ -365,7 +605,8 @@ def analyze_coil_design(
     """
     Complete coil design optimization analysis.
 
-    Art. 706: Comprehensive analysis including:
+    Modern aggregate (no Treatise article; former Art. 706 attribution
+    removed per the D-24 precedent). Comprehensive analysis including:
     1. Optimal single coil
     2. Optimal Helmholtz pair
     3. Uniformity comparison

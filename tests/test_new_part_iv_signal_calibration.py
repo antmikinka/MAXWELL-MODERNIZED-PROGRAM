@@ -2,7 +2,9 @@
 Test new Part IV Signal Processing and Calibration modules.
 
 Comprehensive test coverage for signal transmission and resistance measurement:
-- Telegraphy (Arts. 730-757) — Telegraph equation, signal velocity, attenuation
+- Telegraphy (Arts. 730-735 Treatise line relations; the rise-time /
+  bandwidth / signaling-rate heuristics are reclassified standard_math per
+  the D-24 adjudication of 2026-08-21 and carry no article numbers)
 - Absolute Resistance (Arts. 758-767) — Recoil method, Lenz method, rotating coil
 
 Tests verify:
@@ -22,7 +24,7 @@ from maxwell.config.constants import CONST, C, cgs_unit_of
 from maxwell.meta.citation import MaxwellCitation, get_citation
 
 # =============================================================================
-# TELEGRAPHY TESTS (Arts. 730-757)
+# TELEGRAPHY TESTS (Arts. 730-735; modern heuristics reclassified per D-24)
 # =============================================================================
 
 
@@ -193,7 +195,10 @@ class TestSignalTransmission:
     def test_rise_time(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify rise time formula.
 
-        Art. 740: t_r ≈ 2.2 * R * C * L^2
+        D-24 re-point (2026-08-21): the 2.2RC rule is a modern
+        standard_math heuristic (2.2 = ln 9, first-order 10-90 % step),
+        NOT Treatise Art. 740.  t_r ≈ 2.2 * R * C * ell^2 (distributed
+        RC line; the code applies the ell^2 dependence).
         """
         from maxwell.signal_processing.telegraphy import (
             SignalTransmission,
@@ -224,7 +229,9 @@ class TestSignalTransmission:
     def test_bandwidth_limit(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify bandwidth limit.
 
-        Art. 745: BW ≈ 0.35 / t_r
+        D-24 re-point (2026-08-21): BW ≈ 0.35 / t_r is the modern
+        standard_math first-order rise-time/bandwidth product
+        (ln 9 / (2 pi) ≈ 0.3487), NOT Treatise Art. 745.
         """
         from maxwell.signal_processing.telegraphy import (
             SignalTransmission,
@@ -244,7 +251,8 @@ class TestSignalTransmission:
     def test_max_signaling_rate(self, cgs_tolerance, assert_cgs_close) -> None:
         """Verify maximum signaling rate.
 
-        Art. 750: f_max ≈ 1 / (2 * t_r)
+        D-24 re-point (2026-08-21): f_max ≈ 1 / (2 * t_r) is a modern
+        standard_math Nyquist-style ISI thumb rule, NOT Treatise Art. 750.
         """
         from maxwell.signal_processing.telegraphy import (
             SignalTransmission,
@@ -809,7 +817,13 @@ class TestTelegraphyCitationCompliance:
     def test_signal_transmission_citation(
         self, require_citation, validate_citation_articles
     ) -> None:
-        """Verify SignalTransmission methods have correct citations."""
+        """Verify SignalTransmission methods carry the D-24 reclassification.
+
+        Re-pointed (2026-08-21) per the D-24 adjudication closing G2
+        condition C6: the rise-time / bandwidth / signaling-rate heuristics
+        are modern standard_math with NO Treatise article numbers; the
+        fabricated "Signal Transmission" chapter string must be gone.
+        """
         from maxwell.signal_processing.telegraphy import (
             SignalTransmission,
             TelegraphLine,
@@ -818,9 +832,15 @@ class TestTelegraphyCitationCompliance:
         line = TelegraphLine()
         st = SignalTransmission(line)
 
-        citation = require_citation(st.rise_time)
-        assert citation.part == 4
-        assert any(a in citation.articles for a in [740, 745, 750])
+        for method in (st.rise_time, st.bandwidth_limit, st.max_signaling_rate):
+            citation = require_citation(method)
+            assert citation.part == 4
+            assert citation.theory_class == "standard_math"
+            assert citation.articles == ()
+            assert "Signal Transmission" not in citation.chapter
+            # Arts. 740/745/750 belong to Ch XVI: Observations and carry
+            # genuine Treatise content; no anachronistic attributions.
+            assert all(a not in citation.articles for a in (740, 745, 750))
 
     def test_telegraph_functions_citation(
         self, require_citation, validate_citation_articles

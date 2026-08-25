@@ -608,6 +608,7 @@ def get_emu_dimensions(quantity: str) -> Dimension:
     return mapping[quantity]
 
 
+# PARKING-LOT: Art 620 (Part III unit-ratio foundation) is a deliberate cross-reference; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
     620,
     771,
@@ -785,6 +786,7 @@ def verify_speed_of_light_relationship() -> dict[str, float | bool | list[str]]:
     return results
 
 
+# PARKING-LOT: Art 620 (Part III unit-ratio foundation) is a deliberate cross-reference; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
     620,
     771,
@@ -837,6 +839,7 @@ def convert_esu_to_emu(value: float, quantity: str) -> float:
     return value / ratio
 
 
+# PARKING-LOT: Art 620 (Part III unit-ratio foundation) is a deliberate cross-reference; out of last-200 scope (Wave-6 adjudication, 2026-08-21).
 @maxwell_cite(
     620,
     771,

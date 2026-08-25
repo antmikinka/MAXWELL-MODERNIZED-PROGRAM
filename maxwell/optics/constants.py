@@ -40,8 +40,16 @@ import numpy as np
 from maxwell.config.constants import CONST
 from maxwell.meta.citation import maxwell_cite
 
-# Standard optical constants for common materials (at visible wavelengths)
-# Refractive indices at λ ≈ 589 nm (sodium D line)
+# Standard optical constants for common materials.
+#
+# Provenance: refractive indices at the sodium D line (lambda = 589.3 nm),
+# classical handbook values (CRC Handbook / Landolt-Boernstein) of the kind
+# Maxwell's own Tables I-III in Part IV collated.  The permittivity listed
+# for each medium is the OPTICAL-FREQUENCY specific inductive capacity
+# K = n**2 demanded by Art. 788 for non-magnetic media (mu_r = 1), not the
+# static dielectric constant; the table is therefore self-consistent with
+# Maxwell's relation n = sqrt(K).  Calcite is uniaxial (n_o, n_e); the
+# eps_r quoted is K along the ordinary polarization (n_o**2).
 OPTICAL_CONSTANTS = {
     # Vacuum and gases
     "vacuum": {"n": 1.0, "eps_r": 1.0, "mu_r": 1.0},
@@ -64,15 +72,26 @@ OPTICAL_CONSTANTS = {
     "germanium": {"n": 4.0, "eps_r": 16.0, "mu_r": 1.0},
 }
 
-# Wavelength ranges for optical spectrum (in cm, CGS)
+# Wavelength ranges for optical spectrum (in cm, CGS).
+# Provenance: conventional band boundaries of the optical spectrum as used
+# in spectroscopy handbooks; 1 mm = 1e-1 cm.
 WAVELENGTH_RANGES = {
     "ultraviolet": (1e-7, 4e-7),  # 100-400 nm
     "visible": (4e-7, 7e-7),  # 400-700 nm
-    "infrared": (7e-7, 1e-3),  # 700 nm - 1 mm
+    "infrared": (7e-7, 1e-1),  # 700 nm - 1 mm
     "near_ir": (7e-7, 2.5e-4),  # 700 nm - 2.5 μm
     "mid_ir": (2.5e-4, 2.5e-3),  # 2.5-25 μm
-    "far_ir": (2.5e-3, 1e-3),  # 25 μm - 1 mm
+    "far_ir": (2.5e-3, 1e-1),  # 25 μm - 1 mm
 }
+
+# Parameters of the illustrative normal-dispersion model used by
+# ``calc_dispersion`` (Art. 789): n(omega) = N_BASE + ALPHA_DISP *
+# (omega/omega_0)**2.  N_BASE is the vacuum-limit index; ALPHA_DISP is a
+# dimensionless oscillator-strength parameter of the single-resonance
+# (far-from-resonance) Sellmeier-type expansion, chosen so the model is
+# qualitative; it is not fitted to any specific material.
+DISPERSION_VACUUM_BASE_INDEX = 1.0
+DISPERSION_OSCILLATOR_STRENGTH = 0.1
 
 
 @maxwell_cite(
@@ -178,12 +197,13 @@ def calc_dispersion(omega: float, omega_0: float) -> float:
     if omega_0 <= 0:
         raise ValueError(f"Resonant frequency must be positive")
 
-    # Simple normal dispersion model: n increases with frequency
-    # n = n_base + A * (omega / omega_0)^2
-    n_base = 1.0
-    A = 0.1
-
-    return n_base + A * (omega / omega_0) ** 2
+    # Simple normal dispersion model (leading-order single-resonance
+    # expansion, valid well below resonance): n increases with frequency
+    #   n = N_BASE + ALPHA_DISP * (omega / omega_0)^2
+    return (
+        DISPERSION_VACUUM_BASE_INDEX
+        + DISPERSION_OSCILLATOR_STRENGTH * (omega / omega_0) ** 2
+    )
 
 
 @dataclass

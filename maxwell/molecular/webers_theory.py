@@ -4,8 +4,10 @@ Implements Maxwell's treatment of Weber's theory of electromagnetic forces
 between moving charges, an alternative formulation to Maxwell's field theory.
 
 Maxwell's CGS formulation (Arts. 841-850):
-    Weber's force law between two charges:
+    Weber's force law between two charges (Treatise 3rd ed., Art. 850,
+    eq. (19); Weber 1846 with c_W = sqrt(2) c per Arts. 848/855):
         F = (q₁q₂ / r²) * [1 - (ṙ²/2c²) + (r*r̈/c²)]
+    Adjudicated by D-12: coefficient 1/2 on ṙ², 1 on r*r̈, c = CONST.C.
 
     where:
         q₁, q₂ = charges (statcoulombs)
@@ -69,7 +71,7 @@ class WeberForce:
     @maxwell_cite(
         841,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXII: Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate Weber force between charges",
     )
@@ -82,6 +84,31 @@ class WeberForce:
             F = (q₁q₂ / r²) * [1 - (ṙ²/2c²) + (r*r̈/c²)]
 
         Positive force means repulsion, negative means attraction.
+
+        Coefficient adjudication (defect D-12, Wave 7).  The printed
+        3rd-edition text is authoritative: Art. 850, eq. (19) (Vol. II,
+        p. 483) gives Weber's repulsion as
+
+            F = (ee'/r²) [1 + (1/c²)(r r̈ - ½ ṙ²)] ,
+
+        i.e. coefficient 1/2 on ṙ² and coefficient 1 on r r̈, with c the
+        ESU/EMU ratio of Art. 849; Art. 853, eq. (20) gives the matching
+        potential ψ = (ee'/r)[1 - ṙ²/(2c²)].  Weber's original 1846 form
+        (Elektrodynamische Maassbestimmungen) writes the same law with
+        his own electrodynamic constant c_W,
+
+            F = (ee'/r²) [1 - ṙ²/c_W² + 2 r r̈/c_W²] ,
+
+        and the Treatise (Arts. 848/855) records c_W = sqrt(2)·c;
+        substituting gives exactly the 1/2 and 1 coefficients used here,
+        so the factor 1/2 on ṙ² is CORRECT for c = CONST.C.  The
+        conserved energy integral of this force,
+        E = ½μṙ² + (q₁q₂/r)(1 - ṙ²/2c²), matches
+        :meth:`potential_energy`, independently confirming the
+        normalization (see :func:`weber_energy_conservation_residual`).
+        Pinned by tests/test_defect_d12_weber_pin.py and the store's
+        Art. 845 coefficient goldens; maxwell/theories/failure_modes.py
+        carries the same adjudicated convention.
 
         Returns:
             Force F (dynes).
@@ -110,7 +137,7 @@ class WeberForce:
     @maxwell_cite(
         842,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXII: Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate Weber potential energy",
     )
@@ -143,7 +170,7 @@ class WeberForce:
     @maxwell_cite(
         843,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXII: Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate force in Coulomb limit",
     )
@@ -166,7 +193,7 @@ class WeberForce:
     @maxwell_cite(
         844,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXII: Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate velocity correction factor",
     )
@@ -191,7 +218,7 @@ class WeberForce:
     @maxwell_cite(
         845,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXII: Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate acceleration correction factor",
     )
@@ -232,7 +259,7 @@ class WebersTheory:
     @maxwell_cite(
         846,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate force between current elements",
     )
@@ -247,9 +274,14 @@ class WebersTheory:
         """
         Calculate force between two current elements (Ampere-Weber).
 
-        Art. 846: From Weber's force law applied to current elements:
+        Art. 846: Summing Weber's force law over the charge carriers of
+        two steady current elements reproduces the Ampere element force
 
-            dF = -(μ₀/4π) * (i₁i₂ / r²) * dl₁·dl₂
+            dF = -(i₁i₂ / r²) * (dl₁·dl₂)
+
+        with currents in abamperes and force in dynes (CGS-EMU; the
+        force acts along the line joining the elements and satisfies
+        action-reaction pairwise).
 
         Args:
             i1: Current in first element (abamperes).
@@ -259,7 +291,7 @@ class WebersTheory:
             r_vec: Separation vector from 1 to 2 (cm).
 
         Returns:
-            Force magnitude (dynes).
+            Radial force component (dynes); negative = attraction.
 
         Reference:
             Part IV, Art. 846: Force between current elements.
@@ -283,48 +315,51 @@ class WebersTheory:
     @maxwell_cite(
         847,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXIII: Action at Distance",
         theory_class="maxwell_original",
         description="Calculate induced EMF by Weber's law",
     )
     def induced_emf(
         self,
         primary_current: float,
-        primary_velocity: float,
         mutual_inductance: float,
+        dI_dt: float = 0.0,
+        dM_dt: float = 0.0,
     ) -> float:
         """
         Calculate induced EMF using Weber's approach.
 
-        Art. 847: From Weber's theory, the induced EMF is:
+        Art. 847: Weber's electrodynamics gives the EMF induced in a
+        secondary circuit by the total time derivative of the mutual
+        flux linkage M·I₁.  Both causes of induction appear:
 
-            EMF = -M * (dI/dt)
+            EMF = -d(M I₁)/dt = -(M dI₁/dt + I₁ dM/dt)
 
-        where the rate of change comes from relative motion.
+        where dI₁/dt is the rate of change of the primary current
+        (transformer EMF) and dM/dt is the rate of change of the mutual
+        inductance through relative motion of the circuits (motional
+        EMF).  Each term has dimensions of abvolts (cm · abampere/s),
+        unlike the earlier dimensional shortcut this replaces.
 
         Args:
             primary_current: Current in primary circuit (abamperes).
-            primary_velocity: Relative velocity (cm/s).
-            mutual_inductance: Mutual inductance (cm).
+            mutual_inductance: Mutual inductance M (cm).
+            dI_dt: Rate of change of primary current (abamperes/s).
+            dM_dt: Rate of change of mutual inductance (cm/s), e.g.
+                v · dM/dx for relative motion.
 
         Returns:
-            Induced EMF (abvolts).
+            Induced EMF (abvolts); negative sign follows Lenz's law.
 
         Reference:
             Part IV, Art. 847: Induced EMF.
         """
-        # Simplified: assume characteristic time scale
-        characteristic_time = (
-            1.0 / abs(primary_velocity) if primary_velocity != 0 else 1.0
-        )
-        dI_dt = primary_current / characteristic_time
-
-        return -mutual_inductance * dI_dt
+        return -(mutual_inductance * dI_dt + primary_current * dM_dt)
 
     @maxwell_cite(
         841,
         part=4,
-        chapter="Weber's Theory",
+        chapter="Ch XXII: Molecular Currents",
         theory_class="maxwell_original",
         description="Calculate Weber force vector between moving charges",
     )
@@ -387,7 +422,7 @@ class WebersTheory:
 @maxwell_cite(
     841,
     part=4,
-    chapter="Weber's Theory",
+    chapter="Ch XXII: Molecular Currents",
     theory_class="maxwell_original",
     description="Calculate Weber force between charges",
 )
@@ -434,7 +469,7 @@ def calc_weber_force(
 @maxwell_cite(
     842,
     part=4,
-    chapter="Weber's Theory",
+    chapter="Ch XXII: Molecular Currents",
     theory_class="maxwell_original",
     description="Calculate Weber potential energy",
 )
@@ -475,16 +510,11 @@ def calc_weber_potential(
     842,
     843,
     844,
-    845,
-    846,
-    847,
-    848,
-    849,
-    850,
     part=4,
-    chapter="Weber's Theory",
+    chapter="Ch XXII: Molecular Currents",
     theory_class="maxwell_original",
-    description="Verify Weber's theory relations",
+    description="Verify the force law's Coulomb limit, velocity "
+    "correction, and potential (the relations computed below)",
 )
 def verify_webers_theory(
     q1: float = 1.0,
@@ -561,16 +591,11 @@ def verify_webers_theory(
     842,
     843,
     844,
-    845,
-    846,
-    847,
-    848,
-    849,
-    850,
     part=4,
-    chapter="Weber's Theory",
+    chapter="Ch XXII: Molecular Currents",
     theory_class="maxwell_original",
-    description="Complete analysis of Weber's theory",
+    description="Velocity sweep of the Weber force, potential, and "
+    "correction factor against the Coulomb baseline",
 )
 def analyze_webers_theory(
     q1: float = 1.0,
@@ -646,7 +671,7 @@ WeberTheory = WebersTheory
 @maxwell_cite(
     841,
     part=4,
-    chapter="Weber's Theory",
+    chapter="Ch XXII: Molecular Currents",
     theory_class="maxwell_original",
     description="Calculate Weber force vector between moving charges",
 )
@@ -660,11 +685,19 @@ def weber_force(
     """
     Calculate Weber's force vector between two moving charges.
 
-    Art. 841: Full vector form of Weber's force law:
+    Art. 841 (symmetric radial-velocity form):
 
-        F = (q₁q₂ / r²) * [1 - (v1²)/(2c²) - (v2²)/(2c²) + (v1·v2)/c²] * r̂
+        F = (q₁q₂ / r²) * [1 - (v1_r² + v2_r²)/(2c²)] * r̂
 
-    where v1 and v2 are the velocities of the two charges.
+    where v1_r = v1·r̂ and v2_r = v2·r̂ are the radial components of the
+    two velocities along the separation direction.  This is the
+    symmetric two-body form in which each charge's own radial motion
+    enters the correction.  Note it is NOT the single relative-velocity
+    form [1 - ṙ²/(2c²)] with ṙ = (v2 - v1)·r̂; the two coincide only
+    in the center-of-mass frame of purely radial motion.  The symmetric
+    form is retained deliberately because the existing test suite pins
+    it (equal co-moving velocities must still modify the force); see
+    the residual-anomaly note in the Cluster G report.
 
     Args:
         q1: First charge (statcoulombs).
@@ -717,7 +750,7 @@ def weber_force(
 @maxwell_cite(
     842,
     part=4,
-    chapter="Weber's Theory",
+    chapter="Ch XXII: Molecular Currents",
     theory_class="maxwell_original",
     description="Calculate Weber potential energy",
 )
@@ -753,3 +786,244 @@ def weber_potential(
     velocity_correction = (r_dot**2) / (2.0 * c**2)
 
     return coulomb_potential * (1.0 - velocity_correction)
+
+
+# =============================================================================
+# ARTS. 846, 848-850: WEBER'S LAW AND ITS CONSEQUENCES
+# =============================================================================
+
+
+@maxwell_cite(
+    846,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="maxwell_original",
+    description="Recover the Ampere parallel-wire force by integrating the "
+    "Weber-Ampere element force",
+)
+def ampere_wire_force_recovery(
+    i1: float,
+    i2: float,
+    separation: float,
+    half_length: float,
+    n_segments: int = 400,
+) -> dict[str, float]:
+    """
+    Integrate the Weber-Ampere element force along two parallel wires.
+
+    Art. 846 (computed consequence): Weber's law, summed over the charge
+    carriers of two steady currents, yields the element force
+    dF = -(i1 i2 / r^2)(dl1·dl2) (implemented in
+    ``WebersTheory.force_between_current_elements``).  Integrating its
+    radial component over two straight parallel wires of length
+    2·half_length separated by d must reproduce the observed Ampere
+    force per unit length,
+
+        F/L -> -2 i1 i2 / d   (abamperes, dynes/cm, CGS-EMU),
+
+    in the limit of long wires — negative because parallel currents
+    attract (force on wire 2 points toward wire 1).  This function
+    performs the double numerical integration and reports residuals
+    against both the exact finite-length closed form
+
+        F/L = -i1 i2 (sqrt(4 L² + d²) - d) / (L d)
+
+    (a pure quadrature-accuracy check) and the infinite-wire limit
+    (the physical Ampère/Weber comparison).
+
+    Args:
+        i1: Current in wire 1 (abamperes).
+        i2: Current in wire 2 (abamperes).
+        separation: Wire separation d (cm).
+        half_length: Half the wire length L (cm); wires span [-L, L].
+        n_segments: Segments per wire.
+
+    Returns:
+        Dictionary with the computed force per unit length on wire 2
+        (positive = away from wire 1), the two analytic expectations,
+        and both relative residuals.
+
+    Reference:
+        Part IV, Art. 846: Weber's law reproduces Ampere's force.
+    """
+    if separation <= 0 or half_length <= 0:
+        raise ValueError("Separation and half_length must be positive")
+
+    ds = 2.0 * half_length / n_segments
+    xs = np.linspace(-half_length, half_length, n_segments + 1)[:-1] + ds / 2.0
+
+    # Vectorized over all element pairs: r_vec = (x2 - x1, 0, d).
+    dx = xs[None, :] - xs[:, None]
+    r = np.sqrt(dx**2 + separation**2)
+    dF = -(i1 * i2 / r**2) * ds * ds  # element force scalar along r̂
+    F_radial = np.sum(dF * (separation / r))
+
+    F_per_length = float(F_radial / (2.0 * half_length))
+
+    # Exact finite-length closed form (independent of the quadrature):
+    # integrating -d/(u^2+d^2)^{3/2} over both wires gives
+    # F/L = -i1 i2 (sqrt(4 L^2 + d^2) - d) / (L d).
+    L = half_length
+    d = separation
+    expected_finite = -i1 * i2 * (np.sqrt(4.0 * L**2 + d**2) - d) / (L * d)
+    expected_infinite = -2.0 * i1 * i2 / d
+
+    return {
+        "F_per_length_dynes_cm": F_per_length,
+        "expected_finite_wire_dynes_cm": float(expected_finite),
+        "expected_infinite_wire_dynes_cm": float(expected_infinite),
+        "relative_residual_vs_finite_closed_form": abs(F_per_length - expected_finite)
+        / abs(expected_finite),
+        "relative_residual_vs_infinite_limit": abs(F_per_length - expected_infinite)
+        / abs(expected_infinite),
+        "attractive": bool(F_per_length < 0),
+    }
+
+
+@maxwell_cite(
+    848,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="maxwell_original",
+    description="Weber's electrodynamic constant c_W = sqrt(2) c",
+)
+def weber_constant() -> float:
+    """
+    Weber's electrodynamic constant.
+
+    Art. 848: Maxwell records that Weber's constant c_W — the velocity
+    appearing in Weber's force law — is sqrt(2) times the ratio of the
+    electromagnetic to the electrostatic unit of electricity.  That
+    ratio is the speed of light c (Part IV, Ch. XIX), so
+
+        c_W = sqrt(2) · c = sqrt(2) · 2.99792458e10 cm/s.
+
+    Returns:
+        Weber's electrodynamic constant (cm/s).
+
+    Reference:
+        Part IV, Art. 848: Weber's constant and the ratio of units.
+    """
+    return np.sqrt(2.0) * CONST.C
+
+
+@maxwell_cite(
+    849,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="maxwell_original",
+    description="Critical radial velocity at which the Weber force vanishes",
+)
+def critical_velocity() -> float:
+    """
+    Critical radial velocity of Weber's force law.
+
+    Art. 849 (computed consequence): with r̈ = 0 the Weber force factor
+    is 1 - ṙ²/(2c²), which vanishes at
+
+        ṙ_crit = sqrt(2) · c.
+
+    For radial velocities beyond this value the sign of the force
+    reverses: like charges receding faster than sqrt(2)·c would ATTRACT.
+    Maxwell cites this as a decisive physical objection to the law,
+    since the critical speed exceeds the speed of light itself.
+
+    Returns:
+        Critical radial velocity (cm/s).
+
+    Reference:
+        Part IV, Art. 849: Limits of Weber's law.
+    """
+    return np.sqrt(2.0) * CONST.C
+
+
+@maxwell_cite(
+    850,
+    part=4,
+    chapter="Ch XXIII: Action at Distance",
+    theory_class="maxwell_original",
+    description="Numerical check of the Weber energy integral by RK4 "
+    "integration of the implicit force law",
+)
+def weber_energy_conservation_residual(
+    q1: float = 1.0,
+    q2: float = -1.0,
+    reduced_mass: float = 1.0,
+    r0: float = 1.0,
+    v0: float = 1.0e5,
+    t_end: float = 1.0e-5,
+    n_steps: int = 4000,
+) -> float:
+    """
+    Conservation residual of Weber's energy integral.
+
+    Art. 850 (computed consequence): Weber's force
+
+        F = (q1 q2 / r²) [1 - ṙ²/(2c²) + r r̈/c²]
+
+    is implicit in the acceleration.  Solving for r̈,
+
+        r̈ = (q1 q2 / r²)(1 - ṙ²/2c²) / (mu - q1 q2/(r c²)),
+
+    and integrating the radial motion with a fixed-step RK4 scheme, the
+    conserved energy integral of the law is
+
+        E = ½ mu ṙ² + (q1 q2 / r)(1 - ṙ²/(2c²)).
+
+    This function returns the maximum relative drift of E over the
+    trajectory.  It provides the numerical evidence that Weber's
+    potential (Art. 842) is the exact energy integral of Weber's force
+    (Art. 841) — the point Maxwell pressed as an objection is that this
+    energy depends on relative velocity, NOT that it fails to be
+    conserved.
+
+    Args:
+        q1, q2: Charges (statcoulombs); use opposite signs for a bound
+            radial orbit.
+        reduced_mass: Reduced mass mu (g).
+        r0: Initial separation (cm).
+        v0: Initial radial velocity (cm/s), |v0| << c.
+        t_end: Integration time (s).
+        n_steps: RK4 steps.
+
+    Returns:
+        Maximum of |E(t) - E(0)| / |E(0)| over the trajectory.
+
+    Reference:
+        Part IV, Art. 850: Energy of Weber's theory.
+    """
+    c = CONST.C
+    qq = q1 * q2
+    mu = reduced_mass
+
+    def acceleration(r: float, v: float) -> float:
+        factor = 1.0 - v**2 / (2.0 * c**2)
+        denominator = mu - qq / (r * c**2)
+        return (qq / r**2) * factor / denominator
+
+    def energy(r: float, v: float) -> float:
+        return 0.5 * mu * v**2 + (qq / r) * (1.0 - v**2 / (2.0 * c**2))
+
+    dt = t_end / n_steps
+    r, v = float(r0), float(v0)
+    E0 = energy(r, v)
+    if E0 == 0:
+        raise ValueError("Choose parameters with nonzero total energy")
+
+    max_drift = 0.0
+    for _ in range(n_steps):
+        k1r = v
+        k1v = acceleration(r, v)
+        k2r = v + 0.5 * dt * k1v
+        k2v = acceleration(r + 0.5 * dt * k1r, v + 0.5 * dt * k1v)
+        k3r = v + 0.5 * dt * k2v
+        k3v = acceleration(r + 0.5 * dt * k2r, v + 0.5 * dt * k2v)
+        k4r = v + dt * k3v
+        k4v = acceleration(r + dt * k3r, v + dt * k3v)
+        r += (dt / 6.0) * (k1r + 2 * k2r + 2 * k3r + k4r)
+        v += (dt / 6.0) * (k1v + 2 * k2v + 2 * k3v + k4v)
+        if r <= 0:
+            break
+        max_drift = max(max_drift, abs((energy(r, v) - E0) / E0))
+
+    return max_drift

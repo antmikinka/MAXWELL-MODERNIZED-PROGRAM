@@ -1,0 +1,228 @@
+670 : (Art. 670).
+670 : Art. 670-672: On the axis of a circular loop:
+671 : """Verify the toroidal current sheet (Art. 671).
+672 : - Moving media boundaries (Art. 672-673)
+672 : Art. 672-673: When the boundary between media moves with velocity v,
+673 : Art. 673-675: For a coil in the xy-plane centered at origin,
+674 : - Energy flux at boundaries (Art. 674)
+674 : Art. 674: The energy flux (Poynting vector) at a boundary determines
+675 : Art. 675-685: Maxwell's use of Legendre polynomials in
+675 : Art. 675: Legendre polynomials satisfy:
+676 : Art. 676: The derivative satisfies:
+676 : Part IV, Art. 676: Legendre polynomial derivative.
+677 : Art. 677: Rodrigues' formula:
+677 : Part IV, Art. 677: Rodrigues' formula.
+678 : Art. 678: Orthogonality relation:
+678 : Part IV, Art. 678: Orthogonality relation.
+679 : Art. 679-681: For Helmholtz coils (separation = radius):
+682 : Art. 682-683: For a hollow cylinder with inner radius a and
+682 : Art. 682-683: The Helmholtz configuration provides uniform field
+686 : Art. 686: Real form for physical applications:
+686 : Part IV, Art. 686: Real spherical harmonics.
+687 : Art. 687: The intensity is:
+687 : Part IV, Art. 687: Spherical harmonic intensity.
+693 : greatest. With the self-inductance of a circular coil (Art. 693),
+693 : Maxwell's formula (Art. 693, applied throughout Art. 706): the
+694 : #   * Art. 694 — the VECTOR potential A_φ expanded in zonal vector
+694 : Art. 694: For a circular current of radius a carrying I abamperes in
+695 : #   * Art. 695 — the SCALAR potential of the equivalent magnetic shell,
+695 : Art. 695: The field of a closed current outside the wire equals that
+698 : Art. 698: The incomplete elliptic integral:
+698 : Part IV, Art. 698: Third kind elliptic integral.
+699 : Art. 699: Jacobian elliptic functions are inverses of
+699 : Part IV, Art. 699: Jacobian elliptic functions.
+700 : Art. 700: The Landen transformation relates elliptic
+700 : Part IV, Art. 700: Landen transformation.
+701 : Art. 701: The complementary modulus:
+701 : Part IV, Art. 701: Complementary modulus.
+702 : parameter convention itself is carried — with its Art. 702
+702 : hijack Art. 702 coverage.
+703 : """Verify K(k) = (pi/2) sum_n [((2n-1)!!/(2n)!!)^2 k^{2n}] (Art. 703).
+703 : term by term (Art. 703).
+704 : """Verify dK/dm = (E(m) - (1-m)K(m))/(2 m (1-m)) (Art. 704).
+704 : """Verify dE/dm = (E(m) - K(m))/(2m) (Art. 704).
+705 : """Verify the Landen descending transformation of K (Art. 705):
+708 : 1. Mean radius: wind at the largest available radius. Art. 708 requires
+709 : neglected at this tier (they are the subject of the Art. 709
+709 : # Art. 709: Mathematical theory of the galvanometer
+710 : # Art. 710: Tangent and sine galvanometer principles
+710 : """Tangent galvanometer (Art. 710).
+711 : # Art. 711: Single-coil galvanometer
+711 : """Galvanometer with a single circular coil (Art. 711).
+714 : # Art. 714: Four-coil galvanometer
+714 : """Galvanometer with four coils (Art. 714).
+715 : # Art. 715: Three-coil galvanometer
+715 : """Galvanometer with three coils (Art. 715).
+716 : """Optimize wire dimensions for galvanometer sensitivity (Art. 716).
+717 : # Art. 717: Design of a sensitive galvanometer
+717 : """Design a sensitive galvanometer from a given length of wire (Art. 717).
+718 : """Sensibility figure of merit g(R) = sqrt(R)/(R + R_ext) (Art. 718).
+718 : """Theory of greatest sensibility (Art. 718).
+719 : """Apply the law of wire thickness for sensibility (Art. 719).
+720 : # Art. 720: Uniform-wire galvanometer and zero-deflection sensitivity
+720 : """Galvanometer with uniform thickness wire (Art. 720).
+721 : (no hits)
+722 : """Thomson's sensitive suspended coil (Art. 722).
+723 : (no hits)
+724 : """Thomson's combined suspended coil and galvanometer (Art. 724).
+725 : """Weber's electrodynamometer (Art. 725).
+728 : (no hits)
+729 : """Electrodynamometer with torsion arm (Art. 729).
+730 : Art. 730: For a lossless or high-frequency line:
+730 : Part IV, Art. 730: Signal velocity.
+731 : Art. 731: For a lossless line:
+731 : Part IV, Art. 731: Characteristic impedance.
+732 : Art. 732: For a transmission line:
+732 : Part IV, Art. 732: Attenuation constant.
+733 : Art. 733: The phase constant determines wave phase shift:
+733 : Part IV, Art. 733: Phase constant.
+734 : Art. 734: The delay is:
+734 : Part IV, Art. 734: Signal delay.
+735 : Art. 735: For a forward-traveling wave:
+735 : Part IV, Art. 735: Voltage along line.
+736 : Art. 736-737: For a tangent galvanometer:
+736 : Art. 736-737: Rearranging the tangent formula:
+737 : (no hits)
+738 : (no hits)
+739 : - Sine galvanometer (Art. 739)
+739 : Art. 739: The sine galvanometer differs from the tangent
+741 : (no hits)
+742 : (no hits)
+743 : (no hits)
+744 : (no hits)
+746 : (no hits)
+747 : (no hits)
+748 : (no hits)
+749 : (no hits)
+759 : Art. 759-760: From the induced EMF and current:
+759 : Art. 759-760: R = EMF / I
+765 : Capacitor-discharge (leak) method (Art. 765):
+765 : Art. 765: A capacitor of (independently known) capacitance C is
+766 : Recoil damping correction (Art. 766):
+766 : Art. 766: The recoil determination (Art. 758) reads the transient
+769 : Art. 769: the ratio of the electrostatic to the electromagnetic unit
+769 : Art. 769: ``[q_ESU]/[q_EMU] = L T^-1`` (and analogues for the other
+770 : Art. 770: a moving charged body is an electric current.  For a ring
+770 : Art. 770: with ``H = q omega / (v a)`` the measured centre field of
+771 : The key insight (Art. 771-781): the ratio ESU/EMU for any quantity equals
+771 : Art. 771-773: Maxwell's fundamental discovery — the ratio of ESU to EMU
+772 : """Verify the charge-unit ratio is c (Art. 772).
+772 : * Thomson's electrometer method (Art. 772)
+774 : """Verify the ESU capacitance dimension is length (Art. 774).
+774 : * Jenkin's method by intermittent condenser discharge (Art. 774)
+775 : * Intermittent-current method (Art. 775)
+775 : Art. 775: a condenser is charged and discharged ``frequency`` times
+776 : * Condenser and wippe in a Wheatstone bridge (Art. 776)
+776 : Art. 776: a condenser in a bridge arm is charged and discharged
+778 : * Capacity compared with self-induction (Art. 778)
+778 : Art. 778: an LC circuit oscillates with ``omega = 1/sqrt(L C)`` when
+779 : * Coil and condenser combined (Art. 779)
+779 : Art. 779: a coil of known EMU inductance ``L`` (cm) and a condenser
+780 : Art. 780: for one and the same conductor the numeric readings obey
+781 : Art. 781-791: This dataclass encapsulates the complete state of an
+781 : Art. 781-791: This class provides a unified interface for all
+782 : - Speed of light: Part IV, Ch. XX (EM theory of light), Art. 782
+782 : #: Speed of light in vacuum (cm/s) — Art. 782
+783 : - Derivation from Maxwell's equations in vacuum (Art. 783)
+783 : - Wave equation for E: ∇²E = (με/c²) · ∂²E/∂t² (Art. 783)
+784 : - Wave speed: v = c/√(με) — in vacuum with μ=1, ε=1: v = c (Art. 784)
+784 : Part IV, Art. 784: Wave speed relation.
+786 : Art. 786-787: Maxwell showed that electromagnetic waves propagate
+786 : Art. 786-787: The velocity is:
+787 : Art. 787: k = 2π / λ = ω / v
+787 : Part IV, Art. 787: Wave number.
+790 : Art. 790: λ = λ_0 / n
+790 : Part IV, Art. 790: Wavelength in medium.
+795 : Art. 795-800: Maxwell's theory of metallic reflection treats metals
+795 : Art. 795: For s-polarization (E perpendicular to plane of incidence):
+796 : Art. 796: For p-polarization (E parallel to plane of incidence):
+796 : Part IV, Art. 796: Fresnel reflection (parallel).
+798 : Art. 798: The skin depth is:
+798 : Part IV, Art. 798: Skin depth.
+799 : Art. 799: The absorption coefficient is:
+799 : Part IV, Art. 799: Absorption coefficient.
+804 : Art. 804-805: Maxwell's theory of light in anisotropic crystals,
+804 : Art. 804: The ordinary ray has refractive index n_o and
+805 : Art. 805: The extraordinary ray has refractive index n_e
+805 : Part IV, Art. 805: Extraordinary ray velocity.
+806 : "re-extinguish the ray (Faraday's observation, Art. 806-807).",
+807 : Maxwell 1873, Art. 807: a ray of plane-polarized light is transmitted
+808 : From Faraday's law theta = V B L (Art. 808) and the kinematic
+808 : rotation_per_length: V B (rad/cm, Art. 808).
+809 : """Apply Verdet's sign rule for the rotation (Art. 809).
+809 : Maxwell 1873, Art. 809: "In diamagnetic substances, the direction in
+810 : round trips (cf. Art. 810): a reciprocal (natural) rotation cancels
+810 : rotation is non-reciprocal, Art. 810).
+811 : the two circular components (Art. 811).  This convention is pinned by
+811 : """Kinematical analysis of the two circular components (Art. 811).
+813 : """Right or left-handed circularly polarized ray (Art. 813).
+813 : propagation axis at constant magnitude (Art. 813: the tip of the
+814 : """Velocity split in a naturally rotatory medium (Art. 814).
+815 : """Velocity split induced by a magnetic force along the ray (Art. 815).
+815 : Maxwell 1873, Art. 815: the helix which represents a given ray has
+816 : """Transverse vector disturbance of light (Art. 816).
+816 : Maxwell 1873, Art. 816: "The disturbance which constitutes light,
+817 : * Art. 817 parametrisation (used by :func:`derive_circular_kinematics`):
+817 : sense in the Art. 817 convention).
+818 : """Potential and kinetic energy of the medium (Art. 818).
+818 : Maxwell 1873, Art. 818: "The potential energy, V, of the system
+820 : """Compute the argument that a real rotation is required (Art. 820).
+820 : Maxwell 1873, Art. 820: every term of the kinetic energy T is "of two
+821 : """Computed summary of the magneto-optic results (Art. 821).
+821 : Maxwell 1873, Art. 821 restates the conclusions of Arts. 806-820
+823 : """maxwell.vortex_engine.helmholtz_law — Vortex variation (Art. 823).
+823 : vortices (Maxwell 1873, Part IV, Ch. XXI, Art. 823, citing Helmholtz,
+827 : of Art. 826 by Lagrange's equations (Art. 827), and their solution for a
+827 : """Equations of motion for a plane circular wave (Art. 827).
+828 : left-circular components (Art. 828).
+828 : """Q(q) = A_0 q^2 - A_1 q^4 (Art. 828 eq. (16)).
+829 : from the vortex theory (Art. 829, equations (21)-(26)) and its
+829 : #: exactly Art. 829 eq. (26).  Fraunhofer wavelengths in cm: C (red)
+831 : "Molecular Vortices", Arts. 822-824; Note, Art. 831).
+831 : """Computed summary of the mechanical theory of vortices (Art. 831).
+832 : Gaussian-CGS theory carries c: m = I*A/CONST.C (Art. 832),
+832 : Art. 832-840: Ampere's hypothesis that magnetic phenomena arise
+833 : Art. 833: For a dipole (small current loop):
+833 : Part IV, Art. 833: Dipole field.
+834 : Art. 834: For a magnetic dipole:
+834 : Part IV, Art. 834: Vector potential.
+835 : Art. 835: The magnetization is:
+835 : Part IV, Art. 835: Magnetization formula.
+837 : J_b = CONST.C (curl M) (Art. 837), K_b = CONST.C (M x n_hat)
+837 : Art. 837: The bound (molecular) current density in the interior of
+838 : Art. 838: The magnetic moment of a finite magnet is the integral of
+838 : Part IV, Art. 838: Magnetic moment of a magnetized body.
+839 : (Art. 839).  Currents and current densities are therefore read in
+839 : Art. 839: The molecular currents of a magnetized body are equivalent
+842 : Art. 842: The potential energy is:
+842 : Part IV, Art. 842: Weber potential.
+843 : * Coulomb limit (v = a = 0): F = q1 q2 / r^2           (Art. 843)
+843 : Art. 843: When v = 0 and a = 0, Weber's law reduces to:
+846 : * wire-force closed form for finite wires               (Art. 846)
+846 : * action-reaction pairwise equality of element forces   (Art. 846)
+849 : (e.g. the critical velocity of Art. 849), the computation lives in
+849 : "Art. 849: the force changes sign at the critical velocity "
+850 : * conservation of the Weber energy integral             (Art. 850)
+850 : "Art. 850: the potential energy of two particles depends on "
+851 : Art. 851-858: descriptive commentary together with residuals
+851 : Art. 851-858: Neumann's formulation of electromagnetic interactions
+852 : Art. 852: The flux is:
+852 : Part IV, Art. 852: Magnetic flux.
+853 : * Maxwell's elliptic closed form for coaxial loops (Art. 853)
+853 : Art. 853: Neumann's formula:
+856 : * reciprocity M12 = M21                            (Art. 856)
+856 : the two is the Art. 856-857 verification below.
+857 : * far-field dipole limit M -> 2 pi^2 R1^2 R2^2/d^3 (Art. 857)
+857 : Art. 857 (computed consequence): when the separation d is large
+858 : * Lenz sign of the motional EMF                    (Art. 858)
+858 : Art. 858 (computed consequence): with steady primary current I and
+859 : Art. 859-866: Maxwell's framework for comparing different
+859 : Art. 859: Each theory is characterized by its fundamental
+860 : Art. 860 (compute-or-delete): replaces the former literal
+860 : Part IV, Art. 860: Comparison with the facts.
+861 : Art. 861 (compute-or-delete): replaces hardcoded consistency
+861 : Part IV, Art. 861: Internal consistency.
+863 : Art. 863-864: every boolean below is derived by thresholding a
+864 : (no hits)
+865 : Art. 865-866: descriptive commentary together with the one
+865 : Art. 865-866: From the medium's K and mu, all wave

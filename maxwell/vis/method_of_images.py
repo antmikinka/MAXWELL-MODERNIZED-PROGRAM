@@ -20,7 +20,7 @@ from maxwell.vis._compat import Axes, Figure, plt, require_matplotlib
 
 @maxwell_cite(
     155,
-    part=2,
+    part=1,
     chapter="Theory of Electric Images",
     description="Calculate potential and field for a point charge above a conducting plane using the method of images.",
 )
@@ -81,7 +81,7 @@ def calc_method_of_images(
 
 @maxwell_cite(
     155,
-    part=2,
+    part=1,
     chapter="Theory of Electric Images",
     description="Plot equipotential contours and field lines for a charge above a conducting plane.",
 )

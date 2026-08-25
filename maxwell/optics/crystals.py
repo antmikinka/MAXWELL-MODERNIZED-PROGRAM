@@ -41,8 +41,15 @@ import numpy as np
 from maxwell.config.constants import CONST
 from maxwell.meta.citation import maxwell_cite
 
-# Optical constants for common birefringent crystals
+# Optical constants for common birefringent crystals.
 # Format: {name: {"n_o": ..., "n_e": ..., "type": "positive"|"negative"}}
+#
+# Provenance: ordinary/extraordinary refractive indices at the sodium D
+# line (lambda = 589.3 nm, standard handbook wavelength), tabulated values
+# as collected in the CRC Handbook of Chemistry and Physics and the
+# Landolt-Boernstein optical tables.  Crystal sign convention follows
+# Maxwell Arts. 804-805: "positive" if the extraordinary ray is the
+# slower (n_e > n_o), "negative" if the ordinary ray is slower.
 CRYSTAL_OPTICAL_CONSTANTS = {
     "calcite": {"n_o": 1.658, "n_e": 1.486, "type": "negative"},
     "quartz": {"n_o": 1.544, "n_e": 1.553, "type": "positive"},
@@ -55,6 +62,17 @@ CRYSTAL_OPTICAL_CONSTANTS = {
     "beta_barium_borate": {"n_o": 1.678, "n_e": 1.553, "type": "negative"},
     "potassium_dihydrogen_phosphate": {"n_o": 1.507, "n_e": 1.467, "type": "negative"},
 }
+
+# Default crystal for CrystalOptics / analyze_crystal_optics: quartz at the
+# sodium D line (from CRYSTAL_OPTICAL_CONSTANTS above), so no index value
+# appears as an unattributed literal below.
+_DEFAULT_CRYSTAL = CRYSTAL_OPTICAL_CONSTANTS["quartz"]
+DEFAULT_N_ORDINARY = _DEFAULT_CRYSTAL["n_o"]  # quartz, 589.3 nm
+DEFAULT_N_EXTRAORDINARY = _DEFAULT_CRYSTAL["n_e"]  # quartz, 589.3 nm
+
+# Standard reference wavelength for the tabulated indices above: the sodium
+# D line, lambda_D = 589 nm (rounded from 589.3 nm), expressed in cm.
+SODIUM_D_LINE_CM = 589e-7
 
 
 @dataclass
@@ -72,8 +90,8 @@ class CrystalOptics:
         optic_axis_direction: Direction of optic axis (default: z-axis).
     """
 
-    n_o: float = 1.544
-    n_e: float = 1.553
+    n_o: float = DEFAULT_N_ORDINARY
+    n_e: float = DEFAULT_N_EXTRAORDINARY
     crystal_type: str = "positive"
     optic_axis_direction: np.ndarray = None
 
@@ -186,7 +204,7 @@ class CrystalOptics:
         if wavelength <= 0:
             raise ValueError(f"Wavelength must be positive")
 
-        return (2.0 * np.pi / wavelength) * abs(self.birefringence) * thickness
+        return (2.0 * np.pi / wavelength) * abs(self.birefringence()) * thickness
 
     @maxwell_cite(
         804,
@@ -215,7 +233,7 @@ class CrystalOptics:
         if thickness <= 0:
             raise ValueError(f"Thickness must be positive")
 
-        return abs(self.birefringence) * thickness
+        return abs(self.birefringence()) * thickness
 
     @maxwell_cite(
         804,
@@ -291,10 +309,10 @@ class CrystalOptics:
         """
         if wavelength <= 0:
             raise ValueError(f"Wavelength must be positive")
-        if abs(self.birefringence) < 1e-15:
+        if abs(self.birefringence()) < 1e-15:
             raise ValueError("Crystal must be birefringent")
 
-        return wavelength / (4.0 * abs(self.birefringence))
+        return wavelength / (4.0 * abs(self.birefringence()))
 
     @maxwell_cite(
         804,
@@ -322,10 +340,10 @@ class CrystalOptics:
         """
         if wavelength <= 0:
             raise ValueError(f"Wavelength must be positive")
-        if abs(self.birefringence) < 1e-15:
+        if abs(self.birefringence()) < 1e-15:
             raise ValueError("Crystal must be birefringent")
 
-        return wavelength / (2.0 * abs(self.birefringence))
+        return wavelength / (2.0 * abs(self.birefringence()))
 
 
 @maxwell_cite(
@@ -493,9 +511,9 @@ def calc_retardation_waves(
     description="Verify crystal optics relations",
 )
 def verify_crystal_optics(
-    n_o: float = 1.544,
-    n_e: float = 1.553,
-    wavelength: float = 589e-7,
+    n_o: float = DEFAULT_N_ORDINARY,
+    n_e: float = DEFAULT_N_EXTRAORDINARY,
+    wavelength: float = SODIUM_D_LINE_CM,
     tolerance: float = 1e-10,
 ) -> dict[str, float | bool]:
     """
@@ -540,7 +558,7 @@ def verify_crystal_optics(
     return {
         "n_o": n_o,
         "n_e": n_e,
-        "birefringence": co.birefringence,
+        "birefringence": co.birefringence(),
         "crystal_type": co.crystal_type,
         "v_ordinary": co.ordinary_velocity(),
         "v_extraordinary": co.extraordinary_velocity(),
@@ -575,7 +593,7 @@ def analyze_crystal_optics(
     crystal_name: str = None,
     n_o: float = None,
     n_e: float = None,
-    wavelength: float = 589e-7,
+    wavelength: float = SODIUM_D_LINE_CM,
     thickness: float = 0.01,
 ) -> dict[str, float | str]:
     """
@@ -614,9 +632,9 @@ def analyze_crystal_optics(
         n_e = constants["n_e"]
     else:
         if n_o is None:
-            n_o = 1.544
+            n_o = DEFAULT_N_ORDINARY
         if n_e is None:
-            n_e = 1.553
+            n_e = DEFAULT_N_EXTRAORDINARY
 
     co = CrystalOptics(n_o=n_o, n_e=n_e)
 
@@ -628,7 +646,7 @@ def analyze_crystal_optics(
         "crystal": crystal_name if crystal_name else "custom",
         "n_o": n_o,
         "n_e": n_e,
-        "birefringence": co.birefringence,
+        "birefringence": co.birefringence(),
         "crystal_type": co.crystal_type,
         "v_ordinary": co.ordinary_velocity(),
         "v_extraordinary": co.extraordinary_velocity(),
@@ -639,7 +657,7 @@ def analyze_crystal_optics(
         "retardation_radians": co.retardation(thickness, wavelength),
         "retardation_degrees": np.degrees(co.retardation(thickness, wavelength)),
         "retardation_waves": calc_retardation_waves(
-            thickness, co.birefringence, wavelength
+            thickness, co.birefringence(), wavelength
         ),
         "quarter_wave_thickness_cm": co.quarter_wave_thickness(wavelength),
         "half_wave_thickness_cm": co.half_wave_thickness(wavelength),

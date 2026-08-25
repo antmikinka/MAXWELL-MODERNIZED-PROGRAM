@@ -106,6 +106,14 @@ from maxwell.electromagnetism.theory.general_equations import (
     numerical_divergence,
     verify_maxwell_equations,
 )
+from maxwell.electromagnetism.theory.quaternion_expressions import (
+    Quaternion,
+    impose_s_nabla_A_zero,
+    magnetic_induction_from_potential,
+    nabla_of_vector,
+    scalar_part_of_potential,
+    verify_nabla_quaternion_parts,
+)
 
 __all__ = [
     # Oersted (Arts. 475-479)
@@ -152,6 +160,13 @@ __all__ = [
     "calc_ampere_maxwell",
     "calc_total_current_density",
     "verify_displacement_current_necessity",
+    # Quaternion nabla (Arts. 618-619) — unsplit; S not assumed zero at ingest
+    "Quaternion",
+    "nabla_of_vector",
+    "magnetic_induction_from_potential",
+    "scalar_part_of_potential",
+    "impose_s_nabla_A_zero",
+    "verify_nabla_quaternion_parts",
     # General Equations (Arts. 594-603)
     "ElectromagneticField",
     "MaxwellEquations",

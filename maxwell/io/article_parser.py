@@ -27,7 +27,7 @@ from maxwell.meta.citation import maxwell_cite
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Parse article number from Maxwell's notation (e.g., '27.]')",
@@ -87,7 +87,7 @@ def extract_article_number(text: str) -> int | None:
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Find all article boundaries in chapter text",
@@ -168,7 +168,7 @@ def extract_all_articles_from_chapter(chapter_text: str) -> list[dict[str, Any]]
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract LaTeX equations from Mathpix markdown",
@@ -269,7 +269,7 @@ def extract_equations(mathpix_markdown: str) -> list[dict[str, str]]:
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract figure and diagram references from markdown",
@@ -392,7 +392,7 @@ def extract_figure_references(mathpix_markdown: str) -> list[dict[str, Any]]:
 
 @maxwell_cite(
     1,
-    part=5,
+    part=1,
     chapter="Data Loading Utilities",
     theory_class="user_original",
     description="Extract cross-references to other articles",
