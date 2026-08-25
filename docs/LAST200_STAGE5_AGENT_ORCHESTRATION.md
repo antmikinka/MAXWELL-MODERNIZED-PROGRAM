@@ -207,7 +207,7 @@ G4 criteria (Stage-5 §4.9) vs. state:
 | ≥60 SymPy spine verifiers | ✅ **69** (Wave 8a) |
 | Zero open S1/S2 | ✅ 5 S1 + 5 S2 closed, G3-verified |
 | SCRIBA certification records | ✅ 200/200 machine-evidenced T3 records (Wave 8b); REQ-V strictness gap closed by Wave 9a (store now 200/200) |
-| 100% page verdicts | ⏳ **HUMAN-BLOCKED** — 0 Vol II verdicts exist; 195-page session manifest is turnkey (`PAGE_VERDICT_SESSION_MANIFEST_667_866.*`); verdicts are human semantic judgments and will not be fabricated |
+| 100% page verdicts | ⏳ **HUMAN-BLOCKED** — 0 Vol II verdicts exist; 195-page session manifest is turnkey (`PAGE_VERDICT_SESSION_MANIFEST_667_866.*`, local-only / untracked since 2026-08-24); verdicts are human semantic judgments and will not be fabricated |
 
 **Remaining program decisions (user):** (a) hold the Vol II page-verdict session (manifest ready); ~~(b) fresh-context G4-pre audit~~ — **DONE, verdict G4-PRE PASS-WITH-FINDINGS** (below); (c) commit the working tree (C5 — requires explicit instruction); ~~(d) optional REQ-V tightening wave~~ — **DONE (Wave 9a: 200/200)**.
 

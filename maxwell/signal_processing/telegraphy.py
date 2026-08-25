@@ -8,8 +8,8 @@ D-24 ADJUDICATION (2026-08-21, closing G2 condition C6 / decision D-06):
 the former Arts. 740/745/750 attributions of the ``SignalTransmission``
 rise-time / bandwidth / signaling-rate heuristics were ANACHRONISMS.
 Arts. 740, 745 and 750 are genuine, equation-dense articles of Ch XVI
-(3rd-edition Vol. II pp. 407, 411, 415-416 per
-``page_verifier/data/last200_arts_provenance.json``) within the
+(3rd-edition Vol. II pp. 407, 411, 415-416; provenance recorded in
+``docs/reports/D24_ADJUDICATION_2026-08-21.md``) within the
 observations/measurement cluster; none of them states the 20th-century
 signal-integrity rules ``t_r ≈ 2.2 RC``, ``BW ≈ 0.35/t_r`` or
 ``f_max ≈ 1/(2 t_r)``.  Those three methods are therefore reclassified

@@ -127,5 +127,8 @@ coverage_baseline.json
 # ============================================================
 examples/output/
 
-# Native TeX raster cache for page verifier pane 2
-page_verifier/data/latex_cache/
+# Page-verdict tooling and session artifacts are intentionally local-only
+# (stripped from the remote 2026-08-24; recoverable from git history).
+page_verifier/
+run_page_verifier.py
+docs/reports/PAGE_VERDICT_SESSION_MANIFEST_667_866.*

@@ -1,9 +1,0 @@
-What if the "missing pieces" weren't lost — just trapped in an 1873 book?
-
-I implemented Maxwell's Treatise as free Python/JAX you can soon pip install.
-
-Now I'm verifying it page by page against the real volumes: scan + OCR + programmatic math side by side.
-
-Humanity shouldn't have to re-derive what Maxwell already wrote — we should be able to run it.
-
-Follow for updates — packages publishing soon for free install.

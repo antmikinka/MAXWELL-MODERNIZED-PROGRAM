@@ -16,7 +16,6 @@ prune paper
 prune archive
 
 # Generated caches and agent/tooling trees stay out of the package.
-prune page_verifier
 prune agents
 prune chroma_data
 prune audit_logs
